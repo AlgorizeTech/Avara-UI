@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textreveal",
+  "title": "Textreveal",
+  "description": "A minimalistic textreveal component designed with React and Tailwind CSS.",
+  "author": "Reche Soares",
+  "type": "registry:ui",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "cssVars": {
+    "dark": {},
+    "light": {}
+  },
+  "files": [
+    {
+      "path": "textreveal.tsx",
+      "content": "'use client';\r\n\r\nimport React from 'react';\r\nimport { motion } from 'framer-motion';\r\n\r\n// Main App Component\r\nexport default function TextReveal() {\r\n  const textToAnimate = \"Don’t wait for the perfect moment. Take the moment and make it perfect. Consistent effort, even when no one is watching, is what builds greatness over time.\";\r\n  const words = textToAnimate.split(\" \");\r\n\r\n  // Variants for the container to orchestrate the animation\r\n  const containerVariants = {\r\n    hidden: { opacity: 0 },\r\n    visible: (i = 1) => ({\r\n      opacity: 1,\r\n      transition: { staggerChildren: 0.1, delayChildren: 0.04 * i },\r\n    }),\r\n  };\r\n\r\n  // Variants for each word to create a smoother smoke effect\r\n  const childVariants = {\r\n    hidden: {\r\n      opacity: 0,\r\n      y: 20,\r\n      filter: \"blur(10px)\",\r\n    },\r\n    visible: {\r\n      opacity: 1,\r\n      y: 0,\r\n      filter: \"blur(0px)\",\r\n    },\r\n  };\r\n\r\n  return (\r\n    <div className=\"flex items-center justify-center font-sans p-4\">\r\n      <motion.div\r\n        style={{ display: \"flex\", flexWrap: \"wrap\", justifyContent: 'center' }}\r\n        variants={containerVariants}\r\n        initial=\"hidden\"\r\n        animate=\"visible\"\r\n        className=\"text-2xl font-bold text-center mask-r-from-0.5 max-w-5xl leading-relaxed\"\r\n      >\r\n        {words.map((word, index) => (\r\n          <motion.span\r\n            key={index}\r\n            variants={childVariants}\r\n            transition={{\r\n              duration: 0.8,\r\n              ease: [0.25, 0.46, 0.45, 0.94],\r\n            }}\r\n            style={{ marginRight: \"12px\", marginTop: \"10px\" }} // Adjust spacing for paragraph\r\n          >\r\n            {word}\r\n          </motion.span>\r\n        ))}\r\n      </motion.div>\r\n    </div>\r\n  );\r\n}\r\n",
+      "type": "registry:ui"
+    }
+  ]
+}

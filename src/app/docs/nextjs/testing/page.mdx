@@ -1,0 +1,449 @@
+export const metadata = {
+    title: 'Testing - Next.js',
+    description: 'Learn how to test Next.js applications with Jest, React Testing Library, and Cypress.',
+    keywords: [
+        'Next.js testing',
+        'Jest',
+        'React Testing Library',
+        'Cypress',
+        'unit testing',
+        'integration testing',
+        'E2E testing'
+    ],
+    openGraph: {
+        title: 'Testing - Next.js',
+        description: 'Learn how to test Next.js applications with Jest, React Testing Library, and Cypress.',
+        type: 'article',
+        url: '/docs/nextjs/testing',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Testing - Next.js',
+        description: 'Learn how to test Next.js applications with Jest, React Testing Library, and Cypress.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/testing',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+
+# Testing
+
+Next.js supports multiple testing approaches including unit testing, integration testing, and end-to-end testing.
+
+## Jest and React Testing Library
+
+### Installation
+
+```bash
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom
+```
+
+### Configuration
+
+Create a `jest.config.js` file:
+
+```js
+// jest.config.js
+const nextJest = require('next/jest')
+
+const createJestConfig = nextJest({
+  dir: './',
+})
+
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jest-environment-jsdom',
+  moduleNameMapping: {
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/lib/(.*)$': '<rootDir>/lib/$1',
+  },
+}
+
+module.exports = createJestConfig(customJestConfig)
+```
+
+Create a `jest.setup.js` file:
+
+```js
+// jest.setup.js
+import '@testing-library/jest-dom'
+```
+
+Update package.json:
+
+```json
+{
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  }
+}
+```
+
+### Testing Client Components
+
+```tsx
+// app/components/Button.test.tsx
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import Button from './Button'
+
+describe('Button', () => {
+  it('renders correctly', () => {
+    render(<Button>Click me</Button>)
+    
+    expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument()
+  })
+  
+  it('calls onClick when clicked', async () => {
+    const user = userEvent.setup()
+    const handleClick = jest.fn()
+    
+    render(<Button onClick={handleClick}>Click me</Button>)
+    
+    await user.click(screen.getByRole('button', { name: /click me/i }))
+    
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+  
+  it('is disabled when disabled prop is true', () => {
+    render(<Button disabled>Click me</Button>)
+    
+    expect(screen.getByRole('button', { name: /click me/i })).toBeDisabled()
+  })
+})
+```
+
+### Testing Server Components
+
+```tsx
+// app/components/UserList.test.tsx
+import { render, screen } from '@testing-library/react'
+import UserList from './UserList'
+
+// Mock fetch
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve([{ id: 1, name: 'John Doe' }]),
+  })
+) as jest.Mock
+
+describe('UserList', () => {
+  it('renders users', async () => {
+    render(await UserList())
+    
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
+  })
+})
+```
+
+### Testing API Routes
+
+```ts
+// app/api/users/route.test.ts
+import { GET } from './route'
+import { NextRequest } from 'next/server'
+
+describe('GET /api/users', () => {
+  it('returns users', async () => {
+    const request = new NextRequest('http://localhost:3000/api/users')
+    const response = await GET(request)
+    const data = await response.json()
+    
+    expect(response.status).toBe(200)
+    expect(data.users).toBeInstanceOf(Array)
+  })
+})
+```
+
+### Testing Hooks
+
+```tsx
+// app/hooks/useCounter.test.tsx
+import { renderHook, act } from '@testing-library/react'
+import { useCounter } from './useCounter'
+
+describe('useCounter', () => {
+  it('should initialize with initial value', () => {
+    const { result } = renderHook(() => useCounter(5))
+    
+    expect(result.current.count).toBe(5)
+  })
+  
+  it('should increment count', () => {
+    const { result } = renderHook(() => useCounter(0))
+    
+    act(() => {
+      result.current.increment()
+    })
+    
+    expect(result.current.count).toBe(1)
+  })
+  
+  it('should decrement count', () => {
+    const { result } = renderHook(() => useCounter(5))
+    
+    act(() => {
+      result.current.decrement()
+    })
+    
+    expect(result.current.count).toBe(4)
+  })
+  
+  it('should reset count', () => {
+    const { result } = renderHook(() => useCounter(5))
+    
+    act(() => {
+      result.current.increment()
+      result.current.reset()
+    })
+    
+    expect(result.current.count).toBe(5)
+  })
+})
+```
+
+## Cypress E2E Testing
+
+### Installation
+
+```bash
+npm install --save-dev cypress
+```
+
+### Configuration
+
+Create a `cypress.config.ts` file:
+
+```ts
+// cypress.config.ts
+import { defineConfig } from 'cypress'
+
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+  },
+})
+```
+
+Update package.json:
+
+```json
+{
+  "scripts": {
+    "cypress": "cypress open",
+    "cypress:run": "cypress run"
+  }
+}
+```
+
+### Writing Tests
+
+```ts
+// cypress/e2e/homepage.cy.ts
+describe('Homepage', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  })
+  
+  it('should display the homepage', () => {
+    cy.contains('h1', 'Welcome to Next.js')
+  })
+  
+  it('should navigate to about page', () => {
+    cy.get('a[href="/about"]').click()
+    cy.url().should('include', '/about')
+    cy.contains('h1', 'About Us')
+  })
+  
+  it('should submit a form', () => {
+    cy.get('input[name="email"]').type('test@example.com')
+    cy.get('button[type="submit"]').click()
+    cy.contains('Thank you for subscribing!')
+  })
+})
+```
+
+### Testing Authentication
+
+```ts
+// cypress/e2e/auth.cy.ts
+describe('Authentication', () => {
+  it('should login successfully', () => {
+    cy.visit('/login')
+    
+    cy.get('input[name="email"]').type('user@example.com')
+    cy.get('input[name="password"]').type('password123')
+    cy.get('button[type="submit"]').click()
+    
+    cy.url().should('include', '/dashboard')
+    cy.contains('Welcome back!')
+  })
+  
+  it('should show error for invalid credentials', () => {
+    cy.visit('/login')
+    
+    cy.get('input[name="email"]').type('invalid@example.com')
+    cy.get('input[name="password"]').type('wrongpassword')
+    cy.get('button[type="submit"]').click()
+    
+    cy.contains('Invalid credentials')
+  })
+})
+```
+
+## Mocking and Stubbing
+
+### Mocking API Calls
+
+```tsx
+// app/components/UserProfile.test.tsx
+import { render, screen } from '@testing-library/react'
+import UserProfile from './UserProfile'
+
+// Mock the fetch API
+jest.mock('swr', () => ({
+  __esModule: true,
+  default: () => ({
+    data: { id: 1, name: 'John Doe', email: 'john@example.com' },
+    error: undefined,
+    isLoading: false,
+  }),
+}))
+
+describe('UserProfile', () => {
+  it('displays user information', () => {
+    render(<UserProfile userId={1} />)
+    
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
+    expect(screen.getByText('john@example.com')).toBeInTheDocument()
+  })
+})
+```
+
+### Mocking Next.js Router
+
+```tsx
+// app/components/Navigation.test.tsx
+import { render, screen } from '@testing-library/react'
+import Navigation from './Navigation'
+import { useRouter } from 'next/router'
+
+// Mock useRouter
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}))
+
+describe('Navigation', () => {
+  it('highlights active link', () => {
+    (useRouter as jest.Mock).mockReturnValue({
+      pathname: '/about',
+    })
+    
+    render(<Navigation />)
+    
+    expect(screen.getByRole('link', { name: /about/i })).toHaveClass('active')
+  })
+})
+```
+
+## Test Utilities
+
+### Custom Render Function
+
+```tsx
+// app/test-utils.tsx
+import { render } from '@testing-library/react'
+import { ReactElement } from 'react'
+import { ThemeProvider } from 'next-themes'
+
+export const renderWithProviders = (ui: ReactElement) => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <ThemeProvider attribute="class" defaultTheme="light">
+      {children}
+    </ThemeProvider>
+  )
+  
+  return render(ui, { wrapper: Wrapper })
+}
+```
+
+### Test Data Factory
+
+```ts
+// app/test-data.ts
+export const createUser = (overrides = {}) => ({
+  id: Math.random(),
+  name: 'John Doe',
+  email: 'john@example.com',
+  ...overrides,
+})
+
+export const createPost = (overrides = {}) => ({
+  id: Math.random(),
+  title: 'Test Post',
+  content: 'This is a test post',
+  author: createUser(),
+  ...overrides,
+})
+```
+
+## Continuous Integration
+
+### GitHub Actions
+
+```yaml
+# .github/workflows/test.yml
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Run E2E tests
+        run: npm run cypress:run
+```
+
+## Best Practices
+
+1. **Write tests first** when possible (TDD)
+2. **Test behavior, not implementation** details
+3. **Use descriptive test names** that explain what is being tested
+4. **Keep tests independent** and isolated
+5. **Mock external dependencies** to avoid flaky tests
+6. **Test edge cases** and error conditions
+7. **Use page objects** for E2E tests to reduce duplication
+8. **Run tests in parallel** to speed up execution
+9. **Measure test coverage** to identify gaps
+10. **Keep tests maintainable** by avoiding overly complex setups

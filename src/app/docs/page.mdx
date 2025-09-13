@@ -1,0 +1,156 @@
+export const metadata = {
+  title: 'Documentation - Sera UI Component Library',
+  description: 'Complete documentation for the Sera UI component library with installation guides, component examples, and API references.',
+  keywords: [
+    'Sera UI documentation',
+    'React components',
+    'UI library',
+    'component library',
+    'Tailwind CSS',
+    'React hooks',
+    'UI components',
+    'design system'
+  ],
+  openGraph: {
+    title: 'Documentation - Sera UI',
+    description: 'Complete documentation for the Sera UI component library with installation guides, component examples, and API references.',
+    type: 'article',
+    url: '/docs',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Documentation - Sera UI',
+    description: 'Complete documentation for the Sera UI component library with installation guides, component examples, and API references.',
+  },
+  alternates: {
+    canonical: '/docs',
+  },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import Link from 'next/link';
+
+# Documentation
+
+Welcome to the Sera UI documentation! This guide will help you get started with our component library and make the most of its features.
+
+## Next.js Documentation
+
+We've migrated our documentation to focus on Next.js, the React framework for production. Explore the following sections to learn how to build modern web applications:
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+  <Link href="/docs/nextjs/index" className="block p-6 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all dark:border-gray-800 dark:hover:border-blue-400">
+    <h3 className="text-xl font-semibold mb-2">Getting Started</h3>
+    <p className="text-gray-600 dark:text-gray-400">
+      Learn the basics of Next.js, including installation, project structure, and creating your first app.
+    </p>
+  </Link>
+  
+  <Link href="/docs/nextjs/routing" className="block p-6 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all dark:border-gray-800 dark:hover:border-blue-400">
+    <h3 className="text-xl font-semibold mb-2">Core Features</h3>
+    <p className="text-gray-600 dark:text-gray-400">
+      Explore Next.js core features like routing, data fetching, API routes, and image optimization.
+    </p>
+  </Link>
+  
+  <Link href="/docs/nextjs/styling" className="block p-6 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all dark:border-gray-800 dark:hover:border-blue-400">
+    <h3 className="text-xl font-semibold mb-2">Styling & Performance</h3>
+    <p className="text-gray-600 dark:text-gray-400">
+      Learn about CSS styling options, performance optimization techniques, and SEO best practices.
+    </p>
+  </Link>
+  
+  <Link href="/docs/nextjs/authentication" className="block p-6 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all dark:border-gray-800 dark:hover:border-blue-400">
+    <h3 className="text-xl font-semibold mb-2">Advanced Topics</h3>
+    <p className="text-gray-600 dark:text-gray-400">
+      Dive into advanced topics like authentication, middleware, TypeScript, and testing.
+    </p>
+  </Link>
+</div>
+
+## Component Library
+
+While we focus on Next.js documentation, Sera UI still provides a rich set of React components:
+
+<Tabs defaultValue="components" className="mt-8">
+  <TabsList>
+    <TabsTrigger value="components">UI Components</TabsTrigger>
+    <TabsTrigger value="hooks">React Hooks</TabsTrigger>
+    <TabsTrigger value="utilities">Utilities</TabsTrigger>
+  </TabsList>
+  
+  <TabsContent value="components">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <Link href="/docs/button" className="block p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors dark:border-gray-800 dark:hover:border-blue-400 dark:hover:bg-blue-950/20">
+        <h4 className="font-medium">Button</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Customizable button with multiple variants</p>
+      </Link>
+      
+      <Link href="/docs/card" className="block p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors dark:border-gray-800 dark:hover:border-blue-400 dark:hover:bg-blue-950/20">
+        <h4 className="font-medium">Card</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Flexible container for content</p>
+      </Link>
+      
+      <Link href="/docs/tabs" className="block p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors dark:border-gray-800 dark:hover:border-blue-400 dark:hover:bg-blue-950/20">
+        <h4 className="font-medium">Tabs</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Accessible tab interface</p>
+      </Link>
+    </div>
+  </TabsContent>
+  
+  <TabsContent value="hooks">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+        <h4 className="font-medium">useToast</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Display notifications to users</p>
+      </div>
+      
+      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+        <h4 className="font-medium">useMediaQuery</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Responsive design helpers</p>
+      </div>
+    </div>
+  </TabsContent>
+  
+  <TabsContent value="utilities">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+        <h4 className="font-medium">cn</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Class name merging utility</p>
+      </div>
+      
+      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+        <h4 className="font-medium">createSlug</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">URL-friendly string generator</p>
+      </div>
+    </div>
+  </TabsContent>
+</Tabs>
+
+## Getting Help
+
+If you need help with Sera UI or Next.js:
+
+- Check the [Next.js Documentation](https://nextjs.org/docs)
+- Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
+- Join our [Discord Community](#)
+- Contact our support team at support@seraui.com
+
+## Contributing
+
+We welcome contributions to Sera UI! If you'd like to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+See our [Contributing Guide](/docs/contributing) for more details.

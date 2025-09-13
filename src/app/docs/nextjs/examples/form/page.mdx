@@ -1,0 +1,45 @@
+export const metadata = {
+    title: 'Form Example - Next.js',
+    description: 'A practical form handling example demonstrating Next.js features.',
+    keywords: [
+        'Next.js example', 'form handling', 'client component', 'useState', 'useEffect'
+    ],
+    openGraph: {
+        title: 'Form Example - Next.js',
+        description: 'A practical form handling example demonstrating Next.js features.',
+        type: 'article',
+        url: '/docs/nextjs/examples/form',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Form Example - Next.js',
+        description: 'A practical form handling example demonstrating Next.js features.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/examples/form',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/site/tabs.tsx";
+
+# Form Example
+
+This example demonstrates how to handle forms in a Next.js application using React hooks.
+
+## Preview
+
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <ComponentRenderer component={<FormExample />} />
+  </TabsContent>
+  <TabsContent value="code">
+    <CodeBlock filePath="src/app/docs/nextjs/examples/form/form-example.tsx" />
+  </TabsContent>
+</Tabs>
