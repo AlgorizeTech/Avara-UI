@@ -1,57 +1,75 @@
-# Sera UI 
+# Documentation
 
-**Beautifully designed components you can copy and paste into your apps. Accessible. Customizable. Open Source.**
+Welcome to the Sera UI documentation! This guide will help you get started with our component library and make the most of its features.
 
-Sera UI is a reusable component library for React, Next.js, and other JSX-based libraries. Currently, we support **React** and **Next.js** only. Our goal is to create next-level UI with minimal code, optimal performance, and a modern feel.
+## Next.js Documentation
 
-## 💡 Why Sera UI?
+We've migrated our documentation to focus on Next.js, the React framework for production. Explore the following sections to learn how to build modern web applications:
 
-> “I’m a JavaScript library creator from Bangladesh, not a professional designer. But after building several front-end projects, I realized I needed my own UI system to streamline everything.”
+    Getting Started
+    
+      Learn the basics of Next.js, including installation, project structure, and creating your first app.
 
-Sera UI is born from real development needs — built by a developer, for developers.
+    Core Features
+    
+      Explore Next.js core features like routing, data fetching, API routes, and image optimization.
 
-## ✨ Features
+    Styling & Performance
+    
+      Learn about CSS styling options, performance optimization techniques, and SEO best practices.
 
-* 🎨 **Modern Design**: Clean and beautiful UI components.
-* ⚡ **High Performance**: Built with performance and accessibility in mind.
-* 🧱 **Easy to Customize**: Easily themeable with Tailwind CSS.
-* 🔄 **Smooth Animations**: Powered by the excellent `framer-motion` library.
-* 🧩 **Icons Included**: `lucide-react` icons are integrated out of the box.
+    Advanced Topics
+    
+      Dive into advanced topics like authentication, middleware, TypeScript, and testing.
 
-## 🚀 Getting Started
+## Component Library
 
-You can add Sera UI components to your project in two ways: using our CLI for a quick setup or by manually copying the component code for more control.
+While we focus on Next.js documentation, Sera UI still provides a rich set of React components:
 
-# CLI Installation
-Our CLI will guide you through the process of adding components to your project. Here is an example of how to add the `Tabs` component:
+    UI Components
+    React Hooks
+    Utilities
 
-### NPM
-```bash
-    npx shadcn@latest add "https://seraui.seraprogrammer.com/registry/button.json"
-    ```
+        Button
+        Customizable button with multiple variants
 
-### PNPM
-```bash
-    pnpm dlx shadcn@latest add "https://seraui.seraprogrammer.com/registry/button.json"
-    ```
+        Card
+        Flexible container for content
 
-### Yarn
-```bash
-    yarn dlx shadcn@latest add "https://seraui.seraprogrammer.com/registry/button.json"
-    ```
+        Tabs
+        Accessible tab interface
 
-### Bun
-```bash
-    bunx shadcn@latest add "https://seraui.seraprogrammer.com/registry/button.json"
-    ```
+        useToast
+        Display notifications to users
 
-### Manual Installation
+        useMediaQuery
+        Responsive design helpers
 
-For manual installation, you can copy and paste the component code directly from our documentation into your project.
+        cn
+        Class name merging utility
 
-1. **Choose a Component**: Browse our component library and find what you need.
-2. **Copy the Code**: You can view and copy the source code for each component.
-3. **Paste and Customize**: Paste the code into your project and customize it to fit your needs.
+        createSlug
+        URL-friendly string generator
+
+## Getting Help
+
+If you need help with Sera UI or Next.js:
+
+- Check the [Next.js Documentation](https://nextjs.org/docs)
+- Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
+- Join our [Discord Community](#)
+- Contact our support team at support@seraui.com
+
+## Contributing
+
+We welcome contributions to Sera UI! If you'd like to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+See our [Contributing Guide](/docs/contributing) for more details.
 
 ---
 
