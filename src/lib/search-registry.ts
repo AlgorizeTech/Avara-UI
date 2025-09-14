@@ -1,5 +1,5 @@
 import { navigation } from "@/constants/navigation";
-import { components } from "@/scripts/components";
+// import { components } from "@/scripts/components";
 
 export interface SearchableItem {
   id: string;
@@ -31,32 +31,32 @@ function getNavigationItems(): SearchableItem[] {
 }
 
 // Function to generate searchable items from components registry
-function getComponentItems(): SearchableItem[] {
-  try {
-    return components.map((component) => ({
-      id: `component-${component.name}`,
-      title: component.title || component.name,
-      description: component.description || `${component.name} component`,
-      href: `/docs/${component.name}`,
-      category: "Components",
-      keywords: [
-        component.name.toLowerCase(),
-        component.title?.toLowerCase() || "",
-        ...(component.description?.toLowerCase().split(" ") || [])
-      ].filter(Boolean)
-    }));
-  } catch (error) {
-    console.warn("Error loading components for search:", error);
-    return [];
-  }
-}
+// function getComponentItems(): SearchableItem[] {
+//   try {
+//     return components.map((component) => ({
+//       id: `component-${component.name}`,
+//       title: component.title || component.name,
+//       description: component.description || `${component.name} component`,
+//       href: `/docs/${component.name}`,
+//       category: "Components",
+//       keywords: [
+//         component.name.toLowerCase(),
+//         component.title?.toLowerCase() || "",
+//         ...(component.description?.toLowerCase().split(" ") || [])
+//       ].filter(Boolean)
+//     }));
+//   } catch (error) {
+//     console.warn("Error loading components for search:", error);
+//     return [];
+//   }
+// }
 
 // Main function to get all searchable items
 export function getAllSearchableItems(): SearchableItem[] {
   const navigationItems = getNavigationItems();
-  const componentItems = getComponentItems();
+  // const componentItems = getComponentItems();
   
-  return [...navigationItems, ...componentItems];
+  return [...navigationItems];
 }
 
 // Search function with fuzzy matching
