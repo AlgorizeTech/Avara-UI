@@ -358,4 +358,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*Built with ❤️ by Sera UI Team*
+*Built with ❤️ by Next.js Documentation Team*

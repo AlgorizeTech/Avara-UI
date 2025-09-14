@@ -425,4 +425,4 @@ Deploy the `out` directory to your hosting provider.
 - Update package.json version
 - Create changelog entries
 
-This comprehensive guide provides everything needed to work with the Sera UI component system professionally, from adding new components to maintaining existing ones.
+This comprehensive guide provides everything needed to work with the Next.js Documentation component system professionally, from adding new components to maintaining existing ones.
