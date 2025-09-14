@@ -1,0 +1,87 @@
+export const metadata = {
+    title: 'Next.js Examples',
+    description: 'Practical examples demonstrating Next.js features and best practices.',
+    keywords: [
+        'Next.js examples',
+        'tutorials',
+        'code examples',
+        'best practices',
+        'interactive demos'
+    ],
+    openGraph: {
+        title: 'Next.js Examples',
+        description: 'Practical examples demonstrating Next.js features and best practices.',
+        type: 'article',
+        url: '/docs/nextjs/examples',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Next.js Examples',
+        description: 'Practical examples demonstrating Next.js features and best practices.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/examples',
+    },
+};
+
+import Link from 'next/link';
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+
+# Next.js Examples
+
+Explore practical examples that demonstrate Next.js features and best practices.
+
+## Interactive Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+  <Link href="/docs/nextjs/examples/counter" className="block p-6 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all dark:border-gray-800 dark:hover:border-blue-400">
+    <h3 className="text-xl font-semibold mb-2">Interactive Counter</h3>
+    <p className="text-gray-600 dark:text-gray-400">
+      A simple counter component demonstrating state management with React hooks in Next.js.
+    </p>
+  </Link>
+</div>
+
+## Learning Path
+
+These examples are designed to help you learn Next.js concepts progressively:
+
+1. **Basic Components** - Simple UI components with props and state
+2. **Data Fetching** - Different approaches to fetch and display data
+3. **Routing** - Navigation patterns and dynamic routes
+4. **Authentication** - Protecting routes and managing user sessions
+5. **Performance** - Optimization techniques for better user experience
+6. **Deployment** - Preparing your application for production
+
+## Code Structure
+
+Each example follows Next.js best practices:
+
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **Client Components** only when necessary
+- **Server Components** for data fetching
+- **Proper error handling** and loading states
+
+## Contributing
+
+Have an example you'd like to share? We welcome contributions to our examples collection:
+
+1. Fork the repository
+2. Create a new example directory in `/src/app/docs/nextjs/examples/`
+3. Follow the existing structure and best practices
+4. Submit a pull request with your example
+
+## Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev)
+- [Tailwind CSS Documentation](https://tailwindcss.com)
+- [TypeScript Documentation](https://www.typescriptlang.org)

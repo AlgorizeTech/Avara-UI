@@ -1,0 +1,273 @@
+export const metadata = {
+    title: 'Image Optimization - Next.js',
+    description: 'Learn how to optimize images in Next.js with the next/image component.',
+    keywords: [
+        'Next.js image optimization',
+        'next/image',
+        'responsive images',
+        'image loading',
+        'performance optimization'
+    ],
+    openGraph: {
+        title: 'Image Optimization - Next.js',
+        description: 'Learn how to optimize images in Next.js with the next/image component.',
+        type: 'article',
+        url: '/docs/nextjs/image-optimization',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Image Optimization - Next.js',
+        description: 'Learn how to optimize images in Next.js with the next/image component.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/image-optimization',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+
+# Image Optimization
+
+The `next/image` component automatically optimizes images for performance.
+
+## Basic Usage
+
+Use the `next/image` component instead of `<img>`:
+
+```jsx
+import Image from 'next/image'
+ 
+export default function Page() {
+  return (
+    <Image
+      src="/profile.jpg"
+      alt="Profile picture"
+      width={400}
+      height={400}
+    />
+  )
+}
+```
+
+## Remote Images
+
+For remote images, configure domains in `next.config.js`:
+
+```js
+// next.config.js
+const nextConfig = {
+  images: {
+    domains: ['example.com', 'cdn.example.com'],
+  },
+}
+ 
+module.exports = nextConfig
+```
+
+Then use remote images:
+
+```jsx
+<Image
+  src="https://example.com/image.jpg"
+  alt="Remote image"
+  width={400}
+  height={400}
+/>
+```
+
+## Local Images
+
+Import local images directly:
+
+```jsx
+import profilePic from '../public/profile.jpg'
+ 
+export default function Page() {
+  return (
+    <Image
+      src={profilePic}
+      alt="Profile picture"
+      width={400}
+      height={400}
+    />
+  )
+}
+```
+
+## Responsive Images
+
+The Image component automatically creates responsive images:
+
+```jsx
+<Image
+  src="/large-image.jpg"
+  alt="Responsive image"
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  style={{
+    width: '100%',
+    height: 'auto'
+  }}
+/>
+```
+
+## Fill Container
+
+Use `fill` to make an image fill its parent container:
+
+```jsx
+<div style={{ position: 'relative', width: '400px', height: '400px' }}>
+  <Image
+    src="/profile.jpg"
+    alt="Profile picture"
+    fill
+    style={{
+      objectFit: 'cover'
+    }}
+  />
+</div>
+```
+
+## Priority Loading
+
+Use `priority` for above-the-fold images:
+
+```jsx
+<Image
+  src="/hero.jpg"
+  alt="Hero image"
+  width={1200}
+  height={600}
+  priority
+/>
+```
+
+## Image Sizing
+
+Specify image dimensions:
+
+```jsx
+// Fixed size
+<Image
+  src="/image.jpg"
+  alt="Fixed size image"
+  width={400}
+  height={300}
+/>
+ 
+// Aspect ratio
+<Image
+  src="/image.jpg"
+  alt="Aspect ratio image"
+  width={4}
+  height={3}
+  style={{
+    width: '100%',
+    height: 'auto'
+  }}
+/>
+```
+
+## Styling Images
+
+Style images with the `style` prop:
+
+```jsx
+<Image
+  src="/image.jpg"
+  alt="Styled image"
+  width={400}
+  height={300}
+  style={{
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+  }}
+/>
+```
+
+## Placeholders
+
+Use placeholders for better loading experience:
+
+```jsx
+// Blur placeholder (default for local images)
+<Image
+  src={profilePic}
+  alt="Profile"
+  width={400}
+  height={400}
+  placeholder="blur"
+/>
+ 
+// Data URL placeholder
+<Image
+  src="/image.jpg"
+  alt="Image"
+  width={400}
+  height={400}
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,..."
+/>
+```
+
+## Quality Control
+
+Control image quality:
+
+```jsx
+<Image
+  src="/image.jpg"
+  alt="High quality image"
+  width={400}
+  height={400}
+  quality={100} // 0-100, default is 75
+/>
+```
+
+## Loading Behavior
+
+Control loading behavior:
+
+```jsx
+<Image
+  src="/image.jpg"
+  alt="Image"
+  width={400}
+  height={400}
+  loading="lazy" // 'lazy' | 'eager'
+/>
+```
+
+## On Load Events
+
+Handle image load events:
+
+```jsx
+<Image
+  src="/image.jpg"
+  alt="Image"
+  width={400}
+  height={400}
+  onLoad={() => console.log('Image loaded')}
+  onError={() => console.log('Image failed to load')}
+/>
+```
+
+## Best Practices
+
+1. **Always specify width and height** to prevent layout shift
+2. **Use priority** for above-the-fold images
+3. **Configure remote domains** in next.config.js
+4. **Use placeholders** for better loading experience
+5. **Optimize image quality** for file size vs visual quality
+6. **Use responsive sizes** for different screen widths
+7. **Leverage automatic optimization** instead of manual optimization
