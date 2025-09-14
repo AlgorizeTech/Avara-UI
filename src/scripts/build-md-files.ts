@@ -97,7 +97,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Convert <Cli> component to code block
   mdContent = mdContent.replace(
     /<Cli\s+command=\{`([^`]+)`\}\s*\/>/g,
-    '```bash\nnpx shadcn@latest $1\n```'
+    '``bash\nnpx shadcn@latest $1\n```'
   );
   
   // Convert <CodeBlock> to a reference
@@ -116,11 +116,23 @@ function convertMdxToMd(content: string, componentPath: string): string {
   mdContent = mdContent.replace(/<[^>]+>/g, '');
   
   // Clean up extra whitespace
-  mdContent = mdContent.replace(/\n\s*\n\s*\n/g, '\n\n');
+  mdContent = mdContent.replace(/
+\s*
+\s*
+/g, '
+
+');
   mdContent = mdContent.trim();
   
   // Add component path reference
-  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the interactive version at the corresponding URL on the Sera UI documentation site for live previews and interactive examples.\n`;
+  const pathReference = `
+
+---
+
+**Component Path:** \`${componentPath}\`
+
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
+`;
   
   return mdContent + pathReference;
 }

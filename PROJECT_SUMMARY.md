@@ -1,7 +1,7 @@
 # Next.js Documentation Migration - Project Summary
 
 ## Overview
-This project successfully migrated the Sera UI documentation to focus on Next.js, creating a comprehensive documentation site for Next.js features and best practices while preserving existing functionality.
+This project successfully migrated the documentation to focus on Next.js, creating a comprehensive documentation site for Next.js features and best practices while preserving existing functionality.
 
 ## Documentation Structure
 
@@ -42,7 +42,7 @@ This project successfully migrated the Sera UI documentation to focus on Next.js
 - Enhanced TypeScript/JavaScript toggle
 
 ### 3. Component System
-- Reused existing Sera UI components (Tabs, CodeBlock, ComponentRenderer)
+- Reused existing components (Tabs, CodeBlock, ComponentRenderer)
 - Added new example components demonstrating Next.js patterns
 - Maintained dark theme and UI design
 

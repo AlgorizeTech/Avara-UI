@@ -1,14 +1,14 @@
-# Sera UI
+# Next.js Documentation
 
-**Beautifully designed components you can copy and paste into your apps. Accessible. Customizable. Open Source.**
+**Beautifully designed components and examples you can copy and paste into your apps. Accessible. Customizable. Open Source.**
 
-Sera UI is a reusable component library for React, Next.js, and other JSX-based libraries. Currently, we support **React** and **Next.js** only. Our goal is to create next-level UI with minimal code, optimal performance, and a modern feel.
+This is a comprehensive documentation site for Next.js, providing reusable components and examples for React and Next.js applications. Currently, we support **React** and **Next.js** only. Our goal is to create next-level documentation with minimal code, optimal performance, and a modern feel.
 
-## 💡 Why Sera UI?
+## 💡 Why Next.js Documentation?
 
-> “I’m a JavaScript library creator from Bangladesh, not a professional designer. But after building several front-end projects, I realized I needed my own UI system to streamline everything.”
+> “This documentation site is created to help developers build better Next.js applications with well-documented examples and components.”
 
-Sera UI is born from real development needs — built by a developer, for developers.
+This documentation is born from real development needs — built by developers, for developers.
 
 ## ✨ Features
 
@@ -20,7 +20,7 @@ Sera UI is born from real development needs — built by a developer, for develo
 
 ## 🚀 Getting Started
 
-You can add Sera UI components to your project in two ways: using our CLI for a quick setup or by manually copying the component code for more control.
+You can use these Next.js components and examples in your project in two ways: using our CLI for a quick setup or by manually copying the code for more control.
 
 # CLI Installation
 Our CLI will guide you through the process of adding components to your project. Here is an example of how to add the `Tabs` component:
@@ -57,4 +57,4 @@ For manual installation, you can copy and paste the component code directly from
 
 **Component Path:** `page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Sera UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
