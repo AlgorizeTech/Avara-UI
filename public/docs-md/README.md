@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 # Sera UI Documentation - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
 **Generated at:** 2025-09-14T16:10:23.775Z
+=======
+# Next.js Documentation - Markdown Files
+
+This directory contains auto-generated Markdown versions of all MDX documentation pages.
+
+**Generated at:** 2025-09-14T09:36:06.572Z
+>>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
 **Total files:** 20
 
 ## Available Files
