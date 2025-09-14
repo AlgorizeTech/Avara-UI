@@ -194,7 +194,7 @@ export function ComponentTemplate({
                 Is the {componentName} component accessible?
               </h3>
               <p className="text-zinc-600 dark:text-zinc-400">
-                Yes, all Sera UI components including {componentName} follow WCAG accessibility guidelines 
+                Yes, all components including {componentName} follow WCAG accessibility guidelines 
                 and include proper ARIA attributes, keyboard navigation, and screen reader support.
               </p>
             </div>
@@ -204,7 +204,7 @@ export function ComponentTemplate({
                 Can I use {componentName} with TypeScript?
               </h3>
               <p className="text-zinc-600 dark:text-zinc-400">
-                Absolutely! All Sera UI components are built with TypeScript and include full type definitions 
+                Absolutely! All components are built with TypeScript and include full type definitions 
                 for better development experience and type safety.
               </p>
             </div>

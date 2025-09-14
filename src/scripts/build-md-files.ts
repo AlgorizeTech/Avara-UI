@@ -118,8 +118,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Clean up extra whitespace
   mdContent = mdContent.replace(/
 \s*
-\s*
-/g, '
+\s*/g, '
 
 ');
   mdContent = mdContent.trim();
@@ -230,7 +229,7 @@ async function buildMdFiles(): Promise<void> {
     );
     
     // Create a README for the MD directory
-    const readmeContent = `# Sera UI Documentation - Markdown Files
+    const readmeContent = `# Next.js Documentation - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 

@@ -211,7 +211,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         `${item.title}: ${item.description} - Link: ${currentUrl}${item.href}`
       ).join('\n');
 
-     const enhancedPrompt = `You are "Sera UI Search," an expert assistant for the SeraUI component library. Here are the available components with their documentation links:\n\n${componentsWithLinks}\n\nWhen recommending components, follow these guidelines:
+     const enhancedPrompt = `You are "Next.js Documentation Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
+
+${componentsWithLinks}
+
+When recommending components, follow these guidelines:
 1. Understand the user's intent, even if their keywords are unclear or imperfect.
 2. Suggest the most relevant SeraUI components based on reasoning, context, and functionality—not just keyword matching.
 3. Always include the direct link to the component documentation. Format links as: [Component Name](${currentUrl}/docs/component-name)

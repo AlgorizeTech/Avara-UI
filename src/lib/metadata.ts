@@ -26,7 +26,7 @@ const bangladeshiKeywords = [
 
 const shadcnKeywords = [
   "shadcn ui alternative",
-  "shadcn ui vs Sera UI",
+  "shadcn ui vs Next.js Documentation",
   "Free shadcn ui alternative",
   "Lighter than shadcn ui",
   "Easier shadcn ui",
@@ -126,13 +126,13 @@ export const allKeywords = [
 
 export const metadata: Metadata = {
   title:
-    "Sera UI - Modern React Component Library | Tailwind CSS & Framer Motion",
+    "Next.js Documentation | Comprehensive Guide",
   description:
-    "Sera UI is a premium React component library with 500+ animated components. Built with Tailwind CSS, Framer Motion, and TypeScript. Free, open-source, and production-ready for modern web applications.",
+    "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
   keywords: allKeywords,
-  authors: [{ name: "Sera UI Team", url: "https://github.com/sera-ui" }],
-  creator: "Sera UI",
-  publisher: "Sera UI",
+  authors: [{ name: "Next.js Documentation Team", url: "https://github.com/sera-ui" }],
+  creator: "Next.js Documentation",
+  publisher: "Next.js Documentation",
   formatDetection: {
     email: false,
     address: false,
@@ -144,17 +144,17 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "Sera UI - Modern React Component Library | 500+ Animated Components",
+      "Next.js Documentation | Comprehensive Guide",
     description:
-      "Build stunning web applications with Sera UI's 500+ animated React components. Free, open-source, and built with Tailwind CSS & Framer Motion.",
+      "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
     url: "https://seraui.seraprogrammer.com",
-    siteName: "Sera UI",
+    siteName: "Next.js Documentation",
     images: [
       {
         url: "https://seraui.seraprogrammer.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Sera UI - Modern React Component Library with 500+ Animated Components",
+        alt: "Next.js Documentation | Comprehensive Guide",
         type: "image/png",
       },
     ],
@@ -163,7 +163,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sera UI - Modern React Component Library",
+    title: "Next.js Documentation | Comprehensive Guide",
     description:
       "500+ animated React components built with Tailwind CSS & Framer Motion. Free, open-source, and production-ready.",
     images: ["https://seraui.seraprogrammer.com/og-image.png"],

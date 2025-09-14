@@ -13,7 +13,7 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            name: "Sera UI",
+            name: "Next.js Documentation",
             description:
               "Modern React component library with 500+ animated components built with Tailwind CSS and Framer Motion.",
             url: "https://seraui.seraprogrammer.com",
@@ -30,7 +30,7 @@ export function StructuredData() {
             },
             author: {
               "@type": "Organization",
-              name: "Sera UI Team",
+              name: "Next.js Documentation Team",
               url: "https://github.com/sera-ui",
             },
             keywords:
@@ -45,7 +45,7 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Sera UI",
+            name: "Next.js Documentation",
             url: "https://seraui.seraprogrammer.com",
             logo: "https://seraui.seraprogrammer.com/logo.svg",
             description:
@@ -67,13 +67,13 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "WebSite",
-            name: "Sera UI",
+            name: "Next.js Documentation",
             url: "https://seraui.seraprogrammer.com",
             description:
               "Modern React component library with 500+ animated components",
             publisher: {
               "@type": "Organization",
-              name: "Sera UI",
+              name: "Next.js Documentation",
             },
             potentialAction: {
               "@type": "SearchAction",

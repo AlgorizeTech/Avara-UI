@@ -1,6 +1,6 @@
 {
-  "name": "Sera UI - Modern React Component Library",
-  "short_name": "Sera UI",
+  "name": "Next.js Documentation - Comprehensive Guide",
+  "short_name": "Next.js Docs",
   "description": "Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion",
   "start_url": "/",
   "display": "standalone",
@@ -36,14 +36,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Sera UI Component Library Desktop View"
+      "label": "Next.js Documentation Desktop View"
     },
     {
       "src": "/screenshot-mobile.png",
       "sizes": "375x667",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Sera UI Component Library Mobile View"
+      "label": "Next.js Documentation Mobile View"
     }
   ],
   "shortcuts": [

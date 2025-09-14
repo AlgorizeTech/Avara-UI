@@ -308,4 +308,4 @@ Congratulations! You've created your first Next.js application. Here are some ne
 
 **Component Path:** `nextjs\first-app\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Sera UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.

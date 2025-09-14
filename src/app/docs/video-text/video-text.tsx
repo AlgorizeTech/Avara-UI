@@ -200,7 +200,7 @@ export default function Videotext() {
           onVideoLoad={() => console.log('Video loaded successfully')}
           onVideoError={(error) => console.error('Video error:', error)}
         >
-          Sera UI
+          Next.js Documentation
         </VideoText>
       </div>
     </main>

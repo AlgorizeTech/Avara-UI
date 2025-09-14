@@ -26,13 +26,13 @@ export function generateMetadata(config: SEOConfig): Metadata {
     nofollow = false,
     ogImage = '/og-image.png',
     twitterImage,
-    authors = ['Sera UI Team'],
+    authors = ['Next.js Documentation Team'],
     category = 'technology',
     tags = []
   } = config
 
   const baseUrl = 'https://seraui.seraprogrammer.com'
-  const fullTitle = title.includes('Sera UI') ? title : `${title} | Sera UI`
+  const fullTitle = title.includes('Next.js Documentation') ? title : `${title} | Next.js Documentation`
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : undefined
 
   return {
@@ -40,8 +40,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
     description,
     keywords: [...keywords, ...tags].join(', '),
     authors: authors.map(name => ({ name })),
-    creator: 'Sera UI Team',
-    publisher: 'Sera UI',
+    creator: 'Next.js Documentation Team',
+    publisher: 'Next.js Documentation',
     category,
     
     // Robots
@@ -67,7 +67,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       url: canonicalUrl,
-      siteName: 'Sera UI',
+      siteName: 'Next.js Documentation',
       locale: 'en_US',
       type: 'website',
       images: [
@@ -97,8 +97,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
       'color-scheme': 'dark light',
       'mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'default',
-      'apple-mobile-web-app-title': 'Sera UI',
-      'application-name': 'Sera UI',
+      'apple-mobile-web-app-title': 'Next.js Documentation',
+      'application-name': 'Next.js Documentation',
       'msapplication-TileColor': '#3b82f6',
       'msapplication-config': '/browserconfig.xml',
     },
@@ -146,7 +146,7 @@ export function generateArticleMetadata(
   description: string, 
   publishedTime: string,
   modifiedTime?: string,
-  authors: string[] = ['Sera UI Team'],
+  authors: string[] = ['Next.js Documentation Team'],
   tags: string[] = []
 ): Metadata {
   return {
@@ -193,11 +193,11 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         license: 'https://opensource.org/licenses/MIT',
         author: {
           '@type': 'Organization',
-          name: 'Sera UI Team'
+          name: 'Next.js Documentation Team'
         },
         isPartOf: {
           '@type': 'SoftwareApplication',
-          name: 'Sera UI',
+          name: 'Next.js Documentation',
           url: baseUrl
         }
       }
@@ -210,11 +210,11 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         description: data.description,
         author: {
           '@type': 'Organization',
-          name: 'Sera UI Team'
+          name: 'Next.js Documentation Team'
         },
         publisher: {
           '@type': 'Organization',
-          name: 'Sera UI',
+          name: 'Next.js Documentation',
           logo: {
             '@type': 'ImageObject',
             url: `${baseUrl}/logo.svg`

@@ -2,14 +2,14 @@
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Sera UI",
+  "name": "Next.js Documentation",
   "url": "https://seraui.seraprogrammer.com",
   "logo": "https://seraui.seraprogrammer.com/logo.svg",
   "description": "Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion",
   "foundingDate": "2024",
   "founder": {
     "@type": "Person",
-    "name": "Sera UI Team"
+    "name": "Next.js Documentation Team"
   },
   "sameAs": [
     "https://github.com/seraprogrammer/sera-ui",
@@ -27,7 +27,7 @@ export const organizationSchema = {
 export const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Sera UI",
+  "name": "Next.js Documentation",
   "description": "Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion",
   "url": "https://seraui.seraprogrammer.com",
   "applicationCategory": "DeveloperApplication",
@@ -38,16 +38,16 @@ export const softwareApplicationSchema = {
   "dateModified": new Date().toISOString(),
   "author": {
     "@type": "Organization",
-    "name": "Sera UI Team",
+    "name": "Next.js Documentation Team",
     "url": "https://github.com/sera-ui"
   },
   "creator": {
     "@type": "Organization",
-    "name": "Sera UI Team"
+    "name": "Next.js Documentation Team"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Sera UI",
+    "name": "Next.js Documentation",
     "logo": {
       "@type": "ImageObject",
       "url": "https://seraui.seraprogrammer.com/logo.svg"
@@ -93,12 +93,12 @@ export const softwareApplicationSchema = {
 export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Sera UI",
+  "name": "Next.js Documentation",
   "url": "https://seraui.seraprogrammer.com",
   "description": "Modern React component library with 50+ animated components",
   "publisher": {
     "@type": "Organization",
-    "name": "Sera UI"
+    "name": "Next.js Documentation"
   },
   "potentialAction": {
     "@type": "SearchAction",
@@ -164,11 +164,11 @@ export const componentSchema = (componentName: string, description: string, cate
   "license": "https://opensource.org/licenses/MIT",
   "author": {
     "@type": "Organization",
-    "name": "Sera UI Team"
+    "name": "Next.js Documentation Team"
   },
   "isPartOf": {
     "@type": "SoftwareApplication",
-    "name": "Sera UI"
+    "name": "Next.js Documentation"
   },
   "applicationCategory": category,
   "keywords": `${componentName}, React component, Tailwind CSS, Framer Motion, UI component`

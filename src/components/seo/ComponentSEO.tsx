@@ -40,7 +40,7 @@ export function ComponentSEO({
           "name": `Is ${componentName} component responsive?`,
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": `Yes, all Sera UI components including ${componentName} are fully responsive and work seamlessly across all device sizes.`
+            "text": `Yes, all components including ${componentName} are fully responsive and work seamlessly across all device sizes.`
           }
         },
         {
