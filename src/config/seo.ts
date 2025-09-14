@@ -1,7 +1,7 @@
-// SEO Configuration for Sera UI
+// SEO Configuration for Next.js Documentation
 export const seoConfig = {
   // Basic site information
-  siteName: 'Sera UI',
+  siteName: 'Next.js Documentation',
   siteUrl: 'https://seraui.seraprogrammer.com',
   siteDescription: 'Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion. Free, open-source, and production-ready for modern web applications.',
   
@@ -15,8 +15,8 @@ export const seoConfig = {
 
   // Default metadata
   defaultMetadata: {
-    title: 'Sera UI - Modern React Component Library | 50+ Animated Components',
-    description: 'Build stunning web applications with Sera UI\'s 50+ animated React components. Free, open-source, built with Tailwind CSS & Framer Motion. Perfect for developers who want beautiful, accessible, and performant UI components.',
+    title: 'Next.js Documentation | Comprehensive Guide',
+    description: 'Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.',
     keywords: [
       'React components',
       'UI library',
@@ -37,9 +37,9 @@ export const seoConfig = {
       'component library',
       'design system'
     ],
-    authors: ['Sera UI Team'],
-    creator: 'Sera UI Team',
-    publisher: 'Sera UI',
+    authors: ['Next.js Documentation Team'],
+    creator: 'Next.js Documentation Team',
+    publisher: 'Next.js Documentation',
     category: 'technology'
   },
 
@@ -47,13 +47,13 @@ export const seoConfig = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Sera UI',
+    siteName: 'Next.js Documentation',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Sera UI - Modern React Component Library'
+        alt: 'Next.js Documentation | Comprehensive Guide'
       }
     ]
   },
@@ -127,7 +127,7 @@ export const seoConfig = {
     organization: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'Sera UI',
+      name: 'Next.js Documentation',
       url: 'https://seraui.seraprogrammer.com',
       logo: 'https://seraui.seraprogrammer.com/logo.svg',
       description: 'Modern React component library for developers',
@@ -141,7 +141,7 @@ export const seoConfig = {
     softwareApplication: {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'Sera UI',
+      name: 'Next.js Documentation',
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Web',
       offers: {

@@ -8,16 +8,16 @@ export function LazyOpenGraph() {
     const addOpenGraphTags = () => {
       const ogTags = [
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "Sera UI" },
+        { property: "og:site_name", content: "Next.js Documentation" },
         {
           property: "og:title",
           content:
-            "Sera UI - Modern React Component Library | 500+ Animated Components",
+            "Next.js Documentation | Comprehensive Guide",
         },
         {
           property: "og:description",
           content:
-            "Build stunning web applications with Sera UI's 500+ animated React components. Free, open-source, and built with Tailwind CSS & Framer Motion.",
+            "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
         },
         { property: "og:url", content: "https://seraui.seraprogrammer.com" },
         {
@@ -29,7 +29,7 @@ export function LazyOpenGraph() {
         {
           property: "og:image:alt",
           content:
-            "Sera UI - Modern React Component Library with 500+ Animated Components",
+            "Next.js Documentation | Comprehensive Guide",
         },
         { property: "og:image:type", content: "image/png" },
         { property: "og:locale", content: "en_US" },
@@ -40,7 +40,7 @@ export function LazyOpenGraph() {
         { name: "twitter:creator", content: "@sera_ui" },
         {
           name: "twitter:title",
-          content: "Sera UI - Modern React Component Library",
+          content: "Next.js Documentation | Comprehensive Guide",
         },
         {
           name: "twitter:description",
@@ -54,7 +54,7 @@ export function LazyOpenGraph() {
         {
           name: "twitter:image:alt",
           content:
-            "Sera UI - Modern React Component Library with 500+ Animated Components",
+            "Next.js Documentation | Comprehensive Guide",
         },
       ];
 

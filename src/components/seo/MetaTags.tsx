@@ -13,8 +13,8 @@ export function MetaTags() {
       {/* PWA Meta Tags */}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content="Sera UI" />
-      <meta name="application-name" content="Sera UI" />
+      <meta name="apple-mobile-web-app-title" content="Next.js Documentation" />
+      <meta name="application-name" content="Next.js Documentation" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
 
