@@ -16,84 +16,84 @@ import { Logo } from "@/assets/icons/logo";
 import { SearchModal } from "./search-modal";
 
 // Support Alert Banner Component
-const SupportAlertBanner = () => {
-  const [isVisible, setIsVisible] = useState(() => {
-    // Check if user has previously dismissed the banner
-    if (typeof window !== "undefined") {
-      const dismissed = localStorage.getItem(
-        "sera-ui-support-banner-dismissed"
-      );
-      return !dismissed;
-    }
-    return true;
-  });
+// const SupportAlertBanner = () => {
+//   const [isVisible, setIsVisible] = useState(() => {
+//     // Check if user has previously dismissed the banner
+//     if (typeof window !== "undefined") {
+//       const dismissed = localStorage.getItem(
+//         "sera-ui-support-banner-dismissed"
+//       );
+//       return !dismissed;
+//     }
+//     return true;
+//   });
 
-  const handleClose = () => {
-    setIsVisible(false);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("sera-ui-support-banner-dismissed", "true");
-    }
-  };
+//   const handleClose = () => {
+//     setIsVisible(false);
+//     if (typeof window !== "undefined") {
+//       localStorage.setItem("sera-ui-support-banner-dismissed", "true");
+//     }
+//   };
 
-  if (!isVisible) return null;
+//   if (!isVisible) return null;
 
-  return (
-    <>
-      <style jsx global>{`
-        :root {
-          --fd-banner-height: 3rem;
-        }
-        @keyframes fd-moving-banner {
-          from {
-            background-position: 0% 0;
-          }
-          to {
-            background-position: 100% 0;
-          }
-        }
-      `}</style>
-      <div
-        className="sticky top-0 z-40 flex flex-row items-center justify-center px-4 text-center text-sm font-medium bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100"
-        style={{ height: "3rem" }}
-      >
-        <div
-          className="absolute inset-0 z-[-1]"
-          style={{
-            maskImage:
-              "linear-gradient(to bottom, white, transparent), radial-gradient(circle at top center, white, transparent)",
-            maskComposite: "intersect",
-            animation: "fd-moving-banner 20s linear infinite",
-            backgroundImage:
-              "repeating-linear-gradient(70deg, rgba(165, 50, 90, 0.5) 0%, rgba(165, 50, 90, 0.5) 7.142857142857143%, transparent 14.285714285714286%, rgba(165, 50, 90, 0.5) 21.428571428571427%, transparent 28.571428571428573%, rgba(165, 50, 90, 0.5) 35.714285714285715%, transparent 42.857142857142854%, rgba(165, 50, 90, 0.5) 50%)",
-            backgroundSize: "200% 100%",
-            filter: "saturate(2)",
-          }}
-        />
-        <div className="flex items-center justify-between w-full max-w-[1536px]">
-          <div className="flex items-center gap-2">
-            <Heart className="h-4 w-4 fill-current animate-pulse text-rose-500" />
-            <span className="font-medium">
-              Love This UI? Help It Grow and Reach More Developers Worldwide —{" "}
-              <Link
-                href="/sponsor"
-                className="underline hover:no-underline transition-all duration-200"
-              >
-                Check out
-              </Link>
-            </span>
-          </div>
-          <button
-            onClick={handleClose}
-            className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors duration-200 ml-4"
-            aria-label="Close banner"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <style jsx global>{`
+//         :root {
+//           --fd-banner-height: 3rem;
+//         }
+//         @keyframes fd-moving-banner {
+//           from {
+//             background-position: 0% 0;
+//           }
+//           to {
+//             background-position: 100% 0;
+//           }
+//         }
+//       `}</style>
+//       <div
+//         className="sticky top-0 z-40 flex flex-row items-center justify-center px-4 text-center text-sm font-medium bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100"
+//         style={{ height: "3rem" }}
+//       >
+//         <div
+//           className="absolute inset-0 z-[-1]"
+//           style={{
+//             maskImage:
+//               "linear-gradient(to bottom, white, transparent), radial-gradient(circle at top center, white, transparent)",
+//             maskComposite: "intersect",
+//             animation: "fd-moving-banner 20s linear infinite",
+//             backgroundImage:
+//               "repeating-linear-gradient(70deg, rgba(165, 50, 90, 0.5) 0%, rgba(165, 50, 90, 0.5) 7.142857142857143%, transparent 14.285714285714286%, rgba(165, 50, 90, 0.5) 21.428571428571427%, transparent 28.571428571428573%, rgba(165, 50, 90, 0.5) 35.714285714285715%, transparent 42.857142857142854%, rgba(165, 50, 90, 0.5) 50%)",
+//             backgroundSize: "200% 100%",
+//             filter: "saturate(2)",
+//           }}
+//         />
+//         <div className="flex items-center justify-between w-full max-w-[1536px]">
+//           <div className="flex items-center gap-2">
+//             <Heart className="h-4 w-4 fill-current animate-pulse text-rose-500" />
+//             <span className="font-medium">
+//               Love This UI? Help It Grow and Reach More Developers Worldwide —{" "}
+//               <Link
+//                 href="/sponsor"
+//                 className="underline hover:no-underline transition-all duration-200"
+//               >
+//                 Check out
+//               </Link>
+//             </span>
+//           </div>
+//           <button
+//             onClick={handleClose}
+//             className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors duration-200 ml-4"
+//             aria-label="Close banner"
+//           >
+//             <X className="h-4 w-4" />
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
 
 // GitHub Star Badge Component with Caching
 // const GitHubStarBadge = ({ repo }: { repo: string }) => {
@@ -209,7 +209,7 @@ const Header = () => {
 
   return (
     <>
-      <SupportAlertBanner />
+      {/* <SupportAlertBanner /> */}
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
