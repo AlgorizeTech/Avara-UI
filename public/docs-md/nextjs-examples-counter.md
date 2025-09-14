@@ -149,4 +149,4 @@ export function Button({
 
 **Component Path:** `nextjs\examples\counter\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
+**Web Version:** Visit the interactive version at the corresponding URL on the Sera UI documentation site for live previews and interactive examples.
