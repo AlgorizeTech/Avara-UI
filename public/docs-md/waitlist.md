@@ -41,4 +41,4 @@ See implementation in: `src/app/docs/waitlist/waitlist2.tsx`
 
 **Component Path:** `waitlist\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.

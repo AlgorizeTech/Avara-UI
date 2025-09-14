@@ -204,8 +204,4 @@ export async function OPTIONS() {
 
 **Component Path:** `nextjs\api-routes\page.mdx`
 
-<<<<<<< HEAD
-**Web Version:** Visit the interactive version at the corresponding URL on the Sera UI documentation site for live previews and interactive examples.
-=======
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
->>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.

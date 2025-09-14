@@ -1,10 +1,6 @@
 # Documentation
 
-<<<<<<< HEAD
 Welcome to the Next.js Documentation documentation! This guide will help you get started with our component library and make the most of its features.
-=======
-Welcome to the Next.js Documentation! This guide will help you get started with Next.js and make the most of its features.
->>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
 
 ## Next.js Documentation
 
@@ -28,11 +24,7 @@ We've migrated our documentation to focus on Next.js, the React framework for pr
 
 ## Component Library
 
-<<<<<<< HEAD
 While we focus on Next.js documentation, Next.js Documentation still provides a rich set of React components:
-=======
-While we focus on Next.js documentation, this platform still provides a rich set of React components:
->>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
 
     UI Components
     React Hooks
@@ -61,11 +53,7 @@ While we focus on Next.js documentation, this platform still provides a rich set
 
 ## Getting Help
 
-<<<<<<< HEAD
 If you need help with Next.js Documentation or Next.js:
-=======
-If you need help with Next.js:
->>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
 
 - Check the [Next.js Documentation](https://nextjs.org/docs)
 - Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
@@ -74,11 +62,7 @@ If you need help with Next.js:
 
 ## Contributing
 
-<<<<<<< HEAD
 We welcome contributions to Next.js Documentation! If you'd like to contribute:
-=======
-We welcome contributions to this documentation platform! If you'd like to contribute:
->>>>>>> 8e21847a0a67777192006855ac652c1bf8ef7b1d
 
 1. Fork the repository
 2. Create a feature branch
@@ -91,4 +75,4 @@ See our [Contributing Guide](/docs/contributing) for more details.
 
 **Component Path:** `page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js Documentation site for live previews and interactive examples.
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
