@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Button from '@/app/docs/button/button'
+import Button from '@/app/docs/nextjs/examples/button/button'
 
 interface CounterProps {
   initialCount?: number
