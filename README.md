@@ -315,34 +315,6 @@ FROM node:18-alpine AS runner
 - Translation file structure
 - Language switcher component
 
-## 🎨 Design System
-
-### Color Palette
-- Light/dark theme support
-- CSS variables for theming
-- Accessible color contrast
-
-### Typography
-- Responsive font sizing
-- Font optimization with `next/font`
-- Readability-focused hierarchy
-
-### Components
-- Consistent design language
-- Reusable component patterns
-- Accessibility-first approach
-
-## 📞 Support
-
-### Community
-- GitHub Discussions
-- Discord community
-- Stack Overflow
-
-### Professional Support
-- Enterprise support options
-- Custom development services
-- Training and workshops
 
 ## 📄 License
 
