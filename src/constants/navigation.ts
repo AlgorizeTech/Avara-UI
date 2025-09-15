@@ -43,6 +43,8 @@ export const navigation: NavigationItem[] = [
     children: [
       { label: "Interactive Counter", href: "/docs/nextjs/examples/counter" },
       { label: "Button", href: "/docs/nextjs/examples/button" },
+      { label: "Waitlist", href: "/docs/nextjs/examples/waitlist" },
+      { label: "Video Test", href: "/docs/nextjs/examples/video-text" },
 
 
     ],
