@@ -11,7 +11,6 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
 
   return (
     <div className="w-full flex-col bg-white dark:bg-black text-neutral-800 dark:text-white relative">
-      <Header />
       <div className="mx-auto max-w-[1536px] flex flex-1 md:space-x-16">
         <Sidebar />
         <main className={`flex-1 py-6 pb-16 pt-8 min-w-0 px-4 text-neutral-800 dark:text-white ${

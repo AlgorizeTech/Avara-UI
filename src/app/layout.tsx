@@ -12,6 +12,7 @@ import { StructuredData } from '@/components/seo/StructuredData';
 import { LazyOpenGraph } from '@/components/seo/LazyOpenGraph';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { metadata } from '@/lib/metadata';
+import Header from '@/components/site/header';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -38,7 +39,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark">
           <PackageManagerProvider>
 
-            
+            <Header />
             {children}
             <PerformanceMonitor />
             <WebVitals />
