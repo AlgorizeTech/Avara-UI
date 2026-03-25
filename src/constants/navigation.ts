@@ -42,6 +42,7 @@ export const navigation: NavigationItem[] = [
     label: "Ui Components",
     children: [
       { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
+      { label: "Calendar", href: "/docs/nextjs/calendar", badge: "Core" },
       
     ],
   },
