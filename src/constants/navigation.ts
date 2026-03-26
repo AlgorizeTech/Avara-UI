@@ -41,9 +41,10 @@ export const navigation: NavigationItem[] = [
   {
     label: "Ui Components",
     children: [
+      { label: "Avatar", href: "/docs/nextjs/avatar", badge: "Core" },
+      { label: "Accordion", href: "/docs/nextjs/accordion", badge: "Core" },
       { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
       { label: "Calendar", href: "/docs/nextjs/calendar", badge: "Core" },
-      { label: "Avatar", href: "/docs/nextjs/avatar", badge: "Core" },
       
     ],
   },
