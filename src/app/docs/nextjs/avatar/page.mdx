@@ -1,0 +1,145 @@
+import { Avatar } from "@/components/custom/blocks/Avatar";
+
+# Avatar
+
+A reusable avatar component with built-in support for single avatars, grouped avatar stacks, sizes, and dynamic online/offline status indicators.
+
+## Single Avatar & Status
+
+Basic avatars with optional status indicators. Use the `active` and `status` props to show user availability.
+
+## Preview
+
+<div className="w-full my-8 flex items-center justify-center gap-8 p-10 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+  <div className="flex flex-col items-center gap-3">
+    <Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} />
+    <span className="text-xs text-zinc-500">Basic</span>
+  </div>
+  <div className="flex flex-col items-center gap-3">
+    <Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} active={true} status="active" />
+    <span className="text-xs text-zinc-500">Active</span>
+  </div>
+  <div className="flex flex-col items-center gap-3">
+    <Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} active={true} status="inactive" />
+    <span className="text-xs text-zinc-500">Inactive</span>
+  </div>
+  <div className="flex flex-col items-center gap-3">
+    <Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} active={true} />
+    <span className="text-xs text-zinc-500">Default</span>
+  </div>
+</div>
+
+## Code
+
+```tsx
+"use client";
+
+import { Avatar } from "@/components/custom/avatar";
+
+export default function SingleAvatarDemo() {
+  const user = [{ src: "[https://github.com/shadcn.png](https://github.com/shadcn.png)", fallback: "CN" }];
+
+  return (
+    <div className="flex items-center gap-6">
+      <Avatar avatars={user} />
+      <Avatar avatars={user} active={true} status="active" />
+      <Avatar avatars={user} active={true} status="inactive" />
+      <Avatar avatars={user} active={true} />
+    </div>
+  );
+}
+```
+## Sizes
+Avatars come in three sizes: sm, default, and lg. The status indicator automatically scales to fit the avatar size.
+
+## Preview
+<div className="w-full my-8 flex items-end justify-center gap-8 p-10 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+<div className="flex flex-col items-center gap-3">
+<Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} size="sm" active={true} status="active" />
+<span className="text-xs text-zinc-500">Small</span>
+</div>
+<div className="flex flex-col items-center gap-3">
+<Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} size="default" active={true} status="active" />
+<span className="text-xs text-zinc-500">Default</span>
+</div>
+<div className="flex flex-col items-center gap-3">
+<Avatar avatars={[{ src: "https://github.com/shadcn.png", fallback: "CN" }]} size="lg" active={true} status="active" />
+<span className="text-xs text-zinc-500">Large</span>
+</div>
+</div>
+
+##Code
+```tsx
+"use client";
+
+import { Avatar } from "@/components/custom/avatar";
+
+export default function AvatarSizesDemo() {
+  const user = [{ src: "[https://github.com/shadcn.png](https://github.com/shadcn.png)", fallback: "CN" }];
+
+  return (
+    <div className="flex items-end gap-6">
+      <Avatar avatars={user} size="sm" active={true} status="active" />
+      <Avatar avatars={user} size="default" active={true} status="active" />
+      <Avatar avatars={user} size="lg" active={true} status="active" />
+    </div>
+  );
+}
+```
+## Group Avatars
+Pass multiple avatar objects to the avatars array to automatically render an overlapping avatar group.
+
+##Preview
+<div className="w-full my-8 flex flex-col sm:flex-row items-center justify-center gap-12 p-10 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+<div className="flex flex-col items-center gap-3">
+<Avatar
+avatars={[
+{ src: "https://github.com/shadcn.png", fallback: "CN" },
+{ src: "https://github.com/vercel.png", fallback: "VC" },
+{ src: "https://github.com/nextjs.png", fallback: "NX" }
+]}
+size="default"
+/>
+<span className="text-xs text-zinc-500">3 Members</span>
+</div>
+<div className="flex flex-col items-center gap-3">
+<Avatar
+avatars={[
+{ src: "https://github.com/shadcn.png", fallback: "CN" },
+{ src: "https://github.com/vercel.png", fallback: "VC" },
+{ src: "https://github.com/nextjs.png", fallback: "NX" },
+{ src: "", fallback: "JD" },
+{ src: "https://github.com/react.png", fallback: "RC" }
+]}
+size="lg"
+/>
+<span className="text-xs text-zinc-500">5 Members (Large)</span>
+</div>
+</div>
+
+##Code
+```tsx
+"use client";
+
+import { Avatar } from "@/components/custom/avatar";
+
+export default function GroupAvatarDemo() {
+  const team = [
+    { src: "[https://github.com/shadcn.png](https://github.com/shadcn.png)", fallback: "CN" },
+    { src: "[https://github.com/vercel.png](https://github.com/vercel.png)", fallback: "VC" },
+    { src: "[https://github.com/nextjs.png](https://github.com/nextjs.png)", fallback: "NX" },
+    { src: "", fallback: "JD" }, // Falls back to initials automatically
+    { src: "[https://github.com/react.png](https://github.com/react.png)", fallback: "RC" }
+  ];
+
+  return (
+    <div className="flex gap-8">
+      {/* Standard Group */}
+      <Avatar avatars={team.slice(0, 3)} size="default" />
+      
+      {/* Large Group */}
+      <Avatar avatars={team} size="lg" />
+    </div>
+  );
+}
+```
