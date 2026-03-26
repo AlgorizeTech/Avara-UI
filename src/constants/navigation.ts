@@ -43,6 +43,7 @@ export const navigation: NavigationItem[] = [
     children: [
       { label: "Avatar", href: "/docs/nextjs/avatar", badge: "Core" },
       { label: "Accordion", href: "/docs/nextjs/accordion", badge: "Core" },
+      { label: "Alert", href: "/docs/nextjs/alert", badge: "Core" },
       { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
       { label: "Calendar", href: "/docs/nextjs/calendar", badge: "Core" },
       

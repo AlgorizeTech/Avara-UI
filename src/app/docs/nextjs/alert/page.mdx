@@ -1,0 +1,178 @@
+import { CheckCircle2, AlertTriangle, Info, Bell } from "lucide-react";
+import { Alert } from "@/components/custom/blocks/Alerts";
+
+# Alert
+
+A versatile and highly customizable alert component used to display important messages, warnings, and system feedback to the user.
+
+## Semantic Types
+
+Alerts come in several semantic types to communicate different states: `success`, `danger`, `warning`, `info`, `primary`, `secondary`, and `dark`.
+
+## Preview
+
+<div className="w-full my-8 flex flex-col gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+  <Alert type="success" title="Success!" message="Your changes have been saved successfully." />
+  <Alert type="danger" title="Error" message="Something went wrong. Please try again." />
+  <Alert type="warning" title="Warning" message="Please review your input before proceeding." />
+  <Alert type="info" title="Information" message="Here's some helpful information for you." />
+</div>
+
+## Code
+
+```tsx
+"use client";
+
+import { Alert } from "@/components/custom/alerts";
+
+export default function AlertTypesDemo() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Alert 
+        type="success" 
+        title="Success!" 
+        message="Your changes have been saved successfully." 
+      />
+      <Alert 
+        type="danger" 
+        title="Error" 
+        message="Something went wrong. Please try again." 
+      />
+      <Alert 
+        type="warning" 
+        title="Warning" 
+        message="Please review your input before proceeding." 
+      />
+      <Alert 
+        type="info" 
+        title="Information" 
+        message="Here's some helpful information for you." 
+      />
+    </div>
+  );
+}
+
+## Variants
+You can display alerts using the solid (default) or outline visual variant to match your UI's hierarchy.
+
+## Preview
+<div className="w-full my-8 grid grid-cols-1 md:grid-cols-2 gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+<Alert type="success" variant="solid" title="Solid Success" message="This is a solid variant." />
+<Alert type="success" variant="outline" title="Outline Success" message="This is an outline variant." />
+<Alert type="danger" variant="solid" title="Solid Error" message="This is a solid variant." />
+<Alert type="danger" variant="outline" title="Outline Error" message="This is an outline variant." />
+</div>
+
+## Code
+```tsx
+"use client";
+
+import { Alert } from "@/components/custom/alerts";
+
+export default function AlertVariantsDemo() {
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <Alert type="success" variant="solid" title="Solid" message="Solid background." />
+      <Alert type="success" variant="outline" title="Outline" message="Transparent background." />
+    </div>
+  );
+}
+```
+
+## Custom Icons
+Alerts fully support Lucide React icons, string emojis, or custom SVGs. Pass them directly to the icon prop.
+
+## Preview
+<div className="w-full my-8 flex flex-col gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+<Alert type="success" icon={<CheckCircle2 className="w-5 h-5" />} title="Lucide Icon" message="Using CheckCircle2 from Lucide React." />
+<Alert type="primary" icon="🚀" title="Emoji Icon" message="Using a string emoji as the icon." />
+<Alert type="warning" icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>} title="Custom SVG" message="Passing a raw SVG element." />
+</div>
+
+## Code
+```tsx
+"use client";
+
+import { CheckCircle2 } from "lucide-react";
+import { Alert } from "@/components/custom/alerts";
+
+export default function AlertIconsDemo() {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Lucide Icon */}
+      <Alert 
+        type="success" 
+        icon={<CheckCircle2 className="w-5 h-5" />} 
+        title="Lucide Icon" 
+        message="Using CheckCircle2 from Lucide React." 
+      />
+      
+      {/* Emoji */}
+      <Alert 
+        type="primary" 
+        icon="🚀" 
+        title="Emoji Icon" 
+        message="Using a string emoji as the icon." 
+      />
+    </div>
+  );
+}
+```
+## Dismissible & Rich Content
+Set dismissible={true} to allow users to close the alert. You can also pass children to render rich HTML like lists or buttons inside the alert body.
+
+## Preview
+<div className="w-full my-8 flex flex-col gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
+<Alert type="info" dismissible={true} icon={<Bell className="w-5 h-5" />} title="Notification" message="You can close this alert by clicking the X button." />
+
+<Alert type="primary" title="System Update Available" dismissible={true}>
+<p className="text-sm mb-2">New features and improvements:</p>
+<ul className="text-sm list-disc list-inside space-y-1 mb-3">
+<li>Enhanced dashboard performance</li>
+<li>New alert component with customization</li>
+<li>Bug fixes and stability improvements</li>
+</ul>
+<div className="flex gap-2">
+<button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors cursor-pointer">Update Now</button>
+<button className="bg-white/20 text-blue-900 dark:text-white px-3 py-1 rounded text-sm hover:bg-white/30 transition-colors cursor-pointer">Later</button>
+</div>
+</Alert>
+</div>
+
+## Code
+```tsx
+"use client";
+
+import { Bell } from "lucide-react";
+import { Alert } from "@/components/custom/alerts";
+
+export default function RichAlertDemo() {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Standard Dismissible Alert */}
+      <Alert 
+        type="info" 
+        dismissible={true} 
+        icon={<Bell className="w-5 h-5" />} 
+        title="Notification" 
+        message="You can close this alert by clicking the X button." 
+        onDismiss={() => console.log('Alert closed!')}
+      />
+      
+      {/* Rich HTML Content */}
+      <Alert type="primary" title="System Update Available" dismissible={true}>
+        <p className="text-sm mb-2">New features and improvements:</p>
+        <ul className="text-sm list-disc list-inside space-y-1 mb-3">
+          <li>Enhanced dashboard performance</li>
+          <li>New alert component with customization</li>
+        </ul>
+        <div className="flex gap-2">
+          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm cursor-pointer">
+            Update Now
+          </button>
+        </div>
+      </Alert>
+    </div>
+  );
+}
+```
