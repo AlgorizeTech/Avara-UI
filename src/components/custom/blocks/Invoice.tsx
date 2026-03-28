@@ -102,31 +102,55 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
     document.body.removeChild(link);
   };
 
+  // Custom Input Component to keep things dry and looking premium
+  const EditableInput = ({
+    value,
+    onChange,
+    placeholder,
+    className = "",
+    align = "left",
+  }: any) =>
+    isEditing ? (
+      <input
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none focus:ring-2 focus:ring-[#7367f0]/20 focus:border-[#7367f0] transition-all text-${align} ${className}`}
+      />
+    ) : (
+      <span className={`block ${className}`}>{value}</span>
+    );
+
   return (
-    // FIX 2 & 3: Changed md:flex-row to lg:flex-row and removed min-h-screen
-    <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6 bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-200">
-      {/* MAIN INVOICE AREA */}
-      {/* FIX 1: Added min-w-0 to prevent flex blowout */}
-      <div className="flex-1 min-w-0 bg-white dark:bg-gray-900 p-5 sm:p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 print:shadow-none print:border-none print:p-0">
-        <header className="flex flex-col sm:flex-row justify-between items-start mb-10 gap-6">
-          <div className="flex gap-3">
-            <Heart className="w-10 h-10 text-[#7367f0] shrink-0" />
+    <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 bg-zinc-50 dark:bg-zinc-950/50 min-h-[800px] font-sans transition-colors duration-200">
+      {/* === MAIN INVOICE AREA === */}
+      <div className="flex-1 min-w-0 bg-white dark:bg-zinc-900 p-6 sm:p-10 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 print:shadow-none print:border-none print:p-0">
+        {/* HEADER */}
+        <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
+          {/* Brand */}
+          <div className="flex gap-4 items-start">
+            <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl shrink-0">
+              <Heart className="w-8 h-8 text-[#7367f0] fill-[#7367f0]/20" />
+            </div>
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
                 Algorize
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 max-w-[200px] leading-relaxed">
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px] leading-relaxed">
                 Office 149, 450 South Brand Brooklyn San Diego County, CA 91905,
                 USA
                 <br />
-                +1 (123) 456 7891, +44 (876) 543 2198
+                +1 (123) 456 7891
               </p>
             </div>
           </div>
 
-          <div className="text-left sm:text-right">
-            <div className="text-xl font-medium text-gray-900 dark:text-white flex items-center sm:justify-end gap-2 mb-2">
-              Invoice
+          {/* Invoice Meta */}
+          <div className="w-full sm:w-auto bg-zinc-50 dark:bg-zinc-950/50 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800/50">
+            <div className="flex items-center sm:justify-end gap-3 mb-4">
+              <span className="text-xl font-medium text-zinc-400 uppercase tracking-widest">
+                INVOICE
+              </span>
               {isEditing ? (
                 <input
                   type="text"
@@ -134,318 +158,247 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                   onChange={(e) =>
                     handleMainChange("invoiceNumber", e.target.value)
                   }
-                  className="font-semibold bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 w-24 text-right outline-none focus:border-[#7367f0]"
+                  className="font-bold text-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-1 w-28 text-right outline-none focus:ring-2 focus:ring-[#7367f0]/20 focus:border-[#7367f0] transition-all text-zinc-900 dark:text-zinc-100"
                 />
               ) : (
-                <span className="font-semibold">{data.invoiceNumber}</span>
+                <span className="font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+                  {data.invoiceNumber}
+                </span>
               )}
             </div>
 
-            <div className="text-xs text-gray-500 dark:text-gray-400 grid grid-cols-[auto,1fr] sm:grid-cols-[1fr,auto] gap-x-3 gap-y-2 items-center">
-              <span className="text-gray-700 dark:text-gray-300">
+            <div className="grid grid-cols-[auto,1fr] gap-x-4 gap-y-2 text-sm items-center sm:text-right text-left">
+              <span className="text-zinc-500 dark:text-zinc-400 font-medium">
                 Date Issued:
               </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={data.dateIssued}
-                  onChange={(e) =>
-                    handleMainChange("dateIssued", e.target.value)
-                  }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-              ) : (
-                <span>{data.dateIssued}</span>
-              )}
+              <EditableInput
+                value={data.dateIssued}
+                onChange={(e: any) =>
+                  handleMainChange("dateIssued", e.target.value)
+                }
+                align="right"
+                className="text-zinc-900 dark:text-zinc-200 font-medium"
+              />
 
-              <span className="text-gray-700 dark:text-gray-300">
+              <span className="text-zinc-500 dark:text-zinc-400 font-medium">
                 Date Due:
               </span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={data.dateDue}
-                  onChange={(e) => handleMainChange("dateDue", e.target.value)}
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-              ) : (
-                <span>{data.dateDue}</span>
-              )}
+              <EditableInput
+                value={data.dateDue}
+                onChange={(e: any) =>
+                  handleMainChange("dateDue", e.target.value)
+                }
+                align="right"
+                className="text-zinc-900 dark:text-zinc-200 font-medium"
+              />
             </div>
           </div>
         </header>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 mb-10 text-xs">
-          {/* INVOICE TO */}
+        {/* BILLING INFO */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+          {/* Invoice To */}
           <div>
-            <h2 className="text-gray-600 dark:text-gray-400 font-medium mb-3 text-sm">
-              Invoice To:
-            </h2>
-            {isEditing ? (
-              <div className="space-y-2">
-                <input
-                  value={data.invoiceTo.name}
-                  onChange={(e) =>
-                    handleNestedChange("invoiceTo", "name", e.target.value)
-                  }
-                  placeholder="Name"
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-                <input
-                  value={data.invoiceTo.company}
-                  onChange={(e) =>
-                    handleNestedChange("invoiceTo", "company", e.target.value)
-                  }
-                  placeholder="Company"
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-                <input
-                  value={data.invoiceTo.address}
-                  onChange={(e) =>
-                    handleNestedChange("invoiceTo", "address", e.target.value)
-                  }
-                  placeholder="Address"
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-                <input
-                  value={data.invoiceTo.phone}
-                  onChange={(e) =>
-                    handleNestedChange("invoiceTo", "phone", e.target.value)
-                  }
-                  placeholder="Phone"
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-                <input
-                  value={data.invoiceTo.email}
-                  onChange={(e) =>
-                    handleNestedChange("invoiceTo", "email", e.target.value)
-                  }
-                  placeholder="Email"
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
-                />
-              </div>
-            ) : (
-              <div className="space-y-1">
-                <p className="font-semibold text-gray-900 dark:text-white text-sm">
-                  {data.invoiceTo.name}
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {data.invoiceTo.company}
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {data.invoiceTo.address}
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {data.invoiceTo.phone}
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {data.invoiceTo.email}
-                </p>
-              </div>
-            )}
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
+              Invoice To
+            </span>
+            <div className="space-y-1.5 text-sm">
+              <EditableInput
+                value={data.invoiceTo.name}
+                onChange={(e: any) =>
+                  handleNestedChange("invoiceTo", "name", e.target.value)
+                }
+                placeholder="Name"
+                className="font-semibold text-base text-zinc-900 dark:text-zinc-100 mb-2"
+              />
+              <EditableInput
+                value={data.invoiceTo.company}
+                onChange={(e: any) =>
+                  handleNestedChange("invoiceTo", "company", e.target.value)
+                }
+                placeholder="Company"
+                className="text-zinc-600 dark:text-zinc-300"
+              />
+              <EditableInput
+                value={data.invoiceTo.address}
+                onChange={(e: any) =>
+                  handleNestedChange("invoiceTo", "address", e.target.value)
+                }
+                placeholder="Address"
+                className="text-zinc-600 dark:text-zinc-300"
+              />
+              <EditableInput
+                value={data.invoiceTo.phone}
+                onChange={(e: any) =>
+                  handleNestedChange("invoiceTo", "phone", e.target.value)
+                }
+                placeholder="Phone"
+                className="text-zinc-600 dark:text-zinc-300"
+              />
+              <EditableInput
+                value={data.invoiceTo.email}
+                onChange={(e: any) =>
+                  handleNestedChange("invoiceTo", "email", e.target.value)
+                }
+                placeholder="Email"
+                className="text-zinc-600 dark:text-zinc-300"
+              />
+            </div>
           </div>
 
-          {/* BILL TO */}
+          {/* Payment Details */}
           <div>
-            <h2 className="text-gray-600 dark:text-gray-400 font-medium mb-3 text-sm">
-              Bill To:
-            </h2>
-            <div className="grid grid-cols-[auto,1fr] gap-x-3 gap-y-2 text-gray-700 dark:text-gray-300 items-center">
-              <span className="font-medium text-gray-600 dark:text-gray-400">
-                Total Due:
-              </span>
-              {isEditing ? (
-                <input
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
+              Payment Details
+            </span>
+            <div className="bg-zinc-50 dark:bg-zinc-950/50 p-4 rounded-lg border border-zinc-100 dark:border-zinc-800/50 space-y-3 text-sm">
+              <div className="flex justify-between items-center pb-3 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="font-medium text-zinc-600 dark:text-zinc-400">
+                  Total Due:
+                </span>
+                <EditableInput
                   value={data.billTo.totalDue}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     handleNestedChange("billTo", "totalDue", e.target.value)
                   }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0] font-semibold text-gray-900 dark:text-white"
+                  align="right"
+                  className="font-bold text-lg text-[#7367f0]"
                 />
-              ) : (
-                <span className="font-semibold text-gray-900 dark:text-white text-sm">
-                  {data.billTo.totalDue}
-                </span>
-              )}
-
-              <span className="font-medium text-gray-600 dark:text-gray-400 mt-1">
-                Bank name:
-              </span>
-              {isEditing ? (
-                <input
+              </div>
+              <div className="grid grid-cols-[100px,1fr] gap-2 items-center">
+                <span className="text-zinc-500 dark:text-zinc-400">Bank:</span>
+                <EditableInput
                   value={data.billTo.bankName}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     handleNestedChange("billTo", "bankName", e.target.value)
                   }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium"
                 />
-              ) : (
-                <span>{data.billTo.bankName}</span>
-              )}
 
-              <span className="font-medium text-gray-600 dark:text-gray-400">
-                Country:
-              </span>
-              {isEditing ? (
-                <input
+                <span className="text-zinc-500 dark:text-zinc-400">
+                  Country:
+                </span>
+                <EditableInput
                   value={data.billTo.country}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     handleNestedChange("billTo", "country", e.target.value)
                   }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium"
                 />
-              ) : (
-                <span>{data.billTo.country}</span>
-              )}
 
-              <span className="font-medium text-gray-600 dark:text-gray-400">
-                IBAN:
-              </span>
-              {isEditing ? (
-                <input
+                <span className="text-zinc-500 dark:text-zinc-400">IBAN:</span>
+                <EditableInput
                   value={data.billTo.iban}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     handleNestedChange("billTo", "iban", e.target.value)
                   }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-xs"
                 />
-              ) : (
-                <span>{data.billTo.iban}</span>
-              )}
 
-              <span className="font-medium text-gray-600 dark:text-gray-400">
-                SWIFT code:
-              </span>
-              {isEditing ? (
-                <input
+                <span className="text-zinc-500 dark:text-zinc-400">SWIFT:</span>
+                <EditableInput
                   value={data.billTo.swift}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     handleNestedChange("billTo", "swift", e.target.value)
                   }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0]"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-xs"
                 />
-              ) : (
-                <span>{data.billTo.swift}</span>
-              )}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ITEMS TABLE - Responsive Wrapper */}
-        <section className="mb-10 overflow-x-auto">
-          <table className="w-full min-w-[500px] text-left text-xs text-gray-800 dark:text-gray-200 border-collapse">
-            <thead className="text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+        {/* ITEMS TABLE */}
+        <section className="mb-10 overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-xl">
+          <table className="w-full min-w-[600px] text-left text-sm text-zinc-800 dark:text-zinc-200 border-collapse">
+            <thead className="bg-zinc-50 dark:bg-zinc-950/50 text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold border-b border-zinc-200 dark:border-zinc-800">
               <tr>
-                <th className="px-2 sm:px-4 py-3 font-semibold border-b border-gray-100 dark:border-gray-800">
-                  Item
-                </th>
-                <th className="px-2 sm:px-4 py-3 font-semibold border-b border-gray-100 dark:border-gray-800 hidden sm:table-cell">
-                  Description
-                </th>
-                <th className="px-2 sm:px-4 py-3 font-semibold text-right border-b border-gray-100 dark:border-gray-800">
-                  Hours
-                </th>
-                <th className="px-2 sm:px-4 py-3 font-semibold text-right border-b border-gray-100 dark:border-gray-800">
-                  Qty
-                </th>
-                <th className="px-2 sm:px-4 py-3 font-semibold text-right border-b border-gray-100 dark:border-gray-800">
-                  Total
-                </th>
+                <th className="px-4 py-4">Item Details</th>
+                <th className="px-4 py-4 text-right w-24">Hours</th>
+                <th className="px-4 py-4 text-right w-24">Qty</th>
+                <th className="px-4 py-4 text-right w-32">Total</th>
                 {isEditing && (
-                  <th className="px-2 py-3 font-semibold border-b border-gray-100 dark:border-gray-800 text-center print:hidden">
-                    Action
+                  <th className="px-4 py-4 text-center w-16 print:hidden">
+                    Act
                   </th>
                 )}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
               {data.items.map((item, idx) => (
-                <tr key={idx} className="group">
-                  <td className="px-2 sm:px-4 py-4 border-b border-gray-100 dark:border-gray-800 align-top">
+                <tr
+                  key={idx}
+                  className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20 transition-colors"
+                >
+                  <td className="px-4 py-4 align-top">
                     {isEditing ? (
-                      <input
-                        value={item.item}
-                        onChange={(e) =>
-                          handleItemChange(idx, "item", e.target.value)
-                        }
-                        className="w-full sm:w-32 lg:w-40 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none"
-                      />
+                      <div className="space-y-2">
+                        <input
+                          value={item.item}
+                          onChange={(e) =>
+                            handleItemChange(idx, "item", e.target.value)
+                          }
+                          placeholder="Item Name"
+                          className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none focus:ring-2 focus:ring-[#7367f0]/20 font-medium"
+                        />
+                        <textarea
+                          value={item.description}
+                          onChange={(e) =>
+                            handleItemChange(idx, "description", e.target.value)
+                          }
+                          rows={2}
+                          placeholder="Description"
+                          className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500"
+                        />
+                      </div>
                     ) : (
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        {item.item}
-                      </p>
-                    )}
-                    {!isEditing && (
-                      <p className="sm:hidden text-gray-500 mt-1">
-                        {item.description}
-                      </p>
+                      <div>
+                        <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                          {item.item}
+                        </p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                          {item.description}
+                        </p>
+                      </div>
                     )}
                   </td>
 
-                  <td className="px-2 sm:px-4 py-4 border-b border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-400 hidden sm:table-cell align-top">
-                    {isEditing ? (
-                      <textarea
-                        value={item.description}
-                        onChange={(e) =>
-                          handleItemChange(idx, "description", e.target.value)
-                        }
-                        rows={2}
-                        className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none resize-none"
-                      />
-                    ) : (
-                      item.description
-                    )}
+                  <td className="px-4 py-4 text-right align-top">
+                    <EditableInput
+                      value={item.hours}
+                      onChange={(e: any) =>
+                        handleItemChange(idx, "hours", e.target.value)
+                      }
+                      align="right"
+                    />
                   </td>
 
-                  <td className="px-2 sm:px-4 py-4 border-b border-gray-100 dark:border-gray-800 text-right align-top">
-                    {isEditing ? (
-                      <input
-                        type="number"
-                        value={item.hours}
-                        onChange={(e) =>
-                          handleItemChange(idx, "hours", e.target.value)
-                        }
-                        className="w-12 sm:w-16 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right"
-                      />
-                    ) : (
-                      item.hours
-                    )}
+                  <td className="px-4 py-4 text-right align-top">
+                    <EditableInput
+                      value={item.qty}
+                      onChange={(e: any) =>
+                        handleItemChange(idx, "qty", e.target.value)
+                      }
+                      align="right"
+                    />
                   </td>
 
-                  <td className="px-2 sm:px-4 py-4 border-b border-gray-100 dark:border-gray-800 text-right align-top">
-                    {isEditing ? (
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={(e) =>
-                          handleItemChange(idx, "qty", e.target.value)
-                        }
-                        className="w-12 sm:w-16 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right"
-                      />
-                    ) : (
-                      item.qty
-                    )}
-                  </td>
-
-                  <td className="px-2 sm:px-4 py-4 border-b border-gray-100 dark:border-gray-800 text-right text-gray-900 dark:text-white font-medium align-top">
-                    {isEditing ? (
-                      <input
-                        value={item.total}
-                        onChange={(e) =>
-                          handleItemChange(idx, "total", e.target.value)
-                        }
-                        className="w-16 sm:w-20 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right font-semibold"
-                      />
-                    ) : (
-                      item.total
-                    )}
+                  <td className="px-4 py-4 text-right align-top">
+                    <EditableInput
+                      value={item.total}
+                      onChange={(e: any) =>
+                        handleItemChange(idx, "total", e.target.value)
+                      }
+                      align="right"
+                      className="font-semibold text-zinc-900 dark:text-zinc-100"
+                    />
                   </td>
 
                   {isEditing && (
-                    <td className="px-2 py-4 border-b border-gray-100 dark:border-gray-800 text-center align-top print:hidden">
+                    <td className="px-4 py-4 text-center align-top print:hidden">
                       <button
                         onClick={() => removeItem(idx)}
-                        className="text-red-400 hover:text-red-600 transition-colors p-1"
+                        className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-2 rounded-md transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -457,153 +410,141 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
           </table>
 
           {isEditing && (
-            <div className="mt-4 print:hidden">
+            <div className="p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/30 print:hidden">
               <button
                 onClick={addItem}
-                className="flex items-center gap-2 text-xs font-medium text-[#7367f0] hover:text-[#6355eb] transition-colors cursor-pointer"
+                className="flex items-center gap-2 text-sm font-medium text-[#7367f0] hover:text-[#6355eb] transition-colors cursor-pointer px-2 py-1"
               >
-                <Plus className="w-4 h-4" /> Add Item
+                <Plus className="w-4 h-4" /> Add Line Item
               </button>
             </div>
           )}
         </section>
 
         {/* TOTALS & FOOTER */}
-        <footer className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 items-end text-xs">
-          <div className="order-2 sm:order-1">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-medium text-gray-700 dark:text-gray-300">
-                Salesperson:
+        <footer className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
+          {/* Notes */}
+          <div className="order-2 md:order-1">
+            <div className="bg-zinc-50 dark:bg-zinc-950/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800/50 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
+                Salesperson
+              </span>
+              <EditableInput
+                value={data.salesPerson}
+                onChange={(e: any) =>
+                  handleMainChange("salesPerson", e.target.value)
+                }
+                className="font-semibold text-zinc-900 dark:text-zinc-100"
+              />
+            </div>
+
+            <div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
+                Additional Notes
               </span>
               {isEditing ? (
-                <input
-                  value={data.salesPerson}
-                  onChange={(e) =>
-                    handleMainChange("salesPerson", e.target.value)
-                  }
-                  className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none focus:border-[#7367f0] font-semibold text-gray-900 dark:text-white"
+                <textarea
+                  value={data.note}
+                  onChange={(e) => handleMainChange("note", e.target.value)}
+                  className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-2 outline-none resize-none text-sm text-zinc-600 dark:text-zinc-400 focus:ring-2 focus:ring-[#7367f0]/20"
+                  rows={3}
                 />
               ) : (
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  {data.salesPerson}
-                </span>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed bg-zinc-50 dark:bg-transparent p-3 dark:p-0 rounded-lg">
+                  {data.note}
+                </p>
               )}
             </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Thanks for your business
-            </p>
           </div>
 
-          <div className="text-right order-1 sm:order-2">
-            <div className="grid grid-cols-[1fr,auto] gap-x-4 gap-y-2 text-gray-700 dark:text-gray-300 items-center">
-              <span>Subtotal:</span>
-              {isEditing ? (
-                <input
+          {/* Calculations */}
+          <div className="order-1 md:order-2 flex justify-end">
+            <div className="w-full sm:w-72 space-y-3 text-sm">
+              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
+                <span>Subtotal</span>
+                <EditableInput
                   value={data.subtotal}
-                  onChange={(e) => handleMainChange("subtotal", e.target.value)}
-                  className="w-20 sm:w-24 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right font-medium"
-                />
-              ) : (
-                <span className="font-medium text-gray-900 dark:text-white">
-                  {data.subtotal}
-                </span>
-              )}
-
-              <span>Discount:</span>
-              {isEditing ? (
-                <input
-                  value={data.discount}
-                  onChange={(e) => handleMainChange("discount", e.target.value)}
-                  className="w-20 sm:w-24 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right font-medium"
-                />
-              ) : (
-                <span className="font-medium text-gray-900 dark:text-white">
-                  {data.discount}
-                </span>
-              )}
-
-              <span>Tax:</span>
-              {isEditing ? (
-                <input
-                  value={data.tax}
-                  onChange={(e) => handleMainChange("tax", e.target.value)}
-                  className="w-20 sm:w-24 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right font-medium"
-                />
-              ) : (
-                <span className="font-medium text-gray-900 dark:text-white">
-                  {data.tax}
-                </span>
-              )}
-            </div>
-            <hr className="my-4 border-gray-100 dark:border-gray-800" />
-            <div className="flex justify-end items-center gap-4 text-base font-medium text-gray-900 dark:text-white">
-              <span>Total:</span>
-              {isEditing ? (
-                <input
-                  value={data.grandTotal}
-                  onChange={(e) =>
-                    handleMainChange("grandTotal", e.target.value)
+                  onChange={(e: any) =>
+                    handleMainChange("subtotal", e.target.value)
                   }
-                  className="w-24 sm:w-32 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 outline-none text-right font-bold text-[#7367f0]"
+                  align="right"
+                  className="font-medium text-zinc-900 dark:text-zinc-100"
                 />
-              ) : (
-                <span className="font-bold">{data.grandTotal}</span>
-              )}
+              </div>
+              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
+                <span>Discount</span>
+                <EditableInput
+                  value={data.discount}
+                  onChange={(e: any) =>
+                    handleMainChange("discount", e.target.value)
+                  }
+                  align="right"
+                  className="font-medium text-zinc-900 dark:text-zinc-100"
+                />
+              </div>
+              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                <span>Tax</span>
+                <EditableInput
+                  value={data.tax}
+                  onChange={(e: any) => handleMainChange("tax", e.target.value)}
+                  align="right"
+                  className="font-medium text-zinc-900 dark:text-zinc-100"
+                />
+              </div>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                  Total
+                </span>
+                {isEditing ? (
+                  <input
+                    value={data.grandTotal}
+                    onChange={(e) =>
+                      handleMainChange("grandTotal", e.target.value)
+                    }
+                    className="w-32 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 rounded-md px-3 py-1 outline-none text-right font-bold text-[#7367f0] text-lg focus:ring-2 focus:ring-[#7367f0]/20"
+                  />
+                ) : (
+                  <span className="font-bold text-2xl text-[#7367f0]">
+                    {data.grandTotal}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </footer>
-
-        {/* BOTTOM NOTE */}
-        <div className="mt-10 w-full pt-6 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
-            Note:{" "}
-          </span>
-          {isEditing ? (
-            <textarea
-              value={data.note.replace("Note: ", "")}
-              onChange={(e) =>
-                handleMainChange("note", `Note: ${e.target.value}`)
-              }
-              className="w-full mt-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-3 py-2 outline-none resize-none"
-              rows={2}
-            />
-          ) : (
-            <span>{data.note.replace("Note: ", "")}</span>
-          )}
-        </div>
       </div>
 
-      {/* --- RIGHT SIDEBAR / ACTIONS --- */}
-      <aside className="w-full lg:w-[280px] flex-shrink-0 bg-white dark:bg-gray-900 p-5 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 print:hidden h-fit lg:sticky top-6">
-        <div className="space-y-4">
+      {/* === RIGHT SIDEBAR / ACTIONS === */}
+      <aside className="w-full lg:w-[280px] flex-shrink-0 print:hidden h-fit lg:sticky top-8">
+        <div className="bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-4">
           <button
             onClick={() => alert("Invoice Sent!")}
-            className="cursor-pointer w-full flex items-center justify-center gap-2 py-2.5 bg-[#7367f0] text-white rounded-md text-sm font-medium hover:bg-[#6c5fef] transition-all active:scale-[0.98] shadow-sm"
+            className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#7367f0] text-white rounded-xl text-sm font-medium hover:bg-[#6c5fef] transition-all active:scale-[0.98] shadow-sm shadow-[#7367f0]/20"
           >
             <Send className="w-4 h-4" /> Send Invoice
           </button>
 
           <button
             onClick={handleDownload}
-            className="cursor-pointer w-full flex items-center justify-center gap-2 py-2.5 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all active:scale-[0.98]"
+            className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-zinc-100 text-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-all active:scale-[0.98]"
           >
             Download JSON
           </button>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <button
               onClick={handlePrint}
-              className="cursor-pointer w-full flex items-center justify-center gap-2 py-2.5 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all active:scale-[0.98]"
+              className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-zinc-100 text-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-all active:scale-[0.98]"
             >
               Print
             </button>
 
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className={`cursor-pointer w-full flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-all active:scale-[0.98] ${
+              className={`cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${
                 isEditing
-                  ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                  ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-500/10 dark:text-green-400"
+                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
               }`}
             >
               {isEditing ? (
@@ -615,8 +556,10 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
               )}
             </button>
           </div>
+        </div>
 
-          <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-2.5 bg-[#28c76f] text-white rounded-md text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm">
+        <div className="mt-4 bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800">
+          <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#28c76f] text-white rounded-xl text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm shadow-[#28c76f]/20">
             <DollarSign className="w-4 h-4" /> Add Payment
           </button>
         </div>
