@@ -14,7 +14,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
       <div className="mx-auto max-w-[1536px] flex flex-1 md:space-x-16">
         <Sidebar />
         <main className={`flex-1 py-6 pb-16 pt-8 min-w-0 px-4 text-neutral-800 dark:text-white ${
-          showTOC ? 'max-w-4xl' : 'max-w-none pr-8'
+          showTOC ? 'max-w-5xl' : 'max-w-none pr-8'
         }`}>
           <div className="prose prose-zinc dark:prose-invert prose-h1:text-3xl prose-h1:font-semibold prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-14 prose-h3:text-lg prose-h3:font-medium prose-h3:scroll-m-20 max-w-full">
             {children}
