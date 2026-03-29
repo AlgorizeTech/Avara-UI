@@ -1,0 +1,124 @@
+import EmailApp from "@/components/custom/blocks/Email";
+
+# Email Dashboard
+
+A premium, fully interactive email client featuring a modern SaaS aesthetic, unread/read states, folder management, dynamic labels, and a rich compose modal.
+
+## Interactive Preview
+
+Try filtering by folders, starring an email, or opening the Compose modal to see the glassmorphism effects.
+
+<div className="w-full my-8 relative z-0">
+  <EmailApp
+    initialEmails={[
+      {
+        id: 1,
+        sender: "Tommy Sicilia",
+        email: "tommy@example.com",
+        subject: "How to Succeed with Your Shopify Store",
+        time: "01:46 PM",
+        fullDate: "Dec 10, 2026, 01:46 PM",
+        isStarred: false,
+        isRead: false,
+        avatar: "https://i.pravatar.cc/150?u=tommy",
+        labels: [
+          {
+            color: "bg-rose-500",
+            name: "Private",
+            pill: "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+          },
+        ],
+        body: "Hello,\n\nI hope you are doing well.\n\nHere are some top tips to succeed with your new store. Let me know if you want to schedule a call.",
+        attachments: [],
+        folder: "inbox",
+      },
+      {
+        id: 2,
+        sender: "Tressa Gass",
+        email: "tressag@mail.com",
+        subject: "Please find attached the latest Company Report",
+        time: "01:55 PM",
+        fullDate: "Dec 10, 2026, 01:55 PM",
+        isStarred: true,
+        isRead: true,
+        avatar: "https://i.pravatar.cc/150?u=tressa",
+        labels: [
+          {
+            color: "bg-indigo-500",
+            name: "Company",
+            pill: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+          },
+        ],
+        body: "Hello John,\n\nI hope you are doing well.\n\nI am sending over a company report for company. It is a PDF file.\n\nPlease let me know if you want to schedule a call or any other questions.\n\nRegards\nTressa Gass",
+        attachments: [
+          { name: "Q3-Financial-Report.pdf", type: "pdf", size: "2.4 MB" },
+        ],
+        folder: "inbox",
+      },
+      {
+        id: 3,
+        sender: "Louetta Esses",
+        email: "louetta@mail.com",
+        subject: "Update Can Change Your Personal Life",
+        time: "03:04 PM",
+        fullDate: "Dec 10, 2026, 03:04 PM",
+        isStarred: false,
+        isRead: false,
+        initials: "LE",
+        color:
+          "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400",
+        labels: [
+          {
+            color: "bg-amber-500",
+            name: "Important",
+            pill: "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+          },
+        ],
+        body: "Hi there,\n\nDon't miss out on this life-changing update. Check the link below.",
+        attachments: [],
+        folder: "inbox",
+      },
+    ]}
+  />
+</div>
+
+## Code
+
+```tsx
+"use client";
+
+import EmailApp from "@/components/ui/email";
+
+export default function EmailDemo() {
+  const initialEmails = [
+    {
+      id: 1,
+      sender: "Tommy Sicilia",
+      email: "tommy@example.com",
+      subject: "How to Succeed with Your Shopify Store",
+      time: "01:46 PM",
+      fullDate: "Dec 10, 2026, 01:46 PM",
+      isStarred: false,
+      isRead: false,
+      avatar:
+        "[https://i.pravatar.cc/150?u=tommy](https://i.pravatar.cc/150?u=tommy)",
+      labels: [
+        {
+          color: "bg-rose-500",
+          name: "Private",
+          pill: "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+        },
+      ],
+      body: "Hello,\n\nI hope you are doing well.\n\nHere are some top tips to succeed with your new store.",
+      attachments: [],
+      folder: "inbox",
+    },
+  ];
+
+  return (
+    <div className="w-full">
+      <EmailApp initialEmails={initialEmails} />
+    </div>
+  );
+}
+```
