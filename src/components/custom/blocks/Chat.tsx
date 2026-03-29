@@ -32,14 +32,15 @@ export type CurrentUser = {
   name?: string;
 };
 
-// Bulletproof Avatar (Prevents Flexbox Squishing)
+// FIX: Bulletproof Avatar with an inner overflow mask to completely
+// stop images from popping out of the document flow or distorting.
 const BulletproofAvatar = ({
   src,
   initials,
   color,
   status,
   size = 40,
-  statusBorder = "border-white dark:border-zinc-950",
+  statusBorder = "border-white dark:border-[#09090b]",
 }: {
   src?: string;
   initials?: string;
@@ -49,22 +50,26 @@ const BulletproofAvatar = ({
   statusBorder?: string;
 }) => (
   <div
-    className="relative shrink-0 flex-none rounded-full shadow-sm"
+    className="relative shrink-0 flex-none rounded-full"
     style={{ width: size, height: size, minWidth: size, minHeight: size }}
   >
-    {src ? (
-      <img
-        src={src}
-        alt="Avatar"
-        className="absolute inset-0 w-full h-full rounded-full object-cover m-0 p-0"
-      />
-    ) : (
-      <div
-        className={`absolute inset-0 w-full h-full rounded-full flex items-center justify-center font-bold text-sm m-0 p-0 tracking-wider ${color}`}
-      >
-        {initials}
-      </div>
-    )}
+    {/* Inner wrapper ensures the image behaves like a standard block and stays circular */}
+    <div className="w-full h-full rounded-full overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shadow-sm">
+      {src ? (
+        <img
+          src={src}
+          alt="Avatar"
+          className="w-full h-full object-cover block m-0 p-0"
+        />
+      ) : (
+        <div
+          className={`w-full h-full flex items-center justify-center font-bold text-sm m-0 p-0 tracking-wider ${color}`}
+        >
+          {initials}
+        </div>
+      )}
+    </div>
+    {/* Status dot sits on the outer wrapper so it doesn't get clipped by overflow-hidden */}
     {status && (
       <span
         className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 z-10 m-0 p-0 ${statusBorder} ${
@@ -94,7 +99,6 @@ export default function ChatApp({
   const [contacts, setContacts] = useState(contactsData);
   const [inputValue, setInputValue] = useState("");
 
-  // Typing Indicator State
   const [isTyping, setIsTyping] = useState<string | number | null>(null);
 
   const chatScrollRef = useRef<HTMLDivElement>(null);
@@ -117,7 +121,6 @@ export default function ChatApp({
     },
   );
 
-  // Internal auto-scroll
   useEffect(() => {
     if (chatScrollRef.current) {
       chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
@@ -132,7 +135,6 @@ export default function ChatApp({
     return matchesSearch && matchesFilter;
   });
 
-  // FIX: Properly defined message handler
   const handleSendMessage = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputValue.trim() || !activeContact) return;
@@ -165,12 +167,10 @@ export default function ChatApp({
 
     setInputValue("");
 
-    // Trigger typing indicator
     setIsTyping(activeContact.id);
 
-    // Simulate reply after delay
     setTimeout(() => {
-      setIsTyping(null); // Turn off typing
+      setIsTyping(null);
 
       const replyTime = new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -185,7 +185,6 @@ export default function ChatApp({
       };
 
       setChatHistories((prev) => {
-        // Mark user's last message as read
         const updatedHistory = [...(prev[activeContact.id] || [])];
         const lastMsg = updatedHistory[updatedHistory.length - 1];
         if (lastMsg.sender === "me") lastMsg.status = "read";
@@ -206,7 +205,6 @@ export default function ChatApp({
     }, 2000);
   };
 
-  // FIX: Explicitly typed and scoped handleKeyDown function
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -233,7 +231,6 @@ export default function ChatApp({
           absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none bg-white/80 dark:bg-[#121217]/80 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50 flex flex-col transition-transform duration-300 ease-in-out
         `}
       >
-        {/* Sidebar Header */}
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
@@ -258,7 +255,6 @@ export default function ChatApp({
             />
           </div>
 
-          {/* Filter Tabs */}
           <div className="flex gap-1 p-1 bg-zinc-100/80 dark:bg-zinc-900/80 rounded-lg">
             <button
               onClick={() => setFilterType("all")}
@@ -275,7 +271,6 @@ export default function ChatApp({
           </div>
         </div>
 
-        {/* Contacts List */}
         <div className="flex-1 overflow-y-auto px-2 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {filteredContacts.length > 0 ? (
             filteredContacts.map((contact) => (
@@ -301,7 +296,7 @@ export default function ChatApp({
                   }
                 />
 
-                <div className="flex-1 min-w-0 overflow-hidden">
+                <div className="flex-1 min-w-0 overflow-hidden flex flex-col justify-center">
                   <div className="flex justify-between items-baseline mb-1 gap-2">
                     <h4
                       className={`text-sm font-semibold truncate ${activeContact?.id === contact.id ? "text-indigo-900 dark:text-indigo-100" : "text-zinc-900 dark:text-zinc-100"}`}
@@ -316,7 +311,7 @@ export default function ChatApp({
                   </div>
                   <div className="flex justify-between items-center gap-2">
                     <p
-                      className={`text-xs truncate ${activeContact?.id === contact.id ? "text-indigo-700 dark:text-indigo-300" : "text-zinc-500 dark:text-zinc-400"}`}
+                      className={`text-xs mt-0 truncate ${activeContact?.id === contact.id ? "text-indigo-700 dark:text-indigo-300" : "text-zinc-500 dark:text-zinc-400"}`}
                     >
                       {contact.message}
                     </p>
