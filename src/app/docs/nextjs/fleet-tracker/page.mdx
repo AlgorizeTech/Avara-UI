@@ -1,0 +1,94 @@
+import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+
+# Fleet Tracker
+
+An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
+
+## Interactive Preview
+
+Click on any vehicle in the sidebar to fly the map to its location, or click a map marker to highlight it in the sidebar. You can also filter vehicles dynamically using the search bar.
+
+<div className="w-full my-8 relative z-0">
+  <FleetTracker
+    fleetData={[
+      {
+        id: "VOL-342808",
+        location: "Chelsea, NY, USA",
+        lat: 40.7465,
+        lng: -74.0014,
+      },
+      {
+        id: "VOL-954784",
+        location: "Lincoln Harbor, NY, USA",
+        lat: 40.7621,
+        lng: -74.0205,
+      },
+      {
+        id: "VOL-342809",
+        location: "Midtown East, NY, USA",
+        lat: 40.758,
+        lng: -73.973,
+      },
+      {
+        id: "VOL-343908",
+        location: "Hoboken, NY, USA",
+        lat: 40.744,
+        lng: -74.0324,
+      },
+    ]}
+  />
+</div>
+
+## Code
+
+```tsx
+"use client";
+
+// Make sure this path matches your project structure!
+import FleetTracker from "@/components/custom/blocks/fleet-tracker";
+
+export default function FleetTrackerDemo() {
+  const fleetData = [
+    {
+      id: "VOL-342808",
+      location: "Chelsea, NY, USA",
+      lat: 40.7465,
+      lng: -74.0014,
+    },
+    {
+      id: "VOL-954784",
+      location: "Lincoln Harbor, NY, USA",
+      lat: 40.7621,
+      lng: -74.0205,
+    },
+    {
+      id: "VOL-342809",
+      location: "Midtown East, NY, USA",
+      lat: 40.758,
+      lng: -73.973,
+    },
+    {
+      id: "VOL-343908",
+      location: "Hoboken, NY, USA",
+      lat: 40.744,
+      lng: -74.0324,
+    },
+  ];
+
+  return (
+    <div className="w-full">
+      <FleetTracker fleetData={fleetData} />
+    </div>
+  );
+}
+```
+
+## Installation
+
+1. Install Dependencies
+   You must install leaflet and react-leaflet for the map component to function.
+
+```Bash
+npm install leaflet react-leaflet
+npm install -D @types/leaflet
+```
