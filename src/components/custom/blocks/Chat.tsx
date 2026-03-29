@@ -277,7 +277,7 @@ export default function ChatApp({
               <div
                 key={contact.id}
                 onClick={() => handleContactClick(contact)}
-                className={`p-3 mb-1 flex items-center gap-3 cursor-pointer transition-all rounded-xl ${
+                className={`px-3 flex items-center gap-3 cursor-pointer transition-all rounded-xl ${
                   activeContact?.id === contact.id
                     ? "bg-indigo-50 dark:bg-indigo-500/10 shadow-sm"
                     : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
@@ -299,7 +299,7 @@ export default function ChatApp({
                 <div className="flex-1 min-w-0 overflow-hidden flex flex-col justify-center">
                   <div className="flex justify-between items-baseline mb-1 gap-2">
                     <h4
-                      className={`text-sm font-semibold truncate ${activeContact?.id === contact.id ? "text-indigo-900 dark:text-indigo-100" : "text-zinc-900 dark:text-zinc-100"}`}
+                      className={`text-sm mb-0 font-semibold truncate ${activeContact?.id === contact.id ? "text-indigo-900 dark:text-indigo-100" : "text-zinc-900 dark:text-zinc-100"}`}
                     >
                       {contact.name}
                     </h4>
