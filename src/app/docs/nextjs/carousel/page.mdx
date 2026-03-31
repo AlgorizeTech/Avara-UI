@@ -1,215 +1,22 @@
-import {
-  ImageCarousel,
-  HeroCarousel,
-  CustomCarousel,
-} from "@/components/custom/carousel";
-import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
+import { CarouselShowcase } from "@/components/site/CarouselShowcase";
 
 # Carousel
 
 A collection of customizable and interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-## Image Carousel
+## Interactive Showcase
 
-A standard image slider with dot pagination and arrow navigation. Supports auto-play.
+Explore the different variants of the carousel component. Switch between standard image sliders, full-width hero banners, positionable thumbnails, and GSAP-powered fluid glass sliders.
 
-## Preview
+Use the control panel below to switch variants and automatically generate the integration code.
 
-<div className="w-full max-w-4xl mx-auto my-8 border rounded-xl overflow-hidden shadow-sm">
-  <ImageCarousel
-    images={[
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
-    ]}
-    autoPlay={true}
-    autoPlayInterval={3000}
-  />
-</div>
-
-## Code
-
-```tsx
-"use client";
-
-import { ImageCarousel } from "@/components/custom/carousel";
-
-export default function ImageCarouselDemo() {
-  const images = [
-    "[https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop)",
-    "[https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop)",
-  ];
-
-  return (
-    <div className="w-full max-w-4xl mx-auto">
-      <ImageCarousel
-        images={images}
-        autoPlay={true}
-        autoPlayInterval={3000}
-        rootClassName="relative w-full overflow-hidden rounded-xl border shadow-sm"
-        slideClassName="w-full h-[400px] object-cover"
-      />
-    </div>
-  );
-}
-```
-
-## Hero Carousel
-
-A full-featured hero section carousel featuring animated text overlays and a secondary visual preview track.
-
-### Preview
-
-<div className="w-full my-8 rounded-xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800">
-  <HeroCarousel
-    slides={[
-      {
-        img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
-        title: "Tropical Paradise",
-        des: "Discover pristine beaches and crystal-clear waters.",
-      },
-      {
-        img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
-        title: "Peak Adventures",
-        des: "Challenge yourself with epic mountain trails.",
-      },
-    ]}
-    autoPlay={true}
-  />
-</div>
-
-## Code
-
-```tsx
-"use client";
-
-import { HeroCarousel } from "@/components/custom/carousel";
-
-export default function HeroCarouselDemo() {
-  const slides = [
-    {
-      img: "[https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop)",
-      title: "Tropical Paradise",
-      des: "Discover pristine beaches and crystal-clear waters.",
-    },
-    {
-      img: "[https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop)",
-      title: "Peak Adventures",
-      des: "Challenge yourself with epic mountain trails.",
-    },
-  ];
-
-  return (
-    <div className="w-full rounded-xl overflow-hidden border">
-      <HeroCarousel
-        slides={slides}
-        autoPlay={true}
-        rootClassName="relative z-50 flex h-[450px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-zinc-950/60 xl:flex-row"
-        slideClassName="h-[250px] min-w-[150px] lg:h-[300px] lg:min-w-[180px] z-50 rounded-lg bg-black/50 shadow-xl border border-white/10"
-      />
-    </div>
-  );
-}
-```
-
-## Custom Thumbnail Carousel
-
-A highly interactive slider featuring positionable thumbnail previews (bottom, left, or right).
-
-### Preview
-
-<div className="w-full my-8 rounded-xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800">
-  <CustomCarousel
-    items={[
-      {
-        img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
-        title: "Ocean Paradise",
-        des: "Experience the serenity of crystal-clear waters.",
-      },
-      {
-        img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
-        title: "Mountain Summit",
-        des: "Conquer new heights and witness breathtaking views.",
-      },
-    ]}
-    imageButtonPosition="bottom"
-  />
-</div>
-
-## Code
-
-```tsx
-"use client";
-
-import { CustomCarousel } from "@/components/custom/carousel";
-
-export default function CustomCarouselDemo() {
-  const items = [
-    {
-      img: "[https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop)",
-      title: "Ocean Paradise",
-      des: "Experience the serenity of crystal-clear waters.",
-    },
-    {
-      img: "[https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop](https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop)",
-      title: "Mountain Summit",
-      des: "Conquer new heights and witness breathtaking views.",
-    },
-  ];
-
-  return (
-    <div className="w-full rounded-xl overflow-hidden border">
-      <CustomCarousel
-        items={items}
-        imageButtonPosition="bottom"
-        rootClassName="flex h-[400px] w-full flex-col items-center justify-center gap-5 bg-cover bg-center"
-        thumbClassName="h-12 w-20 bg-black/30 box-content cursor-pointer rounded-lg hover:scale-105 transition-transform"
-        activeThumbClassName="border-2 border-white p-0.5 shadow-lg"
-      />
-    </div>
-  );
-}
-```
-
-## Fluid Glass Slider
-
-A premium, GSAP-powered slider featuring custom cursor tracking, animated progress bars, and glassmorphism elements.
-
-### Preview
-
-<div className="w-full my-8">
-  <FluidGlassSlider className="rounded-xl border shadow-sm" />
-</div>
-
-## Code
-
-```tsx
-"use client";
-
-import { FluidGlassSlider } from "@/components/custom/carousel";
-
-export default function FluidGlassDemo() {
-  return (
-    <div className="w-full">
-      <FluidGlassSlider className="rounded-xl border shadow-sm" />
-    </div>
-  );
-}
-```
+<CarouselShowcase />
 
 ## Installation
 
-````
-CLI
-Manual
-
-```bash
-
-npx shadcn@latest add carousel.json
-
-## Manual Installation
-
-1. Install the required dependencies:
+1. Create the `carousel.tsx` and `FluidGlassSlider.tsx` components inside your project.
+2. Install the required dependencies:
 
 ```bash
 npm install lucide-react gsap
-````
+```
