@@ -1,49 +1,19 @@
-import { CalendarDashboard } from '@/components/custom/blocks/Calendar';
+import { CalendarShowcase } from "@/components/site/CalendarShowcase";
 
 # Calendar
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and popover modals.
 
-## Dashboard View
+## Interactive Dashboard
 
-A fully encapsulated, page-builder-ready calendar dashboard. All state (modals, event editing, filters) is handled internally.
+A fully encapsulated, page-builder-ready calendar dashboard. All state (modals, event editing, filters) is handled internally. Use the controls below to test the different architectural variants and color themes.
 
-## Preview
+<CalendarShowcase />
 
-<div className="w-full my-8 rounded-xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 relative z-0">
-  <CalendarDashboard 
-    mockEvents={{
-      "2025-8-31": ["pentest", "kickoff", "pentest"],
-      "2025-9-2": ["pentest", "kickoff"],
-      "2025-9-10": ["pentest", "kickoff"],
-      "2025-9-15": ["pentest", "kickoff"],
-      "2025-9-24": ["kickoff", "pentest"],
-    }} 
-  />
-</div>
+## Installation
 
-## Code
+1. Install the required dependencies:
 
-```tsx
-"use client";
-
-import { CalendarDashboard } from '@/components/ui/calendar';
-
-export default function CalendarDemo() {
-  // Pass initial events as a dictionary mapping dates to event types
-  const initialEvents = {
-    "2025-8-31": ["pentest", "kickoff", "pentest", "kickoff"],
-    "2025-9-2": ["pentest", "kickoff"],
-    "2025-9-3": ["kickoff", "pentest"],
-    "2025-9-4": ["pentest"],
-    "2025-9-10": ["pentest", "kickoff"],
-    "2025-9-15": ["pentest", "kickoff"],
-    "2025-9-24": ["kickoff", "pentest"],
-  };
-
-  return (
-    <div className="w-full h-screen p-4">
-      <CalendarDashboard mockEvents={initialEvents} />
-    </div>
-  );
-}
+```bash
+npm install lucide-react date-fns react-day-picker
+```

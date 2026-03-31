@@ -23,10 +23,100 @@ import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
-import { Button, buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "../ui/button";
 
-// --- START: react-day-picker wrapper ---
+// ==========================================
+// VARIANT & COLOR CONFIGURATION
+// ==========================================
+export type CalendarVariant = "default" | "minimal" | "glass";
+export type CalendarColor = "indigo" | "rose" | "emerald" | "blue" | "zinc";
+
+const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
+  default: {
+    wrapper:
+      "bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-sm",
+    sidebar:
+      "bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800",
+    header:
+      "bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800",
+    gridOuter: "bg-gray-200 dark:bg-gray-800 p-px",
+    gridGap: "gap-px",
+    gridHeader:
+      "bg-white/95 dark:bg-gray-950/95 border-b border-gray-200 dark:border-gray-800",
+    cellBg:
+      "bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/50",
+  },
+  minimal: {
+    wrapper: "bg-transparent border-none",
+    sidebar:
+      "bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800/50 lg:mr-6",
+    header: "bg-transparent border-none mb-4 rounded-xl",
+    gridOuter: "bg-transparent p-0",
+    gridGap: "gap-2 sm:gap-3",
+    gridHeader: "bg-transparent border-none pb-2",
+    cellBg:
+      "bg-gray-50 dark:bg-gray-900/40 rounded-2xl border border-gray-100 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm",
+  },
+  glass: {
+    wrapper:
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl",
+    sidebar:
+      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+    header: "bg-transparent border-b border-white/20 dark:border-white/10",
+    gridOuter: "bg-gray-400/20 dark:bg-gray-700/30 p-px",
+    gridGap: "gap-px",
+    gridHeader:
+      "bg-white/20 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10",
+    cellBg:
+      "bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 backdrop-blur-sm",
+  },
+};
+
+const colorThemes: Record<CalendarColor, Record<string, string>> = {
+  indigo: {
+    primaryBg:
+      "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20",
+    primaryText: "text-indigo-600 dark:text-indigo-400",
+    lightBg:
+      "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300",
+    focusRing: "focus:ring-indigo-500",
+    pulse: "bg-indigo-500",
+  },
+  rose: {
+    primaryBg: "bg-rose-600 hover:bg-rose-700 text-white shadow-rose-500/20",
+    primaryText: "text-rose-600 dark:text-rose-400",
+    lightBg: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
+    focusRing: "focus:ring-rose-500",
+    pulse: "bg-rose-500",
+  },
+  emerald: {
+    primaryBg:
+      "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/20",
+    primaryText: "text-emerald-600 dark:text-emerald-400",
+    lightBg:
+      "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+    focusRing: "focus:ring-emerald-500",
+    pulse: "bg-emerald-500",
+  },
+  blue: {
+    primaryBg: "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20",
+    primaryText: "text-blue-600 dark:text-blue-400",
+    lightBg: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300",
+    focusRing: "focus:ring-blue-500",
+    pulse: "bg-blue-500",
+  },
+  zinc: {
+    primaryBg:
+      "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black shadow-zinc-900/20",
+    primaryText: "text-zinc-900 dark:text-white",
+    lightBg: "bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-white",
+    focusRing: "focus:ring-zinc-500 dark:focus:ring-zinc-400",
+    pulse: "bg-zinc-900 dark:bg-white",
+  },
+};
+
+// --- START: react-day-picker wrapper (Remains unchanged internally) ---
 function Calendar({
   className,
   classNames,
@@ -215,7 +305,6 @@ function CalendarDayButton({ className, day, modifiers, ...props }: any) {
 }
 // --- END: react-day-picker wrapper ---
 
-// Helpers
 const formatDateForInput = (dateKey: string) => {
   if (!dateKey) return "";
   const [y, m, d] = dateKey.split("-");
@@ -224,10 +313,16 @@ const formatDateForInput = (dateKey: string) => {
 
 function CalendarDashboard({
   mockEvents = {},
+  variant = "default",
+  color = "indigo", // COLOR PROP ADDED HERE
 }: {
   mockEvents?: Record<string, string[]>;
+  variant?: CalendarVariant;
+  color?: CalendarColor;
 }) {
   const [isDark, setIsDark] = useState(false);
+  const styles = dashboardVariants[variant];
+  const theme = colorThemes[color];
 
   // Convert dict prop to rich array state
   const [events, setEvents] = useState<any[]>([]);
@@ -239,7 +334,7 @@ function CalendarDashboard({
         initialEventsList.push({
           id: `${dateKey}-${index}-${Math.random()}`,
           title: type === "pentest" ? "Pentest" : "Kick-Off",
-          date: dateKey, // Format: YYYY-M-D
+          date: dateKey,
           time: "12:00",
           type: type,
           platform: type === "pentest" ? "slack" : "meet",
@@ -250,7 +345,7 @@ function CalendarDashboard({
   }, [mockEvents]);
 
   // View & Date State
-  const [view, setView] = useState("month"); // "month" | "week" | "day"
+  const [view, setView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date(2025, 8, 1));
 
   // UI State
@@ -267,13 +362,11 @@ function CalendarDashboard({
     platforms: { meet: true, slack: true, discord: true },
   });
 
-  // Derived Date Info
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const date = currentDate.getDate();
   const monthName = currentDate.toLocaleString("default", { month: "long" });
 
-  // Navigation Logic Based on View
   const nextPeriod = () => {
     if (view === "month") setCurrentDate(new Date(year, month + 1, 1));
     if (view === "week") setCurrentDate(new Date(year, month, date + 7));
@@ -286,14 +379,10 @@ function CalendarDashboard({
     if (view === "day") setCurrentDate(new Date(year, month, date - 1));
   };
 
-  const goToToday = () => {
-    setCurrentDate(new Date());
-  };
+  const goToToday = () => setCurrentDate(new Date());
 
-  // Generate Grid Data Based on View
   const generateCalendarDays = () => {
     const days = [];
-
     if (view === "month") {
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -348,13 +437,11 @@ function CalendarDashboard({
         dateKey: `${year}-${month + 1}-${date}`,
       });
     }
-
     return days;
   };
 
   const calendarDays = generateCalendarDays();
 
-  // Filter Events
   const filteredEvents = useMemo(() => {
     return events.filter(
       (e) =>
@@ -370,7 +457,6 @@ function CalendarDashboard({
     }));
   };
 
-  // Actions
   const deleteEvent = (id: string) => {
     setEvents(events.filter((e) => e.id !== id));
     setActivePopupEventId(null);
@@ -379,9 +465,9 @@ function CalendarDashboard({
   const handleSaveEvent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const rawDate = formData.get("date") as string; // YYYY-MM-DD
+    const rawDate = formData.get("date") as string;
     const [y, m, d] = rawDate.split("-");
-    const formattedDateKey = `${parseInt(y)}-${parseInt(m)}-${parseInt(d)}`; // Normalize to YYYY-M-D
+    const formattedDateKey = `${parseInt(y)}-${parseInt(m)}-${parseInt(d)}`;
 
     const eventData = {
       id: editingEvent ? editingEvent.id : Date.now().toString(),
@@ -425,13 +511,11 @@ function CalendarDashboard({
   const handleExportCSV = () => {
     const headers = ["ID", "Title", "Date", "Time", "Type", "Platform"];
     const csvRows = [headers.join(",")];
-
     events.forEach((e) => {
       csvRows.push(
         `${e.id},"${e.title}",${e.date},${e.time},${e.type},${e.platform}`,
       );
     });
-
     const blob = new Blob([csvRows.join("\n")], {
       type: "text/csv;charset=utf-8;",
     });
@@ -446,9 +530,20 @@ function CalendarDashboard({
 
   return (
     <div className={`${isDark ? "dark" : ""} w-full h-full`}>
-      <div className="w-full h-[700px] flex overflow-hidden bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+      <div
+        className={cn(
+          "w-full h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300",
+          styles.wrapper,
+          variant !== "minimal" ? "rounded-xl overflow-hidden" : "",
+        )}
+      >
         {/* SIDEBAR FILTERS */}
-        <aside className="w-64 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 p-5 overflow-y-auto hidden lg:block bg-white dark:bg-gray-950 z-10">
+        <aside
+          className={cn(
+            "w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300",
+            styles.sidebar,
+          )}
+        >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-lg">
               {monthName} {year}
@@ -456,20 +551,20 @@ function CalendarDashboard({
             <div className="flex gap-1 text-gray-400">
               <button
                 onClick={prevPeriod}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
               >
                 <ChevronLeft className="w-4 h-4 cursor-pointer" />
               </button>
               <button
                 onClick={nextPeriod}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
               >
                 <ChevronRight className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
           </div>
 
-          <hr className="border-gray-200 dark:border-gray-800 my-6" />
+          <hr className="border-gray-200 dark:border-gray-800/50 my-6" />
 
           <div className="mb-6">
             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-3 cursor-pointer">
@@ -479,30 +574,34 @@ function CalendarDashboard({
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("types", "pentest")}
-                className="flex items-center justify-between bg-gray-50 dark:bg-gray-900 p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-4 bg-yellow-400 rounded-full"></div>
                   <span className="text-sm font-medium">Pentest</span>
                 </div>
                 {filters.types.pentest ? (
-                  <CheckSquare className="w-4 h-4 text-indigo-500 cursor-pointer" />
+                  <CheckSquare
+                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                  />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-300 dark:text-gray-700 cursor-pointer" />
+                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("types", "kickoff")}
-                className="flex items-center justify-between bg-gray-50 dark:bg-gray-900 p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-4 bg-green-500 rounded-full"></div>
                   <span className="text-sm font-medium">Kick-Off</span>
                 </div>
                 {filters.types.kickoff ? (
-                  <CheckSquare className="w-4 h-4 text-indigo-500 cursor-pointer" />
+                  <CheckSquare
+                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                  />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-300 dark:text-gray-700 cursor-pointer" />
+                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
                 )}
               </div>
             </div>
@@ -516,44 +615,50 @@ function CalendarDashboard({
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("platforms", "meet")}
-                className="flex items-center justify-between bg-gray-50 dark:bg-gray-900 p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <Video className="w-4 h-4 text-green-600" />
                   <span className="text-sm font-medium">Google Meet</span>
                 </div>
                 {filters.platforms.meet ? (
-                  <CheckSquare className="w-4 h-4 text-indigo-500 cursor-pointer" />
+                  <CheckSquare
+                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                  />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-300 dark:text-gray-700 cursor-pointer" />
+                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "slack")}
-                className="flex items-center justify-between bg-gray-50 dark:bg-gray-900 p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <Hash className="w-4 h-4 text-blue-500" />
                   <span className="text-sm font-medium">Slack</span>
                 </div>
                 {filters.platforms.slack ? (
-                  <CheckSquare className="w-4 h-4 text-indigo-500 cursor-pointer" />
+                  <CheckSquare
+                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                  />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-300 dark:text-gray-700 cursor-pointer" />
+                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "discord")}
-                className="flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               >
                 <div className="flex items-center gap-2 text-gray-500">
                   <MessageSquare className="w-4 h-4 text-indigo-500" />
                   <span className="text-sm font-medium">Discord</span>
                 </div>
                 {filters.platforms.discord ? (
-                  <CheckSquare className="w-4 h-4 text-indigo-500 cursor-pointer" />
+                  <CheckSquare
+                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                  />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-300 dark:text-gray-700 cursor-pointer" />
+                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
                 )}
               </div>
             </div>
@@ -561,20 +666,25 @@ function CalendarDashboard({
         </aside>
 
         {/* MAIN CALENDAR AREA */}
-        <main className="flex-1 flex flex-col min-w-0 bg-white dark:bg-gray-950">
-          <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-5 border-b border-gray-200 dark:border-gray-800 gap-4 flex-shrink-0 z-10 bg-white dark:bg-gray-950">
+        <main className="flex-1 flex flex-col min-w-0 h-full">
+          <header
+            className={cn(
+              "flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-5 gap-4 flex-shrink-0 z-10 transition-colors duration-300",
+              styles.header,
+            )}
+          >
             <div className="flex items-center justify-between w-full sm:w-auto gap-4">
               <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                 <div className="flex gap-1 text-gray-400">
                   <button
                     onClick={prevPeriod}
-                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                    className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
                   >
                     <ChevronLeft className="w-5 h-5 cursor-pointer" />
                   </button>
                   <button
                     onClick={nextPeriod}
-                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                    className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
                   >
                     <ChevronRight className="w-5 h-5 cursor-pointer" />
                   </button>
@@ -590,14 +700,17 @@ function CalendarDashboard({
                   setEditingEvent(null);
                   setIsAddModalOpen(true);
                 }}
-                className="sm:hidden cursor-pointer flex items-center justify-center p-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+                className={cn(
+                  "sm:hidden flex items-center justify-center p-2 rounded-md transition-colors shadow-sm",
+                  theme.primaryBg,
+                )}
               >
                 <Plus className="w-5 h-5 cursor-pointer" />
               </button>
             </div>
 
             <div className="flex items-center w-full sm:w-auto gap-2 sm:gap-4 justify-between sm:justify-end">
-              <div className="flex bg-gray-100 dark:bg-gray-900 rounded-lg p-1 text-xs sm:text-sm font-medium w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-1 text-xs sm:text-sm font-medium w-full sm:w-auto justify-between sm:justify-start">
                 <button
                   onClick={goToToday}
                   className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-gray-900 dark:hover:text-white text-gray-500 transition-colors"
@@ -606,26 +719,41 @@ function CalendarDashboard({
                 </button>
                 <button
                   onClick={() => setView("day")}
-                  className={`px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors ${view === "day" ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200" : "hover:text-gray-900 dark:hover:text-white text-gray-500"}`}
+                  className={cn(
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
+                    view === "day"
+                      ? theme.lightBg
+                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                  )}
                 >
                   Day
                 </button>
                 <button
                   onClick={() => setView("week")}
-                  className={`px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors hidden sm:block ${view === "week" ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200" : "hover:text-gray-900 dark:hover:text-white text-gray-500"}`}
+                  className={cn(
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors hidden sm:block",
+                    view === "week"
+                      ? theme.lightBg
+                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                  )}
                 >
                   Week
                 </button>
                 <button
                   onClick={() => setView("month")}
-                  className={`px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors ${view === "month" ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200" : "hover:text-gray-900 dark:hover:text-white text-gray-500"}`}
+                  className={cn(
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
+                    view === "month"
+                      ? theme.lightBg
+                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                  )}
                 >
                   Month
                 </button>
               </div>
               <button
                 onClick={handleExportCSV}
-                className="hidden lg:flex items-center cursor-pointer gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                className="hidden lg:flex items-center cursor-pointer gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-md text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
                 Export <Download className="w-4 h-4 cursor-pointer" />
               </button>
@@ -635,7 +763,10 @@ function CalendarDashboard({
                   setSelectedDateKey("");
                   setIsAddModalOpen(true);
                 }}
-                className="hidden sm:flex items-center gap-2 cursor-pointer px-4 py-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+                className={cn(
+                  "hidden sm:flex items-center gap-2 cursor-pointer px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm",
+                  theme.primaryBg,
+                )}
               >
                 <Plus className="w-4 h-4 cursor-pointer" /> Add
               </button>
@@ -643,11 +774,20 @@ function CalendarDashboard({
           </header>
 
           {/* Scrollable Grid Container */}
-          <div className="flex-1 overflow-x-auto overflow-y-auto relative bg-gray-200 dark:bg-gray-800 border-t-0 p-px">
+          <div
+            className={cn(
+              "flex-1 overflow-x-auto overflow-y-auto relative transition-colors duration-300",
+              styles.gridOuter,
+            )}
+          >
             <div className="min-w-[600px] lg:min-w-0 w-full flex flex-col h-full min-h-[500px]">
-              {/* Headers */}
               {view !== "day" && (
-                <div className="sticky top-0 z-20 grid grid-cols-7 border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm">
+                <div
+                  className={cn(
+                    "sticky top-0 z-20 grid grid-cols-7 transition-colors duration-300",
+                    styles.gridHeader,
+                  )}
+                >
                   {[
                     "Monday",
                     "Tuesday",
@@ -656,10 +796,15 @@ function CalendarDashboard({
                     "Friday",
                     "Saturday",
                     "Sunday",
-                  ].map((dayName) => (
+                  ].map((dayName, idx) => (
                     <div
                       key={dayName}
-                      className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 text-center border-r border-gray-200 dark:border-gray-800 last:border-r-0"
+                      className={cn(
+                        "py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 text-center",
+                        variant !== "minimal" && idx !== 6
+                          ? "border-r border-gray-200 dark:border-gray-800"
+                          : "",
+                      )}
                     >
                       <span className="hidden sm:inline">{dayName}</span>
                       <span className="sm:hidden">{dayName.slice(0, 3)}</span>
@@ -668,9 +813,11 @@ function CalendarDashboard({
                 </div>
               )}
 
-              {/* Grid Cells */}
               <div
-                className={`grid flex-1 gap-px ${view === "day" ? "grid-cols-1 auto-rows-[minmax(400px,1fr)]" : "grid-cols-7 auto-rows-[minmax(120px,1fr)]"}`}
+                className={cn(
+                  `grid flex-1 ${view === "day" ? "grid-cols-1 auto-rows-[minmax(400px,1fr)]" : "grid-cols-7 auto-rows-[minmax(120px,1fr)]"}`,
+                  styles.gridGap,
+                )}
               >
                 {calendarDays.map((dayObj, index) => {
                   const dayEvents = filteredEvents.filter(
@@ -690,6 +837,8 @@ function CalendarDashboard({
                       onDeleteEvent={deleteEvent}
                       onEditEvent={openEditModal}
                       onClickCell={() => openAddModalForDate(dayObj.dateKey)}
+                      cellClass={styles.cellBg}
+                      theme={theme}
                     />
                   );
                 })}
@@ -720,7 +869,6 @@ function CalendarDashboard({
                 <X className="w-5 h-5 cursor-pointer" />
               </button>
             </div>
-
             <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -732,10 +880,12 @@ function CalendarDashboard({
                   type="text"
                   defaultValue={editingEvent ? editingEvent.title : ""}
                   placeholder="e.g. Q3 Roadmap Review"
-                  className="w-full cursor-text border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white"
+                  className={cn(
+                    "w-full cursor-text border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white transition-shadow",
+                    theme.focusRing,
+                  )}
                 />
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -751,7 +901,10 @@ function CalendarDashboard({
                         : formatDateForInput(selectedDateKey) ||
                           `${year}-${String(month + 1).padStart(2, "0")}-01`
                     }
-                    className="w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
+                    className={cn(
+                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark] transition-shadow",
+                      theme.focusRing,
+                    )}
                   />
                 </div>
                 <div>
@@ -763,11 +916,13 @@ function CalendarDashboard({
                     name="time"
                     type="time"
                     defaultValue={editingEvent ? editingEvent.time : "12:00"}
-                    className="w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
+                    className={cn(
+                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark] transition-shadow",
+                      theme.focusRing,
+                    )}
                   />
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -776,7 +931,10 @@ function CalendarDashboard({
                   <select
                     name="type"
                     defaultValue={editingEvent ? editingEvent.type : "pentest"}
-                    className="w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white"
+                    className={cn(
+                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:outline-none dark:text-white transition-shadow",
+                      theme.focusRing,
+                    )}
                   >
                     <option value="pentest">Pentest</option>
                     <option value="kickoff">Kick-Off</option>
@@ -789,7 +947,10 @@ function CalendarDashboard({
                   <select
                     name="platform"
                     defaultValue={editingEvent ? editingEvent.platform : "meet"}
-                    className="w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white"
+                    className={cn(
+                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:outline-none dark:text-white transition-shadow",
+                      theme.focusRing,
+                    )}
                   >
                     <option value="meet">Google Meet</option>
                     <option value="slack">Slack</option>
@@ -797,7 +958,6 @@ function CalendarDashboard({
                   </select>
                 </div>
               </div>
-
               <div className="pt-4 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -808,7 +968,10 @@ function CalendarDashboard({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-medium bg-[#7367f0] text-white hover:bg-[#6355eb] rounded-md transition-colors shadow-sm cursor-pointer"
+                  className={cn(
+                    "px-4 py-2 text-sm font-medium rounded-md transition-colors shadow-sm cursor-pointer",
+                    theme.primaryBg,
+                  )}
                 >
                   {editingEvent ? "Update Event" : "Add Event"}
                 </button>
@@ -834,8 +997,9 @@ function CalendarCell({
   onDeleteEvent,
   onEditEvent,
   onClickCell,
+  cellClass,
+  theme,
 }: any) {
-  // Smart Positioning so popups don't render off-screen
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";
   const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
@@ -843,7 +1007,10 @@ function CalendarCell({
   return (
     <div
       onClick={onClickCell}
-      className={`relative flex flex-col bg-white dark:bg-gray-950 p-1.5 sm:p-2 h-full transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-gray-400 dark:text-gray-600" : "text-gray-900 dark:text-gray-100"}`}
+      className={cn(
+        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-gray-400 dark:text-gray-600 opacity-60" : "text-gray-900 dark:text-gray-100"}`,
+        cellClass,
+      )}
     >
       <div
         className={`text-xs sm:text-sm font-medium mb-1 sm:mb-2 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded shrink-0`}
@@ -851,7 +1018,6 @@ function CalendarCell({
         {day}
       </div>
 
-      {/* 1. THE EVENTS LIST (Scrolls strictly inside the cell) */}
       <div className="flex-1 overflow-y-auto space-y-1 sm:space-y-1.5 pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {events.map((event: any) => {
           const isPopupOpen = activePopupEventId === event.id;
@@ -859,8 +1025,8 @@ function CalendarCell({
           const borderClass = isGray
             ? "border-gray-200 bg-gray-50 text-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-600"
             : isPentest
-              ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-              : "border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400";
+              ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+              : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
           const PlatformIcon =
             event.platform === "meet"
               ? Video
@@ -897,7 +1063,6 @@ function CalendarCell({
         })}
       </div>
 
-      {/* 2. THE POPOVERS (Absolute overlay, avoids clipping) */}
       {events.map((event: any) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
@@ -917,7 +1082,6 @@ function CalendarCell({
 
         return (
           <div key={`popup-${event.id}`}>
-            {/* Backdrop to close popup when clicking outside */}
             <div
               className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 sm:bg-transparent cursor-pointer"
               onClick={(e) => {
@@ -925,8 +1089,6 @@ function CalendarCell({
                 setActivePopupEventId(null);
               }}
             />
-
-            {/* Popover Box */}
             <div
               className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
@@ -953,8 +1115,18 @@ function CalendarCell({
                 </div>
               </div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xs font-medium rounded-md">
-                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></div>{" "}
+                <span
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
+                    theme.lightBg,
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full animate-pulse",
+                      theme.pulse,
+                    )}
+                  ></div>{" "}
                   Pending
                 </span>
               </div>
