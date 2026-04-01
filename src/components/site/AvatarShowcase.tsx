@@ -48,7 +48,12 @@ export default function AvatarDemo()${typeDef} {
   return (
     <div className="flex items-center justify-center p-8">
       <Avatar 
-        avatars={user}${propsString} 
+       avatars={type === "single" ? singleData : groupData}
+        size={size}
+        active={status !== "none"}
+        status={
+          status === "active" || status === "inactive" ? status undefined
+        }
       />
     </div>
   );
@@ -71,7 +76,12 @@ export default function AvatarGroupDemo()${typeDef} {
   return (
     <div className="flex items-center justify-center p-8">
       <Avatar 
-        avatars={team}${propsString} 
+        avatars={type === "single" ? singleData : groupData}
+        size={size}
+        active={status !== "none"}
+        status={
+          status === "active" || status === "inactive" ? status undefined
+        }
       />
     </div>
   );
