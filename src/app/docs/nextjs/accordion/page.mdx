@@ -1,229 +1,52 @@
-import { HelpCircle, Shield, Users, CreditCard, FileText, Smartphone, Code, Plus, ArrowDown } from "lucide-react";
-import { Accordion } from "@/components/custom/blocks/Accordion";
-
-export const faqData = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: <HelpCircle className="w-4 h-4" />,
-    content: ["Getting started is easy! Simply sign up for an account and follow our step-by-step onboarding process.", "We'll guide you through setting up your profile, connecting your tools, and creating your first project."],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: <CreditCard className="w-4 h-4" />,
-    content: ["We offer flexible pricing plans to suit different needs and budgets.", "Our basic plan starts at $9/month and includes all essential features."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: <Shield className="w-4 h-4" />,
-    content: ["Security is our top priority. We use enterprise-grade encryption for all data.", "Your information is stored in secure, SOC 2 compliant data centers."],
-  },
-];
-
-export const featureData = [
-  {
-    value: "collaboration",
-    title: "Team Collaboration",
-    icon: <Users className="w-4 h-4" />,
-    content: ["Work together seamlessly with real-time collaboration features.", "Share projects, assign tasks, and track progress with your team members."],
-  },
-  {
-    value: "documentation",
-    title: "Documentation & Guides",
-    icon: <FileText className="w-4 h-4" />,
-    content: ["Comprehensive documentation covers every aspect of our platform.", "Step-by-step tutorials help you master advanced features quickly."],
-  },
-];
-
-export const technicalData = [
-  {
-    value: "mobile",
-    title: "Mobile Optimization",
-    icon: <Smartphone className="w-4 h-4" />,
-    content: ["Fully responsive design works perfectly on all devices.", "Native mobile apps available for iOS and Android."],
-  },
-  {
-    value: "api",
-    title: "Developer API",
-    icon: <Code className="w-4 h-4" />,
-    content: ["RESTful API with comprehensive documentation and examples.", "SDKs available for popular programming languages."],
-  },
-];
-
+import { AccordionShowcase } from "@/components/site/AccordionShowcase";
 
 # Accordion
 
-A reusable accordion with collapsible content sections, icons, and highly customizable styling variants.
+A reusable accordion with collapsible content sections, dynamic icons, and highly customizable styling variants.
 
-## Basic Accordion
+## Interactive Showcase
 
-A simple, standard accordion. By default, it allows only one item to be open at a time (`type="single"`).
+Explore the different structural variants of the accordion component. Toggle between interaction modes (like forcing one panel to always remain open), and switch styling variants to automatically generate the correct integration code.
 
-## Preview
+<AccordionShowcase />
 
-<div className="w-full max-w-2xl mx-auto my-8 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
-  <Accordion
-    accordionData={faqData}
-    defaultValue="getting-started"
-  />
-</div>
+## Installation
 
-## Code
+1. This component relies on `shadcn/ui` base primitives. Install them first:
 
-```tsx
-"use client";
-
-import { HelpCircle, CreditCard, Shield } from "lucide-react";
-import { Accordion } from "@/components/custom/accordion";
-
-export default function BasicAccordionDemo() {
-  const faqData = [
-    {
-      value: "getting-started",
-      title: "How do I get started?",
-      icon: <HelpCircle className="w-4 h-4" />,
-      content: ["Getting started is easy! Simply sign up and follow our onboarding.", "We'll guide you through setting up your profile."],
-    },
-    {
-      value: "pricing",
-      title: "What are your pricing plans?",
-      icon: <CreditCard className="w-4 h-4" />,
-      content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-    }
-  ];
-
-  return (
-    <Accordion
-      accordionData={faqData}
-      defaultValue="getting-started"
-    />
-  );
-}
+````bash
+npx shadcn-ui@latest add accordion
 ```
-## Multiple Selection & Variants
-Set type="multiple" to allow multiple sections to be open simultaneously. You can also use built-in variants like bordered, filled, or ghost.
 
-## Preview
-<div className="w-full max-w-2xl mx-auto my-8 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950 flex flex-col gap-8">
-<div className="space-y-3">
-<h3 className="text-sm font-medium text-zinc-500">Bordered Variant</h3>
-<Accordion
-accordionData={featureData}
-type="multiple"
-variant="bordered"
-defaultValue={["collaboration"]}
-/>
-</div>
+## Install the required icon library:
 
-<div className="space-y-3">
-<h3 className="text-sm font-medium text-zinc-500">Filled Variant</h3>
-<Accordion
-accordionData={technicalData}
-variant="filled"
-defaultValue="mobile"
-/>
-</div>
-</div>
+Create the Accordion.tsx component inside your project and paste the generated code.
 
-## Code
-```tsx
-"use client";
+```bash
+npm install lucide-react
+````
 
-import { Accordion } from "@/components/custom/accordion";
+## Custom Styling Override Example
 
-export default function VariantsDemo() {
-  return (
-    <div className="flex flex-col gap-8">
-      {/* Multiple Selection + Bordered Variant */}
-      <Accordion
-        accordionData={featureData}
-        type="multiple"
-        variant="bordered"
-        defaultValue={["collaboration"]}
-      />
+You can completely override the styles of the triggers, content, and the expand icon to match your brand by utilizing the extensive ClassName props.
 
-      {/* Filled Variant */}
-      <Accordion
-        accordionData={technicalData}
-        variant="filled"
-        defaultValue="mobile"
-      />
-    </div>
-  );
-}
 ```
-## Custom Styling & Icons
-You can completely override the styles of the triggers, content, and the expand icon to match your brand.
-
-##Preview
-<div className="w-full max-w-2xl mx-auto my-8 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950">
-<Accordion
-accordionData={technicalData}
-defaultValue="mobile"
-className="border-2 border-emerald-200 dark:border-emerald-800 rounded-xl"
-itemClassName="border-b border-gray-100 dark:border-gray-800 last:border-b-0"
-triggerClassName="hover:bg-emerald-50 dark:hover:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 font-medium"
-contentClassName="bg-emerald-50/50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200"
-expandIcon={<ArrowDown className="w-4 h-4 text-emerald-600 dark:text-emerald-400 transition-transform duration-200" />}
-expandIconClassName="[&[data-state=open]>svg]:rotate-180"
-/>
-</div>
-
-## Code
-
-```tsx
 "use client";
 
-import { ArrowDown } from "lucide-react";
-import { Accordion } from "@/components/custom/accordion";
+import { Accordion } from "@/components/custom/blocks/Accordion";
 
 export default function CustomStylingDemo() {
   return (
     <Accordion
-      accordionData={technicalData}
+      accordionData={data}
       defaultValue="mobile"
       className="border-2 border-emerald-200 dark:border-emerald-800 rounded-xl"
       itemClassName="border-b border-gray-100 dark:border-gray-800 last:border-b-0"
       triggerClassName="hover:bg-emerald-50 dark:hover:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 font-medium"
       contentClassName="bg-emerald-50/50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200"
-      expandIcon={<ArrowDown className="w-4 h-4 text-emerald-600 dark:text-emerald-400 transition-transform duration-200" />}
+      expandIcon="ArrowDown"
       expandIconClassName="[&[data-state=open]>svg]:rotate-180"
     />
   );
 }
-```
-
-## Ghost variant
-
-<div className="w-full max-w-2xl mx-auto my-8 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm bg-white dark:bg-gray-950 flex flex-col gap-8">
-<div className="space-y-3">
-<h3 className="text-sm font-medium text-zinc-500">Bordered Variant</h3>
-<Accordion
-accordionData={featureData}
-type="multiple"
-variant="ghost"
-defaultValue={["collaboration"]}
-/>
-</div>
-
-<div className="space-y-3">
-<h3 className="text-sm font-medium text-zinc-500">Filled Variant</h3>
-<Accordion
-accordionData={technicalData}
-variant="filled"
-defaultValue="mobile"
-/>
-</div>
-</div>
-
-## Code
-```tsx
-// Ghost variant
-<Accordion
-  accordionData={accordionData}
-  variant="ghost"
-  defaultValue="item-1"
-/>
 ```

@@ -1,10 +1,44 @@
-import { Accordion as ShadCNAccordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/custom/ui/accordion"
-import { cn } from "@/lib/utils"
+"use client";
+
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Accordion as ShadCNAccordion,
+} from "@/components/custom/ui/accordion";
+import { cn } from "@/lib/utils";
+import {
+  ArrowDown,
+  Code,
+  CreditCard,
+  FileText,
+  HelpCircle,
+  Plus,
+  Shield,
+  Smartphone,
+  Users,
+} from "lucide-react";
+import React from "react";
+
+// ==========================================
+// ICON MAP FOR MDX COMPATIBILITY
+// ==========================================
+const ICON_MAP: Record<string, React.ElementType> = {
+  HelpCircle,
+  Shield,
+  Users,
+  CreditCard,
+  FileText,
+  Smartphone,
+  Code,
+  Plus,
+  ArrowDown,
+};
 
 export type AccordionDataItem = {
   value: string;
   title: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode | string;
   content: string[] | React.ReactNode;
 };
 
@@ -13,12 +47,12 @@ export type CustomAccordionProps = {
   collapsible?: boolean;
   defaultValue?: string | string[] | null;
   accordionData?: AccordionDataItem[];
-  variant?: "default" | "bordered" | "filled" | "ghost";
+  variant?: "default" | "bordered" | "filled" | "ghost" | "elevated";
   className?: string;
   itemClassName?: string;
   triggerClassName?: string;
   contentClassName?: string;
-  expandIcon?: React.ReactNode;
+  expandIcon?: React.ReactNode | string;
   expandIconClassName?: string;
 };
 
@@ -33,52 +67,72 @@ export function Accordion({
   triggerClassName = "",
   contentClassName = "",
   expandIcon = null,
-  expandIconClassName
+  expandIconClassName,
 }: CustomAccordionProps) {
-  
   const getVariantStyles = () => {
     switch (variant) {
       case "bordered":
+        // Separated boxes with clean borders
         return {
-          container: "border border-border dark:border-border rounded-lg overflow-hidden bg-card dark:bg-card shadow-sm",
-          item: "border-b border-border dark:border-border last:border-b-0",
-          trigger: "px-6 py-4 hover:bg-muted/50 dark:hover:bg-muted/50 transition-colors duration-200 text-left font-medium",
-          content: "px-6 pb-4 pt-0 text-muted-foreground dark:text-muted-foreground",
-        }
+          container: "space-y-3",
+          item: "border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-950/50 shadow-sm",
+          trigger:
+            "px-5 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors duration-200 text-left font-semibold",
+          content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+        };
       case "filled":
+        // Solid background, soft rounded edges
         return {
           container: "space-y-2",
-          item: "bg-muted/30 dark:bg-muted/30 rounded-lg overflow-hidden border border-transparent hover:border-border dark:hover:border-border transition-all duration-200",
-          trigger: "px-6 py-4 hover:bg-muted/50 dark:hover:bg-muted/50 transition-colors duration-200 text-left font-medium",
-          content: "px-6 pb-4 pt-0 text-muted-foreground dark:text-muted-foreground",
-        }
+          item: "bg-zinc-100/80 dark:bg-zinc-900/80 rounded-xl overflow-hidden border border-transparent data-[state=open]:bg-zinc-200 dark:data-[state=open]:bg-zinc-800 transition-colors duration-200",
+          trigger: "px-5 py-4 text-left font-semibold",
+          content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+        };
+      case "elevated":
+        // Floating cards with deep shadows and hover lift
+        return {
+          container: "space-y-4",
+          item: "bg-white dark:bg-zinc-950 rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:shadow-xl dark:shadow-black/50 border border-zinc-100 dark:border-zinc-800/60 transition-all duration-300 hover:-translate-y-0.5",
+          trigger:
+            "px-6 py-5 text-left font-bold text-zinc-900 dark:text-zinc-100",
+          content:
+            "px-6 pb-6 pt-0 text-zinc-600 dark:text-zinc-400 leading-relaxed",
+        };
       case "ghost":
+        // Minimalist, no borders, subtle hover
         return {
           container: "space-y-1",
-          item: "rounded-lg hover:bg-muted/30 dark:hover:bg-muted/30 transition-colors duration-200",
-          trigger: "px-4 py-3 hover:bg-muted/50 dark:hover:bg-muted/50 transition-colors duration-200 text-left font-medium rounded-lg",
-          content: "px-4 pb-3 pt-0 text-muted-foreground dark:text-muted-foreground",
-        }
+          item: "rounded-lg overflow-hidden",
+          trigger:
+            "px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors duration-200 text-left font-semibold rounded-lg",
+          content: "px-4 pb-4 pt-1 text-zinc-600 dark:text-zinc-400",
+        };
       default:
+        // Classic continuous list with bottom borders
         return {
-          container: "space-y-2",
-          item: "border-b border-border/50 dark:border-border/50 last:border-b-0 pb-2 last:pb-0",
-          trigger: "p-4 hover:text-foreground dark:hover:text-foreground transition-colors duration-200 text-left font-medium text-muted-foreground dark:text-muted-foreground",
-          content: "px-4 pb-4 pt-2 text-muted-foreground dark:text-muted-foreground",
-        }
+          container:
+            "space-y-0 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 overflow-hidden",
+          item: "border-b border-zinc-200 dark:border-zinc-800 last:border-0",
+          trigger:
+            "px-6 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors duration-200 text-left font-semibold",
+          content: "px-6 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+        };
     }
-  }
+  };
 
-  const styles = getVariantStyles()
+  const styles = getVariantStyles();
 
   const getDefaultValue = () => {
     if (type === "multiple") {
       if (Array.isArray(defaultValue)) return defaultValue;
-      if (defaultValue) return [defaultValue];
+      if (defaultValue) return [defaultValue as string];
       return [];
     }
     return defaultValue;
   };
+
+  const ResolvedExpandIcon =
+    typeof expandIcon === "string" ? ICON_MAP[expandIcon] : null;
 
   return (
     <ShadCNAccordion
@@ -87,42 +141,64 @@ export function Accordion({
       className={cn("w-full", styles.container, className)}
       defaultValue={getDefaultValue() as any}
     >
-      {accordionData.map((item) => (
-        <AccordionItem key={item.value} value={item.value} className={cn(styles.item, itemClassName)}>
-          <AccordionTrigger
-            // Note: Requires customizing your base shadcn AccordionTrigger to accept these props
-            expandIcon={expandIcon}
-            expandIconClassName={expandIconClassName}
-            className={cn(
-              "group [&[data-state=open]>div>span:last-child]:text-foreground dark:[&[data-state=open]>div>span:last-child]:text-foreground",
-              styles.trigger,
-              triggerClassName,
-            )}
+      {accordionData.map((item) => {
+        const ItemIcon =
+          typeof item.icon === "string" ? ICON_MAP[item.icon] : null;
+
+        return (
+          <AccordionItem
+            key={item.value}
+            value={item.value}
+            className={cn(styles.item, itemClassName)}
           >
-            <div className="flex items-center gap-3 w-full">
-              {item.icon && (
-                <span className="flex-shrink-0 text-muted-foreground dark:text-muted-foreground group-hover:text-foreground dark:group-hover:text-foreground transition-colors duration-200">
-                  {item.icon}
+            <AccordionTrigger
+              expandIcon={
+                ResolvedExpandIcon ? (
+                  <ResolvedExpandIcon className="w-4 h-4" />
+                ) : (
+                  expandIcon
+                )
+              }
+              expandIconClassName={expandIconClassName}
+              className={cn(
+                "group [&[data-state=open]>div>span:last-child]:text-foreground dark:[&[data-state=open]>div>span:last-child]:text-foreground outline-none",
+                styles.trigger,
+                triggerClassName,
+              )}
+            >
+              <div className="flex items-center gap-3 w-full">
+                {item.icon && (
+                  <span className="flex-shrink-0 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors duration-200">
+                    {ItemIcon ? (
+                      <ItemIcon className="w-4 h-4" />
+                    ) : (
+                      (item.icon as React.ReactNode)
+                    )}
+                  </span>
+                )}
+                <span className="text-left transition-colors duration-200">
+                  {item.title}
                 </span>
-              )}
-              <span className="text-left transition-colors duration-200">{item.title}</span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className={cn("text-sm leading-relaxed", styles.content, contentClassName)}>
-            <div className="space-y-3">
-              {Array.isArray(item.content) ? (
-                item.content.map((paragraph, index) => (
-                  <p key={index} className="leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))
-              ) : (
-                <div>{item.content}</div>
-              )}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      ))}
+              </div>
+            </AccordionTrigger>
+            <AccordionContent
+              className={cn("text-sm", styles.content, contentClassName)}
+            >
+              <div className="space-y-3">
+                {Array.isArray(item.content) ? (
+                  item.content.map((paragraph, index) => (
+                    <p key={index} className="leading-relaxed">
+                      {paragraph}
+                    </p>
+                  ))
+                ) : (
+                  <div>{item.content}</div>
+                )}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        );
+      })}
     </ShadCNAccordion>
-  )
+  );
 }
