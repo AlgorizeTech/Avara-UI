@@ -1,71 +1,17 @@
-import AIChat from "@/components/custom/blocks/Ai-chat";
+import { AIChatShowcase } from "@/components/site/AIChatShowcase";
 
 # AI Assistant Chat
 
-A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a modern glassmorphism prompt bar.
+A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
 
-## Interactive Preview
+## Interactive Showcase
 
-Try sending a prompt to the AI, or click the "New Chat" button to start a fresh conversation thread. You can also rename or delete previous chats in the sidebar.
+Explore the different structural variants of the AI Chat component. Toggle between standard, minimal, and glassmorphism layouts, and apply dynamic color themes. Try sending a prompt to the AI, or click "New Chat" to test the UI interactions. 
 
-<div className="w-full my-8 relative z-0">
-  <AIChat 
-    chatHistory={[
-      { id: 1, title: "Help with React Components", date: "Today" },
-      { id: 2, title: "Write a python script for SEO", date: "Today" },
-      { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
-      { id: 4, title: "Explain quantum physics", date: "Previous 7 Days" },
-      { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
-    ]}
-    initialMessages={[
-      {
-        id: 1,
-        role: "ai",
-        content: "Hello! I am your AI assistant. How can I help you today?",
-        time: "10:00 AM",
-      },
-      {
-        id: 2,
-        role: "user",
-        content: "Can you help me build a modern dashboard UI using Tailwind CSS?",
-        time: "10:02 AM",
-      },
-      {
-        id: 3,
-        role: "ai",
-        content: "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\n\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
-        time: "10:02 AM",
-      },
-    ]}
-  />
-</div>
+<AIChatShowcase />
 
-## Code
+## Installation
 
-```tsx
-"use client";
-
-import AIChat from '@/components/ui/ai-chat';
-
-export default function AIChatDemo() {
-  const chatHistory = [
-    { id: 1, title: "Help with React Components", date: "Today" },
-    { id: 2, title: "Write a python script for SEO", date: "Today" },
-    { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" }
-  ];
-
-  const initialMessages = [
-    {
-      id: 1,
-      role: "ai",
-      content: "Hello! I am your AI assistant. How can I help you today?",
-      time: "10:00 AM",
-    }
-  ];
-
-  return (
-    <div className="w-full">
-      <AIChat chatHistory={chatHistory} initialMessages={initialMessages} />
-    </div>
-  );
-}
+1. Install the required icon library:
+```bash
+npm install lucide-react
