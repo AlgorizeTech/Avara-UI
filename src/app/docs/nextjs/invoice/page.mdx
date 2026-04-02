@@ -1,129 +1,21 @@
-import Invoice from "@/components/custom/blocks/Invoice";
+import { InvoiceShowcase } from "@/components/site/InvoiceShowcase";
 
 # Invoice
 
 A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
 
-## Interactive Dashboard
+## Interactive Showcase
 
-This component is fully encapsulated. Click the "Edit" button in the right sidebar to make the fields editable. You can add items, remove items, change quantities, and download the resulting data.
+This component is fully encapsulated. Use the control panel to switch between UI layouts (including minimal and glassmorphism) and select custom color themes.
 
-## Preview
+Click the "Edit" button in the right sidebar of the preview below to test the editing mode. You can add items, change quantities, and download the resulting data.
 
-<div className="w-full my-8 rounded-xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 relative z-0">
-  <Invoice
-    invoiceData={{
-      invoiceNumber: "#4987",
-      dateIssued: "13 Mar 2026",
-      dateDue: "23 Mar 2026",
-      invoiceTo: {
-        name: "Jordan Stevenson",
-        company: "Hall-Robbins PLC",
-        address: "7777 Mendez Plains",
-        phone: "(616) 865-4180",
-        email: "don85@johnson.com",
-      },
-      billTo: {
-        totalDue: "$12,110.55",
-        bankName: "American Bank",
-        country: "United States",
-        iban: "ETD95476213874685",
-        swift: "BR91905",
-      },
-      items: [
-        {
-          item: "Premium Branding Package",
-          description: "Branding & Promotion",
-          hours: 48,
-          qty: 1,
-          total: "$32",
-        },
-        {
-          item: "Web Design",
-          description: "Web designing package",
-          hours: 46,
-          qty: 1,
-          total: "$24",
-        },
-      ],
-      subtotal: "$1800",
-      discount: "$28",
-      tax: "21%",
-      grandTotal: "$1690",
-      salesPerson: "Tommy Shelby",
-      note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
-    }}
-  />
-</div>
+<InvoiceShowcase />
 
-## Code
+## Installation
 
-```tsx
-"use client";
+1. Install the required icon library:
 
-import Invoice from "@/components/ui/invoice";
-
-export default function InvoiceDemo() {
-  const initialData = {
-    invoiceNumber: "#4987",
-    dateIssued: "13 Mar 2026",
-    dateDue: "23 Mar 2026",
-    invoiceTo: {
-      name: "Jordan Stevenson",
-      company: "Hall-Robbins PLC",
-      address: "7777 Mendez Plains",
-      phone: "(616) 865-4180",
-      email: "don85@johnson.com",
-    },
-    billTo: {
-      totalDue: "$12,110.55",
-      bankName: "American Bank",
-      country: "United States",
-      iban: "ETD95476213874685",
-      swift: "BR91905",
-    },
-    items: [
-      {
-        item: "Premium Branding Package",
-        description: "Branding & Promotion",
-        hours: 48,
-        qty: 1,
-        total: "$32",
-      },
-      {
-        item: "Social Media",
-        description: "Social media templates",
-        hours: 42,
-        qty: 1,
-        total: "$28",
-      },
-      {
-        item: "Web Design",
-        description: "Web designing package",
-        hours: 46,
-        qty: 1,
-        total: "$24",
-      },
-      {
-        item: "SEO",
-        description: "Search engine optimization",
-        hours: 40,
-        qty: 1,
-        total: "$22",
-      },
-    ],
-    subtotal: "$1800",
-    discount: "$28",
-    tax: "21%",
-    grandTotal: "$1690",
-    salesPerson: "Tommy Shelby",
-    note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
-  };
-
-  return (
-    <div className="w-full">
-      <Invoice invoiceData={initialData} />
-    </div>
-  );
-}
+```bash
+npm install lucide-react
 ```

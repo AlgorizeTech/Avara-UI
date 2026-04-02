@@ -1,7 +1,94 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { DollarSign, Heart, Plus, Save, Send, Trash2 } from "lucide-react";
 import { useState } from "react";
+
+// ==========================================
+// VARIANT & COLOR CONFIGURATION
+// ==========================================
+export type InvoiceVariant = "default" | "minimal" | "glass";
+export type InvoiceColor = "indigo" | "rose" | "emerald" | "zinc";
+
+const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
+  default: {
+    wrapper: "bg-zinc-50 dark:bg-zinc-950/50",
+    invoicePanel:
+      "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+    sidebarCard:
+      "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+    tableHeader:
+      "bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800",
+    tableRow:
+      "divide-zinc-100 dark:divide-zinc-800/60 hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20",
+    inputBg:
+      "bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+    blockBg:
+      "bg-zinc-50 dark:bg-zinc-950/50 border border-zinc-100 dark:border-zinc-800/50",
+  },
+  minimal: {
+    wrapper: "bg-transparent",
+    invoicePanel: "bg-transparent border-none shadow-none",
+    sidebarCard:
+      "bg-zinc-50/50 dark:bg-zinc-900/30 border border-zinc-100 dark:border-zinc-800/50 rounded-2xl",
+    tableHeader:
+      "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800",
+    tableRow:
+      "divide-zinc-100 dark:divide-zinc-800/60 hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20",
+    inputBg:
+      "bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800",
+    blockBg: "bg-transparent border-none p-0",
+  },
+  glass: {
+    wrapper:
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+    invoicePanel:
+      "bg-white/50 dark:bg-black/50 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg",
+    sidebarCard:
+      "bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-2xl",
+    tableHeader:
+      "bg-white/20 dark:bg-black/20 border-b border-white/20 dark:border-white/10",
+    tableRow:
+      "divide-white/10 dark:divide-white/5 hover:bg-white/20 dark:hover:bg-white/5",
+    inputBg:
+      "bg-white/40 dark:bg-black/40 border border-white/30 dark:border-white/10 backdrop-blur-md",
+    blockBg:
+      "bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10",
+  },
+};
+
+const colorThemes: Record<InvoiceColor, Record<string, string>> = {
+  indigo: {
+    text: "text-indigo-600 dark:text-indigo-400",
+    bg: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20",
+    lightBg:
+      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
+    border: "border-indigo-200 dark:border-indigo-500/30",
+    focusRing: "focus:ring-indigo-500/20 focus:border-indigo-500",
+  },
+  rose: {
+    text: "text-rose-600 dark:text-rose-400",
+    bg: "bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/20",
+    lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300",
+    border: "border-rose-200 dark:border-rose-500/30",
+    focusRing: "focus:ring-rose-500/20 focus:border-rose-500",
+  },
+  emerald: {
+    text: "text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20",
+    lightBg:
+      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    border: "border-emerald-200 dark:border-emerald-500/30",
+    focusRing: "focus:ring-emerald-500/20 focus:border-emerald-500",
+  },
+  zinc: {
+    text: "text-zinc-900 dark:text-zinc-100",
+    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 shadow-zinc-900/10",
+    lightBg: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
+    border: "border-zinc-300 dark:border-zinc-600",
+    focusRing: "focus:ring-zinc-500/20 focus:border-zinc-500",
+  },
+};
 
 export type InvoiceItem = {
   item: string;
@@ -38,28 +125,32 @@ export type InvoiceData = {
   note: string;
 };
 
-export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
+export default function Invoice({
+  invoiceData,
+  variant = "default",
+  color = "indigo",
+}: {
+  invoiceData: InvoiceData;
+  variant?: InvoiceVariant;
+  color?: InvoiceColor;
+}) {
   const [data, setData] = useState<InvoiceData>(invoiceData);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleMainChange = (field: string, value: string) => {
-    setData((prev) => ({ ...prev, [field]: value }));
-  };
+  const theme = colorThemes[color];
+  const styles = invoiceVariants[variant];
 
+  const handleMainChange = (field: string, value: string) =>
+    setData((prev) => ({ ...prev, [field]: value }));
   const handleNestedChange = (
     section: "invoiceTo" | "billTo",
     field: string,
     value: string,
-  ) => {
+  ) =>
     setData((prev) => ({
       ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
+      [section]: { ...prev[section], [field]: value },
     }));
-  };
-
   const handleItemChange = (
     index: number,
     field: keyof InvoiceItem,
@@ -70,7 +161,7 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
     setData({ ...data, items: newItems });
   };
 
-  const addItem = () => {
+  const addItem = () =>
     setData({
       ...data,
       items: [
@@ -78,16 +169,10 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
         { item: "", description: "", hours: 0, qty: 1, total: "$0" },
       ],
     });
-  };
+  const removeItem = (index: number) =>
+    setData({ ...data, items: data.items.filter((_, i) => i !== index) });
 
-  const removeItem = (index: number) => {
-    const newItems = data.items.filter((_, i) => i !== index);
-    setData({ ...data, items: newItems });
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   const handleDownload = () => {
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -102,7 +187,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
     document.body.removeChild(link);
   };
 
-  // Custom Input Component to keep things dry and looking premium
   const EditableInput = ({
     value,
     onChange,
@@ -115,22 +199,40 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none focus:ring-2 focus:ring-[#7367f0]/20 focus:border-[#7367f0] transition-all text-${align} ${className}`}
+        className={cn(
+          `w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-${align}`,
+          styles.inputBg,
+          theme.focusRing,
+          className,
+        )}
       />
     ) : (
       <span className={`block ${className}`}>{value}</span>
     );
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 bg-zinc-50 dark:bg-zinc-950/50 min-h-[800px] font-sans transition-colors duration-200">
+    <div
+      className={cn(
+        "flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300",
+        styles.wrapper,
+      )}
+    >
       {/* === MAIN INVOICE AREA === */}
-      <div className="flex-1 min-w-0 bg-white dark:bg-zinc-900 p-6 sm:p-10 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 print:shadow-none print:border-none print:p-0">
+      <div
+        className={cn(
+          "flex-1 min-w-0 p-6 sm:p-10 rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300",
+          styles.invoicePanel,
+        )}
+      >
         {/* HEADER */}
         <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
-          {/* Brand */}
           <div className="flex gap-4 items-start">
-            <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl shrink-0">
-              <Heart className="w-8 h-8 text-[#7367f0] fill-[#7367f0]/20" />
+            <div className={cn("p-3 rounded-xl shrink-0", theme.lightBg)}>
+              <Heart
+                className={cn("w-8 h-8", theme.text)}
+                fill="currentColor"
+                fillOpacity={0.2}
+              />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
@@ -145,8 +247,9 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
             </div>
           </div>
 
-          {/* Invoice Meta */}
-          <div className="w-full sm:w-auto bg-zinc-50 dark:bg-zinc-950/50 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800/50">
+          <div
+            className={cn("w-full sm:w-auto p-5 rounded-xl", styles.blockBg)}
+          >
             <div className="flex items-center sm:justify-end gap-3 mb-4">
               <span className="text-xl font-medium text-zinc-400 uppercase tracking-widest">
                 INVOICE
@@ -158,7 +261,11 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                   onChange={(e) =>
                     handleMainChange("invoiceNumber", e.target.value)
                   }
-                  className="font-bold text-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md px-3 py-1 w-28 text-right outline-none focus:ring-2 focus:ring-[#7367f0]/20 focus:border-[#7367f0] transition-all text-zinc-900 dark:text-zinc-100"
+                  className={cn(
+                    "font-bold text-xl rounded-md px-3 py-1 w-28 text-right outline-none focus:ring-2 transition-all text-zinc-900 dark:text-zinc-100",
+                    styles.inputBg,
+                    theme.focusRing,
+                  )}
                 />
               ) : (
                 <span className="font-bold text-2xl text-zinc-900 dark:text-zinc-100">
@@ -179,7 +286,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                 align="right"
                 className="text-zinc-900 dark:text-zinc-200 font-medium"
               />
-
               <span className="text-zinc-500 dark:text-zinc-400 font-medium">
                 Date Due:
               </span>
@@ -197,7 +303,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
 
         {/* BILLING INFO */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-          {/* Invoice To */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
               Invoice To
@@ -246,12 +351,13 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
             </div>
           </div>
 
-          {/* Payment Details */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
               Payment Details
             </span>
-            <div className="bg-zinc-50 dark:bg-zinc-950/50 p-4 rounded-lg border border-zinc-100 dark:border-zinc-800/50 space-y-3 text-sm">
+            <div
+              className={cn("p-4 rounded-lg space-y-3 text-sm", styles.blockBg)}
+            >
               <div className="flex justify-between items-center pb-3 border-b border-zinc-200 dark:border-zinc-800">
                 <span className="font-medium text-zinc-600 dark:text-zinc-400">
                   Total Due:
@@ -262,7 +368,7 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                     handleNestedChange("billTo", "totalDue", e.target.value)
                   }
                   align="right"
-                  className="font-bold text-lg text-[#7367f0]"
+                  className={cn("font-bold text-lg", theme.text)}
                 />
               </div>
               <div className="grid grid-cols-[100px,1fr] gap-2 items-center">
@@ -274,7 +380,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                   }
                   className="text-zinc-800 dark:text-zinc-200 font-medium"
                 />
-
                 <span className="text-zinc-500 dark:text-zinc-400">
                   Country:
                 </span>
@@ -285,7 +390,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                   }
                   className="text-zinc-800 dark:text-zinc-200 font-medium"
                 />
-
                 <span className="text-zinc-500 dark:text-zinc-400">IBAN:</span>
                 <EditableInput
                   value={data.billTo.iban}
@@ -294,7 +398,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                   }
                   className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-xs"
                 />
-
                 <span className="text-zinc-500 dark:text-zinc-400">SWIFT:</span>
                 <EditableInput
                   value={data.billTo.swift}
@@ -309,9 +412,21 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
         </section>
 
         {/* ITEMS TABLE */}
-        <section className="mb-10 overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-xl">
+        <section
+          className={cn(
+            "mb-10 overflow-x-auto rounded-xl",
+            variant !== "minimal"
+              ? "border border-zinc-200 dark:border-zinc-800"
+              : "",
+          )}
+        >
           <table className="w-full min-w-[600px] text-left text-sm text-zinc-800 dark:text-zinc-200 border-collapse">
-            <thead className="bg-zinc-50 dark:bg-zinc-950/50 text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold border-b border-zinc-200 dark:border-zinc-800">
+            <thead
+              className={cn(
+                "text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold",
+                styles.tableHeader,
+              )}
+            >
               <tr>
                 <th className="px-4 py-4">Item Details</th>
                 <th className="px-4 py-4 text-right w-24">Hours</th>
@@ -324,12 +439,9 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <tbody className={styles.tableRow}>
               {data.items.map((item, idx) => (
-                <tr
-                  key={idx}
-                  className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20 transition-colors"
-                >
+                <tr key={idx} className={styles.tableRow}>
                   <td className="px-4 py-4 align-top">
                     {isEditing ? (
                       <div className="space-y-2">
@@ -339,7 +451,11 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                             handleItemChange(idx, "item", e.target.value)
                           }
                           placeholder="Item Name"
-                          className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none focus:ring-2 focus:ring-[#7367f0]/20 font-medium"
+                          className={cn(
+                            "w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 font-medium",
+                            styles.inputBg,
+                            theme.focusRing,
+                          )}
                         />
                         <textarea
                           value={item.description}
@@ -348,7 +464,11 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                           }
                           rows={2}
                           placeholder="Description"
-                          className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500"
+                          className={cn(
+                            "w-full rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500",
+                            styles.inputBg,
+                            theme.focusRing,
+                          )}
                         />
                       </div>
                     ) : (
@@ -362,7 +482,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                       </div>
                     )}
                   </td>
-
                   <td className="px-4 py-4 text-right align-top">
                     <EditableInput
                       value={item.hours}
@@ -372,7 +491,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                       align="right"
                     />
                   </td>
-
                   <td className="px-4 py-4 text-right align-top">
                     <EditableInput
                       value={item.qty}
@@ -382,7 +500,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                       align="right"
                     />
                   </td>
-
                   <td className="px-4 py-4 text-right align-top">
                     <EditableInput
                       value={item.total}
@@ -393,12 +510,11 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                       className="font-semibold text-zinc-900 dark:text-zinc-100"
                     />
                   </td>
-
                   {isEditing && (
                     <td className="px-4 py-4 text-center align-top print:hidden">
                       <button
                         onClick={() => removeItem(idx)}
-                        className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 p-2 rounded-md transition-colors"
+                        className="text-rose-400 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 p-2 rounded-md transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -410,10 +526,20 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
           </table>
 
           {isEditing && (
-            <div className="p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/30 print:hidden">
+            <div
+              className={cn(
+                "p-4 border-t print:hidden",
+                variant === "minimal"
+                  ? "border-zinc-200 dark:border-zinc-800"
+                  : styles.blockBg,
+              )}
+            >
               <button
                 onClick={addItem}
-                className="flex items-center gap-2 text-sm font-medium text-[#7367f0] hover:text-[#6355eb] transition-colors cursor-pointer px-2 py-1"
+                className={cn(
+                  "flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer px-2 py-1",
+                  theme.text,
+                )}
               >
                 <Plus className="w-4 h-4" /> Add Line Item
               </button>
@@ -423,9 +549,8 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
 
         {/* TOTALS & FOOTER */}
         <footer className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
-          {/* Notes */}
           <div className="order-2 md:order-1">
-            <div className="bg-zinc-50 dark:bg-zinc-950/50 p-4 rounded-xl border border-zinc-100 dark:border-zinc-800/50 mb-4">
+            <div className={cn("p-4 rounded-xl mb-4", styles.blockBg)}>
               <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
                 Salesperson
               </span>
@@ -437,7 +562,6 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                 className="font-semibold text-zinc-900 dark:text-zinc-100"
               />
             </div>
-
             <div>
               <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
                 Additional Notes
@@ -446,18 +570,26 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                 <textarea
                   value={data.note}
                   onChange={(e) => handleMainChange("note", e.target.value)}
-                  className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md px-3 py-2 outline-none resize-none text-sm text-zinc-600 dark:text-zinc-400 focus:ring-2 focus:ring-[#7367f0]/20"
+                  className={cn(
+                    "w-full rounded-md px-3 py-2 outline-none resize-none text-sm text-zinc-600 dark:text-zinc-400 focus:ring-2",
+                    styles.inputBg,
+                    theme.focusRing,
+                  )}
                   rows={3}
                 />
               ) : (
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed bg-zinc-50 dark:bg-transparent p-3 dark:p-0 rounded-lg">
+                <p
+                  className={cn(
+                    "text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed p-3 rounded-lg",
+                    styles.blockBg,
+                  )}
+                >
                   {data.note}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Calculations */}
           <div className="order-1 md:order-2 flex justify-end">
             <div className="w-full sm:w-72 space-y-3 text-sm">
               <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
@@ -501,10 +633,16 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
                     onChange={(e) =>
                       handleMainChange("grandTotal", e.target.value)
                     }
-                    className="w-32 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 rounded-md px-3 py-1 outline-none text-right font-bold text-[#7367f0] text-lg focus:ring-2 focus:ring-[#7367f0]/20"
+                    className={cn(
+                      "w-32 rounded-md px-3 py-1 outline-none text-right font-bold text-lg focus:ring-2 transition-all",
+                      theme.lightBg,
+                      theme.border,
+                      theme.focusRing,
+                      theme.text,
+                    )}
                   />
                 ) : (
-                  <span className="font-bold text-2xl text-[#7367f0]">
+                  <span className={cn("font-bold text-2xl", theme.text)}>
                     {data.grandTotal}
                   </span>
                 )}
@@ -516,10 +654,18 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
 
       {/* === RIGHT SIDEBAR / ACTIONS === */}
       <aside className="w-full lg:w-[280px] flex-shrink-0 print:hidden h-fit lg:sticky top-8">
-        <div className="bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-4">
+        <div
+          className={cn(
+            "p-5 space-y-4 transition-colors duration-300",
+            styles.sidebarCard,
+          )}
+        >
           <button
             onClick={() => alert("Invoice Sent!")}
-            className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#7367f0] text-white rounded-xl text-sm font-medium hover:bg-[#6c5fef] transition-all active:scale-[0.98] shadow-sm shadow-[#7367f0]/20"
+            className={cn(
+              "cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] shadow-sm",
+              theme.bg,
+            )}
           >
             <Send className="w-4 h-4" /> Send Invoice
           </button>
@@ -538,14 +684,14 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
             >
               Print
             </button>
-
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className={`cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] ${
+              className={cn(
+                "cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98]",
                 isEditing
-                  ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-500/10 dark:text-green-400"
-                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-              }`}
+                  ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400"
+                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
+              )}
             >
               {isEditing ? (
                 <>
@@ -558,7 +704,12 @@ export default function Invoice({ invoiceData }: { invoiceData: InvoiceData }) {
           </div>
         </div>
 
-        <div className="mt-4 bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800">
+        <div
+          className={cn(
+            "mt-4 p-5 transition-colors duration-300",
+            styles.sidebarCard,
+          )}
+        >
           <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#28c76f] text-white rounded-xl text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm shadow-[#28c76f]/20">
             <DollarSign className="w-4 h-4" /> Add Payment
           </button>
