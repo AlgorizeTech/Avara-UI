@@ -22,6 +22,7 @@ export function ComponentPreview({
     <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden flex flex-col shadow-sm not-prose">
       {/* Top Header: Preview vs Code Toggle */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        {/* Left Side: Preview / Code Toggles */}
         <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg">
           <button
             onClick={() => setActiveTab("preview")}
@@ -45,17 +46,44 @@ export function ComponentPreview({
           </button>
         </div>
 
-        {/* Right Side: TS vs JS Toggle (Only shows when in Code view) */}
+        {/* Right Side: TS vs JS Tab Switcher (Only shows when in Code view) */}
         {activeTab === "code" && jsCode && (
-          <div className="flex items-center gap-2">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as "ts" | "js")}
-              className="text-xs font-semibold bg-transparent border border-zinc-300 dark:border-zinc-700 rounded-md px-2 py-1 outline-none cursor-pointer dark:text-zinc-300 dark:bg-black"
+          <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg animate-in fade-in duration-200">
+            {/* TypeScript Button */}
+            <button
+              onClick={() => setLanguage("ts")}
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+                language === "ts"
+                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
+                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              }`}
             >
-              <option value="ts">TypeScript</option>
-              <option value="js">JavaScript</option>
-            </select>
+              {/* Crisp HTML/CSS Logo */}
+              <div className="w-4 h-4 bg-[#3178C6] rounded-[3px] flex items-center justify-center shrink-0">
+                <span className="text-white text-[9px] font-bold leading-none mt-px">
+                  TS
+                </span>
+              </div>
+              TypeScript
+            </button>
+
+            {/* JavaScript Button */}
+            <button
+              onClick={() => setLanguage("js")}
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+                language === "js"
+                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
+                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              }`}
+            >
+              {/* Crisp HTML/CSS Logo */}
+              <div className="w-4 h-4 bg-[#F7DF1E] rounded-[3px] flex items-center justify-center shrink-0">
+                <span className="text-black text-[9px] font-bold leading-none mt-px">
+                  JS
+                </span>
+              </div>
+              JavaScript
+            </button>
           </div>
         )}
       </div>
