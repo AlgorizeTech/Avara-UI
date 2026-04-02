@@ -1,110 +1,19 @@
-import ChatApp from "@/components/custom/blocks/Chat";
+import { ChatShowcase } from "@/components/site/ChatShowcase";
 
 # Chat Application
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 
-## Interactive Preview
+## Interactive Showcase
 
-<div className="w-full my-8 relative z-0">
-  <ChatApp
-    currentUser={{
-      avatar: "https://i.pravatar.cc/150?u=current",
-      status: "online",
-    }}
-    contactsData={[
-      {
-        id: 1,
-        name: "Felecia Rower",
-        message: "I will purchase it for sure. 👍",
-        date: "Mar 13",
-        unread: 1,
-        status: "offline",
-        avatar: "https://i.pravatar.cc/150?u=1",
-      },
-      {
-        id: 2,
-        name: "Adalberto Granzin",
-        message: "If it takes long you can mail me a...",
-        date: "Mar 12",
-        unread: 0,
-        status: "offline",
-        initials: "AG",
-        color:
-          "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400",
-      },
-      {
-        id: 3,
-        name: "Zenia Jacobs",
-        message: "Thank you, looking forward to it.",
-        date: "Dec 13",
-        unread: 0,
-        status: "online",
-        initials: "ZJ",
-        color: "bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400",
-      },
-      {
-        id: 4,
-        name: "Miguel Guelff",
-        message: "Thank you, looking forward to it.",
-        date: "Dec 11",
-        unread: 0,
-        status: "online",
-        avatar: "https://i.pravatar.cc/150?u=4",
-      },
-      {
-        id: 5,
-        name: "Miguel Garcia",
-        message: "Thank you, looking forward to it.",
-        date: "Dec 11",
-        unread: 0,
-        status: "online",
-        avatar: "https://i.pravatar.cc/150?u=4",
-      },
-    ]}
-  />
-</div>
+Use the control panel to switch between UI layouts (including standard, minimal, and glassmorphism) and select custom color themes. The generated code snippet will automatically update to reflect your choices.
 
-## Code
+<ChatShowcase />
 
-```tsx
-"use client";
+## Installation
 
-import ChatApp from "@/components/ui/chat";
+1. Install the required icon library:
 
-export default function ChatDemo() {
-  const currentUser = {
-    avatar:
-      "[https://i.pravatar.cc/150?u=current](https://i.pravatar.cc/150?u=current)",
-    status: "online",
-  };
-
-  const contactsData = [
-    {
-      id: 1,
-      name: "Felecia Rower",
-      message: "I will purchase it for sure. 👍",
-      date: "Mar 13",
-      unread: 1,
-      status: "offline",
-      avatar: "[https://i.pravatar.cc/150?u=1](https://i.pravatar.cc/150?u=1)",
-    },
-    {
-      id: 2,
-      name: "Adalberto Granzin",
-      message: "If it takes long you can mail me a...",
-      date: "Mar 12",
-      unread: 0,
-      status: "offline",
-      initials: "AG",
-      color: "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400",
-    },
-  ];
-
-  return (
-    <div className="w-full">
-      <ChatApp currentUser={currentUser} contactsData={contactsData} />
-    </div>
-  );
-}
+```bash
+npm install lucide-react
 ```
