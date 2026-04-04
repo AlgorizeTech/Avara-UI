@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
   Archive,
   Bold,
@@ -23,6 +24,99 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+
+// ==========================================
+// VARIANT & COLOR CONFIGURATION
+// ==========================================
+export type EmailVariant = "default" | "minimal" | "glass";
+export type EmailColor = "indigo" | "rose" | "emerald" | "zinc";
+
+const emailVariants: Record<EmailVariant, Record<string, string>> = {
+  default: {
+    wrapper:
+      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl",
+    sidebar:
+      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
+    main: "bg-white dark:bg-[#09090b]",
+    header:
+      "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl",
+    searchBg: "bg-zinc-100 dark:bg-zinc-900/50 border border-transparent",
+    emailItem:
+      "bg-white dark:bg-[#09090b] hover:bg-zinc-50 dark:hover:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800/60",
+    composeModal:
+      "bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 shadow-2xl",
+  },
+  minimal: {
+    wrapper: "bg-transparent border-none shadow-none rounded-none",
+    sidebar:
+      "bg-zinc-50/50 dark:bg-zinc-900/30 rounded-2xl border border-zinc-100 dark:border-zinc-800/50 lg:mr-4",
+    main: "bg-transparent",
+    header:
+      "bg-transparent border-b border-zinc-200 dark:border-zinc-800/50 mb-2 pb-2",
+    searchBg:
+      "bg-zinc-50/50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800",
+    emailItem:
+      "bg-transparent hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 border-b border-zinc-100 dark:border-zinc-800/50 rounded-xl my-1",
+    composeModal:
+      "bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 shadow-2xl",
+  },
+  glass: {
+    wrapper:
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+    sidebar:
+      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+    main: "bg-transparent",
+    header:
+      "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md",
+    searchBg:
+      "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md",
+    emailItem:
+      "bg-transparent hover:bg-white/20 dark:hover:bg-white/5 border-b border-white/10 dark:border-white/5 transition-colors",
+    composeModal:
+      "bg-white/60 dark:bg-black/60 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl",
+  },
+};
+
+const colorThemes: Record<EmailColor, Record<string, string>> = {
+  indigo: {
+    text: "text-indigo-600 dark:text-indigo-400",
+    bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20",
+    lightBg:
+      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
+    border: "border-indigo-500",
+    focusRing:
+      "focus:border-indigo-500/30 focus:ring-indigo-500/10 dark:focus:ring-indigo-500/20",
+    dot: "bg-indigo-500",
+  },
+  rose: {
+    text: "text-rose-600 dark:text-rose-400",
+    bg: "bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20",
+    lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300",
+    border: "border-rose-500",
+    focusRing:
+      "focus:border-rose-500/30 focus:ring-rose-500/10 dark:focus:ring-rose-500/20",
+    dot: "bg-rose-500",
+  },
+  emerald: {
+    text: "text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/20",
+    lightBg:
+      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    border: "border-emerald-500",
+    focusRing:
+      "focus:border-emerald-500/30 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/20",
+    dot: "bg-emerald-500",
+  },
+  zinc: {
+    text: "text-zinc-900 dark:text-zinc-100",
+    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 shadow-zinc-900/10",
+    lightBg: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
+    border: "border-zinc-500 dark:border-zinc-400",
+    focusRing:
+      "focus:border-zinc-500/30 focus:ring-zinc-500/10 dark:focus:ring-zinc-500/20",
+    dot: "bg-zinc-900 dark:bg-zinc-100",
+  },
+};
 
 export type EmailLabel = {
   color: string;
@@ -54,7 +148,6 @@ export type Email = {
   attachments?: Attachment[];
 };
 
-// FIX 2: Added overflow-hidden and flex items-center to guarantee perfect centering
 const BulletproofAvatar = ({
   src,
   initials,
@@ -88,8 +181,12 @@ const BulletproofAvatar = ({
 
 export default function EmailApp({
   initialEmails,
+  variant = "default",
+  color = "indigo",
 }: {
   initialEmails: Email[];
+  variant?: EmailVariant;
+  color?: EmailColor;
 }) {
   const [emails, setEmails] = useState<Email[]>(() =>
     (initialEmails || []).map((e) => ({
@@ -98,6 +195,9 @@ export default function EmailApp({
       isRead: e.isRead ?? true,
     })),
   );
+
+  const theme = colorThemes[color];
+  const styles = emailVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEmails, setSelectedEmails] = useState<Array<string | number>>(
@@ -112,7 +212,6 @@ export default function EmailApp({
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
 
-  // Mark as read when opened
   useEffect(() => {
     if (activeEmailId) {
       setEmails((prev) =>
@@ -126,7 +225,6 @@ export default function EmailApp({
       const matchesSearch =
         email.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
         email.subject.toLowerCase().includes(searchQuery.toLowerCase());
-
       let matchesNavigation = false;
       if (activeLabel) {
         matchesNavigation =
@@ -136,7 +234,6 @@ export default function EmailApp({
       } else {
         matchesNavigation = email.folder === activeFolder;
       }
-
       return matchesSearch && matchesNavigation;
     });
   }, [emails, searchQuery, activeFolder, activeLabel]);
@@ -147,15 +244,12 @@ export default function EmailApp({
   );
 
   const handlePrevEmail = () => {
-    if (activeEmailIndex > 0) {
+    if (activeEmailIndex > 0)
       setActiveEmailId(filteredEmails[activeEmailIndex - 1].id);
-    }
   };
-
   const handleNextEmail = () => {
-    if (activeEmailIndex >= 0 && activeEmailIndex < filteredEmails.length - 1) {
+    if (activeEmailIndex >= 0 && activeEmailIndex < filteredEmails.length - 1)
       setActiveEmailId(filteredEmails[activeEmailIndex + 1].id);
-    }
   };
 
   const handleNavClick = (folder: string, label: string | null = null) => {
@@ -167,29 +261,24 @@ export default function EmailApp({
       setIsSidebarOpen(false);
   };
 
-  const toggleStar = (id: string | number) => {
+  const toggleStar = (id: string | number) =>
     setEmails(
       emails.map((email) =>
         email.id === id ? { ...email, isStarred: !email.isStarred } : email,
       ),
     );
-  };
-
-  const toggleRead = (id: string | number) => {
+  const toggleRead = (id: string | number) =>
     setEmails(
       emails.map((email) =>
         email.id === id ? { ...email, isRead: !email.isRead } : email,
       ),
     );
-  };
-
-  const toggleSelect = (id: string | number) => {
+  const toggleSelect = (id: string | number) =>
     setSelectedEmails((prev) =>
       prev.includes(id)
         ? prev.filter((emailId) => emailId !== id)
         : [...prev, id],
     );
-  };
 
   const toggleSelectAll = () => {
     if (
@@ -255,13 +344,18 @@ export default function EmailApp({
     emails.filter((e) => e.folder === folder && !e.isRead).length;
 
   return (
-    <div className="w-full max-w-full h-[700px] sm:h-[800px] bg-zinc-50 dark:bg-[#09090b] rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800/80 flex overflow-hidden relative font-sans box-border">
+    <div
+      className={cn(
+        "w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
+        styles.wrapper,
+      )}
+    >
       {/* === LEFT SIDEBAR === */}
       <aside
-        className={`
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none bg-white/80 dark:bg-[#121217]/80 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50 flex flex-col transition-transform duration-300 ease-in-out
-        `}
+        className={cn(
+          `absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+          styles.sidebar,
+        )}
       >
         <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/50 shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden">
@@ -277,7 +371,10 @@ export default function EmailApp({
           </div>
           <button
             onClick={() => setIsComposeOpen(true)}
-            className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-medium transition-all shadow-md shadow-indigo-500/20 active:scale-95 cursor-pointer flex justify-center items-center gap-2"
+            className={cn(
+              "w-full py-2.5 rounded-xl font-medium transition-all shadow-md active:scale-95 cursor-pointer flex justify-center items-center gap-2",
+              theme.bg,
+            )}
           >
             <Edit3 className="w-4 h-4" /> Compose
           </button>
@@ -300,20 +397,24 @@ export default function EmailApp({
                 <div
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
-                    isActive
-                      ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold"
-                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-200 font-medium"
-                  }`}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all ${isActive ? cn("font-semibold", theme.lightBg) : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-200 font-medium"}`}
                 >
                   <div className="flex items-center gap-3 text-sm">
                     <item.icon
-                      className={`w-[18px] h-[18px] ${isActive ? "stroke-indigo-500/20" : ""}`}
+                      className={cn(
+                        "w-[18px] h-[18px]",
+                        isActive ? "opacity-70" : "",
+                      )}
                     />
                     {item.label}
                   </div>
                   {unreadCount > 0 && (
-                    <span className="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                    <span
+                      className={cn(
+                        "text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm",
+                        theme.bg,
+                      )}
+                    >
                       {unreadCount}
                     </span>
                   )}
@@ -335,11 +436,7 @@ export default function EmailApp({
                 <div
                   key={label.id}
                   onClick={() => handleNavClick("inbox", label.id)}
-                  className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${
-                    activeLabel === label.id
-                      ? "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100"
-                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-200"
-                  }`}
+                  className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${activeLabel === label.id ? "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100" : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-200"}`}
                 >
                   <div
                     className={`w-2.5 h-2.5 rounded-full shadow-sm ${label.color}`}
@@ -352,7 +449,6 @@ export default function EmailApp({
         </div>
       </aside>
 
-      {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
           className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 lg:hidden cursor-pointer"
@@ -361,11 +457,21 @@ export default function EmailApp({
       )}
 
       {/* === MAIN CONTENT AREA === */}
-      <main className="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#09090b] relative z-10">
+      <main
+        className={cn(
+          "flex-1 flex flex-col min-w-0 relative z-10 transition-colors duration-300",
+          styles.main,
+        )}
+      >
         {!activeEmailId || !activeEmail ? (
           <>
             {/* Top Header */}
-            <header className="h-[72px] flex items-center justify-between px-4 sm:px-6 border-b border-zinc-100 dark:border-zinc-800/80 shrink-0 flex-none bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-xl z-10">
+            <header
+              className={cn(
+                "h-[72px] flex items-center justify-between px-4 sm:px-6 shrink-0 flex-none z-10 transition-colors duration-300",
+                styles.header,
+              )}
+            >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <button
                   className="lg:hidden p-2 -ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors shrink-0 cursor-pointer"
@@ -373,21 +479,32 @@ export default function EmailApp({
                 >
                   <Menu className="w-5 h-5" />
                 </button>
-                <div className="relative w-full max-w-md min-w-0">
-                  <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 shrink-0" />
+                <div className="relative w-full max-w-md min-w-0 group">
+                  <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 shrink-0 group-focus-within:text-zinc-600 dark:group-focus-within:text-zinc-300 transition-colors" />
                   <input
                     type="text"
                     placeholder={`Search ${activeLabel || activeFolder}...`}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full min-w-0 bg-zinc-100 dark:bg-zinc-900/50 border border-transparent focus:border-indigo-500/30 focus:ring-2 focus:ring-indigo-500/10 rounded-full py-2 pl-9 pr-4 text-sm outline-none text-zinc-800 dark:text-zinc-200 transition-all placeholder:text-zinc-500"
+                    className={cn(
+                      "w-full min-w-0 rounded-full py-2 pl-9 pr-4 text-sm outline-none text-zinc-800 dark:text-zinc-200 transition-all placeholder:text-zinc-500",
+                      styles.searchBg,
+                      theme.focusRing,
+                    )}
                   />
                 </div>
               </div>
             </header>
 
             {/* Action Bar */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-2 border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20 shrink-0">
+            <div
+              className={cn(
+                "flex items-center justify-between px-4 sm:px-6 py-2 shrink-0 transition-colors duration-300",
+                variant === "glass"
+                  ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
+                  : "border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20",
+              )}
+            >
               <div className="flex items-center gap-4">
                 <div className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors">
                   <input
@@ -434,15 +551,20 @@ export default function EmailApp({
             {/* Email List */}
             <div className="flex-1 overflow-y-auto">
               {filteredEmails.length > 0 ? (
-                <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                <div className="flex flex-col">
                   {filteredEmails.map((email) => (
                     <div
                       key={email.id}
                       onClick={() => setActiveEmailId(email.id)}
-                      className={`
-                        group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 hover:shadow-md relative bg-white dark:bg-[#09090b] transition-all cursor-pointer border-l-2
-                        ${selectedEmails.includes(email.id) ? "bg-indigo-50/50 dark:bg-indigo-900/10 border-indigo-500" : !email.isRead ? "border-indigo-500" : "border-transparent"}
-                      `}
+                      className={cn(
+                        `group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 relative transition-all cursor-pointer border-l-[3px]`,
+                        styles.emailItem,
+                        selectedEmails.includes(email.id)
+                          ? cn(theme.lightBg, theme.border)
+                          : !email.isRead
+                            ? theme.border
+                            : "border-transparent",
+                      )}
                     >
                       <div
                         className="flex items-center gap-3 sm:gap-4 shrink-0"
@@ -480,7 +602,12 @@ export default function EmailApp({
                         </span>
                         <div className="flex-1 min-w-0 flex items-center gap-2">
                           {!email.isRead && (
-                            <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0" />
+                            <span
+                              className={cn(
+                                "w-2 h-2 rounded-full shrink-0",
+                                theme.dot,
+                              )}
+                            />
                           )}
                           <span
                             className={`text-sm truncate ${!email.isRead ? "font-semibold text-zinc-800 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
@@ -493,9 +620,8 @@ export default function EmailApp({
                         </div>
                       </div>
 
-                      {/* Right Controls (Hover) */}
-                      <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-end bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-sm sm:w-24">
-                        <span className="text-xs font-medium text-zinc-400 group-hover:hidden whitespace-nowrap">
+                      <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-end sm:w-24">
+                        <span className="text-xs font-medium text-zinc-400 group-hover:hidden whitespace-nowrap bg-white/0 dark:bg-black/0">
                           {email.time}
                         </span>
                         <div className="hidden group-hover:flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
@@ -513,7 +639,10 @@ export default function EmailApp({
                               e.stopPropagation();
                               toggleRead(email.id);
                             }}
-                            className="p-2 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-zinc-400 hover:text-indigo-500 rounded-md transition-colors shadow-sm bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-pointer"
+                            className={cn(
+                              "p-2 text-zinc-400 rounded-md transition-colors shadow-sm bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-pointer",
+                              theme.primaryHover,
+                            )}
                           >
                             {email.isRead ? (
                               <Mail className="w-4 h-4" />
@@ -543,9 +672,13 @@ export default function EmailApp({
           </>
         ) : (
           // === EMAIL DETAIL VIEW ===
-          // FIX 1: Safely uses optional chaining (activeEmail?.property)
-          <div className="flex flex-col h-full bg-white dark:bg-[#09090b]">
-            <header className="h-[72px] flex items-center justify-between px-4 sm:px-6 border-b border-zinc-100 dark:border-zinc-800/80 shrink-0 flex-none">
+          <div className="flex flex-col h-full bg-transparent">
+            <header
+              className={cn(
+                "h-[72px] flex items-center justify-between px-4 sm:px-6 shrink-0 flex-none z-10 transition-colors duration-300",
+                styles.header,
+              )}
+            >
               <div className="flex items-center gap-3 overflow-hidden min-w-0">
                 <button
                   className="lg:hidden p-2 -ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 shrink-0 cursor-pointer"
@@ -589,7 +722,14 @@ export default function EmailApp({
               </div>
             </header>
 
-            <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20 shrink-0 text-zinc-400">
+            <div
+              className={cn(
+                "flex items-center justify-between px-4 sm:px-6 py-3 shrink-0 text-zinc-400 transition-colors duration-300",
+                variant === "glass"
+                  ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
+                  : "border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20",
+              )}
+            >
               <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => activeEmail && deleteEmail(activeEmail.id)}
@@ -605,7 +745,10 @@ export default function EmailApp({
                       toggleRead(activeEmail.id);
                     }
                   }}
-                  className="p-2 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-md transition-colors cursor-pointer"
+                  className={cn(
+                    "p-2 rounded-md transition-colors cursor-pointer",
+                    theme.primaryHover,
+                  )}
                   title="Mark Unread"
                 >
                   <Mail className="w-[18px] h-[18px]" />
@@ -641,7 +784,6 @@ export default function EmailApp({
                 <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">
                   {activeEmail?.subject}
                 </h1>
-
                 <div className="flex items-start justify-between mb-8">
                   <div className="flex items-center gap-4">
                     <BulletproofAvatar
@@ -676,7 +818,14 @@ export default function EmailApp({
 
                 {activeEmail?.attachments &&
                   activeEmail.attachments.length > 0 && (
-                    <div className="border-t border-zinc-100 dark:border-zinc-800 pt-6">
+                    <div
+                      className={cn(
+                        "pt-6",
+                        variant === "glass"
+                          ? "border-t border-white/10"
+                          : "border-t border-zinc-100 dark:border-zinc-800",
+                      )}
+                    >
                       <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">
                         Attachments ({activeEmail.attachments.length})
                       </p>
@@ -684,13 +833,24 @@ export default function EmailApp({
                         {activeEmail.attachments.map((file, idx) => (
                           <div
                             key={idx}
-                            className="flex items-center gap-4 p-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:shadow-sm transition-all group"
+                            className={cn(
+                              "flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all group",
+                              variant === "glass"
+                                ? "bg-white/5 border border-white/10 hover:bg-white/10"
+                                : "border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 hover:shadow-sm",
+                              theme.focusRing,
+                            )}
                           >
                             <div className="w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center shrink-0">
                               <FileText className="w-5 h-5 text-rose-600 dark:text-rose-400" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                              <p
+                                className={cn(
+                                  "text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate transition-colors",
+                                  `group-hover:${theme.text}`,
+                                )}
+                              >
                                 {file.name}
                               </p>
                               <p className="text-xs font-medium text-zinc-400">
@@ -706,13 +866,23 @@ export default function EmailApp({
                 <div className="mt-10 flex gap-3">
                   <button
                     onClick={() => setIsComposeOpen(true)}
-                    className="cursor-pointer px-6 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-lg transition-colors shadow-sm"
+                    className={cn(
+                      "cursor-pointer px-6 py-2.5 font-semibold rounded-lg transition-colors shadow-sm",
+                      variant === "glass"
+                        ? "bg-white/10 hover:bg-white/20 text-white"
+                        : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white",
+                    )}
                   >
                     Reply
                   </button>
                   <button
                     onClick={() => setIsComposeOpen(true)}
-                    className="cursor-pointer px-6 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-lg transition-colors shadow-sm"
+                    className={cn(
+                      "cursor-pointer px-6 py-2.5 font-semibold rounded-lg transition-colors shadow-sm",
+                      variant === "glass"
+                        ? "bg-white/10 hover:bg-white/20 text-white"
+                        : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white",
+                    )}
                   >
                     Forward
                   </button>
@@ -730,23 +900,40 @@ export default function EmailApp({
           onClick={() => setIsComposeOpen(false)}
         >
           <div
-            className="w-full sm:w-[600px] bg-white dark:bg-[#121217] rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 duration-300 cursor-default"
+            className={cn(
+              "w-full sm:w-[600px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 duration-300 cursor-default rounded-2xl",
+              styles.composeModal,
+            )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-3.5 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800">
+            <div
+              className={cn(
+                "flex items-center justify-between px-5 py-3.5 border-b",
+                variant === "glass"
+                  ? "bg-white/10 dark:bg-black/10 border-white/10"
+                  : "bg-zinc-50 dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800",
+              )}
+            >
               <h3 className="font-bold text-sm text-zinc-900 dark:text-white">
                 New Message
               </h3>
               <button
                 onClick={() => setIsComposeOpen(false)}
-                className="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                className="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleSendEmail} className="flex flex-col flex-1">
-              <div className="px-5 py-3 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-4">
+              <div
+                className={cn(
+                  "px-5 py-3 border-b flex items-center gap-4",
+                  variant === "glass"
+                    ? "border-white/10"
+                    : "border-zinc-100 dark:border-zinc-800",
+                )}
+              >
                 <span className="text-sm font-medium text-zinc-400">To</span>
                 <input
                   required
@@ -755,7 +942,14 @@ export default function EmailApp({
                   className="flex-1 bg-transparent text-sm font-medium outline-none text-zinc-900 dark:text-white placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
-              <div className="px-5 py-3 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-4">
+              <div
+                className={cn(
+                  "px-5 py-3 border-b flex items-center gap-4",
+                  variant === "glass"
+                    ? "border-white/10"
+                    : "border-zinc-100 dark:border-zinc-800",
+                )}
+              >
                 <span className="text-sm font-medium text-zinc-400">
                   Subject
                 </span>
@@ -776,43 +970,61 @@ export default function EmailApp({
                 ></textarea>
               </div>
 
-              <div className="px-5 py-3 bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+              <div
+                className={cn(
+                  "px-5 py-3 border-t flex items-center justify-between",
+                  variant === "glass"
+                    ? "bg-white/10 dark:bg-black/10 border-white/10"
+                    : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800",
+                )}
+              >
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
                   >
                     <Bold className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
                   >
                     <Italic className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
                   >
                     <LinkIcon className="w-4 h-4" />
                   </button>
-                  <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
+                  <div
+                    className={cn(
+                      "w-px h-5 mx-1",
+                      variant === "glass"
+                        ? "bg-white/20"
+                        : "bg-zinc-200 dark:bg-zinc-700",
+                    )}
+                  ></div>
                   <button
                     type="button"
-                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
                   >
                     <Paperclip className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                    className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"
                   >
                     <ImageIcon className="w-4 h-4" />
                   </button>
                 </div>
                 <button
                   type="submit"
-                  className="cursor-pointer flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-sm font-bold transition-all shadow-md shadow-indigo-500/20 active:scale-95"
+                  className={cn(
+                    "cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md",
+                    theme.bg,
+                    theme.shadow,
+                  )}
                 >
                   Send <Send className="w-3.5 h-3.5" />
                 </button>
