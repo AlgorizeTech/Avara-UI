@@ -2,19 +2,78 @@ import { AvatarShowcase } from "@/components/site/AvatarShowcase";
 
 # Avatar
 
-A reusable avatar component with built-in support for single avatars, grouped avatar stacks, varying sizes, and dynamic online/offline status indicators.
+A powerful, drop-in extension of the standard shadcn/ui avatar. This custom wrapper adds built-in support for avatar groups (stacks), predefined sizing, and dynamic online/offline status indicators.
 
 ## Interactive Showcase
 
-Explore the different variations of the Avatar component. Toggle between single and grouped users, adjust the sizing, and test the different activity status indicators. The code snippet will automatically update based on your selections.
+Explore the different variations of the Avatar component. Toggle between single and grouped users, adjust the sizing, and test the activity status indicators.
+
+_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
 
 <AvatarShowcase />
 
+---
+
 ## Installation
 
-1. Create the `Avatar.tsx` component inside your project.
-2. Install the required dependencies (relies on `shadcn/ui` base components):
+### 1. Install Dependencies
+
+This component relies on the standard `shadcn/ui` avatar base. Run the following command to install it:
 
 ```bash
 npx shadcn-ui@latest add avatar
 ```
+
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>AvatarData[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of objects with <code>src</code> (URL) and <code>fallback</code> (initials).</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>"sm" | "default" | "lg"</code></td>
+        <td><code>"default"</code></td>
+        <td>Controls the dimensions of the avatar.</td>
+      </tr>
+      <tr>
+        <td><code>active</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Displays a status indicator dot on single avatars.</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td><code>"active" | "inactive"</code></td>
+        <td><code>undefined</code></td>
+        <td>Color of the status dot (Green/Red).</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom classes for the outermost wrapper.</td>
+      </tr>
+      <tr>
+        <td><code>avatarClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom classes for the shadcn <code>&lt;Avatar&gt;</code> boundary.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -39,7 +39,6 @@ export const Avatar = ({
         return {
           avatar: "w-8 h-8",
           fallback: "text-xs",
-          // FIX 2: Moved inside the bounds to prevent parent clipping
           indicator: "w-2.5 h-2.5 bottom-0 right-0",
         };
       case "lg":
@@ -67,7 +66,7 @@ export const Avatar = ({
       case "inactive":
         return "bg-red-500";
       default:
-        return "bg-gray-400";
+        return "bg-zinc-400 dark:bg-zinc-600";
     }
   };
 
@@ -84,10 +83,9 @@ export const Avatar = ({
     );
   };
 
-  // Single avatar
+  // Single Avatar Layout
   if (avatars.length === 1) {
     const avatar = avatars[0];
-
     return (
       <div
         className={cn(
@@ -98,7 +96,6 @@ export const Avatar = ({
         <ShadCNAvatar className={cn(sizeClasses.avatar, avatarClassName)}>
           <AvatarImage
             src={avatar.src}
-            // FIX 1: Forced object-cover and 100% sizing to prevent image distortion/overflow
             className={cn(
               "object-cover w-full h-full aspect-square",
               imageClassName,
@@ -116,7 +113,7 @@ export const Avatar = ({
     );
   }
 
-  // Group avatars
+  // Group Avatar Layout
   return (
     <div
       className={cn(
@@ -125,7 +122,6 @@ export const Avatar = ({
       )}
     >
       {avatars.map((avatar, index) => (
-        // FIX 3: Added relative stacking context and hover effects to prevent group clipping
         <div
           key={index}
           className="relative z-0 hover:z-10 transition-transform hover:scale-105 duration-200"
@@ -139,7 +135,6 @@ export const Avatar = ({
           >
             <AvatarImage
               src={avatar.src}
-              // FIX 1: Forced object-cover here too
               className={cn(
                 "object-cover w-full h-full aspect-square",
                 imageClassName,
