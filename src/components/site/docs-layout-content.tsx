@@ -5,17 +5,11 @@ import { TableOfContents } from "@/components/site/table-of-contents";
 import { useTOC } from "@/contexts/toc-context";
 import { ReactNode } from "react";
 
-// Import your brand new custom progress bar
-import { SolidProgressBar } from "@/components/ui/solid-progress-bar";
-
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
   const { showTOC } = useTOC();
 
   return (
     <div className="w-full flex-col bg-white dark:bg-black text-neutral-800 dark:text-white relative">
-
-      <SolidProgressBar />
-
       <div className="mx-auto max-w-[1636px] flex justify-center md:space-x-16">
         <Sidebar />
 

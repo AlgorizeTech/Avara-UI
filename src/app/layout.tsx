@@ -13,6 +13,7 @@ import { LazyOpenGraph } from '@/components/seo/LazyOpenGraph';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { metadata } from '@/lib/metadata';
 import Header from '@/components/site/header';
+import { SolidProgressBar } from '@/components/ui/solid-progress-bar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
           <PackageManagerProvider>
+            <SolidProgressBar />
 
             <Header />
             {children}
