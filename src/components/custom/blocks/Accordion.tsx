@@ -1,11 +1,9 @@
-"use client";
-
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
   Accordion as ShadCNAccordion,
-} from "@/components/custom/ui/accordion";
+} from "@/components/custom/ui/accordion"; // Adjust path to your shadcn accordion if needed
 import { cn } from "@/lib/utils";
 import {
   ArrowDown,
@@ -20,9 +18,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-// ==========================================
-// ICON MAP FOR MDX COMPATIBILITY
-// ==========================================
+// Icon Map for MDX/String compatibility
 const ICON_MAP: Record<string, React.ElementType> = {
   HelpCircle,
   Shield,
@@ -72,7 +68,6 @@ export function Accordion({
   const getVariantStyles = () => {
     switch (variant) {
       case "bordered":
-        // Separated boxes with clean borders
         return {
           container: "space-y-3",
           item: "border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-950/50 shadow-sm",
@@ -81,7 +76,6 @@ export function Accordion({
           content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
         };
       case "filled":
-        // Solid background, soft rounded edges
         return {
           container: "space-y-2",
           item: "bg-zinc-100/80 dark:bg-zinc-900/80 rounded-xl overflow-hidden border border-transparent data-[state=open]:bg-zinc-200 dark:data-[state=open]:bg-zinc-800 transition-colors duration-200",
@@ -89,7 +83,6 @@ export function Accordion({
           content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
         };
       case "elevated":
-        // Floating cards with deep shadows and hover lift
         return {
           container: "space-y-4",
           item: "bg-white dark:bg-zinc-950 rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:shadow-xl dark:shadow-black/50 border border-zinc-100 dark:border-zinc-800/60 transition-all duration-300 hover:-translate-y-0.5",
@@ -99,7 +92,6 @@ export function Accordion({
             "px-6 pb-6 pt-0 text-zinc-600 dark:text-zinc-400 leading-relaxed",
         };
       case "ghost":
-        // Minimalist, no borders, subtle hover
         return {
           container: "space-y-1",
           item: "rounded-lg overflow-hidden",
@@ -108,7 +100,6 @@ export function Accordion({
           content: "px-4 pb-4 pt-1 text-zinc-600 dark:text-zinc-400",
         };
       default:
-        // Classic continuous list with bottom borders
         return {
           container:
             "space-y-0 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 overflow-hidden",
@@ -144,7 +135,6 @@ export function Accordion({
       {accordionData.map((item) => {
         const ItemIcon =
           typeof item.icon === "string" ? ICON_MAP[item.icon] : null;
-
         return (
           <AccordionItem
             key={item.value}
