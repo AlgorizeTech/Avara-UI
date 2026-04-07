@@ -6,12 +6,95 @@ A premium, interactive LLM chat interface featuring conversation history managem
 
 ## Interactive Showcase
 
-Explore the different structural variants of the AI Chat component. Toggle between standard, minimal, and glassmorphism layouts, and apply dynamic color themes. Try sending a prompt to the AI, or click "New Chat" to test the UI interactions. 
+Explore the different structural variants of the AI Chat component. Toggle between standard, minimal, and glassmorphism layouts, and apply dynamic color themes. Try sending a prompt to the AI, or click "New Chat" to test the UI interactions.
+
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
 
 <AIChatShowcase />
 
+---
+
 ## Installation
 
-1. Install the required icon library:
+### 1. Install Dependencies
+
+This component relies on `lucide-react` for its beautiful, lightweight iconography. Run the following command:
+
 ```bash
 npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>chatHistory</code>
+        </td>
+        <td>
+          <code>ChatThread[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          Array of objects containing <code>id</code>, <code>title</code>, and
+          string <code>date</code> group ("Today", etc) for the sidebar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialMessages</code>
+        </td>
+        <td>
+          <code>Message[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          Array of initial message objects (<code>id</code>, <code>role</code>,{" "}
+          <code>content</code>, <code>time</code>) to populate the active chat
+          window.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Applies overarching structural and aesthetic layout styling.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc"</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the active states, buttons, gradients,
+          and send icons.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
