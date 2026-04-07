@@ -2,7 +2,7 @@ import { SupportShowcase } from "@/components/site/SupportShowcase";
 
 # Support Dashboard
 
-A premium, 3-pane helpdesk interface designed for customer support teams. Features include a scrollable ticket queue, a rich conversation thread, and a comprehensive user details panel.
+A premium, 3-pane helpdesk interface designed for customer support teams. Features include a scrollable ticket queue, a rich conversation thread, and a comprehensive user details panel with property dropdowns.
 
 ## Interactive Showcase
 
@@ -10,12 +10,80 @@ Explore the different architectural variants of the Support Dashboard. Switch be
 
 Click on a ticket in the left sidebar to view the conversation thread and the customer's SLA/Properties in the right sidebar. Accent colors and active states will adapt to the selected Theme Color.
 
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+
 <SupportShowcase />
+
+---
 
 ## Installation
 
-1. Install the required dependencies:
+### 1. Install Dependencies
+
+This component relies heavily on `lucide-react` for its interface iconography. Run the following command:
 
 ```bash
 npm install lucide-react
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>SupportData</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A comprehensive object containing the ticket data, chat histories,
+          filter definitions, and sidebar configurations.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including borders, backdrop
+          blurs, and shadows.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc"</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the active ticket highlighting, send
+          buttons, and focus rings.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
