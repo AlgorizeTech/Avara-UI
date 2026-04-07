@@ -2,18 +2,92 @@ import { PricingShowcase } from "@/components/site/PricingShowcase";
 
 # Pricing Components
 
-A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards with toggleable billing cycles or an interactive, usage-based quote builder, these components are designed to maximize conversions.
+A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
 ## Interactive Showcase
 
-Use the control panel below to flip between the **Tiered Cards** layout and the **Interactive Builder**. You can customize the visual structure of the cards (`default`, `premium`, `elegant`) and apply global color themes that cascade instantly across buttons, gradients, glows, and badges.
+Use the control panel below to flip between the four layouts: **Tiered Cards**, **GSAP Builder**, **Comparison Table**, and **Usage Slider**.
+
+You can customize the visual structure of the cards (`default`, `premium`, `elegant`) and apply global color themes that cascade instantly across buttons, gradients, glows, and badges.
+
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
 
 <PricingShowcase />
 
+---
+
 ## Installation
 
-1. Install the required dependencies (`gsap` is required for the Interactive Builder animations, and `lucide-react` handles the icons):
+### 1. Install Dependencies
+
+These components rely on `lucide-react` for icons, and `gsap` specifically for the smooth animation effects found in the **GSAP Builder** layout. Run the following command:
 
 ```bash
 npm install lucide-react gsap
 ```
+
+## Props Reference: PricingCards
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>PricingData</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The core data object containing an array of <code>tabs</code> (e.g.
+          Monthly vs Annually), which in turn contain an array of{" "}
+          <code>plans</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>
+            "default" | "premium" | "elegant" | "minimal" | "bordered"
+          </code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts. <code>premium</code> adds
+          heavy shadows and gradients to popular cards, while{" "}
+          <code>elegant</code> uses soft border-top accents.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc"</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the "Most Popular" badges, checkmark
+          icons, primary buttons, and gradients.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
