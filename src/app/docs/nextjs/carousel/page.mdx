@@ -2,21 +2,129 @@ import { CarouselShowcase } from "@/components/site/CarouselShowcase";
 
 # Carousel
 
-A collection of customizable and interactive carousel components for image galleries, hero sections, and fluid presentations.
+A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
 ## Interactive Showcase
 
 Explore the different variants of the carousel component. Switch between standard image sliders, full-width hero banners, positionable thumbnails, and GSAP-powered fluid glass sliders.
 
-Use the control panel below to switch variants and automatically generate the integration code.
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
 
 <CarouselShowcase />
 
-## Installation
+---
 
-1. Create the `carousel.tsx` and `FluidGlassSlider.tsx` components inside your project.
-2. Install the required dependencies:
+## Installation: Standard Carousels
+
+This installation covers the `Standard Image`, `Hero Slider`, and `Thumbnails` variations.
+
+### 1. Copy the Component
+
+Create a new file at `components/custom/carousel.tsx`. Navigate to the Interactive Showcase above, select any of the first three variants, click the **Component** tab, and paste the code into your file.
+
+### 2. Usage
+
+Import the specific named export you need from the file.
+
+```tsx
+import {
+  HeroCarousel,
+  ImageCarousel,
+  CustomCarousel,
+} from "@/components/custom/carousel";
+
+export default function MyPage() {
+  const images = ["/image1.jpg", "/image2.jpg"];
+
+  return (
+    <div className="w-full max-w-4xl">
+      <ImageCarousel images={images} />
+    </div>
+  );
+}
+```
+
+## Installation: Fluid Glass Slider
+
+This installation covers the Fluid Glass variation, which requires the GSAP animation library for its liquid mouse-tracking and smooth transitions.
 
 ```bash
-npm install lucide-react gsap
+npm install gsap
 ```
+
+## Props Reference: ImageCarousel
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>images</code>
+        </td>
+        <td>
+          <code>ImgSrc[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>Array of string URLs or Next.js StaticImageData objects.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>If true, the carousel automatically cycles through images.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlayInterval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>3000</code>
+        </td>
+        <td>Time (in ms) before automatically switching to the next slide.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>showArrows</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>Whether to show the previous/next navigation buttons.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>showDots</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>Whether to show the bottom navigation dot indicators.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
