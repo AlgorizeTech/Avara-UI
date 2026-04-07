@@ -21,8 +21,8 @@ Use the control panel below to toggle between solid and outline visual variants,
 npm install lucide-react
 ```
 
-
 ## Custom SVGs
+
 If you don't want to use standard strings or Lucide icons, you can always pass a raw SVG element directly into the icon prop within your own codebase.
 
 ```
@@ -32,17 +32,154 @@ import { Alert } from "@/components/custom/blocks/Alerts";
 
 export default function CustomSvgDemo() {
   return (
-    <Alert 
-      type="warning" 
-      title="Custom SVG" 
-      message="Passing a raw SVG element." 
+    <Alert
+      type="warning"
+      title="Custom SVG"
+      message="Passing a raw SVG element."
       dismissible={isDismissible}
       icon={
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
         </svg>
-      } 
+      }
     />
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>
+            "primary" | "secondary" | "success" | "danger" | "warning" | "info"
+            | "dark"
+          </code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Defines the semantic color mapping.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"solid" | "outline"</code>
+        </td>
+        <td>
+          <code>"solid"</code>
+        </td>
+        <td>Defines the visual style structure.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>dismissible</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, renders an 'X' icon that unmounts the alert with an exit
+          animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode | string | null</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          Maps string keys to predefined Lucide icons, accepts raw emojis, or
+          accepts custom SVG nodes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string | null</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>Bold header text rendered above the message.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>message</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>The main body text of the alert.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onDismiss</code>
+        </td>
+        <td>
+          <code>() => void</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          Optional callback function fired exactly when the dismiss button is
+          clicked.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>Custom HTML or components rendered below the main message.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Override container classes.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,11 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
 import React, { useState } from "react";
 
-// ==========================================
-// ICON MAP FOR MDX COMPATIBILITY
-// ==========================================
 const ICON_MAP: Record<string, React.ElementType> = {
   CheckCircle2,
   AlertTriangle,
@@ -22,7 +20,6 @@ export type AlertType =
   | "warning"
   | "info"
   | "dark";
-
 export type AlertVariant = "solid" | "outline";
 
 export interface AlertProps {
@@ -111,7 +108,6 @@ export const Alert: React.FC<AlertProps> = ({
     iconProp: React.ReactNode | string | null,
   ): React.ReactNode => {
     if (iconProp === null) return null;
-
     if (typeof iconProp === "string") {
       if (ICON_MAP[iconProp]) {
         const MappedIcon = ICON_MAP[iconProp];
@@ -119,7 +115,6 @@ export const Alert: React.FC<AlertProps> = ({
       }
       return <span className="text-lg leading-none">{iconProp}</span>;
     }
-
     if (React.isValidElement(iconProp)) return iconProp;
     return null;
   };
@@ -134,25 +129,40 @@ export const Alert: React.FC<AlertProps> = ({
 
   return (
     <div
-      className={`relative flex items-start p-4 border rounded-xl shadow-sm transition-all duration-300 ease-in-out ${alertClasses} ${isAnimating ? "opacity-0 transform scale-[0.98]" : "opacity-100 transform scale-100"} ${className}`}
+      className={cn(
+        `relative flex items-start p-4 border rounded-xl shadow-sm transition-all duration-300 ease-in-out`,
+        alertClasses,
+        isAnimating
+          ? "opacity-0 transform scale-[0.98]"
+          : "opacity-100 transform scale-100",
+        className,
+      )}
       role="alert"
     >
       {icon !== null && icon && (
         <div
-          className={`flex-shrink-0 mr-3 mt-0.5 ${!title ? "self-center mt-0" : ""} ${iconClassName}`}
+          className={cn(
+            `flex-shrink-0 mr-3 mt-0.5`,
+            !title ? "self-center mt-0" : "",
+            iconClassName,
+          )}
         >
           {renderIcon(icon)}
         </div>
       )}
 
-      <div className={`flex-1 min-w-0 ${!title ? "flex items-center" : ""}`}>
+      <div className={cn(`flex-1 min-w-0`, !title ? "flex items-center" : "")}>
         {title && (
-          <h4 className={`font-semibold mb-1 tracking-tight ${titleClassName}`}>
+          <h4
+            className={cn(`font-semibold mb-1 tracking-tight`, titleClassName)}
+          >
             {title}
           </h4>
         )}
         {message && (
-          <p className={`text-sm opacity-90 ${messageClassName}`}>{message}</p>
+          <p className={cn(`text-sm opacity-90`, messageClassName)}>
+            {message}
+          </p>
         )}
         {children && <div className="mt-3">{children}</div>}
       </div>
@@ -160,7 +170,10 @@ export const Alert: React.FC<AlertProps> = ({
       {dismissible && (
         <button
           onClick={handleDismiss}
-          className={`flex-shrink-0 ml-4 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all ${dismissIconClassName}`}
+          className={cn(
+            `flex-shrink-0 ml-4 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all`,
+            dismissIconClassName,
+          )}
           aria-label="Dismiss alert"
         >
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
