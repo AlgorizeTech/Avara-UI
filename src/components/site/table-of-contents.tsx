@@ -10,8 +10,8 @@ export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // --- Toggle State (Default Closed) ---
-  const [isOpen, setIsOpen] = useState(false);
+  // --- Toggle State (Default Open) ---
+  const [isOpen, setIsOpen] = useState(true);
 
   // --- Smooth Scroll Tracker ---
   useEffect(() => {
@@ -81,7 +81,7 @@ export const TableOfContents: React.FC = () => {
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+        className="fixed top-17 -right-13 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
         aria-label="Toggle Table of Contents"
       >
         {isOpen ? (
