@@ -1,0 +1,86 @@
+import { AuthShowcase } from "@/components/site/AuthShowcase";
+
+# Authentication Block
+
+A complete, production-ready Authentication Block that acts as both a Login and Signup component. It features comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles, and social auth button templates.
+
+## Interactive Showcase
+
+Use the control panel below to switch between the `login` and `signup` form types. You can also customize the visual structure (`default`, `split`, `glass`, `minimal`) and apply global color themes that instantly update the buttons, focus rings, and structural gradients.
+
+_Click the **Code** tab in the preview below to copy the full component engine._
+
+<AuthShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies heavily on `lucide-react` for its interface iconography (such as the password visibility eye toggle and social icons).
+
+```bash
+npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"login" | "signup"</code>
+        </td>
+        <td>
+          <code>"signup"</code>
+        </td>
+        <td>Determines the active layout and validation rules of the form.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "split" | "glass" | "minimal"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts. <code>split</code> wraps the
+          form in a full-width marketing panel, while <code>glass</code> adds
+          translucent styling.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the primary buttons, focus rings, and
+          checkbox active states. Accepts valid hex codes (e.g.{" "}
+          <code>"#00FF00"</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
