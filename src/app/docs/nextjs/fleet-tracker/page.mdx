@@ -1,0 +1,93 @@
+import { FleetShowcase } from "@/components/site/FleetShowcase";
+
+# Fleet Tracker Map
+
+An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
+
+## Interactive Showcase
+
+Explore the different architectural variants of the fleet tracker. Switch between the classic split-view (`default`), a floating panel over a light map (`minimal`), or a stunning backdrop-blurred panel (`modern`).
+
+Click on any vehicle in the sidebar to dynamically fly the map to its precise latitude/longitude, or click a map marker to highlight it in the sidebar.
+
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+
+<FleetShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
+
+```bash
+npm install leaflet react-leaflet lucide-react
+npm install -D @types/leaflet
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>fleetData</code>
+        </td>
+        <td>
+          <code>Vehicle[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Array of objects containing vehicle info. Requires <code>id</code>,{" "}
+          <code>location</code> (string), and geographic coordinates (
+          <code>lat</code>, <code>lng</code>). Optionally accepts{" "}
+          <code>status</code> ("active" | "idle" | "maintenance") and{" "}
+          <code>speed</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "modern"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including floating sidebars
+          versus split-views.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc"</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the active map markers, sidebar icons,
+          and focus rings.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

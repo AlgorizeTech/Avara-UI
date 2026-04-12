@@ -1,0 +1,88 @@
+import { DrawerShowcase } from "@/components/site/DrawerShowcase";
+
+# Drawer
+
+A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
+
+## Interactive Showcase
+
+Use the control panel below to switch the `side` prop and see the drawer slide in from different edges of the screen.
+
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+
+<DrawerShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `gsap` to handle the fluid animations and manage the enter/exit lifecycle without relying on complex third-party layout libraries.
+
+```bash
+npm install gsap lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>open</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Controls the visible state of the drawer. When true, the component
+          mounts via React Portals and GSAP animates it into view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onOpenChange</code>
+        </td>
+        <td>
+          <code>(open: boolean) => void</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Callback function to update the <code>open</code> state. Triggered by
+          clicking the overlay, hitting the Escape key, or using the close
+          button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"top" | "bottom" | "left" | "right"</code>
+        </td>
+        <td>
+          <code>"right"</code>
+        </td>
+        <td>
+          Determines which edge of the screen the drawer slides in from, and
+          applies the corresponding layout dimensions.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

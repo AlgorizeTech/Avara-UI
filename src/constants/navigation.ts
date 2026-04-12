@@ -39,6 +39,26 @@ export const navigation: NavigationItem[] = [
     ],
   },
   {
+    label: "Ui Components",
+    children: [
+      { label: "Avatar", href: "/docs/nextjs/avatar", badge: "Core" },
+      { label: "Accordion", href: "/docs/nextjs/accordion", badge: "Core" },
+      { label: "Alert", href: "/docs/nextjs/alert", badge: "Core" },
+      { label: "Ai-Chat", href: "/docs/nextjs/ai-chat", badge: "Core" },
+      { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
+      { label: "Calendar", href: "/docs/nextjs/calendar", badge: "Core" },
+      { label: "Chat", href: "/docs/nextjs/chat", badge: "Core" },
+      { label: "Drawer", href: "/docs/nextjs/drawer", badge: "Core" },
+      { label: "Invoice", href: "/docs/nextjs/invoice", badge: "Core" },
+      { label: "Mails", href: "/docs/nextjs/email", badge: "Core" },
+      { label: "Map", href: "/docs/nextjs/fleet-tracker", badge: "Core" },
+      { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
+      { label: "Pricing", href: "/docs/nextjs/pricing", badge: "Core" },
+      { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
+      
+    ],
+  },
+  {
     label: "Examples",
     children: [
       { label: "Interactive Counter", href: "/docs/nextjs/examples/counter" },

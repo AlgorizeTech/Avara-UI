@@ -1,0 +1,176 @@
+import { AccordionShowcase } from "@/components/site/AccordionShowcase";
+
+# Accordion
+
+A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
+
+## Interactive Showcase
+
+Explore the different structural variants of the accordion component. Toggle between interaction modes (like forcing one panel to always remain open), and switch styling variants.
+
+_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
+
+<AccordionShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on the standard `shadcn/ui` accordion primitives and `lucide-react` for icons. Run the following commands:
+
+```bash
+npx shadcn-ui@latest add accordion
+npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>accordionData</code>
+        </td>
+        <td>
+          <code>AccordionDataItem[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          Array of objects defining <code>value</code>, <code>title</code>,{" "}
+          <code>icon</code>, and <code>content</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "bordered" | "filled" | "elevated" | "ghost"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Applies pre-defined structural and aesthetic styling.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"single" | "multiple"</code>
+        </td>
+        <td>
+          <code>"single"</code>
+        </td>
+        <td>
+          Determines if one or multiple panels can be open simultaneously.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>collapsible</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If <code>type="single"</code>, allows closing the currently open
+          panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultValue</code>
+        </td>
+        <td>
+          <code>string | string[]</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          The <code>value</code> of the item(s) open by default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>expandIcon</code>
+        </td>
+        <td>
+          <code>ReactNode | string</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          Overrides the default chevron icon. Pass a lucide string like{" "}
+          <code>"Plus"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the root container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>itemClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to individual accordion items.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>triggerClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the clickable trigger row.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>contentClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the expanded content area.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
