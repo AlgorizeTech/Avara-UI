@@ -55,6 +55,7 @@ export const navigation: NavigationItem[] = [
       { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
       { label: "Pricing", href: "/docs/nextjs/pricing", badge: "Core" },
       { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
+      { label: "Tabs", href: "/docs/nextjs/vertical-tabs", badge: "Core" },
       
     ],
   },
