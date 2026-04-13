@@ -3,7 +3,7 @@
 import { useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, Menu, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
@@ -93,30 +93,6 @@ export const TableOfContents: React.FC = () => {
 
   return (
     <>
-      {/* Floating Toggle Button - Adjusted positioning to stay on screen for mobile */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-20 right-4 lg:right-8 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer md:hidden"
-        aria-label="Toggle Table of Contents"
-      >
-        {isOpen ? (
-          <X className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        ) : (
-          <Menu className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        )}
-      </button>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-18 -right-12 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
-        aria-label="Toggle Table of Contents"
-      >
-        {isOpen ? (
-          <X className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        ) : (
-          <Menu className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        )}
-      </button>
-
       {/* Sliding Table of Contents Drawer */}
       <motion.aside
         initial={{ x: "100%" }}
@@ -124,6 +100,19 @@ export const TableOfContents: React.FC = () => {
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
         className="fixed right-0 top-[57px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
       >
+        {/* Attached Pull-Tab Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-zinc-950 border-y border-l border-zinc-200 dark:border-zinc-800 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
+          aria-label="Toggle Table of Contents"
+        >
+          {isOpen ? (
+            <ChevronRight className="w-5 h-5" />
+          ) : (
+            <ChevronLeft className="w-5 h-5" />
+          )}
+        </button>
+
         <div className="h-full py-8 px-6 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="space-y-6">
             {/* Table of Contents */}
