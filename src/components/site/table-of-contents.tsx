@@ -10,8 +10,15 @@ export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // --- Toggle State (Default Open) ---
-  const [isOpen, setIsOpen] = useState(true);
+  // 1. Default to closed for SSR safety and mobile-first approach
+  const [isOpen, setIsOpen] = useState(false);
+
+  // 2. Automatically open the TOC on mount ONLY for desktop screens
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      setIsOpen(true);
+    }
+  }, []);
 
   // --- Smooth Scroll Tracker ---
   useEffect(() => {
@@ -36,6 +43,14 @@ export const TableOfContents: React.FC = () => {
   if (toc.length === 0 || toc.every((item) => !item.text.trim())) {
     return null;
   }
+
+  // 3. Helper function to handle link clicks and auto-close on mobile
+  const handleLinkClick = (id: string) => {
+    scrollToHeading(id);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsOpen(false);
+    }
+  };
 
   // --- Style Helper based on progress ---
   const getProgressStyles = (val: number) => {
@@ -78,10 +93,21 @@ export const TableOfContents: React.FC = () => {
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Toggle Button - Adjusted positioning to stay on screen for mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-17 -right-13 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+        className="fixed top-20 right-4 lg:right-8 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer md:hidden"
+        aria-label="Toggle Table of Contents"
+      >
+        {isOpen ? (
+          <X className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+        ) : (
+          <Menu className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+        )}
+      </button>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-18 -right-12 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
         aria-label="Toggle Table of Contents"
       >
         {isOpen ? (
@@ -91,9 +117,7 @@ export const TableOfContents: React.FC = () => {
         )}
       </button>
 
-      {/* Sliding Table of Contents Drawer
-        Removed the backdrop overlay so the main page remains 100% interactive!
-      */}
+      {/* Sliding Table of Contents Drawer */}
       <motion.aside
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? "0%" : "100%" }}
@@ -121,7 +145,7 @@ export const TableOfContents: React.FC = () => {
                       style={{ marginLeft: `${leftOffset}px` }}
                     >
                       <button
-                        onClick={() => scrollToHeading(item.id)}
+                        onClick={() => handleLinkClick(item.id)}
                         className={cn(
                           "text-left transition-all duration-200 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer",
                           item.level === 1
