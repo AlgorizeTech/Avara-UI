@@ -1,0 +1,76 @@
+import { CartShowcase } from "@/components/site/CartShowcase";
+
+# Shopping Cart
+
+A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and four distinct structural layouts.
+
+## Interactive Showcase
+
+Use the control panel below to switch between layouts.
+
+- **Drawer & Modal:** Perfect for global navigation states. Click the trigger button to see the GSAP entrance animations.
+- **Popover:** Excellent for quick previews on hover or click.
+- **Page:** A full-width layout designed specifically for a dedicated `/cart` or `/checkout` route.
+
+_Click the **Code** tab in the preview below to copy the full component engine._
+
+<CartShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component uses `gsap` for the buttery-smooth slide and scale animations, and `lucide-react` for standard UI icons (Plus, Minus, Trash, ShoppingBag).
+
+```bash
+npm install gsap lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"drawer" | "modal" | "popover" | "page"</code>
+        </td>
+        <td>
+          <code>"drawer"</code>
+        </td>
+        <td>
+          Determines the structural layout and animation style of the cart.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the primary buttons, focus rings,
+          badges, and icons. Accepts valid hex codes (e.g.{" "}
+          <code>"#00FF00"</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
