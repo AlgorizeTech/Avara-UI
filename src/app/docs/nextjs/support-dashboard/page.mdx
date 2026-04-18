@@ -2,15 +2,18 @@ import { SupportShowcase } from "@/components/site/SupportShowcase";
 
 # Support Dashboard
 
-A premium, 3-pane helpdesk interface designed for customer support teams. Features include a scrollable ticket queue, a rich conversation thread, and a comprehensive user details panel with property dropdowns.
+A complete, production-ready Helpdesk and Support Dashboard interface.
+
+It now features a **dual-layout system**:
+
+1. **Chat View:** A highly detailed 3-pane layout for resolving individual customer tickets. Features a sortable inbox, a responsive chat thread, and a collapsible metadata pane.
+2. **Table View:** A macro-level Ticket System layout. Automatically calculates top-level metrics (Total, Open, High Priority) based on the exact same data object, and displays an elegant, sortable list view.
 
 ## Interactive Showcase
 
-Explore the different architectural variants of the Support Dashboard. Switch between the classic split-view (`default`), a cleaner borderless layout (`minimal`), or a stunning backdrop-blurred panel (`glass`).
+Use the control panel below to switch between the layout structures, apply beautiful visual variants (`glass`, `minimal`), and change the global accent color.
 
-Click on a ticket in the left sidebar to view the conversation thread and the customer's SLA/Properties in the right sidebar. Accent colors and active states will adapt to the selected Theme Color.
-
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+_Click the **Code** tab in the preview below to copy the full component engine._
 
 <SupportShowcase />
 
@@ -20,7 +23,7 @@ _Click the **Code** tab in the preview below to copy the full component engine o
 
 ### 1. Install Dependencies
 
-This component relies heavily on `lucide-react` for its interface iconography. Run the following command:
+This component relies heavily on `lucide-react` for its standard UI icons.
 
 ```bash
 npm install lucide-react
@@ -50,8 +53,24 @@ npm install lucide-react
           <strong>Required</strong>
         </td>
         <td>
-          A comprehensive object containing the ticket data, chat histories,
-          filter definitions, and sidebar configurations.
+          The core data object containing tickets, SLA limits, filters, and
+          header strings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"chat" | "table"</code>
+        </td>
+        <td>
+          <code>"chat"</code>
+        </td>
+        <td>
+          Determines the overarching UI structure. <code>chat</code> creates a
+          3-pane drill-down view, while <code>table</code> creates a macro-level
+          list with metric cards.
         </td>
       </tr>
       <tr>
@@ -65,8 +84,8 @@ npm install lucide-react
           <code>"default"</code>
         </td>
         <td>
-          Applies overarching structural layouts, including borders, backdrop
-          blurs, and shadows.
+          Applies distinct visual themes to the borders, backgrounds, and drop
+          shadows of the dashboard components.
         </td>
       </tr>
       <tr>
@@ -80,8 +99,8 @@ npm install lucide-react
           <code>"indigo"</code>
         </td>
         <td>
-          Applies global color themes to the active ticket highlighting, send
-          buttons, and focus rings.
+          Applies global accent colors to active states, send buttons, and
+          metric highlights.
         </td>
       </tr>
     </tbody>
