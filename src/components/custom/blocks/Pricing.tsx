@@ -1229,7 +1229,7 @@ export function PricingTypographic({
             </h3>
             <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-medium leading-relaxed">
               Transparent, value-driven pricing designed for high-growth brands.
-              Select a tier to explore what's included.
+              Select a tier to explore what&apos;s included.
             </p>
           </div>
 
