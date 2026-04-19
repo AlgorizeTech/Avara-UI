@@ -45,6 +45,7 @@ export const navigation: NavigationItem[] = [
       { label: "Accordion", href: "/docs/nextjs/accordion", badge: "Core" },
       { label: "Alert", href: "/docs/nextjs/alert", badge: "Core" },
       { label: "Ai-Chat", href: "/docs/nextjs/ai-chat", badge: "Core" },
+      { label: "Breadcrumb", href: "/docs/nextjs/breadcrumb", badge: "Core" },
       { label: "Modern Buttons", href: "/docs/nextjs/button", badge: "Core" },
       { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
       { label: "Counter", href: "/docs/nextjs/counter", badge: "Core" },
