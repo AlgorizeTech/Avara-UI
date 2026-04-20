@@ -1,0 +1,168 @@
+import { InputShowcase } from "@/components/site/InputShowcase";
+
+# Input
+
+A foundational, omni-purpose form primitive. This component handles all major input types (text, password, email, search, file upload, textareas, selects, checkboxes, and radios) while maintaining a consistent visual hierarchy and flawless accessibility.
+
+## Interactive Showcase
+
+Use the control panel below to test the different input types, sizing options, and structural variants.
+
+- **The `glow` variant** applies a deep, luminous ambient shadow using your selected theme color when the input comes into focus.
+- **Checkboxes & Radios** automatically bypass the standard input wrappers to render native-feeling, accessible boolean options that still inherit your custom hex colors via the `accent` CSS property.
+- **The `file` type** completely restyles the native, ugly browser file input into a beautiful drag-and-drop zone.
+
+<InputShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `lucide-react` for the standard UI icons (Eye, Search, Mail, AlertCircle, Upload, ChevronDown).
+
+```bash
+npm install lucide-react
+```
+
+## Props Reference
+
+In addition to all standard React Input/Textarea/Select Attributes, the component accepts:
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>
+            "text" | "email" | "password" | "search" | "file" | "textarea" |
+            "select" | "checkbox" | "radio"
+          </code>
+        </td>
+        <td>
+          <code>"text"</code>
+        </td>
+        <td>
+          The core input type. Determines the underlying HTML element rendered
+          and its structural layout.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>inputSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Uniformly scales the padding, text size, and icon size of the input.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the visual styling of the borders and backgrounds.{" "}
+          <i>(Ignored by checkboxes/radios)</i>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the global color theme to focus rings, glows, and active
+          checkbox/radio accents. Accepts hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Renders a bold, accessible label. For checkboxes, this acts as the
+          text next to the box.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>options</code>
+        </td>
+        <td>
+          <code>{"{label: string, value: string}[]"}</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          An array of key-value pairs. Required for populating{" "}
+          <code>select</code> dropdowns and <code>radio</code> groups.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>error</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, turns the input red, adds an alert icon, and renders the
+          error message below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional React component to render inside the left edge of
+          text/email inputs.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
