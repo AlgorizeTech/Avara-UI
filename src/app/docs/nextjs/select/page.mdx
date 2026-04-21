@@ -1,0 +1,232 @@
+import { SelectShowcase } from "@/components/site/SelectShowcase";
+
+# Select / Dropdown
+
+A completely custom, headless-style dropdown component. Native HTML `<select>` elements are notoriously difficult to style consistently across browsers.
+
+This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
+
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and advanced features.
+
+- **Multi-Select:** Automatically renders selected items as removable, colored tags.
+- **Searchable:** Injects a sticky search bar at the top of the dropdown to filter large lists.
+- **Grouped Options:** Pass a `group` string to your options, and the component will automatically categorize and label them.
+
+<SelectShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
+
+```bash
+npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>options</code>
+        </td>
+        <td>
+          <code>SelectOption[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of objects:{" "}
+          <code>{`{ label: string, value: string, icon?: ReactNode, group?: string }`}</code>
+          .
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string | string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The currently selected value(s). Use an array if <code>multiple</code>{" "}
+          is true.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(val: any) => void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired when a user selects or removes an option.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>multiple</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, allows selecting multiple options and renders them as
+          removable tags in the input field.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>searchable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, renders a sticky search bar inside the dropdown menu to
+          filter options by label.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>inputSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Uniformly scales the padding, text size, and icon size of the select
+          trigger and dropdown menu.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the visual styling of the borders, background, and focus
+          rings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the global color theme to the focus ring, glow shadow, hover
+          states, checkmarks, and multi-select tags. Accepts hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders a bold, accessible label directly above the select.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>helperText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Subtle instructional text rendered below the select.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>error</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, turns the select red, adds an alert icon, and replaces
+          the helper text with the error message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional React component to render inside the left edge of the
+          trigger button.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
