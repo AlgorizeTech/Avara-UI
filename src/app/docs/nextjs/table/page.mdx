@@ -1,0 +1,241 @@
+import { TableShowcase } from "@/components/site/TableShowcase";
+
+# Table
+
+A highly functional, fully customizable data table component engineered for modern dashboards.
+
+We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
+
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and toggle interactive features.
+
+- Toggle **Expandable Rows** on, then click any row in the table to see the smooth CSS Grid expansion effect.
+- Try clicking the column headers (like _Customer_ or _Amount_) to see the built-in sorting logic trigger the GSAP row-reordering animation.
+- Hover over the right edge of any row to see the Edit/Delete action buttons smoothly slide into view.
+
+<TableShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `gsap` for the entrance animations and `lucide-react` for standard UI icons (Chevron Up/Down, Check, Edit, Trash).
+
+```bash
+npm install gsap lucide-react
+```
+
+## Props Reference
+
+Main Component Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>T[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of objects representing your rows.{" "}
+          <strong>
+            Every object must contain a unique <code>id</code> property.
+          </strong>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>TableColumn[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Defines the headers and data mapping (see Column Definition below).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>expandable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, rows become clickable. Clicking a row expands it to show the
+          content returned by <code>renderExpanded</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>renderExpanded</code>
+        </td>
+        <td>
+          <code>(row: T) =&gt; ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          A function that returns the JSX to render inside the expanded
+          accordion area beneath a row.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>selectable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, injects a column of checkboxes allowing users to select rows.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>pagination</code>
+        </td>
+        <td>
+          <code>&#123; itemsPerPage: number &#125;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, automatically chunks the data and displays a pagination
+          bar at the bottom.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSelectionChange</code>
+        </td>
+        <td>
+          <code>(rows: T[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback returning an array of the currently selected row objects.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onEdit / onDelete</code>
+        </td>
+        <td>
+          <code>(row: T) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided (and an <code>"actions"</code> column exists),
+          automatically renders Edit and Trash icons mapped to these functions.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Column Definition (<code>TableColumn&lt;T&gt;</code>)
+
+<div className="overflow-x-auto mt-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>key</code>
+        </td>
+        <td>
+          <code>keyof T | "actions"</code>
+        </td>
+        <td>
+          The object key to map to this column. Use <code>"actions"</code> to
+          render the edit/delete buttons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>The text displayed in the table header.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>sortable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          If true, the column header becomes clickable, automatically sorting
+          the data alphabetically or numerically based on that key.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"left" | "center" | "right"</code>
+        </td>
+        <td>
+          Controls text alignment for both the header and the cells in this
+          column. Defaults to left.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>render</code>
+        </td>
+        <td>
+          <code>(row: T) =&gt; ReactNode</code>
+        </td>
+        <td>
+          An optional function to override the default text rendering, allowing
+          you to insert React components (badges, avatars, multiple fields) into
+          the cell.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
