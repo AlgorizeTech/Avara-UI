@@ -29,10 +29,10 @@ export type SelectVariant = "default" | "filled" | "underlined" | "glow";
 export type SelectSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
-  indigo: { ring: "ring-indigo-500/30 border-indigo-500", text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 text-white", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100", glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500" },
-  rose: { ring: "ring-rose-500/30 border-rose-500", text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-600 text-white", bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500" },
-  emerald: { ring: "ring-emerald-500/30 border-emerald-500", text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-600 text-white", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500" },
-  zinc: { ring: "ring-zinc-500/30 border-zinc-500 dark:ring-white/20 dark:border-white", text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white" },
+  indigo: { ring: "ring-indigo-500/30 border-indigo-500", text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 text-white", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100", glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500", glowWrapper: "shadow-[0_0_10px_rgba(99,102,241,0.2)] border-indigo-500/30" },
+  rose: { ring: "ring-rose-500/30 border-rose-500", text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-600 text-white", bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500", glowWrapper: "shadow-[0_0_10px_rgba(244,63,94,0.2)] border-rose-500/30" },
+  emerald: { ring: "ring-emerald-500/30 border-emerald-500", text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-600 text-white", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500", glowWrapper: "shadow-[0_0_10px_rgba(16,185,129,0.2)] border-emerald-500/30" },
+  zinc: { ring: "ring-zinc-500/30 border-zinc-500 dark:ring-white/20 dark:border-white", text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white", glowWrapper: "shadow-[0_0_10px_rgba(255,255,255,0.1)] border-zinc-500/30 dark:border-white/30" },
 };
 
 const hexToRgb = (hex: string) => {
@@ -46,7 +46,7 @@ export const getThemeStyles = (color: string) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
-      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]" },
+      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]", glowWrapper: "shadow-[0_0_10px_rgba(var(--theme-color-rgb),0.2)] border-[rgba(var(--theme-color-rgb),0.3)]" },
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
@@ -121,7 +121,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(({ optio
     switch (variant) {
       case "filled": return { wrapper: cn(baseWrapper, "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl"), active: cn("bg-white dark:bg-zinc-950 ring-4", theme.ring) };
       case "underlined": return { wrapper: cn(baseWrapper, "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0"), active: theme.ring.split(" ")[1] };
-      case "glow": return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm"), active: theme.glow };
+      case "glow": return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border rounded-xl", theme.glowWrapper), active: theme.glow };
       case "default": default: return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm"), active: cn("ring-4", theme.ring) };
     }
   };
@@ -210,10 +210,10 @@ import { cn } from "@/lib/utils";
 import { ChevronDown, AlertCircle, Check, Search, X } from "lucide-react";
 
 const colorThemes = {
-  indigo: { ring: "ring-indigo-500/30 border-indigo-500", text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 text-white", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100", glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500" },
-  rose: { ring: "ring-rose-500/30 border-rose-500", text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-600 text-white", bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500" },
-  emerald: { ring: "ring-emerald-500/30 border-emerald-500", text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-600 text-white", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500" },
-  zinc: { ring: "ring-zinc-500/30 border-zinc-500 dark:ring-white/20 dark:border-white", text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white" },
+  indigo: { ring: "ring-indigo-500/30 border-indigo-500", text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 text-white", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100", glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500", glowWrapper: "shadow-[0_0_10px_rgba(99,102,241,0.2)] border-indigo-500/30" },
+  rose: { ring: "ring-rose-500/30 border-rose-500", text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-600 text-white", bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500", glowWrapper: "shadow-[0_0_10px_rgba(244,63,94,0.2)] border-rose-500/30" },
+  emerald: { ring: "ring-emerald-500/30 border-emerald-500", text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-600 text-white", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500", glowWrapper: "shadow-[0_0_10px_rgba(16,185,129,0.2)] border-emerald-500/30" },
+  zinc: { ring: "ring-zinc-500/30 border-zinc-500 dark:ring-white/20 dark:border-white", text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white", glowWrapper: "shadow-[0_0_10px_rgba(255,255,255,0.1)] border-zinc-500/30 dark:border-white/30" },
 };
 
 const hexToRgb = (hex) => {
@@ -227,7 +227,7 @@ export const getThemeStyles = (color) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
-      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]" },
+      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]", glowWrapper: "shadow-[0_0_10px_rgba(var(--theme-color-rgb),0.2)] border-[rgba(var(--theme-color-rgb),0.3)]" },
       style: { "--theme-color": color, "--theme-color-rgb": rgb },
     };
   }
@@ -299,7 +299,7 @@ export const SelectBlock = forwardRef(({ options = [], value, onChange, placehol
     switch (variant) {
       case "filled": return { wrapper: cn(baseWrapper, "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl"), active: cn("bg-white dark:bg-zinc-950 ring-4", theme.ring) };
       case "underlined": return { wrapper: cn(baseWrapper, "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0"), active: theme.ring.split(" ")[1] };
-      case "glow": return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm"), active: theme.glow };
+      case "glow": return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border rounded-xl", theme.glowWrapper), active: theme.glow };
       case "default": default: return { wrapper: cn(baseWrapper, "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm"), active: cn("ring-4", theme.ring) };
     }
   };
