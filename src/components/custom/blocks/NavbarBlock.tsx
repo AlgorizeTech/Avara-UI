@@ -6,11 +6,13 @@ import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
-// ==========================================
-// DYNAMIC THEME ENGINE
-// ==========================================
 export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type NavbarVariant = "default" | "floating" | "centered" | "minimal";
+export type NavbarVariant =
+  | "default"
+  | "floating"
+  | "centered"
+  | "minimal"
+  | "glass";
 
 const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
@@ -69,9 +71,6 @@ export const getThemeStyles = (color: string) => {
   return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
 };
 
-// ==========================================
-// MOCK DATA
-// ==========================================
 const NAV_LINKS = [
   { name: "Products", href: "#", hasDropdown: true },
   { name: "Solutions", href: "#", hasDropdown: false },
@@ -79,9 +78,6 @@ const NAV_LINKS = [
   { name: "Pricing", href: "#", hasDropdown: false },
 ];
 
-// ==========================================
-// MAIN COMPONENT
-// ==========================================
 export function NavbarBlock({
   variant = "default",
   color = "indigo",
@@ -94,16 +90,16 @@ export function NavbarBlock({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [renderLayer, setRenderLayer] = useState(false);
   const { theme, style } = getThemeStyles(color);
-
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Handle GSAP Mobile Menu Animations
+  const isGlass = variant === "glass";
+
   useEffect(() => {
     if (mobileMenuOpen) setRenderLayer(true);
     else {
-      const timer = setTimeout(() => setRenderLayer(false), 400);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setRenderLayer(false), 400);
+      return () => clearTimeout(t);
     }
   }, [mobileMenuOpen]);
 
@@ -112,7 +108,6 @@ export function NavbarBlock({
     const menu = mobileMenuRef.current;
     const overlay = overlayRef.current;
     if (!menu || !overlay) return;
-
     if (mobileMenuOpen) {
       gsap.fromTo(
         overlay,
@@ -130,11 +125,12 @@ export function NavbarBlock({
     }
   }, [mobileMenuOpen, renderLayer]);
 
-  // Structural Styles
   const getContainerStyles = () => {
     switch (variant) {
       case "floating":
         return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
+      case "glass":
+        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 md:px-12";
       case "minimal":
         return "w-full bg-transparent px-6 md:px-12 pt-6";
       case "centered":
@@ -166,23 +162,38 @@ export function NavbarBlock({
         <li key={link.name} className="relative group">
           <Link
             href={link.href}
-            className="flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors"
+            className={cn(
+              "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full transition-colors",
+              isGlass
+                ? "hover:bg-white/20 dark:hover:bg-white/10"
+                : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+            )}
           >
             {link.name}
             {link.hasDropdown && (
               <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover:rotate-180 transition-transform" />
             )}
           </Link>
-
-          {/* Simple CSS-only Dropdown */}
           {link.hasDropdown && (
             <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-              <div className="w-48 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl p-2 flex flex-col gap-1">
+              <div
+                className={cn(
+                  "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
+                  isGlass
+                    ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10"
+                    : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+                )}
+              >
                 {["Overview", "Features", "Integrations"].map((sub) => (
                   <Link
                     key={sub}
                     href="#"
-                    className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg transition-colors"
+                    className={cn(
+                      "px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg transition-colors",
+                      isGlass
+                        ? "hover:bg-white/20 dark:hover:bg-white/10"
+                        : "hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                    )}
                   >
                     {sub}
                   </Link>
@@ -217,7 +228,6 @@ export function NavbarBlock({
 
   return (
     <div className="relative w-full z-50" style={style}>
-      {/* Desktop Navbar */}
       <nav
         className={cn(
           "absolute left-0 right-0 h-16 flex items-center transition-all duration-300",
@@ -260,8 +270,6 @@ export function NavbarBlock({
           </div>
         )}
       </nav>
-
-      {/* Mobile Menu Drawer (GSAP Animated) */}
       <div
         className={cn(
           "fixed inset-0 z-[100] pointer-events-none md:hidden",
@@ -275,13 +283,30 @@ export function NavbarBlock({
         />
         <div
           ref={mobileMenuRef}
-          className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 shadow-2xl pointer-events-auto flex flex-col"
+          className={cn(
+            "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
+            isGlass
+              ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10"
+              : "bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800",
+          )}
         >
-          <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+          <div
+            className={cn(
+              "flex items-center justify-between p-6 border-b",
+              isGlass
+                ? "border-white/10"
+                : "border-zinc-100 dark:border-zinc-800/50",
+            )}
+          >
             <Logo />
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 -mr-2 bg-zinc-100 dark:bg-zinc-900 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className={cn(
+                "p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors",
+                isGlass
+                  ? "hover:bg-white/20 dark:hover:bg-white/10"
+                  : "bg-zinc-100 dark:bg-zinc-900",
+              )}
             >
               <X className="w-5 h-5" />
             </button>
@@ -293,13 +318,20 @@ export function NavbarBlock({
                   href={link.href}
                   className="text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-between"
                 >
-                  {link.name}
+                  {link.name}{" "}
                   {link.hasDropdown && (
                     <ArrowRight className="w-5 h-5 opacity-30" />
                   )}
                 </Link>
                 {link.hasDropdown && (
-                  <div className="flex flex-col gap-3 pl-4 border-l-2 border-zinc-100 dark:border-zinc-800">
+                  <div
+                    className={cn(
+                      "flex flex-col gap-3 pl-4 border-l-2",
+                      isGlass
+                        ? "border-white/10"
+                        : "border-zinc-100 dark:border-zinc-800",
+                    )}
+                  >
                     {["Overview", "Features", "Integrations"].map((sub) => (
                       <Link
                         key={sub}
@@ -314,10 +346,22 @@ export function NavbarBlock({
               </div>
             ))}
           </div>
-          <div className="p-6 bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800/50 flex flex-col gap-3">
+          <div
+            className={cn(
+              "p-6 flex flex-col gap-3 border-t",
+              isGlass
+                ? "bg-white/10 dark:bg-white/5 border-white/10"
+                : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800/50",
+            )}
+          >
             <Link
               href="#"
-              className="w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className={cn(
+                "w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border rounded-xl transition-colors",
+                isGlass
+                  ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
+                  : "border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+              )}
             >
               Sign In
             </Link>

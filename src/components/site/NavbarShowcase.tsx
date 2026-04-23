@@ -18,7 +18,7 @@ import { Menu, X, ChevronDown, Command, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type NavbarVariant = "default" | "floating" | "centered" | "minimal";
+export type NavbarVariant = "default" | "floating" | "centered" | "minimal" | "glass";
 
 const colorThemes: Record<string, Record<string, string>> = {
   indigo: { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 hover:bg-indigo-700 text-white", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" },
@@ -59,6 +59,8 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
+  const isGlass = variant === "glass";
+
   useEffect(() => {
     if (mobileMenuOpen) setRenderLayer(true);
     else { const t = setTimeout(() => setRenderLayer(false), 400); return () => clearTimeout(t); }
@@ -80,6 +82,7 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
   const getContainerStyles = () => {
     switch (variant) {
       case "floating": return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
+      case "glass": return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 md:px-12";
       case "minimal": return "w-full bg-transparent px-6 md:px-12 pt-6";
       case "centered":
       case "default":
@@ -98,15 +101,15 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
     <ul className="hidden md:flex items-center gap-1">
       {NAV_LINKS.map((link) => (
         <li key={link.name} className="relative group">
-          <Link href={link.href} className="flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors">
+          <Link href={link.href} className={cn("flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50")}>
             {link.name}
             {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover:rotate-180 transition-transform" />}
           </Link>
           {link.hasDropdown && (
             <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-              <div className="w-48 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl p-2 flex flex-col gap-1">
+              <div className={cn("w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1", isGlass ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10" : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800")}>
                 {["Overview", "Features", "Integrations"].map((sub) => (
-                  <Link key={sub} href="#" className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg transition-colors">{sub}</Link>
+                  <Link key={sub} href="#" className={cn("px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "hover:bg-zinc-100 dark:hover:bg-zinc-900")}>{sub}</Link>
                 ))}
               </div>
             </div>
@@ -141,17 +144,17 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
       </nav>
       <div className={cn("fixed inset-0 z-[100] pointer-events-none md:hidden", !renderLayer && "hidden")}>
         <div ref={overlayRef} onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto" />
-        <div ref={mobileMenuRef} className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 shadow-2xl pointer-events-auto flex flex-col">
-          <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+        <div ref={mobileMenuRef} className={cn("absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col", isGlass ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10" : "bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800")}>
+          <div className={cn("flex items-center justify-between p-6 border-b", isGlass ? "border-white/10" : "border-zinc-100 dark:border-zinc-800/50")}>
             <Logo />
-            <button onClick={() => setMobileMenuOpen(false)} className="p-2 -mr-2 bg-zinc-100 dark:bg-zinc-900 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+            <button onClick={() => setMobileMenuOpen(false)} className={cn("p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "bg-zinc-100 dark:bg-zinc-900")}><X className="w-5 h-5" /></button>
           </div>
           <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
             {NAV_LINKS.map((link) => (
               <div key={link.name} className="flex flex-col gap-3">
                 <Link href={link.href} className="text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-between">{link.name} {link.hasDropdown && <ArrowRight className="w-5 h-5 opacity-30" />}</Link>
                 {link.hasDropdown && (
-                  <div className="flex flex-col gap-3 pl-4 border-l-2 border-zinc-100 dark:border-zinc-800">
+                  <div className={cn("flex flex-col gap-3 pl-4 border-l-2", isGlass ? "border-white/10" : "border-zinc-100 dark:border-zinc-800")}>
                     {["Overview", "Features", "Integrations"].map((sub) => (
                       <Link key={sub} href="#" className="text-base font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">{sub}</Link>
                     ))}
@@ -160,8 +163,8 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
               </div>
             ))}
           </div>
-          <div className="p-6 bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800/50 flex flex-col gap-3">
-            <Link href="#" className="w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">Sign In</Link>
+          <div className={cn("p-6 flex flex-col gap-3 border-t", isGlass ? "bg-white/10 dark:bg-white/5 border-white/10" : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800/50")}>
+            <Link href="#" className={cn("w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border rounded-xl transition-colors", isGlass ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10" : "border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800")}>Sign In</Link>
             <Link href="#" className={cn("w-full py-3 px-4 text-center font-bold rounded-xl transition-transform active:scale-95", theme.bg)}>Get Started</Link>
           </div>
         </div>
@@ -218,6 +221,8 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
   const mobileMenuRef = useRef(null);
   const overlayRef = useRef(null);
 
+  const isGlass = variant === "glass";
+
   useEffect(() => {
     if (mobileMenuOpen) setRenderLayer(true);
     else { const t = setTimeout(() => setRenderLayer(false), 400); return () => clearTimeout(t); }
@@ -239,6 +244,7 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
   const getContainerStyles = () => {
     switch (variant) {
       case "floating": return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
+      case "glass": return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 md:px-12";
       case "minimal": return "w-full bg-transparent px-6 md:px-12 pt-6";
       case "centered":
       case "default":
@@ -257,15 +263,15 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
     <ul className="hidden md:flex items-center gap-1">
       {NAV_LINKS.map((link) => (
         <li key={link.name} className="relative group">
-          <Link href={link.href} className="flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors">
+          <Link href={link.href} className={cn("flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50")}>
             {link.name}
             {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover:rotate-180 transition-transform" />}
           </Link>
           {link.hasDropdown && (
             <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-              <div className="w-48 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl p-2 flex flex-col gap-1">
+              <div className={cn("w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1", isGlass ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10" : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800")}>
                 {["Overview", "Features", "Integrations"].map((sub) => (
-                  <Link key={sub} href="#" className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg transition-colors">{sub}</Link>
+                  <Link key={sub} href="#" className={cn("px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "hover:bg-zinc-100 dark:hover:bg-zinc-900")}>{sub}</Link>
                 ))}
               </div>
             </div>
@@ -300,17 +306,17 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
       </nav>
       <div className={cn("fixed inset-0 z-[100] pointer-events-none md:hidden", !renderLayer && "hidden")}>
         <div ref={overlayRef} onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto" />
-        <div ref={mobileMenuRef} className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 shadow-2xl pointer-events-auto flex flex-col">
-          <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+        <div ref={mobileMenuRef} className={cn("absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col", isGlass ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10" : "bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800")}>
+          <div className={cn("flex items-center justify-between p-6 border-b", isGlass ? "border-white/10" : "border-zinc-100 dark:border-zinc-800/50")}>
             <Logo />
-            <button onClick={() => setMobileMenuOpen(false)} className="p-2 -mr-2 bg-zinc-100 dark:bg-zinc-900 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+            <button onClick={() => setMobileMenuOpen(false)} className={cn("p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors", isGlass ? "hover:bg-white/20 dark:hover:bg-white/10" : "bg-zinc-100 dark:bg-zinc-900")}><X className="w-5 h-5" /></button>
           </div>
           <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
             {NAV_LINKS.map((link) => (
               <div key={link.name} className="flex flex-col gap-3">
                 <Link href={link.href} className="text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-between">{link.name} {link.hasDropdown && <ArrowRight className="w-5 h-5 opacity-30" />}</Link>
                 {link.hasDropdown && (
-                  <div className="flex flex-col gap-3 pl-4 border-l-2 border-zinc-100 dark:border-zinc-800">
+                  <div className={cn("flex flex-col gap-3 pl-4 border-l-2", isGlass ? "border-white/10" : "border-zinc-100 dark:border-zinc-800")}>
                     {["Overview", "Features", "Integrations"].map((sub) => (
                       <Link key={sub} href="#" className="text-base font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">{sub}</Link>
                     ))}
@@ -319,8 +325,8 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
               </div>
             ))}
           </div>
-          <div className="p-6 bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800/50 flex flex-col gap-3">
-            <Link href="#" className="w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">Sign In</Link>
+          <div className={cn("p-6 flex flex-col gap-3 border-t", isGlass ? "bg-white/10 dark:bg-white/5 border-white/10" : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800/50")}>
+            <Link href="#" className={cn("w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border rounded-xl transition-colors", isGlass ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10" : "border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800")}>Sign In</Link>
             <Link href="#" className={cn("w-full py-3 px-4 text-center font-bold rounded-xl transition-transform active:scale-95", theme.bg)}>Get Started</Link>
           </div>
         </div>
@@ -361,7 +367,13 @@ export default function RootLayout({ children }) {
           </label>
           <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
             {(
-              ["default", "floating", "centered", "minimal"] as NavbarVariant[]
+              [
+                "default",
+                "floating",
+                "centered",
+                "minimal",
+                "glass",
+              ] as NavbarVariant[]
             ).map((v) => (
               <button
                 key={v}
@@ -426,15 +438,21 @@ export default function RootLayout({ children }) {
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
       >
-        <div className="relative overflow-hidden w-full flex flex-col items-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-200/40 via-zinc-50 to-zinc-50 dark:from-zinc-800/40 dark:via-zinc-950 dark:to-zinc-950">
+        <div className="relative overflow-hidden w-full flex flex-col items-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] z-0">
+          {/* Decorative Orbs to show off the glass blur. These sit UNDER the navbar. */}
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div className="absolute -top-12 -left-12 w-64 h-64 bg-indigo-500/20 dark:bg-indigo-500/30 blur-3xl rounded-full" />
+            <div className="absolute top-0 right-1/4 w-48 h-48 bg-rose-500/20 dark:bg-rose-500/30 blur-3xl rounded-full" />
+          </div>
+
           <NavbarBlock
             key={`${variant}-${color}`}
             variant={variant}
             color={color}
           />
 
-          {/* Dummy content below navbar to show transparency/blur effects */}
-          <div className="w-full max-w-5xl mx-auto mt-32 px-8 flex flex-col gap-6 opacity-30 pointer-events-none">
+          {/* Dummy content pushed down so it sits below the navbar, not hidden underneath it */}
+          <div className="w-full max-w-5xl mx-auto mt-28 px-8 flex flex-col gap-6 opacity-40 pointer-events-none relative z-0">
             <div className="w-2/3 h-12 bg-zinc-300 dark:bg-zinc-800 rounded-xl" />
             <div className="w-1/2 h-6 bg-zinc-300 dark:bg-zinc-800 rounded-lg" />
             <div className="w-full h-32 bg-zinc-300 dark:bg-zinc-800 rounded-2xl mt-8" />
