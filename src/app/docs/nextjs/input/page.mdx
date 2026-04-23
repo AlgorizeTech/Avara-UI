@@ -2,15 +2,17 @@ import { InputShowcase } from "@/components/site/InputShowcase";
 
 # Input
 
-A foundational, omni-purpose form primitive. This component handles all major input types (text, password, email, search, file upload, textareas, selects, checkboxes, and radios) while maintaining a consistent visual hierarchy and flawless accessibility.
+A powerful, multi-purpose Input component that natively supports advanced File Uploading, Password toggles, and complex layout variants.
+
+By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
 
 ## Interactive Showcase
 
-Use the control panel below to test the different input types, sizing options, and structural variants.
+Use the control panel below to test the different structural variants, colors, and input types.
 
-- **The `glow` variant** applies a deep, luminous ambient shadow using your selected theme color when the input comes into focus.
-- **Checkboxes & Radios** automatically bypass the standard input wrappers to render native-feeling, accessible boolean options that still inherit your custom hex colors via the `accent` CSS property.
-- **The `file` type** completely restyles the native, ugly browser file input into a beautiful drag-and-drop zone.
+- Select **Input Type: File** to reveal the Dropzone.
+- Toggle **Multiple Files** to see the array management logic and preview stacks.
+- Toggle **Images Only** to test the `accept="image/*"` prop limitation.
 
 <InputShowcase />
 
@@ -20,7 +22,7 @@ Use the control panel below to test the different input types, sizing options, a
 
 ### 1. Install Dependencies
 
-This component relies on `lucide-react` for the standard UI icons (Eye, Search, Mail, AlertCircle, Upload, ChevronDown).
+This component relies on `lucide-react` for standard UI icons and the `next/image` component for optimized file previews.
 
 ```bash
 npm install lucide-react
@@ -28,7 +30,7 @@ npm install lucide-react
 
 ## Props Reference
 
-In addition to all standard React Input/Textarea/Select Attributes, the component accepts:
+This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning you can pass any standard input prop (like `onChange`, `value`, `name`, `disabled`, etc.).
 
 <div className="overflow-x-auto">
   <table>
@@ -46,17 +48,61 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>type</code>
         </td>
         <td>
-          <code>
-            "text" | "email" | "password" | "search" | "file" | "textarea" |
-            "select" | "checkbox" | "radio"
-          </code>
+          <code>"text" | "password" | "email" | "number" | "file"</code>
         </td>
         <td>
           <code>"text"</code>
         </td>
         <td>
-          The core input type. Determines the underlying HTML element rendered
-          and its structural layout.
+          Determines the behavior. <code>"password"</code> adds a visibility
+          toggle. <code>"file"</code> transforms the component into a
+          drag-and-drop zone.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onFilesChange</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          <strong>File Mode Only:</strong> Callback fired when files are
+          dropped, selected, or removed. Returns an array of native File
+          objects.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>multiple</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>File Mode Only:</strong> If true, allows dropping or selecting
+          multiple files at once.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>accept</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          <strong>File Mode Only:</strong> Standard HTML accept attribute (e.g.,{" "}
+          <code>"image/*"</code> or <code>".pdf"</code>).
         </td>
       </tr>
       <tr>
@@ -70,7 +116,8 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>"md"</code>
         </td>
         <td>
-          Uniformly scales the padding, text size, and icon size of the input.
+          Uniformly scales the height, padding, text size, and icon size of the
+          input or dropzone.
         </td>
       </tr>
       <tr>
@@ -84,8 +131,8 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>"default"</code>
         </td>
         <td>
-          Determines the visual styling of the borders and backgrounds.{" "}
-          <i>(Ignored by checkboxes/radios)</i>.
+          Determines the visual styling of the borders, background, and focus
+          rings.
         </td>
       </tr>
       <tr>
@@ -99,8 +146,8 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>"indigo"</code>
         </td>
         <td>
-          Applies the global color theme to focus rings, glows, and active
-          checkbox/radio accents. Accepts hex codes.
+          Applies the global color theme to the focus ring, glow shadow, and
+          drag-active states. Accepts hex codes.
         </td>
       </tr>
       <tr>
@@ -113,25 +160,19 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
         <td>
           <code>undefined</code>
         </td>
-        <td>
-          Renders a bold, accessible label. For checkboxes, this acts as the
-          text next to the box.
-        </td>
+        <td>Renders a bold, accessible label directly above the input.</td>
       </tr>
       <tr>
         <td>
-          <code>options</code>
+          <code>helperText</code>
         </td>
         <td>
-          <code>{"{label: string, value: string}[]"}</code>
+          <code>string</code>
         </td>
         <td>
-          <code>[]</code>
+          <code>undefined</code>
         </td>
-        <td>
-          An array of key-value pairs. Required for populating{" "}
-          <code>select</code> dropdowns and <code>radio</code> groups.
-        </td>
+        <td>Subtle instructional text rendered below the input.</td>
       </tr>
       <tr>
         <td>
@@ -144,13 +185,25 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>undefined</code>
         </td>
         <td>
-          If provided, turns the input red, adds an alert icon, and renders the
-          error message below.
+          If provided, turns the input red, adds an alert icon, and replaces the
+          helper text with the error message.
         </td>
       </tr>
       <tr>
         <td>
-          <code>icon</code>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>leftIcon / rightIcon</code>
         </td>
         <td>
           <code>ReactNode</code>
@@ -159,8 +212,8 @@ In addition to all standard React Input/Textarea/Select Attributes, the componen
           <code>undefined</code>
         </td>
         <td>
-          An optional React component to render inside the left edge of
-          text/email inputs.
+          <strong>Standard Mode Only:</strong> Injects an icon or element into
+          the left or right side of the input field.
         </td>
       </tr>
     </tbody>
