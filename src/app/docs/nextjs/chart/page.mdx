@@ -1,0 +1,59 @@
+import { ChartShowcase } from "@/components/site/ChartShowcase";
+
+# Chart
+
+A beautiful, completely custom, dependency-free charting engine.
+
+Most dashboards rely on massive external libraries like `recharts` or `chart.js`, which are notoriously heavy and difficult to style using modern Tailwind paradigms. This `ChartBlock` component draws raw SVG graphics and manages its own coordinate math from scratch. It integrates flawlessly with the dynamic theme engine and uses **GSAP** for premium entrance animations.
+
+## Interactive Showcase
+
+Use the control panel below to test the different chart architectures.
+
+- The engine dynamically calculates the max data value to scale the Y-Axis and grid lines proportionally.
+- Hovering over the chart utilizes invisible SVG overlays (Voronoi-style) to instantly snap the Tooltip to the exact active data point without jittering.
+
+<ChartShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component uses `gsap` for the SVG path and bar scaling entrance animations.
+
+```bash
+npm install gsap
+```
+
+## Usage
+
+Define your data array by passing in a label and a numerical value. The engine handles all the scaling and path drawing automatically.
+
+```tsx
+import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const monthlySignups = [
+  { label: "Jan", value: 120 },
+  { label: "Feb", value: 340 },
+  { label: "Mar", value: 290 },
+  { label: "Apr", value: 500 },
+];
+
+export default function AnalyticsWidget() {
+  return (
+    <div className="w-full p-8 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+      <h3 className="font-bold text-lg mb-6">User Signups</h3>
+
+      <ChartBlock
+        data={monthlySignups}
+        type="area"
+        color="#FF00AA" // Supports custom hex values
+        height={350}
+        valueSuffix=" users"
+      />
+    </div>
+  );
+}
+```
