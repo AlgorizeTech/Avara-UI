@@ -1,56 +1,36 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type ChartColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type ChartType = "bar" | "line" | "area";
+export type ChartColor =
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | "amber"
+  | "blue"
+  | string;
+export type ChartType = "bar" | "line" | "pie" | "donut";
 
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-const colorThemes: Record<string, string> = {
+const colorMap: Record<string, string> = {
   indigo: "#4f46e5",
   rose: "#e11d48",
   emerald: "#10b981",
-  zinc: "#18181b",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
 };
 
-export const getThemeStyles = (color: string) => {
-  const isHex = color && color.startsWith("#");
-  const finalColor = isHex ? color : colorThemes[color] || colorThemes.indigo;
-  const rgb = hexToRgb(finalColor);
-
-  return {
-    theme: {
-      fill: "fill-[var(--theme-color)]",
-      stroke: "stroke-[var(--theme-color)]",
-      bg: "bg-[var(--theme-color)]",
-      text: "text-[var(--theme-color)]",
-    },
-    style: {
-      "--theme-color": finalColor,
-      "--theme-color-rgb": rgb,
-    } as React.CSSProperties,
-  };
+const getThemeColor = (color: string) => {
+  return color.startsWith("#") ? color : colorMap[color] || colorMap.indigo;
 };
 
 // ==========================================
-// CHART COMPONENT
+// TYPES & PROPS
 // ==========================================
 export interface ChartDataPoint {
   label: string;
@@ -62,340 +42,448 @@ export interface ChartBlockProps {
   type?: ChartType;
   color?: ChartColor;
   height?: number;
-  showGrid?: boolean;
-  showTooltip?: boolean;
-  animated?: boolean;
   className?: string;
   valuePrefix?: string;
   valueSuffix?: string;
+  showGrid?: boolean;
+  showArea?: boolean;
 }
 
+// ==========================================
+// MAIN COMPONENT EXPORT
+// ==========================================
 export function ChartBlock({
   data,
   type = "bar",
   color = "indigo",
   height = 300,
-  showGrid = true,
-  showTooltip = true,
-  animated = true,
   className,
   valuePrefix = "",
   valueSuffix = "",
+  showGrid = true,
+  showArea = true,
 }: ChartBlockProps) {
-  const { style } = getThemeStyles(color);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // SVG Coordinate System Setup
-  const viewBoxWidth = 1000;
-  const viewBoxHeight = 400;
-  const padding = { top: 40, bottom: 40, left: 20, right: 20 };
-  const chartWidth = viewBoxWidth - padding.left - padding.right;
-  const chartHeight = viewBoxHeight - padding.top - padding.bottom;
-
-  // Math & Scaling
-  const maxDataValue = useMemo(() => {
-    const max = Math.max(...data.map((d) => d.value));
-    return max > 0 ? max : 1; // Prevent division by zero
-  }, [data]);
-
-  // Round max value up to nearest nice number for grid lines
-  const yAxisMax = useMemo(() => {
-    const magnitude = Math.pow(10, Math.floor(Math.log10(maxDataValue)));
-    return Math.ceil(maxDataValue / magnitude) * magnitude;
-  }, [maxDataValue]);
-
-  const points = useMemo(() => {
-    return data.map((d, i) => {
-      const x = padding.left + (i / Math.max(data.length - 1, 1)) * chartWidth;
-      const y = padding.top + chartHeight - (d.value / yAxisMax) * chartHeight;
-      return { x, y, ...d };
-    });
-  }, [data, yAxisMax, chartWidth, chartHeight, padding]);
-
-  // Generate Path Strings
-  const linePath = useMemo(() => {
-    if (points.length === 0) return "";
-    return points
-      .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-      .join(" ");
-  }, [points]);
-
-  const areaPath = useMemo(() => {
-    if (points.length === 0) return "";
-    return `${linePath} L ${points[points.length - 1].x} ${padding.top + chartHeight} L ${points[0].x} ${padding.top + chartHeight} Z`;
-  }, [linePath, points, padding.top, chartHeight]);
-
-  // Animations
-  useEffect(() => {
-    if (!animated || !svgRef.current) return;
-    const ctx = gsap.context(() => {
-      if (type === "bar") {
-        gsap.fromTo(
-          ".chart-bar",
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 0.8,
-            stagger: 0.05,
-            ease: "back.out(1.2)",
-            transformOrigin: "bottom",
-          },
-        );
-      } else {
-        // For line and area, a clean fade + slide up looks most premium
-        gsap.fromTo(
-          ".chart-path-group",
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-        );
-
-        // If line, animate the stroke drawing
-        if (type === "line") {
-          const path = document.querySelector(
-            ".chart-stroke-path",
-          ) as SVGPathElement;
-          if (path) {
-            const length = path.getTotalLength();
-            gsap.fromTo(
-              path,
-              { strokeDasharray: length, strokeDashoffset: length },
-              { strokeDashoffset: 0, duration: 1.5, ease: "power3.inOut" },
-            );
-          }
-        }
-      }
-    }, svgRef);
-
-    return () => ctx.revert();
-  }, [type, animated, data]);
+  const themeColor = getThemeColor(color);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("relative w-full overflow-visible group", className)}
-      style={{ ...style, height }}
-      onMouseLeave={() => setHoveredIndex(null)}
-    >
+    <div className={cn("relative w-full", className)} style={{ height }}>
+      {/* NATIVE CSS ANIMATIONS */}
+      <style>{`
+        @keyframes drawLine { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+        @keyframes growUp { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+        @keyframes fadeUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-draw { animation: drawLine 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .animate-grow { animation: growUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; transform-origin: bottom; }
+        .animate-fade { animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      `}</style>
+
+      {type === "bar" && (
+        <BarChart
+          data={data}
+          color={themeColor}
+          prefix={valuePrefix}
+          suffix={valueSuffix}
+          showGrid={showGrid}
+        />
+      )}
+
+      {type === "line" && (
+        <SmoothLineChart
+          data={data}
+          color={themeColor}
+          prefix={valuePrefix}
+          suffix={valueSuffix}
+          showGrid={showGrid}
+          showArea={showArea}
+        />
+      )}
+
+      {(type === "pie" || type === "donut") && (
+        <CircularChart
+          data={data}
+          type={type}
+          color={themeColor}
+          prefix={valuePrefix}
+          suffix={valueSuffix}
+        />
+      )}
+    </div>
+  );
+}
+
+// ==========================================
+// 1. HTML FLEXBOX BAR CHART (Flawless Scaling)
+// ==========================================
+function BarChart({
+  data,
+  color,
+  prefix,
+  suffix,
+  showGrid,
+}: {
+  data: ChartDataPoint[];
+  color: string;
+  prefix: string;
+  suffix: string;
+  showGrid: boolean;
+}) {
+  const maxVal = Math.max(...data.map((d) => d.value), 1);
+  const gridLines = [1, 0.75, 0.5, 0.25, 0];
+
+  return (
+    <div className="relative w-full h-full flex flex-col pt-6 animate-fade">
+      {/* Background Grid & Y-Axis */}
+      <div className="absolute inset-0 top-6 bottom-8 flex flex-col justify-between pointer-events-none z-0">
+        {gridLines.map((ratio, i) => (
+          <div key={i} className="flex items-center w-full relative">
+            <span className="absolute -left-2 -translate-x-full text-[10px] font-medium text-zinc-400">
+              {prefix}
+              {Math.round(maxVal * ratio)}
+              {suffix}
+            </span>
+            {showGrid && (
+              <div className="w-full border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Bars Container */}
+      <div className="relative z-10 flex-1 flex items-end justify-between gap-1 sm:gap-2 px-2 pb-8">
+        {data.map((d, i) => (
+          <div
+            key={i}
+            className="group relative flex flex-col items-center justify-end w-full h-full"
+          >
+            {/* Tooltip */}
+            <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
+              <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
+                {d.label}: {prefix}
+                {d.value}
+                {suffix}
+              </div>
+              <div className="w-2 h-2 bg-zinc-900 dark:bg-white rotate-45 -mt-1" />
+            </div>
+
+            {/* Flat-Bottom Bar */}
+            <div
+              className="w-full max-w-[48px] rounded-t-md opacity-90 group-hover:opacity-100 transition-opacity animate-grow cursor-pointer"
+              style={{
+                height: `${(d.value / maxVal) * 100}%`,
+                backgroundColor: color,
+                animationDelay: `${i * 0.04}s`,
+              }}
+            >
+              <div className="w-full h-1.5 bg-white/30 rounded-t-md" />
+            </div>
+
+            {/* X-Axis Label */}
+            <span className="absolute -bottom-6 text-[10px] font-medium text-zinc-500 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+              {d.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 2. SVG SMOOTH CURVE CHART (Line + Area Merge)
+// ==========================================
+function SmoothLineChart({
+  data,
+  color,
+  prefix,
+  suffix,
+  showGrid,
+  showArea,
+}: {
+  data: ChartDataPoint[];
+  color: string;
+  prefix: string;
+  suffix: string;
+  showGrid: boolean;
+  showArea: boolean;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const maxVal = Math.max(...data.map((d) => d.value), 1);
+  const cleanColorId = color.replace("#", "");
+
+  // Calculate X/Y percentages for the data
+  const points = data.map((d, i) => ({
+    x: (i / Math.max(data.length - 1, 1)) * 100,
+    y: 100 - (d.value / maxVal) * 100,
+  }));
+
+  // Mathematical cubic bezier curve generator for a premium SaaS look
+  const createSmoothPath = (pts: { x: number; y: number }[]) => {
+    if (pts.length === 0) return "";
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) {
+      const prev = pts[i - 1];
+      const curr = pts[i];
+      const cpX = (prev.x + curr.x) / 2; // Midpoint easing
+      d += ` C ${cpX} ${prev.y}, ${cpX} ${curr.y}, ${curr.x} ${curr.y}`;
+    }
+    return d;
+  };
+
+  const smoothPath = createSmoothPath(points);
+  const areaPath = `${smoothPath} L 100 100 L 0 100 Z`;
+
+  return (
+    <div className="relative w-full h-full pt-6 pb-8 pl-8 pr-2 animate-fade">
+      {/* Background Grid */}
+      <div className="absolute inset-0 top-6 bottom-8 left-8 right-2 flex flex-col justify-between pointer-events-none z-0">
+        {[1, 0.5, 0].map((ratio, i) => (
+          <div key={i} className="flex items-center w-full relative h-0">
+            <span className="absolute -left-2 -translate-x-full text-[10px] font-medium text-zinc-400">
+              {prefix}
+              {Math.round(maxVal * ratio)}
+              {suffix}
+            </span>
+            {showGrid && (
+              <div className="w-full border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Vector Graphics */}
       <svg
-        ref={svgRef}
-        viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        className="w-full h-full overflow-visible"
+        className="absolute inset-0 top-6 bottom-8 left-8 right-2 w-[calc(100%-40px)] h-[calc(100%-56px)] overflow-visible z-10"
       >
         <defs>
           <linearGradient
-            id={`gradient-${color}`}
-            x1="0%"
-            y1="0%"
-            x2="0%"
-            y2="100%"
+            id={`area-grad-${cleanColorId}`}
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
           >
-            <stop
-              offset="0%"
-              stopColor="var(--theme-color)"
-              stopOpacity={0.4}
-            />
-            <stop
-              offset="100%"
-              stopColor="var(--theme-color)"
-              stopOpacity={0.0}
-            />
+            <stop offset="0%" stopColor={color} stopOpacity="0.35" />
+            <stop offset="100%" stopColor={color} stopOpacity="0.0" />
           </linearGradient>
         </defs>
 
-        {/* Grid Lines */}
-        {showGrid && (
-          <g className="text-zinc-200 dark:text-zinc-800">
-            {[0, 0.25, 0.5, 0.75, 1].map((ratio, i) => {
-              const y = padding.top + chartHeight * ratio;
-              return (
-                <line
-                  key={i}
-                  x1={padding.left}
-                  y1={y}
-                  x2={viewBoxWidth - padding.right}
-                  y2={y}
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  strokeDasharray="4 4"
-                />
-              );
-            })}
-          </g>
+        {/* Optional Area Fill */}
+        {showArea && (
+          <path
+            d={areaPath}
+            fill={`url(#area-grad-${cleanColorId})`}
+            className="animate-fade"
+          />
         )}
 
-        {/* X-Axis Labels */}
-        <g
-          className="text-zinc-400 dark:text-zinc-500 text-[12px] font-medium"
-          textAnchor="middle"
-        >
-          {points.map((p, i) => {
-            // Only show reasonable amount of labels to prevent crowding
-            const showLabel =
-              points.length < 15 ||
-              i % Math.ceil(points.length / 8) === 0 ||
-              i === points.length - 1;
-            if (!showLabel) return null;
-            return (
-              <text key={i} x={p.x} y={viewBoxHeight - 10} fill="currentColor">
-                {p.label}
-              </text>
-            );
-          })}
-        </g>
-
-        {/* Y-Axis Min/Max Labels */}
-        <g
-          className="text-zinc-400 dark:text-zinc-500 text-[12px] font-medium"
-          textAnchor="start"
-        >
-          <text x={0} y={padding.top - 10} fill="currentColor">
-            {valuePrefix}
-            {yAxisMax}
-            {valueSuffix}
-          </text>
-          <text
-            x={0}
-            y={viewBoxHeight - padding.bottom - 10}
-            fill="currentColor"
-          >
-            0
-          </text>
-        </g>
-
-        {/* CHART RENDERING */}
-        <g className="chart-path-group">
-          {type === "bar" && (
-            <g>
-              {points.map((p, i) => {
-                const barWidth = Math.max(
-                  (chartWidth / points.length) * 0.6,
-                  4,
-                );
-                const isHovered = hoveredIndex === i;
-                return (
-                  <rect
-                    key={i}
-                    className={cn(
-                      "chart-bar transition-opacity duration-300 cursor-pointer",
-                      hoveredIndex !== null && !isHovered
-                        ? "opacity-30"
-                        : "opacity-100",
-                    )}
-                    x={p.x - barWidth / 2}
-                    y={p.y}
-                    width={barWidth}
-                    height={padding.top + chartHeight - p.y}
-                    fill="var(--theme-color)"
-                    rx={barWidth / 4}
-                  />
-                );
-              })}
-            </g>
-          )}
-
-          {(type === "area" || type === "line") && (
-            <>
-              {type === "area" && (
-                <path
-                  d={areaPath}
-                  fill={`url(#gradient-${color})`}
-                  className="transition-opacity duration-500"
-                />
-              )}
-              <path
-                d={linePath}
-                fill="none"
-                stroke="var(--theme-color)"
-                strokeWidth={4}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="chart-stroke-path transition-all duration-500"
-              />
-
-              {/* Data Points on Line */}
-              {points.map((p, i) => (
-                <circle
-                  key={i}
-                  cx={p.x}
-                  cy={p.y}
-                  r={hoveredIndex === i ? 6 : 4}
-                  fill="white"
-                  stroke="var(--theme-color)"
-                  strokeWidth={2}
-                  className={cn(
-                    "transition-all duration-300",
-                    hoveredIndex !== null && hoveredIndex !== i
-                      ? "opacity-0"
-                      : "opacity-100",
-                  )}
-                />
-              ))}
-            </>
-          )}
-        </g>
-
-        {/* INVISIBLE INTERACTION OVERLAY (For flawless tooltips) */}
-        {showTooltip && (
-          <g>
-            {points.map((p, i) => {
-              const rectWidth = chartWidth / Math.max(points.length - 1, 1);
-              const xPos =
-                type === "bar"
-                  ? p.x - rectWidth / 2
-                  : i === 0
-                    ? padding.left
-                    : p.x - rectWidth / 2;
-
-              return (
-                <rect
-                  key={`interaction-${i}`}
-                  x={xPos}
-                  y={0}
-                  width={
-                    i === 0 || i === points.length - 1
-                      ? rectWidth / 2
-                      : rectWidth
-                  }
-                  height={viewBoxHeight}
-                  fill="transparent"
-                  onMouseEnter={() => setHoveredIndex(i)}
-                  className="cursor-crosshair"
-                />
-              );
-            })}
-          </g>
-        )}
+        {/* Animated Line Stroke */}
+        <path
+          d={smoothPath}
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          pathLength="100"
+          strokeDasharray="100"
+          className="animate-draw vector-non-scaling-stroke drop-shadow-sm"
+          style={{ vectorEffect: "non-scaling-stroke" }}
+        />
       </svg>
 
-      {/* HTML TOOLTIP */}
-      {showTooltip && hoveredIndex !== null && (
-        <div
-          className="absolute z-50 pointer-events-none transition-all duration-200 ease-out"
-          style={{
-            // Map the SVG coordinate back to HTML coordinate
-            left: `${(points[hoveredIndex].x / viewBoxWidth) * 100}%`,
-            top: `${(points[hoveredIndex].y / viewBoxHeight) * 100}%`,
-            transform: "translate(-50%, -100%)",
-            marginTop: "-12px",
-          }}
-        >
-          <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-2 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap flex flex-col items-center gap-0.5 relative animate-in fade-in zoom-in-95 duration-200">
-            <span className="text-zinc-400 dark:text-zinc-500 text-[10px] uppercase tracking-wider">
-              {points[hoveredIndex].label}
+      {/* HTML Interaction Overlay (Perfectly round dots that never squash) */}
+      <div className="absolute inset-0 top-6 bottom-8 left-8 right-2 z-20">
+        {points.map((p, i) => (
+          <div
+            key={i}
+            className="absolute top-0 bottom-0 cursor-crosshair group"
+            style={{
+              left: `${p.x}%`,
+              width: `${100 / Math.max(points.length - 1, 1)}%`,
+              transform: "translateX(-50%)",
+            }}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {/* HTML Dot positioned accurately over the SVG path */}
+            <div
+              className={cn(
+                "absolute w-3 h-3 rounded-full bg-white dark:bg-black border-2 transition-all duration-200 pointer-events-none shadow-sm",
+                hoveredIndex === i
+                  ? "scale-100 opacity-100"
+                  : "scale-50 opacity-0",
+              )}
+              style={{
+                top: `${p.y}%`,
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                borderColor: color,
+              }}
+            >
+              {/* Tooltip */}
+              <div
+                className={cn(
+                  "absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center transition-all duration-200",
+                  hoveredIndex === i
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95",
+                )}
+              >
+                <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
+                  {data[i].label}: {prefix}
+                  {data[i].value}
+                  {suffix}
+                </div>
+                <div className="w-2 h-2 bg-zinc-900 dark:bg-white rotate-45 -mt-1" />
+              </div>
+            </div>
+
+            {/* X-Axis Label */}
+            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-zinc-500 whitespace-nowrap">
+              {data[i].label}
             </span>
-            <span>
-              {valuePrefix}
-              {points[hoveredIndex].value}
-              {valueSuffix}
-            </span>
-            {/* Tooltip Arrow */}
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 dark:bg-white rotate-45" />
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 3. SVG STROKE-DASHARRAY CHART (Pie/Donut)
+// ==========================================
+function CircularChart({
+  data,
+  type,
+  color,
+  prefix,
+  suffix,
+}: {
+  data: ChartDataPoint[];
+  type: "pie" | "donut";
+  color: string;
+  prefix: string;
+  suffix: string;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const total = data.reduce((sum, d) => sum + d.value, 0);
+  const radius = type === "pie" ? 25 : 40;
+  const strokeWidth = type === "pie" ? 50 : 20;
+  const circumference = 2 * Math.PI * radius;
+
+  let currentOffset = 0;
+
+  // Map data to stroke dashes
+  const slices = data.map((d, i) => {
+    const sliceRatio = d.value / (total || 1);
+    const strokeDasharray = `${sliceRatio * circumference} ${circumference}`;
+    const strokeDashoffset = -currentOffset;
+    currentOffset += sliceRatio * circumference;
+
+    const midAngle =
+      ((currentOffset - (sliceRatio * circumference) / 2) / circumference) *
+        Math.PI *
+        2 -
+      Math.PI / 2;
+    const tooltipRadius = type === "pie" ? 30 : 40;
+
+    // Convert polar to cartesian for the tooltip
+    const tx = 50 + tooltipRadius * Math.cos(midAngle);
+    const ty = 50 + tooltipRadius * Math.sin(midAngle);
+
+    return {
+      ...d,
+      strokeDasharray,
+      strokeDashoffset,
+      opacity: 1 - i * 0.15,
+      tx,
+      ty,
+    };
+  });
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center animate-fade">
+      {/* 1:1 Aspect Ratio Container forces perfect circles */}
+      <div className="relative aspect-square h-full max-h-[300px]">
+        <svg
+          viewBox="0 0 100 100"
+          className="w-full h-full overflow-visible -rotate-90"
+        >
+          {slices.map((slice, i) => (
+            <circle
+              key={i}
+              cx="50"
+              cy="50"
+              r={radius}
+              fill="none"
+              stroke={color}
+              strokeWidth={strokeWidth}
+              strokeDasharray={slice.strokeDasharray}
+              strokeDashoffset={slice.strokeDashoffset}
+              className={cn(
+                "transition-all duration-300 cursor-crosshair",
+                hoveredIndex !== null && hoveredIndex !== i
+                  ? "opacity-30"
+                  : "opacity-100",
+              )}
+              style={{ opacity: slice.opacity }}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            />
+          ))}
+
+          {/* Inner ring to give Donut a sharp edge */}
+          {type === "donut" && (
+            <circle
+              cx="50"
+              cy="50"
+              r={radius - strokeWidth / 2}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+              className="text-zinc-200 dark:text-zinc-800 pointer-events-none"
+            />
+          )}
+        </svg>
+
+        {/* Tooltip Overlay */}
+        {hoveredIndex !== null && (
+          <div
+            className="absolute z-50 pointer-events-none animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center"
+            style={{
+              left: `${slices[hoveredIndex].tx}%`,
+              top: `${slices[hoveredIndex].ty}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
+              <div className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                {slices[hoveredIndex].label}
+              </div>
+              <div>
+                {prefix}
+                {slices[hoveredIndex].value}
+                {suffix}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Donut Center Total Label */}
+        {type === "donut" && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span className="text-xs font-medium text-zinc-500">Total</span>
+            <span className="text-xl font-black text-zinc-900 dark:text-white">
+              {prefix}
+              {total}
+              {suffix}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

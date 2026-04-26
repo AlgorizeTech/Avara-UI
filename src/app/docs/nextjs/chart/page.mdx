@@ -2,16 +2,17 @@ import { ChartShowcase } from "@/components/site/ChartShowcase";
 
 # Chart
 
-A beautiful, completely custom, dependency-free charting engine.
+A beautiful, completely custom charting engine built from the ground up for modern React applications.
 
-Most dashboards rely on massive external libraries like `recharts` or `chart.js`, which are notoriously heavy and difficult to style using modern Tailwind paradigms. This `ChartBlock` component draws raw SVG graphics and manages its own coordinate math from scratch. It integrates flawlessly with the dynamic theme engine and uses **GSAP** for premium entrance animations.
+This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
 ## Interactive Showcase
 
-Use the control panel below to test the different chart architectures.
+Use the control panel below to test the completely rewritten architectures.
 
-- The engine dynamically calculates the max data value to scale the Y-Axis and grid lines proportionally.
-- Hovering over the chart utilizes invisible SVG overlays (Voronoi-style) to instantly snap the Tooltip to the exact active data point without jittering.
+- **Bars** are now built with pure HTML/CSS, meaning they will inherently stack and position perfectly flat on the bottom axis. Tooltips trigger via CSS `group-hover`.
+- **Lines & Areas** use a custom spline function to generate smooth, premium bezier curves instead of harsh angles. The `showArea` toggle seamlessly adds a gradient fill below the stroke.
+- **Pie & Donut** use a dedicated 1:1 aspect ratio container and calculate polar coordinates automatically. They generate a beautiful monochromatic scale by reducing slice opacity based on your chosen theme color.
 
 <ChartShowcase />
 
@@ -19,17 +20,19 @@ Use the control panel below to test the different chart architectures.
 
 ## Installation
 
-### 1. Install Dependencies
+### Copy the Component
 
-This component uses `gsap` for the SVG path and bar scaling entrance animations.
+Because this rewrite drops all external animation libraries, it is **100% dependency-free**.
 
-```bash
-npm install gsap
-```
+The engine uses standard Tailwind utility classes and injects its own lightweight `@keyframes` for the bar growth, line drawing, and pie-burst animations.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ChartBlock.tsx`.
+
+---
 
 ## Usage
 
-Define your data array by passing in a label and a numerical value. The engine handles all the scaling and path drawing automatically.
+Define your `data` array by passing in a `label` and a numerical `value`. The engine handles all the scaling, height distribution, and polar math automatically.
 
 ```tsx
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
@@ -48,7 +51,8 @@ export default function AnalyticsWidget() {
 
       <ChartBlock
         data={monthlySignups}
-        type="area"
+        type="line"
+        showArea={true}
         color="#FF00AA" // Supports custom hex values
         height={350}
         valueSuffix=" users"
@@ -57,3 +61,136 @@ export default function AnalyticsWidget() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>{`{ label: string, value: number }[]`}</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>An array of objects mapping string labels to numerical values.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"bar" | "line" | "pie" | "donut"</code>
+        </td>
+        <td>
+          <code>"bar"</code>
+        </td>
+        <td>Determines the core visualization architecture to render.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+          </code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the active color theme to the bars, strokes, gradients, pie
+          slices, and tooltips. Accepts hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>height</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>300</code>
+        </td>
+        <td>
+          Forces a fixed pixel height for the chart container to prevent layout
+          shifting. Width is always 100% responsive.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showGrid</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders dotted horizontal gridlines mapping 0% to 100% of the
+          Y-Axis maximum. (Ignored on Pie/Donut).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showArea</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <strong>Line Chart Only:</strong> Toggles the gradient fill rendered
+          beneath the bezier curve.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>valuePrefix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Prepends a string (like <code>"$"</code>) to the tooltip and Y-Axis
+          values.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>valueSuffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Appends a string (like <code>"k"</code> or <code>"%"</code>) to the
+          tooltip and Y-Axis values.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
