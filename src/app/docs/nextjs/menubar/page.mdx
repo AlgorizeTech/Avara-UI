@@ -1,0 +1,195 @@
+import { MenubarShowcase } from "@/components/site/MenubarShowcase";
+
+# Menubar
+
+A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
+
+Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
+
+## Interactive Showcase
+
+Interact with the simulated application header below. Try clicking a menu to open it, and then simply hover over the adjacent triggers to see the seamless switching behavior. Clicking outside the menu or hitting `Escape` will close it.
+
+<MenubarShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/MenubarBlock.tsx`.
+
+---
+
+## Usage
+
+The Menubar uses a highly composable structure. Wrap everything in `<Menubar>`, create columns with `<MenubarMenu>`, set your button with `<MenubarTrigger>`, and list your actions inside `<MenubarContent>`.
+
+```tsx
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function TopNav() {
+  return (
+    <Menubar>
+
+      <MenubarMenu value="file">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem onClick="{()"> console.log('New')}>
+            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem disabled>
+            Share
+          </MenubarItem>
+          <MenubarSeparator/>
+          <MenubarItem>
+            Print... <MenubarShortcut>⌘P</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+
+
+      <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Copy</MenubarItem>
+          <MenubarItem>Paste</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MenubarMenu</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required.</strong> A unique identifier for the menu column
+          (e.g., <code>"file"</code>). Used by the internal state context to
+          track which dropdown is open.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarContent</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"start" | "center" | "end"</code>
+        </td>
+        <td>
+          Determines how the dropdown is anchored relative to its trigger
+          button. Defaults to <code>"start"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Adds extra left-padding to the item, aligning text cleanly when
+          adjacent items use icons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Dims the item, changes the cursor, and completely disables pointer
+          events and click handlers.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>{`() => void`}</code>
+        </td>
+        <td>
+          Fires your custom action. The menu will{" "}
+          <strong>automatically close</strong> after the click.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarLabel</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Aligns the label text with <code>inset</code> menu items.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Every component supports custom Tailwind classes for easy styling
+          overrides.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
