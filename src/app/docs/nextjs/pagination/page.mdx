@@ -1,0 +1,140 @@
+import { PaginationShowcase } from "@/components/site/PaginationShowcase";
+
+# Pagination
+
+A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.
+
+Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
+
+## Interactive Showcase
+
+Use the control panel below to test the calculation logic. Try dragging the `Total Pages` slider all the way up to 100, and then click through the page numbers in the preview to see how the ellipses dynamically shift to keep the UI clean.
+
+<PaginationShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It uses standard React `useMemo` hooks to calculate the page ranges and Tailwind CSS for the styling.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/PaginationBlock.tsx`.
+
+---
+
+## Usage
+
+You must maintain the `currentPage` state in your parent component. Pass this state, along with the `totalPages`, into the `Pagination` component, and it will handle the rest.
+
+```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function DataTable() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 25; // Typically calculated from your API response
+
+  return (
+    <div className="w-full flex flex-col gap-8">
+      <Pagination
+        currentPage="{currentPage}"
+        totalPages="{totalPages}"
+        onPageChange="{setCurrentPage}"
+        siblingCount="{1}"
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>currentPage</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The currently active page number. Drives the active state styling and
+          ellipsis calculation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>totalPages</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The absolute total number of pages available in your dataset.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onPageChange</code>
+        </td>
+        <td>
+          <code>{`(page: number) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired when a user clicks a page number, or the
+          next/previous buttons. It returns the new target page number.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>siblingCount</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          Determines how many page buttons to show on either side of the{" "}
+          <code>currentPage</code> before rendering an ellipsis. Increase this
+          for wider desktop screens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showEdges</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders the "Previous" and "Next" control buttons on the
+          extreme left and right of the pagination block.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
