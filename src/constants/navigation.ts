@@ -63,14 +63,12 @@ export const navigation: NavigationItem[] = [
       { label: "Map", href: "/docs/nextjs/fleet-tracker", badge: "Core" },
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
-      { label: "Navbar", href: "/docs/nextjs/navbar", badge: "Core" },
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
       { label: "Select", href: "/docs/nextjs/select", badge: "Core" },
       { label: "Skeleton", href: "/docs/nextjs/skeleton", badge: "New" },
       { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
       { label: "Toast", href: "/docs/nextjs/toast", badge: "Core" },
       { label: "Table", href: "/docs/nextjs/table", badge: "Core" },
-      { label: "Pricing", href: "/docs/nextjs/pricing", badge: "Core" },
       { label: "Pagination", href: "/docs/nextjs/pagination", badge: "New" },
       { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
       { label: "Tabs", href: "/docs/nextjs/vertical-tabs", badge: "Core" },
@@ -78,14 +76,11 @@ export const navigation: NavigationItem[] = [
     ],
   },
   {
-    label: "Examples",
+    label: "Website Sections",
     children: [
-      { label: "Interactive Counter", href: "/docs/nextjs/examples/counter" },
-      { label: "Button", href: "/docs/nextjs/examples/button" },
-      { label: "Waitlist", href: "/docs/nextjs/examples/waitlist" },
-      { label: "Video Test", href: "/docs/nextjs/examples/video-text" },
-
-
+      { label: "Navbar", href: "/docs/nextjs/navbar", badge: "Core" },
+      { label: "Pricing Section", href: "/docs/nextjs/pricing", badge: "Core" },
+      { label: "Sidebar Section", href: "/docs/nextjs/sidebar", badge: "New" },
     ],
   },
 ];
