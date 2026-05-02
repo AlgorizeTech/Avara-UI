@@ -69,3 +69,142 @@ export default function SettingsPage() {
   return <button onClick={handleSave}>Save</button>;
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Target</th>
+        <th>Prop / Argument</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>&lt;Toaster&gt;</code>
+        </td>
+        <td>
+          <code>position</code>
+        </td>
+        <td>
+          <code>
+            "bottom-right" | "bottom-center" | "bottom-left" | "top-right" |
+            "top-center" | "top-left"
+          </code>
+        </td>
+        <td>
+          <code>"bottom-right"</code>
+        </td>
+        <td>Controls where the stack anchors on the screen.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;Toaster&gt;</code>
+        </td>
+        <td>
+          <code>expand</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the stack is permanently expanded and will not collapse into
+          the 3D view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The main, bold text of the notification. Passed as the first argument
+          to the function.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Optional secondary text displayed beneath the title.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4000</code>
+        </td>
+        <td>
+          How long (in milliseconds) before the toast auto-dismisses. Pass{" "}
+          <code>Infinity</code> to disable auto-dismiss.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.action</code>
+        </td>
+        <td>
+          <code>{`{ label: string, onClick: () => void }`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Provides an actionable button inside the toast.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.type</code>
+        </td>
+        <td>
+          <code>"default" | "success" | "error" | "info"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the color scheme and accompanying icon. Alternatively, use
+          the shorthand methods: <code>toast.success()</code>,{" "}
+          <code>toast.error()</code>, etc.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
