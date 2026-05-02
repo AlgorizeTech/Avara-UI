@@ -64,13 +64,12 @@ export const navigation: NavigationItem[] = [
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
+      { label: "Sonner", href: "/docs/nextjs/sonner", badge: "New" },
       { label: "Select", href: "/docs/nextjs/select", badge: "Core" },
       { label: "Skeleton", href: "/docs/nextjs/skeleton", badge: "New" },
-      { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
       { label: "Toast", href: "/docs/nextjs/toast", badge: "Core" },
       { label: "Table", href: "/docs/nextjs/table", badge: "Core" },
       { label: "Pagination", href: "/docs/nextjs/pagination", badge: "New" },
-      { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
       { label: "Tabs", href: "/docs/nextjs/vertical-tabs", badge: "Core" },
       
     ],
@@ -79,8 +78,10 @@ export const navigation: NavigationItem[] = [
     label: "Website Sections",
     children: [
       { label: "Navbar", href: "/docs/nextjs/navbar", badge: "Core" },
+      { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
       { label: "Pricing Section", href: "/docs/nextjs/pricing", badge: "Core" },
       { label: "Sidebar Section", href: "/docs/nextjs/sidebar", badge: "New" },
+      { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
     ],
   },
 ];

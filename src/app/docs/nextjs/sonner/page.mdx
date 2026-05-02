@@ -1,0 +1,71 @@
+import { SonnerShowcase } from "@/components/site/SonnerShowcase";
+
+# Sonner (Toast Stack)
+
+An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
+
+Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
+
+## Interactive Showcase
+
+Click the buttons below to spawn toasts. Notice how they stack beautifully in the corner. If you hover your mouse over the floating toast stack, it will gracefully expand.
+
+<SonnerShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It doesn't use standard React context; instead, it uses a high-performance custom Observer class. This means you don't have to wrap your app in a bulky context provider just to fire a toast from a random utility file.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SonnerBlock.tsx`.
+
+---
+
+## Usage
+
+### 1. Mount the Toaster
+
+Add the `<Toaster />` component exactly **once** at the very root of your application (e.g., in your `layout.tsx` or `App.tsx`).
+
+```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Toaster position="bottom-right" />
+      </body>
+    </html>
+  );
+}
+```
+
+## 2. Trigger Toasts anywhere
+
+Because the toast function communicates with an external store, you can import it and trigger notifications from anywhere—inside components, inside useEffect blocks, or even inside standard non-React fetch functions.
+
+```tsx
+import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+export default function SettingsPage() {
+  const handleSave = async () => {
+    try {
+      await saveUserData();
+      toast.success("Settings Saved", {
+        description: "Your profile has been updated.",
+      });
+    } catch (error) {
+      toast.error("Uh oh!", {
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  };
+
+  return <button onClick={handleSave}>Save</button>;
+}
+```
