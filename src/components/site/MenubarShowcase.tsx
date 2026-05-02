@@ -94,14 +94,82 @@ export function MenubarShortcut({ className, ...props }: React.HTMLAttributes<HT
 export function MenubarLabel({ className, inset, ...props }: React.HTMLAttributes<HTMLDivElement> & { inset?: boolean }) { return <div className={cn("px-2 py-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400", inset && "pl-8", className)} {...props} />; }
 `;
 
-// --- JAVASCRIPT ENGINE CODE ---
-const MENUBAR_ENGINE_CODE_JS = MENUBAR_ENGINE_CODE_TS.replace(
-  /: React\.[A-Za-z0-9_<>]+(& \{[^}]+\})?/g,
-  "",
-)
-  .replace(/<MenubarContextType \| undefined>/g, "")
-  .replace(/<MenuContextType \| undefined>/g, "")
-  .replace(/interface [A-Za-z0-9_]+ \{[^}]+\}/g, "");
+// --- JAVASCRIPT ENGINE CODE (Hardcoded to prevent regex stripping bugs) ---
+const MENUBAR_ENGINE_CODE_JS = `"use client";
+
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const MenubarContext = createContext(undefined);
+const MenuContext = createContext(undefined);
+
+export function Menubar({ className, children, ...props }) {
+  const [activeMenu, setActiveMenu] = useState(null);
+  const menubarRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => { if (menubarRef.current && !menubarRef.current.contains(e.target)) setActiveMenu(null); };
+    const handleEscape = (e) => { if (e.key === "Escape") setActiveMenu(null); };
+    if (activeMenu) { document.addEventListener("mousedown", handleClickOutside); document.addEventListener("keydown", handleEscape); }
+    return () => { document.removeEventListener("mousedown", handleClickOutside); document.removeEventListener("keydown", handleEscape); };
+  }, [activeMenu]);
+
+  return (
+    <MenubarContext.Provider value={{ activeMenu, setActiveMenu }}>
+      <div ref={menubarRef} className={cn("flex h-10 items-center space-x-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-sm", className)} {...props}>{children}</div>
+    </MenubarContext.Provider>
+  );
+}
+
+export function MenubarMenu({ value, children }) {
+  return <MenuContext.Provider value={{ value }}><div className="relative inline-block text-left">{children}</div></MenuContext.Provider>;
+}
+
+export function MenubarTrigger({ className, children, ...props }) {
+  const rootContext = useContext(MenubarContext);
+  const menuContext = useContext(MenuContext);
+  if (!rootContext || !menuContext) throw new Error("MenubarTrigger must be within MenubarMenu");
+
+  const isOpen = rootContext.activeMenu === menuContext.value;
+  return (
+    <button
+      type="button"
+      onClick={() => rootContext.setActiveMenu(isOpen ? null : menuContext.value)}
+      onMouseEnter={() => { if (rootContext.activeMenu !== null && rootContext.activeMenu !== menuContext.value) rootContext.setActiveMenu(menuContext.value); }}
+      className={cn("flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none transition-colors", isOpen ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50" : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/50", className)}
+      {...props}
+    >{children}</button>
+  );
+}
+
+export function MenubarContent({ className, align = "start", children, ...props }) {
+  const rootContext = useContext(MenubarContext);
+  const menuContext = useContext(MenuContext);
+  if (rootContext?.activeMenu !== menuContext?.value) return null;
+
+  return (
+    <div className={cn("absolute z-50 mt-1 min-w-[12rem] overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150", align === "start" && "left-0", align === "end" && "right-0", align === "center" && "left-1/2 -translate-x-1/2", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+export function MenubarItem({ className, inset, children, onClick, disabled, ...props }) {
+  const rootContext = useContext(MenubarContext);
+  return (
+    <button
+      type="button" disabled={disabled}
+      onClick={(e) => { if (onClick) onClick(e); rootContext?.setActiveMenu(null); }}
+      className={cn("relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors", inset && "pl-8", disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400", className)}
+      {...props}
+    >{children}</button>
+  );
+}
+
+export function MenubarSeparator({ className }) { return <div className={cn("-mx-1 my-1 h-px bg-zinc-100 dark:bg-zinc-800", className)} />; }
+export function MenubarShortcut({ className, ...props }) { return <span className={cn("ml-auto text-xs tracking-widest text-zinc-500 dark:text-zinc-400", className)} {...props} />; }
+export function MenubarLabel({ className, inset, ...props }) { return <div className={cn("px-2 py-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400", inset && "pl-8", className)} {...props} />; }
+`;
 
 export function MenubarShowcase() {
   const [theme, setTheme] = useState("System");
