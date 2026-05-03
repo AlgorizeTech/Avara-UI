@@ -3,5 +3,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "out",
   "installCommand": "npm install",
-  "devCommand": "npm run dev"
+  "devCommand": "npm run dev",
+  "cleanUrls": true
 }
