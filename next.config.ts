@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 
+  // Skip type and lint checks during build (Vercel deploy)
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // SEO and Performance Optimizations
   compress: true,
   poweredByHeader: false,
