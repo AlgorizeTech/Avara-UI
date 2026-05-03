@@ -1,0 +1,214 @@
+import { SidebarShowcase } from "@/components/site/SidebarShowcase";
+
+# Sidebar
+
+A powerful, composable sidebar component that automatically manages mobile flyout states and desktop collapse logic.
+
+Building a good sidebar is one of the hardest parts of dashboard development. It requires managing state across completely different structural elements, handling viewport resizing, and animating complex CSS properties smoothly. This `SidebarBlock` utilizes React Context to handle all of this internally.
+
+## Interactive Showcase
+
+Use the interactive preview below. It functions as a complete mini-application shell.
+
+1. Try clicking the desktop collapse trigger (the menu icon in the top header) to see how the text hides and icons seamlessly center. Note how native tooltips appear on hover when collapsed!
+2. If you view this page on a mobile device (or shrink your browser window), the sidebar automatically becomes a dismissible flyout drawer.
+
+<SidebarShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SidebarBlock.tsx`.
+
+---
+
+## Usage
+
+The Sidebar uses a Provider architecture. Wrap your entire application shell in `<SidebarProvider>`, place the `<Sidebar>` adjacent to your main content `<main>`, and drop the triggers wherever you want them to live.
+
+```tsx
+import {
+  SidebarProvider, Sidebar, SidebarHeader, SidebarContent,
+  SidebarGroup, SidebarItem, SidebarFooter,
+  MobileSidebarTrigger, SidebarTrigger
+} from "@/components/custom/blocks/SidebarBlock";
+import { Home, Users, Settings } from "lucide-react";
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SidebarProvider color="indigo" defaultExpanded="{true}">
+
+
+      <Sidebar variant="attached">
+        <SidebarHeader>
+          <div className="font-black text-lg">My App</div>
+        </SidebarHeader>
+
+        <SidebarContent>
+          <SidebarGroup label="Menu">
+            <SidebarItem icon="{<Home"/>} active>Dashboard</SidebarItem>
+            <SidebarItem icon="{<Users"/>}>Team</SidebarItem>
+          </SidebarGroup>
+        </SidebarContent>
+
+        <SidebarFooter>
+          <SidebarItem icon="{<Settings"/>}>Preferences</SidebarItem>
+        </SidebarFooter>
+      </Sidebar>
+
+
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
+        <header className="h-16 flex items-center px-6 border-b border-gray-200">
+
+          <MobileSidebarTrigger className="md:hidden mr-4"/>
+
+          <SidebarTrigger className="hidden md:flex mr-4"/>
+        </header>
+        <main className="p-6">
+          {children}
+        </main>
+      </div>
+
+    </SidebarProvider>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>SidebarProvider</code>
+        </td>
+        <td>
+          <code>defaultExpanded</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Sets the initial desktop state. Defaults to <code>true</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SidebarProvider</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Applies the UI kit's theme color to active items. (e.g.{" "}
+          <code>"indigo"</code>, <code>"rose"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Sidebar</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"attached" | "floating"</code>
+        </td>
+        <td>
+          Determines if the sidebar is pinned flat against the edge (attached)
+          or acts like an elevated, floating island panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SidebarBrand</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          The logo icon. The text children passed to this component will
+          automatically hide with a smooth transition when the sidebar
+          collapses.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SidebarGroup</code>
+        </td>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Optional uppercase header text for a cluster of links. Automatically
+          hides when the sidebar collapses.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SidebarItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          The icon graphic placed on the left side of the item. Automatically
+          centers when collapsed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SidebarItem</code>
+        </td>
+        <td>
+          <code>active</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Highlights the item using the Provider's selected theme{" "}
+          <code>color</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>Standard Tailwind overrides for layout, margin, or padding.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

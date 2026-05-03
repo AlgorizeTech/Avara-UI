@@ -1,0 +1,140 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import React from "react";
+
+// ==========================================
+// TYPES & PROPS
+// ==========================================
+export type SkeletonVariant =
+  | "rect"
+  | "circle"
+  | "text"
+  | "profile"
+  | "card"
+  | "custom";
+export type SkeletonAnimation = "pulse" | "shimmer" | "none";
+
+export interface SkeletonBlockProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: SkeletonVariant;
+  animation?: SkeletonAnimation;
+  width?: string | number;
+  height?: string | number;
+  radius?: string | number;
+  className?: string;
+}
+
+// ==========================================
+// MAIN COMPONENT
+// ==========================================
+export function SkeletonBlock({
+  variant = "rect",
+  animation = "shimmer",
+  width,
+  height,
+  radius,
+  className,
+  style,
+  ...props
+}: SkeletonBlockProps) {
+  // Base shapes for the atomic components
+  const baseClasses = cn(
+    "relative overflow-hidden bg-zinc-200 dark:bg-zinc-800/80",
+    animation === "pulse" && "animate-pulse",
+  );
+
+  // The Shimmer Effect Layer
+  const ShimmerLayer = () => {
+    if (animation !== "shimmer") return null;
+    return (
+      <>
+        <style>{`
+          @keyframes shimmer-slide {
+            100% { transform: translateX(100%); }
+          }
+          .animate-shimmer-slide {
+            animation: shimmer-slide 1.5s infinite linear;
+          }
+        `}</style>
+        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer-slide z-10" />
+      </>
+    );
+  };
+
+  // --- COMPOSITE VARIANTS ---
+
+  if (variant === "profile") {
+    return (
+      <div
+        className={cn("flex items-center gap-4 w-full", className)}
+        style={style}
+        {...props}
+      >
+        <div className={cn(baseClasses, "w-12 h-12 rounded-full shrink-0")}>
+          <ShimmerLayer />
+        </div>
+        <div className="flex flex-col gap-2 w-full max-w-[200px]">
+          <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
+            <ShimmerLayer />
+          </div>
+          <div className={cn(baseClasses, "h-3 w-2/3 rounded-md")}>
+            <ShimmerLayer />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "card") {
+    return (
+      <div
+        className={cn(
+          "flex flex-col gap-3 w-full max-w-sm p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-[#050505]",
+          className,
+        )}
+        style={style}
+        {...props}
+      >
+        <div className={cn(baseClasses, "w-full h-40 rounded-xl mb-2")}>
+          <ShimmerLayer />
+        </div>
+        <div className={cn(baseClasses, "h-5 w-3/4 rounded-md")}>
+          <ShimmerLayer />
+        </div>
+        <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
+          <ShimmerLayer />
+        </div>
+        <div className={cn(baseClasses, "h-4 w-5/6 rounded-md")}>
+          <ShimmerLayer />
+        </div>
+      </div>
+    );
+  }
+
+  // --- ATOMIC & CUSTOM VARIANTS ---
+
+  const atomicClasses = cn(
+    baseClasses,
+    variant === "circle" && !radius && "rounded-full w-12 h-12",
+    variant === "text" && !height && "h-4 w-full",
+    variant === "text" && !radius && "rounded-md",
+    variant === "rect" && !height && "min-h-[100px] w-full",
+    variant === "rect" && !radius && "rounded-xl",
+    className,
+  );
+
+  // Combine standard style prop with our explicit custom props
+  const customStyles: React.CSSProperties = {
+    ...style,
+    width: width ?? style?.width,
+    height: height ?? style?.height,
+    borderRadius: radius ?? style?.borderRadius,
+  };
+
+  return (
+    <div className={atomicClasses} style={customStyles} {...props}>
+      <ShimmerLayer />
+    </div>
+  );
+}

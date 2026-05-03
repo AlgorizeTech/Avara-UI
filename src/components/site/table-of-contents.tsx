@@ -3,15 +3,22 @@
 import { useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, Menu, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // --- Toggle State (Default Open) ---
-  const [isOpen, setIsOpen] = useState(true);
+  // 1. Default to closed for SSR safety and mobile-first approach
+  const [isOpen, setIsOpen] = useState(false);
+
+  // 2. Automatically open the TOC on mount ONLY for desktop screens
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      setIsOpen(true);
+    }
+  }, []);
 
   // --- Smooth Scroll Tracker ---
   useEffect(() => {
@@ -36,6 +43,14 @@ export const TableOfContents: React.FC = () => {
   if (toc.length === 0 || toc.every((item) => !item.text.trim())) {
     return null;
   }
+
+  // 3. Helper function to handle link clicks and auto-close on mobile
+  const handleLinkClick = (id: string) => {
+    scrollToHeading(id);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsOpen(false);
+    }
+  };
 
   // --- Style Helper based on progress ---
   const getProgressStyles = (val: number) => {
@@ -78,28 +93,26 @@ export const TableOfContents: React.FC = () => {
 
   return (
     <>
-      {/* Floating Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-17 -right-13 z-50 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
-        aria-label="Toggle Table of Contents"
-      >
-        {isOpen ? (
-          <X className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        ) : (
-          <Menu className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
-        )}
-      </button>
-
-      {/* Sliding Table of Contents Drawer
-        Removed the backdrop overlay so the main page remains 100% interactive!
-      */}
+      {/* Sliding Table of Contents Drawer */}
       <motion.aside
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? "0%" : "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
         className="fixed right-0 top-[57px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
       >
+        {/* Attached Pull-Tab Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-zinc-950 border-y border-l border-zinc-200 dark:border-zinc-800 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
+          aria-label="Toggle Table of Contents"
+        >
+          {isOpen ? (
+            <ChevronRight className="w-5 h-5" />
+          ) : (
+            <ChevronLeft className="w-5 h-5" />
+          )}
+        </button>
+
         <div className="h-full py-8 px-6 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="space-y-6">
             {/* Table of Contents */}
@@ -121,7 +134,7 @@ export const TableOfContents: React.FC = () => {
                       style={{ marginLeft: `${leftOffset}px` }}
                     >
                       <button
-                        onClick={() => scrollToHeading(item.id)}
+                        onClick={() => handleLinkClick(item.id)}
                         className={cn(
                           "text-left transition-all duration-200 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer",
                           item.level === 1

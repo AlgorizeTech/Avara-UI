@@ -1,0 +1,60 @@
+import { ResizableShowcase } from "@/components/site/ResizableShowcase";
+
+# Resizable
+
+A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.
+
+Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
+
+## Interactive Showcase
+
+Grab the vertical or horizontal handle bars below to resize the panels.
+
+**Accessibility built-in:** Try clicking on one of the grab handles to focus it, and then use the `ArrowLeft`, `ArrowRight`, `ArrowUp`, or `ArrowDown` keys on your keyboard to resize the panels precisely!
+
+<ResizableShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ResizableBlock.tsx`.
+
+---
+
+## Usage
+
+This component utilizes highly composable parts. A `<ResizablePanelGroup>` establishes the flex direction, and contains `<ResizablePanel>` elements separated by `<ResizableHandle>` elements.
+
+You can nest groups infinitely to build complex grids (like VS Code or complex dashboards).
+
+```tsx
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/custom/blocks/ResizableBlock";
+
+export default function DashboardLayout() {
+  return (
+    // The outermost container must have a defined height
+    <div className="w-full h-screen">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize="{25}" minSize="{15}" maxSize="{40}">
+          <nav>Navigation Links</nav>
+        </ResizablePanel>
+
+        <ResizableHandle withHandle />
+
+        <ResizablePanel defaultSize="{75}">
+          <main>Main Application Data</main>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```

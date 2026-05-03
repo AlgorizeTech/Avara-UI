@@ -1,0 +1,181 @@
+import { DatePickerShowcase } from "@/components/site/DatePickerShowcase";
+
+# Date Picker
+
+A completely custom, dependency-free Date Picker component. Native HTML `<input type="date">` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.
+
+This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
+
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and error states.
+
+- The calendar dropdown automatically highlights today's date in a subtle way, while strongly highlighting your selected date.
+- It uses absolute positioning and CSS transitions for a smooth popover effect without needing heavy animation libraries.
+
+<DatePickerShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component only requires standard `lucide-react` icons (Calendar, ChevronLeft, ChevronRight, AlertCircle). It does **not** require heavy date libraries like `date-fns` or `moment`.
+
+```bash
+npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>Date | null</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>The currently selected JavaScript Date object.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(val: Date) => void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired when a user selects a date from the calendar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>placeholder</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Pick a date"</code>
+        </td>
+        <td>
+          Text displayed inside the trigger button when no date is selected.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>inputSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Uniformly scales the padding, text size, and icon size of the trigger
+          button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the visual styling of the borders, background, and focus
+          rings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the global color theme to the focus ring, glow shadow, and the
+          selected date bubble in the calendar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders a bold, accessible label directly above the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>helperText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Subtle instructional text rendered below the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>error</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, turns the input red, adds an alert icon, and replaces the
+          helper text with the error message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

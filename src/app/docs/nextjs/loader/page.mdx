@@ -1,0 +1,136 @@
+import LoaderShowcase from "@/components/site/LoaderShowcase";
+
+# Loader
+
+A premium, dependency-free loading indicator component.
+
+Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`. This component consolidates 5 distinct, ultra-smooth animations into a single block.
+
+## Interactive Showcase
+
+Use the control panel below to test the variants, scale the sizes, and apply theme colors. The injected animations are buttery-smooth CSS `@keyframes` that require zero external libraries.
+
+<LoaderShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free** and relies exclusively on standard Tailwind CSS classes alongside a few lightweight custom `@keyframes` for the specialized staggered animations (like the bouncing dots and the indeterminate bar).
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/LoaderBlock.tsx`.
+
+---
+
+## Usage
+
+Import the component and pass your desired variant and size.
+
+```tsx
+import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function LoadingState() {
+  return (
+    <div className="w-full h-64 flex flex-col items-center justify-center border rounded-xl">
+      <LoaderBlock
+        variant="ring"
+        size="lg"
+        color="#FF00AA"
+        text="Authenticating..."
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"spinner" | "dots" | "pulse" | "ring" | "bar"</code>
+        </td>
+        <td>
+          <code>"spinner"</code>
+        </td>
+        <td>The architectural style of the loading animation.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg" | "xl"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Proportionally scales the container width, height, and the helper text
+          size.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+          </code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the active color theme to the SVG strokes, dots, and borders.
+          Accepts custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional text to display beneath the loader. It automatically receives
+          a subtle pulsing animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional CSS classes to apply to the outermost wrapper container.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

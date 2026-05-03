@@ -1,0 +1,242 @@
+import { ToastShowcase } from "@/components/site/ToastShowcase";
+
+# Toast / Notification
+
+A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.
+
+This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
+
+## Interactive Showcase
+
+Use the control panel below to test the different visual variants and placement locations on the screen.
+
+- The **Glass** variant uses a high-intensity backdrop blur, making it perfect for apps with complex or photographic backgrounds.
+- The **Glow** variant and **Minimal** variant automatically inherit the custom hex color you select in the control panel.
+- Toasts auto-dismiss after 5 seconds, but you can hover them to keep them open, or click the `X` to dismiss manually.
+
+<ToastShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `gsap` for the entrance/exit animations and `lucide-react` for standard UI icons (Check, AlertCircle, Info).
+
+```bash
+npm install gsap lucide-react
+```
+
+2. Copy the Component
+   This component includes the ToastProvider, the useToast hook, and the individual ToastItem renderer all inside a single file.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ToastBlock.tsx.
+
+## Usage
+
+1. Wrap Your App
+   You must wrap the highest level of your application (usually layout.tsx or App.tsx) with the `<ToastProvider>`. You can set the global variant and positioning here.
+
+```jsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <ToastProvider variant="glow" color="#00FFAA" position="bottom-right">
+          {children}
+        </ToastProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+2. Trigger Toasts via Hook
+   Inside any child component, simply call the `useToast` hook.
+
+```jsx
+import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ProfileForm() {
+  const { toast } = useToast();
+
+  const handleSave = () => {
+    // API call logic here...
+
+    toast({
+      title: "Profile Updated",
+      description: "Your changes have been saved successfully.",
+      type: "success", // success | error | warning | info | default
+      duration: 3000, // Optional: Auto-dismisses after 3 seconds
+    });
+  };
+
+  const handleActionToast = () => {
+    toast({
+      title: "Update Available",
+      description: "A new version of the app is ready to install.",
+      type: "info",
+      action: {
+        label: "Install Now",
+        onClick: () => console.log("Installing..."),
+      },
+    });
+  };
+
+  return (
+    <div className="flex gap-4">
+      <button onClick={handleSave}>Save Profile</button>
+      <button onClick={handleActionToast}>Show Action Toast</button>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+### `<ToastProvider>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>position</code>
+        </td>
+        <td>
+          <code>
+            "top-right" | "top-left" | "top-center" | "bottom-right" |
+            "bottom-left" | "bottom-center"
+          </code>
+        </td>
+        <td>
+          <code>"bottom-right"</code>
+        </td>
+        <td>The global position where all toasts will stack on the screen.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glow" | "glass" | "minimal"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Determines the global visual styling of the toast cards.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the global color theme to the glow shadows and border accents.
+          Accepts hex codes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### `toast(options)` Properties
+
+When calling the `toast()` function from the `useToast` hook, you can pass the following properties in the options object:
+
+<div className="overflow-x-auto mt-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The bold, primary text displayed at the top of the toast.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>The subtle, secondary text displayed below the title.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"success" | "error" | "warning" | "info" | "default"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Determines which icon is rendered next to the text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>5000</code>
+        </td>
+        <td>
+          Time in milliseconds before the toast automatically dismisses. Set to{" "}
+          <code>0</code> to disable auto-dismiss.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>action</code>
+        </td>
+        <td>
+          <code>{`{ label: string, onClick: () => void }`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, renders a bold, clickable button at the bottom of the
+          toast. Automatically dismisses the toast when clicked.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

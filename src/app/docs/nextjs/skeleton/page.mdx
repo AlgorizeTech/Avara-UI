@@ -1,0 +1,178 @@
+import { SkeletonShowcase } from "@/components/site/SkeletonShowcase";
+
+# Skeleton Loader
+
+A high-performance visual placeholder system used to reduce perceived loading times.
+
+While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
+
+## Interactive Showcase
+
+Use the control panel below to test the different animation styles and structural variants.
+
+- The `card` and `profile` variants are composite elements that automatically arrange multiple skeleton layers.
+- The `custom` variant demonstrates how you can piece together atomic skeletons using exact pixel values and radii.
+
+<SkeletonShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free. It uses standard Tailwind classes and automatically injects the lightweight CSS required for the shimmer effect.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SkeletonBlock.tsx`.
+
+---
+
+## Usage
+
+### Composite Use
+
+If you are loading standard layouts like a user profile or a product card, just use the built-in composite variants to save time.
+
+```tsx
+import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function FeedLoader() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <SkeletonBlock variant="card" />
+      <SkeletonBlock variant="card" />
+    </div>
+  );
+}
+```
+
+## Custom Skeletons
+
+For everything else, you can leverage explicit props to build perfect placeholder boundaries without wrestling with Tailwind class strings.
+
+```tsx
+import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CustomDashboardLoader() {
+  return (
+    <div className="flex gap-4">
+      {/* Build any layout using exact width/height/radius props */}
+      <SkeletonBlock width={64} height={64} radius="1rem" />
+      <div className="flex flex-col gap-2">
+        <SkeletonBlock width={200} height={16} radius="4px" />
+        <SkeletonBlock width={140} height={16} radius="4px" />
+        <SkeletonBlock width={80} height={12} radius="4px" />
+      </div>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>
+            "rect" | "circle" | "text" | "profile" | "card" | "custom"
+          </code>
+        </td>
+        <td>
+          <code>"rect"</code>
+        </td>
+        <td>
+          Determines the structural shape. <code>profile</code> and{" "}
+          <code>card</code> output pre-arranged composite layouts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>animation</code>
+        </td>
+        <td>
+          <code>"pulse" | "shimmer" | "none"</code>
+        </td>
+        <td>
+          <code>"shimmer"</code>
+        </td>
+        <td>
+          Determines the loading animation style. <code>shimmer</code> slides a
+          gradient, <code>pulse</code> fades opacity.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>width</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Sets an exact inline width (e.g. <code>200</code> or{" "}
+          <code>"50%"</code>). Overrides Tailwind utility classes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>height</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Sets an exact inline height (e.g. <code>48</code> or{" "}
+          <code>"100vh"</code>). Overrides Tailwind utility classes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>radius</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Sets an exact border-radius (e.g. <code>"1rem"</code> or{" "}
+          <code>8</code>). Useful for perfect circles or custom rounding.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Allows you to pass custom Tailwind classes to manage layout
+          constraints like margins or max-widths.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

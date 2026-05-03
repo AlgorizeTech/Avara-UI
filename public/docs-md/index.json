@@ -1,12 +1,24 @@
 {
-  "generatedAt": "2025-09-14T16:15:00.569Z",
-  "totalFiles": 20,
+  "generatedAt": "2026-05-03T11:35:31.650Z",
+  "totalFiles": 56,
   "files": [
     {
-      "name": "button",
-      "path": "/docs/button.md",
-      "url": "/docs/button",
-      "originalMdx": "button\\page.mdx"
+      "name": "nextjs/accordion",
+      "path": "/docs/nextjs-accordion.md",
+      "url": "/docs/nextjs/accordion",
+      "originalMdx": "nextjs\\accordion\\page.mdx"
+    },
+    {
+      "name": "nextjs/ai-chat",
+      "path": "/docs/nextjs-ai-chat.md",
+      "url": "/docs/nextjs/ai-chat",
+      "originalMdx": "nextjs\\ai-chat\\page.mdx"
+    },
+    {
+      "name": "nextjs/alert",
+      "path": "/docs/nextjs-alert.md",
+      "url": "/docs/nextjs/alert",
+      "originalMdx": "nextjs\\alert\\page.mdx"
     },
     {
       "name": "nextjs/api-routes",
@@ -21,10 +33,70 @@
       "originalMdx": "nextjs\\authentication\\page.mdx"
     },
     {
+      "name": "nextjs/avatar",
+      "path": "/docs/nextjs-avatar.md",
+      "url": "/docs/nextjs/avatar",
+      "originalMdx": "nextjs\\avatar\\page.mdx"
+    },
+    {
+      "name": "nextjs/breadcrumb",
+      "path": "/docs/nextjs-breadcrumb.md",
+      "url": "/docs/nextjs/breadcrumb",
+      "originalMdx": "nextjs\\breadcrumb\\page.mdx"
+    },
+    {
+      "name": "nextjs/button",
+      "path": "/docs/nextjs-button.md",
+      "url": "/docs/nextjs/button",
+      "originalMdx": "nextjs\\button\\page.mdx"
+    },
+    {
+      "name": "nextjs/calendar",
+      "path": "/docs/nextjs-calendar.md",
+      "url": "/docs/nextjs/calendar",
+      "originalMdx": "nextjs\\calendar\\page.mdx"
+    },
+    {
+      "name": "nextjs/carousel",
+      "path": "/docs/nextjs-carousel.md",
+      "url": "/docs/nextjs/carousel",
+      "originalMdx": "nextjs\\carousel\\page.mdx"
+    },
+    {
+      "name": "nextjs/cart",
+      "path": "/docs/nextjs-cart.md",
+      "url": "/docs/nextjs/cart",
+      "originalMdx": "nextjs\\cart\\page.mdx"
+    },
+    {
+      "name": "nextjs/chart",
+      "path": "/docs/nextjs-chart.md",
+      "url": "/docs/nextjs/chart",
+      "originalMdx": "nextjs\\chart\\page.mdx"
+    },
+    {
+      "name": "nextjs/chat",
+      "path": "/docs/nextjs-chat.md",
+      "url": "/docs/nextjs/chat",
+      "originalMdx": "nextjs\\chat\\page.mdx"
+    },
+    {
+      "name": "nextjs/counter",
+      "path": "/docs/nextjs-counter.md",
+      "url": "/docs/nextjs/counter",
+      "originalMdx": "nextjs\\counter\\page.mdx"
+    },
+    {
       "name": "nextjs/data-fetching",
       "path": "/docs/nextjs-data-fetching.md",
       "url": "/docs/nextjs/data-fetching",
       "originalMdx": "nextjs\\data-fetching\\page.mdx"
+    },
+    {
+      "name": "nextjs/date-picker",
+      "path": "/docs/nextjs-date-picker.md",
+      "url": "/docs/nextjs/date-picker",
+      "originalMdx": "nextjs\\date-picker\\page.mdx"
     },
     {
       "name": "nextjs/deployment",
@@ -33,10 +105,28 @@
       "originalMdx": "nextjs\\deployment\\page.mdx"
     },
     {
+      "name": "nextjs/drawer",
+      "path": "/docs/nextjs-drawer.md",
+      "url": "/docs/nextjs/drawer",
+      "originalMdx": "nextjs\\drawer\\page.mdx"
+    },
+    {
+      "name": "nextjs/email",
+      "path": "/docs/nextjs-email.md",
+      "url": "/docs/nextjs/email",
+      "originalMdx": "nextjs\\email\\page.mdx"
+    },
+    {
       "name": "nextjs/examples",
       "path": "/docs/nextjs-examples.md",
       "url": "/docs/nextjs/examples",
       "originalMdx": "nextjs\\examples\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/button",
+      "path": "/docs/nextjs-examples-button.md",
+      "url": "/docs/nextjs/examples/button",
+      "originalMdx": "nextjs\\examples\\button\\page.mdx"
     },
     {
       "name": "nextjs/examples/counter",
@@ -45,10 +135,34 @@
       "originalMdx": "nextjs\\examples\\counter\\page.mdx"
     },
     {
+      "name": "nextjs/examples/video-text",
+      "path": "/docs/nextjs-examples-video-text.md",
+      "url": "/docs/nextjs/examples/video-text",
+      "originalMdx": "nextjs\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/waitlist",
+      "path": "/docs/nextjs-examples-waitlist.md",
+      "url": "/docs/nextjs/examples/waitlist",
+      "originalMdx": "nextjs\\examples\\waitlist\\page.mdx"
+    },
+    {
       "name": "nextjs/first-app",
       "path": "/docs/nextjs-first-app.md",
       "url": "/docs/nextjs/first-app",
       "originalMdx": "nextjs\\first-app\\page.mdx"
+    },
+    {
+      "name": "nextjs/fleet-tracker",
+      "path": "/docs/nextjs-fleet-tracker.md",
+      "url": "/docs/nextjs/fleet-tracker",
+      "originalMdx": "nextjs\\fleet-tracker\\page.mdx"
+    },
+    {
+      "name": "nextjs/form",
+      "path": "/docs/nextjs-form.md",
+      "url": "/docs/nextjs/form",
+      "originalMdx": "nextjs\\form\\page.mdx"
     },
     {
       "name": "nextjs/image-optimization",
@@ -57,10 +171,40 @@
       "originalMdx": "nextjs\\image-optimization\\page.mdx"
     },
     {
+      "name": "nextjs/input",
+      "path": "/docs/nextjs-input.md",
+      "url": "/docs/nextjs/input",
+      "originalMdx": "nextjs\\input\\page.mdx"
+    },
+    {
       "name": "nextjs/installation",
       "path": "/docs/nextjs-installation.md",
       "url": "/docs/nextjs/installation",
       "originalMdx": "nextjs\\installation\\page.mdx"
+    },
+    {
+      "name": "nextjs/invoice",
+      "path": "/docs/nextjs-invoice.md",
+      "url": "/docs/nextjs/invoice",
+      "originalMdx": "nextjs\\invoice\\page.mdx"
+    },
+    {
+      "name": "nextjs/item",
+      "path": "/docs/nextjs-item.md",
+      "url": "/docs/nextjs/item",
+      "originalMdx": "nextjs\\item\\page.mdx"
+    },
+    {
+      "name": "nextjs/loader",
+      "path": "/docs/nextjs-loader.md",
+      "url": "/docs/nextjs/loader",
+      "originalMdx": "nextjs\\loader\\page.mdx"
+    },
+    {
+      "name": "nextjs/menubar",
+      "path": "/docs/nextjs-menubar.md",
+      "url": "/docs/nextjs/menubar",
+      "originalMdx": "nextjs\\menubar\\page.mdx"
     },
     {
       "name": "nextjs/middleware",
@@ -69,10 +213,40 @@
       "originalMdx": "nextjs\\middleware\\page.mdx"
     },
     {
+      "name": "nextjs/modal",
+      "path": "/docs/nextjs-modal.md",
+      "url": "/docs/nextjs/modal",
+      "originalMdx": "nextjs\\modal\\page.mdx"
+    },
+    {
+      "name": "nextjs/navbar",
+      "path": "/docs/nextjs-navbar.md",
+      "url": "/docs/nextjs/navbar",
+      "originalMdx": "nextjs\\navbar\\page.mdx"
+    },
+    {
+      "name": "nextjs/pagination",
+      "path": "/docs/nextjs-pagination.md",
+      "url": "/docs/nextjs/pagination",
+      "originalMdx": "nextjs\\pagination\\page.mdx"
+    },
+    {
       "name": "nextjs/performance",
       "path": "/docs/nextjs-performance.md",
       "url": "/docs/nextjs/performance",
       "originalMdx": "nextjs\\performance\\page.mdx"
+    },
+    {
+      "name": "nextjs/pricing",
+      "path": "/docs/nextjs-pricing.md",
+      "url": "/docs/nextjs/pricing",
+      "originalMdx": "nextjs\\pricing\\page.mdx"
+    },
+    {
+      "name": "nextjs/resizable",
+      "path": "/docs/nextjs-resizable.md",
+      "url": "/docs/nextjs/resizable",
+      "originalMdx": "nextjs\\resizable\\page.mdx"
     },
     {
       "name": "nextjs/routing",
@@ -81,10 +255,40 @@
       "originalMdx": "nextjs\\routing\\page.mdx"
     },
     {
+      "name": "nextjs/select",
+      "path": "/docs/nextjs-select.md",
+      "url": "/docs/nextjs/select",
+      "originalMdx": "nextjs\\select\\page.mdx"
+    },
+    {
       "name": "nextjs/seo",
       "path": "/docs/nextjs-seo.md",
       "url": "/docs/nextjs/seo",
       "originalMdx": "nextjs\\seo\\page.mdx"
+    },
+    {
+      "name": "nextjs/sidebar",
+      "path": "/docs/nextjs-sidebar.md",
+      "url": "/docs/nextjs/sidebar",
+      "originalMdx": "nextjs\\sidebar\\page.mdx"
+    },
+    {
+      "name": "nextjs/signup-form",
+      "path": "/docs/nextjs-signup-form.md",
+      "url": "/docs/nextjs/signup-form",
+      "originalMdx": "nextjs\\signup-form\\page.mdx"
+    },
+    {
+      "name": "nextjs/skeleton",
+      "path": "/docs/nextjs-skeleton.md",
+      "url": "/docs/nextjs/skeleton",
+      "originalMdx": "nextjs\\skeleton\\page.mdx"
+    },
+    {
+      "name": "nextjs/sonner",
+      "path": "/docs/nextjs-sonner.md",
+      "url": "/docs/nextjs/sonner",
+      "originalMdx": "nextjs\\sonner\\page.mdx"
     },
     {
       "name": "nextjs/styling",
@@ -93,10 +297,28 @@
       "originalMdx": "nextjs\\styling\\page.mdx"
     },
     {
+      "name": "nextjs/support-dashboard",
+      "path": "/docs/nextjs-support-dashboard.md",
+      "url": "/docs/nextjs/support-dashboard",
+      "originalMdx": "nextjs\\support-dashboard\\page.mdx"
+    },
+    {
+      "name": "nextjs/table",
+      "path": "/docs/nextjs-table.md",
+      "url": "/docs/nextjs/table",
+      "originalMdx": "nextjs\\table\\page.mdx"
+    },
+    {
       "name": "nextjs/testing",
       "path": "/docs/nextjs-testing.md",
       "url": "/docs/nextjs/testing",
       "originalMdx": "nextjs\\testing\\page.mdx"
+    },
+    {
+      "name": "nextjs/toast",
+      "path": "/docs/nextjs-toast.md",
+      "url": "/docs/nextjs/toast",
+      "originalMdx": "nextjs\\toast\\page.mdx"
     },
     {
       "name": "nextjs/typescript",
@@ -105,22 +327,16 @@
       "originalMdx": "nextjs\\typescript\\page.mdx"
     },
     {
+      "name": "nextjs/vertical-tabs",
+      "path": "/docs/nextjs-vertical-tabs.md",
+      "url": "/docs/nextjs/vertical-tabs",
+      "originalMdx": "nextjs\\vertical-tabs\\page.mdx"
+    },
+    {
       "name": "page.mdx",
       "path": "/docs/page.mdx.md",
       "url": "/docs/page.mdx",
       "originalMdx": "page.mdx"
-    },
-    {
-      "name": "video-text",
-      "path": "/docs/video-text.md",
-      "url": "/docs/video-text",
-      "originalMdx": "video-text\\page.mdx"
-    },
-    {
-      "name": "waitlist",
-      "path": "/docs/waitlist.md",
-      "url": "/docs/waitlist",
-      "originalMdx": "waitlist\\page.mdx"
     }
   ]
 }

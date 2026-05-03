@@ -1,0 +1,174 @@
+import { CounterShowcase } from "@/components/site/CounterShowcase";
+
+# Counter Block
+
+A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
+
+## Interactive Showcase
+
+Use the control panel below to flip between the four counter layouts. **When using the `stepper` type, you unlock four unique structural variants** (`default`, `outline`, `soft`, `vertical`) to fit perfectly into horizontal product bars or tight vertical sidebars.
+
+You can also apply global color themes (or custom hex codes) that cascade instantly across buttons, strokes, and text elements.
+
+_Click the **Code** tab in the preview below to copy the full component engine._
+
+<CounterShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies heavily on `gsap` to handle the rapid number interpolations, bouncy spring animations, and SVG stroke manipulations. It also utilizes `lucide-react` for standard UI icons.
+
+```bash
+npm install gsap lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"stepper" | "animated" | "circular" | "countdown"</code>
+        </td>
+        <td>
+          <code>"stepper"</code>
+        </td>
+        <td>Determines the core functionality and layout of the counter.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "outline" | "soft" | "vertical"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies unique structural layouts{" "}
+          <strong>
+            only to the <code>stepper</code> type
+          </strong>
+          .
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes. Accepts valid hex codes (e.g.{" "}
+          <code>"#00FF00"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Counter"</code>
+        </td>
+        <td>The descriptive text rendered alongside the counter value.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>targetValue</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>100</code>
+        </td>
+        <td>
+          The final number to animate towards (used in <code>animated</code> and{" "}
+          <code>circular</code> types).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialValue</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          The starting value for the <code>stepper</code> type.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>min</code> / <code>max</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code> / <code>100</code>
+        </td>
+        <td>
+          Sets the bounds for the <code>stepper</code> type, automatically
+          disabling buttons when limits are reached.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>prefix</code> / <code>suffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Strings to append before or after the number (e.g. <code>"$"</code> or{" "}
+          <code>"%"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>targetDate</code>
+        </td>
+        <td>
+          <code>Date</code>
+        </td>
+        <td>
+          <code>3 days from now</code>
+        </td>
+        <td>
+          The target expiration date for the <code>countdown</code> timer.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

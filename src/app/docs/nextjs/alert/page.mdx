@@ -1,48 +1,67 @@
 import { AlertShowcase } from "@/components/site/AlertShowcase";
 
-# Alert
+# Alerts
 
-A versatile and highly customizable alert component used to display important messages, warnings, and system feedback to the user.
+A highly versatile Alert component designed to communicate states and important information to your users.
+
+Along with the classic `solid` and `outline` variations, this component now features three completely modern aesthetics: `modern` (SaaS style), `glass` (glassmorphism), and `glow` (dark mode neon).
 
 ## Interactive Showcase
 
-Alerts come in several semantic types (`success`, `danger`, `warning`, `info`, `primary`, `secondary`, and `dark`) to communicate different states.
+Use the control panel below to cycle through the different permutations. You can toggle icons, rich content elements (like buttons), and dismissibility.
 
-Use the control panel below to toggle between solid and outline visual variants, swap out icons (including emojis), and test dismissible functionality and rich HTML children.
+_If you enable `dismissible`, you can use the reset button to replay the entrance animations._
 
 <AlertShowcase />
 
+---
+
 ## Installation
 
-1. Create the `Alerts.tsx` component inside your project and paste the generated code.
-2. Install the required icon library (if you intend to use the built-in Lucide icons):
+### 1. Copy the Component
 
-```bash
-npm install lucide-react
-```
+This component manages its own exit/entrance animations using Tailwind CSS utility classes and basic React state, meaning you don't need any complex external animation libraries to use it.
 
-## Custom SVGs
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/Alerts.tsx`.
 
-If you don't want to use standard strings or Lucide icons, you can always pass a raw SVG element directly into the icon prop within your own codebase.
+---
 
-```
-"use client";
+## Usage
 
+Simply drop the `Alert` into your layout and define the `type` and `variant` props.
+
+```tsx
 import { Alert } from "@/components/custom/blocks/Alerts";
 
-export default function CustomSvgDemo() {
+export default function Dashboard() {
   return (
-    <Alert
-      type="warning"
-      title="Custom SVG"
-      message="Passing a raw SVG element."
-      dismissible={isDismissible}
-      icon={
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-        </svg>
-      }
-    />
+    <div className="flex flex-col gap-4 p-8">
+      {/* A modern, high-contrast alert */}
+      <Alert
+        type="success"
+        variant="modern"
+        title="Payment Successful"
+        message="Your subscription has been renewed for another 12 months."
+        icon="CheckCircle2"
+        dismissible
+      />
+
+      {/* A glowing dark-mode alert with rich content */}
+      <Alert
+        type="warning"
+        variant="glow"
+        title="API Rate Limit Reached"
+        icon="AlertTriangle"
+      >
+        <p className="text-sm mb-3">
+          You have exceeded your monthly API quota. Please upgrade your plan to
+          continue using the service without interruptions.
+        </p>
+        <button className="px-4 py-2 bg-yellow-500 text-black font-bold rounded-md text-sm">
+          Upgrade Plan
+        </button>
+      </Alert>
+    </div>
   );
 }
 ```
@@ -73,19 +92,19 @@ export default function CustomSvgDemo() {
         <td>
           <code>"primary"</code>
         </td>
-        <td>Defines the semantic color mapping.</td>
+        <td>Determines the semantic color scheme of the alert.</td>
       </tr>
       <tr>
         <td>
           <code>variant</code>
         </td>
         <td>
-          <code>"solid" | "outline"</code>
+          <code>"solid" | "outline" | "modern" | "glass" | "glow"</code>
         </td>
         <td>
-          <code>"solid"</code>
+          <code>"modern"</code>
         </td>
-        <td>Defines the visual style structure.</td>
+        <td>Applies overarching structural layouts and visual styles.</td>
       </tr>
       <tr>
         <td>
@@ -98,8 +117,8 @@ export default function CustomSvgDemo() {
           <code>false</code>
         </td>
         <td>
-          If true, renders an 'X' icon that unmounts the alert with an exit
-          animation.
+          If true, renders an "X" button that smoothly animates the alert out of
+          the DOM.
         </td>
       </tr>
       <tr>
@@ -107,14 +126,14 @@ export default function CustomSvgDemo() {
           <code>icon</code>
         </td>
         <td>
-          <code>ReactNode | string | null</code>
+          <code>string | ReactNode</code>
         </td>
         <td>
           <code>null</code>
         </td>
         <td>
-          Maps string keys to predefined Lucide icons, accepts raw emojis, or
-          accepts custom SVG nodes.
+          The icon to display. You can pass a string matching the{" "}
+          <code>ICON_MAP</code>, an emoji, or a custom SVG.
         </td>
       </tr>
       <tr>
@@ -122,63 +141,12 @@ export default function CustomSvgDemo() {
           <code>title</code>
         </td>
         <td>
-          <code>string | null</code>
-        </td>
-        <td>
-          <code>null</code>
-        </td>
-        <td>Bold header text rendered above the message.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>message</code>
-        </td>
-        <td>
           <code>string</code>
         </td>
         <td>
-          <code>""</code>
-        </td>
-        <td>The main body text of the alert.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>onDismiss</code>
-        </td>
-        <td>
-          <code>() => void</code>
-        </td>
-        <td>
           <code>null</code>
         </td>
-        <td>
-          Optional callback function fired exactly when the dismiss button is
-          clicked.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>children</code>
-        </td>
-        <td>
-          <code>ReactNode</code>
-        </td>
-        <td>
-          <code>null</code>
-        </td>
-        <td>Custom HTML or components rendered below the main message.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>className</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>""</code>
-        </td>
-        <td>Override container classes.</td>
+        <td>The bold header text of the alert.</td>
       </tr>
     </tbody>
   </table>

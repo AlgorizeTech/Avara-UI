@@ -1,0 +1,105 @@
+import { BreadcrumbShowcase } from "@/components/site/BreadcrumbShowcase";
+
+# Breadcrumb
+
+A navigational aid that helps users understand their current location within a website's hierarchy.
+
+This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
+
+## Interactive Showcase
+
+Use the control panel below to test the different visual styles. Toggle the **Path Length** to see how the component intelligently handles deep page hierarchies without breaking the UI.
+
+_Click the **Code** tab in the preview below to copy the full component engine._
+
+<BreadcrumbShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component utilizes `lucide-react` for standard UI icons like the Home button, Chevron dividers, and the Ellipsis menu.
+
+```bash
+npm install lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>BreadcrumbItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of objects containing a <code>label</code> (string), optional{" "}
+          <code>href</code> (string), and optional <code>icon</code> (Lucide
+          Component).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"classic" | "slash" | "solid" | "ghost"</code>
+        </td>
+        <td>
+          <code>"classic"</code>
+        </td>
+        <td>
+          Determines the visual styling of the links and the dividers between
+          them.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the active text and hover states.
+          Accepts valid hex codes (e.g. <code>"#00FF00"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxItems</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4</code>
+        </td>
+        <td>
+          The maximum number of links to display before automatically truncating
+          the middle of the path.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

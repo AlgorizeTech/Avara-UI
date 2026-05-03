@@ -1,0 +1,86 @@
+import { NavbarShowcase } from "@/components/site/NavbarShowcase";
+
+# Navbar / Header
+
+A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses GSAP to smoothly animate a beautiful slide-out drawer on mobile devices.
+
+## Interactive Showcase
+
+Use the control panel below to switch between layouts.
+
+- **Floating:** A modern, pill-shaped glassmorphism navbar (excellent for landing pages).
+- **Centered:** Perfectly balances the logo in the center of the screen.
+- **Minimal:** Clean, borderless, transparent navigation.
+
+_(Resize your browser window or use mobile view to see the GSAP animated hamburger drawer in action!)_
+
+<NavbarShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component uses `gsap` for the buttery-smooth mobile menu slide animations, and `lucide-react` for standard UI icons.
+
+```bash
+npm install gsap lucide-react
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "floating" | "centered" | "minimal"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Determines the structural layout and positioning of the navbar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the logo icon and primary
+          Call-to-Action button. Accepts valid hex codes (e.g.{" "}
+          <code>"#00FF00"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>logoText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Nexus"</code>
+        </td>
+        <td>The text displayed next to the logo mark.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
