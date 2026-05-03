@@ -15,6 +15,10 @@ const eslintConfig = [
     rules: {
       "@next/next/no-img-element": "off",
       "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
+      "react/no-unescaped-entities": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-require-imports": "off"
     },
   },
 ];

@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-04-27T13:36:30.635Z
-**Total files:** 49
+**Generated at:** 2026-05-03T11:35:31.662Z
+**Total files:** 56
 
 ## Available Files
 
@@ -38,16 +38,23 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/input](/docs/nextjs-input.md) - Source: `nextjs\input\page.mdx`
 - [nextjs/installation](/docs/nextjs-installation.md) - Source: `nextjs\installation\page.mdx`
 - [nextjs/invoice](/docs/nextjs-invoice.md) - Source: `nextjs\invoice\page.mdx`
+- [nextjs/item](/docs/nextjs-item.md) - Source: `nextjs\item\page.mdx`
 - [nextjs/loader](/docs/nextjs-loader.md) - Source: `nextjs\loader\page.mdx`
+- [nextjs/menubar](/docs/nextjs-menubar.md) - Source: `nextjs\menubar\page.mdx`
 - [nextjs/middleware](/docs/nextjs-middleware.md) - Source: `nextjs\middleware\page.mdx`
 - [nextjs/modal](/docs/nextjs-modal.md) - Source: `nextjs\modal\page.mdx`
 - [nextjs/navbar](/docs/nextjs-navbar.md) - Source: `nextjs\navbar\page.mdx`
+- [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `nextjs\pagination\page.mdx`
 - [nextjs/performance](/docs/nextjs-performance.md) - Source: `nextjs\performance\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `nextjs\pricing\page.mdx`
+- [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `nextjs\resizable\page.mdx`
 - [nextjs/routing](/docs/nextjs-routing.md) - Source: `nextjs\routing\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `nextjs\select\page.mdx`
 - [nextjs/seo](/docs/nextjs-seo.md) - Source: `nextjs\seo\page.mdx`
+- [nextjs/sidebar](/docs/nextjs-sidebar.md) - Source: `nextjs\sidebar\page.mdx`
 - [nextjs/signup-form](/docs/nextjs-signup-form.md) - Source: `nextjs\signup-form\page.mdx`
+- [nextjs/skeleton](/docs/nextjs-skeleton.md) - Source: `nextjs\skeleton\page.mdx`
+- [nextjs/sonner](/docs/nextjs-sonner.md) - Source: `nextjs\sonner\page.mdx`
 - [nextjs/styling](/docs/nextjs-styling.md) - Source: `nextjs\styling\page.mdx`
 - [nextjs/support-dashboard](/docs/nextjs-support-dashboard.md) - Source: `nextjs\support-dashboard\page.mdx`
 - [nextjs/table](/docs/nextjs-table.md) - Source: `nextjs\table\page.mdx`

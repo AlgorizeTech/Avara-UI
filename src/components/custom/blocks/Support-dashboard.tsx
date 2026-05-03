@@ -312,7 +312,7 @@ export default function SupportDashboard({
           message: newTicketForm.message || "No description provided.",
           time: "Just now",
           showAvatar: true,
-        },
+        } as TicketMessage,
       ],
     };
 
@@ -344,7 +344,7 @@ export default function SupportDashboard({
               message: replyText,
               time: "Just now",
               showAvatar: false, // Hide avatar for consecutive agent messages for clean UI
-            },
+            } as TicketMessage,
           ],
         };
       }

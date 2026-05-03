@@ -33,6 +33,56 @@ export default function LoadingState() {
 }
 ```
 
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+          variant
+
+          "spinner" | "dots" | "pulse" | "ring" | "bar"
+
+          "spinner"
+        
+        The architectural style of the loading animation.
+
+          size
+
+          "sm" | "md" | "lg" | "xl"
+
+          "md"
+
+          Proportionally scales the container width, height, and the helper text
+          size.
+
+          color
+
+            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+
+          "indigo"
+
+          Applies the active color theme to the SVG strokes, dots, and borders.
+          Accepts custom hex codes.
+
+          text
+
+          string
+
+          undefined
+
+          Optional text to display beneath the loader. It automatically receives
+          a subtle pulsing animation.
+
+          className
+
+          string
+
+          undefined
+
+          Optional CSS classes to apply to the outermost wrapper container.
+
 ---
 
 **Component Path:** `nextjs\loader\page.mdx`

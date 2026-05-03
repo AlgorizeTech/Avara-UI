@@ -1,10 +1,13 @@
 "use client";
 
-import FleetTracker, {
+import type {
   FleetColor,
   FleetVariant,
   Vehicle,
 } from "@/components/custom/blocks/Fleet-map";
+import dynamic from "next/dynamic";
+
+const FleetTracker = dynamic(() => import("@/components/custom/blocks/Fleet-map"), { ssr: false });
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { useState } from "react";
 

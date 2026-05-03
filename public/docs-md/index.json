@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-27T13:36:30.624Z",
-  "totalFiles": 49,
+  "generatedAt": "2026-05-03T11:35:31.650Z",
+  "totalFiles": 56,
   "files": [
     {
       "name": "nextjs/accordion",
@@ -189,10 +189,22 @@
       "originalMdx": "nextjs\\invoice\\page.mdx"
     },
     {
+      "name": "nextjs/item",
+      "path": "/docs/nextjs-item.md",
+      "url": "/docs/nextjs/item",
+      "originalMdx": "nextjs\\item\\page.mdx"
+    },
+    {
       "name": "nextjs/loader",
       "path": "/docs/nextjs-loader.md",
       "url": "/docs/nextjs/loader",
       "originalMdx": "nextjs\\loader\\page.mdx"
+    },
+    {
+      "name": "nextjs/menubar",
+      "path": "/docs/nextjs-menubar.md",
+      "url": "/docs/nextjs/menubar",
+      "originalMdx": "nextjs\\menubar\\page.mdx"
     },
     {
       "name": "nextjs/middleware",
@@ -213,6 +225,12 @@
       "originalMdx": "nextjs\\navbar\\page.mdx"
     },
     {
+      "name": "nextjs/pagination",
+      "path": "/docs/nextjs-pagination.md",
+      "url": "/docs/nextjs/pagination",
+      "originalMdx": "nextjs\\pagination\\page.mdx"
+    },
+    {
       "name": "nextjs/performance",
       "path": "/docs/nextjs-performance.md",
       "url": "/docs/nextjs/performance",
@@ -223,6 +241,12 @@
       "path": "/docs/nextjs-pricing.md",
       "url": "/docs/nextjs/pricing",
       "originalMdx": "nextjs\\pricing\\page.mdx"
+    },
+    {
+      "name": "nextjs/resizable",
+      "path": "/docs/nextjs-resizable.md",
+      "url": "/docs/nextjs/resizable",
+      "originalMdx": "nextjs\\resizable\\page.mdx"
     },
     {
       "name": "nextjs/routing",
@@ -243,10 +267,28 @@
       "originalMdx": "nextjs\\seo\\page.mdx"
     },
     {
+      "name": "nextjs/sidebar",
+      "path": "/docs/nextjs-sidebar.md",
+      "url": "/docs/nextjs/sidebar",
+      "originalMdx": "nextjs\\sidebar\\page.mdx"
+    },
+    {
       "name": "nextjs/signup-form",
       "path": "/docs/nextjs-signup-form.md",
       "url": "/docs/nextjs/signup-form",
       "originalMdx": "nextjs\\signup-form\\page.mdx"
+    },
+    {
+      "name": "nextjs/skeleton",
+      "path": "/docs/nextjs-skeleton.md",
+      "url": "/docs/nextjs/skeleton",
+      "originalMdx": "nextjs\\skeleton\\page.mdx"
+    },
+    {
+      "name": "nextjs/sonner",
+      "path": "/docs/nextjs-sonner.md",
+      "url": "/docs/nextjs/sonner",
+      "originalMdx": "nextjs\\sonner\\page.mdx"
     },
     {
       "name": "nextjs/styling",
