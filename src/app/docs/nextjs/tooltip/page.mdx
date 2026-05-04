@@ -1,0 +1,59 @@
+import { TooltipShowcase } from "@/components/site/TooltipShowcase";
+
+# Tooltip
+
+A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
+
+Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
+
+## Interactive Showcase
+
+Hover over or tab to the center icon to see the tooltip render. Use the controls to test how the dynamic `getBoundingClientRect` math positions the portal perfectly across all sides and alignments.
+
+<TooltipShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TooltipBlock.tsx`.
+
+---
+
+## Usage
+
+The Tooltip leverages a highly composable architecture. Ensure you wrap your application (or the immediate parent) in a `<TooltipProvider>`.
+
+```tsx
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/custom/blocks/TooltipBlock";
+import { Info } from "lucide-react";
+
+export default function IconRow() {
+  return (
+    <TooltipProvider>
+      <div className="flex gap-4">
+        <Tooltip delayDuration="{300}">
+          <TooltipTrigger>
+            {/* The trigger automatically handles focus/hover states */}
+            <button className="p-2 bg-gray-100 rounded-full">
+              <Info className="w-4 h-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" align="center">
+            View detailed analytics
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}
+```
