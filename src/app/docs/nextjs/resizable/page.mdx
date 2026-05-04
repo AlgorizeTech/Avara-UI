@@ -58,3 +58,127 @@ export default function DashboardLayout() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ResizablePanelGroup</code>
+        </td>
+        <td>
+          <code>direction</code>
+        </td>
+        <td>
+          <code>"horizontal" | "vertical"</code>
+        </td>
+        <td>
+          <code>"horizontal"</code>
+        </td>
+        <td>
+          The layout orientation of the group. Panels inside will stack either
+          side-by-side or top-to-bottom.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ResizablePanel</code>
+        </td>
+        <td>
+          <code>defaultSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>50</code>
+        </td>
+        <td>
+          The initial size of the panel, represented as a relative percentage of
+          its parent container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ResizablePanel</code>
+        </td>
+        <td>
+          <code>minSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The minimum allowed size (percentage) the panel can be shrunk to.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ResizablePanel</code>
+        </td>
+        <td>
+          <code>maxSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>100</code>
+        </td>
+        <td>
+          The maximum allowed size (percentage) the panel can be grown to.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ResizableHandle</code>
+        </td>
+        <td>
+          <code>withHandle</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, renders a small visual grip icon in the center of the
+          separator track.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides. Useful for adding specific background
+          colors or padding to panels.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

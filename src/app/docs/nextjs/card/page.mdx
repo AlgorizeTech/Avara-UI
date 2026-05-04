@@ -1,0 +1,145 @@
+import { CardShowcase } from "@/components/site/CardShowcase";
+
+# Card
+
+A flexible container used to group related information and actions together in a visually distinct box.
+
+Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
+
+## Interactive Showcase
+
+Use the controls below to experiment with different card layouts and visual variants. Enabling `Interactive Hover` converts the card into an actionable button-like element, adding elevation shadows and transform scaling when hovered.
+
+<CardShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component suite is completely dependency-free, relying only on standard Tailwind utility classes.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CardBlock.tsx`.
+
+---
+
+## Usage
+
+The Card component uses a composable architecture. You wrap your content in the main `<Card>` container, and then use the sub-components to structure the interior layout.
+
+You do not need to use all the sub-components. For example, metric/statistic cards often omit the `<CardFooter>` entirely.
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/custom/blocks/CardBlock";
+
+export default function CheckoutForm() {
+  return (
+    <Card variant="bordered" className="max-w-md">
+      <CardHeader>
+        <CardTitle>Payment Details</CardTitle>
+        <CardDescription>
+          Enter your credit card information below.
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Card Number"
+            className="w-full p-2 border rounded"
+          />
+        </div>
+      </CardContent>
+
+      <CardFooter>
+        <button className="w-full bg-blue-600 text-white p-2 rounded">
+          Submit Payment
+        </button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Card</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "bordered" | "flat"</code>
+        </td>
+        <td>
+          <code>"bordered"</code>
+        </td>
+        <td>
+          Determines the visual styling of the container. <code>bordered</code>{" "}
+          adds a subtle stroke, while <code>flat</code> removes shadows and
+          applies a light background fill.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Card</code>
+        </td>
+        <td>
+          <code>interactive</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, applies hover states (shadow elevation, border color change,
+          and slight scaling) to indicate the card is clickable.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides. Useful for adjusting the flex layout
+          inside a specific <code>CardContent</code> or <code>CardHeader</code>{" "}
+          block.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
