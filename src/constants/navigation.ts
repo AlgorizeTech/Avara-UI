@@ -61,6 +61,7 @@ export const navigation: NavigationItem[] = [
       { label: "Input", href: "/docs/nextjs/input", badge: "Core" },
       { label: "Item", href: "/docs/nextjs/item", badge: "New" },
       { label: "Invoice", href: "/docs/nextjs/invoice", badge: "Core" },
+      { label: "Kbd", href: "/docs/nextjs/kbd", badge: "New" },
       { label: "Mails", href: "/docs/nextjs/email", badge: "Core" },
       { label: "Map", href: "/docs/nextjs/fleet-tracker", badge: "Core" },
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
