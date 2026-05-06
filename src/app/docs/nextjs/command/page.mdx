@@ -92,3 +92,62 @@ export default function QuickActions() {
   );
 }
 ```
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>open</code></td>
+        <td><code>boolean</code></td>
+        <td><strong>Required</strong></td>
+        <td>Controls the visibility of the modal dialog overlay.</td>
+      </tr>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>onOpenChange</code></td>
+        <td><code>{`(open: boolean) => void`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>Callback fired when the dialog is dismissed via a click-outside event or by pressing the Escape key.</td>
+      </tr>
+      <tr>
+        <td><code>CommandGroup</code></td>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional text label displayed directly above the clustered items. The entire group automatically hides if all its items are filtered out.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>An explicit string used for fuzzy searching. If omitted, the component automatically falls back to searching the rendered <code>textContent</code> of the item.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>onSelect</code></td>
+        <td><code>{`(value: string) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the item is clicked with the mouse or activated via the Enter key during keyboard navigation.</td>
+      </tr>
+      <tr>
+        <td><strong>All Components</strong></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Standard Tailwind CSS overrides for customized styling, sizing, or spacing.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
