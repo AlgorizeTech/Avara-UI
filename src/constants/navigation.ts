@@ -1,7 +1,7 @@
 type NavigationChild = {
   label: string;
   href: string;
-  badge?: string; // Optional badge like "Core" or "Updated"
+  badge?: string; 
 };
 type NavigationItem = {
   label: string;
@@ -66,6 +66,7 @@ export const navigation: NavigationItem[] = [
       { label: "Map", href: "/docs/nextjs/fleet-tracker", badge: "Core" },
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
+      { label: "Popover", href: "/docs/nextjs/popover", badge: "New" },
       { label: "Resizable", href: "/docs/nextjs/resizable", badge: "New" },
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
       { label: "Sonner", href: "/docs/nextjs/sonner", badge: "New" },
