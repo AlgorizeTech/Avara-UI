@@ -1,0 +1,70 @@
+import { ToggleShowcase } from "@/components/site/ToggleShowcase";
+
+# Toggle
+
+A two-state button that can be either on or off.
+
+Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
+
+## Interactive Showcase
+
+Use the controls below to test different visual variants and sizing. Notice how you can use a Toggle as an icon-only button, or pair it with text for complex actions.
+
+<ToggleShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
+
+---
+
+## Usage
+
+### Uncontrolled (Simple)
+
+If you don't need to tightly bind the component to React state, you can let it manage its own internal state and just provide a `defaultPressed` value.
+
+```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Star } from "lucide-react";
+
+export default function SimpleToggle() {
+  return (
+    <Toggle defaultPressed aria-label="Toggle star">
+      <Star className="w-4 h-4" />
+    </Toggle>
+  );
+}
+```
+
+## Controlled (Advanced)
+
+If you are building complex interfaces (like a Rich Text Editor), you should control the state directly using the pressed and onPressedChange prop
+
+```tsx
+import { useState } from "react";
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
+
+export default function Toolbar() {
+  const [isBold, setIsBold] = useState(false);
+
+  return (
+    <div className="flex gap-1 border p-1 rounded-md">
+      <Toggle
+        pressed={isBold}
+        onPressedChange={setIsBold}
+        aria-label="Toggle bold"
+      >
+        <Bold className="w-4 h-4" />
+      </Toggle>
+    </div>
+  );
+}
+```
