@@ -57,3 +57,111 @@ export default function IconRow() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Tooltip</code>
+        </td>
+        <td>
+          <code>delayDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>200</code>
+        </td>
+        <td>
+          The time (in milliseconds) a user must hover over the trigger before
+          the tooltip opens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"top" | "bottom" | "left" | "right"</code>
+        </td>
+        <td>
+          <code>"top"</code>
+        </td>
+        <td>
+          The preferred side of the trigger to render the tooltip content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"start" | "center" | "end"</code>
+        </td>
+        <td>
+          <code>"center"</code>
+        </td>
+        <td>
+          The preferred alignment against the chosen side. For example,{" "}
+          <code>side="top" align="end"</code> anchors the bottom-right corner of
+          the tooltip to the top-right corner of the trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>sideOffset</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>
+          The distance (in pixels) from the edge of the trigger element to the
+          tooltip bubble.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind overrides. Useful for overriding background colors
+          or text sizing on the <code>TooltipContent</code>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

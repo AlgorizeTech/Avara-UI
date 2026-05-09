@@ -1,0 +1,189 @@
+import { CollapsibleShowcase } from "@/components/site/CollapsibleShowcase";
+
+# Collapsible
+
+An interactive component which expands/collapses a panel.
+
+Traditional collapsible components rely on Javascript (like `Element.scrollHeight`) to calculate the exact height of the content before animating it. This causes layout thrashing and stuttering.
+
+The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
+
+## Interactive Showcase
+
+Use the controls below to see how incredibly versatile this component is. It can be used for simple FAQs, rich settings panels, or even deeply nested File Trees.
+
+<CollapsibleShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CollapsibleBlock.tsx`.
+
+---
+
+## Usage
+
+### Simple Usage
+
+Wrap your trigger button in `<CollapsibleTrigger>` and the content in `<CollapsibleContent>`.
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/custom/blocks/CollapsibleBlock";
+
+export default function BasicUsage() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger className="p-2 border rounded font-medium">
+        Click to Expand
+      </CollapsibleTrigger>
+
+      <CollapsibleContent>
+        <div className="p-4 border mt-2 rounded">This content was hidden!</div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+```
+
+## Animating Icons
+
+Because the Collapsible component automatically applies a data-state="open" or data-state="closed" attribute to its trigger, you can easily use standard Tailwind group logic to animate arrows or chevrons.
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/custom/blocks/CollapsibleBlock";
+import { ChevronDown } from "lucide-react";
+
+export default function AnimatedChevron() {
+  return (
+    <Collapsible>
+      {/* 1. Add "group" to the trigger */}
+      <CollapsibleTrigger className="flex items-center gap-2 group">
+        Toggle Me
+        {/* 2. Target the group-data-[state=open] class to rotate */}
+        <ChevronDown className="transition-transform group-data-[state=open]:rotate-180" />
+      </CollapsibleTrigger>
+
+      <CollapsibleContent>Content here.</CollapsibleContent>
+    </Collapsible>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Collapsible</code>
+        </td>
+        <td>
+          <code>open</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The controlled open state of the collapsible. Must be used in
+          conjunction with <code>onOpenChange</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Collapsible</code>
+        </td>
+        <td>
+          <code>defaultOpen</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          The initial open state of the collapsible when it is first rendered.
+          Used for uncontrolled state management.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Collapsible</code>
+        </td>
+        <td>
+          <code>onOpenChange</code>
+        </td>
+        <td>
+          <code>{`(open: boolean) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Event handler called when the open state of the collapsible changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Collapsible</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When true, prevents the user from interacting with the{" "}
+          <code>CollapsibleTrigger</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for customized styling or spacing.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

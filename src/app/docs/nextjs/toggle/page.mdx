@@ -68,3 +68,122 @@ export default function Toolbar() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>pressed</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The controlled pressed state of the toggle. If provided, the component
+          relies entirely on this value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>defaultPressed</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>The starting state when the component is uncontrolled.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>onPressedChange</code>
+        </td>
+        <td>
+          <code>{`(pressed: boolean) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Event handler called when the pressed state of the toggle changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "outline" | "ghost"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          The visual style variant. <code>ghost</code> is highly recommended
+          when clustering multiple toggles together in a toolbar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Adjusts the height, horizontal padding, and text-size of the toggle
+          button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Toggle</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Standard Tailwind CSS overrides.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
