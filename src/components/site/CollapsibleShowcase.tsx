@@ -373,7 +373,7 @@ export default function BasicFAQ() {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="p-5 pt-0 border-t border-zinc-100 dark:border-zinc-800/50 mt-2 space-y-4">
+                  <div className="p-5 border-t border-zinc-100 dark:border-zinc-800/50 mt-2 space-y-4">
                     <div className="flex items-center justify-between">
                       <label className="text-sm text-zinc-700 dark:text-zinc-300">
                         Email Alerts
@@ -420,7 +420,7 @@ export default function BasicFAQ() {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="p-5 pt-0 border-t border-zinc-100 dark:border-zinc-800/50 mt-2 space-y-4">
+                  <div className="p-5 border-t border-zinc-100 dark:border-zinc-800/50 mt-2 space-y-4">
                     <div className="flex flex-col gap-2">
                       <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
                         Production Key
