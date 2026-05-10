@@ -1,0 +1,215 @@
+import { TypographyShowcase } from "@/components/site/TypographyShowcase";
+
+# Typography
+
+Styles for headings, paragraphs, lists, and inline text elements.
+
+While Tailwind provides fantastic utility classes for text, manually copying strings like `scroll-m-20 text-4xl font-extrabold tracking-tight` onto every single `<h1>` tag in your application is tedious and error-prone. The `TypographyBlock` provides a collection of semantic React components that standardize your vertical rhythm, sizing, and dark-mode colors across your entire project.
+
+## Interactive Showcase
+
+Review the preview below to see how the various typography components flow together to create a beautifully structured document.
+
+<TypographyShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This suite of components simply wraps native HTML tags with carefully crafted Tailwind CSS strings. It is completely dependency-free.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TypographyBlock.tsx`.
+
+---
+
+## Usage
+
+Simply import the semantic wrappers you need and use them exactly like standard HTML tags.
+
+```tsx
+import {
+  H1,
+  H2,
+  P,
+  Blockquote,
+  List,
+  InlineCode,
+  Lead,
+} from "@/components/custom/blocks/TypographyBlock";
+
+export default function BlogPost() {
+  return (
+    <article>
+      <H1>Building Next-Gen UIs</H1>
+      <Lead>A deep dive into modular component architecture.</Lead>
+
+      <P>
+        When building large-scale applications, you want to avoid repeating
+        yourself. This is where <InlineCode>Typography</InlineCode> components
+        shine.
+      </P>
+
+      <H2>The Core Principles</H2>
+      <List>
+        <li>Maintain semantic HTML structure</li>
+        <li>Automate vertical spacing (margins)</li>
+        <li>Ensure accessible color contrast</li>
+      </List>
+
+      <Blockquote>
+        Consistency is the easiest way to make your app look professional.
+      </Blockquote>
+    </article>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Tag Output</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>H1</code>
+        </td>
+        <td>
+          <code>&lt;h1&gt;</code>
+        </td>
+        <td>Primary page heading. Massive, bold, and tightly tracked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>H2</code>
+        </td>
+        <td>
+          <code>&lt;h2&gt;</code>
+        </td>
+        <td>
+          Section heading. Includes a bottom border and distinct top margin.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>H3</code>
+        </td>
+        <td>
+          <code>&lt;h3&gt;</code>
+        </td>
+        <td>Subsection heading.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>H4</code>
+        </td>
+        <td>
+          <code>&lt;h4&gt;</code>
+        </td>
+        <td>Minor heading.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>P</code>
+        </td>
+        <td>
+          <code>&lt;p&gt;</code>
+        </td>
+        <td>
+          Standard paragraph text. Automatically handles top margins if it
+          follows another element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Blockquote</code>
+        </td>
+        <td>
+          <code>&lt;blockquote&gt;</code>
+        </td>
+        <td>Indented and italicized quote block with a left border.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>List</code>
+        </td>
+        <td>
+          <code>&lt;ul&gt;</code>
+        </td>
+        <td>
+          An unordered list. Handles left indentation and margin spacing for
+          child <code>&lt;li&gt;</code> tags.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InlineCode</code>
+        </td>
+        <td>
+          <code>&lt;code&gt;</code>
+        </td>
+        <td>Monospaced, slightly smaller text with a subtle background box.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Lead</code>
+        </td>
+        <td>
+          <code>&lt;p&gt;</code>
+        </td>
+        <td>
+          Introductory paragraph text. Slightly larger and muted compared to
+          standard paragraphs.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Large</code>
+        </td>
+        <td>
+          <code>&lt;div&gt;</code>
+        </td>
+        <td>Bolder, larger standard text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Small</code>
+        </td>
+        <td>
+          <code>&lt;small&gt;</code>
+        </td>
+        <td>Small, medium-weight text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Muted</code>
+        </td>
+        <td>
+          <code>&lt;span&gt;</code>
+        </td>
+        <td>Standard text but rendered in a lower-contrast, muted color.</td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          Accept <code>className</code> for standard overrides, and forward all
+          native HTML attributes (like <code>id</code>, <code>onClick</code>,
+          etc.) for their respective HTML tags.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
