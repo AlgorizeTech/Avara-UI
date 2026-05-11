@@ -58,6 +58,7 @@ export const navigation: NavigationItem[] = [
       { label: "Collapsible", href: "/docs/nextjs/collapsible", badge: "New" },
       { label: "ContextMenu", href: "/docs/nextjs/context-menu", badge: "New" },
       { label: "Drawer", href: "/docs/nextjs/drawer", badge: "Core" },
+      { label: "Dialog", href: "/docs/nextjs/dialog", badge: "New" },
       { label: "Date Picker", href: "/docs/nextjs/date-picker", badge: "Core" },
       { label: "Form", href: "/docs/nextjs/form", badge: "Core" },
       { label: "Input", href: "/docs/nextjs/input", badge: "Core" },

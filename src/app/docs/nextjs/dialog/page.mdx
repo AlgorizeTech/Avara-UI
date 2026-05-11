@@ -1,0 +1,214 @@
+import { DialogShowcase } from "@/components/site/DialogShowcase";
+
+# Dialog (Modal)
+
+A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.
+
+Popovers and Dropdowns are great for quick, non-blocking actions. But when you need to force the user to make a decision or complete a complex form without distractions, you need a Dialog (Modal).
+
+The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
+
+## Interactive Showcase
+
+Use the templates below to explore different variations of a Dialog. Notice how the background scrollbar vanishes when the dialog opens, and returns exactly as it was when it closes.
+
+<DialogShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DialogBlock.tsx`.
+
+---
+
+## Usage
+
+A standard dialog requires wrapping your trigger (the button that opens it) and your content within the `<Dialog>` root context.
+
+```tsx
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function CheckoutModal() {
+  return (
+    <Dialog>
+      {/* 1. The button that opens the modal */}
+      <DialogTrigger className="px-4 py-2 bg-blue-600 text-white rounded">
+        Proceed to Checkout
+      </DialogTrigger>
+
+      {/* 2. The modal window itself */}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Confirm Payment</DialogTitle>
+          <DialogDescription>
+            Your card ending in 4242 will be charged $99.00.
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Custom Body Content */}
+        <div className="py-4">
+          <p>Subscription: Annual Pro Plan</p>
+        </div>
+
+        {/* Actions aligned to the right */}
+        <DialogFooter>
+          <button className="border px-4 py-2 rounded">Cancel</button>
+          <button className="bg-black text-white px-4 py-2 rounded">
+            Pay Now
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## Controlled State
+
+If you need to close the dialog programmatically (for instance, after a fetch request succeeds), you can control the open state directly.
+
+```tsx
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = async () => {
+    await saveToServer();
+    setOpen(false); // Close programmatically after success
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>Open</DialogTrigger>
+      <DialogContent>
+        <button onClick={handleSubmit}>Save & Close</button>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Dialog</code>
+        </td>
+        <td>
+          <code>open</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The controlled open state of the dialog. Use this to programmatically
+          open or close the modal from parent state.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dialog</code>
+        </td>
+        <td>
+          <code>defaultOpen</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>The starting state of the dialog when running uncontrollably.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dialog</code>
+        </td>
+        <td>
+          <code>onOpenChange</code>
+        </td>
+        <td>
+          <code>{`(open: boolean) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Event handler called when the open state of the dialog changes via a
+          user action (like pressing Escape or clicking the backdrop).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DialogContent</code>
+        </td>
+        <td>
+          <code>hideCloseButton</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, removes the built-in 'X' icon in the top right corner of the
+          dialog content box.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for customized styling or spacing. For{" "}
+          <code>DialogContent</code>, you can adjust the <code>max-w-*</code>{" "}
+          class here to change the modal width.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
