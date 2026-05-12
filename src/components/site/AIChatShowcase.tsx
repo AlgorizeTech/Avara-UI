@@ -5,7 +5,7 @@ import AIChat, {
   AIChatVariant,
 } from "@/components/custom/blocks/Ai-chat";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const AICHAT_ENGINE_CODE_TS = `"use client";
@@ -15,7 +15,7 @@ import { Bot, Check, Copy, Edit2, Menu, MessageSquare, Mic, MoreVertical, Paperc
 import { useEffect, useRef, useState } from "react";
 
 export type AIChatVariant = "default" | "minimal" | "glass";
-export type AIChatColor = "indigo" | "rose" | "emerald" | "zinc";
+export type AIChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
@@ -47,7 +47,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<AIChatColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { primaryText: "text-indigo-500 dark:text-indigo-400", primaryBg: "bg-indigo-500 hover:bg-indigo-600 text-white", primaryHover: "hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10", lightBg: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300", gradient: "from-indigo-500 to-purple-600", shadow: "shadow-indigo-500/20", ring: "focus-within:border-indigo-500/50 focus-within:ring-indigo-500/10", focusRing: "focus:ring-indigo-500/20", inputBorder: "border-indigo-300 dark:border-indigo-500/50" },
   rose: { primaryText: "text-rose-500 dark:text-rose-400", primaryBg: "bg-rose-500 hover:bg-rose-600 text-white", primaryHover: "hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10", lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300", gradient: "from-rose-500 to-orange-500", shadow: "shadow-rose-500/20", ring: "focus-within:border-rose-500/50 focus-within:ring-rose-500/10", focusRing: "focus:ring-rose-500/20", inputBorder: "border-rose-300 dark:border-rose-500/50" },
   emerald: { primaryText: "text-emerald-500 dark:text-emerald-400", primaryBg: "bg-emerald-500 hover:bg-emerald-600 text-white", primaryHover: "hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10", lightBg: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300", gradient: "from-emerald-500 to-teal-500", shadow: "shadow-emerald-500/20", ring: "focus-within:border-emerald-500/50 focus-within:ring-emerald-500/10", focusRing: "focus:ring-emerald-500/20", inputBorder: "border-emerald-300 dark:border-emerald-500/50" },
@@ -58,7 +58,27 @@ export type ChatThread = { id: number | string; title: string; date: string; };
 export type Message = { id: number | string; role: "ai" | "user"; content: string; time: string; };
 
 export default function AIChat({ chatHistory = [], initialMessages = [], variant = "default", color = "indigo" }: { chatHistory?: ChatThread[]; initialMessages?: Message[]; variant?: AIChatVariant; color?: AIChatColor; }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color.startsWith("#");
+
+  const customVars = isCustomHex ? {
+    "--chat-custom": color,
+    "--chat-custom-10": \`\${color}1a\`,
+    "--chat-custom-20": \`\${color}33\`,
+    "--chat-custom-50": \`\${color}80\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    primaryText: "text-[var(--chat-custom)]",
+    primaryBg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+    primaryHover: "hover:text-[var(--chat-custom)] hover:bg-[var(--chat-custom-10)]",
+    lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+    gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+    shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+    ring: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-10)]",
+    focusRing: "focus:ring-2 focus:ring-[var(--chat-custom-20)]",
+    inputBorder: "border-[var(--chat-custom-50)]",
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [chats, setChats] = useState<ChatThread[]>(chatHistory);
@@ -155,7 +175,7 @@ export default function AIChat({ chatHistory = [], initialMessages = [], variant
   };
 
   return (
-    <div className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}\`, styles.sidebar)}>
         <div className="p-5 border-b border-zinc-100 dark:border-zinc-800/50 shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden">
@@ -354,7 +374,27 @@ const colorThemes = {
 };
 
 export default function AIChat({ chatHistory = [], initialMessages = [], variant = "default", color = "indigo" }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color.startsWith("#");
+
+  const customVars = isCustomHex ? {
+    "--chat-custom": color,
+    "--chat-custom-10": \`\${color}1a\`,
+    "--chat-custom-20": \`\${color}33\`,
+    "--chat-custom-50": \`\${color}80\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    primaryText: "text-[var(--chat-custom)]",
+    primaryBg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+    primaryHover: "hover:text-[var(--chat-custom)] hover:bg-[var(--chat-custom-10)]",
+    lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+    gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+    shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+    ring: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-10)]",
+    focusRing: "focus:ring-2 focus:ring-[var(--chat-custom-20)]",
+    inputBorder: "border-[var(--chat-custom-50)]",
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [chats, setChats] = useState(chatHistory);
@@ -451,7 +491,7 @@ export default function AIChat({ chatHistory = [], initialMessages = [], variant
   };
 
   return (
-    <div className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}\`, styles.sidebar)}>
         <div className="p-5 border-b border-zinc-100 dark:border-zinc-800/50 shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden">
@@ -607,7 +647,45 @@ export default function AIChat({ chatHistory = [], initialMessages = [], variant
 
 export function AIChatShowcase() {
   const [variant, setVariant] = useState<AIChatVariant>("default");
-  const [color, setColor] = useState<AIChatColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<AIChatColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    // Check periodically in case another script updates localStorage
+    // without triggering a storage event in the exact same window.
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    // Listen for official cross-tab storage events
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
@@ -705,6 +783,7 @@ export default function AIChatDemo()${typeDef} {
             Theme Color
           </label>
           <div className="flex items-center gap-2 h-[36px]">
+            {/* Standard Presets */}
             {[
               { id: "indigo", bg: "bg-indigo-500" },
               { id: "rose", bg: "bg-rose-500" },
@@ -713,7 +792,7 @@ export default function AIChatDemo()${typeDef} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as AIChatColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -722,6 +801,33 @@ export default function AIChatDemo()${typeDef} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Hex Native Color Picker */}
+            <div
+              className={`relative w-7 h-7 rounded-full overflow-hidden transition-all duration-200 flex items-center justify-center ${
+                color.startsWith("#")
+                  ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
+                  : "border-2 border-dashed border-zinc-400 dark:border-zinc-600 hover:scale-110 hover:opacity-80"
+              }`}
+              title="Custom Hex Color"
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#6366f1"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

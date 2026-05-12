@@ -26,7 +26,15 @@ import { useEffect, useRef, useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type AIChatVariant = "default" | "minimal" | "glass";
-export type AIChatColor = "indigo" | "rose" | "emerald" | "zinc";
+
+// We use (string & {}) to preserve IDE autocomplete for the predefined types
+// while still allowing any arbitrary hex string like "#000fff".
+export type AIChatColor =
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
@@ -72,7 +80,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<AIChatColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     primaryText: "text-indigo-500 dark:text-indigo-400",
     primaryBg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -150,7 +158,34 @@ export default function AIChat({
   variant?: AIChatVariant;
   color?: AIChatColor;
 }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color.startsWith("#");
+
+  // 1. If it's a custom hex, we generate opacity variants and inject them into the DOM
+  const customVars = isCustomHex
+    ? ({
+        "--chat-custom": color,
+        "--chat-custom-10": `${color}1a`, // 10% opacity
+        "--chat-custom-20": `${color}33`, // 20% opacity
+        "--chat-custom-50": `${color}80`, // 50% opacity
+      } as React.CSSProperties)
+    : {};
+
+  // 2. We dynamically assemble the Tailwind theme mapping to point to our CSS variables
+  const theme = isCustomHex
+    ? {
+        primaryText: "text-[var(--chat-custom)]",
+        primaryBg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+        primaryHover:
+          "hover:text-[var(--chat-custom)] hover:bg-[var(--chat-custom-10)]",
+        lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+        gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+        shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+        ring: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-10)]",
+        focusRing: "focus:ring-2 focus:ring-[var(--chat-custom-20)]",
+        inputBorder: "border-[var(--chat-custom-50)]",
+      }
+    : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [chats, setChats] = useState<ChatThread[]>(chatHistory);
@@ -331,6 +366,7 @@ export default function AIChat({
 
   return (
     <div
+      style={customVars}
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,
