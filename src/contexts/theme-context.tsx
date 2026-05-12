@@ -61,6 +61,12 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (!localStorage.getItem("primaryColor")) {
+      localStorage.setItem("primaryColor", "#6356d1");
+    }
+  }, []);
+
   return (
     <ThemeContext.Provider
       value={{

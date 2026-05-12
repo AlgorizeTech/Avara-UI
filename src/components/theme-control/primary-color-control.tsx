@@ -16,6 +16,8 @@ export function PrimaryColorControl() {
     setColorInput(primaryColor);
   }, [primaryColor]);
 
+
+
   useEffect(() => {
     const handler = setTimeout(() => {
       if (colorInput !== primaryColor) {
