@@ -2,6 +2,8 @@ import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { geistMono } from '@/assets/fonts';
 import { PackageManagerProvider } from '@/contexts/package-manager-context';
+import { ThemeContextProvider } from '@/contexts/theme-context';
+import { ThemeControl } from '@/components/theme-control/theme-control';
 import { Inter } from 'next/font/google';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { WebVitals } from '@/components/performance/web-vitals';
@@ -38,14 +40,17 @@ export default function RootLayout({
         className={`${inter.className} ${geistMono.variable} antialiased min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <PackageManagerProvider>
-            <SolidProgressBar />
+          <ThemeContextProvider>
+            <PackageManagerProvider>
+              <SolidProgressBar />
 
-            <Header />
-            {children}
-            <PerformanceMonitor />
-            <WebVitals />
-          </PackageManagerProvider>
+              <Header />
+              {children}
+              <ThemeControl />
+              <PerformanceMonitor />
+              <WebVitals />
+            </PackageManagerProvider>
+          </ThemeContextProvider>
         </ThemeProvider>
 
         {/* Load analytics and structured data after initial render */}
