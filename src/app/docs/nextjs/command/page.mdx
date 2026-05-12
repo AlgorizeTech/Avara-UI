@@ -1,0 +1,153 @@
+import { CommandShowcase } from "@/components/site/CommandShowcase";
+
+# Command
+
+A powerful, composable command menu palette for searching data and triggering quick actions.
+
+Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
+
+## Interactive Showcase
+
+Use the layout controls below to test the static and modal variants.
+
+1. **Try typing in the search box:** The list will instantly filter, and any groups that become empty will automatically vanish.
+2. **Keyboard Navigation:** Use your `ArrowUp` and `ArrowDown` keys to navigate the filtered list, and hit `Enter` to trigger an action!
+
+<CommandShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CommandBlock.tsx`.
+
+---
+
+## Usage
+
+### Inline Layout
+
+To render the command menu flat on the page (like a sidebar search or settings panel):
+
+```tsx
+import {
+  Command, CommandInput, CommandList, CommandEmpty,
+  CommandGroup, CommandItem, CommandSeparator, CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
+
+export default function StaticMenu() {
+  return (
+    <Command className="border shadow-sm max-w-sm">
+      <CommandInput placeholder="Search settings..."/>
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+
+        <CommandGroup heading="General">
+          <CommandItem onSelect="{()"> alert("Profile!")}>
+            Profile
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}
+```
+
+## Dialog Layout (Modal)
+
+To trigger the command menu as an overlay (the classic Cmd+K experience), simply swap `<Command>` for `<CommandDialog>` and manage its open state:
+
+```tsx
+import { useState, useEffect } from "react";
+import { CommandDialog, CommandInput, CommandList, CommandItem } from "@/components/custom/blocks/CommandBlock";
+
+export default function QuickActions() {
+  const [open, setOpen] = useState(false);
+
+  // Hook to capture Cmd+K
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  return (
+    <CommandDialog open="{open}" onOpenChange="{setOpen}">
+      <CommandInput placeholder="What do you want to do?"/>
+      <CommandList>
+        <CommandItem onSelect="{()"> setOpen(false)}>
+          Close Menu
+        </CommandItem>
+      </CommandList>
+    </CommandDialog>
+  );
+}
+```
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>open</code></td>
+        <td><code>boolean</code></td>
+        <td><strong>Required</strong></td>
+        <td>Controls the visibility of the modal dialog overlay.</td>
+      </tr>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>onOpenChange</code></td>
+        <td><code>{`(open: boolean) => void`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>Callback fired when the dialog is dismissed via a click-outside event or by pressing the Escape key.</td>
+      </tr>
+      <tr>
+        <td><code>CommandGroup</code></td>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional text label displayed directly above the clustered items. The entire group automatically hides if all its items are filtered out.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>An explicit string used for fuzzy searching. If omitted, the component automatically falls back to searching the rendered <code>textContent</code> of the item.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>onSelect</code></td>
+        <td><code>{`(value: string) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the item is clicked with the mouse or activated via the Enter key during keyboard navigation.</td>
+      </tr>
+      <tr>
+        <td><strong>All Components</strong></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Standard Tailwind CSS overrides for customized styling, sizing, or spacing.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

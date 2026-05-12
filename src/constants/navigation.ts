@@ -1,7 +1,7 @@
 type NavigationChild = {
   label: string;
   href: string;
-  badge?: string; // Optional badge like "Core" or "Updated"
+  badge?: string; 
 };
 type NavigationItem = {
   label: string;
@@ -47,29 +47,38 @@ export const navigation: NavigationItem[] = [
       { label: "Ai-Chat", href: "/docs/nextjs/ai-chat", badge: "Core" },
       { label: "Breadcrumb", href: "/docs/nextjs/breadcrumb", badge: "Core" },
       { label: "Modern Buttons", href: "/docs/nextjs/button", badge: "Core" },
+      { label: "Card", href: "/docs/nextjs/card", badge: "New" },
       { label: "Chart", href: "/docs/nextjs/chart", badge: "New" },
       { label: "Carousel", href: "/docs/nextjs/carousel", badge: "Core" },
       { label: "Counter", href: "/docs/nextjs/counter", badge: "Core" },
+      { label: "Command", href: "/docs/nextjs/command", badge: "New" },
       { label: "Calendar", href: "/docs/nextjs/calendar", badge: "Core" },
       { label: "Chat", href: "/docs/nextjs/chat", badge: "Core" },
       { label: "Cart", href: "/docs/nextjs/cart", badge: "Core" },
+      { label: "Collapsible", href: "/docs/nextjs/collapsible", badge: "New" },
+      { label: "ContextMenu", href: "/docs/nextjs/context-menu", badge: "New" },
       { label: "Drawer", href: "/docs/nextjs/drawer", badge: "Core" },
       { label: "Date Picker", href: "/docs/nextjs/date-picker", badge: "Core" },
       { label: "Form", href: "/docs/nextjs/form", badge: "Core" },
       { label: "Input", href: "/docs/nextjs/input", badge: "Core" },
       { label: "Item", href: "/docs/nextjs/item", badge: "New" },
       { label: "Invoice", href: "/docs/nextjs/invoice", badge: "Core" },
+      { label: "Kbd", href: "/docs/nextjs/kbd", badge: "New" },
       { label: "Mails", href: "/docs/nextjs/email", badge: "Core" },
       { label: "Map", href: "/docs/nextjs/fleet-tracker", badge: "Core" },
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
+      { label: "Popover", href: "/docs/nextjs/popover", badge: "New" },
       { label: "Resizable", href: "/docs/nextjs/resizable", badge: "New" },
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
       { label: "Sonner", href: "/docs/nextjs/sonner", badge: "New" },
       { label: "Select", href: "/docs/nextjs/select", badge: "Core" },
       { label: "Skeleton", href: "/docs/nextjs/skeleton", badge: "New" },
       { label: "Toast", href: "/docs/nextjs/toast", badge: "Core" },
+      { label: "Toggle", href: "/docs/nextjs/toggle", badge: "New" },
       { label: "Table", href: "/docs/nextjs/table", badge: "Core" },
+      { label: "Tooltip", href: "/docs/nextjs/tooltip", badge: "New" },
+      { label: "Typography", href: "/docs/nextjs/typography", badge: "New" },
       { label: "Pagination", href: "/docs/nextjs/pagination", badge: "New" },
       { label: "Tabs", href: "/docs/nextjs/vertical-tabs", badge: "Core" },
       

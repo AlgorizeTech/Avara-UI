@@ -1,0 +1,217 @@
+import { ContextMenuShowcase } from "@/components/site/ContextMenuShowcase";
+
+# Context Menu
+
+Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.
+
+Building a Context Menu is difficult because it involves intercepting the browser's native right-click event (`onContextMenu`) and rendering an overlay component precisely at the user's mouse coordinates without it getting clipped by CSS `overflow` properties.
+
+This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
+
+## Interactive Showcase
+
+Right-click anywhere inside the dashed box below to see the context menu in action. Try clicking near the extreme edges of the dashed box to see how the boundary-collision math prevents the menu from falling off the screen.
+
+<ContextMenuShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is completely native and relies only on `react-dom` for the portal functionality.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ContextMenuBlock.tsx`.
+
+---
+
+## Usage
+
+A `<ContextMenu>` component requires a Trigger area and a Content portal. The `<ContextMenuTrigger>` wraps any content you want to act as the right-click listener zone.
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+} from "@/components/custom/blocks/ContextMenuBlock";
+
+export default function RightClickTable() {
+  return (
+    <ContextMenu>
+      {/* 1. This entire DIV now intercepts right-clicks */}
+      <ContextMenuTrigger className="w-full h-40 bg-gray-100 flex items-center justify-center">
+        Right-click anywhere inside this div
+      </ContextMenuTrigger>
+
+      {/* 2. The menu that appears at the cursor */}
+      <ContextMenuContent className="w-64">
+        <ContextMenuItem onClick={() => alert("Back clicked")}>
+          Back
+          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        <ContextMenuItem disabled>
+          Forward
+          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        <ContextMenuItem onClick={() => alert("Reload clicked")}>
+          Reload
+          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ContextMenuTrigger</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for the boundary container that
+          intercepts the right-click event.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuContent</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for the floating menu card. By
+          default, you usually want to set a width here (e.g., <code>w-64</code>
+          ).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the item becomes slightly transparent, ignores hover effects,
+          and prevents <code>onClick</code> events from firing.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>{`(e: React.MouseEvent) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Event handler fired when the user left-clicks the item. Clicking an
+          item automatically closes the context menu.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds left padding to the item. This is incredibly useful when
+          aligning text items with other items that have icons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuLabel</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds left padding to match the alignment of inset menu items.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes</code>
+        </td>
+        <td>
+          <code>{}</code>
+        </td>
+        <td>
+          Standard HTML attributes for their respective underlying{" "}
+          <code>&lt;div&gt;</code> elements.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

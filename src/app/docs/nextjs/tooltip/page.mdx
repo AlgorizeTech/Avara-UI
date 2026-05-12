@@ -1,0 +1,167 @@
+import { TooltipShowcase } from "@/components/site/TooltipShowcase";
+
+# Tooltip
+
+A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
+
+Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
+
+## Interactive Showcase
+
+Hover over or tab to the center icon to see the tooltip render. Use the controls to test how the dynamic `getBoundingClientRect` math positions the portal perfectly across all sides and alignments.
+
+<TooltipShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TooltipBlock.tsx`.
+
+---
+
+## Usage
+
+The Tooltip leverages a highly composable architecture. Ensure you wrap your application (or the immediate parent) in a `<TooltipProvider>`.
+
+```tsx
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/custom/blocks/TooltipBlock";
+import { Info } from "lucide-react";
+
+export default function IconRow() {
+  return (
+    <TooltipProvider>
+      <div className="flex gap-4">
+        <Tooltip delayDuration="{300}">
+          <TooltipTrigger>
+            {/* The trigger automatically handles focus/hover states */}
+            <button className="p-2 bg-gray-100 rounded-full">
+              <Info className="w-4 h-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" align="center">
+            View detailed analytics
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Tooltip</code>
+        </td>
+        <td>
+          <code>delayDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>200</code>
+        </td>
+        <td>
+          The time (in milliseconds) a user must hover over the trigger before
+          the tooltip opens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"top" | "bottom" | "left" | "right"</code>
+        </td>
+        <td>
+          <code>"top"</code>
+        </td>
+        <td>
+          The preferred side of the trigger to render the tooltip content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"start" | "center" | "end"</code>
+        </td>
+        <td>
+          <code>"center"</code>
+        </td>
+        <td>
+          The preferred alignment against the chosen side. For example,{" "}
+          <code>side="top" align="end"</code> anchors the bottom-right corner of
+          the tooltip to the top-right corner of the trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>sideOffset</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>
+          The distance (in pixels) from the edge of the trigger element to the
+          tooltip bubble.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind overrides. Useful for overriding background colors
+          or text sizing on the <code>TooltipContent</code>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

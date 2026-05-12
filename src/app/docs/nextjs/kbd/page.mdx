@@ -1,0 +1,105 @@
+import { KbdShowcase } from "@/components/site/KbdShowcase";
+
+# Kbd (Keyboard)
+
+A specialized typography component used to display keyboard buttons, shortcuts, and commands.
+
+Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `<kbd>` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
+
+## Interactive Showcase
+
+Use the controls below to change the size of the keys. `sm` is ideal for placing inside dense dropdown menus, while `md` and `lg` work well for documentation or large onboarding modals.
+
+<KbdShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free** and forwards all standard HTML attributes.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/KbdBlock.tsx`.
+
+---
+
+## Usage
+
+You can use the component independently, or string multiple together to represent complex key combinations.
+
+```tsx
+import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function ShortcutHint() {
+  return (
+    <div className="flex items-center gap-2 text-sm text-gray-500">
+      <span>To open the command palette, press</span>
+      <div className="flex items-center gap-1">
+        <Kbd title="Command">⌘</Kbd>
+        <Kbd title="K">K</Kbd>
+      </div>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"sm"</code>
+        </td>
+        <td>Controls the height, padding, and font-size of the key element.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides. Useful for adding specific margin or
+          overriding the shadow if needed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLElement&gt;</code>
+        </td>
+        <td>
+          <code>{}</code>
+        </td>
+        <td>
+          Accepts all standard HTML attributes for a native{" "}
+          <code>&lt;kbd&gt;</code> element, including <code>title</code> or{" "}
+          <code>aria-label</code> for accessibility.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
