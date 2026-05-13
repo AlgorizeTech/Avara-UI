@@ -30,7 +30,15 @@ import { Button, buttonVariants } from "../ui/button";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type CalendarVariant = "default" | "minimal" | "glass";
-export type CalendarColor = "indigo" | "rose" | "emerald" | "blue" | "zinc";
+
+// Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
+export type CalendarColor =
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "blue"
+  | "zinc"
+  | (string & {});
 
 const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   default: {
@@ -73,7 +81,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<CalendarColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     primaryBg:
       "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20",
@@ -116,7 +124,7 @@ const colorThemes: Record<CalendarColor, Record<string, string>> = {
   },
 };
 
-// --- START: react-day-picker wrapper (Remains unchanged internally) ---
+// --- START: react-day-picker wrapper ---
 function Calendar({
   className,
   classNames,
@@ -314,7 +322,7 @@ const formatDateForInput = (dateKey: string) => {
 function CalendarDashboard({
   mockEvents = {},
   variant = "default",
-  color = "indigo", // COLOR PROP ADDED HERE
+  color = "indigo",
 }: {
   mockEvents?: Record<string, string[]>;
   variant?: CalendarVariant;
@@ -322,7 +330,27 @@ function CalendarDashboard({
 }) {
   const [isDark, setIsDark] = useState(false);
   const styles = dashboardVariants[variant];
-  const theme = colorThemes[color];
+
+  // Custom hex injection logic
+  const isCustomHex = color && color.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--cal-custom": color,
+        "--cal-custom-10": `${color}1a`,
+        "--cal-custom-20": `${color}33`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        primaryBg:
+          "bg-[var(--cal-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--cal-custom-20)]",
+        primaryText: "text-[var(--cal-custom)]",
+        lightBg: "bg-[var(--cal-custom-10)] text-[var(--cal-custom)]",
+        focusRing: "focus:ring-2 focus:ring-[var(--cal-custom-20)]",
+        pulse: "bg-[var(--cal-custom)]",
+      }
+    : colorThemes[color] || colorThemes["indigo"];
 
   // Convert dict prop to rich array state
   const [events, setEvents] = useState<any[]>([]);
@@ -529,7 +557,7 @@ function CalendarDashboard({
   };
 
   return (
-    <div className={`${isDark ? "dark" : ""} w-full h-full`}>
+    <div className={`${isDark ? "dark" : ""} w-full h-full`} style={customVars}>
       <div
         className={cn(
           "w-full h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300",

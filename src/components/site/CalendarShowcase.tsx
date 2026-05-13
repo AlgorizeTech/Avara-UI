@@ -6,7 +6,7 @@ import {
   CalendarVariant,
 } from "@/components/custom/blocks/Calendar";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ==========================================
 // 1. TYPESCRIPT ENGINE CODE
@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button"; // Adjust path if needed
 
 export type CalendarVariant = "default" | "minimal" | "glass";
-export type CalendarColor = "indigo" | "rose" | "emerald" | "blue" | "zinc";
+export type CalendarColor = "indigo" | "rose" | "emerald" | "blue" | "zinc" | (string & {});
 
 const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   default: { wrapper: "bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-sm", sidebar: "bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800", header: "bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800", gridOuter: "bg-gray-200 dark:bg-gray-800 p-px", gridGap: "gap-px", gridHeader: "bg-white/95 dark:bg-gray-950/95 border-b border-gray-200 dark:border-gray-800", cellBg: "bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/50" },
@@ -31,7 +31,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl", sidebar: "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10", header: "bg-transparent border-b border-white/20 dark:border-white/10", gridOuter: "bg-gray-400/20 dark:bg-gray-700/30 p-px", gridGap: "gap-px", gridHeader: "bg-white/20 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10", cellBg: "bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 backdrop-blur-sm" },
 };
 
-const colorThemes: Record<CalendarColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { primaryBg: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20", primaryText: "text-indigo-600 dark:text-indigo-400", lightBg: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300", focusRing: "focus:ring-indigo-500", pulse: "bg-indigo-500" },
   rose: { primaryBg: "bg-rose-600 hover:bg-rose-700 text-white shadow-rose-500/20", primaryText: "text-rose-600 dark:text-rose-400", lightBg: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", focusRing: "focus:ring-rose-500", pulse: "bg-rose-500" },
   emerald: { primaryBg: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/20", primaryText: "text-emerald-600 dark:text-emerald-400", lightBg: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", focusRing: "focus:ring-emerald-500", pulse: "bg-emerald-500" },
@@ -118,7 +118,22 @@ const formatDateForInput = (dateKey: string) => {
 export function CalendarDashboard({ mockEvents = {}, variant = "default", color = "indigo" }: { mockEvents?: Record<string, string[]>; variant?: CalendarVariant; color?: CalendarColor; }) {
   const [isDark, setIsDark] = useState(false);
   const styles = dashboardVariants[variant];
-  const theme = colorThemes[color];
+  
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--cal-custom": color,
+    "--cal-custom-10": \`\${color}1a\`,
+    "--cal-custom-20": \`\${color}33\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    primaryBg: "bg-[var(--cal-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--cal-custom-20)]",
+    primaryText: "text-[var(--cal-custom)]",
+    lightBg: "bg-[var(--cal-custom-10)] text-[var(--cal-custom)]",
+    focusRing: "focus:ring-2 focus:ring-[var(--cal-custom-20)]",
+    pulse: "bg-[var(--cal-custom)]"
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
@@ -217,7 +232,7 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
   };
 
   return (
-    <div className={\`\${isDark ? "dark" : ""} w-full h-full\`}>
+    <div className={\`\${isDark ? "dark" : ""} w-full h-full\`} style={customVars}>
       <div className={cn("w-full h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300", styles.wrapper, variant !== "minimal" ? "rounded-xl overflow-hidden" : "")}>
         <aside className={cn("w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300", styles.sidebar)}>
           <div className="flex items-center justify-between mb-4">
@@ -530,7 +545,22 @@ const formatDateForInput = (dateKey) => {
 export function CalendarDashboard({ mockEvents = {}, variant = "default", color = "indigo" }) {
   const [isDark, setIsDark] = useState(false);
   const styles = dashboardVariants[variant];
-  const theme = colorThemes[color];
+  
+  const isCustomHex = color && color.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--cal-custom": color,
+    "--cal-custom-10": \`\${color}1a\`,
+    "--cal-custom-20": \`\${color}33\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    primaryBg: "bg-[var(--cal-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--cal-custom-20)]",
+    primaryText: "text-[var(--cal-custom)]",
+    lightBg: "bg-[var(--cal-custom-10)] text-[var(--cal-custom)]",
+    focusRing: "focus:ring-2 focus:ring-[var(--cal-custom-20)]",
+    pulse: "bg-[var(--cal-custom)]"
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -629,7 +659,7 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
   };
 
   return (
-    <div className={\`\${isDark ? "dark" : ""} w-full h-full\`}>
+    <div className={\`\${isDark ? "dark" : ""} w-full h-full\`} style={customVars}>
       <div className={cn("w-full h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300", styles.wrapper, variant !== "minimal" ? "rounded-xl overflow-hidden" : "")}>
         <aside className={cn("w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300", styles.sidebar)}>
           <div className="flex items-center justify-between mb-4">
@@ -770,16 +800,16 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
   );
 }
 
-function CalendarCell({ day, events = [], isGray, activePopupEventId, setActivePopupEventId, colIndex, rowIndex, dateStr, onDeleteEvent, onEditEvent, onClickCell, cellClass, theme }) {
+function CalendarCell({ day, events = [], isGray, activePopupEventId, setActivePopupEventId, colIndex, rowIndex, dateStr, onDeleteEvent, onEditEvent, onClickCell, cellClass, theme }: any) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";
-  const isAnyPopupOpen = events.some((e) => e.id === activePopupEventId);
+  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
 
   return (
     <div onClick={onClickCell} className={cn(\`relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer \${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} \${isGray ? "text-gray-400 dark:text-gray-600 opacity-60" : "text-gray-900 dark:text-gray-100"}\`, cellClass)}>
       <div className={\`text-xs sm:text-sm font-medium mb-1 sm:mb-2 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded shrink-0\`}>{day}</div>
       <div className="flex-1 overflow-y-auto space-y-1 sm:space-y-1.5 pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event) => {
+        {events.map((event: any) => {
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray ? "border-gray-200 bg-gray-50 text-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-600" : isPentest ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400" : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
@@ -797,7 +827,7 @@ function CalendarCell({ day, events = [], isGray, activePopupEventId, setActiveP
           );
         })}
       </div>
-      {events.map((event) => {
+      {events.map((event: any) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
         const PlatformIcon = event.platform === "meet" ? Video : event.platform === "slack" ? Hash : MessageSquare;
@@ -837,7 +867,42 @@ export { Calendar, CalendarDashboard, CalendarDayButton };`;
 
 export function CalendarShowcase() {
   const [variant, setVariant] = useState<CalendarVariant>("default");
-  const [color, setColor] = useState<CalendarColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<CalendarColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   // Dynamic code generation based on selected state
   const generateUsageCode = (isTs: boolean) => `"use client";
@@ -904,7 +969,7 @@ export default function CalendarDemo()${isTs ? " : React.JSX.Element" : ""} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as CalendarColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -913,6 +978,29 @@ export default function CalendarDemo()${isTs ? " : React.JSX.Element" : ""} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#8b5cf6"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
