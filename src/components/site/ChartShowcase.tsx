@@ -14,7 +14,7 @@ const CHART_ENGINE_CODE_TS = `"use client";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
-export type ChartColor = "indigo" | "rose" | "emerald" | "zinc" | "amber" | "blue" | string;
+export type ChartColor = "indigo" | "rose" | "emerald" | "zinc" | "amber" | "blue" | (string & {});
 export type ChartType = "bar" | "line" | "pie" | "donut";
 
 const colorMap: Record<string, string> = { indigo: "#4f46e5", rose: "#e11d48", emerald: "#10b981", zinc: "#3f3f46", amber: "#f59e0b", blue: "#3b82f6" };

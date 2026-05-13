@@ -5,7 +5,7 @@ import EmailApp, {
   EmailVariant,
 } from "@/components/custom/blocks/Email";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const EMAIL_ENGINE_CODE_TS = `"use client";
@@ -15,7 +15,7 @@ import { Archive, Bold, ChevronLeft, ChevronRight, Edit3, FileText, Image as Ima
 import { useEffect, useMemo, useState } from "react";
 
 export type EmailVariant = "default" | "minimal" | "glass";
-export type EmailColor = "indigo" | "rose" | "emerald" | "zinc";
+export type EmailColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const emailVariants: Record<EmailVariant, Record<string, string>> = {
   default: { wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl", sidebar: "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50", main: "bg-white dark:bg-[#09090b]", header: "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", searchBg: "bg-zinc-100 dark:bg-zinc-900/50 border border-transparent", emailItem: "bg-white dark:bg-[#09090b] hover:bg-zinc-50 dark:hover:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800/60", composeModal: "bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 shadow-2xl" },
@@ -23,7 +23,7 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
   glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl", sidebar: "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10", main: "bg-transparent", header: "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md", searchBg: "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md", emailItem: "bg-transparent hover:bg-white/20 dark:hover:bg-white/5 border-b border-white/10 dark:border-white/5 transition-colors", composeModal: "bg-white/60 dark:bg-black/60 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl" },
 };
 
-const colorThemes: Record<EmailColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20", lightBg: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300", border: "border-indigo-500", focusRing: "focus:border-indigo-500/30 focus:ring-indigo-500/10 dark:focus:ring-indigo-500/20", dot: "bg-indigo-500" },
   rose: { text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20", lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300", border: "border-rose-500", focusRing: "focus:border-rose-500/30 focus:ring-rose-500/10 dark:focus:ring-rose-500/20", dot: "bg-rose-500" },
   emerald: { text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/20", lightBg: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300", border: "border-emerald-500", focusRing: "focus:border-emerald-500/30 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/20", dot: "bg-emerald-500" },
@@ -42,7 +42,24 @@ const BulletproofAvatar = ({ src, initials, color, size = 40 }: { src?: string; 
 
 export default function EmailApp({ initialEmails, variant = "default", color = "indigo" }: { initialEmails: Email[]; variant?: EmailVariant; color?: EmailColor; }) {
   const [emails, setEmails] = useState<Email[]>(() => (initialEmails || []).map((e) => ({ ...e, folder: e.folder || "inbox", isRead: e.isRead ?? true })));
-  const theme = colorThemes[color];
+  
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--email-custom": color,
+    "--email-custom-10": \`\${color}1a\`,
+    "--email-custom-20": \`\${color}33\`,
+    "--email-custom-50": \`\${color}80\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--email-custom)]",
+    bg: "bg-[var(--email-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--email-custom-20)]",
+    lightBg: "bg-[var(--email-custom-10)] text-[var(--email-custom)]",
+    border: "border-[var(--email-custom)]",
+    focusRing: "focus:border-[var(--email-custom-50)] focus:ring-2 focus:ring-[var(--email-custom-20)]",
+    dot: "bg-[var(--email-custom)]"
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = emailVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -90,7 +107,7 @@ export default function EmailApp({ initialEmails, variant = "default", color = "
   const getFolderCount = (folder: string) => emails.filter((e) => e.folder === folder && !e.isRead).length;
 
   return (
-    <div className={cn("w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}\`, styles.sidebar)}>
         <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/50 shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden"><h2 className="font-bold text-zinc-900 dark:text-zinc-100">Mailbox</h2><button onClick={() => setIsSidebarOpen(false)} className="text-zinc-500"><X className="w-5 h-5" /></button></div>
@@ -287,7 +304,7 @@ export default function EmailApp({ initialEmails, variant = "default", color = "
                   <button type="button" className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"><Paperclip className="w-4 h-4" /></button>
                   <button type="button" className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"><ImageIcon className="w-4 h-4" /></button>
                 </div>
-                <button type="submit" className={cn("cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md", theme.bg, theme.shadow)}>
+                <button type="submit" className={cn("cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md", theme.bg)}>
                   Send <Send className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -327,7 +344,24 @@ const BulletproofAvatar = ({ src, initials, color, size = 40 }) => (
 
 export default function EmailApp({ initialEmails, variant = "default", color = "indigo" }) {
   const [emails, setEmails] = useState(() => (initialEmails || []).map((e) => ({ ...e, folder: e.folder || "inbox", isRead: e.isRead ?? true })));
-  const theme = colorThemes[color];
+  
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--email-custom": color,
+    "--email-custom-10": \`\${color}1a\`,
+    "--email-custom-20": \`\${color}33\`,
+    "--email-custom-50": \`\${color}80\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--email-custom)]",
+    bg: "bg-[var(--email-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--email-custom-20)]",
+    lightBg: "bg-[var(--email-custom-10)] text-[var(--email-custom)]",
+    border: "border-[var(--email-custom)]",
+    focusRing: "focus:border-[var(--email-custom-50)] focus:ring-2 focus:ring-[var(--email-custom-20)]",
+    dot: "bg-[var(--email-custom)]"
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = emailVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -375,7 +409,7 @@ export default function EmailApp({ initialEmails, variant = "default", color = "
   const getFolderCount = (folder) => emails.filter((e) => e.folder === folder && !e.isRead).length;
 
   return (
-    <div className={cn("w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}\`, styles.sidebar)}>
         <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/50 shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden"><h2 className="font-bold text-zinc-900 dark:text-zinc-100">Mailbox</h2><button onClick={() => setIsSidebarOpen(false)} className="text-zinc-500"><X className="w-5 h-5" /></button></div>
@@ -572,7 +606,7 @@ export default function EmailApp({ initialEmails, variant = "default", color = "
                   <button type="button" className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"><Paperclip className="w-4 h-4" /></button>
                   <button type="button" className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-md transition-colors cursor-pointer"><ImageIcon className="w-4 h-4" /></button>
                 </div>
-                <button type="submit" className={cn("cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md", theme.bg, theme.shadow)}>
+                <button type="submit" className={cn("cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md", theme.bg)}>
                   Send <Send className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -586,7 +620,42 @@ export default function EmailApp({ initialEmails, variant = "default", color = "
 
 export function EmailShowcase() {
   const [variant, setVariant] = useState<EmailVariant>("default");
-  const [color, setColor] = useState<EmailColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<EmailColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
@@ -734,7 +803,7 @@ export default function EmailDemo()${typeDef} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as EmailColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -743,6 +812,29 @@ export default function EmailDemo()${typeDef} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#8b5cf6"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

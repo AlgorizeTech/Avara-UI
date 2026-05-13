@@ -29,7 +29,9 @@ import { useEffect, useMemo, useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type EmailVariant = "default" | "minimal" | "glass";
-export type EmailColor = "indigo" | "rose" | "emerald" | "zinc";
+
+// Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
+export type EmailColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const emailVariants: Record<EmailVariant, Record<string, string>> = {
   default: {
@@ -77,7 +79,7 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<EmailColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20",
@@ -196,7 +198,29 @@ export default function EmailApp({
     })),
   );
 
-  const theme = colorThemes[color];
+  // Custom hex injection logic
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--email-custom": color,
+        "--email-custom-10": `${color}1a`,
+        "--email-custom-20": `${color}33`,
+        "--email-custom-50": `${color}80`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        text: "text-[var(--email-custom)]",
+        bg: "bg-[var(--email-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--email-custom-20)]",
+        lightBg: "bg-[var(--email-custom-10)] text-[var(--email-custom)]",
+        border: "border-[var(--email-custom)]",
+        focusRing:
+          "focus:border-[var(--email-custom-50)] focus:ring-2 focus:ring-[var(--email-custom-20)]",
+        dot: "bg-[var(--email-custom)]",
+      }
+    : colorThemes[color] || colorThemes["indigo"];
+
   const styles = emailVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -345,6 +369,7 @@ export default function EmailApp({
 
   return (
     <div
+      style={customVars}
       className={cn(
         "w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,
@@ -641,7 +666,7 @@ export default function EmailApp({
                             }}
                             className={cn(
                               "p-2 text-zinc-400 rounded-md transition-colors shadow-sm bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-pointer",
-                              theme.primaryHover,
+                              theme.focusRing,
                             )}
                           >
                             {email.isRead ? (
@@ -747,7 +772,7 @@ export default function EmailApp({
                   }}
                   className={cn(
                     "p-2 rounded-md transition-colors cursor-pointer",
-                    theme.primaryHover,
+                    theme.focusRing,
                   )}
                   title="Mark Unread"
                 >
@@ -1023,7 +1048,6 @@ export default function EmailApp({
                   className={cn(
                     "cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md",
                     theme.bg,
-                    theme.shadow,
                   )}
                 >
                   Send <Send className="w-3.5 h-3.5" />
