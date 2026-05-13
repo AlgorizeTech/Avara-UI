@@ -19,7 +19,9 @@ import { useEffect, useRef, useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type ChatVariant = "default" | "minimal" | "glass";
-export type ChatColor = "indigo" | "rose" | "emerald" | "zinc";
+
+// Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
+export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
   default: {
@@ -71,7 +73,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<ChatColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     text: "text-indigo-500 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -183,7 +185,29 @@ export default function ChatApp({
   variant?: ChatVariant;
   color?: ChatColor;
 }) {
-  const theme = colorThemes[color];
+  // Custom hex injection logic
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--chat-custom": color,
+        "--chat-custom-10": `${color}1a`,
+        "--chat-custom-20": `${color}33`,
+        "--chat-custom-50": `${color}80`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        text: "text-[var(--chat-custom)]",
+        bg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+        lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+        gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+        shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+        focusRing:
+          "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
+      }
+    : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -308,6 +332,7 @@ export default function ChatApp({
 
   return (
     <div
+      style={customVars}
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,

@@ -5,7 +5,7 @@ import ChatApp, {
   ChatVariant,
 } from "@/components/custom/blocks/Chat";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const CHAT_ENGINE_CODE_TS = `"use client";
@@ -15,7 +15,7 @@ import { CheckCheck, Menu, MessageCircle, Mic, MoreVertical, Paperclip, Phone, S
 import { useEffect, useRef, useState } from "react";
 
 export type ChatVariant = "default" | "minimal" | "glass";
-export type ChatColor = "indigo" | "rose" | "emerald" | "zinc";
+export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
   default: { wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl", sidebar: "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50", main: "bg-white dark:bg-[#09090b]", header: "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", footer: "bg-white/80 dark:bg-[#09090b]/80 border-t border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", inputBg: "bg-zinc-100 dark:bg-zinc-900 border border-transparent", msgThem: "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 rounded-2xl rounded-bl-sm border border-zinc-200 dark:border-zinc-800/80 shadow-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm border border-transparent" },
@@ -23,7 +23,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
   glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl", sidebar: "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10", main: "bg-transparent", header: "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md", footer: "bg-white/10 dark:bg-black/10 border-t border-white/20 dark:border-white/10 backdrop-blur-md", inputBg: "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md", msgThem: "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-lg" },
 };
 
-const colorThemes: Record<ChatColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { text: "text-indigo-500 dark:text-indigo-400", bg: "bg-indigo-500 hover:bg-indigo-600 text-white", lightBg: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300", gradient: "from-indigo-500 to-purple-600", shadow: "shadow-indigo-500/20", focusRing: "focus-within:border-indigo-500/30 focus-within:ring-indigo-500/10 dark:focus-within:ring-indigo-500/20" },
   rose: { text: "text-rose-500 dark:text-rose-400", bg: "bg-rose-500 hover:bg-rose-600 text-white", lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300", gradient: "from-rose-500 to-orange-500", shadow: "shadow-rose-500/20", focusRing: "focus-within:border-rose-500/30 focus-within:ring-rose-500/10 dark:focus-within:ring-rose-500/20" },
   emerald: { text: "text-emerald-500 dark:text-emerald-400", bg: "bg-emerald-500 hover:bg-emerald-600 text-white", lightBg: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300", gradient: "from-emerald-500 to-teal-500", shadow: "shadow-emerald-500/20", focusRing: "focus-within:border-emerald-500/30 focus-within:ring-emerald-500/10 dark:focus-within:ring-emerald-500/20" },
@@ -43,7 +43,23 @@ const BulletproofAvatar = ({ src, initials, color, status, size = 40, statusBord
 );
 
 export default function ChatApp({ currentUser, contactsData, variant = "default", color = "indigo" }: { currentUser: CurrentUser; contactsData: Contact[]; variant?: ChatVariant; color?: ChatColor; }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--chat-custom": color,
+    "--chat-custom-10": \`\${color}1a\`,
+    "--chat-custom-20": \`\${color}33\`,
+    "--chat-custom-50": \`\${color}80\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--chat-custom)]",
+    bg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+    lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+    gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+    shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+    focusRing: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -119,7 +135,7 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
   };
 
   return (
-    <div className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}\`, styles.sidebar)}>
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
@@ -272,7 +288,23 @@ const BulletproofAvatar = ({ src, initials, color, status, size = 40, statusBord
 );
 
 export default function ChatApp({ currentUser, contactsData, variant = "default", color = "indigo" }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--chat-custom": color,
+    "--chat-custom-10": \`\${color}1a\`,
+    "--chat-custom-20": \`\${color}33\`,
+    "--chat-custom-50": \`\${color}80\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--chat-custom)]",
+    bg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+    lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+    gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+    shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+    focusRing: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = chatVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -348,7 +380,7 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
   };
 
   return (
-    <div className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
       <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}\`, styles.sidebar)}>
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
@@ -473,7 +505,42 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
 
 export function ChatShowcase() {
   const [variant, setVariant] = useState<ChatVariant>("default");
-  const [color, setColor] = useState<ChatColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<ChatColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
@@ -607,7 +674,7 @@ export default function ChatDemo()${typeDef} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as ChatColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -616,6 +683,29 @@ export default function ChatDemo()${typeDef} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#8b5cf6"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
