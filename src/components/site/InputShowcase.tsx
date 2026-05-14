@@ -8,7 +8,7 @@ import {
 } from "@/components/custom/blocks/InputBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { Mail } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const INPUT_ENGINE_CODE_TS = `"use client";
@@ -16,9 +16,8 @@ const INPUT_ENGINE_CODE_TS = `"use client";
 import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { AlertCircle, Eye, EyeOff, UploadCloud, X, FileIcon, ImageIcon, FileText } from "lucide-react";
-import Image from "next/image";
 
-export type InputColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type InputColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type InputVariant = "default" | "filled" | "underlined" | "glow";
 export type InputSize = "sm" | "md" | "lg";
 
@@ -51,7 +50,7 @@ export interface InputBlockProps extends Omit<React.InputHTMLAttributes<HTMLInpu
 
 export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(({ type = "text", variant = "default", color = "indigo", inputSize = "md", label, helperText, error, leftIcon, rightIcon, disabled = false, className, multiple, accept, onFilesChange, ...props }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
-  const { theme, style } = getThemeStyles(color);
+  const { theme, style } = getThemeStyles(color as string);
   const hasError = Boolean(error);
 
   const [isDragging, setIsDragging] = useState(false);
@@ -60,7 +59,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(({ type 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const sizeClasses = { sm: { wrapper: "min-h-9 px-3", text: "text-xs", icon: "w-3.5 h-3.5", dropzone: "p-4 min-h-[100px]" }, md: { wrapper: "min-h-11 px-4", text: "text-sm", icon: "w-4 h-4", dropzone: "p-6 min-h-[140px]" }, lg: { wrapper: "min-h-14 px-5", text: "text-base", icon: "w-5 h-5", dropzone: "p-8 min-h-[180px]" } };
-  const s = sizeClasses[inputSize];
+  const s = sizeClasses[inputSize || "md"];
 
   const getVariantStyles = () => {
     const baseWrapper = cn("relative flex items-center w-full transition-all duration-300 overflow-hidden", s.wrapper);
@@ -154,7 +153,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(({ type 
 });
 InputBlock.displayName = "InputBlock";`;
 
-// --- PURE JAVASCRIPT ENGINE CODE ---
+// --- JAVASCRIPT ENGINE CODE ---
 const INPUT_ENGINE_CODE_JS = `"use client";
 
 import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
@@ -296,7 +295,6 @@ export function InputShowcase() {
     "text" | "password" | "email" | "file"
   >("text");
   const [variant, setVariant] = useState<InputVariant>("default");
-  const [color, setColor] = useState<InputColor>("indigo");
   const [inputSize, setInputSize] = useState<InputSize>("md");
   const [showError, setShowError] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -304,6 +302,42 @@ export function InputShowcase() {
   // File specific toggles
   const [isMultiple, setIsMultiple] = useState(true);
   const [isImageOnly, setIsImageOnly] = useState(false);
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<InputColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     let propsStr = `\n        type="${inputType}"\n        variant="${variant}"\n        color="${color}"\n        inputSize="${inputSize}"\n        label="${inputType === "file" ? "Upload Documents" : "Email Address"}"`;
@@ -424,7 +458,7 @@ export default function FormDemo() {
               ].map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setColor(c.id as InputColor)}
+                  onClick={() => handleColorChange(c.id)}
                   className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                     color === c.id
                       ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -434,6 +468,8 @@ export default function FormDemo() {
                 />
               ))}
 
+              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
               {/* Custom Color Picker */}
               <div
                 className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
@@ -441,9 +477,17 @@ export default function FormDemo() {
                 <input
                   type="color"
                   value={color.startsWith("#") ? color : "#6366f1"}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer"
+                  onChange={(e) => handleColorChange(e.target.value)}
+                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
                   title="Custom Hex Color"
+                />
+                <div
+                  className="w-full h-full"
+                  style={{
+                    backgroundColor: color.startsWith("#")
+                      ? color
+                      : "transparent",
+                  }}
                 />
               </div>
             </div>
