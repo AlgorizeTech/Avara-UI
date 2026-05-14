@@ -5,7 +5,7 @@ import Invoice, {
   InvoiceVariant,
 } from "@/components/custom/blocks/Invoice";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const INVOICE_ENGINE_CODE_TS = `"use client";
@@ -15,7 +15,7 @@ import { DollarSign, Heart, Plus, Save, Send, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 export type InvoiceVariant = "default" | "minimal" | "glass";
-export type InvoiceColor = "indigo" | "rose" | "emerald" | "zinc";
+export type InvoiceColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   default: { wrapper: "bg-zinc-50 dark:bg-zinc-950/50", invoicePanel: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm", sidebarCard: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm", tableHeader: "bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800", tableRow: "divide-zinc-100 dark:divide-zinc-800/60 hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20", inputBg: "bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800", blockBg: "bg-zinc-50 dark:bg-zinc-950/50 border border-zinc-100 dark:border-zinc-800/50" },
@@ -23,11 +23,35 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl", invoicePanel: "bg-white/50 dark:bg-black/50 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg", sidebarCard: "bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-2xl", tableHeader: "bg-white/20 dark:bg-black/20 border-b border-white/20 dark:border-white/10", tableRow: "divide-white/10 dark:divide-white/5 hover:bg-white/20 dark:hover:bg-white/5", inputBg: "bg-white/40 dark:bg-black/40 border border-white/30 dark:border-white/10 backdrop-blur-md", blockBg: "bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10" },
 };
 
-const colorThemes: Record<InvoiceColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20", lightBg: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300", border: "border-indigo-200 dark:border-indigo-500/30", focusRing: "focus:ring-indigo-500/20 focus:border-indigo-500" },
   rose: { text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/20", lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300", border: "border-rose-200 dark:border-rose-500/30", focusRing: "focus:ring-rose-500/20 focus:border-rose-500" },
   emerald: { text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20", lightBg: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300", border: "border-emerald-200 dark:border-emerald-500/30", focusRing: "focus:ring-emerald-500/20 focus:border-emerald-500" },
   zinc: { text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 shadow-zinc-900/10", lightBg: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", border: "border-zinc-300 dark:border-zinc-600", focusRing: "focus:ring-zinc-500/20 focus:border-zinc-500" },
+};
+
+const hexToRgb = (hex: string) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join("");
+  const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex);
+  return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
+};
+
+export const getThemeStyles = (color: string) => {
+  if (color && color.startsWith("#")) {
+    const rgb = hexToRgb(color);
+    return {
+      theme: {
+        text: "text-[var(--theme-color)]",
+        bg: "bg-[var(--theme-color)] hover:opacity-90 text-white shadow-[0_4px_14px_0_rgba(var(--theme-color-rgb),0.2)]",
+        lightBg: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        border: "border-[rgba(var(--theme-color-rgb),0.3)]",
+        focusRing: "focus:ring-[rgba(var(--theme-color-rgb),0.2)] focus:border-[var(--theme-color)]"
+      },
+      style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
+    };
+  }
+  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
 };
 
 export type InvoiceItem = { item: string; description: string; hours: number | string; qty: number | string; total: string; };
@@ -36,7 +60,8 @@ export type InvoiceData = { invoiceNumber: string; dateIssued: string; dateDue: 
 export default function Invoice({ invoiceData, variant = "default", color = "indigo" }: { invoiceData: InvoiceData; variant?: InvoiceVariant; color?: InvoiceColor; }) {
   const [data, setData] = useState<InvoiceData>(invoiceData);
   const [isEditing, setIsEditing] = useState(false);
-  const theme = colorThemes[color];
+
+  const { theme, style } = getThemeStyles(color as string);
   const styles = invoiceVariants[variant];
 
   const handleMainChange = (field: string, value: string) => setData((prev) => ({ ...prev, [field]: value }));
@@ -52,7 +77,7 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
   const EditableInput = ({ value, onChange, placeholder, className = "", align = "left" }: any) => isEditing ? (<input value={value} onChange={onChange} placeholder={placeholder} className={cn(\`w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-\${align}\`, styles.inputBg, theme.focusRing, className)} />) : (<span className={\`block \${className}\`}>{value}</span>);
 
   return (
-    <div className={cn("flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300", styles.wrapper)}>
+    <div style={style} className={cn("flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300", styles.wrapper)}>
       <div className={cn("flex-1 min-w-0 p-6 sm:p-10 rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300", styles.invoicePanel)}>
         <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
           <div className="flex gap-4 items-start">
@@ -162,7 +187,7 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
           </div>
         </div>
         <div className={cn("mt-4 p-5 transition-colors duration-300", styles.sidebarCard)}>
-          <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#28c76f] text-white rounded-xl text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm shadow-[#28c76f]/20"><DollarSign className="w-4 h-4" /> Add Payment</button>
+          <button className={cn("cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] shadow-sm", theme.bg)}><DollarSign className="w-4 h-4" /> Add Payment</button>
         </div>
       </aside>
     </div>
@@ -189,10 +214,35 @@ const colorThemes = {
   zinc: { text: "text-zinc-900 dark:text-zinc-100", bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 shadow-zinc-900/10", lightBg: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100", border: "border-zinc-300 dark:border-zinc-600", focusRing: "focus:ring-zinc-500/20 focus:border-zinc-500" },
 };
 
+const hexToRgb = (hex) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join("");
+  const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex);
+  return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
+};
+
+export const getThemeStyles = (color) => {
+  if (color && color.startsWith("#")) {
+    const rgb = hexToRgb(color);
+    return {
+      theme: {
+        text: "text-[var(--theme-color)]",
+        bg: "bg-[var(--theme-color)] hover:opacity-90 text-white shadow-[0_4px_14px_0_rgba(var(--theme-color-rgb),0.2)]",
+        lightBg: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        border: "border-[rgba(var(--theme-color-rgb),0.3)]",
+        focusRing: "focus:ring-[rgba(var(--theme-color-rgb),0.2)] focus:border-[var(--theme-color)]"
+      },
+      style: { "--theme-color": color, "--theme-color-rgb": rgb },
+    };
+  }
+  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+};
+
 export default function Invoice({ invoiceData, variant = "default", color = "indigo" }) {
   const [data, setData] = useState(invoiceData);
   const [isEditing, setIsEditing] = useState(false);
-  const theme = colorThemes[color];
+
+  const { theme, style } = getThemeStyles(color);
   const styles = invoiceVariants[variant];
 
   const handleMainChange = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
@@ -208,7 +258,7 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
   const EditableInput = ({ value, onChange, placeholder, className = "", align = "left" }) => isEditing ? (<input value={value} onChange={onChange} placeholder={placeholder} className={cn(\`w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-\${align}\`, styles.inputBg, theme.focusRing, className)} />) : (<span className={\`block \${className}\`}>{value}</span>);
 
   return (
-    <div className={cn("flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300", styles.wrapper)}>
+    <div style={style} className={cn("flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300", styles.wrapper)}>
       <div className={cn("flex-1 min-w-0 p-6 sm:p-10 rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300", styles.invoicePanel)}>
         <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
           <div className="flex gap-4 items-start">
@@ -318,7 +368,7 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
           </div>
         </div>
         <div className={cn("mt-4 p-5 transition-colors duration-300", styles.sidebarCard)}>
-          <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#28c76f] text-white rounded-xl text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm shadow-[#28c76f]/20"><DollarSign className="w-4 h-4" /> Add Payment</button>
+          <button className={cn("cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] shadow-sm", theme.bg)}><DollarSign className="w-4 h-4" /> Add Payment</button>
         </div>
       </aside>
     </div>
@@ -327,7 +377,42 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
 
 export function InvoiceShowcase() {
   const [variant, setVariant] = useState<InvoiceVariant>("default");
-  const [color, setColor] = useState<InvoiceColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<InvoiceColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
@@ -459,7 +544,7 @@ export default function InvoiceDemo()${typeDef} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as InvoiceColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -468,6 +553,29 @@ export default function InvoiceDemo()${typeDef} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#8b5cf6"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

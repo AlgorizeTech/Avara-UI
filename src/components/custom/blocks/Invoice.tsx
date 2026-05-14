@@ -8,7 +8,14 @@ import { useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type InvoiceVariant = "default" | "minimal" | "glass";
-export type InvoiceColor = "indigo" | "rose" | "emerald" | "zinc";
+
+// Preserves IDE autocomplete while allowing arbitrary hex strings
+export type InvoiceColor =
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 
 const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   default: {
@@ -57,7 +64,7 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<InvoiceColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20",
@@ -88,6 +95,41 @@ const colorThemes: Record<InvoiceColor, Record<string, string>> = {
     border: "border-zinc-300 dark:border-zinc-600",
     focusRing: "focus:ring-zinc-500/20 focus:border-zinc-500",
   },
+};
+
+const hexToRgb = (hex: string) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3)
+    cleanHex = cleanHex
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "99, 102, 241";
+};
+
+export const getThemeStyles = (color: string) => {
+  if (color && color.startsWith("#")) {
+    const rgb = hexToRgb(color);
+    return {
+      theme: {
+        text: "text-[var(--theme-color)]",
+        bg: "bg-[var(--theme-color)] hover:opacity-90 text-white shadow-[0_4px_14px_0_rgba(var(--theme-color-rgb),0.2)]",
+        lightBg:
+          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        border: "border-[rgba(var(--theme-color-rgb),0.3)]",
+        focusRing:
+          "focus:ring-[rgba(var(--theme-color-rgb),0.2)] focus:border-[var(--theme-color)]",
+      },
+      style: {
+        "--theme-color": color,
+        "--theme-color-rgb": rgb,
+      } as React.CSSProperties,
+    };
+  }
+  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
 };
 
 export type InvoiceItem = {
@@ -137,7 +179,7 @@ export default function Invoice({
   const [data, setData] = useState<InvoiceData>(invoiceData);
   const [isEditing, setIsEditing] = useState(false);
 
-  const theme = colorThemes[color];
+  const { theme, style } = getThemeStyles(color as string);
   const styles = invoiceVariants[variant];
 
   const handleMainChange = (field: string, value: string) =>
@@ -212,6 +254,7 @@ export default function Invoice({
 
   return (
     <div
+      style={style}
       className={cn(
         "flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300",
         styles.wrapper,
@@ -710,7 +753,12 @@ export default function Invoice({
             styles.sidebarCard,
           )}
         >
-          <button className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-[#28c76f] text-white rounded-xl text-sm font-medium hover:bg-[#25c069] transition-all active:scale-[0.98] shadow-sm shadow-[#28c76f]/20">
+          <button
+            className={cn(
+              "cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] shadow-sm",
+              theme.bg,
+            )}
+          >
             <DollarSign className="w-4 h-4" /> Add Payment
           </button>
         </div>
