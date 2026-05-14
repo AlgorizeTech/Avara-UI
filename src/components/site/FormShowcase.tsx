@@ -9,7 +9,7 @@ import {
 import { InputBlock } from "@/components/custom/blocks/InputBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -19,7 +19,7 @@ const FORM_ENGINE_CODE_TS = `"use client";
 import React, { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type FormColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type FormColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const hexToRgb = (hex: string) => {
   let cleanHex = hex.replace(/^#/, "");
@@ -44,7 +44,7 @@ export const getThemeStyles = (color: string) => {
 export interface FormWrapperProps { children: ReactNode; color?: FormColor; title?: string; description?: string; className?: string; onSubmit?: (e: React.FormEvent) => void; }
 
 export function FormWrapper({ children, color = "indigo", title, description, className, onSubmit }: FormWrapperProps) {
-  const { style } = getThemeStyles(color);
+  const { style } = getThemeStyles(color as string);
 
   return (
     <div style={style} className={cn("relative group w-full", className)}>
@@ -185,8 +185,43 @@ const enterpriseSchema = z.object({
 type EnterpriseFormValues = z.infer<typeof enterpriseSchema>;
 
 export function FormShowcase() {
-  const [color, setColor] = useState<FormColor>("indigo");
   const [demoType, setDemoType] = useState<"native" | "zod">("zod");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<FormColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   // Native State Logic
   const [nativeEmail, setNativeEmail] = useState("");
@@ -324,20 +359,32 @@ export default function EnterpriseForm() {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as FormColor)}
-                className={`w-7 h-7 rounded-full transition-all duration-200 outline-none ${c.bg} ${color === c.id ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110" : "hover:scale-110"}`}
+                onClick={() => handleColorChange(c.id)}
+                className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${color === c.id ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110" : "hover:scale-110"}`}
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
             <div
               className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
             >
               <input
                 type="color"
                 value={color.startsWith("#") ? color : "#8b5cf6"}
-                onChange={(e) => setColor(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer"
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
                 title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
               />
             </div>
           </div>
