@@ -11,7 +11,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 // TYPES & INTERFACES
 // ==========================================
 export type FleetVariant = "default" | "minimal" | "modern";
-export type FleetColor = "indigo" | "rose" | "emerald" | "zinc";
+export type FleetColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 export interface Vehicle {
   id: string;
@@ -65,7 +65,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<FleetColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -154,7 +154,29 @@ export default function FleetTracker({
   variant = "default",
   color = "indigo",
 }: FleetTrackerProps) {
-  const theme = colorThemes[color];
+  // Custom hex injection logic
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--fleet-custom": color,
+        "--fleet-custom-10": `${color}1a`,
+        "--fleet-custom-20": `${color}33`,
+        "--fleet-custom-50": `${color}80`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        text: "text-[var(--fleet-custom)]",
+        bg: "bg-[var(--fleet-custom)] hover:brightness-110 text-white",
+        border: "border-[var(--fleet-custom)]",
+        lightBg: "bg-[var(--fleet-custom-10)]",
+        focusRing:
+          "focus-within:ring-[var(--fleet-custom-20)] focus-within:border-[var(--fleet-custom-50)]",
+        marker: "black", // Fallback marker for arbitrary colors
+      }
+    : colorThemes[color as string] || colorThemes["indigo"];
+
   const styles = fleetVariants[variant];
 
   const [mounted, setMounted] = useState(false);
@@ -194,6 +216,7 @@ export default function FleetTracker({
 
   return (
     <div
+      style={customVars}
       className={cn(
         "w-full h-[600px] md:h-[700px] font-sans transition-all duration-300",
         styles.wrapper,

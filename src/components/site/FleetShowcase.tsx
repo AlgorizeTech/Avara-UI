@@ -5,11 +5,14 @@ import type {
   FleetVariant,
   Vehicle,
 } from "@/components/custom/blocks/Fleet-map";
-import dynamic from "next/dynamic";
-
-const FleetTracker = dynamic(() => import("@/components/custom/blocks/Fleet-map"), { ssr: false });
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+const FleetTracker = dynamic(
+  () => import("@/components/custom/blocks/Fleet-map"),
+  { ssr: false },
+);
 
 // --- TYPESCRIPT ENGINE CODE ---
 const FLEET_ENGINE_CODE_TS = `"use client";
@@ -22,7 +25,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
 export type FleetVariant = "default" | "minimal" | "modern";
-export type FleetColor = "indigo" | "rose" | "emerald" | "zinc";
+export type FleetColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 export interface Vehicle { id: string; location: string; lat: number; lng: number; status?: "active" | "idle" | "maintenance"; speed?: string; }
 export interface FleetTrackerProps { fleetData: Vehicle[]; variant?: FleetVariant; color?: FleetColor; }
@@ -33,7 +36,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   modern: { wrapper: "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative", sidebar: "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden", mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm", itemActive: "bg-zinc-50 dark:bg-zinc-900/80 border-l-[3px]", itemInactive: "hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40 border-l-[3px] border-transparent transition-colors" },
 };
 
-const colorThemes: Record<FleetColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
   indigo: { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500 hover:bg-indigo-600 text-white", border: "border-indigo-500", lightBg: "bg-indigo-50 dark:bg-indigo-500/10", focusRing: "focus-within:ring-indigo-500/20 focus-within:border-indigo-500/50", marker: "violet" },
   rose: { text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-500 hover:bg-rose-600 text-white", border: "border-rose-500", lightBg: "bg-rose-50 dark:bg-rose-500/10", focusRing: "focus-within:ring-rose-500/20 focus-within:border-rose-500/50", marker: "red" },
   emerald: { text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500 hover:bg-emerald-600 text-white", border: "border-emerald-500", lightBg: "bg-emerald-50 dark:bg-emerald-500/10", focusRing: "focus-within:ring-emerald-500/20 focus-within:border-emerald-500/50", marker: "green" },
@@ -61,7 +64,23 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
 }
 
 export default function FleetTracker({ fleetData = [], variant = "default", color = "indigo" }: FleetTrackerProps) {
-  const theme = colorThemes[color];
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--fleet-custom": color,
+    "--fleet-custom-10": \`\${color}1a\`,
+    "--fleet-custom-20": \`\${color}33\`,
+    "--fleet-custom-50": \`\${color}80\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--fleet-custom)]",
+    bg: "bg-[var(--fleet-custom)] hover:brightness-110 text-white",
+    border: "border-[var(--fleet-custom)]",
+    lightBg: "bg-[var(--fleet-custom-10)]",
+    focusRing: "focus-within:ring-[var(--fleet-custom-20)] focus-within:border-[var(--fleet-custom-50)]",
+    marker: "black" // Fallback marker for arbitrary colors
+  } : colorThemes[color as string] || colorThemes["indigo"];
+
   const styles = fleetVariants[variant];
 
   const [mounted, setMounted] = useState(false);
@@ -85,7 +104,7 @@ export default function FleetTracker({ fleetData = [], variant = "default", colo
   if (!mounted) return <div className="w-full h-[600px] md:h-[700px] bg-zinc-100 dark:bg-zinc-900 rounded-2xl animate-pulse border border-zinc-200 dark:border-zinc-800" />;
 
   return (
-    <div className={cn("w-full h-[600px] md:h-[700px] font-sans transition-all duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full h-[600px] md:h-[700px] font-sans transition-all duration-300", styles.wrapper)}>
       {variant !== "default" && (
         <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className={cn("md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800", theme.bg)}>
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -192,7 +211,23 @@ function MapController({ activeVehicle }) {
 }
 
 export default function FleetTracker({ fleetData = [], variant = "default", color = "indigo" }) {
-  const theme = colorThemes[color];
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--fleet-custom": color,
+    "--fleet-custom-10": \`\${color}1a\`,
+    "--fleet-custom-20": \`\${color}33\`,
+    "--fleet-custom-50": \`\${color}80\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    text: "text-[var(--fleet-custom)]",
+    bg: "bg-[var(--fleet-custom)] hover:brightness-110 text-white",
+    border: "border-[var(--fleet-custom)]",
+    lightBg: "bg-[var(--fleet-custom-10)]",
+    focusRing: "focus-within:ring-[var(--fleet-custom-20)] focus-within:border-[var(--fleet-custom-50)]",
+    marker: "black" // Fallback marker for arbitrary colors
+  } : colorThemes[color] || colorThemes["indigo"];
+
   const styles = fleetVariants[variant];
 
   const [mounted, setMounted] = useState(false);
@@ -216,7 +251,7 @@ export default function FleetTracker({ fleetData = [], variant = "default", colo
   if (!mounted) return <div className="w-full h-[600px] md:h-[700px] bg-zinc-100 dark:bg-zinc-900 rounded-2xl animate-pulse border border-zinc-200 dark:border-zinc-800" />;
 
   return (
-    <div className={cn("w-full h-[600px] md:h-[700px] font-sans transition-all duration-300", styles.wrapper)}>
+    <div style={customVars} className={cn("w-full h-[600px] md:h-[700px] font-sans transition-all duration-300", styles.wrapper)}>
       {variant !== "default" && (
         <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className={cn("md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800", theme.bg)}>
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -282,7 +317,42 @@ export default function FleetTracker({ fleetData = [], variant = "default", colo
 
 export function FleetShowcase() {
   const [variant, setVariant] = useState<FleetVariant>("modern");
-  const [color, setColor] = useState<FleetColor>("indigo");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<FleetColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
@@ -386,7 +456,7 @@ export default function FleetDemo()${typeDef} {
             ].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setColor(c.id as FleetColor)}
+                onClick={() => handleColorChange(c.id)}
                 className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
                     ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -395,6 +465,29 @@ export default function FleetDemo()${typeDef} {
                 title={c.id}
               />
             ))}
+
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+            {/* Custom Color Picker */}
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#8b5cf6"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
+              />
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#")
+                    ? color
+                    : "transparent",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
