@@ -15,7 +15,7 @@ import {
   Paintbrush,
   Smartphone,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const SELECT_ENGINE_CODE_TS = `"use client";
@@ -24,7 +24,7 @@ import React, { useState, useRef, useEffect, forwardRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown, AlertCircle, Check, Search, X } from "lucide-react";
 
-export type SelectColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type SelectColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type SelectVariant = "default" | "filled" | "underlined" | "glow";
 export type SelectSize = "sm" | "md" | "lg";
 
@@ -61,7 +61,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(({ optio
   const [searchQuery, setSearchQuery] = useState("");
   const selectRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { theme, style } = getThemeStyles(color);
+  const { theme, style } = getThemeStyles(color as string);
 
   const hasError = Boolean(error);
 
@@ -112,7 +112,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(({ optio
     md: { wrapper: "min-h-11 px-4 py-2.5", text: "text-sm", icon: "w-4 h-4", option: "px-4 py-2.5 text-sm", tag: "px-2 py-1 text-xs" },
     lg: { wrapper: "min-h-14 px-5 py-3.5", text: "text-base", icon: "w-5 h-5", option: "px-5 py-3 text-base", tag: "px-2.5 py-1 text-sm" },
   };
-  const s = sizeClasses[inputSize];
+  const s = sizeClasses[inputSize || "md"];
 
   const getVariantStyles = () => {
     const baseWrapper = cn("relative flex items-center justify-between w-full transition-all duration-300 cursor-pointer outline-none", s.wrapper);
@@ -227,7 +227,7 @@ export const getThemeStyles = (color) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
-      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]", glowWrapper: "shadow-[0_0_10px_rgba(var(--theme-color-rgb),0.2)] border-[rgba(var(--theme-color-rgb),0.3)]" },
+      theme: { ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]", text: "text-[var(--theme-color)]", bg: "bg-[var(--theme-color)] text-white hover:opacity-90", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)] hover:bg-[rgba(var(--theme-color-rgb),0.2)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]", glowWrapper: "shadow-[0_0_10px_rgba(var(--theme-color-rgb),0.2)] border-[rgba(var(--theme-color-rgb),0.3)]" },
       style: { "--theme-color": color, "--theme-color-rgb": rgb },
     };
   }
@@ -382,13 +382,48 @@ SelectBlock.displayName = "SelectBlock";`;
 
 export function SelectShowcase() {
   const [variant, setVariant] = useState<SelectVariant>("default");
-  const [color, setColor] = useState<SelectColor>("indigo");
   const [inputSize, setInputSize] = useState<SelectSize>("md");
   const [showError, setShowError] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isMultiple, setIsMultiple] = useState(false);
   const [isSearchable, setIsSearchable] = useState(false);
   const [isGrouped, setIsGrouped] = useState(true);
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<SelectColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   // State for the preview component
   const [singleValue, setSingleValue] = useState<string>("");
@@ -517,7 +552,7 @@ export default function FormDemo() {
               ].map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setColor(c.id as SelectColor)}
+                  onClick={() => handleColorChange(c.id)}
                   className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                     color === c.id
                       ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -527,6 +562,8 @@ export default function FormDemo() {
                 />
               ))}
 
+              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
               {/* Custom Color Picker */}
               <div
                 className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
@@ -534,9 +571,17 @@ export default function FormDemo() {
                 <input
                   type="color"
                   value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer"
+                  onChange={(e) => handleColorChange(e.target.value)}
+                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
                   title="Custom Hex Color"
+                />
+                <div
+                  className="w-full h-full"
+                  style={{
+                    backgroundColor: color.startsWith("#")
+                      ? color
+                      : "transparent",
+                  }}
                 />
               </div>
             </div>
