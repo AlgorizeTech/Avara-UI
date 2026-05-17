@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@/components/custom/blocks/ToastBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const TOAST_ENGINE_CODE_TS = `"use client";
@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { X, CheckCircle2, AlertCircle, Info, AlertTriangle } from "lucide-react";
 
-export type ToastColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type ToastColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type ToastVariant = "default" | "glow" | "glass" | "minimal";
 export type ToastType = "success" | "error" | "info" | "warning" | "default";
 export type ToastPosition = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
@@ -28,24 +28,6 @@ const colorThemes: Record<string, Record<string, string>> = {
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", bgSoft: "bg-rose-50 dark:bg-rose-500/10", border: "border-rose-600", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-600", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500" },
   zinc: { bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", text: "text-zinc-900 dark:text-zinc-100", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50", border: "border-zinc-900 dark:border-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white" },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join("");
-  const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex);
-  return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: { bg: "bg-[var(--theme-color)] text-white", text: "text-[var(--theme-color)]", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]", border: "border-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]" },
-      style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
 };
 
 export interface ToastProps { id: string; title: string; description?: string; type?: ToastType; duration?: number; action?: { label: string; onClick: () => void }; }
@@ -62,7 +44,21 @@ interface ToastItemProps extends ToastProps { onRemove: (id: string) => void; va
 
 const ToastItem = ({ id, title, description, type = "default", duration = 5000, action, onRemove, variant, color, position }: ToastItemProps) => {
   const toastRef = useRef<HTMLDivElement>(null);
-  const { theme, style } = getThemeStyles(color);
+  
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--toast-custom": color,
+    "--toast-custom-10": \`\${color}1a\`,
+    "--toast-custom-40": \`\${color}66\`,
+  } as React.CSSProperties : {};
+
+  const theme = isCustomHex ? {
+    bg: "bg-[var(--toast-custom)] text-white",
+    text: "text-[var(--toast-custom)]",
+    bgSoft: "bg-[var(--toast-custom-10)]",
+    border: "border-[var(--toast-custom)]",
+    glow: "shadow-[0_0_20px_var(--toast-custom-40)] border-[var(--toast-custom)]"
+  } : colorThemes[color as string] || colorThemes["indigo"];
 
   const isTop = position.includes("top");
   const yOffset = isTop ? -30 : 30;
@@ -92,7 +88,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   };
 
   return (
-    <div ref={toastRef} className={cn("pointer-events-auto flex w-full max-w-sm items-start gap-4 rounded-xl p-4 transition-colors", variantStyles[variant])} style={style}>
+    <div ref={toastRef} className={cn("pointer-events-auto flex w-full max-w-sm items-start gap-4 rounded-xl p-4 transition-colors", variantStyles[variant])} style={customVars}>
       {Icon && <Icon className={cn("mt-0.5 w-5 h-5 shrink-0", iconColor)} />}
       <div className="flex flex-col gap-1 w-full min-w-0">
         <h3 className={cn("text-sm font-bold", variant === "glass" ? "text-zinc-900 dark:text-white" : "text-zinc-900 dark:text-zinc-100")}>{title}</h3>
@@ -147,24 +143,6 @@ const colorThemes = {
   zinc: { bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900", text: "text-zinc-900 dark:text-zinc-100", bgSoft: "bg-zinc-100 dark:bg-zinc-800/50", border: "border-zinc-900 dark:border-zinc-100", glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white" },
 };
 
-const hexToRgb = (hex) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join("");
-  const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex);
-  return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
-};
-
-export const getThemeStyles = (color) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: { bg: "bg-[var(--theme-color)] text-white", text: "text-[var(--theme-color)]", bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]", border: "border-[var(--theme-color)]", glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]" },
-      style: { "--theme-color": color, "--theme-color-rgb": rgb },
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
-};
-
 const ToastContext = createContext(undefined);
 
 export const useToast = () => {
@@ -175,7 +153,21 @@ export const useToast = () => {
 
 const ToastItem = ({ id, title, description, type = "default", duration = 5000, action, onRemove, variant, color, position }) => {
   const toastRef = useRef(null);
-  const { theme, style } = getThemeStyles(color);
+  
+  const isCustomHex = color && color.startsWith("#");
+  const customVars = isCustomHex ? {
+    "--toast-custom": color,
+    "--toast-custom-10": \`\${color}1a\`,
+    "--toast-custom-40": \`\${color}66\`,
+  } : {};
+
+  const theme = isCustomHex ? {
+    bg: "bg-[var(--toast-custom)] text-white",
+    text: "text-[var(--toast-custom)]",
+    bgSoft: "bg-[var(--toast-custom-10)]",
+    border: "border-[var(--toast-custom)]",
+    glow: "shadow-[0_0_20px_var(--toast-custom-40)] border-[var(--toast-custom)]"
+  } : colorThemes[color] || colorThemes["indigo"];
 
   const isTop = position.includes("top");
   const yOffset = isTop ? -30 : 30;
@@ -205,7 +197,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   };
 
   return (
-    <div ref={toastRef} className={cn("pointer-events-auto flex w-full max-w-sm items-start gap-4 rounded-xl p-4 transition-colors", variantStyles[variant])} style={style}>
+    <div ref={toastRef} className={cn("pointer-events-auto flex w-full max-w-sm items-start gap-4 rounded-xl p-4 transition-colors", variantStyles[variant])} style={customVars}>
       {Icon && <Icon className={cn("mt-0.5 w-5 h-5 shrink-0", iconColor)} />}
       <div className="flex flex-col gap-1 w-full min-w-0">
         <h3 className={cn("text-sm font-bold", variant === "glass" ? "text-zinc-900 dark:text-white" : "text-zinc-900 dark:text-zinc-100")}>{title}</h3>
@@ -301,8 +293,43 @@ const ToastButtons = () => {
 
 export function ToastShowcase() {
   const [variant, setVariant] = useState<ToastVariant>("default");
-  const [color, setColor] = useState<ToastColor>("indigo");
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<ToastColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   const generateUsageCode = (isTs: boolean) => {
     const propsStr = `\n      variant="${variant}"\n      color="${color}"\n      position="${position}"`;
@@ -414,7 +441,7 @@ function MyComponent() {
               ].map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setColor(c.id as ToastColor)}
+                  onClick={() => handleColorChange(c.id)}
                   className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                     color === c.id
                       ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -424,6 +451,8 @@ function MyComponent() {
                 />
               ))}
 
+              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
               {/* Custom Color Picker */}
               <div
                 className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
@@ -431,9 +460,17 @@ function MyComponent() {
                 <input
                   type="color"
                   value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer"
+                  onChange={(e) => handleColorChange(e.target.value)}
+                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
                   title="Custom Hex Color"
+                />
+                <div
+                  className="w-full h-full"
+                  style={{
+                    backgroundColor: color.startsWith("#")
+                      ? color
+                      : "transparent",
+                  }}
                 />
               </div>
             </div>
