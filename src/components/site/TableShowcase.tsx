@@ -8,7 +8,7 @@ import {
   TableVariant,
 } from "@/components/custom/blocks/TableBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const TABLE_ENGINE_CODE_TS = `"use client";
@@ -18,7 +18,7 @@ import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { ChevronUp, ChevronDown, ChevronsUpDown, Edit2, Trash2, Check, ChevronLeft, ChevronRight, ChevronRight as ChevronRightIcon } from "lucide-react";
 
-export type TableColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type TableColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type TableVariant = "default" | "minimal" | "glass";
 export type TableSize = "sm" | "md" | "lg";
 
@@ -51,7 +51,7 @@ export interface TableColumn<T> { key: keyof T | "actions"; label: string; sorta
 export interface TableBlockProps<T> { data: T[]; columns: TableColumn<T>[]; variant?: TableVariant; color?: TableColor; tableSize?: TableSize; selectable?: boolean; expandable?: boolean; pagination?: { itemsPerPage: number }; onSelectionChange?: (selectedRows: T[]) => void; onEdit?: (row: T) => void; onDelete?: (row: T) => void; renderExpanded?: (row: T) => React.ReactNode; className?: string; }
 
 export function TableBlock<T extends { id: string | number }>({ data, columns, variant = "default", color = "indigo", tableSize = "md", selectable = false, expandable = false, pagination, onSelectionChange, onEdit, onDelete, renderExpanded, className }: TableBlockProps<T>) {
-  const { theme, style } = getThemeStyles(color);
+  const { theme, style } = getThemeStyles(color as string);
   const tbodyRef = useRef<HTMLTableSectionElement>(null);
   
   const [sortConfig, setSortConfig] = useState<{ key: keyof T | null; direction: "asc" | "desc" }>({ key: null, direction: "asc" });
@@ -427,11 +427,46 @@ type Transaction = {
 
 export function TableShowcase() {
   const [variant, setVariant] = useState<TableVariant>("default");
-  const [color, setColor] = useState<TableColor>("indigo");
   const [tableSize, setTableSize] = useState<TableSize>("md");
   const [isSelectable, setIsSelectable] = useState(true);
   const [isPaginated, setIsPaginated] = useState(true);
   const [isExpandable, setIsExpandable] = useState(true);
+
+  // Initialize with localStorage if available
+  const [color, setColor] = useState<TableColor | string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("primaryColor") || "indigo";
+    }
+    return "indigo";
+  });
+
+  // Automatically listen for updates to the primaryColor in localStorage
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    }, 1000);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "primaryColor" && e.newValue) {
+        setColor(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [color]);
+
+  // Sync manual UI changes down to local storage
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    localStorage.setItem("primaryColor", newColor);
+  };
 
   // Sample Data
   const sampleData: Transaction[] = [
@@ -639,7 +674,7 @@ export default function TableDemo() {
               ].map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setColor(c.id as TableColor)}
+                  onClick={() => handleColorChange(c.id)}
                   className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
                     color === c.id
                       ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
@@ -649,6 +684,8 @@ export default function TableDemo() {
                 />
               ))}
 
+              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
               {/* Custom Color Picker */}
               <div
                 className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
@@ -656,9 +693,17 @@ export default function TableDemo() {
                 <input
                   type="color"
                   value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer"
+                  onChange={(e) => handleColorChange(e.target.value)}
+                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
                   title="Custom Hex Color"
+                />
+                <div
+                  className="w-full h-full"
+                  style={{
+                    backgroundColor: color.startsWith("#")
+                      ? color
+                      : "transparent",
+                  }}
                 />
               </div>
             </div>
