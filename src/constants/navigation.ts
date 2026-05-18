@@ -71,6 +71,7 @@ export const navigation: NavigationItem[] = [
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
       { label: "Navigation", href: "/docs/nextjs/navigation", badge: "New" },
       { label: "Popover", href: "/docs/nextjs/popover", badge: "New" },
+      { label: "Progress", href: "/docs/nextjs/progress", badge: "New" },
       { label: "Resizable", href: "/docs/nextjs/resizable", badge: "New" },
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
       { label: "Sonner", href: "/docs/nextjs/sonner", badge: "New" },
