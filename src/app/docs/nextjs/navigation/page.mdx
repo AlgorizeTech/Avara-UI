@@ -1,0 +1,76 @@
+import { NavigationMenuShowcase } from "@/components/site/NavigationMenuShowcase";
+
+# Navigation Menu
+
+A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
+
+This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
+
+## Interactive Showcase
+
+Use the control panel below to test the different styles and colors.
+
+- **Composition:** The menu relies on a specific hierarchy (`Menu` > `List` > `Item` > `Trigger` / `Content`) to ensure smooth animations.
+- **Dynamic Indicator:** The `NavigationMenuIndicator` automatically calculates the width and position of the active trigger and slides to it.
+
+<NavigationMenuShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+Because this relies on standard React Context and GSAP for the smooth indicator sliding, it fits right into your existing architecture.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/NavigationMenu.tsx`.
+
+---
+
+## Usage
+
+Define your navigation structure using the provided sub-components. The `value` prop on the `NavigationMenuItem` is required to link the trigger to its content.
+
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+} from "@/components/custom/blocks/NavigationMenu";
+
+export default function TopNav() {
+  return (
+    <div className="w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex justify-center">
+      <NavigationMenu variant="glass" color="#8B5CF6">
+        <NavigationMenuList>
+          <NavigationMenuItem value="products">
+            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="p-4 w-[300px]">
+                <NavigationMenuLink href="/saas">
+                  SaaS Platform
+                </NavigationMenuLink>
+                <NavigationMenuLink href="/mobile">
+                  Mobile App
+                </NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem value="pricing">
+            <NavigationMenuLink href="/pricing" active>
+              Pricing
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuIndicator />
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+}
+```
