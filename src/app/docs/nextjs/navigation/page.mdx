@@ -74,3 +74,92 @@ export default function TopNav() {
   );
 }
 ```
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>NavigationMenu</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the core visual architecture and styling of the navigation
+          bar and its dropdown menus.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenu</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the active color theme to the hover states, soft backgrounds,
+          and the sliding indicator. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenuItem</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique string identifier used by the internal context engine to link
+          the <code>Trigger</code> to its specific <code>Content</code>{" "}
+          dropdown.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenuLink</code>
+        </td>
+        <td>
+          <code>active</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Manually forces the link into an active state, applying the soft
+          background color of your currently selected theme.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
