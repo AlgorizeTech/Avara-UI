@@ -76,6 +76,7 @@ export const navigation: NavigationItem[] = [
       { label: "Loader", href: "/docs/nextjs/loader", badge: "New" },
       { label: "Sonner", href: "/docs/nextjs/sonner", badge: "New" },
       { label: "Select", href: "/docs/nextjs/select", badge: "Core" },
+      { label: "Scroll Area", href: "/docs/nextjs/scroll-area", badge: "New" },
       { label: "Skeleton", href: "/docs/nextjs/skeleton", badge: "New" },
       { label: "Toast", href: "/docs/nextjs/toast", badge: "Core" },
       { label: "Toggle", href: "/docs/nextjs/toggle", badge: "New" },

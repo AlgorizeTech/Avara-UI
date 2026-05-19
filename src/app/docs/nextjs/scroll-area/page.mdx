@@ -1,0 +1,160 @@
+import { ScrollAreaShowcase } from "@/components/site/ScrollAreaShowcase";
+
+# Scroll Area
+
+Augments native scroll functionality for custom, cross-browser styling.
+
+This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
+
+## Interactive Showcase
+
+Use the control panel below to test the different styles, orientations, and features.
+
+<ScrollAreaShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component dynamically injects standard CSS scrollbar properties via a `style` tag, scoping them securely to unique class names to prevent overriding global scrollbars unless desired.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ScrollAreaBlock.tsx`.
+
+---
+
+## Usage
+
+Simply wrap your overflowing content inside the `<ScrollAreaBlock>`. Remember to give the block a specific height or width constraint so it knows when to scroll.
+
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+export default function LongList() {
+  const tags = Array.from({ length: 50 }).map((_, i) => \`Item \${i + 1}\`);
+
+  return (
+    <ScrollAreaBlock
+      className="h-[300px] w-full max-w-sm rounded-md border p-4"
+      color="#10b981"
+      variant="minimal"
+      autoHide
+    >
+      <div className="flex flex-col gap-2">
+        {tags.map((tag) => (
+          <div key={tag} className="text-sm">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollAreaBlock>
+  );
+}
+```
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the architectural style and thickness of the scroll track
+          and thumb.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"zinc"</code>
+        </td>
+        <td>
+          The color of the scrollbar thumb and hover states. Fully supports
+          dynamic custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>orientation</code>
+        </td>
+        <td>
+          <code>"vertical" | "horizontal" | "both"</code>
+        </td>
+        <td>
+          <code>"vertical"</code>
+        </td>
+        <td>
+          Defines which axis should be scrollable. This automatically applies
+          the correct CSS overflow utilities.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>hideTrack</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, forces the background scroll track to be completely
+          transparent, showing only the thumb.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>autoHide</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the scrollbar thumb fades to transparent when the container
+          is not being actively hovered.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
