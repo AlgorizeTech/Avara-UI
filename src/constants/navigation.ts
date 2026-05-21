@@ -93,6 +93,7 @@ export const navigation: NavigationItem[] = [
     children: [
       { label: "Navbar", href: "/docs/nextjs/navbar", badge: "Core" },
       { label: "Sign-Up", href: "/docs/nextjs/signup-form", badge: "Core" },
+      { label: "Marquee", href: "/docs/nextjs/marquee", badge: "New" },
       { label: "Pricing Section", href: "/docs/nextjs/pricing", badge: "Core" },
       { label: "Sidebar Section", href: "/docs/nextjs/sidebar", badge: "New" },
       { label: "Support Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core" },
