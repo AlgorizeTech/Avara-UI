@@ -1,0 +1,218 @@
+import { OtpInputShowcase } from "@/components/site/OtpInputShowcase";
+
+# OTP Input
+
+A fully accessible, developer-friendly multi-box input designed for One-Time Passwords and 2FA codes.
+
+Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
+
+## Interactive Showcase
+
+Use the control panel below to test the different variants, lengths, and masking features. **Try copying a 6-digit number and pasting it directly into the first box!**
+
+<OtpInputShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component handles all of the complex array-mapping and React Ref logic internally without relying on heavy third-party form libraries.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
+
+---
+
+## Usage
+
+The component acts exactly like a standard controlled or uncontrolled React input. You can listen to every keystroke via `onChange`, or simply wait for the user to finish typing via `onComplete`.
+
+```tsx
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function VerificationForm() {
+  const [code, setCode] = useState("");
+
+  const handleVerify = (finalCode: string) => {
+    console.log("Submitting code to API:", finalCode);
+    // API logic here...
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <h3 className="font-bold text-lg">Enter Security Code</h3>
+      <OtpInputBlock
+        color="#10b981"
+        length="{6}"
+        onChange="{setCode}"
+        onComplete="{handleVerify}"
+        value="{code}"
+        variant="filled"
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>length</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>
+          The number of individual input boxes to generate for the OTP code.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          The controlled string value. The internal array state automatically
+          syncs with this value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(value: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fires every time a single digit is added, changed, or removed,
+          returning the newly assembled string.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>onComplete</code>
+        </td>
+        <td>
+          <code>(value: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          A convenience callback that fires automatically as soon as all input
+          boxes have been filled.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the structural styling and border treatment of the
+          individual input boxes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The theme color applied to the borders, text, and focus rings. Fully
+          supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>mask</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, converts the underlying HTML inputs to{" "}
+          <code>type="password"</code> to obscure the characters.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, disables all interactions across all input boxes and reduces
+          their overall opacity.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

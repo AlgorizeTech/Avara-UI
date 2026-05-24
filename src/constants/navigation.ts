@@ -70,6 +70,7 @@ export const navigation: NavigationItem[] = [
       { label: "Menubar", href: "/docs/nextjs/menubar", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal", badge: "Core" },
       { label: "Navigation", href: "/docs/nextjs/navigation", badge: "New" },
+      { label: "OTP Input", href: "/docs/nextjs/otp-input", badge: "New" },
       { label: "Popover", href: "/docs/nextjs/popover", badge: "New" },
       { label: "Progress", href: "/docs/nextjs/progress", badge: "New" },
       { label: "Resizable", href: "/docs/nextjs/resizable", badge: "New" },
