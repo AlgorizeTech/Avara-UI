@@ -1,0 +1,165 @@
+import { TerminalShowcase } from "@/components/site/TerminalShowcase";
+
+# Terminal Snippet
+
+A beautiful, dependency-free code display block inspired by Mac OS windows.
+
+If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
+
+## Interactive Showcase
+
+Use the control panel below to test the different themes, variants, and copy functionalities. Notice how the `glass` variant uses backdrop-blur to blend elegantly over complex backgrounds!
+
+<TerminalShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component leverages pure React state for the copy transitions and Tailwind CSS for the dark-mode compatible styling. It is **100% dependency-free**.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TerminalBlock.tsx`.
+
+---
+
+## Usage
+
+Simply pass your raw code string to the `code` prop. The component automatically handles the scroll overflow for long lines.
+
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const installCommand = `npx create-next-app@latest my-app --typescript --tailwind --eslint
+cd my-app
+npm install lucide-react clsx tailwind-merge
+npm run dev`;
+
+export default function Docs() {
+  return (
+    <div className="w-full max-w-2xl mx-auto py-12">
+      <h3 className="font-bold text-lg mb-4">1. Initialize the Project</h3>
+      <TerminalBlock
+        code={installCommand}
+        language="bash"
+        filename="Terminal"
+        variant="glass"
+        color="#8B5CF6"
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MarqueeBlock</code>
+        </td>
+        <td>
+          <code>direction</code>
+        </td>
+        <td>
+          <code>"left" | "right" | "up" | "down"</code>
+        </td>
+        <td>
+          <code>"left"</code>
+        </td>
+        <td>
+          Determines the direction the marquee will continuously slide. Note:
+          Ensure you set a fixed <code>height</code> on the component when using
+          "up" or "down".
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MarqueeBlock</code>
+        </td>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>"slow" | "normal" | "fast" | number</code>
+        </td>
+        <td>
+          <code>"normal"</code>
+        </td>
+        <td>
+          Controls the animation duration. Can use a preset string or a specific
+          number representing duration in seconds (e.g., <code>speed={15}</code>{" "}
+          equals a 15s loop).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MarqueeBlock</code>
+        </td>
+        <td>
+          <code>pauseOnHover</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the animation automatically pauses when the user's cursor
+          hovers over the container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MarqueeBlock</code>
+        </td>
+        <td>
+          <code>fade</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, applies a CSS <code>mask-image</code> gradient to smoothly
+          fade out the edges of the marquee container. Works seamlessly across
+          light and dark modes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MarqueeBlock</code>
+        </td>
+        <td>
+          <code>gap</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"1rem"</code>
+        </td>
+        <td>
+          The CSS gap applied between the individual items inside the marquee.
+          Accepts any valid CSS unit (e.g., <code>"2rem"</code>,{" "}
+          <code>"32px"</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
