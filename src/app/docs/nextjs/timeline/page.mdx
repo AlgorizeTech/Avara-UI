@@ -71,3 +71,272 @@ export default function OrderTracker() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>TimelineItemType[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of configuration objects representing each event on the
+          timeline. See the TimelineItemType reference below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"left" | "center" | "right"</code>
+        </td>
+        <td>
+          <code>"left"</code>
+        </td>
+        <td>
+          Determines the structural alignment of the timeline. Using{" "}
+          <code>center</code> creates an alternating zig-zag layout on desktop
+          and elegantly falls back to left-aligned on mobile.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the architectural style of the event cards, backgrounds,
+          and the vertical tracking line.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The dynamic accent color applied to completed/current tracking lines,
+          glowing nodes, and hover states. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>animate</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, the timeline nodes will execute a staggered fade-and-slide
+          entry animation powered by GSAP when the component mounts.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelineItemType Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier for the event. Used internally for React keys and
+          handling the expansion state safely.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The primary headline for the specific timeline event.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>date</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The timestamp, date string, or status badge displayed inside the event
+          header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"completed" | "current" | "upcoming"</code>
+        </td>
+        <td>
+          <code>"completed"</code>
+        </td>
+        <td>
+          Drives the visual styling. <code>completed</code> fills the vertical
+          line, <code>current</code> adds a pulsing glow, and{" "}
+          <code>upcoming</code> fades the node out.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional secondary text string displayed directly beneath the
+          title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional Lucide (or custom SVG) icon to render inside the circular
+          indicator node. If omitted, a clean solid dot is used.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, the entire event header becomes a clickable trigger that
+          smoothly expands to reveal this detailed content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>action</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional slot for rendering buttons, links, or specific badges
+          immediately below the header area.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
