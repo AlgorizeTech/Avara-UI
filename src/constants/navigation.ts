@@ -83,6 +83,7 @@ export const navigation: NavigationItem[] = [
       { label: "Toggle", href: "/docs/nextjs/toggle", badge: "New" },
       { label: "Table", href: "/docs/nextjs/table", badge: "Core" },
       { label: "Tooltip", href: "/docs/nextjs/tooltip", badge: "New" },
+      { label: "Toggle Group", href: "/docs/nextjs/toggle-group", badge: "New" },
       { label: "Timeline", href: "/docs/nextjs/timeline", badge: "New" },
       { label: "Terminal", href: "/docs/nextjs/terminal", badge: "New" },
       { label: "Typography", href: "/docs/nextjs/typography", badge: "New" },
