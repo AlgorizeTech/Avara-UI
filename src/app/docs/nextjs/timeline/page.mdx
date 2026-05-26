@@ -1,0 +1,73 @@
+import { TimelineShowcase } from "@/components/site/TimelineShowcase";
+
+# Advanced Timeline
+
+A robust, multi-layout vertical timeline component for tracking complex events, order statuses, and company histories.
+
+This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
+
+## Interactive Showcase
+
+Use the control panel below to test the different themes and layouts. Notice how the `center` layout perfectly zig-zags the content on desktop, but elegantly collapses back to a standard left-aligned view on mobile devices!
+
+<TimelineShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TimelineBlock.tsx`.
+
+---
+
+## Usage
+
+Pass an array of items to the component. Use the `status` prop on individual items to automatically format them as `completed` (solid line and filled icon), `current` (pulsing glow), or `upcoming` (faded out).
+
+```tsx
+import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { CheckCircle2, Truck, Package } from "lucide-react";
+
+export default function OrderTracker() {
+  const events = [
+    {
+      id: "1",
+      title: "Order Placed",
+      date: "10:24 AM",
+      icon: Package,
+      status: "completed",
+      action: <button className="border rounded px-3 py-1">Invoice</button>,
+    },
+    {
+      id: "2",
+      title: "Out for Delivery",
+      date: "10:25 AM",
+      icon: Truck,
+      status: "current",
+      content: <p>Driver is 4 stops away.</p>,
+    },
+    {
+      id: "3",
+      title: "Delivered",
+      date: "Pending",
+      icon: CheckCircle2,
+      status: "upcoming",
+    },
+  ];
+
+  return (
+    <div className="w-full max-w-4xl mx-auto py-12">
+      <TimelineBlock
+        items={events}
+        variant="default"
+        layout="center"
+        color="#8B5CF6"
+      />
+    </div>
+  );
+}
+```
