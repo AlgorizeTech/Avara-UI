@@ -1,0 +1,189 @@
+import { HeroShowcase } from "@/components/site/HeroShowcase";
+
+# Advanced Hero Section
+
+A highly composable, multi-layout Hero component perfect for landing pages, complete with advanced UI effects like glitch text and glowing borders.
+
+Building a flexible hero section is notoriously annoying because the DOM layout changes drastically depending on the design (e.g., centering the text vs placing an image beside it). This `HeroBlock` separates layout structure from visual style through **Compound Components**. You write the exact same clean component structure every time, and simply change the `layout` and `variant` props to automatically orchestrate the DOM.
+
+## Interactive Showcase
+
+Use the control panel below to test the different structural layouts and advanced UI effects. Try combining the `glow` variant with the **Glitch Title** and **Glow Action** toggles for a premium dark-mode aesthetic!
+
+<HeroShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component handles all layout shifts via Tailwind grid utilities. The glitch effects and glow animations use injected, dependency-free CSS keyframes.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/HeroBlock.tsx`.
+
+---
+
+## Usage
+
+Structure your Hero section using the provided sub-components. The parent `<Hero>` container dictates the layout, while the children dictate the content.
+
+```tsx
+import {
+  Hero,
+  HeroContent,
+  HeroBadge,
+  HeroTitle,
+  HeroDescription,
+  HeroActions,
+  HeroAction,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, Sparkles } from "lucide-react";
+
+export default function MarketingHeader() {
+  return (
+    <Hero color="#10b981" layout="split-right" variant="glow">
+      <HeroContent>
+        <HeroBadge>
+          <Sparkles className="w-4 h-4" />
+          <span>New Feature Released</span>
+        </HeroBadge>
+
+        <HeroTitle glitch>Ship products faster than ever before.</HeroTitle>
+
+        <HeroDescription>
+          Stop rebuilding the same foundational components. Drop in our
+          high-performance UI kit and focus on your business logic.
+        </HeroDescription>
+
+        <HeroActions>
+          <HeroAction variant="glow">
+            Get Started <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">Read Docs</HeroAction>
+        </HeroActions>
+      </HeroContent>
+
+      <HeroVisual>
+        <img
+          src="/dashboard-preview.png"
+          alt="Dashboard Screenshot"
+          className="w-full h-full object-cover rounded-3xl border border-zinc-800"
+        />
+      </HeroVisual>
+    </Hero>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"center" | "left" | "split-right" | "split-left"</code>
+        </td>
+        <td>
+          <code>"center"</code>
+        </td>
+        <td>
+          Orchestrates the macro-structure of the DOM layout.{" "}
+          <strong>Note:</strong> Using the <code>glass</code> variant overrides
+          this prop and forces a full-bleed centered overlay.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glass" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Controls the background and visual container behavior. The{" "}
+          <code>glow</code> variant adds a massive, dynamic radial gradient
+          behind the content matching your theme color.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The active accent color injected into the Badge, Action buttons, and
+          background glows. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroTitle</code>
+        </td>
+        <td>
+          <code>glitch</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, injects an animated, pure CSS RGB-split keyframe effect
+          directly into the title text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroAction</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"primary" | "secondary" | "outline" | "ghost" | "glow"</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Determines the visual styling of the call-to-action button. The{" "}
+          <code>glow</code> variant adds an animated, shimmering border and
+          shadow matching the theme color.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
