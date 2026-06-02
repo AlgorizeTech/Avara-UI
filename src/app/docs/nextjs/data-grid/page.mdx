@@ -1,0 +1,302 @@
+import { DataGridShowcase } from "@/components/site/DataGridShowcase";
+
+# Data Grid
+
+A high-performance, fully keyboard-navigable data table with Excel-style inline editing.
+
+Building an interactive spreadsheet is notoriously difficult. Most developers give up and install massive, 500kb third-party libraries just to get basic arrow-key navigation.
+
+This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
+
+## Interactive Showcase
+
+Use the control panel to customize the data grid. Try clicking a cell and using your arrow keys to navigate around. **Press `Enter` or double-click to edit the value, and press `Enter` again to save it and move down!**
+
+<DataGridShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DataGridBlock.tsx`.
+
+---
+
+## Usage
+
+Define your `columns` array to declare the schema, and pass in your `data` array. The grid automatically manages the editing state internally and fires the `onChange` callback with the mutated data array whenever a user saves a cell edit.
+
+```tsx
+import { useState } from "react";
+import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+
+const COLUMNS = [
+  { field: "id", headerName: "User ID", width: 100, readOnly: true },
+  { field: "name", headerName: "Full Name", width: 250 },
+  { field: "score", headerName: "Test Score", type: "number", width: 150 },
+];
+
+const INITIAL_DATA = [
+  { id: "U-01", name: "Alice Smith", score: 95 },
+  { id: "U-02", name: "Bob Jones", score: 82 },
+];
+
+export default function Gradebook() {
+  const [data, setData] = useState(INITIAL_DATA);
+
+  return (
+    <div className="w-full">
+      <DataGridBlock
+        columns={COLUMNS}
+        data={data}
+        onChange={(newData) => setData(newData)}
+        color="#3b82f6"
+        showRowNumbers
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>GridColumn[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Defines the schema, headers, and specific behaviors of the grid
+          columns. See the GridColumn object reference below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>Record&lt;string, any&gt;[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The array of row objects to display in the grid. The keys in these
+          objects must perfectly match the <code>field</code> strings defined in
+          your columns array.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(newData: Record&lt;string, any&gt;[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          A callback fired immediately after a user successfully edits and saves
+          a cell value (via Enter, Tab, or clicking away). Returns the newly
+          mutated data array.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"blue" | "indigo" | "emerald" | "rose" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"blue"</code>
+        </td>
+        <td>
+          The accent color applied to the active cell's focus ring and the
+          interactive drag handle. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>showRowNumbers</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders a sticky left-aligned column displaying the 1-based
+          index of every row.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>readOnly</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, globally disables all double-click and keyboard editing
+          capabilities across the entire grid, while preserving the ability to
+          navigate via arrow keys.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### GridColumn Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>GridColumn</code>
+        </td>
+        <td>
+          <code>field</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The object key to look up in your <code>data</code> array to populate
+          this specific column's cells.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>GridColumn</code>
+        </td>
+        <td>
+          <code>headerName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The human-readable title displayed inside the sticky table header for
+          this column.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>GridColumn</code>
+        </td>
+        <td>
+          <code>width</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>120</code>
+        </td>
+        <td>
+          The fixed and minimum width of the column. Can be a number (pixels) or
+          a CSS string (e.g., <code>"250px"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>GridColumn</code>
+        </td>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"text" | "number"</code>
+        </td>
+        <td>
+          <code>"text"</code>
+        </td>
+        <td>
+          Determines the underlying HTML input type rendered during inline
+          editing. Setting this to <code>"number"</code> also applies a
+          monospaced font to the cell values for better numerical alignment.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>GridColumn</code>
+        </td>
+        <td>
+          <code>readOnly</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, completely locks editing capabilities for this specific
+          column (e.g., for auto-generated IDs or timestamps), even if the
+          global grid itself is editable.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
