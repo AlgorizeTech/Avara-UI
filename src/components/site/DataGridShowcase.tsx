@@ -51,7 +51,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(({ c
   const containerRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<Record<string, any>[]>(initialData);
   const [activeCell, setActiveCell] = useState<{ row: number; col: number } | null>(null);
   const [editingCell, setEditingCell] = useState<{ row: number; col: number } | null>(null);
   const [editValue, setEditValue] = useState<string>("");
@@ -388,7 +388,10 @@ const COLUMNS: GridColumn[] = [
 export function DataGridShowcase() {
   const [showRowNumbers, setShowRowNumbers] = useState(true);
   const [readOnly, setReadOnly] = useState(false);
-  const [currentData, setCurrentData] = useState(INITIAL_DATA);
+
+  // FIX: Explicitly type the state array as Record<string, any>[] so it satisfies DataGridBlock's onChange
+  const [currentData, setCurrentData] =
+    useState<Record<string, any>[]>(INITIAL_DATA);
 
   // Initialize with localStorage if available
   const [color, setColor] = useState<GridColor | string>(() => {
@@ -442,7 +445,8 @@ export function DataGridShowcase() {
     if (!showRowNumbers) propsStr += `\n        showRowNumbers={false}`;
     if (readOnly) propsStr += `\n        readOnly`;
 
-    return `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+    return `import { useState } from "react";
+import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 
 const columns = [
   { field: "id", headerName: "ID", readOnly: true },
@@ -450,16 +454,18 @@ const columns = [
   { field: "score", headerName: "Score", type: "number" }
 ];
 
-const data = [
+const INITIAL_DATA = [
   { id: 1, name: "Alice", score: 95 },
   { id: 2, name: "Bob", score: 88 }
 ];
 
 export default function Spreadsheet() {
+  const [data, setData] = useState<Record<string, any>[]>(INITIAL_DATA);
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <DataGridBlock ${propsStr}
-        onChange={(newData) => console.log("Saved:", newData)}
+        onChange={(newData) => setData(newData)}
       />
     </div>
   );
