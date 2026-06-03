@@ -1,200 +1,86 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { ThemeSwitcher } from "./theme";
-import Link from "next/link";
+
 import { GitHubIcon } from "@/assets/icons/github";
-
-import { AnimatePresence, motion } from "motion/react";
-import { SidebarMobile } from "./sidebar-mobile";
+import { cn } from "@/lib/utils";
 import {
-  X,
-  LinkedinIcon,
+  BarChart3,
   BookOpen,
-  Heart,
+  LayoutGrid,
+  Palette,
+  Search,
+  X,
 } from "lucide-react";
-import { Logo } from "@/assets/icons/logo";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { SearchModal } from "./search-modal";
+import { SidebarMobile } from "./sidebar-mobile";
+import { ThemeSwitcher } from "./theme";
 
-// Support Alert Banner Component
-// const SupportAlertBanner = () => {
-//   const [isVisible, setIsVisible] = useState(() => {
-//     // Check if user has previously dismissed the banner
-//     if (typeof window !== "undefined") {
-//       const dismissed = localStorage.getItem(
-//         "sera-ui-support-banner-dismissed"
-//       );
-//       return !dismissed;
-//     }
-//     return true;
-//   });
+// ==========================================
+// PREMIUM SUPPORT ALERT BANNER
+// ==========================================
+const SupportAlertBanner = () => {
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window !== "undefined") {
+      const dismissed = localStorage.getItem("docs-ui-banner-dismissed");
+      return !dismissed;
+    }
+    return true;
+  });
 
-//   const handleClose = () => {
-//     setIsVisible(false);
-//     if (typeof window !== "undefined") {
-//       localStorage.setItem("sera-ui-support-banner-dismissed", "true");
-//     }
-//   };
+  const handleClose = () => {
+    setIsVisible(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("docs-ui-banner-dismissed", "true");
+    }
+  };
 
-//   if (!isVisible) return null;
+  if (!isVisible) return null;
 
-//   return (
-//     <>
-//       <style jsx global>{`
-//         :root {
-//           --fd-banner-height: 3rem;
-//         }
-//         @keyframes fd-moving-banner {
-//           from {
-//             background-position: 0% 0;
-//           }
-//           to {
-//             background-position: 100% 0;
-//           }
-//         }
-//       `}</style>
-//       <div
-//         className="sticky top-0 z-40 flex flex-row items-center justify-center px-4 text-center text-sm font-medium bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100"
-//         style={{ height: "3rem" }}
-//       >
-//         <div
-//           className="absolute inset-0 z-[-1]"
-//           style={{
-//             maskImage:
-//               "linear-gradient(to bottom, white, transparent), radial-gradient(circle at top center, white, transparent)",
-//             maskComposite: "intersect",
-//             animation: "fd-moving-banner 20s linear infinite",
-//             backgroundImage:
-//               "repeating-linear-gradient(70deg, rgba(165, 50, 90, 0.5) 0%, rgba(165, 50, 90, 0.5) 7.142857142857143%, transparent 14.285714285714286%, rgba(165, 50, 90, 0.5) 21.428571428571427%, transparent 28.571428571428573%, rgba(165, 50, 90, 0.5) 35.714285714285715%, transparent 42.857142857142854%, rgba(165, 50, 90, 0.5) 50%)",
-//             backgroundSize: "200% 100%",
-//             filter: "saturate(2)",
-//           }}
-//         />
-//         <div className="flex items-center justify-between w-full max-w-[1536px]">
-//           <div className="flex items-center gap-2">
-//             <Heart className="h-4 w-4 fill-current animate-pulse text-rose-500" />
-//             <span className="font-medium">
-//               Love This UI? Help It Grow and Reach More Developers Worldwide —{" "}
-//               <Link
-//                 href="/sponsor"
-//                 className="underline hover:no-underline transition-all duration-200"
-//               >
-//                 Check out
-//               </Link>
-//             </span>
-//           </div>
-//           <button
-//             onClick={handleClose}
-//             className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors duration-200 ml-4"
-//             aria-label="Close banner"
-//           >
-//             <X className="h-4 w-4" />
-//           </button>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+  return (
+    <div className="w-full relative flex items-center justify-center h-9 text-[12.5px] font-medium border-b border-zinc-200/50 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 text-zinc-600 dark:text-zinc-400 overflow-hidden select-none">
+      <div className="flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-[pulse_2s_ease-in-out_infinite]" />
+        <span>
+          Love Docs? Help it reach more developers —{" "}
+          <Link
+            href="/sponsor"
+            className="font-semibold text-zinc-900 dark:text-zinc-50 border-b border-zinc-400 hover:border-zinc-900 dark:border-zinc-600 dark:hover:border-zinc-100 transition-colors pb-0.5"
+          >
+            Sponsor the project
+          </Link>
+        </span>
+      </div>
+      <button
+        onClick={handleClose}
+        className="absolute right-3.5 p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-all duration-150"
+        aria-label="Dismiss banner"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+};
 
-// GitHub Star Badge Component with Caching
-// const GitHubStarBadge = ({ repo }: { repo: string }) => {
-//   const [stars, setStars] = useState<number | null>(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchStars = async () => {
-//       try {
-//         const now = Date.now();
-//         const cacheKey = `github-stars-${repo}`;
-//         const cacheTimeKey = `github-stars-time-${repo}`;
-
-//         // Check cache first (cache for 1 hour = 3600000ms)
-//         if (typeof window !== "undefined") {
-//           const cached = localStorage.getItem(cacheKey);
-//           const cacheTime = localStorage.getItem(cacheTimeKey);
-
-//           if (cached && cacheTime && now - parseInt(cacheTime) < 3600000) {
-//             setStars(parseInt(cached));
-//             setLoading(false);
-//             return;
-//           }
-//         }
-
-//         console.log("Fetching stars for repo:", repo);
-//         const response = await fetch(`https://api.github.com/repos/${repo}`);
-//         console.log("Response status:", response.status);
-
-//         if (response.ok) {
-//           const data = await response.json();
-//           console.log("Star count:", data.stargazers_count);
-//           setStars(data.stargazers_count);
-
-//           // Cache the result
-//           if (typeof window !== "undefined") {
-//             localStorage.setItem(cacheKey, data.stargazers_count.toString());
-//             localStorage.setItem(cacheTimeKey, now.toString());
-//           }
-//         } else {
-//           console.error("Failed to fetch stars, status:", response.status);
-//           setStars(0);
-//         }
-//       } catch (error) {
-//         console.error("Failed to fetch GitHub stars:", error);
-//         setStars(0);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchStars();
-//   }, [repo]);
-
-//   const formatStars = (count: number) => {
-//     if (count >= 1000) {
-//       return `${(count / 1000).toFixed(1)}k`;
-//     }
-//     return count.toString();
-//   };
-
-//   if (loading) {
-//     return (
-//       <Link
-//         href="https://github.com/seraui/seraui"
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         className="flex items-center gap-2 px-3 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-200"
-//         aria-label="GitHub"
-//       >
-//         <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 animate-pulse">
-//           ...
-//         </span>
-//         <GitHubIcon className="h-4 w-4 fill-zinc-950 dark:fill-zinc-50" />
-//       </Link>
-//     );
-//   }
-
-//   return (
-//     <Link
-//       href="https://github.com/seraui/seraui"
-//       target="_blank"
-//       rel="noopener noreferrer"
-//       className="flex items-center gap-2 px-3 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-200"
-//       aria-label="GitHub"
-//     >
-//       <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-//         {stars !== null ? formatStars(stars) : "N/A"}
-//       </span>
-//       <GitHubIcon className="h-4 w-4 fill-zinc-950 dark:fill-zinc-50" />
-//     </Link>
-//   );
-// };
-
+// ==========================================
+// PREMIUM HEADER COMPONENT
+// ==========================================
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  // Monitor scroll for border state transition
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  // Keyboard shortcut for search (Cmd+K on Mac, Ctrl+K on Windows/Linux)
+  // Universal Cmd+K / Ctrl+K Palette Interceptor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -202,7 +88,6 @@ const Header = () => {
         setSearchOpen(true);
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
@@ -210,122 +95,248 @@ const Header = () => {
   return (
     <>
       {/* <SupportAlertBanner /> */}
+
+      {/* Mobile Drawer Backdrop Overlay */}
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             exit={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-30 bg-black/50 md:hidden"
+            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
       </AnimatePresence>
 
+      {/* Mobile Sidebar Navigation Drawer */}
       <motion.div
         initial={{ x: "-100%" }}
         animate={{ x: sidebarOpen ? "0%" : "-100%" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 left-0 z-40 h-full w-4/5 bg-zinc-50 dark:bg-zinc-950 md:hidden"
+        transition={{ duration: 0.25, ease: "easeInOut" }}
+        className="fixed top-0 left-0 z-50 h-full w-[280px] bg-white dark:bg-black border-r border-zinc-200 dark:border-zinc-800 md:hidden shadow-2xl"
       >
-        <div className="w-full px-6 py-4 flex items-center justify-between border-b border-gray-200 dark:border-zinc-800">
-          <Link href="/" className="flex items-center">
-            <Logo className="size-6 fill-rose-500" />
+        <div className="w-full px-5 h-14 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <div className="relative flex items-center justify-center">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-6"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="7"
+                  height="7"
+                  rx="1.5"
+                  className="fill-zinc-900 dark:fill-white"
+                />
+                <rect
+                  x="14"
+                  y="3"
+                  width="7"
+                  height="7"
+                  rx="1.5"
+                  className="fill-zinc-400 dark:fill-zinc-500"
+                />
+                <rect
+                  x="14"
+                  y="14"
+                  width="7"
+                  height="7"
+                  rx="1.5"
+                  className="fill-zinc-900 dark:fill-white"
+                />
+                <rect
+                  x="3"
+                  y="14"
+                  width="7"
+                  height="7"
+                  rx="1.5"
+                  className="fill-zinc-400 dark:fill-zinc-500"
+                />
+              </svg>
+            </div>
+            <span className="font-bold text-[16px] tracking-tight text-zinc-900 dark:text-zinc-50">
+              Docs
+            </span>
           </Link>
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="text-zinc-900 dark:text-zinc-100"
+            className="p-1 rounded-md text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
           >
-            <X className="size-5" />
+            <X className="size-4" />
           </button>
         </div>
         <SidebarMobile onClose={() => setSidebarOpen(false)} />
       </motion.div>
 
-      <div className="w-full sticky top-0 z-40 bg-transparent backdrop-blur-lg border-b border-gray-200 dark:border-zinc-800">
-        <header className="mx-auto max-w-[1536px] h-14 px-4 md:px-6 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <div className="flex items-center gap-4">
-              {
-                <button
-                  onClick={toggleSidebar}
-                  className="flex flex-col items-start gap-1 md:hidden"
-                >
-                  <span className="w-5 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
-                  <span className="w-3 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
-                  <span className="w-4 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
-                </button>
-              }
-
-              {/* <Link href="/" className="flex items-center gap-2">
-                <Logo className="size-6 fill-rose-500" />
-                <div className="hidden md:flex items-center gap-2">
-                  <span className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
-                    Sera&nbsp;UI
-                  </span>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-white/20 dark:bg-white/10 backdrop-blur-sm border border-white/30 dark:border-white/20 rounded-full text-zinc-700 dark:text-zinc-300">
-                    1.0
-                  </span>
-                </div>
-              </Link> */}
-            </div>
-            <nav className=" hidden md:flex items-center gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-              <Link
-                className="flex items-center gap-2 hover:text-zinc-900 dark:hover:text-zinc-50"
-                href="/docs"
-              >
-                <BookOpen className="h-4 w-4" />
-                Docs
-              </Link>
-            </nav>
-          </div>
-          <nav className="flex items-center space-x-3">
+      {/* Global Sticky Navigation Shell */}
+      <div
+        className={cn(
+          "w-full sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b transition-colors duration-200",
+          isScrolled
+            ? "border-zinc-200 dark:border-zinc-800/80 shadow-sm"
+            : "border-zinc-200/50 dark:border-zinc-900/50",
+        )}
+      >
+        <header className="mx-auto max-w-[1536px] h-[52px] px-4 md:px-5 flex items-center justify-between relative">
+          {/* Left Area: Logo & Mobile Trigger */}
+          <div className="flex items-center gap-4">
             <button
-              onClick={() => setSearchOpen(true)}
-              className="flex items-center justify-between gap-3 px-3 py-2 h-9 rounded-md bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-300/50 dark:border-zinc-800 hover:bg-zinc-200/80 dark:hover:bg-zinc-800/80 transition-all duration-200 text-left md:min-w-[280px] cursor-pointer backdrop-blur-sm"
-              aria-label="Search"
+              onClick={() => setSidebarOpen(true)}
+              className="flex flex-col gap-1 md:hidden p-1 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded transition-colors"
+              aria-label="Open navigation menu"
             >
-              <div className="flex items-center gap-2">
+              <span className="w-5 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full" />
+              <span className="w-3 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full" />
+              <span className="w-4 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full" />
+            </button>
+
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 select-none group"
+            >
+              <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                 <svg
-                  width="1em"
-                  height="1em"
+                  width="24"
+                  height="24"
                   viewBox="0 0 24 24"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-zinc-600 dark:text-zinc-400 flex-shrink-0"
+                  className="size-[22px]"
                 >
-                  <path
-                    d="M10 3.347c1.138 0 2.213.266 3.163.739-.255.462-.74.764-1.283.787l-.87.036A5.636 5.636 0 0010 4.818c-3.038 0-5.5 2.415-5.5 5.394 0 2.906 2.344 5.276 5.279 5.39l.221.004.221-.004c2.935-.114 5.279-2.484 5.279-5.39l-.003-.13.082-.215c.2-.524.676-.893 1.234-.967l.058-.005a6.771 6.771 0 01-.803 4.742 2.849 2.849 0 012.076.657l.157.143 1.872 1.836a2.731 2.731 0 010 3.916 2.864 2.864 0 01-3.852.13l-.14-.13-1.872-1.836a2.732 2.732 0 01-.818-2.19 7.062 7.062 0 01-3.491.914c-3.866 0-7-3.073-7-6.865 0-3.791 3.134-6.865 7-6.865zm5.37 12.13a1.28 1.28 0 00-.097 1.73l.096.106 1.872 1.836c.241.236.552.362.868.378h.135l.135-.013c.269-.04.527-.162.733-.365a1.28 1.28 0 00.097-1.73l-.097-.106-1.871-1.835a1.342 1.342 0 00-1.872 0zm.05-12.056l.044 1.013a2.493 2.493 0 001.648 2.225l.97.355c.457.167.35.83-.138.85l-1.033.044a2.592 2.592 0 00-.304.03l-.05.01c-.08.014-.159.032-.236.054l-.147.046-.18.07-.168.08-.113.063-.141.09-.164.121-.032.026c-.323.27-.579.62-.734 1.026l-.361.95a.43.43 0 01-.373.285h-.078l-.077-.012a.429.429 0 01-.34-.407l-.044-1.014a2.493 2.493 0 00-1.648-2.224l-.97-.355c-.457-.167-.35-.83.138-.85l1.034-.044c.3-.013.588-.077.855-.185l.109-.048c.175-.08.34-.178.49-.294l.148-.122.12-.114.136-.152.045-.056.078-.104.055-.082-.03.046a2.47 2.47 0 00.262-.505l.362-.95c.17-.45.846-.345.867.134z"
-                    fill="currentColor"
-                    fillRule="evenodd"
+                  <rect
+                    x="3"
+                    y="3"
+                    width="7"
+                    height="7"
+                    rx="1.5"
+                    className="fill-zinc-900 dark:fill-white"
+                  />
+                  <rect
+                    x="14"
+                    y="3"
+                    width="7"
+                    height="7"
+                    rx="1.5"
+                    className="fill-zinc-400 dark:fill-zinc-500"
+                  />
+                  <rect
+                    x="14"
+                    y="14"
+                    width="7"
+                    height="7"
+                    rx="1.5"
+                    className="fill-zinc-900 dark:fill-white"
+                  />
+                  <rect
+                    x="3"
+                    y="14"
+                    width="7"
+                    height="7"
+                    rx="1.5"
+                    className="fill-zinc-400 dark:fill-zinc-500"
                   />
                 </svg>
-                <span className="hidden md:inline text-sm text-zinc-600 dark:text-zinc-400">
-                  Search
-                </span>
               </div>
-              <div className="hidden md:flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 text-xs font-mono bg-zinc-200/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded border border-zinc-300/50 dark:border-zinc-700/50">
-                  Ctrl
+              <span className="font-bold text-[16px] tracking-tight text-zinc-900 dark:text-zinc-50">
+                Docs
+              </span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-500 bg-zinc-50 dark:bg-zinc-900/50 scale-90">
+                v1.0
+              </span>
+            </Link>
+          </div>
+
+          {/* Center Area: Absolute Centered Core Actions */}
+          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 text-[13.5px] font-medium text-zinc-500 dark:text-zinc-400">
+            <Link
+              className="flex items-center gap-1.5 px-3 py-1 rounded-md text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-100 dark:bg-zinc-900"
+              href="/docs"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              Docs
+            </Link>
+            <Link
+              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              href="/components"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              Components
+              <span className="text-[10px] font-semibold px-1.5 py-px rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 tracking-wide scale-90">
+                New
+              </span>
+            </Link>
+            <Link
+              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              href="/themes"
+            >
+              <Palette className="h-3.5 w-3.5" />
+              Themes
+            </Link>
+            <Link
+              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              href="/showcase"
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+              Showcase
+            </Link>
+          </nav>
+
+          {/* Right Area: Command Palette Trigger, Git Tracker */}
+          <div className="flex items-center gap-2">
+            {/* Command Palette Omni Button */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="flex items-center gap-2 px-2.5 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all text-left max-w-[40px] md:max-w-none md:w-[180px] lg:w-[220px]"
+              aria-label="Open command palette search"
+            >
+              <Search className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+              <span className="hidden md:inline text-[12.5px] text-zinc-400 flex-1">
+                Search…
+              </span>
+              <div className="hidden md:flex items-center gap-0.5 shrink-0 select-none">
+                <kbd className="text-[10px] px-1 py-px rounded border border-zinc-200 dark:border-zinc-700 text-zinc-400 bg-white dark:bg-zinc-950 font-mono leading-none">
+                  ⌘
                 </kbd>
-                <span className="text-xs text-zinc-500">+</span>
-                <kbd className="px-1.5 py-0.5 text-xs font-mono bg-zinc-200/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded border border-zinc-300/50 dark:border-zinc-700/50">
+                <kbd className="text-[10px] px-1 py-px rounded border border-zinc-200 dark:border-zinc-700 text-zinc-400 bg-white dark:bg-zinc-950 font-mono leading-none">
                   K
                 </kbd>
               </div>
             </button>
-            {/* <Link
-              href="https://www.linkedin.com/in/codernazmulhossain/"
+
+            <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-800 mx-0.5" />
+
+            {/* GitHub Stars Metrics Badge */}
+            <Link
+              href="https://github.com/docs/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center h-9 w-9 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-200"
-              aria-label="Linkedin"
+              className="hidden lg:flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all text-[12.5px] font-medium"
+              aria-label="View project on GitHub"
             >
-              <LinkedinIcon className="h-4 w-4 fill-zinc-950 dark:fill-zinc-50" />
-            </Link> */}
-            {/* <GitHubStarBadge repo="seraui/seraui" /> */}
+              <GitHubIcon className="w-[14px] h-[14px] fill-current" />
+              <span>GitHub</span>
+              <span className="text-[11px] font-semibold px-1.5 py-px rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700">
+                2.1k
+              </span>
+            </Link>
+
+            <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-800 mx-0.5" />
+
+            {/* Dynamic System Theme Core Engine Toggle */}
             <ThemeSwitcher />
-          </nav>
+          </div>
         </header>
       </div>
 

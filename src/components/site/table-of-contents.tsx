@@ -98,7 +98,7 @@ export const TableOfContents: React.FC = () => {
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? "0%" : "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-[57px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
+        className="fixed right-0 top-[55px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
       >
         {/* Attached Pull-Tab Button */}
         <button
