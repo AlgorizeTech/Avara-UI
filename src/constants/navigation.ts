@@ -61,6 +61,7 @@ export const navigation: NavigationItem[] = [
       { label: "Drawer", href: "/docs/nextjs/drawer", badge: "Core" },
       { label: "Dialog", href: "/docs/nextjs/dialog", badge: "Core" },
       { label: "Data Grid", href: "/docs/nextjs/data-grid", badge: "New" },
+      { label: "Data Table", href: "/docs/nextjs/data-table", badge: "New" },
       { label: "Date Picker", href: "/docs/nextjs/date-picker", badge: "Core" },
       { label: "Form", href: "/docs/nextjs/form", badge: "Core" },
       { label: "Input", href: "/docs/nextjs/input", badge: "Core" },
