@@ -99,6 +99,7 @@ export const navigation: NavigationItem[] = [
     label: "Animated Ui Components",
     children: [
       { label: "Typography", href: "/docs/nextjs/animated-typography", badge: "New" },
+      { label: "Timeline", href: "/docs/nextjs/animated-timeline", badge: "New" },
     ],
   },
   {
