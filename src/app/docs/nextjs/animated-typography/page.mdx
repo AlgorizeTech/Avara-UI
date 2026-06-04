@@ -1,0 +1,230 @@
+import { AnimatedTypographyShowcase } from "@/components/site/AnimatedTypographyShowcase";
+
+# Animated Typography
+
+A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced, staggered visual effects and deep layout controls.
+
+Building animated text that scales responsively and doesn't break screen readers is tricky. Standard staggered character animations often result in screen readers spelling out words letter-by-letter. This `AnimatedTypographyBlock` automatically wraps your content in an `sr-only` tag for assistive technologies, while orchestrating the visual animations on hidden child spans.
+
+It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
+
+## Interactive Showcase
+
+Use the control panel below to test the different semantic tags, alignment options, and the newly added 3D animation variants (`flip-up`, `reveal`, `pop-in`).
+
+<AnimatedTypographyShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
+
+You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/AnimatedTypographyBlock.tsx`.
+
+---
+
+## Usage
+
+Use the `as` prop to define the underlying semantic HTML tag. By default, it applies standard Tailwind typography sizing, but you can override this safely using the `size` prop.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function LandingHeader() {
+  return (
+    <div className="flex flex-col max-w-3xl">
+      {/* 3D Flip Reveal */}
+      <AnimatedTypographyBlock
+        as="h1"
+        variant="flip-up"
+        align="center"
+        size="6xl"
+        text="The Future of User Interfaces."
+      />
+
+      {/* Staggered Subheadline with Custom Rem Sizing */}
+      <AnimatedTypographyBlock
+        as="p"
+        variant="reveal"
+        align="center"
+        size="1.25rem"
+        delay={400}
+        speed={1.5}
+        text="Build faster, accessible, and stunning applications."
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The text content to render. Staggered variants (like{" "}
+          <code>fade-up</code> or <code>pop-in</code>) automatically split this
+          string by spaces to animate word-by-word.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>
+            "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" |
+            "blockquote"
+          </code>
+        </td>
+        <td>
+          <code>"p"</code>
+        </td>
+        <td>
+          The semantic HTML tag to render. Automatically applies sensible
+          responsive sizing based on the tag unless overridden by the{" "}
+          <code>size</code> prop.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>
+            "fade-up" | "reveal" | "flip-up" | "blur-in" | "pop-in" |
+            "typewriter" | "glitch" | "glow" | "none"
+          </code>
+        </td>
+        <td>
+          <code>"fade-up"</code>
+        </td>
+        <td>The animation effect applied to the text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"left" | "center" | "right" | "justify"</code>
+        </td>
+        <td>
+          <code>"left"</code>
+        </td>
+        <td>Controls the CSS text alignment of the underlying container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Overrides the default tag size. Supports Tailwind scale sizes (e.g.,{" "}
+          <code>"sm"</code>, <code>"3xl"</code>) OR standard CSS values (e.g.,{" "}
+          <code>"24px"</code>, <code>"2rem"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "zinc" | "default" | string
+          </code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          The text color. If <code>"default"</code>, it inherits the parent
+          container's color. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>delay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The initial delay in milliseconds before the animation begins.
+          Essential for sequencing multiple typography blocks (e.g., fading a
+          subheadline in after the main headline).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          A multiplier for the animation speed. Lower numbers mean faster
+          animations (e.g., <code>0.5</code> makes the staggered delays run
+          twice as fast).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
