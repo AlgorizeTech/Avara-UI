@@ -207,7 +207,7 @@ const Sidebar = () => {
   const currentPath = useCurrentPath();
 
   return (
-    <aside className="hidden md:block w-[260px] h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-100 dark:border-zinc-800">
+    <aside className="hidden md:block w-[260px] h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-100 dark:border-white/5">
       <ScrollArea className="h-full w-full">
         <div className="py-6 px-4">
           <nav role="navigation" aria-label="Documentation navigation">

@@ -98,12 +98,12 @@ export const TableOfContents: React.FC = () => {
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? "0%" : "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-[55px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
+        className="fixed right-0 top-[55px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-black/5 backdrop-blur-xl border-l border-zinc-200 dark:border-white/5 shadow-2xl flex-shrink-0"
       >
         {/* Attached Pull-Tab Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-zinc-950 border-y border-l border-zinc-200 dark:border-zinc-800 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
+          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-black/5 border-y border-l border-zinc-200 dark:border-white/10 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
           aria-label="Toggle Table of Contents"
         >
           {isOpen ? (
