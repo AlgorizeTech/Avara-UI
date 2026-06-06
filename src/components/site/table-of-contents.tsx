@@ -3,230 +3,167 @@
 import { useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
+
+// Each TOC row is ~28px tall — used to position the tracker pill
+const ROW_H = 28;
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // 1. Default to closed for SSR safety and mobile-first approach
-  const [isOpen, setIsOpen] = useState(false);
-
-  // 2. Automatically open the TOC on mount ONLY for desktop screens
   useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
-      setIsOpen(true);
-    }
-  }, []);
-
-  // --- Smooth Scroll Tracker ---
-  useEffect(() => {
-    const updateProgress = () => {
-      const currentScrollY = window.scrollY;
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight;
-
-      const windowHeight = scrollHeight - clientHeight;
-      const progress =
-        windowHeight > 0 ? (currentScrollY / windowHeight) * 100 : 0;
-
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    const update = () => {
+      const scrolled = window.scrollY;
+      const total =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      setScrollProgress(
+        total > 0 ? Math.min(100, (scrolled / total) * 100) : 0,
+      );
     };
-
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress();
-
-    return () => window.removeEventListener("scroll", updateProgress);
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
-  if (toc.length === 0 || toc.every((item) => !item.text.trim())) {
-    return null;
-  }
+  if (!toc.length || toc.every((i) => !i.text.trim())) return null;
 
-  // 3. Helper function to handle link clicks and auto-close on mobile
-  const handleLinkClick = (id: string) => {
-    scrollToHeading(id);
-    if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setIsOpen(false);
-    }
-  };
-
-  // --- Style Helper based on progress ---
-  const getProgressStyles = (val: number) => {
-    if (val <= 25) {
-      return {
-        background: `linear-gradient(90deg, #ef4444 0%, #f59e0b ${val * 4}%, #ef4444 100%)`,
-        shadow: "0 0 8px rgba(239, 68, 68, 0.4)",
-        color: "#ef4444",
-        bgColor: "rgba(239, 68, 68, 0.1)",
-        borderColor: "1px solid rgba(239, 68, 68, 0.2)",
-      };
-    } else if (val <= 50) {
-      return {
-        background: `linear-gradient(90deg, #f59e0b 0%, #f97316 ${(val - 25) * 4}%, #f59e0b 100%)`,
-        shadow: "0 0 8px rgba(245, 158, 11, 0.4)",
-        color: "#f59e0b",
-        bgColor: "rgba(245, 158, 11, 0.1)",
-        borderColor: "1px solid rgba(245, 158, 11, 0.2)",
-      };
-    } else if (val <= 75) {
-      return {
-        background: `linear-gradient(90deg, #f97316 0%, #84cc16 ${(val - 50) * 4}%, #f97316 100%)`,
-        shadow: "0 0 8px rgba(249, 115, 22, 0.4)",
-        color: "#f97316",
-        bgColor: "rgba(249, 115, 22, 0.1)",
-        borderColor: "1px solid rgba(249, 115, 22, 0.2)",
-      };
-    } else {
-      return {
-        background: `linear-gradient(90deg, #84cc16 0%, #22c55e ${(val - 75) * 4}%, #22c55e 100%)`,
-        shadow: "0 0 8px rgba(34, 197, 94, 0.4)",
-        color: "#22c55e",
-        bgColor: "rgba(34, 197, 94, 0.1)",
-        borderColor: "1px solid rgba(34, 197, 94, 0.2)",
-      };
-    }
-  };
-
-  const dynamicStyles = getProgressStyles(scrollProgress);
+  const activeIndex = toc.findIndex((item) => item.id === activeId);
 
   return (
-    <>
-      {/* Sliding Table of Contents Drawer */}
-      <motion.aside
-        initial={{ x: "100%" }}
-        animate={{ x: isOpen ? "0%" : "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-[55px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-black/5 backdrop-blur-xl border-l border-zinc-200 dark:border-white/5 shadow-2xl flex-shrink-0"
-      >
-        {/* Attached Pull-Tab Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-black/5 border-y border-l border-zinc-200 dark:border-white/10 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
-          aria-label="Toggle Table of Contents"
-        >
-          {isOpen ? (
-            <ChevronRight className="w-5 h-5" />
-          ) : (
-            <ChevronLeft className="w-5 h-5" />
-          )}
-        </button>
+    <aside className="hidden xl:flex flex-col w-[228px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] overflow-hidden">
+      {/*
+        Outer card — sits as a panel within the layout.
+        Remove the border/rounded if your layout already provides a right edge.
+      */}
+      <div className="flex flex-col h-full border-l border-zinc-100 dark:border-zinc-800/70">
+        {/* ── Header ─────────────────────────────────── */}
+        <div className="px-5 pt-8 pb-4 flex-shrink-0">
+          {/* Label row */}
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+              On this page
+            </span>
+            <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+          </div>
 
-        <div className="h-full py-8 px-6 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <div className="space-y-6">
-            {/* Table of Contents */}
-            <nav
-              className="relative"
-              role="navigation"
-              aria-label="Table of contents"
-            >
-              <div className="space-y-3">
-                {toc.map((item) => {
-                  const isActive = item.id === activeId;
-                  const indentLevel = item.level - 1;
-                  const leftOffset = indentLevel * 16;
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="relative flex items-start"
-                      style={{ marginLeft: `${leftOffset}px` }}
-                    >
-                      <button
-                        onClick={() => handleLinkClick(item.id)}
-                        className={cn(
-                          "text-left transition-all duration-200 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer",
-                          item.level === 1
-                            ? "text-[0.80rem] font-medium"
-                            : item.level === 2
-                              ? "text-[0.8rem]"
-                              : "text-[0.75rem]",
-                          isActive
-                            ? "text-blue-600 dark:text-blue-400 font-medium"
-                            : "text-zinc-600 dark:text-zinc-400",
-                        )}
-                      >
-                        {item.text}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </nav>
-
-            {/* Reading Progress */}
-            <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
-              <div className="relative">
-                <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 shadow-inner">
-                  <motion.div
-                    className="h-2 rounded-full relative overflow-hidden shadow-lg"
-                    style={{
-                      background: dynamicStyles.background,
-                      boxShadow: dynamicStyles.shadow,
-                    }}
-                    initial={{ width: "0%" }}
-                    animate={{ width: `${scrollProgress}%` }}
-                    transition={{ duration: 0.1, ease: "linear" }}
-                  >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                      animate={{ x: ["-100%", "100%"] }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
-                  </motion.div>
-                </div>
-
-                <motion.div
-                  className="absolute top-0 -mt-6 text-xs font-medium px-2 py-1 rounded-md shadow-sm"
-                  style={{
-                    transform: "translateX(-50%)",
-                    background: dynamicStyles.bgColor,
-                    color: dynamicStyles.color,
-                    border: dynamicStyles.borderColor,
-                  }}
-                  animate={{ left: `${scrollProgress}%` }}
-                  transition={{ duration: 0.1, ease: "linear" }}
-                >
-                  {Math.round(scrollProgress)}%
-                </motion.div>
-              </div>
-
-              <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                <span>Start</span>
-                <span>End</span>
-              </div>
+          {/* Progress bar */}
+          <div className="flex items-center gap-2.5">
+            <div className="flex-1 h-[2px] bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full origin-left"
+                animate={{ scaleX: scrollProgress / 100 }}
+                transition={{ duration: 0.12, ease: "linear" }}
+              />
             </div>
-
-            {/* Glassy Navigation Buttons */}
-            <div className="space-y-2">
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-md border border-white/20 dark:border-zinc-700/50 rounded-lg hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-                <span>Back to top</span>
-              </button>
-              <button
-                onClick={() =>
-                  window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: "smooth",
-                  })
-                }
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-md border border-white/20 dark:border-zinc-700/50 rounded-lg hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                <ArrowDown className="w-3.5 h-3.5" />
-                <span>Go to bottom</span>
-              </button>
-            </div>
+            <span className="text-[10.5px] font-semibold tabular-nums text-zinc-400 dark:text-zinc-500 w-7 text-right">
+              {Math.round(scrollProgress)}%
+            </span>
           </div>
         </div>
-      </motion.aside>
-    </>
+
+        <div className="h-px bg-zinc-100 dark:bg-zinc-800 flex-shrink-0" />
+
+        {/* ── TOC list ───────────────────────────────── */}
+        <div className="flex-1 overflow-y-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav
+            role="navigation"
+            aria-label="Table of contents"
+            className="relative py-1"
+          >
+            {/* Static track line */}
+            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-zinc-100 dark:bg-zinc-800" />
+
+            {/* Animated tracker pill */}
+            {activeIndex >= 0 && (
+              <motion.div
+                className="absolute left-[18px] w-[3px] rounded-full bg-zinc-900 dark:bg-zinc-100"
+                initial={false}
+                animate={{
+                  top: activeIndex * ROW_H + 6,
+                  height: 16,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 340,
+                  damping: 32,
+                }}
+              />
+            )}
+
+            {toc.map((item, i) => {
+              const isActive = item.id === activeId;
+              // h2 = level 2, h3 = level 3, etc. (level 1 treated same as h2)
+              const indent = Math.max(0, item.level - 2) * 14;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToHeading(item.id)}
+                  style={{ paddingLeft: `${36 + indent}px` }}
+                  className={cn(
+                    "w-full text-left py-[5px] pr-5 text-[12.5px] leading-snug",
+                    "transition-colors duration-150 truncate block",
+                    "h-[28px] flex items-center",
+                    isActive
+                      ? "text-zinc-900 dark:text-zinc-50 font-medium"
+                      : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300",
+                  )}
+                >
+                  {item.text}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="h-px bg-zinc-100 dark:bg-zinc-800 flex-shrink-0" />
+
+        {/* ── Footer nav ─────────────────────────────── */}
+        <div className="flex-shrink-0 px-3 py-3 flex gap-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5",
+              "py-[7px] rounded-lg text-[11.5px] font-medium",
+              "bg-zinc-50 dark:bg-zinc-900",
+              "border border-zinc-200/80 dark:border-zinc-800",
+              "text-zinc-500 dark:text-zinc-400",
+              "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-700 dark:hover:text-zinc-200",
+              "hover:border-zinc-300 dark:hover:border-zinc-700",
+              "transition-all duration-150",
+            )}
+          >
+            <ArrowUp className="w-3 h-3" />
+            Top
+          </button>
+          <button
+            onClick={() =>
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth",
+              })
+            }
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5",
+              "py-[7px] rounded-lg text-[11.5px] font-medium",
+              "bg-zinc-50 dark:bg-zinc-900",
+              "border border-zinc-200/80 dark:border-zinc-800",
+              "text-zinc-500 dark:text-zinc-400",
+              "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-700 dark:hover:text-zinc-200",
+              "hover:border-zinc-300 dark:hover:border-zinc-700",
+              "transition-all duration-150",
+            )}
+          >
+            <ArrowDown className="w-3 h-3" />
+            End
+          </button>
+        </div>
+      </div>
+    </aside>
   );
 };
