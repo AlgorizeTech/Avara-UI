@@ -6,6 +6,7 @@ import {
   BarChart3,
   BookOpen,
   LayoutGrid,
+  Linkedin,
   Palette,
   Search,
   X,
@@ -269,13 +270,10 @@ const Header = () => {
             </Link>
             <Link
               className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
-              href="/components"
+              href="/docs/nextjs/avatar"
             >
               <LayoutGrid className="h-3.5 w-3.5" />
               Components
-              <span className="text-[10px] font-semibold px-1.5 py-px rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 tracking-wide scale-90">
-                New
-              </span>
             </Link>
             <Link
               className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
@@ -293,7 +291,7 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Right Area: Command Palette Trigger, Git Tracker */}
+          {/* Right Area: Command Palette Trigger, Socials, Theme */}
           <div className="flex items-center gap-2">
             {/* Command Palette Omni Button */}
             <button
@@ -317,20 +315,31 @@ const Header = () => {
 
             <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-800 mx-0.5" />
 
-            {/* GitHub Stars Metrics Badge */}
-            <Link
-              href="https://github.com/docs/docs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all text-[12.5px] font-medium"
-              aria-label="View project on GitHub"
-            >
-              <GitHubIcon className="w-[14px] h-[14px] fill-current" />
-              <span>GitHub</span>
-              <span className="text-[11px] font-semibold px-1.5 py-px rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700">
-                2.1k
-              </span>
-            </Link>
+            {/* Social Links (LinkedIn & GitHub) */}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <Link
+                href="https://www.linkedin.com/company/algorizetech/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-8 w-8 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all"
+                aria-label="View LinkedIn Profile"
+              >
+                <Linkedin className="w-[14px] h-[14px]" />
+              </Link>
+
+              <Link
+                href="https://github.com/docs/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all text-[12.5px] font-medium"
+                aria-label="View project on GitHub"
+              >
+                <GitHubIcon className="w-[14px] h-[14px] fill-current" />
+                <span className="text-[11px] font-semibold px-1.5 py-px rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700">
+                  2.1k
+                </span>
+              </Link>
+            </div>
 
             <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-800 mx-0.5" />
 
