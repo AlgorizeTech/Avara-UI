@@ -130,12 +130,12 @@ const MenuItem: React.FC<{
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={triggerClasses}
+          className={cn(triggerClasses, "cursor-pointer")}
         >
           {triggerContent}
         </button>
       ) : (
-        <Link href={item.href} className={triggerClasses}>
+        <Link href={item.href} className={cn(triggerClasses, "cursor-pointer")}>
           {triggerContent}
         </Link>
       )}
@@ -159,7 +159,7 @@ const MenuItem: React.FC<{
                   <Link
                     href={child.href}
                     className={cn(
-                      "flex items-center py-1.5 px-3 ml-[28px] rounded-lg text-[13.5px] transition-all duration-200",
+                      "flex items-center py-1.5 px-3 ml-[28px] rounded-lg text-[13.5px] transition-all duration-200 cursor-pointer",
                       isChildActive
                         ? "text-zinc-900 dark:text-white font-medium bg-zinc-50 dark:bg-zinc-800/50"
                         : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/30",
@@ -213,7 +213,7 @@ const Sidebar = () => {
             <Link
               href="/docs"
               className={cn(
-                "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all",
+                "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all cursor-pointer",
                 currentPath === "/docs"
                   ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50 font-medium"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",

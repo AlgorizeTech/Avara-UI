@@ -105,7 +105,7 @@ export const TableOfContents: React.FC = () => {
                   style={{ paddingLeft: `${36 + indent}px` }}
                   className={cn(
                     "w-full text-left py-[5px] pr-5 text-[12.5px] leading-snug",
-                    "transition-colors duration-150 truncate block",
+                    "transition-colors duration-150 truncate block cursor-pointer",
                     "h-[28px] flex items-center",
                     isActive
                       ? "text-zinc-900 dark:text-zinc-50 font-medium"
@@ -134,7 +134,7 @@ export const TableOfContents: React.FC = () => {
               "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
               "hover:text-zinc-700 dark:hover:text-zinc-200",
               "hover:border-zinc-300 dark:hover:border-zinc-700",
-              "transition-all duration-150",
+              "transition-all duration-150 cursor-pointer",
             )}
           >
             <ArrowUp className="w-3 h-3" />
@@ -156,7 +156,7 @@ export const TableOfContents: React.FC = () => {
               "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
               "hover:text-zinc-700 dark:hover:text-zinc-200",
               "hover:border-zinc-300 dark:hover:border-zinc-700",
-              "transition-all duration-150",
+              "transition-all duration-150 cursor-pointer",
             )}
           >
             <ArrowDown className="w-3 h-3" />
