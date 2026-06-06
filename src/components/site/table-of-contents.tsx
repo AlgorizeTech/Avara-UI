@@ -11,7 +11,10 @@ const ROW_H = 28;
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
+
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -19,10 +22,20 @@ export const TableOfContents: React.FC = () => {
       const total =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
-      setScrollProgress(
-        total > 0 ? Math.min(100, (scrolled / total) * 100) : 0,
+
+      const progress = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+
+      setScrollProgress(progress);
+
+      // Boundary checks to fix Intersection Observer edge cases
+      setIsAtTop(scrolled < 100); // within 100px of the very top
+      setIsAtBottom(
+        progress >= 99 ||
+          scrolled + document.documentElement.clientHeight >=
+            document.documentElement.scrollHeight - 20,
       );
     };
+
     window.addEventListener("scroll", update, { passive: true });
     update();
     return () => window.removeEventListener("scroll", update);
@@ -30,7 +43,18 @@ export const TableOfContents: React.FC = () => {
 
   if (!toc.length || toc.every((i) => !i.text.trim())) return null;
 
-  const activeIndex = toc.findIndex((item) => item.id === activeId);
+  // --- SMART ACTIVE ID OVERRIDE ---
+  // Overrides the hook's activeId if the user hits the scroll boundaries
+  let displayActiveId = activeId;
+  if (toc.length > 0) {
+    if (isAtTop) {
+      displayActiveId = toc[0].id;
+    } else if (isAtBottom) {
+      displayActiveId = toc[toc.length - 1].id;
+    }
+  }
+
+  const activeIndex = toc.findIndex((item) => item.id === displayActiveId);
 
   return (
     <aside className="hidden xl:flex flex-col w-[228px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] overflow-hidden">
@@ -94,7 +118,7 @@ export const TableOfContents: React.FC = () => {
             )}
 
             {toc.map((item, i) => {
-              const isActive = item.id === activeId;
+              const isActive = item.id === displayActiveId;
               // h2 = level 2, h3 = level 3, etc. (level 1 treated same as h2)
               const indent = Math.max(0, item.level - 2) * 14;
 
