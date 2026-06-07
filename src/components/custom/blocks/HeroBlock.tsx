@@ -115,7 +115,6 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
     const { theme, style } = getThemeStyles(color as string);
     const uniqueId = React.useId().replace(/:/g, "");
 
-    // Structural CSS Grid/Flex layouts correctly mapped to the inner container
     const layoutStyles = {
       center:
         "flex flex-col items-center text-center max-w-5xl mx-auto pt-24 pb-20 px-6",
@@ -223,13 +222,14 @@ export const HeroContent = forwardRef<
 HeroContent.displayName = "HeroContent";
 
 export const HeroBadge = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
+  HTMLAnchorElement,
+  React.AnchorHTMLAttributes<HTMLAnchorElement>
+>(({ children, className, href = "#", ...props }, ref) => {
   const { theme, variant } = useHero();
   return (
-    <div
+    <a
       ref={ref}
+      href={href}
       className={cn(
         "inline-flex items-center gap-2 px-3.5 py-1.5 mb-8 rounded-full text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
         variant === "glass"
@@ -240,10 +240,32 @@ export const HeroBadge = forwardRef<
       {...props}
     >
       {children}
-    </div>
+    </a>
   );
 });
 HeroBadge.displayName = "HeroBadge";
+
+// --- ADDED: HeroBadgeText ---
+export const HeroBadgeText = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  const { theme, variant } = useHero();
+  return (
+    <span
+      className={cn(
+        "text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 mr-1 font-bold",
+        variant === "glass" ? "bg-white/20 text-white" : theme.bg,
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+};
 
 export interface HeroTitleProps
   extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -272,7 +294,6 @@ export const HeroTitle = forwardRef<HTMLHeadingElement, HeroTitleProps>(
           data-text={typeof children === "string" ? children : undefined}
           className={cn(
             "text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] font-black tracking-tighter leading-[1.05]",
-            // Fixed: Removed text-balance to prevent grid collapsing
             variant === "glass"
               ? "text-white drop-shadow-md"
               : "text-zinc-900 dark:text-zinc-50",
@@ -302,7 +323,6 @@ export const HeroDescription = forwardRef<
       ref={ref}
       className={cn(
         "mt-6 text-[17px] sm:text-[19px] leading-relaxed tracking-wide",
-        // Fixed: Removed text-balance to prevent CSS Grid breaking on Safari/Chrome
         layout === "center" || variant === "glass"
           ? "max-w-2xl mx-auto"
           : "max-w-xl",
@@ -430,3 +450,48 @@ export const HeroVisual = forwardRef<
   );
 });
 HeroVisual.displayName = "HeroVisual";
+
+// --- ADDED: HeroSocialProof ---
+export interface HeroSocialProofProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  avatars: string[];
+  text: string;
+}
+
+export const HeroSocialProof = forwardRef<HTMLDivElement, HeroSocialProofProps>(
+  ({ avatars, text, className, ...props }, ref) => {
+    const { layout } = useHero();
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800 sm:flex sm:items-center",
+          layout === "center" && "justify-center border-t-0 pt-0",
+          className,
+        )}
+        {...props}
+      >
+        <div className="flex -space-x-3 sm:justify-start">
+          {avatars.map((src, idx) => (
+            <img
+              key={idx}
+              className="w-10 h-10 border-2 border-white dark:border-[#09090b] rounded-full object-cover shadow-sm"
+              src={src}
+              alt={`Avatar ${idx + 1}`}
+            />
+          ))}
+        </div>
+        <div
+          className={cn(
+            "mt-3 sm:mt-0 sm:ml-5 text-sm font-medium text-zinc-600 dark:text-zinc-400",
+            layout === "center" && "text-center",
+          )}
+        >
+          {text}
+        </div>
+      </div>
+    );
+  },
+);
+HeroSocialProof.displayName = "HeroSocialProof";
