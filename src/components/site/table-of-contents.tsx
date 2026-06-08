@@ -1,9 +1,10 @@
 "use client";
 
+import { useTOC } from "@/contexts/toc-context";
 import { useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, PanelRightClose } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 // Each TOC row is ~28px tall — used to position the tracker pill
@@ -11,6 +12,7 @@ const ROW_H = 28;
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
+  const { setShowTOC } = useTOC(); // Fetch the toggle function from Context
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -28,7 +30,7 @@ export const TableOfContents: React.FC = () => {
       setScrollProgress(progress);
 
       // Boundary checks to fix Intersection Observer edge cases
-      setIsAtTop(scrolled < 100); // within 100px of the very top
+      setIsAtTop(scrolled < 100);
       setIsAtBottom(
         progress >= 99 ||
           scrolled + document.documentElement.clientHeight >=
@@ -44,7 +46,6 @@ export const TableOfContents: React.FC = () => {
   if (!toc.length || toc.every((i) => !i.text.trim())) return null;
 
   // --- SMART ACTIVE ID OVERRIDE ---
-  // Overrides the hook's activeId if the user hits the scroll boundaries
   let displayActiveId = activeId;
   if (toc.length > 0) {
     if (isAtTop) {
@@ -56,33 +57,44 @@ export const TableOfContents: React.FC = () => {
 
   const activeIndex = toc.findIndex((item) => item.id === displayActiveId);
 
+  // Smoothly transition color from Red (0) to Green (120) based on progress
+  const dynamicColor = `hsl(${Math.round(scrollProgress * 1.2)}, 80%, 50%)`;
+
   return (
     <aside className="hidden xl:flex flex-col w-[228px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] overflow-hidden">
-      {/*
-        Outer card — sits as a panel within the layout.
-        Remove the border/rounded if your layout already provides a right edge.
-      */}
       <div className="flex flex-col h-full border-l border-zinc-100 dark:border-zinc-800/70">
         {/* ── Header ─────────────────────────────────── */}
         <div className="px-5 pt-8 pb-4 flex-shrink-0">
-          {/* Label row */}
-          <div className="flex items-center gap-3 mb-4">
+          {/* Label row with Toggle Button */}
+          <div className="flex items-center justify-between gap-3 mb-4">
             <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
               On this page
             </span>
             <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+            <button
+              onClick={() => setShowTOC(false)}
+              className="text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 transition-colors p-1 -mr-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+              title="Hide Table of Contents"
+              aria-label="Hide Table of Contents"
+            >
+              <PanelRightClose className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {/* Progress bar */}
           <div className="flex items-center gap-2.5">
             <div className="flex-1 h-[2px] bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full origin-left"
+                className="h-full rounded-full origin-left"
+                style={{ backgroundColor: dynamicColor }}
                 animate={{ scaleX: scrollProgress / 100 }}
                 transition={{ duration: 0.12, ease: "linear" }}
               />
             </div>
-            <span className="text-[10.5px] font-semibold tabular-nums text-zinc-400 dark:text-zinc-500 w-7 text-right">
+            <span
+              className="text-[10.5px] font-bold tabular-nums w-7 text-right transition-colors duration-100"
+              style={{ color: dynamicColor }}
+            >
               {Math.round(scrollProgress)}%
             </span>
           </div>
@@ -109,17 +121,12 @@ export const TableOfContents: React.FC = () => {
                   top: activeIndex * ROW_H + 6,
                   height: 16,
                 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 340,
-                  damping: 32,
-                }}
+                transition={{ type: "spring", stiffness: 340, damping: 32 }}
               />
             )}
 
-            {toc.map((item, i) => {
+            {toc.map((item) => {
               const isActive = item.id === displayActiveId;
-              // h2 = level 2, h3 = level 3, etc. (level 1 treated same as h2)
               const indent = Math.max(0, item.level - 2) * 14;
 
               return (
@@ -152,17 +159,13 @@ export const TableOfContents: React.FC = () => {
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5",
               "py-[7px] rounded-lg text-[11.5px] font-medium",
-              "bg-zinc-50 dark:bg-zinc-900",
-              "border border-zinc-200/80 dark:border-zinc-800",
-              "text-zinc-500 dark:text-zinc-400",
-              "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
-              "hover:text-zinc-700 dark:hover:text-zinc-200",
-              "hover:border-zinc-300 dark:hover:border-zinc-700",
+              "bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800",
+              "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-700 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
               "transition-all duration-150 cursor-pointer",
             )}
           >
-            <ArrowUp className="w-3 h-3" />
-            Top
+            <ArrowUp className="w-3 h-3" /> Top
           </button>
           <button
             onClick={() =>
@@ -174,17 +177,13 @@ export const TableOfContents: React.FC = () => {
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5",
               "py-[7px] rounded-lg text-[11.5px] font-medium",
-              "bg-zinc-50 dark:bg-zinc-900",
-              "border border-zinc-200/80 dark:border-zinc-800",
-              "text-zinc-500 dark:text-zinc-400",
-              "hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
-              "hover:text-zinc-700 dark:hover:text-zinc-200",
-              "hover:border-zinc-300 dark:hover:border-zinc-700",
+              "bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800",
+              "text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-700 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
               "transition-all duration-150 cursor-pointer",
             )}
           >
-            <ArrowDown className="w-3 h-3" />
-            End
+            <ArrowDown className="w-3 h-3" /> End
           </button>
         </div>
       </div>
