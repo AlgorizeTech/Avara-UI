@@ -92,6 +92,7 @@ export const navigation: NavigationItem[] = [
       { label: "Typography", href: "/docs/nextjs/typography",  },
       { label: "Pagination", href: "/docs/nextjs/pagination",  },
       { label: "Tabs", href: "/docs/nextjs/vertical-tabs",  },
+      { label: "Wizard", href: "/docs/nextjs/wizard", badge: "New" },
       
     ],
   },
