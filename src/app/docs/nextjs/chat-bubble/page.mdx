@@ -1,0 +1,239 @@
+import { ChatBubbleShowcase } from "@/components/site/ChatBubbleShowcase";
+
+# Animated Chat Bubble
+
+A complete, GSAP-powered compound component system for building highly customized chat interfaces, messengers, and support widgets.
+
+Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and high-performance GSAP animations.
+
+## Interactive Showcase
+
+Use the control panel below to test the sender colors and simulate an incoming message. Notice how the border-radius logic handles consecutive messages gracefully, and how GSAP handles the bouncy entrance physics.
+
+<ChatBubbleShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies on **GSAP** for the high-performance entrance and typing indicator animations, and **Lucide React** for the read receipt ticks.
+
+```bash
+npm install gsap lucide-react
+```
+
+## Copy the Component
+
+You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ChatBubbleBlock.tsx.
+
+## Usage
+
+Structure your chat messages using the provided sub-components. The parent `<ChatBubble />` container dictates the variant (sent vs. received) and the layout grouping, which automatically propagates to the child components to handle border radiuses and layout alignment.
+
+```tsx
+import {
+  ChatBubble,
+  ChatAvatar,
+  ChatMessage,
+  ChatTimestamp,
+  ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
+
+export default function ChatInterface() {
+  return (
+    <div className="flex flex-col gap-2 p-4 max-w-md mx-auto">
+      {/* Grouped Received Messages */}
+      <ChatBubble variant="received" layout="group-top">
+        <ChatAvatar fallback="AI" src="/bot-avatar.png" />
+        <ChatMessage>Hello! How can I help you today?</ChatMessage>
+      </ChatBubble>
+
+      <ChatBubble variant="received" layout="group-bottom">
+        <ChatAvatar fallback="AI" />
+        <ChatMessage>
+          I can answer questions, process data, or generate code.
+          <ChatTimestamp time="10:24 AM" />
+        </ChatMessage>
+      </ChatBubble>
+
+      {/* Single Sent Message with Read Receipt */}
+      <ChatBubble variant="sent" layout="default">
+        <ChatAvatar fallback="ME" />
+        <ChatMessage color="blue">
+          Can you show me how to use the ChatBubble component?
+          <ChatTimestamp time="10:25 AM" status="read" />
+        </ChatMessage>
+      </ChatBubble>
+
+      {/* Animated Typing Indicator */}
+      <ChatBubble variant="received">
+        <ChatAvatar fallback="AI" />
+        <ChatTypingIndicator />
+      </ChatBubble>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"center" | "split-right" | "split-left"</code>
+        </td>
+        <td>
+          <code>"split-left"</code>
+        </td>
+        <td>
+          Orchestrates the macro-structure of the DOM layout. Switches between
+          centered SaaS headers and two-column enterprise layouts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>pattern</code>
+        </td>
+        <td>
+          <code>"none" | "grid" | "dots"</code>
+        </td>
+        <td>
+          <code>"none"</code>
+        </td>
+        <td>
+          Renders a perfectly masked, subtle geometric background pattern behind
+          the hero content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glass" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Controls the background behavior. The <code>glow</code> variant adds a
+          massive, dynamic radial gradient behind the content matching your
+          theme color. The <code>glass</code> variant overlays the content on
+          top of an image.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"blue" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"blue"</code>
+        </td>
+        <td>
+          The active accent color injected into the Badge, Action buttons, and
+          background glows. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroTitle</code>
+        </td>
+        <td>
+          <code>animation</code>
+        </td>
+        <td>
+          <code>"fade-up" | "blur-in" | "glitch" | "none"</code>
+        </td>
+        <td>
+          <code>"fade-up"</code>
+        </td>
+        <td>
+          Applies cinematic entry animations. The <code>glitch</code> effect
+          uses pure CSS RGB-splitting keyframes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroAction</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"primary" | "secondary" | "outline" | "ghost" | "glow"</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Determines the visual styling of the CTA button. The <code>glow</code>{" "}
+          variant adds an animated, shimmering border matching the theme color.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroSocialProof</code>
+        </td>
+        <td>
+          <code>avatars</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of image URL strings to populate the overlapping avatar group
+          (commonly used for "Trusted by" sections).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroSocialProof</code>
+        </td>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The label text rendered next to (or below) the avatar group.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
