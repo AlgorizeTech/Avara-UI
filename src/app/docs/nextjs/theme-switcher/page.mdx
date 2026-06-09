@@ -1,0 +1,145 @@
+import { ThemeSwitcherShowcase } from "@/components/site/ThemeSwitcherShowcase";
+
+# Theme Switcher
+
+A premium, GSAP-powered dark mode toggle component built specifically for Next.js applications using `next-themes`.
+
+It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
+
+## Interactive Showcase
+
+Use the control panel below to test the different layout styles. If you change your actual system theme while the `pill` variant is active, you will see the active indicator seamlessly slide to match your OS settings!
+
+<ThemeSwitcherShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies heavily on `next-themes` to manage the actual CSS classes and localStorage states securely, and `gsap` for the micro-interactions.
+
+```bash
+npm install next-themes gsap lucide-react
+```
+
+### 2. Configure Next Themes
+
+Ensure your app/layout.tsx (or pages/\_app.tsx) is wrapped in the ThemeProvider so the hook functions correctly across your app.
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider } from "next-themes";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### 3. Copy the Component
+
+You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ThemeSwitcherBlock.tsx.
+
+## Usage
+
+Simply drop the component into your header or settings page. You can customize the layout by passing the variant prop.
+
+```tsx
+import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    <header className="flex justify-between items-center p-4 border-b">
+      <h1>My App</h1>
+
+      <div className="flex items-center gap-4">
+        {/* A simple icon toggle for the main navbar */}
+        <ThemeSwitcher variant="icon" />
+
+        {/* Or, a full segmented pill for a settings page */}
+        {/* <ThemeSwitcher variant="pill" /> */}
+      </div>
+    </header>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"icon" | "pill" | "dropdown"</code>
+        </td>
+        <td>
+          <code>"icon"</code>
+        </td>
+        <td>
+          Determines the structural layout and specific GSAP animations applied
+          to the toggler.
+          <ul>
+            <li>
+              <code>icon</code>: A simple, rotating toggle button.
+            </li>
+            <li>
+              <code>pill</code>: A segmented control with a sliding active
+              indicator.
+            </li>
+            <li>
+              <code>dropdown</code>: A click-to-open menu with all theme
+              options.
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML div attributes (e.g., <code>className</code>,{" "}
+          <code>id</code>) which are seamlessly forwarded to the root wrapper.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
