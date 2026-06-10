@@ -101,6 +101,7 @@ export const navigation: NavigationItem[] = [
     label: "Animated Ui Components",
     children: [
       { label: "Chat Bubble", href: "/docs/nextjs/chat-bubble", badge: "New" },
+      // { label: "Flow Chart", href: "/docs/nextjs/flowchart", badge: "New" },
       { label: "Typography", href: "/docs/nextjs/animated-typography", badge: "New" },
       { label: "Timeline", href: "/docs/nextjs/animated-timeline", badge: "New" },
     ],
