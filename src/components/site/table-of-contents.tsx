@@ -77,7 +77,7 @@ export const TableOfContents: React.FC = () => {
               title="Hide Table of Contents"
               aria-label="Hide Table of Contents"
             >
-              <PanelRightClose className="w-3.5 h-3.5" />
+              <PanelRightClose className="w-7 h-6" />
             </button>
           </div>
 

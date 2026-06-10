@@ -50,11 +50,11 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
         {!showTOC && (
           <button
             onClick={() => setShowTOC(true)}
-            className="hidden xl:flex fixed right-0 top-[120px] z-40 p-2.5 bg-white dark:bg-zinc-900 border border-r-0 border-zinc-200 dark:border-zinc-800 rounded-l-lg shadow-sm text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:pr-4 group"
+            className="hidden xl:flex fixed right-0 top-[120px] z-40 p-2.5 bg-white dark:bg-zinc-900 border border-r-0 border-zinc-200 dark:border-zinc-800 rounded-l-lg shadow-sm text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:pr-4 group cursor-pointer"
             title="Show Table of Contents"
             aria-label="Show Table of Contents"
           >
-            <PanelRightOpen className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            <PanelRightOpen className="w-7 h-5 group-hover:-translate-x-0.5 transition-transform" />
           </button>
         )}
       </div>
