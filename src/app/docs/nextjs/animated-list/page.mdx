@@ -1,0 +1,68 @@
+import { AnimatedListShowcase } from "@/components/site/AnimatedListShowcase";
+
+# Animated List
+
+A layout component that automatically animates its children in sequence with a staggered delay. Perfect for showcasing live activity feeds, notifications, testimonials, or feature lists on your landing page.
+
+Instead of writing complex state orchestration arrays or map indexes, this component uses a strict GSAP timeline. Simply wrap your items in the `AnimatedList` parent container, and it will automatically apply a cascading pop-in effect to all direct children.
+
+## Interactive Showcase
+
+Hit the replay button below to watch the GSAP engine sequence the list items smoothly. Notice the slight blur applied during the entry animation for a premium, high-fidelity look.
+
+<AnimatedListShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component requires **GSAP** to handle the staggered DOM targeting and physics.
+
+```bash
+npm install gsap
+```
+
+### Copy the Component
+
+You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/AnimatedListBlock.tsx.
+
+## Usage
+
+Structure your feed using the AnimatedList as the parent wrapper. You can adjust the staggerDelay prop to speed up or slow down the cascade effect. We provide an AnimatedListItem with pre-configured glassmorphic card styling, but the AnimatedList container will successfully animate any direct children you pass into it.
+
+```tsx
+import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+
+export default function NotificationFeed() {
+  return (
+    // Increase staggerDelay for a slower, more deliberate cascade
+    <AnimatedList staggerDelay={0.15} animationDelay={0.2}>
+      <AnimatedListItem>
+        <div>
+          <h4>Payment Received</h4>
+          <p>$129.00 via Stripe</p>
+        </div>
+      </AnimatedListItem>
+
+      <AnimatedListItem>
+        <div>
+          <h4>New User Signup</h4>
+          <p>alice@example.com</p>
+        </div>
+      </AnimatedListItem>
+
+      <AnimatedListItem>
+        <div>
+          <h4>Server Scaled</h4>
+          <p>Cluster capacity increased to handle traffic.</p>
+        </div>
+      </AnimatedListItem>
+    </AnimatedList>
+  );
+}
+```

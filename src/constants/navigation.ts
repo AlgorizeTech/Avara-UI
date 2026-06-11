@@ -104,6 +104,7 @@ export const navigation: NavigationItem[] = [
       // { label: "Flow Chart", href: "/docs/nextjs/flowchart", badge: "New" },
       { label: "Typography", href: "/docs/nextjs/animated-typography", badge: "New" },
       { label: "Timeline", href: "/docs/nextjs/animated-timeline", badge: "New" },
+      { label: "Animated List", href: "/docs/nextjs/animated-list", badge: "New" },
     ],
   },
   {
