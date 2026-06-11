@@ -22,32 +22,49 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, { forwardRef, useEffect, useRef } from "react";
 
-export interface AnimatedListProps extends React.HTMLAttributes<HTMLDivElement> {
-  staggerDelay?: number;
-  animationDelay?: number;
-  ease?: string;
-  duration?: number;
-}
+export interface AnimatedListProps extends React.HTMLAttributes<HTMLDivElement> { staggerDelay?: number; animationDelay?: number; ease?: string; duration?: number; }
 
-export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(({ children, staggerDelay = 0.1, animationDelay = 0, ease = "back.out(1.2)", duration = 0.6, className, ...props }, ref) => {
+export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(({ children, staggerDelay = 0.12, animationDelay = 0, ease = "back.out(1.5)", duration = 0.8, className, ...props }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const items = containerRef.current.children;
-    gsap.set(items, { opacity: 0, y: 20, scale: 0.95, filter: "blur(4px)" });
-    gsap.to(items, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration, ease, stagger: staggerDelay, delay: animationDelay });
+    gsap.set(items, { opacity: 0, y: 40, scale: 0.9, rotationX: -45, transformOrigin: "top center", filter: "blur(8px)" });
+    gsap.to(items, { opacity: 1, y: 0, scale: 1, rotationX: 0, filter: "blur(0px)", duration, ease, stagger: staggerDelay, delay: animationDelay, force3D: true });
     return () => { gsap.killTweensOf(items); };
   }, [staggerDelay, animationDelay, ease, duration]);
 
-  return (<div ref={containerRef} className={cn("flex flex-col gap-3", className)} {...props}>{children}</div>);
+  return (<div ref={containerRef} className={cn("flex flex-col gap-3 lg:gap-4 perspective-[1000px]", className)} {...props}>{children}</div>);
 });
 AnimatedList.displayName = "AnimatedList";
 
 export interface AnimatedListItemProps extends React.HTMLAttributes<HTMLDivElement> {}
+
 export const AnimatedListItem = forwardRef<HTMLDivElement, AnimatedListItemProps>(({ children, className, ...props }, ref) => {
-  return (<div ref={ref} className={cn("w-full rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm backdrop-blur-sm opacity-0", className)} {...props}>{children}</div>);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current || !glowRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+    gsap.to(glowRef.current, { background: \`radial-gradient(600px circle at \${x}px \${y}px, rgba(255,255,255,0.06), transparent 40%)\`, duration: 0.1 });
+  };
+
+  const handleMouseLeave = () => {
+    if (glowRef.current) gsap.to(glowRef.current, { background: \`radial-gradient(600px circle at 50% 50%, rgba(255,255,255,0), transparent 40%)\`, duration: 0.5 });
+  };
+
+  return (
+    <div ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className={cn("relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden", className)} {...props}>
+      <div ref={glowRef} className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+      <div className="absolute inset-0 rounded-2xl border border-white/40 dark:border-white/5 pointer-events-none z-10" />
+      <div className="relative z-20">{children}</div>
+    </div>
+  );
 });
 AnimatedListItem.displayName = "AnimatedListItem";`;
 
@@ -58,24 +75,45 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, { forwardRef, useEffect, useRef } from "react";
 
-export const AnimatedList = forwardRef(({ children, staggerDelay = 0.1, animationDelay = 0, ease = "back.out(1.2)", duration = 0.6, className, ...props }, ref) => {
+export const AnimatedList = forwardRef(({ children, staggerDelay = 0.12, animationDelay = 0, ease = "back.out(1.5)", duration = 0.8, className, ...props }, ref) => {
   const containerRef = useRef(null);
   React.useImperativeHandle(ref, () => containerRef.current);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const items = containerRef.current.children;
-    gsap.set(items, { opacity: 0, y: 20, scale: 0.95, filter: "blur(4px)" });
-    gsap.to(items, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration, ease, stagger: staggerDelay, delay: animationDelay });
+    gsap.set(items, { opacity: 0, y: 40, scale: 0.9, rotationX: -45, transformOrigin: "top center", filter: "blur(8px)" });
+    gsap.to(items, { opacity: 1, y: 0, scale: 1, rotationX: 0, filter: "blur(0px)", duration, ease, stagger: staggerDelay, delay: animationDelay, force3D: true });
     return () => { gsap.killTweensOf(items); };
   }, [staggerDelay, animationDelay, ease, duration]);
 
-  return (<div ref={containerRef} className={cn("flex flex-col gap-3", className)} {...props}>{children}</div>);
+  return (<div ref={containerRef} className={cn("flex flex-col gap-3 lg:gap-4 perspective-[1000px]", className)} {...props}>{children}</div>);
 });
 AnimatedList.displayName = "AnimatedList";
 
 export const AnimatedListItem = forwardRef(({ children, className, ...props }, ref) => {
-  return (<div ref={ref} className={cn("w-full rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm backdrop-blur-sm opacity-0", className)} {...props}>{children}</div>);
+  const cardRef = useRef(null);
+  const glowRef = useRef(null);
+  React.useImperativeHandle(ref, () => cardRef.current);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || !glowRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+    gsap.to(glowRef.current, { background: \`radial-gradient(600px circle at \${x}px \${y}px, rgba(255,255,255,0.06), transparent 40%)\`, duration: 0.1 });
+  };
+
+  const handleMouseLeave = () => {
+    if (glowRef.current) gsap.to(glowRef.current, { background: \`radial-gradient(600px circle at 50% 50%, rgba(255,255,255,0), transparent 40%)\`, duration: 0.5 });
+  };
+
+  return (
+    <div ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className={cn("relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden", className)} {...props}>
+      <div ref={glowRef} className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+      <div className="absolute inset-0 rounded-2xl border border-white/40 dark:border-white/5 pointer-events-none z-10" />
+      <div className="relative z-20">{children}</div>
+    </div>
+  );
 });
 AnimatedListItem.displayName = "AnimatedListItem";`;
 
@@ -130,28 +168,18 @@ export default function NotificationFeed() {
     <AnimatedList staggerDelay={0.15}>
       
       <AnimatedListItem>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-            <span className="text-emerald-600 font-bold">$</span>
+        <div className="flex items-center gap-4">
+          <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <span className="text-emerald-500 font-bold">$</span>
           </div>
           <div>
-            <h4 className="text-sm font-semibold">Payment Received</h4>
-            <p className="text-xs text-gray-500">$129.00 via Stripe</p>
+            <h4 className="text-[15px] font-bold">Payment Received</h4>
+            <p className="text-[13px] text-zinc-500 font-medium">$129.00 via Stripe</p>
           </div>
         </div>
       </AnimatedListItem>
 
-      <AnimatedListItem>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-            <span className="text-blue-600 font-bold">+</span>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold">New User Signup</h4>
-            <p className="text-xs text-gray-500">alice@example.com</p>
-          </div>
-        </div>
-      </AnimatedListItem>
+      {/* Add more items... */}
 
     </AnimatedList>
   );
@@ -163,9 +191,9 @@ export default function NotificationFeed() {
       {/* --- CONTROL PANEL --- */}
       <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="text-sm text-zinc-500 dark:text-zinc-400 max-w-sm">
-            Watch the elements seamlessly stagger in via GSAP. Perfect for live
-            feeds, feature lists, or testimonials.
+          <div className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md">
+            Watch the elements flip in via a 3D GSAP perspective stagger. Hover
+            over the cards to reveal the mouse-tracking glassmorphic spotlight.
           </div>
 
           <button
@@ -186,47 +214,53 @@ export default function NotificationFeed() {
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
       >
-        <div className="w-full flex justify-center bg-[#fbfbfb] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative">
-          {/* Subtle Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none z-0" />
+        <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative">
+          {/* Subtle Abstract Background Glows */}
+          <div className="absolute top-[-100px] right-[-100px] w-96 h-96 bg-indigo-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
+          <div className="absolute bottom-[-100px] left-[-100px] w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
 
           {/* Device Mockup Container */}
-          <div className="w-full max-w-md bg-zinc-50 dark:bg-[#09090b] rounded-3xl border border-zinc-200 dark:border-zinc-800/80 shadow-2xl overflow-hidden relative z-10">
+          <div className="w-full max-w-md bg-zinc-50 dark:bg-[#09090b]/80 backdrop-blur-2xl rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden relative z-10">
             {/* Header */}
-            <div className="px-6 py-5 border-b border-zinc-200 dark:border-zinc-800/80 bg-white/50 dark:bg-black/50 backdrop-blur-xl">
-              <h3 className="font-semibold text-zinc-900 dark:text-white">
+            <div className="px-6 py-5 border-b border-zinc-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-md">
+              <h3 className="font-bold text-zinc-900 dark:text-white text-lg">
                 Activity Feed
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                Live updates from your workspace
+              <p className="text-[13px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+                Real-time system events
               </p>
             </div>
 
             {/* List Container */}
-            <div className="p-4 bg-zinc-50 dark:bg-[#09090b]">
-              <AnimatedList key={key} staggerDelay={0.12}>
+            <div className="p-4 sm:p-5">
+              <AnimatedList key={key} staggerDelay={0.15}>
                 {notifications.map((notif) => (
                   <AnimatedListItem key={notif.id}>
                     <div className="flex items-center gap-4">
+                      {/* Icon Container with Hover Bounce */}
                       <div
                         className={cn(
-                          "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                          "w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
                           notif.bg,
                           notif.color,
                         )}
                       >
-                        <notif.icon className="w-5 h-5" />
+                        <notif.icon
+                          className="w-[22px] h-[22px]"
+                          strokeWidth={2.5}
+                        />
                       </div>
+
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                          <h4 className="text-[14.5px] font-bold text-zinc-900 dark:text-zinc-100 truncate">
                             {notif.title}
                           </h4>
-                          <span className="text-[11px] text-zinc-400 flex-shrink-0">
+                          <span className="text-[11px] font-semibold text-zinc-400 flex-shrink-0">
                             {notif.time}
                           </span>
                         </div>
-                        <p className="text-[13px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
+                        <p className="text-[13px] font-medium text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
                           {notif.desc}
                         </p>
                       </div>

@@ -16,10 +16,10 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
   (
     {
       children,
-      staggerDelay = 0.1,
+      staggerDelay = 0.12,
       animationDelay = 0,
-      ease = "back.out(1.2)",
-      duration = 0.6,
+      ease = "back.out(1.5)",
+      duration = 0.8,
       className,
       ...props
     },
@@ -27,7 +27,6 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Forward the ref while keeping our local ref for GSAP
     React.useImperativeHandle(
       ref,
       () => containerRef.current as HTMLDivElement,
@@ -36,25 +35,32 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
     useEffect(() => {
       if (!containerRef.current) return;
 
-      // Select all direct children of the list container
       const items = containerRef.current.children;
 
-      // Reset initial state in case of re-renders
-      gsap.set(items, { opacity: 0, y: 20, scale: 0.95, filter: "blur(4px)" });
+      // Premium 3D start state
+      gsap.set(items, {
+        opacity: 0,
+        y: 40,
+        scale: 0.9,
+        rotationX: -45,
+        transformOrigin: "top center",
+        filter: "blur(8px)",
+      });
 
-      // Orchestrate the staggered animation
+      // 3D Flip-in sequence
       gsap.to(items, {
         opacity: 1,
         y: 0,
         scale: 1,
+        rotationX: 0,
         filter: "blur(0px)",
         duration: duration,
         ease: ease,
         stagger: staggerDelay,
         delay: animationDelay,
+        force3D: true, // Forces GPU acceleration for buttery smoothness
       });
 
-      // Cleanup
       return () => {
         gsap.killTweensOf(items);
       };
@@ -63,7 +69,11 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
     return (
       <div
         ref={containerRef}
-        className={cn("flex flex-col gap-3", className)}
+        // perspective-[1000px] enables the 3D rotationX effect on children
+        className={cn(
+          "flex flex-col gap-3 lg:gap-4 perspective-[1000px]",
+          className,
+        )}
         {...props}
       >
         {children}
@@ -79,16 +89,55 @@ export const AnimatedListItem = forwardRef<
   HTMLDivElement,
   AnimatedListItemProps
 >(({ children, className, ...props }, ref) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
+
+  // Mouse-tracking Spotlight Effect
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current || !glowRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    gsap.to(glowRef.current, {
+      background: `radial-gradient(600px circle at ${x}px ${y}px, rgba(255,255,255,0.06), transparent 40%)`,
+      duration: 0.1,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    if (!glowRef.current) return;
+    gsap.to(glowRef.current, {
+      background: `radial-gradient(600px circle at 50% 50%, rgba(255,255,255,0), transparent 40%)`,
+      duration: 0.5,
+    });
+  };
+
   return (
     <div
-      ref={ref}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={cn(
-        "w-full rounded-xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-sm backdrop-blur-sm opacity-0",
+        "relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden",
         className,
       )}
       {...props}
     >
-      {children}
+      {/* Spotlight Overlay Layer */}
+      <div
+        ref={glowRef}
+        className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+      />
+
+      {/* Inner Border Shine (Glassmorphism detail) */}
+      <div className="absolute inset-0 rounded-2xl border border-white/40 dark:border-white/5 pointer-events-none z-10" />
+
+      {/* Content Layer */}
+      <div className="relative z-20">{children}</div>
     </div>
   );
 });
