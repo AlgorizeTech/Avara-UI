@@ -61,11 +61,11 @@ export const TableOfContents: React.FC = () => {
   const dynamicColor = `hsl(${Math.round(scrollProgress * 1.2)}, 80%, 45%)`;
 
   return (
-    <aside className="hidden xl:flex flex-col w-[228px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative group">
-      {/* ── Floating Close Button (Left Edge) ──────────────── */}
+    <aside className="hidden xl:flex flex-col w-[228px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
+      {/* ── Floating Close Button (Left Edge - Always Visible) ──────────────── */}
       <button
         onClick={() => setShowTOC(false)}
-        className="absolute top-[30px] -left-3.5 z-20 flex items-center justify-center p-1 rounded-md bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
+        className="absolute top-[30px] -left-3.5 z-20 flex items-center justify-center p-1 rounded-md bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 transition-all duration-200 cursor-pointer"
         title="Hide Table of Contents"
         aria-label="Hide Table of Contents"
       >
