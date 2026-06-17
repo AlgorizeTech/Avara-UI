@@ -64,8 +64,18 @@ export function FormWrapper({ children, color = "indigo", title, description, cl
   );
 }
 
-export function FormError({ message }: { message?: string }) {
+export function FormError({ message, variant = "glitch" }: { message?: string; variant?: "default" | "glitch" }) {
   if (!message) return null;
+
+  if (variant === "default") {
+    return (
+      <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
+        <div className="w-1 h-3 bg-red-500 shrink-0" />
+        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">{message}</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{\`@keyframes glitch-anim-1 { 0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); } 20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); } 40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); } 60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); } 80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); } 100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); } } @keyframes glitch-anim-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); } 40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(70% 0 10% 0); transform: translate(-1px, 1px); } 80% { clip-path: inset(20% 0 50% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 1px); } } .glitch-text { position: relative; display: inline-block; font-weight: 700; color: #ef4444; } .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; } .glitch-text::before { left: 1px; text-shadow: -1px 0 rgba(255, 0, 0, 0.7); animation: glitch-anim-1 2.5s infinite linear alternate-reverse; } .glitch-text::after { left: -1px; text-shadow: 1px 0 rgba(0, 0, 255, 0.7); animation: glitch-anim-2 3s infinite linear alternate-reverse; }\`}</style>
@@ -77,12 +87,12 @@ export function FormError({ message }: { message?: string }) {
   );
 }
 
-export function FormField({ label, error, children }: { label?: string; error?: string; children: ReactNode }) {
+export function FormField({ label, error, errorVariant = "glitch", children }: { label?: string; error?: string; errorVariant?: "default" | "glitch"; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && <label className={cn("text-sm font-bold", error ? "text-red-500" : "text-zinc-700 dark:text-zinc-300")}>{label}</label>}
       {children}
-      <FormError message={error} />
+      <FormError message={error} variant={errorVariant} />
     </div>
   );
 }
@@ -142,8 +152,18 @@ export function FormWrapper({ children, color = "indigo", title, description, cl
   );
 }
 
-export function FormError({ message }) {
+export function FormError({ message, variant = "glitch" }) {
   if (!message) return null;
+
+  if (variant === "default") {
+    return (
+      <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
+        <div className="w-1 h-3 bg-red-500 shrink-0" />
+        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">{message}</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{\`@keyframes glitch-anim-1 { 0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); } 20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); } 40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); } 60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); } 80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); } 100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); } } @keyframes glitch-anim-2 { 0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); } 20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); } 40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, -2px); } 60% { clip-path: inset(70% 0 10% 0); transform: translate(-1px, 1px); } 80% { clip-path: inset(20% 0 50% 0); transform: translate(1px, -1px); } 100% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 1px); } } .glitch-text { position: relative; display: inline-block; font-weight: 700; color: #ef4444; } .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; } .glitch-text::before { left: 1px; text-shadow: -1px 0 rgba(255, 0, 0, 0.7); animation: glitch-anim-1 2.5s infinite linear alternate-reverse; } .glitch-text::after { left: -1px; text-shadow: 1px 0 rgba(0, 0, 255, 0.7); animation: glitch-anim-2 3s infinite linear alternate-reverse; }\`}</style>
@@ -155,12 +175,12 @@ export function FormError({ message }) {
   );
 }
 
-export function FormField({ label, error, children }) {
+export function FormField({ label, error, errorVariant = "glitch", children }) {
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && <label className={cn("text-sm font-bold", error ? "text-red-500" : "text-zinc-700 dark:text-zinc-300")}>{label}</label>}
       {children}
-      <FormError message={error} />
+      <FormError message={error} variant={errorVariant} />
     </div>
   );
 }
@@ -186,6 +206,7 @@ type EnterpriseFormValues = z.infer<typeof enterpriseSchema>;
 
 export function FormShowcase() {
   const [demoType, setDemoType] = useState<"native" | "zod">("zod");
+  const [errorStyle, setErrorStyle] = useState<"glitch" | "default">("glitch");
 
   // Initialize with localStorage if available
   const [color, setColor] = useState<FormColor | string>(() => {
@@ -249,6 +270,13 @@ export function FormShowcase() {
     formState: { errors, isSubmitting: isZodSubmitting },
   } = useForm<EnterpriseFormValues>({
     resolver: zodResolver(enterpriseSchema),
+    // Pre-populate with errors for the showcase specifically
+    defaultValues: {
+      companyName: "",
+      workEmail: "invalid-email",
+      password: "123",
+    },
+    mode: "onTouched",
   });
 
   const onZodSubmit = (data: EnterpriseFormValues) => {
@@ -278,7 +306,7 @@ export default function NativeForm() {
 
   return (
     <FormWrapper title="Basic Login" onSubmit={onSubmit} color="${color}">
-      <FormField label="Email Address" error={error}>
+      <FormField label="Email Address" error={error} errorVariant="${errorStyle}">
         <InputBlock value={email} onChange={e => setEmail(e.target.value)} color="${color}" />
       </FormField>
       
@@ -307,11 +335,11 @@ export default function EnterpriseForm() {
   return (
     <FormWrapper title="Enterprise Registration" onSubmit={handleSubmit(console.log)} color="${color}">
       <div className="grid grid-cols-2 gap-4">
-        <FormField label="Company Name" error={errors.companyName?.message}>
+        <FormField label="Company Name" error={errors.companyName?.message} errorVariant="${errorStyle}">
           <InputBlock {...register("companyName")} color="${color}" />
         </FormField>
         
-        <FormField label="Work Email" error={errors.workEmail?.message}>
+        <FormField label="Work Email" error={errors.workEmail?.message} errorVariant="${errorStyle}">
           <InputBlock {...register("workEmail")} type="email" color="${color}" />
         </FormField>
       </div>
@@ -342,6 +370,26 @@ export default function EnterpriseForm() {
               className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${demoType === "zod" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
             >
               Advanced (RHF + Zod)
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            Error Style
+          </label>
+          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
+            <button
+              onClick={() => setErrorStyle("glitch")}
+              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${errorStyle === "glitch" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
+            >
+              Glitch
+            </button>
+            <button
+              onClick={() => setErrorStyle("default")}
+              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${errorStyle === "default" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
+            >
+              Default
             </button>
           </div>
         </div>
@@ -405,11 +453,15 @@ export default function EnterpriseForm() {
               <FormWrapper
                 key={`native-${color}`}
                 title="Newsletter Signup"
-                description="A simple, single-field form using native React state."
+                description="A simple, single-field form using native React state. Try submitting an empty value to see the error."
                 color={color}
                 onSubmit={handleNativeSubmit}
               >
-                <FormField label="Email Address" error={nativeError}>
+                <FormField
+                  label="Email Address"
+                  error={nativeError}
+                  errorVariant={errorStyle}
+                >
                   <InputBlock
                     type="email"
                     placeholder="Enter your email..."
@@ -427,7 +479,7 @@ export default function EnterpriseForm() {
               <FormWrapper
                 key={`zod-${color}`}
                 title="Enterprise Registration"
-                description="High-level implementation using React-Hook-Form and Zod."
+                description="Click inside the fields and immediately blur away to trigger Zod validation states."
                 color={color}
                 onSubmit={handleSubmit(onZodSubmit)}
               >
@@ -436,6 +488,7 @@ export default function EnterpriseForm() {
                     <FormField
                       label="Company Name"
                       error={errors.companyName?.message}
+                      errorVariant={errorStyle}
                     >
                       <InputBlock
                         {...register("companyName")}
@@ -448,6 +501,7 @@ export default function EnterpriseForm() {
                   <FormField
                     label="Work Email"
                     error={errors.workEmail?.message}
+                    errorVariant={errorStyle}
                   >
                     <InputBlock
                       {...register("workEmail")}
@@ -460,6 +514,7 @@ export default function EnterpriseForm() {
                   <FormField
                     label="Secure Password"
                     error={errors.password?.message}
+                    errorVariant={errorStyle}
                   >
                     <InputBlock
                       {...register("password")}

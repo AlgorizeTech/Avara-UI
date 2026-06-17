@@ -104,10 +104,27 @@ export function FormWrapper({
 }
 
 // ==========================================
-// FORM ERROR (Glitch Effect)
+// FORM ERROR (With Toggleable Glitch Effect)
 // ==========================================
-export function FormError({ message }: { message?: string }) {
+export function FormError({
+  message,
+  variant = "glitch",
+}: {
+  message?: string;
+  variant?: "default" | "glitch";
+}) {
   if (!message) return null;
+
+  if (variant === "default") {
+    return (
+      <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
+        <div className="w-1 h-3 bg-red-500 shrink-0" />
+        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">
+          {message}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -173,10 +190,12 @@ export function FormError({ message }: { message?: string }) {
 export function FormField({
   label,
   error,
+  errorVariant = "glitch",
   children,
 }: {
   label?: string;
   error?: string;
+  errorVariant?: "default" | "glitch";
   children: ReactNode;
 }) {
   return (
@@ -192,7 +211,7 @@ export function FormField({
         </label>
       )}
       {children}
-      <FormError message={error} />
+      <FormError message={error} variant={errorVariant} />
     </div>
   );
 }
