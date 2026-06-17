@@ -2,20 +2,19 @@
 
 import {
   Progress,
-  ProgressColor,
   ProgressField,
   ProgressSize,
   ProgressVariant,
 } from "@/components/custom/blocks/ProgressBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { HardDrive, Pause, Play, RefreshCw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
-const PROGRESS_ENGINE_CODE_TS = `"use client";
+const PROGRESS_CODE_TS = `"use client";
 
-import React, { forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import React, { forwardRef } from "react";
 
 export type ProgressVariant = "default" | "glass" | "glow" | "minimal";
 export type ProgressSize = "sm" | "md" | "lg";
@@ -70,12 +69,14 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ value = 0, 
   const { theme, style } = getThemeStyles(color as string);
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const sizeClasses = { sm: "h-1.5", md: "h-2.5", lg: "h-4" };
+
   const variantStyles = {
     default: { track: "bg-zinc-200 dark:bg-zinc-800 border-none", indicator: theme.bg },
     glass: { track: "bg-white/20 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-inner", indicator: cn(theme.bg, "backdrop-blur-xl") },
     glow: { track: "bg-zinc-200 dark:bg-zinc-900 border-none", indicator: cn(theme.bg, theme.glow) },
     minimal: { track: "bg-transparent border border-zinc-200 dark:border-zinc-800", indicator: theme.bg },
   };
+
   const currentVariant = variantStyles[variant];
 
   return (
@@ -86,11 +87,11 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ value = 0, 
 });
 Progress.displayName = "Progress";`;
 
-// --- PURE JAVASCRIPT ENGINE CODE ---
-const PROGRESS_ENGINE_CODE_JS = `"use client";
+// --- JAVASCRIPT ENGINE CODE ---
+const PROGRESS_CODE_JS = `"use client";
 
-import React, { forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import React, { forwardRef } from "react";
 
 const colorThemes = {
   indigo: { bg: "bg-indigo-600", bgSoft: "bg-indigo-500/20", glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]" },
@@ -137,12 +138,14 @@ export const Progress = forwardRef(({ value = 0, max = 100, variant = "default",
   const { theme, style } = getThemeStyles(color);
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   const sizeClasses = { sm: "h-1.5", md: "h-2.5", lg: "h-4" };
+
   const variantStyles = {
     default: { track: "bg-zinc-200 dark:bg-zinc-800 border-none", indicator: theme.bg },
     glass: { track: "bg-white/20 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-inner", indicator: cn(theme.bg, "backdrop-blur-xl") },
     glow: { track: "bg-zinc-200 dark:bg-zinc-900 border-none", indicator: cn(theme.bg, theme.glow) },
     minimal: { track: "bg-transparent border border-zinc-200 dark:border-zinc-800", indicator: theme.bg },
   };
+
   const currentVariant = variantStyles[variant];
 
   return (
@@ -154,236 +157,220 @@ export const Progress = forwardRef(({ value = 0, max = 100, variant = "default",
 Progress.displayName = "Progress";`;
 
 export function ProgressShowcase() {
-  const [variant, setVariant] = useState<ProgressVariant>("default");
+  const [value, setValue] = useState(45);
+  const [max, setMax] = useState(100);
+  const [variant, setVariant] = useState<ProgressVariant>("glow");
   const [barSize, setBarSize] = useState<ProgressSize>("md");
-  const [showLabel, setShowLabel] = useState(true);
-  const [showValue, setShowValue] = useState(true);
+  const [color, setColor] = useState<string>("indigo");
 
-  // Progress Value State
-  const [progressValue, setProgressValue] = useState(33);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ProgressColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
-
-  // Auto-play logic
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setProgressValue((prev) => {
-          if (prev >= 100) {
-            setIsPlaying(false);
-            return 100;
-          }
-          return prev + Math.floor(Math.random() * 10) + 1; // Random jump between 1-10
-        });
-      }, 500);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying]);
-
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
-  const generateUsageCode = (isTs: boolean) => {
-    const propsStr = `\n        value={progress}\n        variant="${variant}"\n        color="${color}"\n        barSize="${barSize}"`;
+  // Resolve active color for the slider thumbs
+  const colorMap: Record<string, string> = {
+    indigo: "#4f46e5",
+    rose: "#e11d48",
+    emerald: "#10b981",
+    zinc: "#18181b", // Note: The actual progress thumb for zinc switches to white in dark mode, but the control slider stays dark here for simplicity.
+  };
+  const activeHex = color.startsWith("#")
+    ? color
+    : colorMap[color] || "#4f46e5";
 
-    if (showLabel || showValue) {
-      return `import { useState } from "react";
-import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function Demo() {
-  const [progress, setProgress] = useState(33);
-
-  return (
-    <div className="w-full max-w-md">
-      <ProgressField 
-        label=${showLabel ? '"File Upload"' : "undefined"}
-        value={progress}
-        showValue={${showValue}}
-      >
-        <Progress ${propsStr}
-        />
-      </ProgressField>
-    </div>
+  // Cross-browser targeted structural selectors to keep range track line visible permanently
+  const sliderClasses = cn(
+    "w-full appearance-none bg-transparent cursor-pointer outline-none",
+    // ── Webkit Track Styles (Permanent Visibility) ──
+    "[&::-webkit-slider-runnable-track]:h-1.5",
+    "[&::-webkit-slider-runnable-track]:bg-zinc-200",
+    "dark:[&::-webkit-slider-runnable-track]:bg-zinc-800",
+    "[&::-webkit-slider-runnable-track]:rounded-full",
+    // ── Webkit Thumb Styles ──
+    "[&::-webkit-slider-thumb]:appearance-none",
+    "[&::-webkit-slider-thumb]:w-4",
+    "[&::-webkit-slider-thumb]:h-4",
+    "[&::-webkit-slider-thumb]:rounded-full",
+    "[&::-webkit-slider-thumb]:bg-[var(--thumb-color)]",
+    "[&::-webkit-slider-thumb]:mt-[-5px]", // Vertical adjustment offset
+    "[&::-webkit-slider-thumb]:shadow-sm",
+    "[&::-webkit-slider-thumb]:transition-transform",
+    "hover:[&::-webkit-slider-thumb]:scale-110",
+    // ── Mozilla Track Styles ──
+    "[&::-moz-range-track]:h-1.5",
+    "[&::-moz-range-track]:bg-zinc-200",
+    "dark:[&::-moz-range-track]:bg-zinc-800",
+    "[&::-moz-range-track]:rounded-full",
+    // ── Mozilla Thumb Styles ──
+    "[&::-moz-range-thumb]:w-4",
+    "[&::-moz-range-thumb]:h-4",
+    "[&::-moz-range-thumb]:rounded-full",
+    "[&::-moz-range-thumb]:bg-[var(--thumb-color)]",
+    "[&::-moz-range-thumb]:border-none",
+    "[&::-moz-range-thumb]:shadow-sm",
+    "[&::-moz-range-thumb]:transition-transform",
+    "hover:[&::-moz-range-thumb]:scale-110",
   );
-}`;
-    }
 
-    return `import { useState } from "react";
-import { Progress } from "@/components/custom/blocks/ProgressBlock";
+  const generateUsageCode = () => {
+    return `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
 
-export default function Demo() {
-  const [progress, setProgress] = useState(33);
-
+export default function UsageDemo() {
   return (
-    <div className="w-full max-w-md">
-      <Progress ${propsStr}
+    <ProgressField label="Server Load" value={${value}} max={${max}}>
+      <Progress 
+        value={${value}} 
+        max={${max}} 
+        variant="${variant}" 
+        barSize="${barSize}" 
+        color="${color}" 
       />
-    </div>
+    </ProgressField>
   );
 }`;
   };
 
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
-      {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
-        <div className="flex flex-col xl:flex-row gap-6">
-          {/* Variant Selector */}
+      {/* --- CONTROL PANEL CONTROLLER --- */}
+      <div
+        style={
+          {
+            "--thumb-color":
+              color === "zinc" ? "var(--zinc-thumb, #18181b)" : activeHex,
+          } as React.CSSProperties
+        }
+        className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative"
+      >
+        {/* Helper style specifically to make 'zinc' color thumb adapt in dark mode */}
+        <style>{`
+          .dark { --zinc-thumb: #ffffff; }
+        `}</style>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {/* Slider 1: Value */}
+          <div className="flex flex-col gap-3">
+            <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
+              Value Control
+              <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md text-[11px]">
+                {value}
+              </span>
+            </label>
+            <input
+              type="range"
+              min="0"
+              max={max}
+              value={value}
+              onChange={(e) => setValue(parseInt(e.target.value))}
+              className={sliderClasses}
+            />
+          </div>
+
+          {/* Slider 2: Max Value */}
+          <div className="flex flex-col gap-3">
+            <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
+              Max Boundary
+              <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md text-[11px]">
+                {max}
+              </span>
+            </label>
+            <input
+              type="range"
+              min="50"
+              max="200"
+              value={max}
+              onChange={(e) => {
+                const newMax = parseInt(e.target.value);
+                setMax(newMax);
+                if (value > newMax) setValue(newMax);
+              }}
+              className={sliderClasses}
+            />
+          </div>
+
+          {/* Dropdown 1: Variant */}
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Style Variant
             </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(
-                ["default", "glass", "glow", "minimal"] as ProgressVariant[]
-              ).map((v) => (
-                <button
-                  key={v}
-                  onClick={() => setVariant(v)}
-                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    variant === v
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
+            <select
+              value={variant}
+              onChange={(e) => setVariant(e.target.value as ProgressVariant)}
+              className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            >
+              <option value="default">Default</option>
+              <option value="glass">Glassmorphic</option>
+              <option value="glow">Neon Glow</option>
+              <option value="minimal">Minimal Outline</option>
+            </select>
           </div>
 
-          {/* Size Selector */}
+          {/* Dropdown 2: Size */}
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Size
+              Bar Height Scale
             </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["sm", "md", "lg"] as ProgressSize[]).map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setBarSize(s)}
-                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    barSize === s
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+            <select
+              value={barSize}
+              onChange={(e) => setBarSize(e.target.value as ProgressSize)}
+              className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            >
+              <option value="sm">Small (6px)</option>
+              <option value="md">Medium (10px)</option>
+              <option value="lg">Large (16px)</option>
+            </select>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Color Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Theme Color
-            </label>
-            <div className="flex items-center gap-2 h-10 px-2">
-              {[
-                { id: "indigo", bg: "bg-indigo-500" },
-                { id: "rose", bg: "bg-rose-500" },
-                { id: "emerald", bg: "bg-emerald-500" },
-                { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => handleColorChange(c.id)}
-                  className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                    color === c.id
-                      ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                      : "hover:scale-110 hover:opacity-80"
-                  }`}
-                  title={c.id}
-                />
-              ))}
+        {/* Color Toggles */}
+        <div className="flex flex-col gap-2 border-t border-zinc-200 dark:border-zinc-800/80 pt-4">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            Accent Brand Theme
+          </label>
+          <div className="flex items-center gap-2 h-8">
+            {[
+              { id: "indigo", bg: "bg-indigo-500" },
+              { id: "rose", bg: "bg-rose-500" },
+              { id: "emerald", bg: "bg-emerald-500" },
+              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
+            ].map((c) => (
+              <button
+                key={c.id}
+                onClick={() => handleColorChange(c.id)}
+                className={cn(
+                  "w-6 h-6 rounded-full transition-transform duration-200 outline-none flex items-center justify-center",
+                  c.bg,
+                  color === c.id
+                    ? "scale-110 ring-2 ring-offset-2 dark:ring-offset-zinc-900 ring-zinc-400"
+                    : "hover:scale-110",
+                )}
+                title={c.id}
+              />
+            ))}
 
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+            <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-800 mx-1" />
 
-              {/* Custom Color Picker */}
+            {/* Custom Color Native Selector */}
+            <div
+              className={cn(
+                "relative flex items-center justify-center w-6 h-6 rounded-full overflow-hidden border transition-transform",
+                color.startsWith("#")
+                  ? "scale-110 ring-2 ring-offset-2 dark:ring-offset-zinc-900 ring-zinc-400 border-zinc-400"
+                  : "border-zinc-300 dark:border-zinc-700 hover:scale-110",
+              )}
+            >
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#6366f1"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+              />
               <div
-                className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
-                <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundColor: color.startsWith("#")
-                      ? color
-                      : "transparent",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Features Toggles */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Field Wrapper Options
-            </label>
-            <div className="flex flex-wrap items-center gap-2 h-10">
-              <button
-                onClick={() => setShowLabel(!showLabel)}
-                className={`px-4 py-2 text-sm font-bold rounded-lg border transition-all ${
-                  showLabel
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                }`}
-              >
-                Label
-              </button>
-              <button
-                onClick={() => setShowValue(!showValue)}
-                className={`px-4 py-2 text-sm font-bold rounded-lg border transition-all ${
-                  showValue
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                }`}
-              >
-                Value Display
-              </button>
+                className="w-full h-full"
+                style={{
+                  backgroundColor: color.startsWith("#") ? color : "#6366f1",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -392,86 +379,26 @@ export default function Demo() {
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview
         name="ProgressBlock"
-        tsCode={PROGRESS_ENGINE_CODE_TS}
-        jsCode={PROGRESS_ENGINE_CODE_JS}
-        usageCode={generateUsageCode(true)}
-        jsUsageCode={generateUsageCode(false)}
+        tsCode={PROGRESS_CODE_TS}
+        jsCode={PROGRESS_CODE_JS}
+        usageCode={generateUsageCode()}
+        jsUsageCode={generateUsageCode()}
       >
-        <div
-          className={`w-full flex flex-col items-center justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "p-4 sm:p-8 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center" : "bg-white dark:bg-[#050505] p-6 sm:p-12"} relative z-10`}
-        >
-          <div className="w-full max-w-md mx-auto flex flex-col gap-10">
-            {/* The Main Component in Action */}
-            <div
-              className={`p-8 rounded-2xl ${variant === "glass" ? "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl" : "bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm"}`}
+        <div className="w-full flex flex-col items-center justify-center min-h-[220px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10 overflow-hidden">
+          <div className="w-full max-w-md mx-auto">
+            <ProgressField
+              label="Database Synchronization Pipeline"
+              value={value}
+              max={max}
             >
-              <ProgressField
-                label={
-                  showLabel ? (
-                    <div className="flex items-center gap-2">
-                      <HardDrive className="w-4 h-4 text-zinc-500" />
-                      <span>Storage Usage</span>
-                    </div>
-                  ) : undefined
-                }
-                value={progressValue}
-                showValue={showValue}
-                valueFormat={(val) =>
-                  `${Math.round((val / 100) * 512)} GB / 512 GB`
-                }
-              >
-                <Progress
-                  value={progressValue}
-                  variant={variant}
-                  color={color}
-                  barSize={barSize}
-                />
-              </ProgressField>
-            </div>
-
-            {/* Slider & Auto-Play Controls */}
-            <div className="flex flex-col gap-4 p-6 bg-zinc-100 dark:bg-zinc-900/80 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-inner">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-                  Interactive Controller
-                </label>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      setProgressValue(0);
-                      setIsPlaying(false);
-                    }}
-                    className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-                    title="Reset"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-                    title={isPlaying ? "Pause" : "Play"}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-4 h-4" />
-                    ) : (
-                      <Play className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progressValue}
-                onChange={(e) => {
-                  setIsPlaying(false);
-                  setProgressValue(Number(e.target.value));
-                }}
-                className="w-full h-2 bg-zinc-300 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-zinc-900 dark:accent-white"
+              <Progress
+                value={value}
+                max={max}
+                variant={variant}
+                color={color}
+                barSize={barSize}
               />
-            </div>
+            </ProgressField>
           </div>
         </div>
       </ComponentPreview>
