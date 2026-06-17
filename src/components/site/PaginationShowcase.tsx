@@ -2,6 +2,7 @@
 
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { cn } from "@/lib/utils";
 import { RefreshCw } from "lucide-react";
 import { useState } from "react";
 
@@ -102,7 +103,7 @@ export function PaginationEllipsis({ className, ...props }: React.ComponentProps
   );
 }`;
 
-// --- JAVASCRIPT ENGINE CODE (Hardcoded to prevent regex stripping bugs) ---
+// --- JAVASCRIPT ENGINE CODE ---
 const PAGINATION_ENGINE_CODE_JS = `"use client";
 
 import React, { useMemo } from "react";
@@ -227,12 +228,46 @@ export default function DataTable() {
   const currentStart = (currentPage - 1) * itemsPerPage + 1;
   const currentEnd = Math.min(currentPage * itemsPerPage, mockTotalItems);
 
+  // Cross-browser targeted structural selectors to keep track line locked visible permanently
+  const sliderClasses = cn(
+    "w-full appearance-none bg-transparent cursor-pointer outline-none",
+    // ── Webkit Track Styles (Permanent Visibility) ──
+    "[&::-webkit-slider-runnable-track]:h-1.5",
+    "[&::-webkit-slider-runnable-track]:bg-zinc-200",
+    "dark:[&::-webkit-slider-runnable-track]:bg-zinc-800",
+    "[&::-webkit-slider-runnable-track]:rounded-full",
+    // ── Webkit Thumb Styles ──
+    "[&::-webkit-slider-thumb]:appearance-none",
+    "[&::-webkit-slider-thumb]:w-4",
+    "[&::-webkit-slider-thumb]:h-4",
+    "[&::-webkit-slider-thumb]:rounded-full",
+    "[&::-webkit-slider-thumb]:bg-indigo-500",
+    "[&::-webkit-slider-thumb]:mt-[-5px]", // Vertical adjustment offset positioning
+    "[&::-webkit-slider-thumb]:shadow-sm",
+    "[&::-webkit-slider-thumb]:transition-transform",
+    "hover:[&::-webkit-slider-thumb]:scale-110",
+    // ── Mozilla Track Styles ──
+    "[&::-moz-range-track]:h-1.5",
+    "[&::-moz-range-track]:bg-zinc-200",
+    "dark:[&::-moz-range-track]:bg-zinc-800",
+    "[&::-moz-range-track]:rounded-full",
+    // ── Mozilla Thumb Styles ──
+    "[&::-moz-range-thumb]:w-4",
+    "[&::-moz-range-thumb]:h-4",
+    "[&::-moz-range-thumb]:rounded-full",
+    "[&::-moz-range-thumb]:bg-indigo-500",
+    "[&::-moz-range-thumb]:border-none",
+    "[&::-moz-range-thumb]:shadow-sm",
+    "[&::-moz-range-thumb]:transition-transform",
+    "hover:[&::-moz-range-thumb]:scale-110",
+  );
+
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
-        <div className="flex flex-col xl:flex-row gap-6">
-          <div className="flex flex-col gap-2 flex-1">
+        <div className="flex flex-col xl:flex-row gap-8">
+          <div className="flex flex-col gap-3 flex-1">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
               Total Pages
               <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
@@ -249,11 +284,11 @@ export default function DataTable() {
                 setTotalPages(newTotal);
                 if (currentPage > newTotal) setCurrentPage(newTotal);
               }}
-              className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              className={sliderClasses}
             />
           </div>
 
-          <div className="flex flex-col gap-2 flex-1">
+          <div className="flex flex-col gap-3 flex-1">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
               Sibling Count
               <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
@@ -266,20 +301,20 @@ export default function DataTable() {
               max="3"
               value={siblingCount}
               onChange={(e) => setSiblingCount(parseInt(e.target.value))}
-              className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              className={sliderClasses}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Features
             </label>
-            <div className="flex items-center gap-2 h-10">
+            <div className="flex items-center gap-2 h-7">
               <button
                 onClick={() => setShowEdges(!showEdges)}
-                className={`px-4 py-2 text-sm font-bold rounded-lg border transition-all ${
+                className={`px-4 py-1.5 text-[13px] font-bold rounded-lg border transition-all ${
                   showEdges
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
+                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400 shadow-sm"
                     : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                 }`}
               >
