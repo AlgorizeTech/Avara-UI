@@ -4,12 +4,20 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, { forwardRef, useEffect, useRef } from "react";
 
+export type AnimationVariant =
+  | "flip"
+  | "slide-right"
+  | "slide-left"
+  | "slide-up"
+  | "pop";
+
 export interface AnimatedListProps
   extends React.HTMLAttributes<HTMLDivElement> {
   staggerDelay?: number;
   animationDelay?: number;
   ease?: string;
   duration?: number;
+  variant?: AnimationVariant;
 }
 
 export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
@@ -19,7 +27,8 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
       staggerDelay = 0.12,
       animationDelay = 0,
       ease = "back.out(1.5)",
-      duration = 0.8,
+      duration = 0.6,
+      variant = "slide-right",
       className,
       ...props
     },
@@ -37,19 +46,41 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
 
       const items = containerRef.current.children;
 
-      // Premium 3D start state
-      gsap.set(items, {
-        opacity: 0,
-        y: 40,
-        scale: 0.9,
-        rotationX: -45,
-        transformOrigin: "top center",
-        filter: "blur(8px)",
-      });
+      // Define dynamic starting states based on the selected variant
+      let startState: gsap.TweenVars = { opacity: 0, filter: "blur(8px)" };
 
-      // 3D Flip-in sequence
+      switch (variant) {
+        case "slide-right":
+          startState = { ...startState, x: 60 };
+          break;
+        case "slide-left":
+          startState = { ...startState, x: -60 };
+          break;
+        case "slide-up":
+          startState = { ...startState, y: 40 };
+          break;
+        case "pop":
+          startState = { ...startState, scale: 0.6 };
+          break;
+        case "flip":
+        default:
+          startState = {
+            ...startState,
+            y: 40,
+            scale: 0.9,
+            rotationX: -45,
+            transformOrigin: "top center",
+          };
+          break;
+      }
+
+      // Reset items to start state
+      gsap.set(items, startState);
+
+      // Orchestrate the animated entrance
       gsap.to(items, {
         opacity: 1,
+        x: 0,
         y: 0,
         scale: 1,
         rotationX: 0,
@@ -58,18 +89,18 @@ export const AnimatedList = forwardRef<HTMLDivElement, AnimatedListProps>(
         ease: ease,
         stagger: staggerDelay,
         delay: animationDelay,
-        force3D: true, // Forces GPU acceleration for buttery smoothness
+        force3D: true, // Forces GPU acceleration
       });
 
       return () => {
         gsap.killTweensOf(items);
       };
-    }, [staggerDelay, animationDelay, ease, duration]);
+    }, [staggerDelay, animationDelay, ease, duration, variant]);
 
     return (
       <div
         ref={containerRef}
-        // perspective-[1000px] enables the 3D rotationX effect on children
+        // perspective enables the 3D rotationX effect on children if 'flip' is chosen
         className={cn(
           "flex flex-col gap-3 lg:gap-4 perspective-[1000px]",
           className,
@@ -97,7 +128,6 @@ export const AnimatedListItem = forwardRef<
   // Mouse-tracking Spotlight Effect
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || !glowRef.current) return;
-
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -122,7 +152,7 @@ export const AnimatedListItem = forwardRef<
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden",
+        "relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden",
         className,
       )}
       {...props}
@@ -133,7 +163,7 @@ export const AnimatedListItem = forwardRef<
         className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
       />
 
-      {/* Inner Border Shine (Glassmorphism detail) */}
+      {/* Inner Border Shine */}
       <div className="absolute inset-0 rounded-2xl border border-white/40 dark:border-white/5 pointer-events-none z-10" />
 
       {/* Content Layer */}
