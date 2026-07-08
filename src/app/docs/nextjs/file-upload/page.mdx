@@ -1,0 +1,92 @@
+import { UploadShowcase } from "@/components/site/UploadShowcase";
+
+# UX Engineered Upload Flow
+
+A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
+
+1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events via GSAP.
+2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
+3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
+4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
+5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
+
+## Interactive Showcase
+
+Drag and drop some real files (images, PDFs) from your desktop into the zone below, or click to browse. The showcase includes a built-in network simulator.
+
+_Note: The simulation will randomly force some files to "fail" at 89% to demonstrate the Inline Retry feature. Click Retry to see it resume seamlessly!_
+
+<UploadShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies heavily on **GSAP** to manage the smooth progress bar fill and the instantaneous dropzone border reactions.
+
+```bash
+npm install gsap lucide-react
+```
+
+### Copy the Component
+
+You can copy the full layout code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/UploadBlock.tsx.
+
+## Usage Architecture
+
+The engine is split into two modular parts: the Dropzone and the UploadItem. This allows you to place the queue anywhere in your application layout (e.g. pinned to the bottom of the screen, or inline below the dropzone).
+
+```tsx
+import {
+  Dropzone,
+  UploadItem,
+  FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+import { useState } from "react";
+
+export default function DocumentUploader() {
+  const [queue, setQueue] = useState<FileUploadState[]>([]);
+
+  const handleFilesAdded = (nativeFiles: File[]) => {
+    // 1. Transform raw files into your state objects
+    const newItems = nativeFiles.map((file) => ({
+      id: Math.random().toString(),
+      file,
+      progress: 0,
+      status: "uploading" as const,
+      // Create local preview if image
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+
+    setQueue((prev) => [...prev, ...newItems]);
+
+    // 2. Map over files and trigger your actual Axios/Fetch POST requests here
+    // update queue state inside your XHR upload progress listeners
+  };
+
+  return (
+    <div className="max-w-md mx-auto flex flex-col gap-6">
+      <Dropzone onFilesDrop={handleFilesAdded} />
+
+      {queue.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {queue.map((item) => (
+            <UploadItem
+              key={item.id}
+              item={item}
+              onRetry={(id) => console.log("Retry API call for", id)}
+              onRemove={(id) =>
+                setQueue((prev) => prev.filter((q) => q.id !== id))
+              }
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
