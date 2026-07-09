@@ -90,3 +90,165 @@ export default function DocumentUploader() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>onFilesDrop</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Callback function triggered when the user successfully drops files
+          into the zone or selects them via the native file browser.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>maxSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>50</code>
+        </td>
+        <td>
+          The maximum allowed file size in Megabytes (MB). Displayed dynamically
+          in the helper text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>accept</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Native HTML input accept string restricting file types (e.g.,{" "}
+          <code>"image/*,application/pdf"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>item</code>
+        </td>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The data object tracking the specific file's progress, status, and
+          metadata.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>onRetry</code>
+        </td>
+        <td>
+          <code>(id: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback fired when the user clicks the inline "Retry" button after a
+          file fails to upload.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>onRemove</code>
+        </td>
+        <td>
+          <code>(id: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback fired when the user clicks the "X" button to cancel an upload
+          or clear a completed file from the queue.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"idle" | "uploading" | "error" | "success"</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The core state machine parameter that drives the UI colors, icons, and
+          messaging for the specific upload item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <code>previewUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional local Blob URL used to render instant client-side image
+          thumbnails before the upload completes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

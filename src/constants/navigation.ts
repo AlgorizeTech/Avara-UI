@@ -106,6 +106,7 @@ export const navigation: NavigationItem[] = [
       { label: "File Upload", href: "/docs/nextjs/file-upload", badge: "New" },
       { label: "Timeline", href: "/docs/nextjs/animated-timeline" },
       { label: "Animated List", href: "/docs/nextjs/animated-list", badge: "New" },
+      { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack", badge: "New" },
     ],
   },
   {

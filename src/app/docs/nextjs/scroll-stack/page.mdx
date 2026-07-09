@@ -1,0 +1,255 @@
+import { ScrollStackShowcase } from "@/components/site/ScrollStackShowcase";
+
+# Scroll Stack
+
+A modern landing page section layout where cards stack on top of each other as the user scrolls, creating a feeling of 3D depth and progression.
+
+Instead of relying on heavy event listeners and state management, this engine utilizes `framer-motion`'s `useScroll` hook natively linked to `useTransform`. This guarantees 60fps animations because the scale and opacity transformations are calculated on the main thread parallel to the native CSS `sticky` positioning.
+
+## Interactive Showcase
+
+Use the control panel below to tweak the math. You can adjust the **Depth Scale** (how fast the background layers shrink) and the **Card Gap** (the visual top-padding between cards in the deck).
+
+_Scroll inside the black preview box below to see the effect._
+
+<ScrollStackShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This layout block relies on **Framer Motion** for its scroll-linked mathematics and transformations.
+
+```bash
+npm install framer-motion
+```
+
+### Copy the Component
+
+You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ScrollStackBlock.tsx.
+
+## Usage
+
+Create an array of StackItem objects and pass it to the component. The container will automatically adapt its height to guarantee each card gets exactly one 100vh duration of scroll time before the next card overlaps it.
+
+```tsx
+import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { Zap, Layers } from "lucide-react";
+
+export default function FeaturesPage() {
+  const cards = [
+    {
+      id: "feature-1",
+      title: "Lightning Fast",
+      description: "Everything runs on the edge.",
+      icon: Zap,
+      color: "bg-indigo-600",
+      content: <div>Custom visual goes here</div>, // Optional ReactNode
+    },
+    {
+      id: "feature-2",
+      title: "Modular Core",
+      description: "Swap out pieces without breaking the system.",
+      icon: Layers,
+      color: "bg-emerald-600",
+    },
+  ];
+
+  return (
+    <main className="w-full bg-black min-h-screen">
+      <div className="py-24 text-center text-white">
+        <h1>Our Features</h1>
+      </div>
+
+      <ScrollStack
+        items={cards}
+        depthScale={0.05} // Cards shrink by 5% per layer
+        cardGap={24} // Spacing between the top edges
+      />
+    </main>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>StackItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the content, styling, and visual
+          assets for each stacked card in the sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>depthScale</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.05</code>
+        </td>
+        <td>
+          Controls the scaling mathematics. A value of <code>0.05</code> means
+          each background card shrinks by an additional 5% as it is pushed
+          further back into the stack.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>cardGap</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>24</code>
+        </td>
+        <td>
+          The absolute pixel distance applied to the top edge padding, creating
+          the staggered visual "deck of cards" effect so background layers
+          remain visible at the top.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP key mapping.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the left side of the
+          card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Secondary paragraph text providing context underneath the main title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional Lucide React icon or custom SVG component rendered inside a
+          floating container above the title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"bg-zinc-900"</code>
+        </td>
+        <td>
+          Tailwind background color classes applied to the specific card surface
+          (e.g., <code>"bg-indigo-50 dark:bg-indigo-500/10"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional custom React elements (images, charts, code blocks) rendered
+          in the dedicated right-side visual panel of the card.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
