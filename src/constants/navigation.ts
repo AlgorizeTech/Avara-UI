@@ -107,6 +107,7 @@ export const navigation: NavigationItem[] = [
       { label: "Timeline", href: "/docs/nextjs/animated-timeline" },
       { label: "Animated List", href: "/docs/nextjs/animated-list", badge: "New" },
       { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack", badge: "New" },
+      { label: "Magic Bento", href: "/docs/nextjs/magic-bento", badge: "New" },
     ],
   },
   {
