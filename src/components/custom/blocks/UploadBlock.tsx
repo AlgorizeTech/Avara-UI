@@ -13,7 +13,7 @@ import {
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 // ==========================================
-// TYPES & FORMATTERS
+// TYPES, FORMATTERS & THEME ENGINE
 // ==========================================
 export type UploadStatus =
   | "idle"
@@ -48,8 +48,54 @@ export function formatTimeLeft(seconds?: number) {
   return `${Math.floor(seconds / 60)}m ${seconds % 60}s left`;
 }
 
+// Hex to RGB converter for GSAP rgba() tweens
+const hexToRgb = (hex: string) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3)
+    cleanHex = cleanHex
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "99, 102, 241"; // Default indigo RGB
+};
+
+// Hook to seamlessly grab and listen to the primaryColor from localStorage
+function useThemeColor(defaultColor = "#6366f1") {
+  const [color, setColor] = useState(defaultColor);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const fetchColor = () => {
+      const stored = localStorage.getItem("primaryColor");
+      if (stored && stored !== color) {
+        setColor(stored);
+      }
+    };
+
+    // Initial fetch
+    fetchColor();
+
+    // Listen for cross-tab changes
+    window.addEventListener("storage", fetchColor);
+
+    // Polling interval for same-tab dynamic changes (e.g. from a control panel)
+    const interval = setInterval(fetchColor, 500);
+
+    return () => {
+      window.removeEventListener("storage", fetchColor);
+      clearInterval(interval);
+    };
+  }, [color]);
+
+  return color;
+}
+
 // ==========================================
-// 1. DROPZONE (Glitch-Free)
+// 1. DROPZONE (Glitch-Free & Theme Adaptive)
 // ==========================================
 export interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
   onFilesDrop: (files: File[]) => void;
@@ -65,27 +111,32 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
 
+    // Fetch dynamic theme color
+    const primaryColor = useThemeColor();
+
     // Drag counter prevents bubbling glitches when hovering over children
     const dragCounter = useRef(0);
 
     React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
-    // GSAP Reaction on Drag
+    // GSAP Reaction on Drag (Injected with Dynamic LocalStorage Theme)
     useEffect(() => {
       if (!internalRef.current || !iconRef.current || !textRef.current) return;
 
+      const rgbColor = hexToRgb(primaryColor);
+
       if (isDragging) {
         gsap.to(internalRef.current, {
-          borderColor: "#6366f1", // Indigo glow
-          backgroundColor: "rgba(99, 102, 241, 0.05)",
-          boxShadow: "0 0 30px -5px rgba(99, 102, 241, 0.2)",
+          borderColor: primaryColor,
+          backgroundColor: `rgba(${rgbColor}, 0.05)`,
+          boxShadow: `0 0 30px -5px rgba(${rgbColor}, 0.2)`,
           duration: 0.3,
           ease: "power2.out",
         });
         gsap.to(iconRef.current, {
           y: -8,
           scale: 1.1,
-          color: "#6366f1",
+          color: primaryColor,
           duration: 0.4,
           ease: "back.out(2)",
         });
@@ -106,7 +157,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         });
         gsap.to(textRef.current, { y: 0, duration: 0.4, ease: "power2.out" });
       }
-    }, [isDragging]);
+    }, [isDragging, primaryColor]);
 
     const handleDragEnter = (e: React.DragEvent) => {
       e.preventDefault();
@@ -215,6 +266,9 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     const progressRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
 
+    // Fetch dynamic theme color
+    const primaryColor = useThemeColor();
+
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
     // Smooth Progress Bar Animation
@@ -259,12 +313,13 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     const isSuccess = status === "success";
     const isPaused = status === "paused";
 
-    // Determine colors based on state
-    const barColor = isError
+    // Determine structural colors based on state
+    const barColorClass = isError
       ? "bg-rose-500"
       : isSuccess
         ? "bg-emerald-500"
-        : "bg-indigo-500";
+        : ""; // We use inline styles for the active upload state
+
     const iconColor = isError
       ? "text-rose-500"
       : isSuccess
@@ -390,9 +445,14 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
             ref={progressRef}
             className={cn(
               "absolute top-0 bottom-0 left-0 rounded-full",
-              barColor,
+              barColorClass,
             )}
-            style={{ width: "0%" }} // Controlled by GSAP
+            style={{
+              width: "0%",
+              // Inject custom localStorage theme color ONLY if it's currently uploading
+              backgroundColor:
+                !isError && !isSuccess ? primaryColor : undefined,
+            }}
           />
         </div>
       </div>
