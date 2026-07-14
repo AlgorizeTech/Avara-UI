@@ -1,0 +1,358 @@
+import { SplitScrollStackShowcase } from "@/components/site/SplitScrollStackShowcase";
+
+# Split-ScrollStack
+
+A high-impact, scroll-driven landing page layout engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down through a narrative sequence of feature sections on one side, the opposite column maintains a sticky container that dynamically stacks custom visual cards into a 3D deck.
+
+Whenever a new section enters the viewport, GreenSock slides the matching card up from below while calculating a depth transform (`scale` and `translateY`) to push previous cards further back into the stack.
+
+## Interactive Showcase
+
+Use the control panel below to swap the sticky showcase between the **Left** or **Right** side of the screen. **Scroll down inside the preview box** to see the ScrollTrigger plugin trigger the 3D card deck animations in real time.
+
+<SplitScrollStackShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies exclusively on **GSAP** and its native `ScrollTrigger` plugin for all viewport detection and 3D card scaling math.
+
+```bash
+npm install gsap lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/SplitScrollStackBlock.tsx.
+
+## Usage Architecture
+
+The `<SplitScrollStack>` component automatically configures responsive grid heights and sticky positioning. You simply provide an array of objects containing your text sequence and custom visual JSX payloads for the stacked cards.
+
+```tsx
+import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+export default function LandingSection() {
+  const items = [
+    {
+      id: "landing",
+      stepNumber: "01",
+      title: "Landing Page Design",
+      description: "We engineer high-converting layouts with scroll-triggered GSAP animations.",
+      tags: ["Conversion Focused", "Figma To Code"],
+      cardContent: <div className="p-6 bg-amber-500/10">Custom Visual 1</div>,
+    },
+    {
+      id: "saas",
+      stepNumber: "02",
+      title: "SaaS Development",
+      description: "Modular, multi-tenant web applications designed to scale to millions of requests.",
+      tags: ["Multi-Tenant Architecture", "Real-Time Sync"],
+      cardContent: <div className="p-6 bg-indigo-500/10">Custom Visual 2</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <SplitScrollStack "left" // Easily cardDepthScale="{0.05}" cardOffset="{16}" color="#FFAB1D" items="{items}" stickySide="right" switch to/>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>ScrollStackItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array defining the scrollable narrative sections and their paired
+          visual cards.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>stickySide</code>
+        </td>
+        <td>
+          <code>"left" | "right"</code>
+        </td>
+        <td>
+          <code>"right"</code>
+        </td>
+        <td>
+          Determines which grid column remains sticky as a 3D visual card stack
+          versus which column scrolls vertically as a narrative sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>cardDepthScale</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.05</code>
+        </td>
+        <td>
+          Controls the scaling mathematics. A value of <code>0.05</code> means
+          each stacked background card shrinks by an additional 5% as it is
+          pushed deeper into the 3D deck via GSAP.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>cardOffset</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>16</code>
+        </td>
+        <td>
+          The absolute pixel distance applied to the vertical Y-axis translation
+          of stacked background cards via GSAP, creating the staggered deck
+          effect.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#FFAB1D"</code>
+        </td>
+        <td>
+          The global theme color applied to active borders, step index badges,
+          glowing pill tags, and indicator icons. Accepts hex codes or Tailwind
+          utility classes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>scroller</code>
+        </td>
+        <td>
+          <code>string | Element | null</code>
+        </td>
+        <td>
+          <code>window</code>
+        </td>
+        <td>
+          Optional scrolling viewport target passed directly to GSAP's{" "}
+          <code>ScrollTrigger</code>. Crucial when rendering the stack inside
+          custom overflow containers or modals instead of the window root.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>onActiveIndexChange</code>
+        </td>
+        <td>
+          <code>(index: number) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback fired whenever the user scrolls to a new narrative
+          section in the sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitScrollStack</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost responsive grid
+          wrapper.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP key mapping.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>stepNumber</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Formatted numerical string (e.g., <code>"01"</code>, <code>"02"</code>
+          ) rendered inside the step index badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the scrolling narrative
+          section.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Detailed paragraph text explaining the specific feature or step in the
+          workflow.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>tags</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional array of keyword strings rendered as interactive pill
+          badges underneath the description. Glows with the active theme color
+          when scrolled into view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>cardContent</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The custom JSX/UI payload (e.g., analytics charts, terminals, mockups)
+          rendered inside the sticky 3D card for this specific step.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"bg-zinc-900 text-white"</code>
+        </td>
+        <td>
+          Optional Tailwind background and border color classes applied to the
+          specific showcase card surface (e.g.,{" "}
+          <code>"bg-[#090a14] border-indigo-500/20"</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

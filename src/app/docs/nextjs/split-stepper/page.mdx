@@ -1,0 +1,339 @@
+import { SplitStepperShowcase } from "@/components/site/SplitStepperShowcase";
+
+# Split-Stack Stepper
+
+A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+
+Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
+
+## Interactive Showcase
+
+Use the control panel below to swap the sticky showcase between the **Left** or **Right** side of the layout. Click any step in the scrolling sequence to see the GSAP card deck animate and stack in real-time.
+
+<SplitStepperShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies exclusively on **GSAP** for all 3D card depth scaling, stacking translations, and indicator animations.
+
+```bash
+npm install gsap lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/SplitStepperBlock.tsx.
+
+## Usage Architecture
+
+The `<SplitStepper>` component automatically orchestrates the responsive grid layout. You simply provide an array of objects containing your text sequence and custom visual JSX payloads for the stacked cards.
+
+```tsx
+import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+export default function ServicesSection() {
+  const steps = [
+    {
+      id: "landing",
+      stepNumber: "01",
+      title: "Landing Page Design",
+      description: "We engineer high-converting layouts with engaging GSAP animations.",
+      tags: ["Conversion Focused", "Figma To Code"],
+      cardContent: <div className="p-6 bg-amber-500/10">Custom Visual 1</div>,
+    },
+    {
+      id: "saas",
+      stepNumber: "02",
+      title: "SaaS Development",
+      description: "Modular, multi-tenant web applications designed to scale to millions of requests.",
+      tags: ["Multi-Tenant Architecture", "Real-Time Sync"],
+      cardContent: <div className="p-6 bg-indigo-500/10">Custom Visual 2</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <SplitStepper "left" // Easily cardDepthScale="{0.05}" cardOffset="{16}" color="#FFAB1D" steps="{steps}" stickySide="right" switch to/>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>steps</code>
+        </td>
+        <td>
+          <code>SplitStep[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array defining the narrative step sequence and paired visual
+          showcase cards.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>stickySide</code>
+        </td>
+        <td>
+          <code>"left" | "right"</code>
+        </td>
+        <td>
+          <code>"right"</code>
+        </td>
+        <td>
+          Determines which grid column remains sticky as a 3D visual card stack
+          versus which column flows as a clickable narrative list.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>cardDepthScale</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.05</code>
+        </td>
+        <td>
+          Controls the scaling mathematics. A value of <code>0.05</code> means
+          each stacked background card shrinks by an additional 5% as it is
+          pushed deeper into the 3D deck.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>cardOffset</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>16</code>
+        </td>
+        <td>
+          The absolute pixel distance applied to the vertical Y-axis translation
+          of stacked background cards via GSAP, creating the staggered deck
+          effect.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#FFAB1D"</code>
+        </td>
+        <td>
+          The global theme color applied to active card borders, step index
+          badges, glowing pill tags, and indicator arrows. Accepts hex codes or
+          Tailwind utility classes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>onStepChange</code>
+        </td>
+        <td>
+          <code>(index: number) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback fired whenever the user clicks on a new narrative
+          step in the sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStepper</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost responsive grid
+          wrapper.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP key mapping.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>stepNumber</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Formatted numerical string (e.g., <code>"01"</code>, <code>"02"</code>
+          ) rendered inside the step index badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the narrative sequence
+          card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Detailed paragraph text explaining the specific feature or step in the
+          workflow.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>tags</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional array of keyword strings rendered as interactive pill
+          badges underneath the description. Glows with the active theme color
+          when selected.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>cardContent</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The custom JSX/UI payload (e.g., analytics charts, terminals, mockups)
+          rendered inside the sticky 3D card for this specific step.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SplitStep</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"bg-zinc-900 text-white"</code>
+        </td>
+        <td>
+          Optional Tailwind background and border color classes applied to the
+          specific showcase card surface (e.g.,{" "}
+          <code>"bg-[#090a14] border-indigo-500/20"</code>).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
