@@ -108,6 +108,7 @@ export const navigation: NavigationItem[] = [
       { label: "Tilted Card", href: "/docs/nextjs/tilted-card", badge: "New" },
       { label: "Animated List", href: "/docs/nextjs/animated-list", badge: "New" },
       { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack", badge: "New" },
+      { label: "Stepper", href: "/docs/nextjs/stepper", badge: "New" },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento", badge: "New" },
     ],
   },

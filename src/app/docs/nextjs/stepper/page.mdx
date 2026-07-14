@@ -1,0 +1,129 @@
+import { StepperShowcase } from "@/components/site/StepperShowcase";
+
+# Stepper
+
+A production-grade, highly animated multi-step wizard component engineered exclusively with **GSAP**. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+
+Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
+
+## Interactive Showcase
+
+Fill in the fields below and step through the wizard. If you try clicking Next without filling required fields, red validation errors will prevent navigation. On the final **Review** step, toggle the **Simulate Server Error** checkbox to test both successful completions and backend failure alerts.
+
+<StepperShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies exclusively on **GSAP** for all line scaling, icon scaling, ring pulsing, and layout transitions.
+
+```bash
+npm install gsap lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/StepperBlock.tsx.
+
+## Usage Architecture
+
+To build a complete form wizard, manage your data in a parent state object and pass per-step validation checks into your navigation handlers:
+
+```tsx
+import {
+  Stepper,
+  StepperContent,
+} from "@/components/custom/blocks/StepperBlock";
+import { useState } from "react";
+import { User, Building2, CheckCircle2 } from "lucide-react";
+
+export default function RealFormWizard() {
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({ fullName: "", company: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateStep = (current: number) => {
+    if (current === 0 && !formData.fullName) {
+      setErrors({ fullName: "Name required" });
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) setStep((s) => s + 1);
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/submit", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+      alert("Success!");
+    } catch (err) {
+      alert("Submission failed!");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const steps = [
+    {
+      id: "1",
+      title: "Profile",
+      icon: User,
+      content: (
+        <input
+          value={formData.fullName}
+          onChange={(e) =>
+            setFormData({ ...formData, fullName: e.target.value })
+          }
+        />
+      ),
+    },
+    {
+      id: "2",
+      title: "Workspace",
+      icon: Building2,
+      content: <div>Workspace Form</div>,
+    },
+    {
+      id: "3",
+      title: "Review",
+      icon: CheckCircle2,
+      content: <div>Summary Screen</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-3xl mx-auto flex flex-col gap-8 p-8 bg-zinc-950 rounded-3xl border border-zinc-800">
+      <Stepper
+        color="#FFAB1D"
+        currentStep="{step}"
+        onStepChange="{setStep}"
+        steps="{steps}"
+      />
+      <StepperContent currentStep="{step}" steps="{steps}" />
+
+      <div className="flex justify-between pt-6 border-t border-zinc-900 mt-4">
+        <button onClick={() => setStep((s) => s - 1)} disabled={step === 0}>
+          Back
+        </button>
+        {step === steps.length - 1 ? (
+          <button onClick={handleSubmit} disabled={isSubmitting}>
+            Submit
+          </button>
+        ) : (
+          <button onClick={handleNext}>Next</button>
+        )}
+      </div>
+    </div>
+  );
+}
+```
