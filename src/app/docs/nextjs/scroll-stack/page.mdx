@@ -2,15 +2,13 @@ import { ScrollStackShowcase } from "@/components/site/ScrollStackShowcase";
 
 # Scroll Stack
 
-A modern landing page section layout where cards stack on top of each other as the user scrolls, creating a feeling of 3D depth and progression.
+A premium, scroll-driven 3D card stacking layout engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, each full-width feature card sticks to the top of the viewport while the next card slides up to cover it.
 
-Instead of relying on heavy event listeners and state management, this engine utilizes `framer-motion`'s `useScroll` hook natively linked to `useTransform`. This guarantees 60fps animations because the scale and opacity transformations are calculated on the main thread parallel to the native CSS `sticky` positioning.
+Whenever a new card stacks on top, GreenSock dynamically scrubs the background card's `scale` and `opacity` properties, pushing it deeper into a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
 ## Interactive Showcase
 
-Use the control panel below to tweak the math. You can adjust the **Depth Scale** (how fast the background layers shrink) and the **Card Gap** (the visual top-padding between cards in the deck).
-
-_Scroll inside the black preview box below to see the effect._
+Use the control panel below to adjust the depth scaling rate and the vertical pixel gap between stacked cards. **Scroll down inside the preview box** to see the ScrollTrigger plugin orchestrate the deck in real time.
 
 <ScrollStackShowcase />
 
@@ -20,55 +18,52 @@ _Scroll inside the black preview box below to see the effect._
 
 ### Dependencies
 
-This layout block relies on **Framer Motion** for its scroll-linked mathematics and transformations.
+This layout relies exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
 
 ```bash
-npm install framer-motion
+npm install gsap lucide-react
 ```
 
 ### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ScrollStackBlock.tsx.
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ScrollStackBlock.tsx.
 
-## Usage
+## Usage Architecture
 
-Create an array of StackItem objects and pass it to the component. The container will automatically adapt its height to guarantee each card gets exactly one 100vh duration of scroll time before the next card overlaps it.
+The `<ScrollStack>` component automatically calculates sticky positioning and depth reduction. You simply provide an array of feature objects containing your text, optional Lucide icons, and custom JSX payloads.
+
+If you omit the color property on an item, the card will automatically adapt to your site's current light or dark mode theme!
 
 ```tsx
 import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 import { Zap, Layers } from "lucide-react";
 
-export default function FeaturesPage() {
-  const cards = [
+export default function FeaturesSection() {
+  const items = [
     {
-      id: "feature-1",
-      title: "Lightning Fast",
-      description: "Everything runs on the edge.",
+      id: "1",
+      title: "Real-time Synchronization",
+      description:
+        "Instantly sync state across clients without writing WebSocket logic.",
       icon: Zap,
-      color: "bg-indigo-600",
-      content: <div>Custom visual goes here</div>, // Optional ReactNode
+      // Omitting color uses default adaptive light/dark mode surfaces automatically
+      content: <div className="p-8">Custom Interactive UI 1</div>,
     },
     {
-      id: "feature-2",
-      title: "Modular Core",
-      description: "Swap out pieces without breaking the system.",
+      id: "2",
+      title: "Layered Architecture",
+      description:
+        "Build robust systems with separated concerns and modular backends.",
       icon: Layers,
-      color: "bg-emerald-600",
+      color: "bg-indigo-600 text-white border-indigo-500/30", // Custom accent color override
+      content: <div className="p-8">Custom Interactive UI 2</div>,
     },
   ];
 
   return (
-    <main className="w-full bg-black min-h-screen">
-      <div className="py-24 text-center text-white">
-        <h1>Our Features</h1>
-      </div>
-
-      <ScrollStack
-        items={cards}
-        depthScale={0.05} // Cards shrink by 5% per layer
-        cardGap={24} // Spacing between the top edges
-      />
-    </main>
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <ScrollStack cardGap="{24}" depthScale="{0.05}" items="{items}" />
+    </div>
   );
 }
 ```
@@ -101,8 +96,8 @@ export default function FeaturesPage() {
           <strong>Required</strong>
         </td>
         <td>
-          An array of data objects defining the content, styling, and visual
-          assets for each stacked card in the sequence.
+          An array of feature card objects defining the sequential stack
+          sequence.
         </td>
       </tr>
       <tr>
@@ -120,8 +115,8 @@ export default function FeaturesPage() {
         </td>
         <td>
           Controls the scaling mathematics. A value of <code>0.05</code> means
-          each background card shrinks by an additional 5% as it is pushed
-          further back into the stack.
+          each background card shrinks by 5% as the next card stacks over it via
+          GSAP.
         </td>
       </tr>
       <tr>
@@ -138,9 +133,47 @@ export default function FeaturesPage() {
           <code>24</code>
         </td>
         <td>
-          The absolute pixel distance applied to the top edge padding, creating
-          the staggered visual "deck of cards" effect so background layers
-          remain visible at the top.
+          The vertical pixel distance applied to the sticky top offset of each
+          subsequent card, creating a staggered folder/deck appearance at the
+          top of the viewport.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>scroller</code>
+        </td>
+        <td>
+          <code>string | Element | null</code>
+        </td>
+        <td>
+          <code>window</code>
+        </td>
+        <td>
+          Optional scrolling viewport target passed directly to GSAP's{" "}
+          <code>ScrollTrigger</code>. Essential when rendering the stack inside
+          custom overflow containers, modals, or preview boxes instead of the
+          native window root.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost scrolling
+          container wrapper.
         </td>
       </tr>
       <tr>
@@ -175,8 +208,8 @@ export default function FeaturesPage() {
           <strong>Required</strong>
         </td>
         <td>
-          Primary headline text displayed prominently on the left side of the
-          card.
+          Primary headline text displayed prominently on the left or top side of
+          the card.
         </td>
       </tr>
       <tr>
@@ -193,7 +226,8 @@ export default function FeaturesPage() {
           <strong>Required</strong>
         </td>
         <td>
-          Secondary paragraph text providing context underneath the main title.
+          Detailed paragraph text explaining the feature, displayed beneath the
+          headline.
         </td>
       </tr>
       <tr>
@@ -210,8 +244,26 @@ export default function FeaturesPage() {
           <code>undefined</code>
         </td>
         <td>
-          Optional Lucide React icon or custom SVG component rendered inside a
-          floating container above the title.
+          Optional Lucide React icon rendered inside an adaptive badge box above
+          the title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional custom JSX/UI payload (e.g., code blocks, interactive graphs,
+          mockups) rendered on the right half of the card on desktop viewports.
         </td>
       </tr>
       <tr>
@@ -225,29 +277,12 @@ export default function FeaturesPage() {
           <code>string</code>
         </td>
         <td>
-          <code>"bg-zinc-900"</code>
+          <code>"bg-white dark:bg-zinc-900..."</code>
         </td>
         <td>
-          Tailwind background color classes applied to the specific card surface
-          (e.g., <code>"bg-indigo-50 dark:bg-indigo-500/10"</code>).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>StackItem</code>
-        </td>
-        <td>
-          <code>content</code>
-        </td>
-        <td>
-          <code>ReactNode</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Optional custom React elements (images, charts, code blocks) rendered
-          in the dedicated right-side visual panel of the card.
+          Optional Tailwind background, text, and border classes applied to the
+          card surface (e.g., <code>"bg-indigo-600 text-white"</code>). Omitting
+          this allows the card to adapt automatically to light and dark modes.
         </td>
       </tr>
     </tbody>
