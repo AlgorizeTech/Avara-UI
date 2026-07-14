@@ -127,3 +127,261 @@ export default function RealFormWizard() {
   );
 }
 ```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Stepper</code>
+        </td>
+        <td>
+          <code>steps</code>
+        </td>
+        <td>
+          <code>Step[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array defining the wizard sequence. Each object requires an{" "}
+          <code>id</code> and <code>title</code>. <code>description</code>,{" "}
+          <code>icon</code>, and <code>content</code> are optional.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Stepper</code>
+        </td>
+        <td>
+          <code>currentStep</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The active zero-indexed step of the sequence. Controls the GSAP
+          progress line fill and active/completed indicator states.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Stepper</code>
+        </td>
+        <td>
+          <code>onStepChange</code>
+        </td>
+        <td>
+          <code>(step: number) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback fired when a user clicks directly on a step circle in the
+          header. If omitted, the steps become static visual indicators. When
+          provided, users can click any step to jump forward or backward freely.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Stepper</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#FFAB1D"</code>
+        </td>
+        <td>
+          The active theme color. Accepts valid hex codes (e.g.,{" "}
+          <code>"#FFAB1D"</code>) which are applied dynamically via inline
+          styles, or standard Tailwind utility classes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Stepper</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost navigation
+          header wrapper.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StepperContent</code>
+        </td>
+        <td>
+          <code>steps</code>
+        </td>
+        <td>
+          <code>Step[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The identical array passed to the header component. This engine
+          extracts the active step's <code>content</code> node and animates its
+          entrance/exit via GSAP.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StepperContent</code>
+        </td>
+        <td>
+          <code>currentStep</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The active zero-indexed step used to identify which payload to render
+          and determine the direction (left/right) of the GSAP sliding
+          animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StepperContent</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes applied to the sliding content wrapper
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Step</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP key mapping.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Step</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently below the step circle
+          indicator.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Step</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional secondary helper text displayed directly underneath the step
+          title on larger screens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Step</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional Lucide React icon or custom SVG component rendered inside the
+          step circle indicator instead of a default number.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Step</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The actual JSX/UI payload (e.g., input forms, review summaries)
+          rendered inside the <code>StepperContent</code> container when this
+          step is active.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
