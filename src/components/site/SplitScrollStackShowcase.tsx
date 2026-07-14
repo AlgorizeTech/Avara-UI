@@ -23,7 +23,7 @@ export function SplitScrollStackShowcase() {
   const [stickySide, setStickySide] = useState<"left" | "right">("right");
   const [cardDepthScale, setCardDepthScale] = useState(0.06);
   const [cardOffset, setCardOffset] = useState(20);
-  const [color, setColor] = useState<string>("#FFAB1D"); // Syncs with Local Storage
+  const [color, setColor] = useState<string>("#FFAB1D");
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -209,14 +209,13 @@ export default function LandingSection() {
       tags: ["Multi-Tenant Architecture", "Real-Time Sync"],
       cardContent: <div>Custom Visual Card 2</div>,
     },
-    // ... add more items
   ];
 
   return (
     <div className="max-w-7xl mx-auto py-20 px-6">
       <SplitScrollStack 
         items={items} 
-        stickySide="${stickySide}" // Swap between "left" or "right"
+        stickySide="${stickySide}" 
         cardDepthScale={${cardDepthScale}} 
         cardOffset={${cardOffset}} 
         color="#FFAB1D" 
@@ -226,7 +225,6 @@ export default function LandingSection() {
 }`;
   };
 
-  // Cross-browser targeted structural selectors for sliders
   const sliderClasses = cn(
     "w-full appearance-none bg-transparent cursor-pointer outline-none",
     "[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-zinc-200 dark:[&::-webkit-slider-runnable-track]:bg-zinc-800 [&::-webkit-slider-runnable-track]:rounded-full",
@@ -329,7 +327,7 @@ export default function LandingSection() {
             ↓ Scroll inside preview box to trigger stack ↓
           </div>
 
-          {/* Internal Scrollable Viewport with dedicated scrollerRef for GSAP */}
+          {/* Internal Scrollable Viewport: We pass scrollerRef={viewportRef} directly! */}
           <div
             ref={viewportRef}
             className="w-full h-[680px] overflow-y-auto overflow-x-hidden custom-scrollbar px-6 sm:px-12 relative"
@@ -340,7 +338,7 @@ export default function LandingSection() {
               cardDepthScale={cardDepthScale}
               cardOffset={cardOffset}
               color={color}
-              scroller={viewportRef.current} // Pass container to ScrollTrigger
+              scrollerRef={viewportRef} // CRITICAL FIX: Pass ref object directly
               onActiveIndexChange={setActiveStepIndex}
             />
           </div>

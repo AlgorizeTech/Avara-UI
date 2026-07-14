@@ -31,7 +31,8 @@ export interface SplitScrollStackProps
   cardDepthScale?: number; // Shrink rate of stacked background cards (default: 0.05)
   cardOffset?: number; // Vertical pixel distance between stacked cards (default: 16)
   color?: string; // Global active theme color (default: #FFAB1D)
-  scroller?: string | Element | null; // Optional scroller target for internal overflow divs
+  scroller?: string | Element | null; // Optional direct element scroller target
+  scrollerRef?: React.RefObject<HTMLElement | null>; // CRITICAL: Ref object for React containers
   onActiveIndexChange?: (index: number) => void;
 }
 
@@ -50,6 +51,7 @@ export const SplitScrollStack = React.forwardRef<
       cardOffset = 16,
       color = "#FFAB1D",
       scroller,
+      scrollerRef,
       className,
       onActiveIndexChange,
       ...props
@@ -62,6 +64,12 @@ export const SplitScrollStack = React.forwardRef<
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
     const isHex = color.startsWith("#");
 
+    // Keep callback fresh without triggering useEffect re-runs
+    const onActiveIndexChangeRef = useRef(onActiveIndexChange);
+    useEffect(() => {
+      onActiveIndexChangeRef.current = onActiveIndexChange;
+    }, [onActiveIndexChange]);
+
     React.useImperativeHandle(
       ref,
       () => containerRef.current as HTMLDivElement,
@@ -71,6 +79,8 @@ export const SplitScrollStack = React.forwardRef<
     useEffect(() => {
       if (!containerRef.current) return;
 
+      // CRITICAL FIX: Resolve scroller target AFTER mount guaranteed by useEffect
+      const targetScroller = scrollerRef?.current || scroller || window;
       const triggers: ScrollTrigger[] = [];
 
       sectionRefs.current.forEach((section, idx) => {
@@ -78,26 +88,31 @@ export const SplitScrollStack = React.forwardRef<
 
         const trigger = ScrollTrigger.create({
           trigger: section,
-          scroller: scroller || window,
-          start: "top 55%",
-          end: "bottom 55%",
-          onEnter: () => {
-            setActiveIndex(idx);
-            onActiveIndexChange?.(idx);
-          },
-          onEnterBack: () => {
-            setActiveIndex(idx);
-            onActiveIndexChange?.(idx);
+          scroller: targetScroller,
+          start: "top 60%",
+          end: "bottom 60%",
+          // onToggle with isActive prevents skipping/dead zones on fast scrolling
+          onToggle: (self) => {
+            if (self.isActive) {
+              setActiveIndex(idx);
+              onActiveIndexChangeRef.current?.(idx);
+            }
           },
         });
 
         triggers.push(trigger);
       });
 
+      // Refresh triggers after layout calculation
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 150);
+
       return () => {
+        clearTimeout(timer);
         triggers.forEach((t) => t.kill());
       };
-    }, [scroller, items.length, onActiveIndexChange]);
+    }, [scroller, scrollerRef, items.length]);
 
     // GSAP Card Stacking & Depth Animation
     useEffect(() => {
@@ -146,7 +161,7 @@ export const SplitScrollStack = React.forwardRef<
       <div
         ref={containerRef}
         className={cn(
-          "grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 w-full relative items-start",
+          "grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 w-full relative",
           className,
         )}
         {...props}
@@ -284,60 +299,63 @@ export const SplitScrollStack = React.forwardRef<
         {/* ========================================== */}
         <div
           className={cn(
-            "md:col-span-6 lg:col-span-5 sticky top-20 sm:top-28 w-full h-[450px] sm:h-[520px] flex items-center justify-center perspective-[1200px] z-20 py-4",
+            "md:col-span-6 lg:col-span-5 w-full relative z-20",
             stickySide === "left" ? "md:order-1" : "md:order-2",
           )}
         >
-          <div className="relative w-full h-full max-w-lg">
-            {items.map((item, index) => {
-              return (
-                <div
-                  key={item.id}
-                  ref={(el) => {
-                    cardRefs.current[index] = el;
-                  }}
-                  className={cn(
-                    "absolute inset-0 w-full h-full rounded-[2.5rem] p-6 sm:p-8 border overflow-hidden shadow-2xl flex flex-col justify-between origin-top transition-shadow",
-                    item.color ||
-                      "bg-zinc-900 text-white border-white/10 dark:border-zinc-800",
-                  )}
-                  style={{
-                    opacity: index === 0 ? 1 : 0,
-                    zIndex: index === 0 ? 10 : 0,
-                  }}
-                >
-                  {/* Glassmorphic Top Highlight */}
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+          {/* Decoupled sticky box inside stretching column track */}
+          <div className="sticky top-20 sm:top-28 w-full h-[450px] sm:h-[520px] flex items-center justify-center perspective-[1200px] py-4">
+            <div className="relative w-full h-full max-w-lg">
+              {items.map((item, index) => {
+                return (
+                  <div
+                    key={item.id}
+                    ref={(el) => {
+                      cardRefs.current[index] = el;
+                    }}
+                    className={cn(
+                      "absolute inset-0 w-full h-full rounded-[2.5rem] p-6 sm:p-8 border overflow-hidden shadow-2xl flex flex-col justify-between origin-top transition-shadow",
+                      item.color ||
+                        "bg-zinc-900 text-white border-white/10 dark:border-zinc-800",
+                    )}
+                    style={{
+                      opacity: index === 0 ? 1 : 0,
+                      zIndex: index === 0 ? 10 : 0,
+                    }}
+                  >
+                    {/* Glassmorphic Top Highlight */}
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-                  {/* Card Header */}
-                  <div className="flex items-center justify-between relative z-10 mb-4">
-                    <span className="px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-mono font-bold tracking-widest uppercase border border-white/15 flex items-center gap-2">
-                      <Layers className="w-3.5 h-3.5" /> DECK //{" "}
-                      {item.stepNumber}
-                    </span>
-                    <div
-                      className="w-2.5 h-2.5 rounded-full animate-ping"
-                      style={{ backgroundColor: color }}
-                    />
-                  </div>
+                    {/* Card Header */}
+                    <div className="flex items-center justify-between relative z-10 mb-4">
+                      <span className="px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-mono font-bold tracking-widest uppercase border border-white/15 flex items-center gap-2">
+                        <Layers className="w-3.5 h-3.5" /> DECK //{" "}
+                        {item.stepNumber}
+                      </span>
+                      <div
+                        className="w-2.5 h-2.5 rounded-full animate-ping"
+                        style={{ backgroundColor: color }}
+                      />
+                    </div>
 
-                  {/* Visual Payload */}
-                  <div className="relative z-10 flex-1 flex flex-col justify-center my-2 overflow-hidden">
-                    {item.cardContent}
-                  </div>
+                    {/* Visual Payload */}
+                    <div className="relative z-10 flex-1 flex flex-col justify-center my-2 overflow-hidden">
+                      {item.cardContent}
+                    </div>
 
-                  {/* Card Footer */}
-                  <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/60 font-medium">
-                    <span className="truncate pr-2 font-bold text-white/90">
-                      {item.title}
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-white/40 flex-shrink-0">
-                      SCROLL DRIVEN
-                    </span>
+                    {/* Card Footer */}
+                    <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/60 font-medium">
+                      <span className="truncate pr-2 font-bold text-white/90">
+                        {item.title}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/40 flex-shrink-0">
+                        SCROLL DRIVEN
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
