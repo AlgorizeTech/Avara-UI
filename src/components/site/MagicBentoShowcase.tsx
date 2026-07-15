@@ -17,8 +17,161 @@ import {
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
-const BENTO_CODE_TS = `/* Exposes the full MagicBentoBlock architecture natively via module export */`;
-const BENTO_CODE_JS = `/* Exposes the full MagicBentoBlock architecture natively via module export */`;
+const BENTO_CODE_TS = `"use client";
+
+import { cn } from "@/lib/utils";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import React, { ReactNode } from "react";
+
+export interface MagicBentoProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+}
+
+export const MagicBento = React.forwardRef<HTMLDivElement, MagicBentoProps>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto w-full auto-rows-[minmax(180px,auto)]",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+MagicBento.displayName = "MagicBento";
+
+export interface MagicBentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+  highlight?: boolean;
+}
+
+export const MagicBentoCard = React.forwardRef<HTMLDivElement, MagicBentoCardProps>(
+  ({ children, className, highlight = false, ...props }, ref) => {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+      const { left, top } = currentTarget.getBoundingClientRect();
+      mouseX.set(clientX - left);
+      mouseY.set(clientY - top);
+    }
+
+    return (
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        className={cn(
+          "group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
+          className,
+        )}
+        {...props}
+      >
+        <div className="absolute inset-0 rounded-3xl bg-zinc-200 dark:bg-zinc-800/80 transition-colors" />
+        {highlight && (
+          <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-30 dark:opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+        )}
+        <motion.div
+          className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate\`
+              radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-color), transparent 40%)
+            \`,
+          }}
+        />
+        <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
+        <motion.div
+          className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-overlay dark:mix-blend-screen"
+          style={{
+            background: useMotionTemplate\`
+              radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-glow), transparent 40%)
+            \`,
+          }}
+        />
+        <div className="relative z-20 flex flex-col h-full p-6 sm:p-8 pointer-events-auto">
+          {children}
+        </div>
+      </div>
+    );
+  }
+);
+MagicBentoCard.displayName = "MagicBentoCard";`;
+
+// --- PURE JAVASCRIPT ENGINE CODE ---
+const BENTO_CODE_JS = `"use client";
+
+import { cn } from "@/lib/utils";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import React from "react";
+
+export const MagicBento = React.forwardRef(({ children, className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto w-full auto-rows-[minmax(180px,auto)]",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
+MagicBento.displayName = "MagicBento";
+
+export const MagicBentoCard = React.forwardRef(({ children, className, highlight = false, ...props }, ref) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
+        className
+      )}
+      {...props}
+    >
+      <div className="absolute inset-0 rounded-3xl bg-zinc-200 dark:bg-zinc-800/80 transition-colors" />
+      {highlight && (
+        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-30 dark:opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+      )}
+      <motion.div
+        className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate\`
+            radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-color), transparent 40%)
+          \`,
+        }}
+      />
+      <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
+      <motion.div
+        className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-overlay dark:mix-blend-screen"
+        style={{
+          background: useMotionTemplate\`
+            radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-glow), transparent 40%)
+          \`,
+        }}
+      />
+      <div className="relative z-20 flex flex-col h-full p-6 sm:p-8 pointer-events-auto">
+        {children}
+      </div>
+    </div>
+  );
+});
+MagicBentoCard.displayName = "MagicBentoCard";`;
 
 // Helper to convert hex to RGB for the CSS variables
 const hexToRgb = (hex: string) => {
@@ -66,10 +219,10 @@ export default function DashboardLayout() {
     <div style={{ "--magic-color": "rgba(255,171,29,1)", "--magic-glow": "rgba(255,171,29,0.15)" } as React.CSSProperties}>
       
       {/* Set auto-rows to control uniform height mapping */}
-      <MagicBento className="auto-rows-[240px]">
+      <MagicBento className="auto-rows-[220px]">
         
         {/* Top Left - Small */}
-        <MagicBentoCard className="lg:col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
           <span className="text-zinc-500 font-semibold flex items-center gap-2"><Activity className="w-4 h-4"/> Insights</span>
           <div>
             <h3 className="text-lg font-bold">Analytics</h3>
@@ -94,7 +247,8 @@ export default function DashboardLayout() {
           spans in opposite corners). We made it unique by separating the
           category labels to the top and pushing the primary text to the bottom,
           while adding abstract UI mockups inside the large span cards to make
-          them feel premium and full.
+          them feel premium and full. Mobile view natively stacks the grid to
+          single-column automatically.
         </p>
       </div>
 
@@ -122,7 +276,7 @@ export default function DashboardLayout() {
               {/* ============================== */}
               {/* CARD 1: TOP LEFT (1x1)         */}
               {/* ============================== */}
-              <MagicBentoCard className="col-span-1 lg:col-span-1 lg:row-span-1 flex flex-col justify-between">
+              <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Activity className="w-4 h-4" />
                   Insights
@@ -140,7 +294,7 @@ export default function DashboardLayout() {
               {/* ============================== */}
               {/* CARD 2: TOP MID-LEFT (1x1)     */}
               {/* ============================== */}
-              <MagicBentoCard className="col-span-1 lg:col-span-1 lg:row-span-1 flex flex-col justify-between">
+              <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Globe2 className="w-4 h-4" />
                   Overview
@@ -160,7 +314,8 @@ export default function DashboardLayout() {
               {/* ============================== */}
               <MagicBentoCard
                 highlight
-                className="col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-between relative"
+                /* FIXED RESPONSIVENESS: row-span-2 is now applied on mobile so the visual has room! */
+                className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative"
               >
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
                   <Users className="w-4 h-4" />
@@ -169,7 +324,8 @@ export default function DashboardLayout() {
 
                 {/* Decorative Visual inside Large Card */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <div className="relative flex items-center justify-center">
+                  {/* Scaled down slightly on mobile to prevent clipping */}
+                  <div className="relative flex items-center justify-center scale-[0.8] sm:scale-100">
                     <div className="absolute w-40 h-40 border border-zinc-200 dark:border-zinc-800 rounded-full animate-[spin_10s_linear_infinite] border-dashed" />
                     <div className="absolute w-24 h-24 border border-zinc-300 dark:border-zinc-700 rounded-full animate-[spin_6s_linear_infinite_reverse]" />
                     <div
@@ -198,7 +354,7 @@ export default function DashboardLayout() {
               {/* ============================== */}
               {/* CARD 4: BOTTOM LEFT (2x2)      */}
               {/* ============================== */}
-              <MagicBentoCard className="col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-between relative">
+              <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
                   <Workflow className="w-4 h-4" />
                   Efficiency
@@ -206,7 +362,7 @@ export default function DashboardLayout() {
 
                 {/* Decorative Pipeline Mockup */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50 dark:opacity-100">
-                  <div className="flex flex-col gap-3 w-3/4">
+                  <div className="flex flex-col gap-3 w-full max-w-[200px] sm:max-w-none sm:w-3/4 scale-[0.85] sm:scale-100">
                     <div className="h-8 w-full bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
                     <div className="flex gap-3">
                       <div className="h-8 w-1/3 bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
@@ -235,7 +391,7 @@ export default function DashboardLayout() {
               {/* ============================== */}
               {/* CARD 5: BOTTOM MID-RIGHT (1x1) */}
               {/* ============================== */}
-              <MagicBentoCard className="col-span-1 lg:col-span-1 lg:row-span-1 flex flex-col justify-between">
+              <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Network className="w-4 h-4" />
                   Connectivity
@@ -253,7 +409,7 @@ export default function DashboardLayout() {
               {/* ============================== */}
               {/* CARD 6: BOTTOM RIGHT (1x1)     */}
               {/* ============================== */}
-              <MagicBentoCard className="col-span-1 lg:col-span-1 lg:row-span-1 flex flex-col justify-between">
+              <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <LockKeyhole className="w-4 h-4" />
                   Protection
