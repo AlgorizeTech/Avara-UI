@@ -89,7 +89,7 @@ export const SplitScrollStack = React.forwardRef<
         const trigger = ScrollTrigger.create({
           trigger: section,
           scroller: targetScroller,
-          start: "top 60%",
+          start: "top 40%",
           end: "bottom 60%",
           // onToggle with isActive prevents skipping/dead zones on fast scrolling
           onToggle: (self) => {
@@ -171,7 +171,7 @@ export const SplitScrollStack = React.forwardRef<
         {/* ========================================== */}
         <div
           className={cn(
-            "md:col-span-6 lg:col-span-7 flex flex-col gap-12 sm:gap-24 relative z-10 py-6 sm:py-12",
+            "col-span-1 md:col-span-6 lg:col-span-7 flex flex-col gap-12 sm:gap-24 relative z-10 py-6 sm:py-12",
             stickySide === "left" ? "md:order-2" : "md:order-1",
           )}
         >
@@ -299,7 +299,7 @@ export const SplitScrollStack = React.forwardRef<
         {/* ========================================== */}
         <div
           className={cn(
-            "md:col-span-6 lg:col-span-5 w-full relative z-20",
+            "hidden md:block md:col-span-6 lg:col-span-5 w-full relative z-20", // Added hidden md:block!
             stickySide === "left" ? "md:order-1" : "md:order-2",
           )}
         >
