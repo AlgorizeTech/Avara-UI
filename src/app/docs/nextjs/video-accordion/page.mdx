@@ -1,0 +1,66 @@
+import { VideoAccordionShowcase } from "@/components/site/VideoAccordionShowcase";
+
+# Video Accordion
+
+A cinematic, expanding gallery component built with **GSAP**. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+
+This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
+
+## Interactive Showcase
+
+Hover over any of the background panels to smoothly expand them and trigger video playback.
+
+<VideoAccordionShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component utilizes **GSAP** to handle the heavy mathematical lifting of flex-basis interpolation during the expansion tracking.
+
+```bash
+npm install gsap
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/VideoAccordionBlock.tsx.
+
+## Usage Architecture
+
+The `<VideoAccordion>` component receives a specialized panels array. For maximum performance and accessibility, ensure you provide high-quality posterUrl fallback images alongside your .mp4 sources.
+
+```tsx
+import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+
+export default function PortfolioSection() {
+  const videoPanels = [
+    {
+      id: "wildlife",
+      title: "Nature & Wildlife",
+      description:
+        "Transform your audio tracks into compelling visual stories automatically.",
+      videoSrc: "/videos/elephants.mp4",
+      posterUrl: "/images/elephants-poster.jpg",
+    },
+    {
+      id: "urban",
+      title: "Urban Sprawl",
+      description:
+        "Capture the relentless energy of cityscapes in 4k resolution.",
+      videoSrc: "/videos/city.mp4",
+      posterUrl: "/images/city-poster.jpg",
+    },
+  ];
+
+  return (
+    <div className="max-w-6xl mx-auto py-24 px-6">
+      <VideoAccordion panels="{videoPanels}" />
+    </div>
+  );
+}
+```
+
+## Props Reference
