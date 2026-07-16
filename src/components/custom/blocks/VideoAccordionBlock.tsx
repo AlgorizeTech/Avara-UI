@@ -15,16 +15,18 @@ export interface AccordionPanel {
 export interface VideoAccordionProps
   extends React.HTMLAttributes<HTMLDivElement> {
   panels: AccordionPanel[];
-  defaultActiveId?: string;
+  defaultActiveId?: string; // Optional: starts with one expanded
 }
 
 export const VideoAccordion = React.forwardRef<
   HTMLDivElement,
   VideoAccordionProps
 >(({ panels, defaultActiveId, className, ...props }, ref) => {
-  const [activeId, setActiveId] = useState<string>(
-    defaultActiveId || panels[0]?.id,
+  // Allows null so we can have a "resting state" where no text is shown
+  const [activeId, setActiveId] = useState<string | null>(
+    defaultActiveId || null,
   );
+
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -68,7 +70,7 @@ export const VideoAccordion = React.forwardRef<
       if (videoEl) {
         if (isActive) {
           videoEl.play().catch((err) => {
-            console.warn("Autoplay blocked or video failed to load:", err);
+            console.warn("Autoplay blocked by browser:", err);
           });
         } else {
           videoEl.pause();
@@ -80,6 +82,7 @@ export const VideoAccordion = React.forwardRef<
   return (
     <div
       ref={containerRef}
+      onMouseLeave={() => setActiveId(null)} // Resets to a clean, text-free state when mouse leaves
       className={cn(
         // Responsive: Vertical stack on mobile, horizontal rail on md+
         "flex flex-col md:flex-row w-full h-[600px] md:h-[500px] gap-2 md:gap-3 overflow-hidden",

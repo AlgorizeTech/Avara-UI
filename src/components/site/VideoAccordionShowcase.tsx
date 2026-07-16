@@ -28,7 +28,7 @@ export interface VideoAccordionProps extends React.HTMLAttributes<HTMLDivElement
 
 export const VideoAccordion = React.forwardRef<HTMLDivElement, VideoAccordionProps>(
   ({ panels, defaultActiveId, className, ...props }, ref) => {
-    const [activeId, setActiveId] = useState<string>(defaultActiveId || panels[0]?.id);
+    const [activeId, setActiveId] = useState<string | null>(defaultActiveId || null);
     const containerRef = useRef<HTMLDivElement>(null);
     const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
     const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -76,7 +76,7 @@ export const VideoAccordion = React.forwardRef<HTMLDivElement, VideoAccordionPro
     }, [activeId, panels]);
 
     return (
-      <div ref={containerRef} className={cn("flex flex-col md:flex-row w-full h-[600px] md:h-[500px] gap-2 md:gap-3 overflow-hidden", className)} {...props}>
+      <div ref={containerRef} onMouseLeave={() => setActiveId(null)} className={cn("flex flex-col md:flex-row w-full h-[600px] md:h-[500px] gap-2 md:gap-3 overflow-hidden", className)} {...props}>
         {panels.map((panel, index) => {
           const isActive = activeId === panel.id;
           return (
@@ -105,7 +105,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 export const VideoAccordion = React.forwardRef(
   ({ panels, defaultActiveId, className, ...props }, ref) => {
-    const [activeId, setActiveId] = useState(defaultActiveId || panels[0]?.id);
+    const [activeId, setActiveId] = useState(defaultActiveId || null);
     const containerRef = useRef(null);
     const panelRefs = useRef([]);
     const videoRefs = useRef([]);
@@ -153,7 +153,7 @@ export const VideoAccordion = React.forwardRef(
     }, [activeId, panels]);
 
     return (
-      <div ref={containerRef} className={cn("flex flex-col md:flex-row w-full h-[600px] md:h-[500px] gap-2 md:gap-3 overflow-hidden", className)} {...props}>
+      <div ref={containerRef} onMouseLeave={() => setActiveId(null)} className={cn("flex flex-col md:flex-row w-full h-[600px] md:h-[500px] gap-2 md:gap-3 overflow-hidden", className)} {...props}>
         {panels.map((panel, index) => {
           const isActive = activeId === panel.id;
           return (
@@ -174,44 +174,45 @@ export const VideoAccordion = React.forwardRef(
 VideoAccordion.displayName = "VideoAccordion";`;
 
 export function VideoAccordionShowcase() {
+  // Using ultra-reliable Cloudinary Demo videos (Zero CORS, 100% Uptime, Instant Load)
   const samplePanels: AccordionPanel[] = [
     {
-      id: "nature",
-      title: "Nature & Wildlife",
+      id: "ocean",
+      title: "Ocean Life",
       description:
-        "Transform your audio tracks into compelling visual stories automatically. Experience the majestic beauty of untouched landscapes.",
+        "Dive deep into the abyss and discover the serene, mysterious world beneath the waves.",
       videoSrc:
-        "https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-seen-from-the-sky-in-a-sunset-26070-large.mp4",
-      posterUrl:
-        "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: "animal",
-      title: "Animal Companions",
-      description:
-        "Capture the heartwarming moments between pets and their human friends with stunning clarity and rich color grading.",
-      videoSrc:
-        "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
-      posterUrl:
-        "https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: "child",
-      title: "Beautiful Moments",
-      description:
-        "Capture the pure joy and innocence of everyday moments in stunning clarity and incredibly smooth 60fps motion.",
-      videoSrc:
-        "https://assets.mixkit.co/videos/preview/mixkit-mother-with-her-little-daughter-eating-a-marshmallow-in-picnic-975-large.mp4",
+        "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/sea-turtle.mp4",
       posterUrl:
         "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      id: "space",
-      title: "Galactic Frontiers",
+      id: "wildlife",
+      title: "Majestic Wildlife",
       description:
-        "Time-lapse perfection. Watch the universe unfold in real-time with our advanced cinematic space rendering engine.",
+        "Experience the power and scale of untamed nature across the world's most remote habitats.",
       videoSrc:
-        "https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4",
+        "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/elephants.mp4",
+      posterUrl:
+        "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: "soaring",
+      title: "Aerial Perspectives",
+      description:
+        "Take to the skies and see the world from a completely new vantage point.",
+      videoSrc:
+        "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/eagle.mp4",
+      posterUrl:
+        "https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: "nature",
+      title: "Rolling Pastures",
+      description:
+        "Peaceful, quiet, and completely natural. A breath of fresh air for your landing pages.",
+      videoSrc:
+        "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/cows.mp4",
       posterUrl:
         "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1200&auto=format&fit=crop",
     },
@@ -224,9 +225,9 @@ export default function HeroSection() {
   const panels = [
     {
       id: "p1",
-      title: "Nature & Wildlife",
-      description: "Transform your audio tracks into compelling visual stories.",
-      videoSrc: "https://your-video-url.mp4",
+      title: "Ocean Life",
+      description: "Dive deep into the abyss and discover the serene world beneath.",
+      videoSrc: "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/sea-turtle.mp4",
       posterUrl: "https://your-fallback-image.jpg",
     },
     // Add up to 4 or 5 panels for best results
@@ -247,9 +248,9 @@ export default function HeroSection() {
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           A cinematic, expanding gallery component built entirely on{" "}
           <strong>GSAP</strong>. Hovering over an inactive panel triggers HTML5{" "}
-          <code>play()</code> methods while smoothly hiding the text of the
-          previously active view. Text is completely hidden on compressed rails
-          for a clean, modern aesthetic.
+          <code>play()</code> methods. <strong>New Upgrade:</strong> When your
+          mouse leaves the accordion completely, the component resets into a
+          beautifully clean, text-free, and paused resting state.
         </p>
       </div>
 
@@ -266,6 +267,7 @@ export default function HeroSection() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
           <div className="w-full max-w-5xl mx-auto relative z-10 shadow-2xl">
+            {/* By omitting defaultActiveId, it starts in the clean resting state */}
             <VideoAccordion panels={samplePanels} />
           </div>
         </div>
