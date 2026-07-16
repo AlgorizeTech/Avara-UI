@@ -64,3 +64,162 @@ export default function PortfolioSection() {
 ```
 
 ## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>VideoAccordion</code>
+        </td>
+        <td>
+          <code>panels</code>
+        </td>
+        <td>
+          <code>AccordionPanel[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of configuration objects defining the videos, text, and IDs
+          for the gallery.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>VideoAccordion</code>
+        </td>
+        <td>
+          <code>defaultActiveId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          The unique <code>id</code> of the panel that should be expanded by
+          default. If omitted, the accordion starts in a fully collapsed,
+          text-free resting state.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>VideoAccordion</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost responsive flex
+          container wrapper.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionPanel</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP state tracking.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionPanel</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>Primary headline text displayed at the bottom of the panel.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionPanel</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Detailed paragraph text explaining the video. This text automatically
+          hides when the panel is collapsed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionPanel</code>
+        </td>
+        <td>
+          <code>videoSrc</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The URL to the background <code>.mp4</code> or <code>.webm</code>{" "}
+          file.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionPanel</code>
+        </td>
+        <td>
+          <code>posterUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional (but highly recommended) URL to a fallback image. This
+          displays immediately while the video is buffering to prevent black
+          flashes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
