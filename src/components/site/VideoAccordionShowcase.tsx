@@ -46,23 +46,11 @@ export const VideoAccordion = React.forwardRef<HTMLDivElement, VideoAccordionPro
         const isActive = activeId === panel.id;
 
         if (panelEl) {
-          gsap.to(panelEl, {
-            flexGrow: isActive ? 5 : 1,
-            duration: 0.8,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
+          gsap.to(panelEl, { flexGrow: isActive ? 5 : 1, duration: 0.8, ease: "power3.out", overwrite: "auto" });
         }
 
         if (titleEl && descEl) {
-          gsap.to([titleEl, descEl], {
-            opacity: isActive ? 1 : 0,
-            y: isActive ? 0 : 20,
-            stagger: 0.05,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
+          gsap.to([titleEl, descEl], { opacity: isActive ? 1 : 0, y: isActive ? 0 : 20, stagger: 0.05, duration: 0.6, ease: "power3.out", overwrite: "auto" });
         }
 
         if (videoEl) {
@@ -80,12 +68,12 @@ export const VideoAccordion = React.forwardRef<HTMLDivElement, VideoAccordionPro
         {panels.map((panel, index) => {
           const isActive = activeId === panel.id;
           return (
-            <div key={panel.id} ref={(el) => { panelRefs.current[index] = el; }} onMouseEnter={() => setActiveId(panel.id)} onClick={() => setActiveId(panel.id)} className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-900">
+            <div key={panel.id} ref={(el) => { panelRefs.current[index] = el; }} onMouseEnter={() => setActiveId(panel.id)} onClick={() => setActiveId(panel.id)} className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-200 dark:bg-zinc-900">
               <video ref={(el) => { videoRefs.current[index] = el; }} src={panel.videoSrc} poster={panel.posterUrl} muted loop playsInline preload="auto" className={cn("absolute inset-0 w-full h-full object-cover transition-transform duration-1000", isActive ? "scale-105" : "scale-100")} />
-              <div className={cn("absolute inset-0 transition-all duration-700 pointer-events-none", isActive ? "bg-gradient-to-t from-black/90 via-black/20 to-transparent" : "bg-black/60 backdrop-blur-[2px]")} />
+              <div className={cn("absolute inset-0 transition-all duration-700 pointer-events-none", isActive ? "bg-gradient-to-t from-white/90 via-white/20 to-transparent dark:from-black/90 dark:via-black/20 dark:to-transparent" : "bg-white/50 dark:bg-black/60 backdrop-blur-[2px]")} />
               <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex flex-col justify-end pointer-events-none">
-                <h3 ref={(el) => { titleRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight">{panel.title}</h3>
-                <p ref={(el) => { descRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-white/80 text-sm md:text-base leading-relaxed max-w-lg whitespace-normal line-clamp-3 md:line-clamp-none">{panel.description}</p>
+                <h3 ref={(el) => { titleRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-zinc-900 dark:text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight">{panel.title}</h3>
+                <p ref={(el) => { descRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-zinc-700 dark:text-white/80 text-sm md:text-base leading-relaxed max-w-lg whitespace-normal line-clamp-3 md:line-clamp-none">{panel.description}</p>
               </div>
             </div>
           );
@@ -123,23 +111,11 @@ export const VideoAccordion = React.forwardRef(
         const isActive = activeId === panel.id;
 
         if (panelEl) {
-          gsap.to(panelEl, {
-            flexGrow: isActive ? 5 : 1,
-            duration: 0.8,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
+          gsap.to(panelEl, { flexGrow: isActive ? 5 : 1, duration: 0.8, ease: "power3.out", overwrite: "auto" });
         }
 
         if (titleEl && descEl) {
-          gsap.to([titleEl, descEl], {
-            opacity: isActive ? 1 : 0,
-            y: isActive ? 0 : 20,
-            stagger: 0.05,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
+          gsap.to([titleEl, descEl], { opacity: isActive ? 1 : 0, y: isActive ? 0 : 20, stagger: 0.05, duration: 0.6, ease: "power3.out", overwrite: "auto" });
         }
 
         if (videoEl) {
@@ -157,12 +133,12 @@ export const VideoAccordion = React.forwardRef(
         {panels.map((panel, index) => {
           const isActive = activeId === panel.id;
           return (
-            <div key={panel.id} ref={(el) => { panelRefs.current[index] = el; }} onMouseEnter={() => setActiveId(panel.id)} onClick={() => setActiveId(panel.id)} className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-900">
+            <div key={panel.id} ref={(el) => { panelRefs.current[index] = el; }} onMouseEnter={() => setActiveId(panel.id)} onClick={() => setActiveId(panel.id)} className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-200 dark:bg-zinc-900">
               <video ref={(el) => { videoRefs.current[index] = el; }} src={panel.videoSrc} poster={panel.posterUrl} muted loop playsInline preload="auto" className={cn("absolute inset-0 w-full h-full object-cover transition-transform duration-1000", isActive ? "scale-105" : "scale-100")} />
-              <div className={cn("absolute inset-0 transition-all duration-700 pointer-events-none", isActive ? "bg-gradient-to-t from-black/90 via-black/20 to-transparent" : "bg-black/60 backdrop-blur-[2px]")} />
+              <div className={cn("absolute inset-0 transition-all duration-700 pointer-events-none", isActive ? "bg-gradient-to-t from-white/90 via-white/20 to-transparent dark:from-black/90 dark:via-black/20 dark:to-transparent" : "bg-white/50 dark:bg-black/60 backdrop-blur-[2px]")} />
               <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex flex-col justify-end pointer-events-none">
-                <h3 ref={(el) => { titleRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight">{panel.title}</h3>
-                <p ref={(el) => { descRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-white/80 text-sm md:text-base leading-relaxed max-w-lg whitespace-normal line-clamp-3 md:line-clamp-none">{panel.description}</p>
+                <h3 ref={(el) => { titleRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-zinc-900 dark:text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight">{panel.title}</h3>
+                <p ref={(el) => { descRefs.current[index] = el; }} style={{ opacity: isActive ? 1 : 0, transform: isActive ? "translateY(0)" : "translateY(20px)" }} className="text-zinc-700 dark:text-white/80 text-sm md:text-base leading-relaxed max-w-lg whitespace-normal line-clamp-3 md:line-clamp-none">{panel.description}</p>
               </div>
             </div>
           );
@@ -174,7 +150,6 @@ export const VideoAccordion = React.forwardRef(
 VideoAccordion.displayName = "VideoAccordion";`;
 
 export function VideoAccordionShowcase() {
-  // Using ultra-reliable Cloudinary Demo videos (Zero CORS, 100% Uptime, Instant Load)
   const samplePanels: AccordionPanel[] = [
     {
       id: "ocean",
@@ -250,7 +225,8 @@ export default function HeroSection() {
           <strong>GSAP</strong>. Hovering over an inactive panel triggers HTML5{" "}
           <code>play()</code> methods. <strong>New Upgrade:</strong> When your
           mouse leaves the accordion completely, the component resets into a
-          beautifully clean, text-free, and paused resting state.
+          beautifully clean, text-free resting state. Fully adaptive for Light
+          and Dark modes.
         </p>
       </div>
 
@@ -262,9 +238,9 @@ export default function HeroSection() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full flex items-center justify-center bg-[#0a0a0a] py-8 sm:py-16 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-white/10">
-          {/* Subtle Backglow to make the dark UI pop */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-16 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+          {/* Subtle Adaptive Backglow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-zinc-900/5 dark:bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
           <div className="w-full max-w-5xl mx-auto relative z-10 shadow-2xl">
             {/* By omitting defaultActiveId, it starts in the clean resting state */}

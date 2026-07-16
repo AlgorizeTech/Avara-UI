@@ -120,13 +120,13 @@ export const VideoAccordion = React.forwardRef<
               )}
             />
 
-            {/* Dark Overlay (Heavy blur on inactive, clear bottom gradient on active) */}
+            {/* Cinematic Overlay (Dark universally for best video contrast) */}
             <div
               className={cn(
                 "absolute inset-0 transition-all duration-700 pointer-events-none",
                 isActive
                   ? "bg-gradient-to-t from-black/90 via-black/20 to-transparent"
-                  : "bg-black/60 backdrop-blur-[2px]",
+                  : "bg-black/50 backdrop-blur-[2px]",
               )}
             />
 
