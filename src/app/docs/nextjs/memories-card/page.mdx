@@ -1,0 +1,261 @@
+import { MemoriesCardShowcase } from "@/components/site/MemoriesCardShowcase";
+
+# Memories Card
+
+A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
+
+## Interactive Showcase
+
+Hover over the front card to see the 3D perspective tilt follow your cursor. Click and drag (or touch swipe) left or right to send the current card to the back of the deck.
+
+<MemoriesCardShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies on **Framer Motion** for 3D spring tilt physics and drag gesture handling, and **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and save it to components/custom/blocks/MemoriesCardBlock.tsx.
+
+## Usage Architecture
+
+The `<MemoriesCard>` component accepts an array of items and automatically handles stack reordering and gesture physics internally.
+
+```
+import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
+
+export default function GallerySection() {
+  const memories = [
+    {
+      id: "1",
+      tag: "Highlight",
+      title: "Kyoto Lantern Festival",
+      location: "Kyoto, Japan",
+      date: "Oct 2025",
+      description: "Walking through glowing paper lanterns in historic Gion.",
+      image:
+        "[https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop)",
+    },
+    {
+      id: "2",
+      tag: "Expedition",
+      title: "Dolomites Alpine Ridge",
+      location: "South Tyrol, Italy",
+      date: "Aug 2025",
+      description:
+        "Reaching the summit just as morning sun cast jagged shadows.",
+      image:
+        "[https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop)",
+    },
+  ];
+
+  return (
+    <div className="w-full max-w-4xl mx-auto py-12 px-4">
+      <MemoriesCard items="{memories}" />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>MemoryItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the images, titles, locations, and
+          badges for the card stack.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>onCardChange</code>
+        </td>
+        <td>
+          <code>(index: number) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback function fired whenever a card is swiped to the back
+          and the stack cycles to a new front card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost perspective
+          wrapper container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          Framer Motion layout transitions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text prominently displayed at the bottom of the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The URL to the high-resolution background image for the card.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>tag</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional badge label displayed in the top-left corner (e.g.,
+          "Highlight", "Expedition").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>location</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional geographical string displayed with a map pin icon above the
+          headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>date</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional date or timestamp string displayed with a calendar icon above
+          the headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional supporting paragraph text explaining the memory.
+          Automatically clamped to 2 lines.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
