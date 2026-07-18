@@ -1,0 +1,243 @@
+import { Carousel3DShowcase } from "@/components/site/Carousel3DShowcase";
+
+# 3D Carousel
+
+A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
+
+## Interactive Showcase
+
+Interact with the active center card by dragging it left or right, or use the navigation controls below the carousel.
+
+<Carousel3DShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component requires **Framer Motion** for the 3D spring physics and drag gestures, and **Lucide React** for the UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ThreeDCarouselBlock.tsx.
+
+## Usage Architecture
+
+The `<ThreeDCarousel>` component accepts an array of items and configuration props for the auto-play behavior.
+
+```tsx
+import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+export default function ShowcaseSection() {
+  const items = [
+    {
+      id: "1",
+      category: "Architecture",
+      title: "Futuristic Sanctuary",
+      description:
+        "Next-generation living spaces integrated with natural flora.",
+      image:
+        "[https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop)",
+    },
+    {
+      id: "2",
+      category: "Automotive",
+      title: "Cybernetic Grand Tourer",
+      description: "Pure electric performance meeting aerodynamic excellence.",
+      image:
+        "[https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop)",
+    },
+  ];
+
+  return (
+    <div className="w-full max-w-6xl mx-auto py-12 px-4">
+      {/* Auto-play is enabled by default with a 4000ms interval */}
+      <ThreeDCarousel
+        autoPlay="{true}"
+        autoPlayInterval="{4500}"
+        items="{items}"
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>CarouselItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining each slide's category, title,
+          description, and image URL.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Enables or disables automatic slide advancement. Automatically pauses
+          when a user hovers over the carousel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>autoPlayInterval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4000</code>
+        </td>
+        <td>
+          The time duration in milliseconds between automatic slide transitions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost responsive flex
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          Framer Motion layout animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the card overlay.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>category</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A short descriptive pill/badge label rendered above the title (e.g.,
+          "Architecture", "Design").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The URL to the high-resolution background image for the card.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional supporting paragraph text displayed below the headline.
+          Automatically clamped to 2 lines.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
