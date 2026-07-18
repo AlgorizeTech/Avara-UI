@@ -1,0 +1,303 @@
+import { DockShowcase } from "@/components/site/DockShowcase";
+
+# Dock
+
+A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
+
+## Interactive Showcase
+
+Hover across the dock icons on desktop to experience unclipped Framer Motion magnification physics. Click any icon to switch the active indicator dot.
+
+<DockShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component requires **Framer Motion** for real-time cursor tracking and spring physics, and **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/DockBlock.tsx.
+
+## Usage Architecture
+
+The `<Dock>` component accepts an array of items along with optional dimension and physics parameters (containerHeight, gap, baseSize, magnification, and distance) to tune the appearance and responsiveness of the zoom effect.
+
+```
+import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Home, Mail, Terminal, Settings } from "lucide-react";
+
+export default function BottomNav() {
+  const dockItems = [
+    { id: "home", label: "Home", icon: <Home className="w-full h-full"/>, isActive: true },
+    { id: "mail", label: "Mail", icon: <Mail className="w-full h-full"/>, badge: "3" },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full"/> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full"/> },
+  ];
+
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      <Dock baseSize="{48}" containerHeight="{68}" distance="{140}" gap="{14}" items="{dockItems}" magnification="{82}"/>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>DockItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the icons, labels, onClick
+          callbacks, badges, and active states for each item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>containerHeight</code>
+        </td>
+        <td>
+          <code>number | string</code>
+        </td>
+        <td>
+          <code>64</code>
+        </td>
+        <td>
+          The height of the glassmorphic background bar (in pixels if passed as
+          a number, or valid CSS string e.g., <code>"4.5rem"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>gap</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>12</code>
+        </td>
+        <td>
+          The horizontal gap spacing (in pixels) between resting dock icon
+          buttons. Automatically compresses on mobile viewports.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>baseSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>48</code>
+        </td>
+        <td>
+          The resting width and height (in pixels) of each dock icon button
+          before any hover interaction occurs.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>magnification</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>80</code>
+        </td>
+        <td>
+          The maximum expanded width and height (in pixels) an icon reaches when
+          the mouse cursor is directly over its center.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>distance</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>140</code>
+        </td>
+        <td>
+          The pixel distance radius around the mouse cursor within which
+          neighboring icons will begin to magnify.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost glassmorphic
+          dock wrapper container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          layout animations.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The text displayed inside the floating tooltip tag above the icon when
+          hovered.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A React element or Lucide icon component to render inside the button
+          (should use classes like <code>w-full h-full</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback function fired whenever the user clicks on the
+          specific dock icon button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>isActive</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When set to <code>true</code>, displays a smooth animated dot
+          indicator beneath the icon button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional notification badge string or number (e.g., "3", "NEW")
+          rendered as a pulsing red pill in the top-right corner.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
