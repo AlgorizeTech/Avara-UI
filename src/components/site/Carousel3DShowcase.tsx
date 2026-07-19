@@ -10,7 +10,7 @@ import { ComponentPreview } from "@/components/site/ComponentPreview";
 const CAROUSEL_CODE_TS = `"use client";
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, PanInfo, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +26,90 @@ export interface ThreeDCarouselProps extends React.HTMLAttributes<HTMLDivElement
   items: CarouselItem[];
   autoPlay?: boolean;
   autoPlayInterval?: number;
+}
+
+interface CarouselCardProps {
+  item: CarouselItem;
+  index: number;
+  activeIndex: number;
+  total: number;
+  onClick: () => void;
+  onDragEnd: (_: MouseEvent | TouchEvent, info: PanInfo) => void;
+}
+
+function CarouselCard({ item, index, activeIndex, total, onClick, onDragEnd }: CarouselCardProps) {
+  let diff = (index - activeIndex) % total;
+  if (diff > Math.floor(total / 2)) diff -= total;
+  if (diff < -Math.floor(total / 2)) diff += total;
+
+  const offset = diff;
+  const isCenter = offset === 0;
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-150, 150], [14, -14]), { stiffness: 300, damping: 25 });
+  const rotateY = useSpring(useTransform(x, [-150, 150], [-14, 14]), { stiffness: 300, damping: 25 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set(e.clientX - centerX);
+    y.set(e.clientY - centerY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  if (Math.abs(offset) > 2) return null;
+
+  return (
+    <motion.div
+      onClick={onClick}
+      drag={isCenter ? "x" : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={onDragEnd}
+      initial={false}
+      animate={{
+        x: offset * (typeof window !== "undefined" && window.innerWidth < 640 ? 120 : 220),
+        scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
+        rotateY: offset * -22,
+        z: -Math.abs(offset) * 140,
+        zIndex: 30 - Math.abs(offset) * 10,
+        opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
+      }}
+      transition={{ type: "spring", stiffness: 280, damping: 28 }}
+      className={cn(
+        "absolute w-[280px] sm:w-[320px] md:w-[360px] h-[360px] sm:h-[400px] md:h-[420px] rounded-3xl",
+        isCenter ? "cursor-grab active:cursor-grabbing z-30" : "cursor-pointer z-10"
+      )}
+    >
+      <motion.div
+        style={{ rotateX, rotateY }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        whileHover={{ scale: isCenter ? 1.02 : 1.05, transition: { duration: 0.2 } }}
+        className={cn(
+          "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
+          isCenter ? "shadow-zinc-400/50 dark:shadow-black/80 ring-1 ring-black/5 dark:ring-white/20" : "hover:border-zinc-400 dark:hover:border-white/30 shadow-md"
+        )}
+      >
+        <div className="relative w-full h-full overflow-hidden">
+          <img src={item.image} alt={item.title} className="w-full h-full object-cover pointer-events-none transition-transform duration-700 hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent dark:from-black/95 dark:via-black/40 dark:to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
+            <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md w-fit mb-2 text-white/90">{item.category}</span>
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">{item.title}</h3>
+            {item.description && <p className="text-sm text-zinc-300 dark:text-zinc-400 line-clamp-2 leading-relaxed">{item.description}</p>}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
 
 export const ThreeDCarousel = React.forwardRef<HTMLDivElement, ThreeDCarouselProps>(
@@ -69,57 +153,21 @@ export const ThreeDCarousel = React.forwardRef<HTMLDivElement, ThreeDCarouselPro
       else if (info.offset.x > 50) handlePrev();
     };
 
-    const getOffset = (index: number) => {
-      let diff = (index - activeIndex) % total;
-      if (diff > Math.floor(total / 2)) diff -= total;
-      if (diff < -Math.floor(total / 2)) diff += total;
-      return diff;
-    };
-
     return (
       <div ref={ref} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={cn("relative w-full h-[500px] md:h-[580px] flex flex-col items-center justify-center overflow-hidden select-none py-6", className)} {...props}>
         <div className="relative w-full max-w-4xl h-[360px] md:h-[420px] flex items-center justify-center perspective-[1200px]">
           <AnimatePresence initial={false}>
-            {items.map((item, index) => {
-              const offset = getOffset(index);
-              const isCenter = offset === 0;
-              if (Math.abs(offset) > 2) return null;
-
-              return (
-                <motion.div
-                  key={item.id}
-                  onClick={() => !isCenter && setActiveIndex(index)}
-                  drag={isCenter ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
-                  initial={false}
-                  animate={{
-                    x: offset * (typeof window !== "undefined" && window.innerWidth < 640 ? 120 : 220),
-                    scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
-                    rotateY: offset * -22,
-                    z: -Math.abs(offset) * 140,
-                    zIndex: 30 - Math.abs(offset) * 10,
-                    opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
-                  }}
-                  transition={{ type: "spring", stiffness: 280, damping: 28 }}
-                  className={cn(
-                    "absolute w-[280px] sm:w-[320px] md:w-[360px] h-[360px] sm:h-[400px] md:h-[420px] rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
-                    isCenter ? "cursor-grab active:cursor-grabbing shadow-zinc-400/50 dark:shadow-black/80 ring-1 ring-black/5 dark:ring-white/20" : "cursor-pointer hover:border-zinc-400 dark:hover:border-white/30"
-                  )}
-                >
-                  <div className="relative w-full h-full overflow-hidden">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover pointer-events-none transition-transform duration-700 hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent dark:from-black/95 dark:via-black/40 dark:to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
-                      <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md w-fit mb-2 text-white/90">{item.category}</span>
-                      <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">{item.title}</h3>
-                      {item.description && <p className="text-sm text-zinc-300 dark:text-zinc-400 line-clamp-2 leading-relaxed">{item.description}</p>}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {items.map((item, index) => (
+              <CarouselCard
+                key={item.id}
+                item={item}
+                index={index}
+                activeIndex={activeIndex}
+                total={total}
+                onClick={() => index !== activeIndex && setActiveIndex(index)}
+                onDragEnd={handleDragEnd}
+              />
+            ))}
           </AnimatePresence>
         </div>
 
@@ -144,9 +192,84 @@ ThreeDCarousel.displayName = "ThreeDCarousel";`;
 const CAROUSEL_CODE_JS = `"use client";
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+function CarouselCard({ item, index, activeIndex, total, onClick, onDragEnd }) {
+  let diff = (index - activeIndex) % total;
+  if (diff > Math.floor(total / 2)) diff -= total;
+  if (diff < -Math.floor(total / 2)) diff += total;
+
+  const offset = diff;
+  const isCenter = offset === 0;
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-150, 150], [14, -14]), { stiffness: 300, damping: 25 });
+  const rotateY = useSpring(useTransform(x, [-150, 150], [-14, 14]), { stiffness: 300, damping: 25 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set(e.clientX - centerX);
+    y.set(e.clientY - centerY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  if (Math.abs(offset) > 2) return null;
+
+  return (
+    <motion.div
+      onClick={onClick}
+      drag={isCenter ? "x" : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={onDragEnd}
+      initial={false}
+      animate={{
+        x: offset * (typeof window !== "undefined" && window.innerWidth < 640 ? 120 : 220),
+        scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
+        rotateY: offset * -22,
+        z: -Math.abs(offset) * 140,
+        zIndex: 30 - Math.abs(offset) * 10,
+        opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
+      }}
+      transition={{ type: "spring", stiffness: 280, damping: 28 }}
+      className={cn(
+        "absolute w-[280px] sm:w-[320px] md:w-[360px] h-[360px] sm:h-[400px] md:h-[420px] rounded-3xl",
+        isCenter ? "cursor-grab active:cursor-grabbing z-30" : "cursor-pointer z-10"
+      )}
+    >
+      <motion.div
+        style={{ rotateX, rotateY }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        whileHover={{ scale: isCenter ? 1.02 : 1.05, transition: { duration: 0.2 } }}
+        className={cn(
+          "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
+          isCenter ? "shadow-zinc-400/50 dark:shadow-black/80 ring-1 ring-black/5 dark:ring-white/20" : "hover:border-zinc-400 dark:hover:border-white/30 shadow-md"
+        )}
+      >
+        <div className="relative w-full h-full overflow-hidden">
+          <img src={item.image} alt={item.title} className="w-full h-full object-cover pointer-events-none transition-transform duration-700 hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent dark:from-black/95 dark:via-black/40 dark:to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
+            <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md w-fit mb-2 text-white/90">{item.category}</span>
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">{item.title}</h3>
+            {item.description && <p className="text-sm text-zinc-300 dark:text-zinc-400 line-clamp-2 leading-relaxed">{item.description}</p>}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export const ThreeDCarousel = React.forwardRef(
   ({ items, autoPlay = true, autoPlayInterval = 4000, className, ...props }, ref) => {
@@ -189,57 +312,21 @@ export const ThreeDCarousel = React.forwardRef(
       else if (info.offset.x > 50) handlePrev();
     };
 
-    const getOffset = (index) => {
-      let diff = (index - activeIndex) % total;
-      if (diff > Math.floor(total / 2)) diff -= total;
-      if (diff < -Math.floor(total / 2)) diff += total;
-      return diff;
-    };
-
     return (
       <div ref={ref} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={cn("relative w-full h-[500px] md:h-[580px] flex flex-col items-center justify-center overflow-hidden select-none py-6", className)} {...props}>
         <div className="relative w-full max-w-4xl h-[360px] md:h-[420px] flex items-center justify-center perspective-[1200px]">
           <AnimatePresence initial={false}>
-            {items.map((item, index) => {
-              const offset = getOffset(index);
-              const isCenter = offset === 0;
-              if (Math.abs(offset) > 2) return null;
-
-              return (
-                <motion.div
-                  key={item.id}
-                  onClick={() => !isCenter && setActiveIndex(index)}
-                  drag={isCenter ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
-                  initial={false}
-                  animate={{
-                    x: offset * (typeof window !== "undefined" && window.innerWidth < 640 ? 120 : 220),
-                    scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
-                    rotateY: offset * -22,
-                    z: -Math.abs(offset) * 140,
-                    zIndex: 30 - Math.abs(offset) * 10,
-                    opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
-                  }}
-                  transition={{ type: "spring", stiffness: 280, damping: 28 }}
-                  className={cn(
-                    "absolute w-[280px] sm:w-[320px] md:w-[360px] h-[360px] sm:h-[400px] md:h-[420px] rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
-                    isCenter ? "cursor-grab active:cursor-grabbing shadow-zinc-400/50 dark:shadow-black/80 ring-1 ring-black/5 dark:ring-white/20" : "cursor-pointer hover:border-zinc-400 dark:hover:border-white/30"
-                  )}
-                >
-                  <div className="relative w-full h-full overflow-hidden">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover pointer-events-none transition-transform duration-700 hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent dark:from-black/95 dark:via-black/40 dark:to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
-                      <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md w-fit mb-2 text-white/90">{item.category}</span>
-                      <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">{item.title}</h3>
-                      {item.description && <p className="text-sm text-zinc-300 dark:text-zinc-400 line-clamp-2 leading-relaxed">{item.description}</p>}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {items.map((item, index) => (
+              <CarouselCard
+                key={item.id}
+                item={item}
+                index={index}
+                activeIndex={activeIndex}
+                total={total}
+                onClick={() => index !== activeIndex && setActiveIndex(index)}
+                onDragEnd={handleDragEnd}
+              />
+            ))}
           </AnimatePresence>
         </div>
 
@@ -339,7 +426,8 @@ export default function ShowcaseSection() {
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           A high-performance 3D carousel powered by{" "}
           <strong>Framer Motion</strong> and <strong>Lucide React</strong>.
-          Features physics-based touch/mouse dragging, keyboard arrow
+          Features physics-based touch/mouse dragging, interactive{" "}
+          <strong>3D perspective tilt</strong> on hover, keyboard arrow
           navigation, circular endless fanning, and an adaptive auto-play timer
           that pauses on hover. The aesthetic automatically adjusts between
           crisp zinc shadows in Light Mode and glowing borders in Dark Mode.
