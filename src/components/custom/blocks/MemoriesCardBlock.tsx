@@ -66,7 +66,15 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           const newStack = [...prev];
           const removed = newStack.shift();
           if (removed) newStack.push(removed);
-          if (onCardChange) onCardChange(0);
+
+          // Fixed: Pass the correct original index of the NEW front card to the parent
+          if (onCardChange && newStack[0]) {
+            const nextActiveIndex = items.findIndex(
+              (orig) => orig.id === newStack[0].id,
+            );
+            onCardChange(nextActiveIndex);
+          }
+
           return newStack;
         });
         x.set(0);
@@ -76,6 +84,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
 
     const handleReset = () => {
       setCards(items);
+      if (onCardChange) onCardChange(0);
     };
 
     return (
@@ -92,6 +101,11 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           <AnimatePresence>
             {cards.map((item, index) => {
               const isFront = index === 0;
+
+              // Fixed: Lookup card's original sequence index in the immutable items prop
+              const originalIndex = items.findIndex(
+                (orig) => orig.id === item.id,
+              );
 
               // Calculate fanned background spread offsets
               const fanRotate = index === 1 ? 6 : index === 2 ? -6 : index * 4;
@@ -161,8 +175,10 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                       ) : (
                         <div />
                       )}
+
+                      {/* Fixed: Displays actual sequence (1/4, 2/4, etc.) based on original index */}
                       <span className="text-xs font-medium text-white/80 bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
-                        {index + 1} / {cards.length}
+                        {originalIndex + 1} / {items.length}
                       </span>
                     </div>
 

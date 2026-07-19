@@ -58,12 +58,23 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           const newStack = [...prev];
           const removed = newStack.shift();
           if (removed) newStack.push(removed);
-          if (onCardChange) onCardChange(0);
+          
+          // Fixed: Pass the correct original index of the NEW front card to parent
+          if (onCardChange && newStack[0]) {
+            const nextActiveIndex = items.findIndex((orig) => orig.id === newStack[0].id);
+            onCardChange(nextActiveIndex);
+          }
+          
           return newStack;
         });
         x.set(0);
         y.set(0);
       }
+    };
+
+    const handleReset = () => {
+      setCards(items);
+      if (onCardChange) onCardChange(0);
     };
 
     return (
@@ -72,6 +83,10 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           <AnimatePresence>
             {cards.map((item, index) => {
               const isFront = index === 0;
+              
+              // Fixed: Lookup card's original sequence index in the immutable items prop
+              const originalIndex = items.findIndex((orig) => orig.id === item.id);
+              
               const fanRotate = index === 1 ? 6 : index === 2 ? -6 : index * 4;
               const fanX = index === 1 ? 24 : index === 2 ? -24 : 0;
               const fanY = index * 12;
@@ -109,7 +124,8 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                           {item.tag}
                         </span>
                       ) : <div />}
-                      <span className="text-xs font-medium text-white/80 bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">{index + 1} / {cards.length}</span>
+                      {/* Fixed: Displays actual sequence (1/4, 2/4, etc.) based on original index */}
+                      <span className="text-xs font-medium text-white/80 bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">{originalIndex + 1} / {items.length}</span>
                     </div>
                     <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
                       <div className="flex items-center gap-4 text-xs font-medium text-zinc-300 dark:text-zinc-400 mb-2">
@@ -127,7 +143,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
         </div>
         <div className="flex items-center justify-between w-full max-w-[340px] sm:max-w-[380px] mt-6 px-2 z-40">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">← Swipe card left or right to cycle →</span>
-          <button onClick={() => setCards(items)} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-700 active:scale-95 transition-all"><RotateCcw className="w-3.5 h-3.5" />Reset</button>
+          <button onClick={handleReset} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-700 active:scale-95 transition-all"><RotateCcw className="w-3.5 h-3.5" />Reset</button>
         </div>
       </div>
     );
@@ -172,12 +188,23 @@ export const MemoriesCard = React.forwardRef(
           const newStack = [...prev];
           const removed = newStack.shift();
           if (removed) newStack.push(removed);
-          if (onCardChange) onCardChange(0);
+          
+          // Fixed: Pass the correct original index of the NEW front card to parent
+          if (onCardChange && newStack[0]) {
+            const nextActiveIndex = items.findIndex((orig) => orig.id === newStack[0].id);
+            onCardChange(nextActiveIndex);
+          }
+          
           return newStack;
         });
         x.set(0);
         y.set(0);
       }
+    };
+
+    const handleReset = () => {
+      setCards(items);
+      if (onCardChange) onCardChange(0);
     };
 
     return (
@@ -186,6 +213,10 @@ export const MemoriesCard = React.forwardRef(
           <AnimatePresence>
             {cards.map((item, index) => {
               const isFront = index === 0;
+              
+              // Fixed: Lookup card's original sequence index in the immutable items prop
+              const originalIndex = items.findIndex((orig) => orig.id === item.id);
+              
               const fanRotate = index === 1 ? 6 : index === 2 ? -6 : index * 4;
               const fanX = index === 1 ? 24 : index === 2 ? -24 : 0;
               const fanY = index * 12;
@@ -223,7 +254,8 @@ export const MemoriesCard = React.forwardRef(
                           {item.tag}
                         </span>
                       ) : <div />}
-                      <span className="text-xs font-medium text-white/80 bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">{index + 1} / {cards.length}</span>
+                      {/* Fixed: Displays actual sequence (1/4, 2/4, etc.) based on original index */}
+                      <span className="text-xs font-medium text-white/80 bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">{originalIndex + 1} / {items.length}</span>
                     </div>
                     <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
                       <div className="flex items-center gap-4 text-xs font-medium text-zinc-300 dark:text-zinc-400 mb-2">
@@ -241,7 +273,7 @@ export const MemoriesCard = React.forwardRef(
         </div>
         <div className="flex items-center justify-between w-full max-w-[340px] sm:max-w-[380px] mt-6 px-2 z-40">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">← Swipe card left or right to cycle →</span>
-          <button onClick={() => setCards(items)} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-700 active:scale-95 transition-all"><RotateCcw className="w-3.5 h-3.5" />Reset</button>
+          <button onClick={handleReset} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-700 active:scale-95 transition-all"><RotateCcw className="w-3.5 h-3.5" />Reset</button>
         </div>
       </div>
     );
