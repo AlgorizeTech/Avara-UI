@@ -1,0 +1,343 @@
+import { ScrollAccordionShowcaseShowcase } from "@/components/site/ScrollAccordionShowcaseShowcase";
+
+# Scroll Accordion Showcase
+
+A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
+
+## Interactive Showcase
+
+Scroll through the narrative cards on desktop to experience viewport-triggered expansion and sticky image cross-fading. On small screens, the layout adapts cleanly to a vertically stacked structure.
+
+<ScrollAccordionShowcaseShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies on **Framer Motion** for smooth accordion animations and image cross-fading, alongside **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ScrollAccordionShowcaseBlock.tsx.
+
+## Usage Architecture
+
+The `<ScrollAccordionShowcase>` component automatically adapts to dark and light modes, stacks cleanly on mobile viewports, and reads your site's custom primary hex color from localStorage (defaulting to primaryColor).
+
+```
+import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+export default function ServicesSection() {
+  const items = [
+    {
+      id: "landing",
+      stepNumber: "01",
+      title: "Landing Page Design",
+      description: "We engineer high-converting layouts with scroll-triggered animations.",
+      tags: ["CONVERSION FOCUSED", "FIGMA TO CODE"],
+      image: "[https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop)",
+      badgeText: "SELECTED SERVICE",
+    },
+    {
+      id: "saas",
+      stepNumber: "02",
+      title: "SaaS Development",
+      description: "Modular, multi-tenant web applications designed to scale to millions of requests.",
+      tags: ["MULTI-TENANT ARCHITECTURE", "REAL-TIME SYNC"],
+      image: "[https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop)",
+      badgeText: "SELECTED SERVICE",
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <ScrollAccordionShowcase defaultAccentColor="#FFAB1D" displayMode="both" items="{items}" localStorageKey="primaryColor"/>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>AccordionShowcaseItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the numbered step badges, titles,
+          narrative descriptions, interactive tags, and paired visual mockup
+          images.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>displayMode</code>
+        </td>
+        <td>
+          <code>"both" | "text-only" | "image-only"</code>
+        </td>
+        <td>
+          <code>"both"</code>
+        </td>
+        <td>
+          Controls the rendered layout structure. <code>"both"</code> renders
+          the two-column grid with JS-driven sticky tracking;{" "}
+          <code>"text-only"</code> renders isolated accordion cards;{" "}
+          <code>"image-only"</code> renders a horizontal step selector bar above
+          the visual showcase card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>defaultIndex</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The initial zero-based index of the accordion card that is expanded
+          and highlighted when the component first mounts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>localStorageKey</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"primaryColor"</code>
+        </td>
+        <td>
+          The primary storage key string monitored by the instant multi-layer
+          detection proxy to synchronize theme colors across tabs,{" "}
+          <code>Storage.prototype</code> mutations, and CSS root variables.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>defaultAccentColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#FFAB1D"</code>
+        </td>
+        <td>
+          The fallback hex color string applied automatically if no valid hex or
+          rgb color value is detected in <code>localStorage</code> or CSS root
+          variables.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>scrollerRef</code>
+        </td>
+        <td>
+          <code>React.RefObject&lt;HTMLElement | null&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional React ref target passed directly to the internal{" "}
+          <code>IntersectionObserver</code> to track scroll progress within a
+          custom scrollable container instead of the browser window viewport.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost section wrapper
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique string identifier required for safe React list rendering and
+          Framer Motion layout animations.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>stepNumber</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A formatted numerical string (e.g., <code>"01"</code>,{" "}
+          <code>"02"</code>) rendered inside the top badge on the accordion card
+          and horizontal selector bar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The primary headline text displayed prominently on the accordion card,
+          horizontal selector, and sticky visual showcase badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The detailed paragraph text explaining the specific step or service,
+          which smoothly expands via Framer Motion when the card becomes active.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>tags</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional array of keyword strings rendered as uppercase pill badges
+          with colored checkmark icons beneath the description when the card
+          expands.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The image URL or file path displayed inside the sticky visual mockup
+          card, which smoothly cross-fades when the active step changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>badgeText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"SELECTED SERVICE"</code>
+        </td>
+        <td>
+          An optional custom uppercase label rendered inside the floating
+          glassmorphic badge at the bottom-left of the sticky visual card.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
