@@ -22,15 +22,43 @@ export type TypographyTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "spa
 export type TypographyColor = "indigo" | "rose" | "emerald" | "zinc" | "default" | (string & {});
 export type TypographyAlign = "left" | "center" | "right" | "justify";
 
-const colorThemes: Record<string, string> = { indigo: "text-indigo-600 dark:text-indigo-400", rose: "text-rose-600 dark:text-rose-400", emerald: "text-emerald-600 dark:text-emerald-400", zinc: "text-zinc-900 dark:text-zinc-100", default: "text-inherit" };
-const hexToRgb = (hex: string) => { let cleanHex = hex.replace(/^#/, ""); if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join(""); const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex); return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241"; };
-export const getThemeStyles = (color: string) => { if (color && color.startsWith("#")) { const rgb = hexToRgb(color); return { className: "text-[var(--typo-color)]", style: { "--typo-color": color, "--typo-rgb": rgb } as React.CSSProperties }; } return { className: colorThemes[color] || colorThemes.default, style: {} }; };
+const colorThemes: Record<string, string> = {
+  indigo: "text-indigo-600 dark:text-indigo-400",
+  rose: "text-rose-600 dark:text-rose-400",
+  emerald: "text-emerald-600 dark:text-emerald-400",
+  zinc: "text-zinc-900 dark:text-zinc-100",
+  default: "text-inherit",
+};
+
+const hexToRgb = (hex: string) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join("");
+  const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex);
+  return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
+};
+
+export const getThemeStyles = (color: string) => {
+  if (color && color.startsWith("#")) {
+    const rgb = hexToRgb(color);
+    return { className: "text-[var(--typo-color)]", style: { "--typo-color": color, "--typo-rgb": rgb } as React.CSSProperties };
+  }
+  return { className: colorThemes[color] || colorThemes.default, style: {} };
+};
 
 const alignStyles: Record<TypographyAlign, string> = { left: "text-left", center: "text-center", right: "text-right", justify: "text-justify" };
 const tagBaseStyles: Record<TypographyTag, string> = { h1: "font-extrabold tracking-tight leading-[1.1]", h2: "font-bold tracking-tight", h3: "font-semibold tracking-tight", h4: "font-semibold tracking-tight", h5: "font-medium", h6: "font-medium", p: "leading-relaxed", span: "", blockquote: "pl-6 italic border-l-4 border-zinc-300 dark:border-zinc-700" };
 const tailwindSizes = new Set(["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"]);
 
-export interface AnimatedTypographyProps extends React.HTMLAttributes<HTMLElement> { as?: TypographyTag; variant?: TypographyVariant; text: string; color?: TypographyColor; align?: TypographyAlign; size?: string; delay?: number; speed?: number; }
+export interface AnimatedTypographyProps extends React.HTMLAttributes<HTMLElement> {
+  as?: TypographyTag;
+  variant?: TypographyVariant;
+  text: string;
+  color?: TypographyColor;
+  align?: TypographyAlign;
+  size?: string;
+  delay?: number;
+  speed?: number;
+}
 
 export const AnimatedTypographyBlock = forwardRef<HTMLElement, AnimatedTypographyProps>(({ as: Tag = "p", variant = "fade-up", text, color = "default", align = "left", size, delay = 0, speed = 1, className, ...props }, ref) => {
   const { className: colorClass, style: colorStyle } = getThemeStyles(color as string);
@@ -199,51 +227,78 @@ export default function App() {
 
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
-      {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Animation Variant
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(
-                [
-                  "fade-up",
-                  "reveal",
-                  "flip-up",
-                  "pop-in",
-                  "blur-in",
-                  "typewriter",
-                  "glitch",
-                  "glow",
-                ] as TypographyVariant[]
-              ).map((v) => (
-                <button
-                  key={v}
-                  onClick={() => {
-                    setVariant(v);
-                    triggerAnimation();
-                  }}
-                  className={`flex-1 md:flex-none px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    variant === v
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {v.replace("-", " ")}
-                </button>
-              ))}
-            </div>
+      {/* --- REORGANIZED CONTROL PANEL --- */}
+      <div className="flex flex-col gap-6 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl z-0 relative shadow-sm">
+        {/* ROW 1: Hero Text Input & Replay Button */}
+        <div className="flex flex-col gap-2">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Text Content
+          </label>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={customText}
+              onChange={(e) => setCustomText(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && triggerAnimation()}
+              placeholder="Enter text to animate..."
+              className="w-full h-10 px-3.5 text-sm bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-zinc-900 dark:text-white placeholder:text-zinc-400"
+            />
+            <button
+              onClick={triggerAnimation}
+              className="h-10 px-4 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 font-medium text-sm flex items-center gap-2 shrink-0 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Replay Animation"
+            >
+              <RefreshCcw className="w-4 h-4" />
+              <span className="hidden sm:inline">Replay</span>
+            </button>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        {/* ROW 2: Animation Variant (Spans Full Width neatly) */}
+        <div className="flex flex-col gap-2">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Animation Variant
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-1.5 bg-zinc-200/60 dark:bg-black/40 p-1.5 rounded-xl border border-zinc-200 dark:border-white/5">
+            {(
+              [
+                "fade-up",
+                "reveal",
+                "flip-up",
+                "pop-in",
+                "blur-in",
+                "typewriter",
+                "glitch",
+                "glow",
+                "none",
+              ] as TypographyVariant[]
+            ).map((v) => (
+              <button
+                key={v}
+                onClick={() => {
+                  setVariant(v);
+                  triggerAnimation();
+                }}
+                className={`h-8 px-2.5 text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer truncate ${
+                  variant === v
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-white/50 dark:hover:bg-white/5"
+                }`}
+              >
+                {v.replace("-", " ")}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ROW 3: Structured 4-Column Grid for Settings */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
+          {/* Semantic Tag */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Semantic Tag
             </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
+            <div className="grid grid-cols-5 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
               {(["h1", "h2", "h3", "p", "blockquote"] as TypographyTag[]).map(
                 (t) => (
                   <button
@@ -252,24 +307,25 @@ export default function App() {
                       setTag(t);
                       triggerAnimation();
                     }}
-                    className={`flex-1 md:flex-none px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
+                    className={`h-full text-xs font-semibold rounded-lg uppercase transition-all cursor-pointer flex items-center justify-center ${
                       tag === t
                         ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                     }`}
                   >
-                    {t}
+                    {t === "blockquote" ? "q" : t}
                   </button>
                 ),
               )}
             </div>
           </div>
 
+          {/* Alignment */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Alignment
             </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
+            <div className="grid grid-cols-3 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
               {(["left", "center", "right"] as TypographyAlign[]).map((a) => (
                 <button
                   key={a}
@@ -277,10 +333,10 @@ export default function App() {
                     setAlign(a);
                     triggerAnimation();
                   }}
-                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
+                  className={`h-full text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer flex items-center justify-center ${
                     align === a
                       ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                   }`}
                 >
                   {a}
@@ -291,99 +347,84 @@ export default function App() {
 
           {/* Size Override */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Size Override (Optional)
+            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Size Override{" "}
+              <span className="text-[10px] font-normal lowercase opacity-70">
+                (opt)
+              </span>
             </label>
             <input
               type="text"
               placeholder="e.g. 5xl, 24px, 2rem"
               value={customSize}
               onChange={(e) => setCustomSize(e.target.value)}
-              className="w-full sm:w-48 px-3 py-2 text-sm bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg outline-none focus:border-indigo-500 transition-colors"
+              className="w-full h-10 px-3 text-xs bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-zinc-900 dark:text-white placeholder:text-zinc-400"
             />
           </div>
-        </div>
 
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Color Selector */}
+          {/* Text Color */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Text Color
             </label>
-            <div className="flex items-center gap-2 h-10 px-2">
+            <div className="flex items-center justify-between gap-1.5 h-10 px-2 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
               <button
                 onClick={() => handleColorChange("default")}
-                className={`px-2 py-1 text-xs font-semibold rounded-md border transition-all ${
+                className={`px-2.5 h-7 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
                   color === "default"
-                    ? "bg-zinc-200 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white"
-                    : "border-transparent text-zinc-500 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
+                    ? "bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white shadow-sm"
+                    : "border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                 }`}
               >
                 Default
               </button>
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-              {[
-                { id: "indigo", bg: "bg-indigo-500" },
-                { id: "rose", bg: "bg-rose-500" },
-                { id: "emerald", bg: "bg-emerald-500" },
-                { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => handleColorChange(c.id)}
-                  className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                    color === c.id
-                      ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                      : "hover:scale-110 hover:opacity-80"
-                  }`}
-                  title={c.id}
-                />
-              ))}
+              <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-700" />
+              <div className="flex items-center gap-1.5">
+                {[
+                  { id: "indigo", bg: "bg-indigo-500" },
+                  { id: "rose", bg: "bg-rose-500" },
+                  { id: "emerald", bg: "bg-emerald-500" },
+                  { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
+                ].map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => handleColorChange(c.id)}
+                    className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center cursor-pointer ${c.bg} ${
+                      color === c.id
+                        ? "ring-2 ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500 scale-110"
+                        : "hover:scale-110 opacity-85 hover:opacity-100"
+                    }`}
+                    title={c.id}
+                  />
+                ))}
 
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+                <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-700 mx-0.5" />
 
-              <div
-                className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
+                {/* Custom Color Picker */}
                 <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundColor: color.startsWith("#")
-                      ? color
-                      : "transparent",
-                  }}
-                />
+                  className={`relative flex items-center justify-center w-6 h-6 rounded-full overflow-hidden border transition-all cursor-pointer ${
+                    color.startsWith("#")
+                      ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500"
+                      : "border-zinc-300 dark:border-zinc-700 hover:scale-110"
+                  }`}
+                >
+                  <input
+                    type="color"
+                    value={color.startsWith("#") ? color : "#8b5cf6"}
+                    onChange={(e) => handleColorChange(e.target.value)}
+                    className="absolute inset-[-10px] w-10 h-10 cursor-pointer opacity-0"
+                    title="Custom Hex Color"
+                  />
+                  <div
+                    className="w-full h-full"
+                    style={{
+                      backgroundColor: color.startsWith("#")
+                        ? color
+                        : "transparent",
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Custom Text Input */}
-          <div className="flex flex-col gap-2 flex-1">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Text Content
-            </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={customText}
-                onChange={(e) => setCustomText(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && triggerAnimation()}
-                className="w-full px-3 py-2 text-sm bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg outline-none focus:border-indigo-500 transition-colors"
-              />
-              <button
-                onClick={triggerAnimation}
-                className="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-300"
-                title="Replay Animation"
-              >
-                <RefreshCcw className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>
