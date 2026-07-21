@@ -106,6 +106,7 @@ html.dark .shiki span {
   font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
   font-size: 0.875rem;
   line-height: 1.5;
+  border: 1px solid hsl(var(--border)) !important;
 }
 
 .shiki code {
