@@ -516,7 +516,7 @@ export default function ServicesSection() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3">
+       {/*   <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
               Scale Step
               <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md font-mono">
@@ -532,7 +532,7 @@ export default function ServicesSection() {
               onChange={(e) => setScaleStep(parseFloat(e.target.value))}
               className={sliderClasses}
             />
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
