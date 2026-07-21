@@ -95,6 +95,7 @@ export const navigation: NavigationItem[] = [
       { label: "Theme Switcher", href: "/docs/nextjs/theme-switcher", badge: "New" },
       { label: "Wizard", href: "/docs/nextjs/wizard", badge: "New" },
       { label: "QR Code Generator", href: "/docs/nextjs/qr-code-generator", badge: "New" },
+      { label: "Data Maps", href: "/docs/nextjs/data-maps", badge: "New" },
       
     ],
   },
