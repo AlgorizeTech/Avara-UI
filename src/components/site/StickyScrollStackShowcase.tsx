@@ -6,7 +6,7 @@ import {
 } from "@/components/custom/blocks/StickyScrollStackBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { cn } from "@/lib/utils";
-import { Layers, Palette, Smartphone, Sparkles } from "lucide-react";
+import { Palette, Smartphone, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // --- 100% COMPLETE TYPESCRIPT ENGINE CODE ---
@@ -401,31 +401,68 @@ export function StickyScrollStackShowcase() {
       buttonText: "Tech Stack Specs",
     },
     {
-      id: "fullstack-dev",
-      title: "Full-Stack Development",
-      badge: "Engineering",
-      icon: <Smartphone className="w-5 h-5 text-blue-500" />,
+      id: "fullstack-dev-2",
+      title: "Backend Architecture",
+      badge: "Infrastructure",
+      icon: <Smartphone className="w-5 h-5 text-emerald-500" />,
       contentType: "image",
       description:
-        "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
+        "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
       imageUrl:
         "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-      imageAlt: "Code editor preview",
-      buttonText: "Tech Stack Specs",
-    }
+      imageAlt: "Cloud infrastructure preview",
+      buttonText: "View Cloud Specs",
+    },
   ];
 
+  // --- FIXED: USAGE CODE NOW EXPLICITLY SHOWS HOW TO BUILD THE ITEMS ARRAY ---
   const generateUsageCode = () => {
     const imageProps =
       headerMode === "image-button"
         ? `\n      headerImageUrl="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80"`
         : "";
 
-    return `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+    return `import { StickyScrollStack, ScrollStackItem } from "@/components/custom/blocks/StickyScrollStackBlock";
+import { Palette, Sparkles, Smartphone } from "lucide-react";
 
 export default function ServicesSection() {
+  const items: ScrollStackItem[] = [
+    {
+      id: "ui-design",
+      title: "UI Design",
+      badge: "Visual Identity",
+      icon: <Palette className="w-5 h-5 text-indigo-500" />,
+      contentType: "list",
+      description: "Crafting intuitive, pixel-perfect interfaces designed to convert.",
+      listItems: ["Landing Pages", "Mobile Apps", "SaaS Dashboards"],
+      buttonText: "View UI Showcase",
+    },
+    {
+      id: "branding",
+      title: "Branding & Identity",
+      badge: "Brand Strategy",
+      icon: <Sparkles className="w-5 h-5 text-pink-500" />,
+      contentType: "split",
+      description: "Building iconic brand identities that stand out.",
+      listItems: ["Logo Assets", "Color Palettes", "Brand Guidelines"],
+      imageUrl: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
+      buttonText: "Explore Branding",
+    },
+    {
+      id: "fullstack-dev",
+      title: "Full-Stack Development",
+      badge: "Engineering",
+      icon: <Smartphone className="w-5 h-5 text-blue-500" />,
+      contentType: "image",
+      description: "High-performance web applications built with Next.js and Tailwind CSS.",
+      imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+      buttonText: "Tech Stack Specs",
+    },
+  ];
+
   return (
     <StickyScrollStack
+      items={items}
       enableGlow={${enableGlow}}
       scaleStep={${scaleStep}}
       stackOffsetStep={${stackOffsetStep}}
@@ -479,7 +516,7 @@ export default function ServicesSection() {
             </div>
           </div>
 
-          {/* <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
               Scale Step
               <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md font-mono">
@@ -495,7 +532,7 @@ export default function ServicesSection() {
               onChange={(e) => setScaleStep(parseFloat(e.target.value))}
               className={sliderClasses}
             />
-          </div> */}
+          </div>
 
           <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
