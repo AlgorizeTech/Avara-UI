@@ -78,7 +78,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const [accentColor, setAccentColor] = useState<string>(defaultAccentColor);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -138,8 +138,12 @@ export const FloatingContactButtonBlock = React.forwardRef<
     }, [localStorageKey, defaultAccentColor]);
 
     useEffect(() => {
-      if (isOpen) {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (isOpen && scrollContainerRef.current) {
+        const el = scrollContainerRef.current;
+        el.scrollTo({
+          top: el.scrollHeight,
+          behavior: "smooth",
+        });
       }
     }, [messages, isOpen, isTyping]);
 
@@ -181,18 +185,23 @@ export const FloatingContactButtonBlock = React.forwardRef<
 
     const positionClasses =
       position === "bottom-right"
-        ? "bottom-4 right-4 sm:bottom-6 sm:right-6 items-end"
-        : "bottom-4 left-4 sm:bottom-6 sm:left-6 items-start";
+        ? "bottom-4 right-4 sm:bottom-6 sm:right-6"
+        : "bottom-4 left-4 sm:bottom-6 sm:left-6";
+
+    const modalAlignmentClasses = 
+      position === "bottom-right"
+        ? "right-0 origin-bottom-right"
+        : "left-0 origin-bottom-left";
 
     const modalWidthClass =
       containerMode === "fixed"
         ? "w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px]"
-        : "w-[340px] sm:w-[380px] max-w-[calc(100%-1.5rem)]";
+        : "w-[340px] sm:w-[380px]";
 
     const modalHeightClass =
       containerMode === "fixed"
         ? "h-[450px] sm:h-[490px] max-h-[calc(100vh-6rem)]"
-        : "h-[440px] sm:h-[480px] max-h-[calc(100%-5rem)]";
+        : "h-[440px] sm:h-[480px]";
 
     const activeBgGlow = hexToRgba(accentColor, 0.25);
 
@@ -200,9 +209,10 @@ export const FloatingContactButtonBlock = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "z-50 flex flex-col justify-end pointer-events-none select-none top-auto",
+          "z-50 pointer-events-none select-none",
           containerMode === "fixed" ? "fixed" : "absolute",
           positionClasses,
+          "w-14 h-14 sm:w-16 sm:h-16",
           className
         )}
         {...props}
@@ -215,7 +225,8 @@ export const FloatingContactButtonBlock = React.forwardRef<
               exit={{ opacity: 0, y: 16, scale: 0.96 }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                "pointer-events-auto mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl flex flex-col transition-colors duration-300 shrink-0",
+                "pointer-events-auto absolute bottom-full mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl flex flex-col transition-colors duration-300",
+                modalAlignmentClasses,
                 modalWidthClass,
                 modalHeightClass
               )}
@@ -247,6 +258,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center text-white transition-colors cursor-pointer shrink-0 z-10"
                 >
@@ -254,7 +266,10 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 </button>
               </div>
 
-              <div className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-zinc-50/50 dark:bg-zinc-900/30">
+              <div
+                ref={scrollContainerRef}
+                className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-zinc-50/50 dark:bg-zinc-900/30"
+              >
                 <div className="text-center my-1">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400">
                     Today
@@ -313,7 +328,6 @@ export const FloatingContactButtonBlock = React.forwardRef<
                     </div>
                   </motion.div>
                 )}
-                <div ref={messagesEndRef} />
               </div>
 
               <form
@@ -350,13 +364,13 @@ export const FloatingContactButtonBlock = React.forwardRef<
         </AnimatePresence>
 
         <motion.button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{ backgroundColor: accentColor }}
           className={cn(
-            "pointer-events-auto group relative flex items-center justify-center rounded-full p-3 sm:p-4 text-white shadow-2xl transition-colors duration-300 cursor-pointer outline-none shrink-0",
-            "w-14 h-14 sm:w-16 sm:h-16"
+            "pointer-events-auto absolute inset-0 flex items-center justify-center rounded-full text-white shadow-2xl transition-colors duration-300 cursor-pointer outline-none"
           )}
         >
           <div
@@ -446,7 +460,7 @@ export const FloatingContactButtonBlock = React.forwardRef(
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const [accentColor, setAccentColor] = useState(defaultAccentColor);
-    const messagesEndRef = useRef(null);
+    const scrollContainerRef = useRef(null);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -506,8 +520,12 @@ export const FloatingContactButtonBlock = React.forwardRef(
     }, [localStorageKey, defaultAccentColor]);
 
     useEffect(() => {
-      if (isOpen) {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (isOpen && scrollContainerRef.current) {
+        const el = scrollContainerRef.current;
+        el.scrollTo({
+          top: el.scrollHeight,
+          behavior: "smooth",
+        });
       }
     }, [messages, isOpen, isTyping]);
 
@@ -549,18 +567,23 @@ export const FloatingContactButtonBlock = React.forwardRef(
 
     const positionClasses =
       position === "bottom-right"
-        ? "bottom-4 right-4 sm:bottom-6 sm:right-6 items-end"
-        : "bottom-4 left-4 sm:bottom-6 sm:left-6 items-start";
+        ? "bottom-4 right-4 sm:bottom-6 sm:right-6"
+        : "bottom-4 left-4 sm:bottom-6 sm:left-6";
+
+    const modalAlignmentClasses = 
+      position === "bottom-right"
+        ? "right-0 origin-bottom-right"
+        : "left-0 origin-bottom-left";
 
     const modalWidthClass =
       containerMode === "fixed"
         ? "w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px]"
-        : "w-[340px] sm:w-[380px] max-w-[calc(100%-1.5rem)]";
+        : "w-[340px] sm:w-[380px]";
 
     const modalHeightClass =
       containerMode === "fixed"
         ? "h-[450px] sm:h-[490px] max-h-[calc(100vh-6rem)]"
-        : "h-[440px] sm:h-[480px] max-h-[calc(100%-5rem)]";
+        : "h-[440px] sm:h-[480px]";
 
     const activeBgGlow = hexToRgba(accentColor, 0.25);
 
@@ -568,9 +591,10 @@ export const FloatingContactButtonBlock = React.forwardRef(
       <div
         ref={ref}
         className={cn(
-          "z-50 flex flex-col justify-end pointer-events-none select-none top-auto",
+          "z-50 pointer-events-none select-none",
           containerMode === "fixed" ? "fixed" : "absolute",
           positionClasses,
+          "w-14 h-14 sm:w-16 sm:h-16",
           className
         )}
         {...props}
@@ -583,7 +607,8 @@ export const FloatingContactButtonBlock = React.forwardRef(
               exit={{ opacity: 0, y: 16, scale: 0.96 }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                "pointer-events-auto mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl flex flex-col transition-colors duration-300 shrink-0",
+                "pointer-events-auto absolute bottom-full mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl flex flex-col transition-colors duration-300",
+                modalAlignmentClasses,
                 modalWidthClass,
                 modalHeightClass
               )}
@@ -615,6 +640,7 @@ export const FloatingContactButtonBlock = React.forwardRef(
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center text-white transition-colors cursor-pointer shrink-0 z-10"
                 >
@@ -622,7 +648,10 @@ export const FloatingContactButtonBlock = React.forwardRef(
                 </button>
               </div>
 
-              <div className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-zinc-50/50 dark:bg-zinc-900/30">
+              <div
+                ref={scrollContainerRef}
+                className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-zinc-50/50 dark:bg-zinc-900/30"
+              >
                 <div className="text-center my-1">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400">
                     Today
@@ -681,7 +710,6 @@ export const FloatingContactButtonBlock = React.forwardRef(
                     </div>
                   </motion.div>
                 )}
-                <div ref={messagesEndRef} />
               </div>
 
               <form
@@ -718,13 +746,13 @@ export const FloatingContactButtonBlock = React.forwardRef(
         </AnimatePresence>
 
         <motion.button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{ backgroundColor: accentColor }}
           className={cn(
-            "pointer-events-auto group relative flex items-center justify-center rounded-full p-3 sm:p-4 text-white shadow-2xl transition-colors duration-300 cursor-pointer outline-none shrink-0",
-            "w-14 h-14 sm:w-16 sm:h-16"
+            "pointer-events-auto absolute inset-0 flex items-center justify-center rounded-full text-white shadow-2xl transition-colors duration-300 cursor-pointer outline-none"
           )}
         >
           <div
@@ -956,7 +984,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
 
-      {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview
         name="FloatingContactButtonBlock"
         tsCode={CONTACT_CODE_TS}
@@ -964,7 +991,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        {/* Increased min-h to 640px so the 480px modal + button fit inside without clipping! */}
         <div className="w-full relative flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] overflow-hidden min-h-[640px] p-4 sm:p-6">
           <div className="absolute top-8 left-8 right-8 text-center max-w-sm mx-auto pointer-events-none opacity-40">
             <p className="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
@@ -975,7 +1001,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <FloatingContactButtonBlock
             key={`${renderKey}-${position}-${defaultOpen}`}
             position={position}
-            containerMode="absolute" // Safely keeps the button inside the 640px preview box!
+            containerMode="absolute"
             title={title}
             defaultOpen={defaultOpen}
             defaultAccentColor={color}

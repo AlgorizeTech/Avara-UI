@@ -117,7 +117,7 @@ export const navigation: NavigationItem[] = [
       { label: "Split ScrollStepper", href: "/docs/nextjs/split-scroll-stepper", badge: "New" },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion", badge: "New" },
-      // { label: "Floating ContactButton", href: "/docs/nextjs/floating-contact-button", badge: "New" },
+      { label: "Floating ContactButton", href: "/docs/nextjs/floating-contact-button", badge: "New" },
     ],
   },
   {
