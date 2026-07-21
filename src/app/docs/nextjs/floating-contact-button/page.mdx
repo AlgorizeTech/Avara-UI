@@ -61,3 +61,136 @@ export default function RootLayout({
 ```
 
 ## Props Reference
+
+<div class="props-reference">
+  <section class="props-section">
+    <h3>FloatingContactButtonBlock Props</h3>
+    <p>
+      Extends <code>React.HTMLAttributes&lt;HTMLDivElement&gt;</code>. Accepts all standard native <code>&lt;div&gt;</code> attributes.
+    </p>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Prop</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>position</code></td>
+            <td><code>"bottom-right" | "bottom-left"</code></td>
+            <td><code>"bottom-right"</code></td>
+            <td>Determines which viewport or container corner the trigger button and expanded chat modal adhere to.</td>
+          </tr>
+          <tr>
+            <td><code>containerMode</code></td>
+            <td><code>"fixed" | "absolute"</code></td>
+            <td><code>"fixed"</code></td>
+            <td>Layout positioning engine. Use <code>"fixed"</code> for production web pages to anchor to the viewport; use <code>"absolute"</code> inside documentation preview boxes.</td>
+          </tr>
+          <tr>
+            <td><code>title</code></td>
+            <td><code>string</code></td>
+            <td><code>"Chat with us"</code></td>
+            <td>The primary headline string rendered in the chat modal header next to the sparkles badge.</td>
+          </tr>
+          <tr>
+            <td><code>subtitle</code></td>
+            <td><code>string</code></td>
+            <td><code>"We typically reply in a few minutes"</code></td>
+            <td>The secondary status string displayed beneath the title in the header.</td>
+          </tr>
+          <tr>
+            <td><code>avatarUrl</code></td>
+            <td><code>string</code></td>
+            <td><code>"https://images.unsplash.com/..."</code></td>
+            <td>Image URL for the support agent avatar rendered in the header with an online status badge.</td>
+          </tr>
+          <tr>
+            <td><code>defaultOpen</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Whether the chat modal should render expanded by default when the component mounts.</td>
+          </tr>
+          <tr>
+            <td><code>localStorageKey</code></td>
+            <td><code>string</code></td>
+            <td><code>"primaryColor"</code></td>
+            <td>The storage key string monitored by the instant detection engine to sync brand colors across tabs.</td>
+          </tr>
+          <tr>
+            <td><code>defaultAccentColor</code></td>
+            <td><code>string</code></td>
+            <td><code>"#6366f1"</code></td>
+            <td>The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage.</td>
+          </tr>
+          <tr>
+            <td><code>initialMessages</code></td>
+            <td><code>ChatMessage[]</code></td>
+            <td><em>Default greeting array</em></td>
+            <td>An array of message objects populated in the chat thread when the user opens the widget.</td>
+          </tr>
+          <tr>
+            <td><code>onSendMessage</code></td>
+            <td><code>(message: string) =&gt; void</code></td>
+            <td><code>undefined</code></td>
+            <td>Callback function fired whenever the user submits a new text message via the input bar.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+<hr />
+
+
+  <section class="props-section">
+    <h3>ChatMessage Interface</h3>
+    <p>
+      Used for structuring items inside the <code>initialMessages</code> array and managing conversation state.
+    </p>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>id</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>A unique string identifier required for React list rendering and Framer Motion layout animations.</td>
+          </tr>
+          <tr>
+            <td><code>text</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>The text body string rendered inside the message bubble.</td>
+          </tr>
+          <tr>
+            <td><code>sender</code></td>
+            <td><code>"user" | "agent"</code></td>
+            <td><strong>Yes</strong></td>
+            <td>Determines bubble alignment and styling. <code>"user"</code> aligns right with the accent color; <code>"agent"</code> aligns left with neutral styling.</td>
+          </tr>
+          <tr>
+            <td><code>timestamp</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>Formatted time string (e.g., <code>"2:45 PM"</code> or <code>"Just now"</code>) displayed beneath the message bubble.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
