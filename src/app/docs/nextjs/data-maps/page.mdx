@@ -1,0 +1,309 @@
+import { DataMapsShowcase } from "@/components/site/DataMapsShowcase";
+
+# Data Maps
+
+{/* A beautiful map component to visualize your geographic data points */}
+
+A React-Leaflet based choropleth map component for beautifully visualizing geographic data and trends without clunky map tiles.
+
+<div className="mt-8">
+  <DataMapsShowcase />
+</div>
+
+---
+
+## Installation
+
+Ensure you have `leaflet` and `react-leaflet` installed. If not, install them using:
+
+```bash
+npm install leaflet react-leaflet
+npm install -D @types/leaflet
+```
+
+### Copy the Component
+
+This component uses `next/dynamic` to dynamically import Leaflet modules, ensuring Server-Side Rendering (SSR) compatibility in Next.js. It fetches a lightweight World GeoJSON file on the fly to render a beautiful, scalable vector map.
+
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DataMapsBlock.tsx`.
+
+---
+
+## Usage
+
+Pass an array of data points to the component. Each point requires an `id` (the 3-letter ISO country code) and can display rich metrics like active users and new trends in an elegant hover card.
+
+```tsx
+import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+
+export default function AnalyticsDashboard() {
+  const mapData = [
+    { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
+    { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
+    { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
+  ];
+
+  return (
+    <div className="w-full h-[500px]">
+      <DataMaps dataPoints={mapData} zoom={2} />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>dataPoints</code>
+        </td>
+        <td>
+          <code>DataPoint[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data point objects to display on the map. See the DataPoint reference below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>center</code>
+        </td>
+        <td>
+          <code>[number, number]</code>
+        </td>
+        <td>
+          <code>[20, 0]</code>
+        </td>
+        <td>
+          The initial latitude and longitude coordinates to center the map on.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>zoom</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>2</code>
+        </td>
+        <td>
+          The initial zoom level of the map.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>highlightColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>var(--primary)</code>
+        </td>
+        <td>
+          The default fill color for highlighted countries.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>defaultColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>#cbd5e1</code>
+        </td>
+        <td>
+          The fill color for non-highlighted countries.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DataPoint Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A 3-letter ISO 3166-1 alpha-3 country code (e.g. 'USA', 'IND', 'GBR'). Used to map data to the correct polygon.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>name</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The title displayed in the header of the hover card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>flag</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional emoji or text to display next to the country name (e.g., 🇺🇸).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>active</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional metric to display on the first line.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>activeTrend</code>
+        </td>
+        <td>
+          <code>"up" | "down"</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Renders a green up-arrow or red down-arrow next to the <code>active</code> value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>new</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional metric to display on the second line.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>newTrend</code>
+        </td>
+        <td>
+          <code>"up" | "down"</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Renders a green up-arrow or red down-arrow next to the <code>new</code> value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataPoint</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional custom fill color for this specific country, overriding the global highlight.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
