@@ -1,0 +1,546 @@
+import { StickyScrollStackShowcase } from "@/components/site/StickyScrollStackShowcase";
+
+# Sticky Scroll Stack
+
+A high-performance narrative section designed for showcasing multi-step workflows, service offerings, or feature highlights. Pairs native CSS `position: sticky` with Framer Motion compositor hooks to eliminate scroll jank and layout thrashing.
+
+## Interactive Showcase
+
+Use the control panel to adjust the GPU scaling decrement, vertical deck offset, and content rendering layouts in real time.
+
+<StickyScrollStackShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component requires **Framer Motion** for its scroll-driven compositor scaling and **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/StickyScrollStackBlock.tsx.
+
+## Usage Architecture
+
+The `<StickyScrollStack>` component acts as a responsive section container. On desktop viewports (lg:), the left headline column pins itself while the right column cards stack over one another.
+
+```tsx
+import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+import { Palette, Layers } from "lucide-react";
+
+export default function ServicesSection() {
+  return (
+    <StickyScrollStack "UI "Visual "ui-design", <Palette Design", Identity", badge: className="w-6 h-6 text-indigo-500" enableGlow="{true}" headerButtonText="Request free audit" headerSubtitle="We emphasize user-centric design, ensuring every project prioritizes your real audience." headerTitle="We can help you with" icon: id: items="{[" scaleStep="{0.04}" stackOffsetStep="{16}" title: {/>,
+          contentType: "list",
+          description: "Crafting intuitive, pixel-perfect interfaces.",
+          listItems: ["Landing Pages", "Mobile Apps", "Design Systems"],
+          buttonText: "View UI Showcase"
+        },
+        {
+          id: "ux-design",
+          title: "UX Design",
+          badge: "User Research",
+          icon: <Layers className="w-6 h-6 text-purple-500"/>,
+          contentType: "split",
+          description: "Data-driven architecture mapping out frictionless customer journeys.",
+          imageUrl: "/showcase/ux-mapping.png",
+          buttonText: "Explore UX"
+        }
+      ]}
+    />
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerBadge</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Expertise &amp; Solutions"</code>
+        </td>
+        <td>
+          An optional uppercase pill badge rendered at the very top of the
+          sticky left column.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerTitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"We can help you with"</code>
+        </td>
+        <td>
+          The primary bold headline string rendered in the sticky left narrative
+          column.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerSubtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"We emphasize user-centric design..."</code>
+        </td>
+        <td>
+          The secondary descriptive paragraph displayed directly beneath the
+          headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerContentType</code>
+        </td>
+        <td>
+          <code>"text-only" | "text-button" | "image-button" | "custom"</code>
+        </td>
+        <td>
+          <code>"text-button"</code>
+        </td>
+        <td>
+          Determines the visual layout of the sticky left header section,
+          allowing you to embed banner images or custom graphics alongside CTA
+          buttons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerImageUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          URL for an image graphic or banner rendered above the button when{" "}
+          <code>headerContentType</code> is set to <code>"image-button"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerImageAlt</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accessible alt text string for the optional header banner image.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerCustomContent</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Allows injecting arbitrary React components or custom markup into the
+          sticky header when using <code>"custom"</code> mode.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>headerButtonText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Request free audit"</code>
+        </td>
+        <td>
+          Text label for the call-to-action button anchored in the sticky header
+          column.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>onHeaderButtonClick</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired whenever the user clicks the primary header
+          CTA button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>ScrollStackItem[]</code>
+        </td>
+        <td>
+          <em>6 default service cards</em>
+        </td>
+        <td>
+          An array of structured card objects that generate the scrolling deck
+          on the right.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>stackOffsetStep</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>12</code>
+        </td>
+        <td>
+          Vertical pixel spacing added to each subsequent card's sticky top
+          position to create the visible top "lip" deck effect.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>scaleStep</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.03</code>
+        </td>
+        <td>
+          The compositor scaling decrement applied to underlying cards as newer
+          cards stack over them (e.g., <code>0.03</code> shrinks cards by 3% per
+          layer).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>enableGlow</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles an ambient, theme-responsive gradient blur glow positioned
+          behind the card stack container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StickyScrollStack</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes applied to the outermost section wrapper.
+          Also accepts all standard React HTML div attributes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### ScrollStackItem Interface
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Interface</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique string identifier required for React list reconciliation and
+          layout animation tracking.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The primary headline rendered at the top-left of the individual
+          stacked card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>contentType</code>
+        </td>
+        <td>
+          <code>"list" | "image" | "split" | "custom"</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Determines internal card scaffolding: bulleted feature lists, showcase
+          images, side-by-side splits, or custom markup.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional uppercase category label displayed below the card title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          A Lucide icon or SVG node rendered inside a themed badge icon box in
+          the card header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Supporting text paragraph introducing the card's service or feature
+          set.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>listItems</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Array of feature strings rendered with green checkmark bullet icons
+          when <code>contentType</code> is set to <code>"list"</code> or{" "}
+          <code>"split"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>imageUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          High-resolution image URL displayed inside the card container when
+          using <code>"image"</code> or <code>"split"</code> modes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>imageAlt</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accessible alt text string for the card's feature image. Defaults to
+          the card's title if omitted.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>buttonText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional label that triggers an action button at the bottom right of
+          the specific card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStackItem</code>
+        </td>
+        <td>
+          <code>onButtonClick</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function triggered when the card's specific action button is
+          clicked.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
