@@ -117,7 +117,7 @@ export const navigation: NavigationItem[] = [
       { label: "Stepper", href: "/docs/nextjs/stepper" },
       { label: "Split Stepper", href: "/docs/nextjs/split-stepper" },
       { label: "Split ScrollStack", href: "/docs/nextjs/split-scroll-stack" },
-      { label: "Split ScrollStepper", href: "/docs/nextjs/split-scroll-stepper", badge: "New" },
+      // { label: "Split ScrollStepper", href: "/docs/nextjs/split-scroll-stepper", badge: "New" },
       { label: "Sticky ScrollStack", href: "/docs/nextjs/sticky-scroll-stack", badge: "New" },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion", badge: "New" },
