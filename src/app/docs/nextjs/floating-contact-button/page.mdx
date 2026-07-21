@@ -1,0 +1,63 @@
+import { FloatingContactButtonShowcase } from "@/components/site/FloatingContactButtonShowcase";
+
+# Floating Contact Button
+
+A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
+
+## Interactive Showcase
+
+Test out the interactive chat box below. Type a message and hit enter to see simulated typing indicators and auto-replies. Use the control panel to flip screen corners or customize brand colors in real-time.
+
+<FloatingContactButtonShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component relies on **Framer Motion** for spring-physics popup animations and layout transitions, alongside **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/FloatingContactButtonBlock.tsx
+
+## Usage Architecture
+
+The `<FloatingContactButtonBlock>` automatically monitors your site's saved primary hex color in localStorage (defaulting to primaryColor) and synchronizes light/dark mode borders and backgrounds instantly without layout shifts.
+
+Note on Container Mode: By default, the component sets containerMode="fixed", which fixes the button directly to the viewport window. When building component showcases or documentation previews, pass containerMode="absolute" so the button anchors safely to the bottom of the parent preview container instead of floating over your entire website.
+
+```tsx
+import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+
+        {/* Placed at the root level of your application */}
+        <FloatingContactButtonBlock
+          containerMode="fixed"
+          defaultAccentColor="#6366f1"
+          localStorageKey="primaryColor"
+          position="bottom-right"
+          subtitle="We typically reply in under 5 minutes"
+          title="Chat with Engineering"
+        />
+      </body>
+    </html>
+  );
+}
+```
+
+## Props Reference
