@@ -1,0 +1,312 @@
+import { HeroVideoPlayerShowcase } from "@/components/site/HeroVideoPlayerShowcase";
+
+# Hero Video Player
+
+An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
+
+---
+
+## Interactive Showcase
+
+Use the interactive control panel below to experiment with aspect ratios, modal dimensions, and ambient glow effects in real time.
+
+<HeroVideoPlayerShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component requires **Framer Motion** for modal animations and **Lucide React** for UI icons.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it inside components/custom/blocks/HeroVideoPlayerBlock.tsx.
+
+## Usage Architecture
+
+The `<HeroVideoPlayer>` adapts seamlessly across screen sizes and supports standard embed URLs from YouTube, Vimeo, or direct HTML5 video sources.
+
+```tsx
+import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+
+export default function HeroSection() {
+  return (
+    <section className="relative max-w-6xl mx-auto py-20 px-6">
+      <div className="text-center max-w-3xl mx-auto mb-12">
+        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
+          The Future of Web Interfaces
+        </h1>
+        <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          Deploy high-performance digital experiences in seconds with our
+          unified design architecture.
+        </p>
+      </div>
+
+      <HeroVideoPlayer
+        aspectRatio="16/9"
+        badge="Watch Product Tour"
+        enableGlow="{true}"
+        modalSize="lg"
+        playButtonLabel="Watch 4K Demo"
+        subtitle="See how teams around the world use our platform to ship UI components 10x faster."
+        thumbnailUrl="[https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80)"
+        title="Experience the Workflow in Under 3 Minutes"
+        videoUrl="[https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1](https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1)"
+      />
+    </section>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>videoUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"https://www.youtube..."</code>
+        </td>
+        <td>
+          The embed URL (YouTube, Vimeo, etc.) or video source string rendered
+          inside the active modal dialog.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>thumbnailUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"https://images.unsplash..."</code>
+        </td>
+        <td>
+          High-resolution image URL displayed on the card preview before the
+          modal is launched.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>thumbnailAlt</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Hero Video Thumbnail"</code>
+        </td>
+        <td>Accessible alt text string for the background image preview.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Next-Gen Architecture"</code>
+        </td>
+        <td>
+          Optional pill badge rendered with an animated pulse icon at the
+          top-left of the preview container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Experience the Platform..."</code>
+        </td>
+        <td>
+          The bold headline string overlaid at the bottom of the hero video
+          card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>subtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Watch how our engine..."</code>
+        </td>
+        <td>
+          The secondary descriptive paragraph displayed directly below the
+          title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>playButtonLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Watch Demo"</code>
+        </td>
+        <td>
+          Text label anchored inside the centered glassmorphic play button CTA.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>aspectRatio</code>
+        </td>
+        <td>
+          <code>"16/9" | "21/9" | "4/3" | "1/1"</code>
+        </td>
+        <td>
+          <code>"16/9"</code>
+        </td>
+        <td>
+          Controls the responsive aspect ratio dimensions of the preview card
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>modalSize</code>
+        </td>
+        <td>
+          <code>"md" | "lg" | "xl" | "full"</code>
+        </td>
+        <td>
+          <code>"lg"</code>
+        </td>
+        <td>
+          Determines the width and height constraints of the popup modal dialog.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>enableGlow</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles an ambient, theme-responsive blur gradient glow behind the
+          hero player container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>onPlay</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback function fired whenever the user clicks to launch
+          the video modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>onClose</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback function fired whenever the video modal dialog is
+          dismissed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroVideoPlayer</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes applied to the outermost container
+          wrapper. Also accepts all standard React HTML div attributes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
