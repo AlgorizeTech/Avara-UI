@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
@@ -52,6 +52,23 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   ) => {
     const [isMounted, setIsMounted] = useState(false);
     const [geoData, setGeoData] = useState<any>(null);
+    const geoJsonRef = useRef<any>(null);
+    const highlightColorRef = useRef(highlightColor);
+
+    useEffect(() => {
+      highlightColorRef.current = highlightColor;
+      
+      // Update existing layers dynamically to prevent unmounting React-Leaflet
+      if (geoJsonRef.current) {
+        geoJsonRef.current.eachLayer((layer: any) => {
+          const countryId = layer.feature?.id;
+          const dataPoint = dataPoints.find((p) => p.id === countryId);
+          layer.setStyle({
+            fillColor: dataPoint ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+          });
+        });
+      }
+    }, [highlightColor, dataPoints]);
 
     useEffect(() => {
       setIsMounted(true);
@@ -94,6 +111,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
+            opacity: 1 !important;
           }
           .custom-leaflet-tooltip::before {
             display: none !important;
@@ -109,6 +127,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             attributionControl={false}
           >
             <GeoJSON
+              ref={geoJsonRef}
               data={geoData}
               style={(feature) => {
                 const countryId = feature?.id;
@@ -173,20 +192,20 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                   });
                 }
 
-                // Add hover effects
+                // Add hover effects using the ref color to prevent closure traps
                 layer.on({
                   mouseover: (e) => {
                     const target = e.target;
                     target.setStyle({
                       fillOpacity: 0.7,
-                      fillColor: dataPoint ? (dataPoint.color || highlightColor) : highlightColor,
+                      fillColor: dataPoint ? (dataPoint.color || highlightColorRef.current) : highlightColorRef.current,
                     });
                   },
                   mouseout: (e) => {
                     const target = e.target;
                     target.setStyle({
                       fillOpacity: 1,
-                      fillColor: dataPoint ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+                      fillColor: dataPoint ? (dataPoint.color || highlightColorRef.current) : "var(--map-default-fill)",
                     });
                   }
                 });

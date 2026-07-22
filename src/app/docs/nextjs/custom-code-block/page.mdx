@@ -1,0 +1,106 @@
+import { CustomCodeBlockShowcase } from "@/components/site/CustomCodeBlockShowcase";
+
+# Custom Code Block
+
+A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality.
+
+This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
+
+## Interactive Showcase
+
+<CustomCodeBlockShowcase />
+
+---
+
+## Installation
+
+### Copy the Component
+
+This component manages its own syntax highlighting using a custom regex engine, meaning there are no heavy external dependencies like Prism or Shiki. It uses `lucide-react` and `react-icons` for beautiful language badges.
+
+Copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CustomCodeBlock.tsx`.
+
+---
+
+## Usage
+
+### Simple Usage
+
+Simply pass a `code` string and a `language` prop. The component automatically handles syntax highlighting, rendering the correct language icon, and clipboard copying.
+
+```tsx
+import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+export default function BasicUsage() {
+  const codeString = `console.log("Hello, World!");`;
+
+  return (
+    <div className="w-full max-w-2xl mx-auto py-12">
+      <CustomCodeBlock
+        code={codeString}
+        language="javascript"
+        fileName="example.js"
+      />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>CustomCodeBlock</code>
+        </td>
+        <td>
+          <code>code</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>-</td>
+        <td>The raw code string to display.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CustomCodeBlock</code>
+        </td>
+        <td>
+          <code>language</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"typescript"</code>
+        </td>
+        <td>The programming language for syntax highlighting (e.g. "javascript", "tsx", "html", "bash").</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CustomCodeBlock</code>
+        </td>
+        <td>
+          <code>fileName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>-</td>
+        <td>Optional custom file name to display in the header (e.g. "app.tsx").</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
