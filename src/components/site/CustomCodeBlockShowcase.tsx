@@ -232,7 +232,6 @@ const SNIPPETS = {
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Main Application Container -->
   <main class="app-container" id="app">
     <section class="card glass-effect">
       <header class="card-header">

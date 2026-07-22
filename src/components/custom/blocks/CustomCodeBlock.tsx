@@ -48,19 +48,19 @@ const highlightCode = (code: string, language: string) => {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
-  // Vibrant syntax theme for Light Mode (Dracula inspired), Professional for Dark Mode
+  // Atom One Light for Light Mode, One Dark Pro for Dark Mode
   const colors = {
-    keyword: "text-pink-600 dark:text-[#C678DD] font-medium",
-    string: "text-emerald-600 dark:text-[#98C379]",
-    function: "text-blue-600 dark:text-[#61AFEF]",
-    number: "text-orange-600 dark:text-[#D19A66]",
-    property: "text-purple-600 dark:text-[#E5C07B] italic",
-    tag: "text-rose-600 dark:text-[#E06C75]", 
-    component: "text-amber-600 dark:text-[#E5C07B] font-semibold",
-    operator: "text-slate-500 dark:text-[#ABB2BF]",
-    comment: "text-slate-400 dark:text-[#5C6370] italic",
-    punctuation: "text-slate-500 dark:text-[#ABB2BF]",
-    stringContent: "text-emerald-600 dark:text-[#98C379]",
+    keyword: "text-[#A626A4] dark:text-[#C678DD] font-medium",
+    string: "text-[#50A14F] dark:text-[#98C379]",
+    function: "text-[#4078F2] dark:text-[#61AFEF]",
+    number: "text-[#986801] dark:text-[#D19A66]",
+    property: "text-[#E45649] dark:text-[#E5C07B]",
+    tag: "text-[#E45649] dark:text-[#E06C75]", 
+    component: "text-[#C18401] dark:text-[#E5C07B] font-semibold",
+    operator: "text-[#383A42] dark:text-[#ABB2BF]",
+    comment: "text-[#A0A1A7] dark:text-[#5C6370]",
+    punctuation: "text-[#383A42] dark:text-[#ABB2BF]",
+    stringContent: "text-[#50A14F] dark:text-[#98C379]",
   };
 
   if (language === "html" || language === "xml") {
