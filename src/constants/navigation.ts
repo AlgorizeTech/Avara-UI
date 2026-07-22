@@ -97,6 +97,7 @@ export const navigation: NavigationItem[] = [
       { label: "QR Code Generator", href: "/docs/nextjs/qr-code-generator", badge: "New" },
       { label: "Data Maps", href: "/docs/nextjs/data-maps", badge: "New" },
       { label: "iPhone 14 Pro Max Mockup", href: "/docs/nextjs/iphone-14-pro-max-mockup", badge: "New" },
+      { label: "Half Stars", href: "/docs/nextjs/half-stars", badge: "New" },
       
     ],
   },
