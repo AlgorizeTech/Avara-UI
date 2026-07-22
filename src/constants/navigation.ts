@@ -122,6 +122,7 @@ export const navigation: NavigationItem[] = [
       { label: "Sticky ScrollStack", href: "/docs/nextjs/sticky-scroll-stack", badge: "New" },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion", badge: "New" },
+      { label: "Network Graph", href: "/docs/nextjs/network-graph", badge: "New" },
       { label: "Floating ContactButton", href: "/docs/nextjs/floating-contact-button", badge: "New" },
     ],
   },
