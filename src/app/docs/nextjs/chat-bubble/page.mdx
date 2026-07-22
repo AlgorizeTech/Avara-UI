@@ -6,6 +6,8 @@ A complete, GSAP-powered compound component system for building highly customize
 
 Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and high-performance GSAP animations.
 
+---
+
 ## Interactive Showcase
 
 Use the control panel below to test the sender colors and simulate an incoming message. Notice how the border-radius logic handles consecutive messages gracefully, and how GSAP handles the bouncy entrance physics.
@@ -24,11 +26,11 @@ This component relies on **GSAP** for the high-performance entrance and typing i
 npm install gsap lucide-react
 ```
 
-## Copy the Component
+### Copy the Component
 
 You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ChatBubbleBlock.tsx.
 
-## Usage
+## Usage Architecture
 
 Structure your chat messages using the provided sub-components. The parent `<ChatBubble />` container dictates the variant (sent vs. received) and the layout grouping, which automatically propagates to the child components to handle border radiuses and layout alignment.
 
@@ -43,14 +45,14 @@ import {
 
 export default function ChatInterface() {
   return (
-    <div className="flex flex-col gap-2 p-4 max-w-md mx-auto">
+    <div className="flex flex-col gap-1.5 p-4 max-w-md mx-auto">
       {/* Grouped Received Messages */}
-      <ChatBubble variant="received" layout="group-top">
+      <ChatBubble layout="group-top" variant="received">
         <ChatAvatar fallback="AI" src="/bot-avatar.png" />
         <ChatMessage>Hello! How can I help you today?</ChatMessage>
       </ChatBubble>
 
-      <ChatBubble variant="received" layout="group-bottom">
+      <ChatBubble layout="group-bottom" variant="received">
         <ChatAvatar fallback="AI" />
         <ChatMessage>
           I can answer questions, process data, or generate code.
@@ -58,14 +60,18 @@ export default function ChatInterface() {
         </ChatMessage>
       </ChatBubble>
 
+      <div className="h-2" />
+
       {/* Single Sent Message with Read Receipt */}
-      <ChatBubble variant="sent" layout="default">
+      <ChatBubble layout="default" variant="sent">
         <ChatAvatar fallback="ME" />
         <ChatMessage color="blue">
           Can you show me how to use the ChatBubble component?
-          <ChatTimestamp time="10:25 AM" status="read" />
+          <ChatTimestamp status="read" time="10:25 AM" />
         </ChatMessage>
       </ChatBubble>
+
+      <div className="h-2" />
 
       {/* Animated Typing Indicator */}
       <ChatBubble variant="received">
@@ -93,138 +99,61 @@ export default function ChatInterface() {
     <tbody>
       <tr>
         <td>
-          <code>Hero</code>
+          <code>ChatBubble</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"sent" | "received"</code>
+        </td>
+        <td>
+          <code>"received"</code>
+        </td>
+        <td>
+          Dictates the alignment of the message. <code>"sent"</code> aligns
+          right, <code>"received"</code> aligns left.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ChatBubble</code>
         </td>
         <td>
           <code>layout</code>
         </td>
         <td>
-          <code>"center" | "split-right" | "split-left"</code>
-        </td>
-        <td>
-          <code>"split-left"</code>
-        </td>
-        <td>
-          Orchestrates the macro-structure of the DOM layout. Switches between
-          centered SaaS headers and two-column enterprise layouts.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>Hero</code>
-        </td>
-        <td>
-          <code>pattern</code>
-        </td>
-        <td>
-          <code>"none" | "grid" | "dots"</code>
-        </td>
-        <td>
-          <code>"none"</code>
-        </td>
-        <td>
-          Renders a perfectly masked, subtle geometric background pattern behind
-          the hero content.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>Hero</code>
-        </td>
-        <td>
-          <code>variant</code>
-        </td>
-        <td>
-          <code>"default" | "glass" | "glow"</code>
+          <code>"default" | "group-top" | "group-middle" | "group-bottom"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Controls the background behavior. The <code>glow</code> variant adds a
-          massive, dynamic radial gradient behind the content matching your
-          theme color. The <code>glass</code> variant overlays the content on
-          top of an image.
+          Controls the dynamic border-radius logic to seamlessly connect stacked
+          messages from the same sender.
         </td>
       </tr>
       <tr>
         <td>
-          <code>Hero</code>
+          <code>ChatAvatar</code>
         </td>
         <td>
-          <code>color</code>
+          <code>src</code>
         </td>
         <td>
-          <code>"blue" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>string</code>
         </td>
         <td>
-          <code>"blue"</code>
+          <code>undefined</code>
         </td>
-        <td>
-          The active accent color injected into the Badge, Action buttons, and
-          background glows. Fully supports custom hex codes.
-        </td>
+        <td>Optional image URL for the user's avatar.</td>
       </tr>
       <tr>
         <td>
-          <code>HeroTitle</code>
+          <code>ChatAvatar</code>
         </td>
         <td>
-          <code>animation</code>
-        </td>
-        <td>
-          <code>"fade-up" | "blur-in" | "glitch" | "none"</code>
-        </td>
-        <td>
-          <code>"fade-up"</code>
-        </td>
-        <td>
-          Applies cinematic entry animations. The <code>glitch</code> effect
-          uses pure CSS RGB-splitting keyframes.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>HeroAction</code>
-        </td>
-        <td>
-          <code>variant</code>
-        </td>
-        <td>
-          <code>"primary" | "secondary" | "outline" | "ghost" | "glow"</code>
-        </td>
-        <td>
-          <code>"primary"</code>
-        </td>
-        <td>
-          Determines the visual styling of the CTA button. The <code>glow</code>{" "}
-          variant adds an animated, shimmering border matching the theme color.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>HeroSocialProof</code>
-        </td>
-        <td>
-          <code>avatars</code>
-        </td>
-        <td>
-          <code>string[]</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          An array of image URL strings to populate the overlapping avatar group
-          (commonly used for "Trusted by" sections).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>HeroSocialProof</code>
-        </td>
-        <td>
-          <code>text</code>
+          <code>fallback</code>
         </td>
         <td>
           <code>string</code>
@@ -232,7 +161,81 @@ export default function ChatInterface() {
         <td>
           <strong>Required</strong>
         </td>
-        <td>The label text rendered next to (or below) the avatar group.</td>
+        <td>
+          The text initials to display if the image is missing or fails to load.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ChatMessage</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"default" | "blue" | "indigo" | "rose" | "emerald"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Sets the background color of the bubble. Only applies when the parent{" "}
+          <code>variant</code> is set to <code>"sent"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ChatTimestamp</code>
+        </td>
+        <td>
+          <code>time</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The timestamp string rendered below the text (e.g., "10:24 AM").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ChatTimestamp</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"sent" | "delivered" | "read"</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Renders Lucide checkmarks to indicate read receipts. Only visible if
+          the parent <code>variant</code> is <code>"sent"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>All Components</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts custom Tailwind CSS classes to override default styling. All
+          components also accept standard HTML <code>&lt;div&gt;</code>{" "}
+          attributes.
+        </td>
       </tr>
     </tbody>
   </table>
