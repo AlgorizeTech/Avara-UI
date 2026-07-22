@@ -1,0 +1,192 @@
+import { MasonryGridShowcase } from "@/components/site/MasonryGridShowcase";
+
+# Masonry Grid
+
+A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
+
+This premium iteration includes hardware-accelerated blur-fade entrances, `layout` animations for dynamic content reflows, and a scroll-triggered `whileInView` sequence for high-end aesthetic presentation.
+
+---
+
+## Interactive Showcase
+
+The grid dynamically adapts its column count based on the screen size (1 column on mobile, 2 on tablet, 3 on desktop). Resize your browser to see the fluid reflow, and click the replay button to watch the elegant, Apple-style staggered entrance sequence.
+
+<MasonryGridShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component uses **Framer Motion** for the staggered spring animations.
+
+```bash
+npm install framer-motion
+```
+
+### Copy the Component
+
+Copy the full engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/MasonryGridBlock.tsx.
+
+## Usage Architecture
+
+The `<MasonryGrid>` accepts your raw data via the items prop and iterates through them using the renderItem function. This headless approach gives you total control over how your cards, images, or text blocks look without needing to modify the core layout component.
+
+```tsx
+import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+const posts = [
+  { id: 1, title: "Feature One", text: "A short status update." },
+  { id: 2, title: "Deep Dive", text: "A much longer piece of text that will require more vertical space in the masonry layout to demonstrate the fluid packing behavior." },
+];
+
+export default function BentoFeatures() {
+  return (
+    <MasonryGrid columnsClassName="columns-1 md:columns-2 lg:columns-3" gapClassName="gap-6" items="{posts}" renderItem="{(post)"> (
+        <div className="p-8 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+          <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
+          <p className="text-zinc-500 dark:text-zinc-400">{post.text}</p>
+        </div>
+      )}
+    />
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>T[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of generic objects representing your data. Each item must
+          contain a unique <code>id</code> for layout tracking.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>renderItem</code>
+        </td>
+        <td>
+          <code>(item: T, index: number) =&gt; ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A function that receives the data item and its index, returning the
+          React element to display.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>number | object</code>
+        </td>
+        <td>
+          <code>{`{ default: 1, sm: 2, lg: 3 }`}</code>
+        </td>
+        <td>
+          Determines the number of Flexbox columns. Pass a static number or a
+          breakpoint object mapping to Tailwind screens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>gapClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"gap-6"</code>
+        </td>
+        <td>
+          Tailwind CSS gap utility. Applied horizontally to the flex container
+          and vertically to the columns.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>animateIn</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles the staggered, hardware-accelerated blur-fade entrance
+          sequence via Framer Motion.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>staggerDelay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.08</code>
+        </td>
+        <td>
+          The time (in seconds) to delay the entrance animation of each
+          sequential item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind classes applied to the outermost wrapper element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLMotionProps</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all standard HTML <code>&lt;div&gt;</code> attributes and
+          Framer Motion props, excluding <code>children</code>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
