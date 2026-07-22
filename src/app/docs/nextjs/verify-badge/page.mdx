@@ -1,0 +1,139 @@
+import { VerifyBadgeShowcase } from "@/components/site/VerifyBadgeShowcase";
+
+export const metadata = {
+  title: "Verify Badge - AlgorizeTech UI",
+  description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support.",
+};
+
+# Verify Badge
+
+A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
+
+It includes distinct customization options to match different areas of your application.
+
+## Interactive Showcase
+
+Use the control panel below to test the different styles and configurations for your verify badge!
+
+<VerifyBadgeShowcase />
+
+---
+
+## Installation
+
+### 1. Install Dependencies
+
+This component uses `lucide-react` for the checkmark icon and standard Tailwind utilities.
+
+```bash
+npm install lucide-react clsx tailwind-merge
+```
+
+### 2. Copy the Component
+
+You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in `components/custom/blocks/VerifyBadgeBlock.tsx`.
+
+## Usage
+
+Simply drop the component into your page. You can customize the layout by passing the necessary props.
+
+```tsx
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function ProfilePage() {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="font-semibold text-lg">AlgorizeTech</span>
+      {/* Display a verified badge */}
+      <VerifyBadge variant="blue" size="lg" animate={true} />
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>VerifyBadge</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"blue" | "gold" | "dark" | "gray"</code>
+        </td>
+        <td>
+          <code>"blue"</code>
+        </td>
+        <td>
+          The color theme of the badge. Use blue for default verification, gold for premium/orgs.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>VerifyBadge</code>
+        </td>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg" | "xl"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          The physical dimensions and icon size of the badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>VerifyBadge</code>
+        </td>
+        <td>
+          <code>animate</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds a continuous subtle pulse animation to the background.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>VerifyBadge</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML div attributes (e.g., <code>className</code>,{" "}
+          <code>id</code>) which are seamlessly forwarded to the root wrapper.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

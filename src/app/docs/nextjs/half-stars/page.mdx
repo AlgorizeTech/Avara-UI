@@ -1,0 +1,213 @@
+import { HalfStarsShowcase } from "@/components/site/HalfStarsShowcase";
+
+# Half Stars Rating
+
+A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.
+
+It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
+
+## Interactive Showcase
+
+Interact with the examples below to test different rating configurations!
+
+<HalfStarsShowcase />
+
+---
+
+## Installation
+
+Ensure you have Tailwind CSS configured in your project, as the component uses standard Tailwind classes for styling.
+
+### Copy the Component
+
+You can copy the full component code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/HalfStarsBlock.tsx`.
+
+---
+
+## Usage
+
+Simply drop the component into your page. You can customize the rating, size, colors, and maximum number of stars. To make it interactive, pass `interactive={true}` and provide an `onRatingChange` handler.
+
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+
+export default function AppShowcasePage() {
+  const [fullRating, setFullRating] = useState(3);
+  const [halfRating, setHalfRating] = useState(3.5);
+  const [preciseRating, setPreciseRating] = useState(4.2);
+  const [customRating, setCustomRating] = useState(7.5);
+
+  return (
+    <div className="flex flex-col gap-8 p-8">
+        <div>
+          <h3>Full Stars (Interactive)</h3>
+          <HalfStars 
+            rating={fullRating} 
+            interactive={true} 
+            allowHalf={false} 
+            onRatingChange={setFullRating}
+            showText={false}
+          />
+        </div>
+
+        <div>
+          <h3>Half Stars (Interactive)</h3>
+          <HalfStars 
+            rating={halfRating} 
+            interactive={true} 
+            allowHalf={true} 
+            onRatingChange={setHalfRating} 
+          />
+        </div>
+
+        <div>
+          <h3>Continuous Fractions (Interactive)</h3>
+          <HalfStars 
+            rating={preciseRating} 
+            interactive={true} 
+            step={0.1}
+            onRatingChange={setPreciseRating} 
+          />
+        </div>
+
+        <div>
+          <h3>Custom Max Stars (Interactive)</h3>
+          <HalfStars 
+            rating={customRating} 
+            maxStars={10}
+            activeColor="text-red-500" 
+            inactiveColor="text-red-200 dark:text-red-900"
+            interactive={true} 
+            allowHalf={true} 
+            onRatingChange={setCustomRating} 
+          />
+        </div>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>rating</code></td>
+        <td><code>number</code></td>
+        <td><strong>Required</strong></td>
+        <td>The current rating value to display (e.g., <code>3.5</code> or <code>4.8</code>).</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>maxStars</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>The total number of stars to display.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>size</code></td>
+        <td><code>number</code></td>
+        <td><code>24</code></td>
+        <td>The width and height of each individual star in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>activeColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"text-yellow-400"</code></td>
+        <td>Tailwind text color class for the filled (active) portion of the stars.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>inactiveColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"text-slate-200 dark:text-slate-700"</code></td>
+        <td>Tailwind text color class for the empty (inactive) portion of the stars.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>showText</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>If true, displays the numerical rating text next to the stars (e.g. <code>4.8 / 5</code>).</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>If true, enables hover states and clicking to change the rating.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>allowHalf</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>(Legacy) If true and <code>interactive</code> is true, allows users to select 0.5 increments.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>step</code></td>
+        <td><code>number</code></td>
+        <td><code>allowHalf ? 0.5 : 1</code></td>
+        <td>Defines the precision increment (e.g. <code>0.1</code> for continuous). Overrides <code>allowHalf</code>.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>onRatingChange</code></td>
+        <td><code>(rating: number) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback function fired when a user clicks to set a new rating.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>onHoverChange</code></td>
+        <td><code>(rating: number) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback function fired when a user hovers over the stars, updating the temporary display rating.</td>
+      </tr>
+      <tr>
+        <td><code>HalfStars</code></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional Tailwind CSS classes to override or extend the outer container's styling.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Interface Reference
+
+If you are using TypeScript, you can import the `HalfStarsProps` interface for strong typing:
+
+```tsx
+interface HalfStarsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  rating: number;
+  maxStars?: number;
+  size?: number;
+  activeColor?: string;
+  inactiveColor?: string;
+  showText?: boolean;
+  interactive?: boolean;
+  allowHalf?: boolean;
+  step?: number;
+  onRatingChange?: (rating: number) => void;
+  onHoverChange?: (rating: number) => void;
+}
+```
