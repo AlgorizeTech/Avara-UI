@@ -100,7 +100,7 @@ export const navigation: NavigationItem[] = [
       { label: "Hero VideoPlayer", href: "/docs/nextjs/hero-video-player", badge: "New" },
       { label: "Verify Badge", href: "/docs/nextjs/verify-badge", badge: "New" },
       { label: "Text Animation", href: "/docs/nextjs/text-animation", badge: "New" },
-      { label: "iPhone 14 Pro Max Mockup", href: "/docs/nextjs/iphone-14-pro-max-mockup", badge: "New" },
+      { label: "Mobile Mockups", href: "/docs/nextjs/mobile-mockup", badge: "New" },
       { label: "Half Stars", href: "/docs/nextjs/half-stars", badge: "New" },
       { label: "Custom Code Block", href: "/docs/nextjs/custom-code-block", badge: "New" },
       

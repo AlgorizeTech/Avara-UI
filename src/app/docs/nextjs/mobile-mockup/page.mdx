@@ -1,0 +1,91 @@
+import { MobileMockupShowcase } from "@/components/site/MobileMockupShowcase";
+
+export const metadata = {
+  title: "Mobile Mockups - AlgorizeTech UI",
+  description: "A sleek, responsive suite of mobile hardware mockup components for Next.js applications.",
+};
+
+# Mobile Mockups
+
+A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.
+
+The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhone 12 Pro Max, the ultra-modern iPhone 14 Pro Max, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10. Whether you want to evoke nostalgia with a classic home button or highlight the future with a dynamic island and edge-to-edge glass, these mockups seamlessly wrap your React content to create the perfect showcase.
+
+## Interactive Showcase
+
+Use the control panel below to test the different device variants and see how they adapt to light and dark modes.
+
+<MobileMockupShowcase />
+
+---
+
+## Installation
+
+### 1. Copy the Component
+
+You can copy the full engine code directly from the **Component** tab in any of the Interactive Showcases above. Place it in a single file named `MobileMockupBlock.tsx` (e.g., in `src/components/custom/blocks/MobileMockupBlock.tsx`).
+
+All 6 mockups are bundled into this single file for your convenience.
+
+## Usage
+
+Simply drop the component into your page. It automatically scales and supports passing custom children or an image/video source directly to the screen.
+
+```tsx
+import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+export default function AppShowcasePage() {
+  return (
+    <div className="flex justify-center p-8">
+        <Iphone5Mockup>
+            <img 
+              src="/assets/mockups/dashboard_light.png" 
+              alt="Light Dashboard" 
+              className="dark:hidden w-full h-full object-cover" 
+            />
+            <img 
+              src="/assets/mockups/dashboard_dark.png" 
+              alt="Dark Dashboard" 
+              className="hidden dark:block w-full h-full object-cover" 
+            />
+        </Iphone5Mockup>
+    </div>
+  );
+}
+```
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>Custom content to render inside the phone screen (useful for complex UIs).</td>
+      </tr>
+      <tr>
+        <td><code>src</code></td>
+        <td><code>string</code></td>
+        <td>Image URL to display in the screen (fills the whole screen).</td>
+      </tr>
+      <tr>
+        <td><code>videoSrc</code></td>
+        <td><code>string</code></td>
+        <td>Video URL to auto-play inside the screen (muted and looping).</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>Additional CSS classes to apply to the mockup's outer wrapper.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
