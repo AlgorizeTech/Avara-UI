@@ -37,9 +37,9 @@ export interface HorizontalScrollStackProps extends React.HTMLAttributes<HTMLDiv
 }
 
 function StackCard({
-  item, index, total, progress, cardWidth, gap, stackOffset, scrollEndThreshold,
+  item, index, total, progress, cardWidth, gap, stackOffset, scrollEndThreshold, isMobile = false,
 }: {
-  item: ScrollStackItem; index: number; total: number; progress: MotionValue<number>; cardWidth: number; gap: number; stackOffset: number; scrollEndThreshold: number;
+  item: ScrollStackItem; index: number; total: number; progress: MotionValue<number>; cardWidth: number; gap: number; stackOffset: number; scrollEndThreshold: number; isMobile?: boolean;
 }) {
   const travelPerCard = cardWidth + gap - stackOffset;
   const lockDistance = index * travelPerCard;
@@ -50,8 +50,8 @@ function StackCard({
 
   return (
     <motion.div
-      style={{ width: \`\${cardWidth}px\`, x: index === 0 ? 0 : x }}
-      className="shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative"
+      style={{ width: isMobile ? "100%" : \`\${cardWidth}px\`, x: isMobile || index === 0 ? 0 : x }}
+      className={cn("shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative", isMobile ? "w-full" : "")}
     >
       <div>
         <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -92,6 +92,7 @@ export function HorizontalScrollStack({
 }: HorizontalScrollStackProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [layout, setLayout] = useState({ cardWidth: 440, gap: 32, stackOffset: 60 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -121,6 +122,7 @@ export function HorizontalScrollStack({
 
     const updateLayout = () => {
       const w = window.innerWidth;
+      setIsMobile(w < 768);
       if (w < 640) {
         const offset = Math.min(24, Math.max(14, Math.floor((w - 120) / (items.length || 1))));
         const cardW = Math.min(300, w - (items.length - 1) * offset - 32);
@@ -149,25 +151,39 @@ export function HorizontalScrollStack({
   const dynamicHeight = Math.max(400, items.length * 70);
 
   return (
-    <div ref={containerRef} style={{ height: \`\${dynamicHeight}vh\`, ...style }} className={cn("relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300", className)} {...props}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
-        <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
-          <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">{subtitle}</p>
-        </div>
-        <div className="w-full overflow-visible py-4">
-          <div style={{ gap: \`\${layout.gap}px\` }} className="flex w-max items-stretch">
+    <div ref={containerRef} style={{ height: isMobile ? "auto" : \`\${dynamicHeight}vh\`, ...style }} className={cn("relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300", isMobile ? "py-12 px-4 sm:px-8" : "", className)} {...props}>
+      {isMobile ? (
+        <div className="w-full flex flex-col gap-6">
+          <div className="max-w-3xl mb-4 shrink-0">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-base mt-2 font-normal">{subtitle}</p>
+          </div>
+          <div className="flex flex-col gap-6 w-full mt-2">
             {items.map((item, index) => (
-              <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={layout.cardWidth} gap={layout.gap} stackOffset={layout.stackOffset} scrollEndThreshold={SCROLL_END_THRESHOLD} />
+              <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={0} gap={0} stackOffset={0} scrollEndThreshold={SCROLL_END_THRESHOLD} isMobile={true} />
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
-          {items.map((_, i) => (
-            <ProgressBarItem key={i} index={i} total={items.length} progress={scrollYProgress} scrollEndThreshold={SCROLL_END_THRESHOLD} />
-          ))}
+      ) : (
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
+          <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">{subtitle}</p>
+          </div>
+          <div className="w-full overflow-visible py-4">
+            <div style={{ gap: \`\${layout.gap}px\` }} className="flex w-max items-stretch">
+              {items.map((item, index) => (
+                <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={layout.cardWidth} gap={layout.gap} stackOffset={layout.stackOffset} scrollEndThreshold={SCROLL_END_THRESHOLD} isMobile={false} />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
+            {items.map((_, i) => (
+              <ProgressBarItem key={i} index={i} total={items.length} progress={scrollYProgress} scrollEndThreshold={SCROLL_END_THRESHOLD} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }`;
@@ -180,7 +196,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 function StackCard({
-  item, index, total, progress, cardWidth, gap, stackOffset, scrollEndThreshold,
+  item, index, total, progress, cardWidth, gap, stackOffset, scrollEndThreshold, isMobile = false,
 }) {
   const travelPerCard = cardWidth + gap - stackOffset;
   const lockDistance = index * travelPerCard;
@@ -191,8 +207,8 @@ function StackCard({
 
   return (
     <motion.div
-      style={{ width: \`\${cardWidth}px\`, x: index === 0 ? 0 : x }}
-      className="shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative"
+      style={{ width: isMobile ? "100%" : \`\${cardWidth}px\`, x: isMobile || index === 0 ? 0 : x }}
+      className={cn("shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative", isMobile ? "w-full" : "")}
     >
       <div>
         <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -233,6 +249,7 @@ export function HorizontalScrollStack({
 }) {
   const containerRef = useRef(null);
   const [layout, setLayout] = useState({ cardWidth: 440, gap: 32, stackOffset: 60 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -262,6 +279,7 @@ export function HorizontalScrollStack({
 
     const updateLayout = () => {
       const w = window.innerWidth;
+      setIsMobile(w < 768);
       if (w < 640) {
         const offset = Math.min(24, Math.max(14, Math.floor((w - 120) / (items.length || 1))));
         const cardW = Math.min(300, w - (items.length - 1) * offset - 32);
@@ -290,25 +308,39 @@ export function HorizontalScrollStack({
   const dynamicHeight = Math.max(400, items.length * 70);
 
   return (
-    <div ref={containerRef} style={{ height: \`\${dynamicHeight}vh\`, ...style }} className={cn("relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300", className)} {...props}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
-        <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
-          <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">{subtitle}</p>
-        </div>
-        <div className="w-full overflow-visible py-4">
-          <div style={{ gap: \`\${layout.gap}px\` }} className="flex w-max items-stretch">
+    <div ref={containerRef} style={{ height: isMobile ? "auto" : \`\${dynamicHeight}vh\`, ...style }} className={cn("relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300", isMobile ? "py-12 px-4 sm:px-8" : "", className)} {...props}>
+      {isMobile ? (
+        <div className="w-full flex flex-col gap-6">
+          <div className="max-w-3xl mb-4 shrink-0">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-base mt-2 font-normal">{subtitle}</p>
+          </div>
+          <div className="flex flex-col gap-6 w-full mt-2">
             {items.map((item, index) => (
-              <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={layout.cardWidth} gap={layout.gap} stackOffset={layout.stackOffset} scrollEndThreshold={SCROLL_END_THRESHOLD} />
+              <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={0} gap={0} stackOffset={0} scrollEndThreshold={SCROLL_END_THRESHOLD} isMobile={true} />
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
-          {items.map((_, i) => (
-            <ProgressBarItem key={i} index={i} total={items.length} progress={scrollYProgress} scrollEndThreshold={SCROLL_END_THRESHOLD} />
-          ))}
+      ) : (
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
+          <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">{subtitle}</p>
+          </div>
+          <div className="w-full overflow-visible py-4">
+            <div style={{ gap: \`\${layout.gap}px\` }} className="flex w-max items-stretch">
+              {items.map((item, index) => (
+                <StackCard key={item.id} item={item} index={index} total={items.length} progress={scrollYProgress} cardWidth={layout.cardWidth} gap={layout.gap} stackOffset={layout.stackOffset} scrollEndThreshold={SCROLL_END_THRESHOLD} isMobile={false} />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
+            {items.map((_, i) => (
+              <ProgressBarItem key={i} index={i} total={items.length} progress={scrollYProgress} scrollEndThreshold={SCROLL_END_THRESHOLD} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }`;

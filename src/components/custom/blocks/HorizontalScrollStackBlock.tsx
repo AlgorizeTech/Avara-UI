@@ -29,6 +29,7 @@ function StackCard({
   gap,
   stackOffset,
   scrollEndThreshold,
+  isMobile = false,
 }: {
   item: ScrollStackItem;
   index: number;
@@ -38,8 +39,9 @@ function StackCard({
   gap: number;
   stackOffset: number;
   scrollEndThreshold: number;
+  isMobile?: boolean;
 }) {
-  // Distance each card travels before locking over the previous card
+  // Distance each card travels before locking over the previous card (Desktop only)
   const travelPerCard = cardWidth + gap - stackOffset;
   const lockDistance = index * travelPerCard;
 
@@ -60,10 +62,13 @@ function StackCard({
   return (
     <motion.div
       style={{
-        width: `${cardWidth}px`,
-        x: index === 0 ? 0 : x,
+        width: isMobile ? "100%" : `${cardWidth}px`,
+        x: isMobile || index === 0 ? 0 : x,
       }}
-      className="shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative"
+      className={cn(
+        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative",
+        isMobile ? "w-full" : "",
+      )}
     >
       <div>
         {/* Top Row: Icon & Step Number */}
@@ -130,19 +135,18 @@ export function HorizontalScrollStack({
 }: HorizontalScrollStackProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Responsive dimensions for pixel-perfect card stacking calculations
+  // Responsive layout state & mobile detection (< 768px)
   const [layout, setLayout] = useState({
     cardWidth: 440,
     gap: 32,
     stackOffset: 60,
   });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     // 1. UNIVERSAL STICKY PATCHER: Intercepts & neutralizes ALL CSS traps (auto, scroll, hidden, overlay, contain)
-    // In doc frameworks (like Shadcn UI preview boxes), parent containers use overflow-x: auto or contain: paint.
-    // This loop upgrades any trapping ancestor so native GPU sticky locks to the viewport without elastic wobble!
     const modifiedAncestors: {
       element: HTMLElement;
       overflow: string;
@@ -175,7 +179,6 @@ export function HorizontalScrollStack({
           contain: parent.style.contain,
         });
 
-        // "clip" contains visual bounds horizontally without creating a scrolling boundary that breaks sticky!
         if (["hidden", "auto", "scroll", "overlay"].includes(overflowX))
           parent.style.overflowX = "clip";
         if (["hidden", "auto", "scroll", "overlay"].includes(overflowY))
@@ -187,9 +190,11 @@ export function HorizontalScrollStack({
       parent = parent.parentElement;
     }
 
-    // 2. Responsive layout sizing
+    // 2. Responsive layout sizing & Mobile detection
     const updateLayout = () => {
       const w = window.innerWidth;
+      setIsMobile(w < 768); // Below 768px (md breakpoint) triggers simple vertical stack
+
       if (w < 640) {
         const offset = Math.min(
           24,
@@ -213,7 +218,6 @@ export function HorizontalScrollStack({
 
     return () => {
       window.removeEventListener("resize", updateLayout);
-      // Clean up and restore original parent styles on unmount
       modifiedAncestors.forEach(
         ({ element, overflow, overflowX, overflowY, contain }) => {
           element.style.overflow = overflow;
@@ -231,41 +235,37 @@ export function HorizontalScrollStack({
     offset: ["start start", "end end"],
   });
 
-  // SCROLL_END_THRESHOLD (0.70): Horizontal card stacking finishes at 70% of container height.
-  // From 70% to 100%, the cards stay stacked and firmly pinned on screen before scrolling away!
   const SCROLL_END_THRESHOLD = 0.7;
-
-  // Dynamic container height based on item count for comfortable scroll pacing
   const dynamicHeight = Math.max(400, items.length * 70);
 
   return (
     <div
       ref={containerRef}
-      style={{ height: `${dynamicHeight}vh`, ...style }}
+      style={{ height: isMobile ? "auto" : `${dynamicHeight}vh`, ...style }}
       className={cn(
         "relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300",
+        isMobile ? "py-12 px-4 sm:px-8" : "",
         className,
       )}
       {...props}
     >
-      {/* Native Hardware-Accelerated GPU Sticky Viewport Container (Zero Elasticity & Solid Lock!) */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
-            {title}
-          </h2>
-          <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">
-            {subtitle}
-          </p>
-        </div>
+      {isMobile ? (
+        /* =========================================================
+           MOBILE (< 768px): Simple Vertical Scroll Stack Fallback
+           ========================================================= */
+        <div className="w-full flex flex-col gap-6">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-4 shrink-0">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+              {title}
+            </h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-base mt-2 font-normal">
+              {subtitle}
+            </p>
+          </div>
 
-        {/* Horizontal Stacking Track */}
-        <div className="w-full overflow-visible py-4">
-          <div
-            style={{ gap: `${layout.gap}px` }}
-            className="flex w-max items-stretch"
-          >
+          {/* Vertical Stack Track */}
+          <div className="flex flex-col gap-6 w-full mt-2">
             {items.map((item, index) => (
               <StackCard
                 key={item.id}
@@ -273,28 +273,67 @@ export function HorizontalScrollStack({
                 index={index}
                 total={items.length}
                 progress={scrollYProgress}
-                cardWidth={layout.cardWidth}
-                gap={layout.gap}
-                stackOffset={layout.stackOffset}
+                cardWidth={0}
+                gap={0}
+                stackOffset={0}
+                scrollEndThreshold={SCROLL_END_THRESHOLD}
+                isMobile={true}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        /* =========================================================
+           DESKTOP (>= 768px): Native GPU Horizontal Sticky Deck
+           ========================================================= */
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+              {title}
+            </h2>
+            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">
+              {subtitle}
+            </p>
+          </div>
+
+          {/* Horizontal Stacking Track */}
+          <div className="w-full overflow-visible py-4">
+            <div
+              style={{ gap: `${layout.gap}px` }}
+              className="flex w-max items-stretch"
+            >
+              {items.map((item, index) => (
+                <StackCard
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  total={items.length}
+                  progress={scrollYProgress}
+                  cardWidth={layout.cardWidth}
+                  gap={layout.gap}
+                  stackOffset={layout.stackOffset}
+                  scrollEndThreshold={SCROLL_END_THRESHOLD}
+                  isMobile={false}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Progress Bar Indicators */}
+          <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
+            {items.map((_, i) => (
+              <ProgressBarItem
+                key={i}
+                index={i}
+                total={items.length}
+                progress={scrollYProgress}
                 scrollEndThreshold={SCROLL_END_THRESHOLD}
               />
             ))}
           </div>
         </div>
-
-        {/* Progress Bar Indicators */}
-        <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
-          {items.map((_, i) => (
-            <ProgressBarItem
-              key={i}
-              index={i}
-              total={items.length}
-              progress={scrollYProgress}
-              scrollEndThreshold={SCROLL_END_THRESHOLD}
-            />
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
