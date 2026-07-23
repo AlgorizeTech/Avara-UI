@@ -1,57 +1,103 @@
-import { QrCodeGeneratorShowcase } from "@/components/site/QrCodeGeneratorShowcase";
+import { QrCodeShowcase } from "@/components/site/QrCodeShowcase";
 
-# QR Code Generator
+export const metadata = {
+  title: "QR Code - AlgorizeTech UI",
+  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images.",
+};
 
-A premium, customizable QR code generator component built specifically for Next.js applications.
+# QR Code Suite
 
-It includes distinct customization options (Colors, Logos, and Sizes) to match different areas of your application. It safely handles React rendering to generate high-quality QR codes on the fly.
+A premium, dual-purpose QR Code component suite built for Next.js applications. 
+
+Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
 ## Interactive Showcase
 
-Use the control panel below to test the different styles and configurations for your QR codes!
+Use the interactive control panel below to seamlessly toggle between the **Generator** and the **Reader** modes. 
 
-<QrCodeGeneratorShowcase />
+In the **Generator** mode, you can instantly create, customize, and preview high-fidelity QR codes with options to tweak colors, sizes, and error correction levels. Switch over to the **Reader** mode to experience our robust, drag-and-drop scanning interface that effortlessly extracts encoded URLs and data from your uploaded images.
+
+<QrCodeShowcase />
 
 ---
+
+<style dangerouslySetInnerHTML={{__html: `
+  body[data-active-tab="reader"] [id^="generator-docs-"] { display: none !important; }
+  body[data-active-tab="generator"] [id^="reader-docs-"] { display: none !important; }
+  body:not([data-active-tab]) [id^="reader-docs-"] { display: none !important; } 
+`}} />
 
 ## Installation
 
 ### 1. Install Dependencies
 
-This component relies on `qrcode.react` to generate the QR codes easily and securely.
+<div id="generator-docs-install">
+
+The QR Code Generator relies on the lightweight, industry-standard package `qrcode.react` for generating SVG QR Codes.
 
 ```bash
 npm install qrcode.react
 ```
 
-### 2. Copy the Component
+</div>
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/QrCodeGeneratorBlock.tsx.
+<div id="reader-docs-install">
+
+The QR Code Reader relies on the `jsqr` package for reading and extracting data from uploaded images, and `lucide-react` for the UI icons.
+
+```bash
+npm install jsqr lucide-react
+```
+
+</div>
 
 ## Usage
 
-Simply drop the component into your page. You can customize the layout by passing the necessary props.
+<div id="generator-docs-usage">
+
+Generate standard QR codes with custom sizes, colors, and correction levels.
 
 ```tsx
 import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
-export default function DashboardPage() {
+export default function GeneratorExample() {
   return (
-    <div className="flex flex-col items-center p-4">
-        {/* Display a QR code with custom value */}
-        <QrCodeGenerator value="https://algorizetech.com" size={256} />
+    <div className="flex gap-4 items-center p-8">
+      <QrCodeGenerator value="https://algorizetech.com" size={200} />
+      <QrCodeGenerator value="Scan Me!" size={150} fgColor="#3b82f6" />
     </div>
   );
 }
 ```
 
+</div>
+
+<div id="reader-docs-usage">
+
+Allow users to click or drag-and-drop a QR code image to read its contents.
+
+```tsx
+import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+
+export default function ReaderExample() {
+  return (
+    <div className="p-8">
+      <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />
+    </div>
+  );
+}
+```
+
+</div>
+
 ## Props Reference
+
+<div id="generator-docs-props">
 
 <div className="overflow-x-auto mb-8">
   <table>
     <thead>
       <tr>
-        <th>Component</th>
         <th>Prop</th>
         <th>Type</th>
         <th>Default</th>
@@ -60,40 +106,68 @@ export default function DashboardPage() {
     </thead>
     <tbody>
       <tr>
-        <td>
-          <code>QrCodeGenerator</code>
-        </td>
-        <td>
-          <code>value</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>""</code>
-        </td>
-        <td>
-          The URL or text string that the QR code will encode.
-        </td>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>The data or URL to encode inside the QR code (Required).</td>
       </tr>
       <tr>
-        <td>
-          <code>QrCodeGenerator</code>
-        </td>
-        <td>
-          <code>...props</code>
-        </td>
-        <td>
-          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Accepts all native HTML div attributes (e.g., <code>className</code>,{" "}
-          <code>id</code>) which are seamlessly forwarded to the root wrapper.
-        </td>
+        <td><code>size</code></td>
+        <td><code>number</code></td>
+        <td><code>128</code></td>
+        <td>The width and height of the QR code in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>bgColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#FFFFFF"</code></td>
+        <td>Background color of the QR code (supports hex/rgba).</td>
+      </tr>
+      <tr>
+        <td><code>fgColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#000000"</code></td>
+        <td>Foreground color (the dots/pattern) of the QR code.</td>
+      </tr>
+      <tr>
+        <td><code>level</code></td>
+        <td><code>"L" | "M" | "Q" | "H"</code></td>
+        <td><code>"L"</code></td>
+        <td>Error correction level (Low, Medium, Quartile, High).</td>
       </tr>
     </tbody>
   </table>
+</div>
+
+</div>
+
+<div id="reader-docs-props">
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>onRead</code></td>
+        <td><code>(data: string) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback function triggered upon successfully reading a QR code from an image.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional CSS classes applied to the outer wrapper of the reader component.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </div>
