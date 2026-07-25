@@ -48,7 +48,9 @@ export function ThemeControl() {
   }
 
   return (
-    <div className={`fixed top-40 ${dir === "rtl" ? "left-0" : "right-0"} z-40`}>
+    <div
+      className={`fixed top-40 ${dir === "rtl" ? "left-0" : "right-0"} z-40`}
+    >
       <Sheet>
         <SheetTrigger asChild>
           <div
@@ -57,30 +59,34 @@ export function ThemeControl() {
             <Settings />
           </div>
         </SheetTrigger>
-        <SheetContent className="hide-scroll z-[101] overflow-y-auto">
-          <SheetHeader className="border-b">
-            <SheetTitle className="flex items-center gap-4">
-              <span>Customization</span>
-              <span
-                className="relative cursor-pointer"
-                onClick={resetThemeCustomization}
-                aria-label="Reset customization"
-              >
-                <TimerReset />
-                <span className="min-w-size-2 absolute top-0 -right-1 size-2 rounded-full bg-red-600" />
-              </span>
-            </SheetTitle>
-            <SheetDescription>
-              Customize and preview in real time
-            </SheetDescription>
-          </SheetHeader>
-          <div className="space-y-8 px-4">
-            <PrimaryColorControl />
-            <DarkModeControl />
-            <FontSizeControl />
-            <FontFamilyControl />
+
+        {/* Added flex flex-col to ensure the footer button can push to the very bottom */}
+        <SheetContent className="hide-scroll z-[101] overflow-y-auto flex flex-col justify-between">
+          <div>
+            <SheetHeader className="border-b pb-4">
+              <SheetTitle>Customization</SheetTitle>
+              <SheetDescription>
+                Customize and preview in real time
+              </SheetDescription>
+            </SheetHeader>
+            <div className="space-y-8 px-4 py-6">
+              <PrimaryColorControl />
+              <DarkModeControl />
+              <FontSizeControl />
+              <FontFamilyControl />
+            </div>
+          {/* Bottom Right Reset Button Footer */}
+          <div className="mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-end">
+            <button
+              onClick={resetThemeCustomization}
+              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-95 transition-all rounded-lg border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm cursor-pointer"
+            >
+              <TimerReset className="w-4 h-4" />
+              Reset Defaults
+            </button>
           </div>
-          <span className="block w-full border-b" />
+          </div>
+
         </SheetContent>
       </Sheet>
     </div>
