@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
 
 export interface DataPoint {
   id: string; // ISO 3166-1 alpha-3 country code
@@ -21,6 +22,7 @@ export interface DataPoint {
 
 export interface DataMapsProps extends React.HTMLAttributes<HTMLDivElement> {
   dataPoints: DataPoint[];
+  variant?: "fill" | "dots";
   center?: [number, number];
   zoom?: number;
   highlightColor?: string;
@@ -40,6 +42,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   (
     {
       dataPoints,
+      variant = "fill",
       center = [20, 0],
       zoom = 2,
       highlightColor = "var(--primary, #2563eb)",
@@ -53,22 +56,75 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const [isMounted, setIsMounted] = useState(false);
     const [geoData, setGeoData] = useState<any>(null);
     const geoJsonRef = useRef<any>(null);
+    const markersGroupRef = useRef<any>(null);
     const highlightColorRef = useRef(highlightColor);
+    const variantRef = useRef(variant);
+    const [leafletLib, setLeafletLib] = useState<any>(null);
+    const [dotCount, setDotCount] = useState(0);
+
+    useEffect(() => {
+      import("leaflet").then((L) => setLeafletLib(L));
+    }, []);
+
+    useEffect(() => {
+      variantRef.current = variant;
+    }, [variant]);
 
     useEffect(() => {
       highlightColorRef.current = highlightColor;
       
       // Update existing layers dynamically to prevent unmounting React-Leaflet
-      if (geoJsonRef.current) {
+      if (geoJsonRef.current && leafletLib) {
+        const isDots = variant === "dots";
+        const map = geoJsonRef.current._map;
+        
+        if (map && !markersGroupRef.current) {
+          markersGroupRef.current = leafletLib.layerGroup().addTo(map);
+        }
+        
+        if (markersGroupRef.current) {
+          markersGroupRef.current.clearLayers();
+        }
+
+        let currentDotCount = 0;
+
         geoJsonRef.current.eachLayer((layer: any) => {
           const countryId = layer.feature?.id;
           const dataPoint = dataPoints.find((p) => p.id === countryId);
+          
           layer.setStyle({
-            fillColor: dataPoint ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+            fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
           });
+
+          if (isDots && dataPoint && layer.getBounds && markersGroupRef.current && map?.getPanes?.()?.markerPane) {
+             currentDotCount++;
+             const c = layer.getBounds().getCenter();
+             const color = dataPoint.color || highlightColor;
+             
+             const icon = leafletLib.divIcon({
+                className: 'bg-transparent border-none',
+                html: `<div class="map-pulse-dot" style="--pulse-color: ${color};"></div>`,
+                iconSize: [8, 8],
+                iconAnchor: [4, 4]
+             });
+             
+             try {
+               leafletLib.marker([c.lat, c.lng], { icon, interactive: false }).addTo(markersGroupRef.current);
+             } catch (e) {
+               // Silently ignore if map is unmounting during HMR
+             }
+          }
         });
+        
+        setDotCount(currentDotCount);
       }
-    }, [highlightColor, dataPoints]);
+      
+      return () => {
+         if (markersGroupRef.current) {
+             markersGroupRef.current.clearLayers();
+         }
+      }
+    }, [highlightColor, dataPoints, variant, geoData, leafletLib]);
 
     useEffect(() => {
       setIsMounted(true);
@@ -81,7 +137,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     if (!isMounted || !geoData) {
       return (
         <div ref={ref} className={cn("w-full h-full min-h-[400px] bg-slate-50 dark:bg-slate-900/50 rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
-          <p className="text-slate-400 text-sm">Loading map data...</p>
+          <p className="text-slate-400 text-sm">Loading Maps...</p>
         </div>
       );
     }
@@ -92,7 +148,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           .map-wrapper {
             --map-default-fill: #e2e8f0;
           }
-          :global(.dark) .map-wrapper, .dark .map-wrapper {
+          .dark .map-wrapper {
             --map-default-fill: #1e293b;
           }
           path.leaflet-interactive:focus {
@@ -116,6 +172,26 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           .custom-leaflet-tooltip::before {
             display: none !important;
           }
+          .map-pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            background-color: var(--pulse-color);
+          }
+          .map-pulse-dot::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 var(--pulse-color);
+            animation: map-pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+          }
+          @keyframes map-pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0.8; }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px var(--pulse-color); opacity: 0; }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0; }
+          }
         `}} />
         <div className="absolute inset-0 z-0">
           <MapContainer 
@@ -132,8 +208,9 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
               style={(feature) => {
                 const countryId = feature?.id;
                 const dataPoint = dataPoints.find((p) => p.id === countryId);
+                const isDots = variant === "dots";
                 return {
-                  fillColor: dataPoint ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+                  fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
                   className: "map-stroke",
                   weight: 0.5,
                   fillOpacity: 1,
@@ -203,9 +280,10 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                   },
                   mouseout: (e) => {
                     const target = e.target;
+                    const isDots = variantRef.current === "dots";
                     target.setStyle({
                       fillOpacity: 1,
-                      fillColor: dataPoint ? (dataPoint.color || highlightColorRef.current) : "var(--map-default-fill)",
+                      fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColorRef.current) : "var(--map-default-fill)",
                     });
                   }
                 });
@@ -213,6 +291,28 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             />
           </MapContainer>
         </div>
+        
+        {variant === "dots" && (
+          <div className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-full shadow-sm z-[400] flex items-center gap-1.5">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="14" 
+              height="14" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke={highlightColor} 
+              strokeWidth="2.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              {dotCount} Locations Selected
+            </span>
+          </div>
+        )}
       </div>
     );
   }
