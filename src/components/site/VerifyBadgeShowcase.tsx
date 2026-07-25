@@ -88,7 +88,7 @@ const VERIFY_BADGE_JS = VERIFY_BADGE_TS
 
 export function VerifyBadgeShowcase() {
   const [color, setColor] = useState<string>("#1d9bf0"); // Default blue
-  const [size, setSize] = useState<"sm" | "md" | "lg" | "xl">("lg");
+  const [size, setSize] = useState<"sm" | "md" | "lg" | "xl">("md");
   const [animate, setAnimate] = useState<boolean>(true);
 
   // Helper to handle both preset colors and custom hex colors
@@ -208,28 +208,31 @@ export default function ProfilePage() {
                 title={c.id}
               />
             ))}
-            
+            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
             {/* Custom Color Picker */}
-            <div className="relative flex items-center justify-center w-6 h-6 ml-1 group">
+            <div
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${
+                !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
+                  ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500"
+                  : "border-zinc-300 dark:border-zinc-700 hover:scale-110"
+              }`}
+            >
               <input
                 type="color"
-                value={color.startsWith("#") ? color : "#1d9bf0"}
+                value={!["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color) ? color : "#8b5cf6"}
                 onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-                title="Custom Color"
+                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+                title="Custom Hex Color"
               />
               <div
-                className={`w-full h-full rounded-full border-2 transition-all duration-200 overflow-hidden ${
-                  !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
-                    ? "border-zinc-400 dark:border-zinc-500 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "border-dashed border-zinc-300 dark:border-zinc-700 group-hover:border-zinc-400 dark:group-hover:border-zinc-500 group-hover:scale-110"
-                }`}
-              >
-                <div
-                  className="w-full h-full pointer-events-none"
-                  style={{ backgroundColor: color.startsWith("#") ? color : "transparent" }}
-                />
-              </div>
+                className="w-full h-full pointer-events-none"
+                style={{
+                  backgroundColor: !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
+                    ? color
+                    : "transparent",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -243,22 +246,53 @@ export default function ProfilePage() {
         usageCode={getUsageCode(true)}
         jsUsageCode={getUsageCode(false)}
       >
-        <div className="w-full min-h-[300px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 flex flex-col items-center justify-center p-8 gap-4">
-          <div className="flex items-center gap-2 p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse overflow-hidden">
-               <img src="https://github.com/shadcn.png" alt="Avatar" className="w-full h-full object-cover opacity-80" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-slate-900 dark:text-slate-100 text-base">AlgorizeTech</span>
-                <VerifyBadge color={color} size={size} animate={animate} />
+        <div className="w-full min-h-[380px] bg-zinc-50/50 dark:bg-[#09090b] rounded-2xl border border-slate-100 dark:border-slate-800/50 flex flex-col items-center justify-center p-8">
+          
+          {/* Chat Notification Card */}
+          <div className="w-full max-w-md bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 flex gap-4 transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/50">
+            
+            {/* Bot Avatar */}
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-inner">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/>
+                </svg>
               </div>
-              <span className="text-sm text-slate-500 dark:text-slate-400">@algorizetech</span>
             </div>
-            <button className="ml-4 px-4 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-sm font-medium hover:opacity-90">
-              Follow
-            </button>
+
+            {/* Message Content */}
+            <div className="flex flex-col w-full">
+              
+              {/* Header */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">AlgorizeSystem</span>
+                <VerifyBadge color={color} size={size} animate={animate} />
+                <span className="text-[9px] font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400 px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider ml-0.5">
+                  Bot
+                </span>
+                <span className="text-[13px] text-zinc-500 dark:text-zinc-400 ml-1 font-medium">Today at 2:34 PM</span>
+              </div>
+
+              {/* Text */}
+              <p className="mt-1 text-zinc-800 dark:text-zinc-200 text-[15px] leading-relaxed">
+                Deployment <span className="text-blue-500 hover:underline cursor-pointer">#421</span> to <strong>production</strong> completed successfully.
+              </p>
+
+              {/* Embed Box */}
+              <div className="mt-3 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-3.5 flex items-start gap-3 relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500"></div>
+                <div className="flex flex-col gap-1 ml-1">
+                  <span className="font-semibold text-[14px] text-zinc-900 dark:text-zinc-50 tracking-tight">Build Passed 🚀</span>
+                  <span className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-snug">
+                    All 142 tests passed in 12s. The latest preview is now live on Vercel.
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
           </div>
+          
         </div>
       </ComponentPreview>
     </div>

@@ -11,6 +11,27 @@ A versatile verified badge component that can be customized with various styles 
 
 It includes distinct customization options to match different areas of your application.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">SVG Based</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Custom Themes</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily pass any custom hex color or use predefined themes to match your branding.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Micro-Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built-in optional subtle pulse animations to draw attention to verified status.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Flexible Sizing</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Use the control panel below to test the different styles and configurations for your verify badge!
@@ -44,12 +65,25 @@ export default function ProfilePage() {
   return (
     <div className="flex items-center gap-2">
       <span className="font-semibold text-lg">Elon Musk</span>
-      <VerifyBadge color="#1d9bf0" size="lg" animate={true} />
+      <VerifyBadge color="#1d9bf0" size="md" animate={true} />
     </div>
   );
 }
 ```
 
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Accessibility First</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Always ensure that you add an <code>aria-label</code> or <code>title</code> to the badge so that screen readers can convey the "Verified" status to visually impaired users.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Proper Sizing</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Use the <code>sm</code> or <code>md</code> sizes when placing the badge directly next to standard text (like usernames). The <code>lg</code> and <code>xl</code> sizes are best reserved for profile headers or prominent display cards.</p>
+  </div>
 </div>
 
 ## Props Reference
