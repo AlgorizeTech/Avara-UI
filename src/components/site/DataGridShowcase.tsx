@@ -69,7 +69,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(({ c
       }
     }
     setEditingCell(null);
-    containerRef.current?.focus();
   }, [data, columns, editingCell, editValue, onChange, readOnly]);
 
   const startEditing = useCallback((row: number, col: number, initialValue?: string) => {
@@ -118,9 +117,9 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(({ c
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.row < data.length - 1) setActiveCell({ row: activeCell.row + 1, col: activeCell.col }); } 
-    else if (e.key === "Escape") { e.preventDefault(); finishEditing(false); } 
-    else if (e.key === "Tab") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.col < columns.length - 1) setActiveCell({ row: activeCell.row, col: activeCell.col + 1 }); }
+    if (e.key === "Enter") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.row < data.length - 1) setActiveCell({ row: activeCell.row + 1, col: activeCell.col }); containerRef.current?.focus({ preventScroll: true }); } 
+    else if (e.key === "Escape") { e.preventDefault(); finishEditing(false); containerRef.current?.focus({ preventScroll: true }); } 
+    else if (e.key === "Tab") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.col < columns.length - 1) setActiveCell({ row: activeCell.row, col: activeCell.col + 1 }); containerRef.current?.focus({ preventScroll: true }); }
     e.stopPropagation();
   };
 
@@ -149,7 +148,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(({ c
                   const isEditingThis = editingCell?.row === rowIndex && editingCell?.col === colIndex;
                   const val = row[col.field];
                   return (
-                    <td key={colIndex} id={\`cell-\${rowIndex}-\${colIndex}\`} onClick={() => { setActiveCell({ row: rowIndex, col: colIndex }); containerRef.current?.focus(); }} onDoubleClick={() => startEditing(rowIndex, colIndex)} className={cn("relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell", isActive && "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900", isActive && theme.outline, (activeCell?.row === rowIndex && !isActive) && "bg-zinc-50/80 dark:bg-zinc-900/50", isEditingThis && "p-0")}>
+                    <td key={colIndex} id={\`cell-\${rowIndex}-\${colIndex}\`} onClick={() => { setActiveCell({ row: rowIndex, col: colIndex }); containerRef.current?.focus({ preventScroll: true }); }} onDoubleClick={() => startEditing(rowIndex, colIndex)} className={cn("relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell", isActive && "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900", isActive && theme.outline, (activeCell?.row === rowIndex && !isActive) && "bg-zinc-50/80 dark:bg-zinc-900/50", isEditingThis && "p-0")}>
                       {isEditingThis ? (<input ref={editInputRef} autoFocus type={col.type === "number" ? "number" : "text"} value={editValue} onChange={(e) => setEditValue(e.target.value)} onKeyDown={handleInputKeyDown} onBlur={() => finishEditing(true)} className={cn("absolute inset-0 w-full h-full px-4 outline-none bg-white dark:bg-zinc-900 font-sans text-sm m-0 border-none shadow-xl z-20", col.type === "number" && "font-mono")} />) : (<span className={cn("block w-full overflow-hidden text-ellipsis", col.type === "number" && "font-mono text-zinc-600 dark:text-zinc-400", (readOnly || col.readOnly) && "opacity-60 cursor-not-allowed")}>{val !== null && val !== undefined ? String(val) : ""}</span>)}
                       {isActive && !isEditingThis && <div className={cn("absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-white dark:border-black rounded-[1px]", theme.handle)} />}
                     </td>
@@ -221,7 +220,6 @@ export const DataGridBlock = forwardRef(({ columns, data: initialData, color = "
       }
     }
     setEditingCell(null);
-    containerRef.current?.focus();
   }, [data, columns, editingCell, editValue, onChange, readOnly]);
 
   const startEditing = useCallback((row, col, initialValue) => {
@@ -270,9 +268,9 @@ export const DataGridBlock = forwardRef(({ columns, data: initialData, color = "
   };
 
   const handleInputKeyDown = (e) => {
-    if (e.key === "Enter") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.row < data.length - 1) setActiveCell({ row: activeCell.row + 1, col: activeCell.col }); } 
-    else if (e.key === "Escape") { e.preventDefault(); finishEditing(false); } 
-    else if (e.key === "Tab") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.col < columns.length - 1) setActiveCell({ row: activeCell.row, col: activeCell.col + 1 }); }
+    if (e.key === "Enter") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.row < data.length - 1) setActiveCell({ row: activeCell.row + 1, col: activeCell.col }); containerRef.current?.focus({ preventScroll: true }); } 
+    else if (e.key === "Escape") { e.preventDefault(); finishEditing(false); containerRef.current?.focus({ preventScroll: true }); } 
+    else if (e.key === "Tab") { e.preventDefault(); finishEditing(true); if (activeCell && activeCell.col < columns.length - 1) setActiveCell({ row: activeCell.row, col: activeCell.col + 1 }); containerRef.current?.focus({ preventScroll: true }); }
     e.stopPropagation();
   };
 
@@ -301,7 +299,7 @@ export const DataGridBlock = forwardRef(({ columns, data: initialData, color = "
                   const isEditingThis = editingCell?.row === rowIndex && editingCell?.col === colIndex;
                   const val = row[col.field];
                   return (
-                    <td key={colIndex} id={\`cell-\${rowIndex}-\${colIndex}\`} onClick={() => { setActiveCell({ row: rowIndex, col: colIndex }); containerRef.current?.focus(); }} onDoubleClick={() => startEditing(rowIndex, colIndex)} className={cn("relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell", isActive && "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900", isActive && theme.outline, (activeCell?.row === rowIndex && !isActive) && "bg-zinc-50/80 dark:bg-zinc-900/50", isEditingThis && "p-0")}>
+                    <td key={colIndex} id={\`cell-\${rowIndex}-\${colIndex}\`} onClick={() => { setActiveCell({ row: rowIndex, col: colIndex }); containerRef.current?.focus({ preventScroll: true }); }} onDoubleClick={() => startEditing(rowIndex, colIndex)} className={cn("relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell", isActive && "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900", isActive && theme.outline, (activeCell?.row === rowIndex && !isActive) && "bg-zinc-50/80 dark:bg-zinc-900/50", isEditingThis && "p-0")}>
                       {isEditingThis ? (<input ref={editInputRef} autoFocus type={col.type === "number" ? "number" : "text"} value={editValue} onChange={(e) => setEditValue(e.target.value)} onKeyDown={handleInputKeyDown} onBlur={() => finishEditing(true)} className={cn("absolute inset-0 w-full h-full px-4 outline-none bg-white dark:bg-zinc-900 font-sans text-sm m-0 border-none shadow-xl z-20", col.type === "number" && "font-mono")} />) : (<span className={cn("block w-full overflow-hidden text-ellipsis", col.type === "number" && "font-mono text-zinc-600 dark:text-zinc-400", (readOnly || col.readOnly) && "opacity-60 cursor-not-allowed")}>{val !== null && val !== undefined ? String(val) : ""}</span>)}
                       {isActive && !isEditingThis && <div className={cn("absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-white dark:border-black rounded-[1px]", theme.handle)} />}
                     </td>
@@ -389,11 +387,9 @@ export function DataGridShowcase() {
   const [showRowNumbers, setShowRowNumbers] = useState(true);
   const [readOnly, setReadOnly] = useState(false);
 
-  // FIX: Explicitly type the state array as Record<string, any>[] so it satisfies DataGridBlock's onChange
   const [currentData, setCurrentData] =
     useState<Record<string, any>[]>(INITIAL_DATA);
 
-  // Initialize with localStorage if available
   const [color, setColor] = useState<GridColor | string>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("primaryColor") || "blue";
@@ -604,7 +600,6 @@ export default function Spreadsheet() {
               </button>
             </div>
 
-            {/* Note the key trick here to force a clean remount when toggling row numbers for demonstration */}
             <DataGridBlock
               key={`${showRowNumbers}`}
               columns={COLUMNS}

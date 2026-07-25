@@ -155,8 +155,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
           }
         }
         setEditingCell(null);
-        // Return focus to the grid wrapper
-        containerRef.current?.focus();
       },
       [data, columns, editingCell, editValue, onChange, readOnly],
     );
@@ -170,7 +168,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
             ? initialValue
             : String(data[row][columns[col].field] || ""),
         );
-        // Focus will be handled by autoFocus on the input, but we ensure state is flushed
       },
       [columns, data, readOnly],
     );
@@ -234,7 +231,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
           }
           break;
         default:
-          // If a printable character is pressed, start editing immediately with that char
           if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
             startEditing(row, col, e.key);
             e.preventDefault();
@@ -248,15 +244,12 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
         if (nextRow !== row || nextCol !== col) {
           e.preventDefault();
           setActiveCell({ row: nextRow, col: nextCol });
-          // Scroll active cell into view
           const cellId = `cell-${nextRow}-${nextCol}`;
-          document
-            .getElementById(cellId)
-            ?.scrollIntoView({
-              behavior: "auto",
-              block: "nearest",
-              inline: "nearest",
-            });
+          document.getElementById(cellId)?.scrollIntoView({
+            behavior: "auto",
+            block: "nearest",
+            inline: "nearest",
+          });
         }
       }
     };
@@ -266,20 +259,21 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
       if (e.key === "Enter") {
         e.preventDefault();
         finishEditing(true);
-        // Excel behavior: move down after enter
         if (activeCell && activeCell.row < data.length - 1) {
           setActiveCell({ row: activeCell.row + 1, col: activeCell.col });
         }
+        containerRef.current?.focus({ preventScroll: true });
       } else if (e.key === "Escape") {
         e.preventDefault();
         finishEditing(false); // Cancel
+        containerRef.current?.focus({ preventScroll: true });
       } else if (e.key === "Tab") {
         e.preventDefault();
         finishEditing(true);
-        // Move right
         if (activeCell && activeCell.col < columns.length - 1) {
           setActiveCell({ row: activeCell.row, col: activeCell.col + 1 });
         }
+        containerRef.current?.focus({ preventScroll: true });
       }
       e.stopPropagation(); // Prevent grid listener from firing
     };
@@ -364,7 +358,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                         id={`cell-${rowIndex}-${colIndex}`}
                         onClick={() => {
                           setActiveCell({ row: rowIndex, col: colIndex });
-                          containerRef.current?.focus();
+                          containerRef.current?.focus({ preventScroll: true });
                         }}
                         onDoubleClick={() => startEditing(rowIndex, colIndex)}
                         className={cn(
@@ -374,8 +368,8 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                           isActive && theme.outline,
                           activeCell?.row === rowIndex &&
                             !isActive &&
-                            "bg-zinc-50/80 dark:bg-zinc-900/50", // Row highlight
-                          isEditingThis && "p-0", // Remove padding when editing for full input size
+                            "bg-zinc-50/80 dark:bg-zinc-900/50",
+                          isEditingThis && "p-0",
                         )}
                       >
                         {isEditingThis ? (
@@ -408,7 +402,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                           </span>
                         )}
 
-                        {/* The classic spreadsheet little drag handle on the active cell */}
                         {isActive && !isEditingThis && (
                           <div
                             className={cn(

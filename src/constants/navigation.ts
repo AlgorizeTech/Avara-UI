@@ -9,18 +9,18 @@ type NavigationItem = {
 };
 
 export const navigation: NavigationItem[] = [
-  {
-    label: "Getting Started",
-    children: [
-      { label: "Introduction", href: "/docs/nextjs/index" },
-      {
-        label: "Installation",
-        href: "/docs/nextjs/installation",
-        badge: "Updated",
-      },
-      { label: "Quick Start", href: "/docs/nextjs/first-app" },
-    ],
-  },
+  // {
+  //   label: "Getting Started",
+  //   children: [
+  //     { label: "Introduction", href: "/docs/nextjs/index" },
+  //     {
+  //       label: "Installation",
+  //       href: "/docs/nextjs/installation",
+  //       badge: "Updated",
+  //     },
+  //     { label: "Quick Start", href: "/docs/nextjs/first-app" },
+  //   ],
+  // },
   // {
   //   label: "Core Features",
   //   children: [
