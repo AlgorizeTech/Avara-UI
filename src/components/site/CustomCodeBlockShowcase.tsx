@@ -444,6 +444,16 @@ npm run dev
 export function CustomCodeBlockShowcase() {
   const [activeTab, setActiveTab] = useState<keyof typeof SNIPPETS>("HTML");
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("custom-code-change", {
+          detail: { variant: activeTab },
+        })
+      );
+    }
+  }, [activeTab]);
+
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Variant Switcher Above Preview */}
