@@ -1,0 +1,261 @@
+import { HorizontalScrollStackShowcase } from "@/components/site/HorizontalScrollStackShowcase";
+
+# Horizontal Scroll Stack
+
+A high-performance interactive scroll experience inspired by modern agency design patterns. As the user scrolls vertically down the page, a sticky container pins to the viewport and translates your card items horizontally across the screen in sync with the scroll progress.
+
+---
+
+## Interactive Showcase
+
+Scroll down inside the preview container below to watch the horizontal card sequence lock and slide into view.
+
+<HorizontalScrollStackShowcase />
+
+---
+
+## Installation
+
+### Dependencies
+
+This component uses **Framer Motion** for high-performance scroll tracking and layout transformations.
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### Copy the Component
+
+Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it inside components/custom/blocks/HorizontalScrollStackBlock.tsx.
+
+## Usage Architecture
+
+The `<HorizontalScrollStack>` requires an array of step items. Each item can contain a custom title, description, badge number, and icon.
+
+```tsx
+import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { Compass, FileText, Sparkles, Layers } from "lucide-react";
+
+export default function ProcessSection() {
+  const steps = [
+    {
+      id: "1",
+      title: "Understand",
+      description: "Business goals and strategies, persona and painpoints.",
+      icon: <Compass />,
+    },
+    {
+      id: "2",
+      title: "Define",
+      description: "Strategy, information architecture, user flows.",
+      icon: <FileText />,
+    },
+    {
+      id: "3",
+      title: "Ideate",
+      description: "Brainstorming, solution propose, sketching.",
+      icon: <Sparkles />,
+    },
+    {
+      id: "4",
+      title: "Design",
+      description: "Style guide, design system, interface design.",
+      icon: <Layers />,
+    },
+  ];
+
+  return (
+    <HorizontalScrollStack
+      items="{steps}"
+      subtitle="from understanding your goals to delivering polished assets."
+      title="We follow a streamlined design process"
+    />
+  );
+}
+```
+
+## Props Reference
+
+<div className="not-prose my-8 overflow-x-auto">
+  <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+    HorizontalScrollStack Props
+  </h3>
+  <table className="w-full text-left border-collapse text-sm">
+    <thead>
+      <tr className="border-b border-slate-200 dark:border-zinc-800 text-slate-900 dark:text-white font-semibold">
+        <th className="py-3 px-4">Prop</th>
+        <th className="py-3 px-4">Type</th>
+        <th className="py-3 px-4">Default</th>
+        <th className="py-3 px-4">Description</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-slate-200 dark:divide-zinc-800 text-slate-600 dark:text-zinc-400">
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>items</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>ScrollStackItem[]</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs text-red-500 dark:text-red-400">
+          <code>Required</code>
+        </td>
+        <td className="py-3 px-4">
+          An array of step objects representing each card rendered inside the
+          horizontal fanned deck.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>title</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>"We follow a..."</code>
+        </td>
+        <td className="py-3 px-4">
+          The primary heading text displayed above the stacked cards, locked in
+          view while scrolling.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>subtitle</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>"from understanding..."</code>
+        </td>
+        <td className="py-3 px-4">
+          The descriptive subtitle text displayed directly beneath the main
+          heading.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>className</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>undefined</code>
+        </td>
+        <td className="py-3 px-4">
+          Optional custom Tailwind CSS classes applied to the outermost scroll
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>style</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>React.CSSProperties</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>undefined</code>
+        </td>
+        <td className="py-3 px-4">
+          Optional inline CSS properties applied to the outermost scroll
+          container.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div className="not-prose my-10 overflow-x-auto">
+  <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+    ScrollStackItem Object Reference
+  </h3>
+  <table className="w-full text-left border-collapse text-sm">
+    <thead>
+      <tr className="border-b border-slate-200 dark:border-zinc-800 text-slate-900 dark:text-white font-semibold">
+        <th className="py-3 px-4">Property</th>
+        <th className="py-3 px-4">Type</th>
+        <th className="py-3 px-4">Default</th>
+        <th className="py-3 px-4">Description</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-slate-200 dark:divide-zinc-800 text-slate-600 dark:text-zinc-400">
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>id</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string | number</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs text-red-500 dark:text-red-400">
+          <code>Required</code>
+        </td>
+        <td className="py-3 px-4">
+          A unique identifier for the item, used as the React rendering key.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>title</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs text-red-500 dark:text-red-400">
+          <code>Required</code>
+        </td>
+        <td className="py-3 px-4">
+          The main heading displayed inside the individual card.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>description</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs text-red-500 dark:text-red-400">
+          <code>Required</code>
+        </td>
+        <td className="py-3 px-4">
+          The descriptive body paragraph explaining the specific step or
+          feature.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>number</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>string</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>"01", "02"...</code>
+        </td>
+        <td className="py-3 px-4">
+          Custom step text displayed in the top right corner. If omitted, it
+          automatically calculates based on array index.
+        </td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono font-medium text-indigo-600 dark:text-indigo-400">
+          <code>icon</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>React.ReactNode</code>
+        </td>
+        <td className="py-3 px-4 font-mono text-xs">
+          <code>undefined</code>
+        </td>
+        <td className="py-3 px-4">
+          An icon component (e.g., from Lucide or Radix) or SVG rendered inside
+          the interactive top-left badge.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
