@@ -99,7 +99,13 @@ const MenuItem: React.FC<{
     item.children!.some((child) => checkActiveRecursive(child, pathName));
 
   const [isOpen, setIsOpen] = useState(defaultOpen || hasActiveDescendant);
-  const isActive = pathName === item.href && !hasChildren;
+
+  // --- UPDATED ACTIVE LOGIC ---
+  // isExactActive: True ONLY when you are on this exact link (for leaf items & indicator bar)
+  const isExactActive = pathName === item.href && !hasChildren;
+
+  // isParentActive: True if this is a folder AND one of its children is active
+  const isParentActive = hasChildren && hasActiveDescendant;
 
   // Keep folder open if a user navigates to an inner child via another link
   useEffect(() => {
@@ -113,7 +119,7 @@ const MenuItem: React.FC<{
     if (level === 0) {
       return cn(
         "font-semibold text-[14px] py-1.5 px-3",
-        isActive
+        isExactActive || isParentActive
           ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white"
           : "text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
       );
@@ -121,7 +127,8 @@ const MenuItem: React.FC<{
     if (level === 1) {
       return cn(
         "font-medium text-[13.5px] py-1.5 px-2.5",
-        isActive
+        // Highlights the Level 1 parent (e.g., "Scroll Stack") when any child is clicked!
+        isExactActive || isParentActive
           ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white font-semibold"
           : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/30",
       );
@@ -129,7 +136,7 @@ const MenuItem: React.FC<{
     // Level 2+ (Sub-children and deeper)
     return cn(
       "text-[13px] py-1 px-2.5",
-      isActive
+      isExactActive || isParentActive
         ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white font-medium"
         : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/20",
     );
@@ -181,8 +188,8 @@ const MenuItem: React.FC<{
         </button>
       ) : (
         <Link href={item.href} className={baseClasses}>
-          {/* Active indicator pill for leaf items */}
-          {isActive && (
+          {/* Active indicator pill ONLY renders on the exact active child leaf */}
+          {isExactActive && (
             <motion.div
               layoutId="sidebar-active-indicator"
               className="absolute left-0 w-[3px] h-[16px] bg-zinc-900 dark:bg-zinc-100 rounded-full -ml-[7px]"
