@@ -11,6 +11,27 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Client-side</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Runs securely in the browser without relying on any external APIs.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High-Fidelity Output</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Generates crisp, scalable SVG QR codes that never lose visual quality.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily tweak foreground/background colors, sizes, and error correction levels.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Drag-and-Drop Scan</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The reader supports both file selection and drag-and-drop for a premium UX.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Use the interactive control panel below to seamlessly toggle between the **Generator** and the **Reader** modes. 
@@ -88,6 +109,34 @@ export default function ReaderExample() {
 }
 ```
 
+</div>
+
+## Best Practices & Guidelines
+
+<div id="generator-docs-best-practices">
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/20">
+    <h4 className="text-base font-semibold text-indigo-900 dark:text-indigo-300 mb-1">Color Contrast</h4>
+    <p className="text-indigo-800 dark:text-indigo-400/80 text-sm">Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Error Correction Level</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
+  </div>
+</div>
+</div>
+
+<div id="reader-docs-best-practices">
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/50 dark:bg-rose-950/20">
+    <h4 className="text-base font-semibold text-rose-900 dark:text-rose-300 mb-1">Error Handling</h4>
+    <p className="text-rose-800 dark:text-rose-400/80 text-sm">The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Accessibility (a11y)</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>
+  </div>
+</div>
 </div>
 
 ## Props Reference
