@@ -403,6 +403,16 @@ export function HeroVideoPlayerShowcase() {
     };
   }, [color]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("hero-video-change", {
+          detail: { ratio: aspectRatio },
+        })
+      );
+    }
+  }, [aspectRatio]);
+
   const generateUsageCode = () => {
     return `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 

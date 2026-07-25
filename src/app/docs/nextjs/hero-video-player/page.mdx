@@ -4,7 +4,26 @@ import { HeroVideoPlayerShowcase } from "@/components/site/HeroVideoPlayerShowca
 
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
----
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Immersive Previews</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Captivate users with autoplaying, loop-ready thumbnail videos that elegantly transition into a full modal player.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Cinematic Glow</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optional ambient background glow derived directly from the video thumbnail for a premium, theater-like aesthetic.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Aspect Ratios</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Natively supports standard 16:9, ultrawide 21:9, and classic 4:3 ratios, automatically scaling for mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully compliant with ARIA standards, allowing users to trigger the video and dismiss the modal via keyboard navigation.</p>
+  </div>
+</div>
 
 ## Interactive Showcase
 
@@ -12,57 +31,98 @@ Use the interactive control panel below to experiment with aspect ratios, modal 
 
 <HeroVideoPlayerShowcase />
 
----
+import { HeroVideoPlayerDocsUpdater } from "@/components/custom/blocks/HeroVideoPlayerDocsUpdater";
 
-## Installation
+<HeroVideoPlayerDocsUpdater />
 
-### Dependencies
+## Usage
 
-This component requires **Framer Motion** for modal animations and **Lucide React** for UI icons.
+The code below dynamically updates based on the **Aspect Ratio** you select in the Interactive Showcase above.
 
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it inside components/custom/blocks/HeroVideoPlayerBlock.tsx.
-
-## Usage Architecture
-
-The `<HeroVideoPlayer>` adapts seamlessly across screen sizes and supports standard embed URLs from YouTube, Vimeo, or direct HTML5 video sources.
-
+<div id="usage-block-16-9" className="block">
 ```tsx
 import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function HeroSection() {
   return (
-    <section className="relative max-w-6xl mx-auto py-20 px-6">
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
-          The Future of Web Interfaces
-        </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          Deploy high-performance digital experiences in seconds with our
-          unified design architecture.
-        </p>
-      </div>
-
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
       <HeroVideoPlayer
+        enableGlow={true}
         aspectRatio="16/9"
-        badge="Watch Product Tour"
-        enableGlow="{true}"
         modalSize="lg"
+        badge="Platform v2.4"
+        title="Experience the Architecture in Action"
+        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
         playButtonLabel="Watch 4K Demo"
-        subtitle="See how teams around the world use our platform to ship UI components 10x faster."
-        thumbnailUrl="[https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80](https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80)"
-        title="Experience the Workflow in Under 3 Minutes"
-        videoUrl="[https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1](https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1)"
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
       />
-    </section>
+    </div>
   );
 }
 ```
+</div>
+
+<div id="usage-block-21-9" className="hidden">
+```tsx
+import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+
+export default function HeroSection() {
+  return (
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
+      <HeroVideoPlayer
+        enableGlow={true}
+        aspectRatio="21/9"
+        modalSize="lg"
+        badge="Platform v2.4"
+        title="Experience the Architecture in Action"
+        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
+        playButtonLabel="Watch 4K Demo"
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-4-3" className="hidden">
+```tsx
+import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+
+export default function HeroSection() {
+  return (
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
+      <HeroVideoPlayer
+        enableGlow={true}
+        aspectRatio="4/3"
+        modalSize="lg"
+        badge="Platform v2.4"
+        title="Experience the Architecture in Action"
+        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
+        playButtonLabel="Watch 4K Demo"
+        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Optimizing Thumbnails</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Always provide a high-resolution <code>thumbnailUrl</code> that matches your selected <code>aspectRatio</code>. The ambient glow effect relies on the average color values of the thumbnail image.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Autoplay Considerations</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When embedding YouTube or Vimeo videos via <code>videoUrl</code>, append <code>?autoplay=1</code> to the URL so that the video starts playing instantly when the user clicks to open the modal.</p>
+  </div>
+</div>
 
 ## Props Reference
 
