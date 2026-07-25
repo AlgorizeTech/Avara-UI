@@ -10,7 +10,7 @@ interface TOCContextType {
 const TOCContext = createContext<TOCContextType | undefined>(undefined);
 
 export function TOCProvider({ children }: { children: ReactNode }) {
-  const [showTOC, setShowTOC] = useState(true);
+  const [showTOC, setShowTOC] = useState(false);
 
   return (
     <TOCContext.Provider value={{ showTOC, setShowTOC }}>

@@ -2,6 +2,7 @@ type NavigationChild = {
   label: string;
   href: string;
   badge?: string; 
+  children?: NavigationChild[];
 };
 type NavigationItem = {
   label: string;
@@ -9,18 +10,18 @@ type NavigationItem = {
 };
 
 export const navigation: NavigationItem[] = [
-  {
-    label: "Getting Started",
-    children: [
-      { label: "Introduction", href: "/docs/nextjs/index" },
-      {
-        label: "Installation",
-        href: "/docs/nextjs/installation",
-        badge: "Updated",
-      },
-      { label: "Quick Start", href: "/docs/nextjs/first-app" },
-    ],
-  },
+  // {
+  //   label: "Getting Started",
+  //   children: [
+  //     { label: "Introduction", href: "/docs/nextjs/index" },
+  //     {
+  //       label: "Installation",
+  //       href: "/docs/nextjs/installation",
+  //       badge: "Updated",
+  //     },
+  //     { label: "Quick Start", href: "/docs/nextjs/first-app" },
+  //   ],
+  // },
   // {
   //   label: "Core Features",
   //   children: [
@@ -79,6 +80,7 @@ export const navigation: NavigationItem[] = [
       { label: "Resizable", href: "/docs/nextjs/resizable",  },
       { label: "Loader", href: "/docs/nextjs/loader",  },
       { label: "Sonner", href: "/docs/nextjs/sonner",  },
+      { label: "Stepper", href: "/docs/nextjs/stepper" },
       { label: "Select", href: "/docs/nextjs/select",  },
       { label: "Scroll Area", href: "/docs/nextjs/scroll-area",  },
       { label: "Skeleton", href: "/docs/nextjs/skeleton",  },
@@ -119,13 +121,14 @@ export const navigation: NavigationItem[] = [
       { label: "Timeline", href: "/docs/nextjs/animated-timeline" },
       { label: "Tilted Card", href: "/docs/nextjs/tilted-card" },
       { label: "Animated List", href: "/docs/nextjs/animated-list" },
-      { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack" },
-      { label: "Stepper", href: "/docs/nextjs/stepper" },
-      { label: "Split Stepper", href: "/docs/nextjs/split-stepper" },
-      { label: "Split ScrollStack", href: "/docs/nextjs/split-scroll-stack" },
+      // { label: "Split Stepper", href: "/docs/nextjs/split-stepper" },
       // { label: "Split ScrollStepper", href: "/docs/nextjs/split-scroll-stepper", badge: "New" },
-      { label: "Sticky ScrollStack", href: "/docs/nextjs/sticky-scroll-stack", badge: "New" },
-      { label: "Horizontal Scroll Stack", href: "/docs/nextjs/horizontal-scroll-stack", badge: "New" },
+      { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack", children: [
+        { label: "Simple Scroll Stack", href: "/docs/nextjs/scroll-stack" },
+        { label: "Split ScrollStack", href: "/docs/nextjs/split-scroll-stack" },
+        { label: "Sticky ScrollStack", href: "/docs/nextjs/sticky-scroll-stack", badge: "New" },
+        { label: "Horizontal Scroll Stack", href: "/docs/nextjs/horizontal-scroll-stack", badge: "New" },
+      ] },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion" },
       { label: "Network Graph", href: "/docs/nextjs/network-graph", badge: "New" },

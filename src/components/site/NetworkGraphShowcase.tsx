@@ -30,6 +30,8 @@ export interface NetworkGraphProps extends React.HTMLAttributes<HTMLDivElement> 
   baseRadius?: number;
   ringGap?: number;
   animateIn?: boolean;
+  animateOrbit?: boolean;
+  orbitSpeed?: number;
 }
 
 const sizeMap = {
@@ -39,7 +41,7 @@ const sizeMap = {
 };
 
 export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
-  ({ nodes, centerNode, ringCount = 3, baseRadius = 15, ringGap = 15, animateIn = true, className, ...props }, ref) => {
+  ({ nodes, centerNode, ringCount = 3, baseRadius = 15, ringGap = 15, animateIn = true, animateOrbit = true, orbitSpeed = 1, className, ...props }, ref) => {
     const rings = Array.from({ length: ringCount }, (_, i) => i + 1);
     const groupedNodes = useMemo(() => {
       const groups: Record<number, NetworkNode[]> = {};
@@ -63,24 +65,39 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
           const ringNodes = groupedNodes[ringIndex] || [];
           const angleStep = 360 / ringNodes.length;
           const radius = baseRadius + (ringIndex - 1) * ringGap;
+          const isEvenRing = ringIndex % 2 === 0;
+          const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
+          const ringRotateDirection = isEvenRing ? -360 : 360;
+          const avatarCounterRotate = isEvenRing ? 360 : -360;
 
-          return ringNodes.map((node, index) => {
-            const angle = angleStep * index - 90;
-            const radian = (angle * Math.PI) / 180;
-            const x = \`calc(50% + \${radius * Math.cos(radian)}%)\`;
-            const y = \`calc(50% + \${radius * Math.sin(radian)}%)\`;
+          return (
+            <motion.div
+              key={\`ring-orbit-\${ringIndex}\`}
+              className="absolute inset-0 pointer-events-none"
+              animate={animateOrbit ? { rotate: ringRotateDirection } : { rotate: 0 }}
+              transition={animateOrbit ? { duration: baseDuration, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
+            >
+              {ringNodes.map((node, index) => {
+                const angle = angleStep * index - 90;
+                const radian = (angle * Math.PI) / 180;
+                const x = \`calc(50% + \${radius * Math.cos(radian)}%)\`;
+                const y = \`calc(50% + \${radius * Math.sin(radian)}%)\`;
 
-            return (
-              <div key={node.id} className="absolute z-10 w-0 h-0 flex items-center justify-center" style={{ left: x, top: y }}>
-                <motion.div className="relative group cursor-pointer" initial={animateIn ? { opacity: 0, scale: 0 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 + ringIndex * 0.1 + index * 0.05 }}>
-                  <div className={cn("relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900", sizeMap[node.size || "md"])}>
-                    {node.image ? <img src={node.image} alt={node.label || "Avatar"} className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">{node.fallback}</span>}
+                return (
+                  <div key={node.id} className="absolute z-10 w-0 h-0 flex items-center justify-center pointer-events-auto" style={{ left: x, top: y }}>
+                    <motion.div initial={animateIn ? { opacity: 0, scale: 0 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 + ringIndex * 0.1 + index * 0.05 }}>
+                      <motion.div className="relative group cursor-pointer" animate={animateOrbit ? { rotate: avatarCounterRotate } : { rotate: 0 }} transition={animateOrbit ? { duration: baseDuration, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}>
+                        <div className={cn("relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900", sizeMap[node.size || "md"])}>
+                          {node.image ? <img src={node.image} alt={node.label || "Avatar"} className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">{node.fallback}</span>}
+                        </div>
+                        {node.label && <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">{node.label}</div>}
+                      </motion.div>
+                    </motion.div>
                   </div>
-                  {node.label && <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">{node.label}</div>}
-                </motion.div>
-              </div>
-            );
-          });
+                );
+              })}
+            </motion.div>
+          );
         })}
 
         {centerNode && (
@@ -113,7 +130,7 @@ const sizeMap = {
 };
 
 export const NetworkGraph = React.forwardRef(
-  ({ nodes, centerNode, ringCount = 3, baseRadius = 15, ringGap = 15, animateIn = true, className, ...props }, ref) => {
+  ({ nodes, centerNode, ringCount = 3, baseRadius = 15, ringGap = 15, animateIn = true, animateOrbit = true, orbitSpeed = 1, className, ...props }, ref) => {
     const rings = Array.from({ length: ringCount }, (_, i) => i + 1);
     const groupedNodes = useMemo(() => {
       const groups = {};
@@ -137,24 +154,39 @@ export const NetworkGraph = React.forwardRef(
           const ringNodes = groupedNodes[ringIndex] || [];
           const angleStep = 360 / ringNodes.length;
           const radius = baseRadius + (ringIndex - 1) * ringGap;
+          const isEvenRing = ringIndex % 2 === 0;
+          const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
+          const ringRotateDirection = isEvenRing ? -360 : 360;
+          const avatarCounterRotate = isEvenRing ? 360 : -360;
 
-          return ringNodes.map((node, index) => {
-            const angle = angleStep * index - 90;
-            const radian = (angle * Math.PI) / 180;
-            const x = \`calc(50% + \${radius * Math.cos(radian)}%)\`;
-            const y = \`calc(50% + \${radius * Math.sin(radian)}%)\`;
+          return (
+            <motion.div
+              key={\`ring-orbit-\${ringIndex}\`}
+              className="absolute inset-0 pointer-events-none"
+              animate={animateOrbit ? { rotate: ringRotateDirection } : { rotate: 0 }}
+              transition={animateOrbit ? { duration: baseDuration, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
+            >
+              {ringNodes.map((node, index) => {
+                const angle = angleStep * index - 90;
+                const radian = (angle * Math.PI) / 180;
+                const x = \`calc(50% + \${radius * Math.cos(radian)}%)\`;
+                const y = \`calc(50% + \${radius * Math.sin(radian)}%)\`;
 
-            return (
-              <div key={node.id} className="absolute z-10 w-0 h-0 flex items-center justify-center" style={{ left: x, top: y }}>
-                <motion.div className="relative group cursor-pointer" initial={animateIn ? { opacity: 0, scale: 0 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 + ringIndex * 0.1 + index * 0.05 }}>
-                  <div className={cn("relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900", sizeMap[node.size || "md"])}>
-                    {node.image ? <img src={node.image} alt={node.label || "Avatar"} className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">{node.fallback}</span>}
+                return (
+                  <div key={node.id} className="absolute z-10 w-0 h-0 flex items-center justify-center pointer-events-auto" style={{ left: x, top: y }}>
+                    <motion.div initial={animateIn ? { opacity: 0, scale: 0 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 + ringIndex * 0.1 + index * 0.05 }}>
+                      <motion.div className="relative group cursor-pointer" animate={animateOrbit ? { rotate: avatarCounterRotate } : { rotate: 0 }} transition={animateOrbit ? { duration: baseDuration, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}>
+                        <div className={cn("relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900", sizeMap[node.size || "md"])}>
+                          {node.image ? <img src={node.image} alt={node.label || "Avatar"} className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">{node.fallback}</span>}
+                        </div>
+                        {node.label && <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">{node.label}</div>}
+                      </motion.div>
+                    </motion.div>
                   </div>
-                  {node.label && <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">{node.label}</div>}
-                </motion.div>
-              </div>
-            );
-          });
+                );
+              })}
+            </motion.div>
+          );
         })}
 
         {centerNode && (
@@ -236,6 +268,8 @@ export default function SocialProofHero() {
         ringCount={2}
         baseRadius={20}
         ringGap={20}
+        animateOrbit={true}
+        orbitSpeed={1}
         centerNode={{ 
           image: "https://i.pravatar.cc/150?u=99", 
           label: "You" 
@@ -277,6 +311,8 @@ export default function SocialProofHero() {
               ringCount={3}
               baseRadius={18}
               ringGap={16}
+              animateOrbit={true}
+              orbitSpeed={1}
               centerNode={{
                 image: "https://i.pravatar.cc/150?u=99",
                 label: "You",
