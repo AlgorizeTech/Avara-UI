@@ -6,45 +6,344 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Language Badges</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Clipboard Copy</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dark Mode Ready</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 <CustomCodeBlockShowcase />
 
----
+import { CustomCodeBlockDocsUpdater } from "@/components/custom/blocks/CustomCodeBlockDocsUpdater";
 
-## Installation
-
-### Copy the Component
-
-This component manages its own syntax highlighting using a custom regex engine, meaning there are no heavy external dependencies like Prism or Shiki. It uses `lucide-react` and `react-icons` for beautiful language badges.
-
-Copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CustomCodeBlock.tsx`.
-
----
+<CustomCodeBlockDocsUpdater />
 
 ## Usage
 
-### Simple Usage
+The code below dynamically updates based on the **Language** you select in the Interactive Showcase above.
 
-Simply pass a `code` string and a `language` prop. The component automatically handles syntax highlighting, rendering the correct language icon, and clipboard copying.
-
+<div id="usage-block-HTML" className="block">
 ```tsx
+"use client";
+
+import React from "react";
 import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
-export default function BasicUsage() {
-  const codeString = `console.log("Hello, World!");`;
+export default function AppShowcasePage() {
+  const codeString = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Landing Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <header class="flex justify-between items-center p-6 bg-white shadow-sm">
+    <h1 class="text-2xl font-bold tracking-tight text-indigo-600">SaaSFlow</h1>
+    <nav>
+      <ul class="flex gap-4 font-medium">
+        <li><a href="#features" class="hover:text-indigo-500">Features</a></li>
+        <li><a href="#pricing" class="hover:text-indigo-500">Pricing</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main class="max-w-4xl mx-auto py-20 text-center">
+    <h2 class="text-5xl font-black mb-6">Build Faster. Scale Better.</h2>
+    <p class="text-xl text-slate-500 mb-8">The ultimate UI toolkit for modern startups.</p>
+    <button class="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold hover:bg-indigo-700 transition">
+      Get Started
+    </button>
+  </main>
+</body>
+</html>`;
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-12">
-      <CustomCodeBlock
+    <div className="w-full h-full p-4 md:p-12">
+      <CustomCodeBlock 
         code={codeString}
-        language="javascript"
-        fileName="example.js"
+        language="html"
+        fileName="index.html"
       />
     </div>
   );
 }
 ```
+</div>
+
+<div id="usage-block-CSS" className="hidden">
+```tsx
+"use client";
+
+import React from "react";
+import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+export default function AppShowcasePage() {
+  const codeString = `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+  }
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(0.95); opacity: 1; }
+}`;
+
+  return (
+    <div className="w-full h-full p-4 md:p-12">
+      <CustomCodeBlock 
+        code={codeString}
+        language="css"
+        fileName="globals.css"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-JavaScript" className="hidden">
+```tsx
+"use client";
+
+import React from "react";
+import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+export default function AppShowcasePage() {
+  const codeString = `import React, { useState, useEffect } from "react";
+import { Activity, Server, Zap } from "lucide-react";
+
+export function SystemStatus({ serverName, defaultStatus }) {
+  const [status, setStatus] = useState(defaultStatus);
+  const [metrics, setMetrics] = useState({ ping: 45, load: 2.1 });
+
+  useEffect(() => {
+    // Simulate real-time monitoring
+    const interval = setInterval(() => {
+      setMetrics({
+        ping: Math.floor(Math.random() * 20) + 30,
+        load: Number((Math.random() * 3 + 1).toFixed(2))
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="p-6 rounded-2xl bg-white border border-slate-200">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold flex items-center gap-2">
+          <Server className="w-5 h-5 text-indigo-500" />
+          {serverName}
+        </h3>
+        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
+          {status}
+        </span>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 bg-slate-50 rounded-xl">
+          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+            <Activity className="w-4 h-4"/> Ping
+          </div>
+          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
+        </div>
+        <div className="p-4 bg-slate-50 rounded-xl">
+          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+            <Zap className="w-4 h-4"/> Load
+          </div>
+          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
+        </div>
+      </div>
+    </div>
+  );
+}`;
+
+  return (
+    <div className="w-full h-full p-4 md:p-12">
+      <CustomCodeBlock 
+        code={codeString}
+        language="jsx"
+        fileName="SystemStatus.jsx"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-TypeScript" className="hidden">
+```tsx
+"use client";
+
+import React from "react";
+import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+export default function AppShowcasePage() {
+  const codeString = `import React, { useState, useEffect } from "react";
+import { Activity, Server, Zap } from "lucide-react";
+
+interface SystemMetrics {
+  ping: number;
+  load: number;
+}
+
+interface SystemStatusProps {
+  serverName: string;
+  defaultStatus: "Operational" | "Degraded" | "Outage";
+}
+
+export function SystemStatus({ serverName, defaultStatus }: SystemStatusProps) {
+  const [status, setStatus] = useState(defaultStatus);
+  const [metrics, setMetrics] = useState<SystemMetrics>({ ping: 45, load: 2.1 });
+
+  useEffect(() => {
+    // Simulate real-time monitoring data
+    const interval = setInterval(() => {
+      setMetrics({
+        ping: Math.floor(Math.random() * 20) + 30,
+        load: Number((Math.random() * 3 + 1).toFixed(2))
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="p-6 rounded-2xl bg-white border border-slate-200">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold flex items-center gap-2">
+          <Server className="w-5 h-5 text-indigo-500" />
+          {serverName}
+        </h3>
+        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
+          {status}
+        </span>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 bg-slate-50 rounded-xl">
+          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+            <Activity className="w-4 h-4"/> Ping
+          </div>
+          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
+        </div>
+        <div className="p-4 bg-slate-50 rounded-xl">
+          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+            <Zap className="w-4 h-4"/> Load
+          </div>
+          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
+        </div>
+      </div>
+    </div>
+  );
+}`;
+
+  return (
+    <div className="w-full h-full p-4 md:p-12">
+      <CustomCodeBlock 
+        code={codeString}
+        language="tsx"
+        fileName="SystemStatus.tsx"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-Terminal" className="hidden">
+```tsx
+"use client";
+
+import React from "react";
+import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+export default function AppShowcasePage() {
+  const codeString = `# Initialize a new Next.js project with Tailwind CSS
+npx create-next-app@latest my-app --typescript --tailwind --eslint
+
+# Navigate into the project directory
+cd my-app
+
+# Install additional UI dependencies and icons
+npm install clsx tailwind-merge framer-motion lucide-react
+
+# Add Shadcn UI components for faster development
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add button card dialog
+
+# Start the development server on port 3000
+npm run dev
+
+# The server is now running at http://localhost:3000
+# Press Ctrl+C to stop the server`;
+
+  return (
+    <div className="w-full h-full p-4 md:p-12">
+      <CustomCodeBlock 
+        code={codeString}
+        language="bash"
+        fileName="terminal"
+      />
+    </div>
+  );
+}
+```
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Language Prop Mapping</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
+  </div>
+</div>
 
 ## Props Reference
 

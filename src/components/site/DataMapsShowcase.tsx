@@ -210,7 +210,7 @@ DataMaps.displayName = "DataMaps";
 
 const DATA_MAPS_JS = DATA_MAPS_TS.replace(/export interface [^}]+}/g, "").replace(/: [A-Za-z\[\]]+/g, "").replace(/<HTMLDivElement, DataMapsProps>/g, ""); // A basic clean for JS
 
-const USAGE_CODE = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+const FILL_USAGE_CODE = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
 
 const sampleData = [
   { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
@@ -224,7 +224,27 @@ const sampleData = [
 export default function App() {
   return (
     <div className="h-[500px] w-full bg-white dark:bg-black rounded-lg">
-      <DataMaps dataPoints={sampleData} />
+      <DataMaps dataPoints={sampleData} variant="fill" />
+    </div>
+  );
+}
+`;
+
+const DOTS_USAGE_CODE = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+
+const sampleData = [
+  { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
+  { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
+  { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
+  { id: "BRA", name: "Brazil", flag: "🇧🇷", active: 5.1, activeTrend: "up", new: 0.2, newTrend: "down" },
+  { id: "GBR", name: "United Kingdom", flag: "🇬🇧", active: 2.8, activeTrend: "down", new: 0.05, newTrend: "up" },
+  { id: "DEU", name: "Germany", flag: "🇩🇪", active: 3.4, activeTrend: "up", new: 0.1, newTrend: "up" },
+];
+
+export default function App() {
+  return (
+    <div className="h-[500px] w-full bg-white dark:bg-black rounded-lg">
+      <DataMaps dataPoints={sampleData} variant="dots" />
     </div>
   );
 }
@@ -249,6 +269,13 @@ export function DataMapsShowcase() {
     const savedColor = localStorage.getItem("primaryColor");
     if (savedColor) setColor(savedColor);
   }, []);
+
+  useEffect(() => {
+    document.body.setAttribute("data-active-variant", variant);
+    return () => {
+      document.body.removeAttribute("data-active-variant");
+    };
+  }, [variant]);
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
@@ -281,7 +308,7 @@ export function DataMapsShowcase() {
               <button
                 key={v}
                 onClick={() => setVariant(v)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
+                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer ${
                   variant === v
                     ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
                     : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -339,13 +366,13 @@ export function DataMapsShowcase() {
         </div>
       </div>
 
-      {/* --- PREVIEW AND CODE --- */}
+      {/* --- PREVIEW WINDOW --- */}
       <ComponentPreview
         name="DataMaps"
         tsCode={DATA_MAPS_TS}
         jsCode={DATA_MAPS_JS}
-        usageCode={USAGE_CODE.replace('<DataMaps dataPoints={sampleData} />', `<DataMaps dataPoints={sampleData}${variant === "dots" ? ' variant="dots"' : ''} highlightColor="${getHexForColor(color)}" />`)}
-        jsUsageCode={USAGE_CODE.replace('<DataMaps dataPoints={sampleData} />', `<DataMaps dataPoints={sampleData}${variant === "dots" ? ' variant="dots"' : ''} highlightColor="${getHexForColor(color)}" />`)}
+        usageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
+        jsUsageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
       >
         <div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
           <DataMaps 

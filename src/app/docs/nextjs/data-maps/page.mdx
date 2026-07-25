@@ -6,11 +6,38 @@ import { DataMapsShowcase } from "@/components/site/DataMapsShowcase";
 
 A React-Leaflet based choropleth map component for beautifully visualizing geographic data and trends without clunky map tiles.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">SSR Compatible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Lightweight Vectors</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dual Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Rich Hover Cards</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
+  </div>
+</div>
+
 <div className="mt-8">
   <DataMapsShowcase />
 </div>
 
 ---
+
+<style dangerouslySetInnerHTML={{__html: `
+  body[data-active-variant="dots"] [id^="datamap-docs-fill"] { display: none !important; }
+  body[data-active-variant="fill"] [id^="datamap-docs-dots"] { display: none !important; }
+  body:not([data-active-variant]) [id^="datamap-docs-dots"] { display: none !important; } 
+`}} />
 
 ## Installation
 
@@ -21,17 +48,13 @@ npm install leaflet react-leaflet
 npm install -D @types/leaflet
 ```
 
-### Copy the Component
 
-This component uses `next/dynamic` to dynamically import Leaflet modules, ensuring Server-Side Rendering (SSR) compatibility in Next.js. It fetches a lightweight World GeoJSON file on the fly to render a beautiful, scalable vector map.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DataMapsBlock.tsx`.
-
----
 
 ## Usage
 
 Pass an array of data points to the component. Each point requires an `id` (the 3-letter ISO country code) and can display rich metrics like active users and new trends in an elegant hover card.
+
+<div id="datamap-docs-fill">
 
 ```tsx
 import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
@@ -45,11 +68,48 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="w-full h-[500px]">
-      <DataMaps dataPoints={mapData} zoom={2} />
+      <DataMaps dataPoints={mapData} zoom={2} variant="fill" />
     </div>
   );
 }
 ```
+
+</div>
+
+<div id="datamap-docs-dots">
+
+```tsx
+import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+
+export default function AnalyticsDashboard() {
+  const mapData = [
+    { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
+    { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
+    { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
+  ];
+
+  return (
+    <div className="w-full h-[500px]">
+      <DataMaps dataPoints={mapData} zoom={2} variant="dots" />
+    </div>
+  );
+}
+```
+
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Dynamic Imports</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Always ensure that any component relying on <code>react-leaflet</code> is dynamically imported with <code>{"{ ssr: false }"}</code>. Leaflet relies on the browser's <code>window</code> object and will crash your Next.js app if executed on the server.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">GeoJSON Caching</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>
+  </div>
+</div>
 
 ## Props Reference
 

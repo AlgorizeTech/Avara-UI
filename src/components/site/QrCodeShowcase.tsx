@@ -113,6 +113,7 @@ export default function App() {
 
 export function QrCodeShowcase() {
 	const [activeTab, setActiveTab] = useState<"generator" | "reader">("generator");
+	const [themeColor, setThemeColor] = useState("default");
 	
 	const [value, setValue] = useState("https://algorizetech.com");
 	const [level, setLevel] = useState<"L" | "M" | "Q" | "H">("L");
@@ -201,6 +202,26 @@ export function QrCodeShowcase() {
 		};
 	}, [activeTab]);
 
+	const getButtonColorClass = () => {
+		switch (themeColor) {
+			case "blue": return "bg-blue-600 hover:bg-blue-700 text-white";
+			case "emerald": return "bg-emerald-600 hover:bg-emerald-700 text-white";
+			case "rose": return "bg-rose-600 hover:bg-rose-700 text-white";
+			case "violet": return "bg-violet-600 hover:bg-violet-700 text-white";
+			default: return "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200";
+		}
+	};
+
+	const getTextColorClass = () => {
+		switch (themeColor) {
+			case "blue": return "text-blue-600 dark:text-blue-500";
+			case "emerald": return "text-emerald-600 dark:text-emerald-500";
+			case "rose": return "text-rose-600 dark:text-rose-500";
+			case "violet": return "text-violet-600 dark:text-violet-500";
+			default: return "text-zinc-900 dark:text-white";
+		}
+	};
+
 	return (
 		<div className="w-full flex flex-col gap-6 not-prose my-8">
 			{/* Control Panel / Tabs */}
@@ -225,6 +246,27 @@ export function QrCodeShowcase() {
 							>
 								{v.label}
 							</button>
+						))}
+					</div>
+				</div>
+				<div className="flex flex-col gap-2">
+					<label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+						Color Variant
+					</label>
+					<div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 items-center gap-2 px-2">
+						{[
+							{ id: "default", class: "bg-zinc-900 dark:bg-zinc-100" },
+							{ id: "blue", class: "bg-blue-600" },
+							{ id: "emerald", class: "bg-emerald-600" },
+							{ id: "rose", class: "bg-rose-600" },
+							{ id: "violet", class: "bg-violet-600" },
+						].map((c) => (
+							<button
+								key={c.id}
+								onClick={() => setThemeColor(c.id)}
+								className={`w-6 h-6 rounded-full cursor-pointer transition-transform ${c.class} ${themeColor === c.id ? "ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black scale-110" : ""}`}
+								aria-label={c.id}
+							/>
 						))}
 					</div>
 				</div>
@@ -271,12 +313,9 @@ export function QrCodeShowcase() {
 										<button
 											key={lvl}
 											onClick={() => setLevel(lvl)}
-											style={
-												level === lvl ? { color: "var(--primary)" } : undefined
-											}
 											className={`cursor-pointer px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 ${
 												level === lvl
-													? "bg-slate-50 dark:bg-slate-900"
+													? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
 													: "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
 											}`}>
 											{lvl}
@@ -302,7 +341,7 @@ export function QrCodeShowcase() {
 							<div className="flex flex-col sm:flex-row gap-3 w-full">
 								<button
 									onClick={handleDownloadPNG}
-									className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 rounded-xl transition-colors shadow-sm">
+									className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors shadow-sm ${getButtonColorClass()}`}>
 									<ImageIcon className="w-4 h-4" />
 									Save as PNG
 								</button>

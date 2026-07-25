@@ -11,25 +11,43 @@ A stunning, fully responsive collection of mobile device mockups engineered for 
 
 The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhone 12 Pro Max, the ultra-modern iPhone 14 Pro Max, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10. Whether you want to evoke nostalgia with a classic home button or highlight the future with a dynamic island and edge-to-edge glass, these mockups seamlessly wrap your React content to create the perfect showcase.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">6 Unique Devices</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Choose from a variety of iconic models including classic iPhones, modern Pro Max series, Samsung Ultra, and Google Pixel.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pure CSS/SVG</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">No heavy raster images used for the frames. Everything is built with perfectly scaled SVG and CSS for blazing fast performance.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Media & React Ready</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily pass static images, autoplaying looping videos, or full interactive React trees directly into the screen container.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Theme Adapting</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Use the control panel below to test the different device variants and see how they adapt to light and dark modes.
 
 <MobileMockupShowcase />
 
----
-
-## Installation
-
-### 1. Copy the Component
-
-You can copy the full engine code directly from the **Component** tab in any of the Interactive Showcases above. Place it in a single file named `MobileMockupBlock.tsx` (e.g., in `src/components/custom/blocks/MobileMockupBlock.tsx`).
-
-All 6 mockups are bundled into this single file for your convenience.
 
 ## Usage
 
 Simply drop the component into your page. It automatically scales and supports passing custom children or an image/video source directly to the screen.
+
+import { MobileMockupDocsUpdater } from "@/components/custom/blocks/MobileMockupDocsUpdater";
+
+<MobileMockupDocsUpdater />
+
+<div id="mobile-mockup-docs">
 
 ```tsx
 import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
@@ -53,6 +71,21 @@ export default function AppShowcasePage() {
   );
 }
 ```
+
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Content Aspect Ratios</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a <code id="mockup-aspect-ratio">16:9</code> vertical aspect ratio to prevent unnatural stretching or cropping inside the frame.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Handling Overflow</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">If you are passing interactive React components inside the mockup instead of an image, ensure you add <code>overflow-y-auto</code> to your child wrapper if you want the screen content to be scrollable.</p>
+  </div>
+</div>
 
 ## Props Reference
 

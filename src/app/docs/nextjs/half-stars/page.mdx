@@ -6,28 +6,42 @@ A sleek, customizable star rating component for Next.js applications that suppor
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High Precision</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Interactive Mode</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Custom</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Interact with the examples below to test different rating configurations!
 
 <HalfStarsShowcase />
 
----
+import { HalfStarsDocsUpdater } from "@/components/custom/blocks/HalfStarsDocsUpdater";
 
-## Installation
-
-Ensure you have Tailwind CSS configured in your project, as the component uses standard Tailwind classes for styling.
-
-### Copy the Component
-
-You can copy the full component code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/HalfStarsBlock.tsx`.
-
----
+<HalfStarsDocsUpdater />
 
 ## Usage
 
-Simply drop the component into your page. You can customize the rating, size, colors, and maximum number of stars. To make it interactive, pass `interactive={true}` and provide an `onRatingChange` handler.
+The code below dynamically updates based on the **Configuration** you select in the Interactive Showcase above.
 
+<div id="usage-block-full" className="block">
 ```tsx
 "use client";
 
@@ -35,60 +49,110 @@ import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
 export default function AppShowcasePage() {
-  const [fullRating, setFullRating] = useState(3);
-  const [halfRating, setHalfRating] = useState(3.5);
-  const [preciseRating, setPreciseRating] = useState(4.2);
-  const [customRating, setCustomRating] = useState(7.5);
+  const [rating, setRating] = useState(3);
 
   return (
-    <div className="flex flex-col gap-8 p-8">
-        <div>
-          <h3>Full Stars (Interactive)</h3>
-          <HalfStars 
-            rating={fullRating} 
-            interactive={true} 
-            allowHalf={false} 
-            onRatingChange={setFullRating}
-            showText={false}
-          />
-        </div>
-
-        <div>
-          <h3>Half Stars (Interactive)</h3>
-          <HalfStars 
-            rating={halfRating} 
-            interactive={true} 
-            allowHalf={true} 
-            onRatingChange={setHalfRating} 
-          />
-        </div>
-
-        <div>
-          <h3>Continuous Fractions (Interactive)</h3>
-          <HalfStars 
-            rating={preciseRating} 
-            interactive={true} 
-            step={0.1}
-            onRatingChange={setPreciseRating} 
-          />
-        </div>
-
-        <div>
-          <h3>Custom Max Stars (Interactive)</h3>
-          <HalfStars 
-            rating={customRating} 
-            maxStars={10}
-            activeColor="text-red-500" 
-            inactiveColor="text-red-200 dark:text-red-900"
-            interactive={true} 
-            allowHalf={true} 
-            onRatingChange={setCustomRating} 
-          />
-        </div>
+    <div className="flex justify-center p-8">
+      <HalfStars 
+        rating={rating} 
+        interactive={true} 
+        allowHalf={false} 
+        onRatingChange={setRating}
+        showText={false}
+      />
     </div>
   );
 }
 ```
+</div>
+
+<div id="usage-block-half" className="hidden">
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+
+export default function AppShowcasePage() {
+  const [rating, setRating] = useState(3.5);
+
+  return (
+    <div className="flex justify-center p-8">
+      <HalfStars 
+        rating={rating} 
+        interactive={true} 
+        allowHalf={true} 
+        onRatingChange={setRating} 
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-continuous" className="hidden">
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+
+export default function AppShowcasePage() {
+  const [rating, setRating] = useState(4.2);
+
+  return (
+    <div className="flex justify-center p-8">
+      <HalfStars 
+        rating={rating} 
+        interactive={true} 
+        step={0.1}
+        onRatingChange={setRating} 
+      />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="usage-block-custom" className="hidden">
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+
+export default function AppShowcasePage() {
+  const [rating, setRating] = useState(7.5);
+
+  return (
+    <div className="flex justify-center p-8">
+      <HalfStars 
+        rating={rating} 
+        maxStars={10}
+        activeColor="text-red-500" 
+        inactiveColor="text-red-200 dark:text-red-900"
+        interactive={true} 
+        allowHalf={true} 
+        onRatingChange={setRating} 
+      />
+    </div>
+  );
+}
+```
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Precision Steps</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">If you are allowing user input via <code>interactive={true}</code>, it is recommended to set <code>allowHalf={true}</code> (step 0.5) or <code>step={1}</code> for standard reviews. Setting <code>step={0.1}</code> can make it difficult for users to intentionally click a precise score like 4.0 exactly.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Color Contrast</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. By default, <code>text-slate-200</code> works well on white backgrounds.</p>
+  </div>
+</div>
 
 ## Props Reference
 
