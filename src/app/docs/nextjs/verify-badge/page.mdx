@@ -21,21 +21,21 @@ Use the control panel below to test the different styles and configurations for 
 
 ## Installation
 
-### 1. Install Dependencies
-
 This component uses `lucide-react` for the checkmark icon and standard Tailwind utilities.
 
 ```bash
 npm install lucide-react clsx tailwind-merge
 ```
 
-### 2. Copy the Component
-
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in `components/custom/blocks/VerifyBadgeBlock.tsx`.
-
 ## Usage
 
 Simply drop the component into your page. You can customize the layout by passing the necessary props.
+
+import { VerifyBadgeDocsUpdater } from "@/components/custom/blocks/VerifyBadgeDocsUpdater";
+
+<VerifyBadgeDocsUpdater />
+
+<div id="verify-badge-docs">
 
 ```tsx
 import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
@@ -43,13 +43,14 @@ import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 export default function ProfilePage() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-semibold text-lg">AlgorizeTech</span>
-      {/* Display a verified badge */}
-      <VerifyBadge variant="blue" size="lg" animate={true} />
+      <span className="font-semibold text-lg">Elon Musk</span>
+      <VerifyBadge color="#1d9bf0" size="lg" animate={true} />
     </div>
   );
 }
 ```
+
+</div>
 
 ## Props Reference
 
@@ -70,16 +71,16 @@ export default function ProfilePage() {
           <code>VerifyBadge</code>
         </td>
         <td>
-          <code>variant</code>
+          <code>color</code>
         </td>
         <td>
-          <code>"blue" | "gold" | "dark" | "gray"</code>
+          <code>string (hex/css color)</code>
         </td>
         <td>
-          <code>"blue"</code>
+          <code>"#1d9bf0"</code>
         </td>
         <td>
-          The color theme of the badge. Use blue for default verification, gold for premium/orgs.
+          The theme color of the badge.
         </td>
       </tr>
       <tr>

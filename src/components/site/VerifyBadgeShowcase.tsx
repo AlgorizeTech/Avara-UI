@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { VerifyBadge, VerifyBadgeProps } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -11,14 +11,14 @@ import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
 export interface VerifyBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "blue" | "gold" | "dark" | "gray";
+  color?: string;
   size?: "sm" | "md" | "lg" | "xl";
   animate?: boolean;
 }
 
 export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
   (
-    { variant = "blue", size = "md", animate = false, className, ...props },
+    { color = "#1d9bf0", size = "md", animate = false, className, ...props },
     ref
   ) => {
     const sizeClasses = {
@@ -35,27 +35,6 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
       xl: "w-4 h-4",
     };
 
-    const variantStyles = {
-      blue: "text-[#1d9bf0]", // Twitter/X Blue
-      gold: "text-[#eab308]", // Verified Org Gold
-      dark: "text-slate-900 dark:text-white", // Dark/White theme
-      gray: "text-slate-400 dark:text-slate-500", // Generic unverified or subtle
-    };
-
-    const bgVariantStyles = {
-      blue: "bg-[#1d9bf0]",
-      gold: "bg-[#eab308]",
-      dark: "bg-slate-900 dark:bg-white",
-      gray: "bg-slate-400 dark:bg-slate-500",
-    };
-
-    const checkColors = {
-      blue: "text-white",
-      gold: "text-white",
-      dark: "text-white dark:text-slate-900",
-      gray: "text-white",
-    };
-
     return (
       <div
         ref={ref}
@@ -69,19 +48,18 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         {/* Animated Shine/Ping effect */}
         {animate && (
           <div
-            className={cn(
-              "absolute inset-0 rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity",
-              bgVariantStyles[variant]
-            )}
+            className="absolute inset-0 rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity"
+            style={{ backgroundColor: color }}
           />
         )}
         
-        {/* Badge SVG shape */}
+        {/* Badge SVG shape (Twitter-like decagon/star) */}
         <svg
           viewBox="0 0 24 24"
           fill="currentColor"
-          className={cn("absolute inset-0 w-full h-full", variantStyles[variant])}
+          className="absolute inset-0 w-full h-full"
           style={{
+            color: color,
             filter: "drop-shadow(0px 1px 1px rgba(0,0,0,0.1))",
           }}
         >
@@ -91,9 +69,8 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         {/* Checkmark inside */}
         <Check
           className={cn(
-            "relative z-10 stroke-[4]",
-            iconSizeClasses[size],
-            checkColors[variant]
+            "relative z-10 stroke-[4] text-white",
+            iconSizeClasses[size]
           )}
         />
       </div>
@@ -110,18 +87,45 @@ const VERIFY_BADGE_JS = VERIFY_BADGE_TS
   .replace(/,\n    ref\n  \) => {/g, ", ref) => {");
 
 export function VerifyBadgeShowcase() {
-  const [variant, setVariant] = useState<VerifyBadgeProps["variant"]>("blue");
-  const [size, setSize] = useState<VerifyBadgeProps["size"]>("lg");
+  const [color, setColor] = useState<string>("#1d9bf0"); // Default blue
+  const [size, setSize] = useState<"sm" | "md" | "lg" | "xl">("lg");
   const [animate, setAnimate] = useState<boolean>(true);
+
+  // Helper to handle both preset colors and custom hex colors
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+  };
+
+  useEffect(() => {
+    // If the color matches a preset, we could use that for vstate, but let's just 
+    // try to map it to a predefined state name if it's one of the 4 original ones 
+    // so the MDX toggle still works for the predefined ones (blue/gold/dark/gray)
+    let stateColor = "blue";
+    if (color === "#eab308") stateColor = "gold";
+    if (color === "#0f172a" || color === "#f8fafc" || color === "rgb(15, 23, 42)") stateColor = "dark";
+    if (color === "#94a3b8") stateColor = "gray";
+    
+    document.body.setAttribute("data-active-vstate", `${stateColor}-${size}-${animate}`);
+    
+    // Dispatch custom event for the Docs Updater
+    const event = new CustomEvent("verify-badge-change", {
+      detail: { color, size, animate }
+    });
+    window.dispatchEvent(event);
+    
+    return () => {
+      document.body.removeAttribute("data-active-vstate");
+    };
+  }, [color, size, animate]);
 
   const getUsageCode = (isTs: boolean) => {
     return `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
-export default function App() {
+export default function ProfilePage() {
   return (
     <div className="flex items-center gap-2">
       <span className="font-semibold text-lg">Elon Musk</span>
-      <VerifyBadge variant="${variant}" size="${size}"${animate ? " animate" : ""} />
+      <VerifyBadge color="${color}" size="${size}" animate={${animate}} />
     </div>
   );
 }`;
@@ -132,27 +136,7 @@ export default function App() {
       {/* --- CONTROL PANEL --- */}
       <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
         
-        {/* Variant Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {(["blue", "gold", "dark", "gray"] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
+
 
         {/* Size Selector */}
         <div className="flex flex-col gap-2">
@@ -164,7 +148,7 @@ export default function App() {
               <button
                 key={s}
                 onClick={() => setSize(s)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md uppercase transition-all ${
+                className={`px-4 py-1.5 text-sm font-medium rounded-md uppercase transition-all cursor-pointer ${
                   size === s
                     ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
                     : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -181,25 +165,72 @@ export default function App() {
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Animation
           </label>
-          <div className="flex items-center gap-3 h-[36px]">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={animate}
-              onClick={() => setAnimate(!animate)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900 ${
-                animate ? 'bg-indigo-500' : 'bg-zinc-300 dark:bg-zinc-700'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  animate ? 'translate-x-6' : 'translate-x-1'
+          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
+            {[
+              { label: "ON", value: true },
+              { label: "OFF", value: false }
+            ].map((opt) => (
+              <button
+                key={opt.label}
+                onClick={() => setAnimate(opt.value)}
+                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer ${
+                  animate === opt.value
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Color Selector */}
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            Theme Color
+          </label>
+          <div className="flex items-center gap-2 h-[36px]">
+            {[
+              { id: "#1d9bf0", bg: "bg-[#1d9bf0]" },
+              { id: "#eab308", bg: "bg-[#eab308]" },
+              { id: "#0f172a", bg: "bg-slate-900 dark:bg-slate-100" },
+              { id: "#94a3b8", bg: "bg-slate-400" },
+            ].map((c) => (
+              <button
+                key={c.id}
+                onClick={() => handleColorChange(c.id)}
+                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
+                  color === c.id
+                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
+                    : "hover:scale-110 hover:opacity-80"
+                }`}
+                title={c.id}
               />
-            </button>
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {animate ? "Pulse ON" : "Pulse OFF"}
-            </span>
+            ))}
+            
+            {/* Custom Color Picker */}
+            <div className="relative flex items-center justify-center w-6 h-6 ml-1 group">
+              <input
+                type="color"
+                value={color.startsWith("#") ? color : "#1d9bf0"}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                title="Custom Color"
+              />
+              <div
+                className={`w-full h-full rounded-full border-2 transition-all duration-200 overflow-hidden ${
+                  !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
+                    ? "border-zinc-400 dark:border-zinc-500 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
+                    : "border-dashed border-zinc-300 dark:border-zinc-700 group-hover:border-zinc-400 dark:group-hover:border-zinc-500 group-hover:scale-110"
+                }`}
+              >
+                <div
+                  className="w-full h-full pointer-events-none"
+                  style={{ backgroundColor: color.startsWith("#") ? color : "transparent" }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -220,7 +251,7 @@ export default function App() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="font-semibold text-slate-900 dark:text-slate-100 text-base">AlgorizeTech</span>
-                <VerifyBadge variant={variant} size={size} animate={animate} />
+                <VerifyBadge color={color} size={size} animate={animate} />
               </div>
               <span className="text-sm text-slate-500 dark:text-slate-400">@algorizetech</span>
             </div>

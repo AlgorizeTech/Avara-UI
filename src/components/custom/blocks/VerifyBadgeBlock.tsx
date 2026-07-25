@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
 export interface VerifyBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "blue" | "gold" | "dark" | "gray";
+  color?: string;
   size?: "sm" | "md" | "lg" | "xl";
   animate?: boolean;
 }
 
 export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
   (
-    { variant = "blue", size = "md", animate = false, className, ...props },
+    { color = "#1d9bf0", size = "md", animate = false, className, ...props },
     ref
   ) => {
     const sizeClasses = {
@@ -29,27 +29,6 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
       xl: "w-4 h-4",
     };
 
-    const variantStyles = {
-      blue: "text-[#1d9bf0]", // Twitter/X Blue
-      gold: "text-[#eab308]", // Verified Org Gold
-      dark: "text-slate-900 dark:text-white", // Dark/White theme
-      gray: "text-slate-400 dark:text-slate-500", // Generic unverified or subtle
-    };
-
-    const bgVariantStyles = {
-      blue: "bg-[#1d9bf0]",
-      gold: "bg-[#eab308]",
-      dark: "bg-slate-900 dark:bg-white",
-      gray: "bg-slate-400 dark:bg-slate-500",
-    };
-
-    const checkColors = {
-      blue: "text-white",
-      gold: "text-white",
-      dark: "text-white dark:text-slate-900",
-      gray: "text-white",
-    };
-
     return (
       <div
         ref={ref}
@@ -63,10 +42,8 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         {/* Animated Shine/Ping effect */}
         {animate && (
           <div
-            className={cn(
-              "absolute inset-0 rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity",
-              bgVariantStyles[variant]
-            )}
+            className="absolute inset-0 rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity"
+            style={{ backgroundColor: color }}
           />
         )}
         
@@ -74,8 +51,9 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         <svg
           viewBox="0 0 24 24"
           fill="currentColor"
-          className={cn("absolute inset-0 w-full h-full", variantStyles[variant])}
+          className="absolute inset-0 w-full h-full"
           style={{
+            color: color,
             filter: "drop-shadow(0px 1px 1px rgba(0,0,0,0.1))",
           }}
         >
@@ -85,9 +63,8 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         {/* Checkmark inside */}
         <Check
           className={cn(
-            "relative z-10 stroke-[4]",
-            iconSizeClasses[size],
-            checkColors[variant]
+            "relative z-10 stroke-[4] text-white",
+            iconSizeClasses[size]
           )}
         />
       </div>
