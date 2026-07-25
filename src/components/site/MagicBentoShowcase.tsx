@@ -85,7 +85,7 @@ export const MagicBentoCard = React.forwardRef<HTMLDivElement, MagicBentoCardPro
         />
         <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
         <motion.div
-          className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-overlay dark:mix-blend-screen"
+          className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-normal dark:mix-blend-screen"
           style={{
             background: useMotionTemplate\`
               radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-glow), transparent 40%)
@@ -158,7 +158,7 @@ export const MagicBentoCard = React.forwardRef(({ children, className, highlight
       />
       <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
       <motion.div
-        className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-overlay dark:mix-blend-screen"
+        className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-normal dark:mix-blend-screen"
         style={{
           background: useMotionTemplate\`
             radial-gradient(600px circle at \${mouseX}px \${mouseY}px, var(--magic-glow), transparent 40%)
@@ -184,11 +184,11 @@ const hexToRgb = (hex: string) => {
   const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
   return result
     ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "255, 171, 29"; // Default to primaryColor from context
+    : "255, 171, 29";
 };
 
 export function MagicBentoShowcase() {
-  const [color, setColor] = useState<string>("#FFAB1D"); // Setup based on user summary context
+  const [color, setColor] = useState<string>("#FFAB1D");
 
   // Sync with localStorage
   useEffect(() => {
@@ -314,7 +314,6 @@ export default function DashboardLayout() {
               {/* ============================== */}
               <MagicBentoCard
                 highlight
-                /* FIXED RESPONSIVENESS: row-span-2 is now applied on mobile so the visual has room! */
                 className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative"
               >
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
@@ -324,7 +323,6 @@ export default function DashboardLayout() {
 
                 {/* Decorative Visual inside Large Card */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  {/* Scaled down slightly on mobile to prevent clipping */}
                   <div className="relative flex items-center justify-center scale-[0.8] sm:scale-100">
                     <div className="absolute w-40 h-40 border border-zinc-200 dark:border-zinc-800 rounded-full animate-[spin_10s_linear_infinite] border-dashed" />
                     <div className="absolute w-24 h-24 border border-zinc-300 dark:border-zinc-700 rounded-full animate-[spin_6s_linear_infinite_reverse]" />
