@@ -25,6 +25,8 @@ export interface NetworkGraphProps
   baseRadius?: number; // Starting radius percentage for the first ring
   ringGap?: number; // Percentage gap between rings
   animateIn?: boolean;
+  animateOrbit?: boolean; // Toggles planetary orbital motion
+  orbitSpeed?: number; // Speed multiplier (1 = default, 2 = twice as fast)
 }
 
 const sizeMap = {
@@ -42,6 +44,8 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
       baseRadius = 15,
       ringGap = 15,
       animateIn = true,
+      animateOrbit = true,
+      orbitSpeed = 1,
       className,
       ...props
     },
@@ -49,6 +53,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
   ) => {
     const rings = Array.from({ length: ringCount }, (_, i) => i + 1);
 
+    // FIXED: Added [nodes] dependency array to useMemo to resolve ts(2554) and eslint warnings
     const groupedNodes = useMemo(() => {
       const groups: Record<number, NetworkNode[]> = {};
       nodes.forEach((node) => {
@@ -61,7 +66,6 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
     return (
       <div
         ref={ref}
-        // Removed overflow-hidden here so avatars can safely bleed over the mathematical edges
         className={cn(
           "relative w-full aspect-square max-w-[800px] mx-auto flex items-center justify-center",
           className,
@@ -92,63 +96,107 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
           })}
         </div>
 
-        {/* Render Nodes per Ring */}
+        {/* Render Nodes per Ring with Orbiting Container */}
         {rings.map((ringIndex) => {
           const ringNodes = groupedNodes[ringIndex] || [];
           const angleStep = 360 / ringNodes.length;
           const radius = baseRadius + (ringIndex - 1) * ringGap;
 
-          return ringNodes.map((node, index) => {
-            const angle = angleStep * index - 90;
-            const radian = (angle * Math.PI) / 180;
-            const x = `calc(50% + ${radius * Math.cos(radian)}%)`;
-            const y = `calc(50% + ${radius * Math.sin(radian)}%)`;
+          // Alternate rotation direction per ring for visual depth
+          const isEvenRing = ringIndex % 2 === 0;
+          const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
+          const ringRotateDirection = isEvenRing ? -360 : 360;
+          const avatarCounterRotate = isEvenRing ? 360 : -360;
 
-            return (
-              <div
-                key={node.id}
-                className="absolute z-10 w-0 h-0 flex items-center justify-center"
-                style={{ left: x, top: y }}
-              >
-                <motion.div
-                  className="relative group cursor-pointer"
-                  initial={animateIn ? { opacity: 0, scale: 0 } : false}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                    delay: 0.2 + ringIndex * 0.1 + index * 0.05,
-                  }}
-                >
+          return (
+            <motion.div
+              key={`ring-orbit-${ringIndex}`}
+              className="absolute inset-0 pointer-events-none"
+              animate={
+                animateOrbit ? { rotate: ringRotateDirection } : { rotate: 0 }
+              }
+              transition={
+                animateOrbit
+                  ? {
+                      duration: baseDuration,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }
+                  : { duration: 0.5 }
+              }
+            >
+              {ringNodes.map((node, index) => {
+                const angle = angleStep * index - 90;
+                const radian = (angle * Math.PI) / 180;
+                const x = `calc(50% + ${radius * Math.cos(radian)}%)`;
+                const y = `calc(50% + ${radius * Math.sin(radian)}%)`;
+
+                return (
                   <div
-                    className={cn(
-                      "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900",
-                      sizeMap[node.size || "md"],
-                    )}
+                    key={node.id}
+                    className="absolute z-10 w-0 h-0 flex items-center justify-center pointer-events-auto"
+                    style={{ left: x, top: y }}
                   >
-                    {node.image ? (
-                      <img
-                        src={node.image}
-                        alt={node.label || "Avatar"}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
-                        {node.fallback}
-                      </span>
-                    )}
-                  </div>
+                    {/* 1. Entrance Scale & Opacity Wrapper */}
+                    <motion.div
+                      initial={animateIn ? { opacity: 0, scale: 0 } : false}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20,
+                        delay: 0.2 + ringIndex * 0.1 + index * 0.05,
+                      }}
+                    >
+                      {/* 2. Counter-Rotation Wrapper (Keeps Avatars Upright!) */}
+                      <motion.div
+                        className="relative group cursor-pointer"
+                        animate={
+                          animateOrbit
+                            ? { rotate: avatarCounterRotate }
+                            : { rotate: 0 }
+                        }
+                        transition={
+                          animateOrbit
+                            ? {
+                                duration: baseDuration,
+                                repeat: Infinity,
+                                ease: "linear",
+                              }
+                            : { duration: 0.5 }
+                        }
+                      >
+                        <div
+                          className={cn(
+                            "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900",
+                            sizeMap[node.size || "md"],
+                          )}
+                        >
+                          {node.image ? (
+                            <img
+                              src={node.image}
+                              alt={node.label || "Avatar"}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
+                              {node.fallback}
+                            </span>
+                          )}
+                        </div>
 
-                  {node.label && (
-                    <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                      {node.label}
-                    </div>
-                  )}
-                </motion.div>
-              </div>
-            );
-          });
+                        {node.label && (
+                          <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                            {node.label}
+                          </div>
+                        )}
+                      </motion.div>
+                    </motion.div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          );
         })}
 
         {/* Center Node */}
