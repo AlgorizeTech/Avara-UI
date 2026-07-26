@@ -8,13 +8,36 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
+## Features
+Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pure CSS Layout</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Headless Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Staggered Entrances</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Powered by Framer Motion to deliver beautiful, Apple-style staggered blur-fade entrances on scroll.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Resizing</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically reflows into the correct number of columns using Tailwind responsive utility classes.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
+Resize your browser window to see how the Masonry Grid intelligently recalculates its columns.
 
-The grid dynamically adapts its column count based on the screen size (1 column on mobile, 2 on tablet, 3 on desktop). Resize your browser to see the fluid reflow, and click the replay button to watch the elegant, Apple-style staggered entrance sequence.
 
-<MasonryGridShowcase />
-
----
+<div className="mt-8">
+  <MasonryGridShowcase />
+</div>
 
 ## Installation
 
@@ -30,9 +53,7 @@ npm install framer-motion
 
 Copy the full engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/MasonryGridBlock.tsx.
 
-## Usage Architecture
-
-The `<MasonryGrid>` accepts your raw data via the items prop and iterates through them using the renderItem function. This headless approach gives you total control over how your cards, images, or text blocks look without needing to modify the core layout component.
+## Implementation
 
 ```tsx
 import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
@@ -54,6 +75,15 @@ export default function BentoFeatures() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Break-Inside-Avoid</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.</p>
+  </div>
+</div>
 
 ## Props Reference
 

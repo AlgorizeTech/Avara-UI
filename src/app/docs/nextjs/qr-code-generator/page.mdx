@@ -5,6 +5,17 @@ export const metadata = {
   description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images.",
 };
 
+
+<style dangerouslySetInnerHTML={{__html: `
+  .prose h2 {
+    margin-bottom: 12px !important;
+  }
+  .prose h2 + * {
+    margin-top: 0 !important;
+  }
+`}} />
+
+
 # QR Code Suite
 
 A premium, dual-purpose QR Code component suite built for Next.js applications. 
@@ -12,41 +23,35 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
 ## Features
+Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
+
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Client-side</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Runs securely in the browser without relying on any external APIs.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High-Fidelity Output</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Generates crisp, scalable SVG QR codes that never lose visual quality.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily tweak foreground/background colors, sizes, and error correction levels.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Drag-and-Drop Scan</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">The reader supports both file selection and drag-and-drop for a premium UX.</p>
   </div>
 </div>
 
 ## Interactive Showcase
+Adjust the settings in the interactive QR Code demo to see the code regenerate in real-time.
 
-Use the interactive control panel below to seamlessly toggle between the **Generator** and the **Reader** modes. 
 
-In the **Generator** mode, you can instantly create, customize, and preview high-fidelity QR codes with options to tweak colors, sizes, and error correction levels. Switch over to the **Reader** mode to experience our robust, drag-and-drop scanning interface that effortlessly extracts encoded URLs and data from your uploaded images.
-
-<QrCodeShowcase />
-
----
-
-<style dangerouslySetInnerHTML={{__html: `
-  body[data-active-tab="reader"] [id^="generator-docs-"] { display: none !important; }
-  body[data-active-tab="generator"] [id^="reader-docs-"] { display: none !important; }
-  body:not([data-active-tab]) [id^="reader-docs-"] { display: none !important; } 
-`}} />
+<div className="mt-8">
+  <QrCodeShowcase />
+</div>
 
 ## Installation
 
@@ -72,11 +77,9 @@ npm install jsqr lucide-react
 
 </div>
 
-## Usage
+## Implementation
 
-<div id="generator-docs-usage">
-
-Generate standard QR codes with custom sizes, colors, and correction levels.
+<div id="generator-docs-usage" >
 
 ```tsx
 import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";

@@ -200,7 +200,7 @@ export function AlertShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-        <div className="flex flex-col xl:flex-row gap-6">
+        <div className="flex flex-wrap gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Semantic Type
@@ -236,7 +236,7 @@ export function AlertShowcase() {
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Visual Variant
             </label>
-            <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
+            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
               {(
                 [
                   "solid",
@@ -249,7 +249,7 @@ export function AlertShowcase() {
                 <button
                   key={v}
                   onClick={() => setVariant(v)}
-                  className={`px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
+                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
                     variant === v
                       ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
                       : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -262,12 +262,12 @@ export function AlertShowcase() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-wrap gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Icon Type
             </label>
-            <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
+            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
               {[
                 { id: "none", label: "None" },
                 { id: "lucide", label: "Lucide Icon" },
@@ -276,7 +276,7 @@ export function AlertShowcase() {
                 <button
                   key={i.id}
                   onClick={() => setIconType(i.id as IconType)}
-                  className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                     iconType === i.id
                       ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
                       : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -292,37 +292,40 @@ export function AlertShowcase() {
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Features
             </label>
-            <div className="flex gap-2 h-[36px] items-center">
+            <div className="flex flex-wrap gap-1 bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5 items-center">
               <button
                 onClick={() => setIsDismissible(!isDismissible)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-lg border transition-all ${
+                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                   isDismissible
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-300"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
               >
                 Dismissible
               </button>
               <button
                 onClick={() => setShowRichContent(!showRichContent)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-lg border transition-all ${
+                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
                   showRichContent
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-300"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
               >
                 Rich Content
               </button>
 
-              {isDismissible && (
-                <button
-                  onClick={() => setResetKey((prev) => prev + 1)}
-                  className="p-1.5 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors ml-2"
-                  title="Reset Alert"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-              )}
+              <button
+                onClick={() => setResetKey((prev) => prev + 1)}
+                disabled={!isDismissible}
+                className={`p-1.5 transition-all ml-1 rounded-md shadow-sm border ${
+                  isDismissible
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white border-zinc-200 dark:border-zinc-700 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700"
+                    : "bg-white/50 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-600 border-transparent cursor-not-allowed opacity-60"
+                }`}
+                title="Reset Alert"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>

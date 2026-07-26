@@ -7,37 +7,41 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
 ## Features
+Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
+
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Language Badges</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Clipboard Copy</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dark Mode Ready</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
   </div>
 </div>
 
 ## Interactive Showcase
+Interact with the Custom Code Block to test the copy button and view its scrolling behavior.
 
-<CustomCodeBlockShowcase />
+
+<div className="mt-8">
+  <CustomCodeBlockShowcase />
+</div>
 
 import { CustomCodeBlockDocsUpdater } from "@/components/custom/blocks/CustomCodeBlockDocsUpdater";
 
 <CustomCodeBlockDocsUpdater />
 
-## Usage
-
-The code below dynamically updates based on the **Language** you select in the Interactive Showcase above.
+## Implementation
 
 <div id="usage-block-HTML" className="block">
 ```tsx

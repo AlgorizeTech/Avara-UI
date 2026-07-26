@@ -5,39 +5,41 @@ import { HeroVideoPlayerShowcase } from "@/components/site/HeroVideoPlayerShowca
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
 ## Features
+Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
+
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Immersive Previews</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Captivate users with autoplaying, loop-ready thumbnail videos that elegantly transition into a full modal player.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Cinematic Glow</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optional ambient background glow derived directly from the video thumbnail for a premium, theater-like aesthetic.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Aspect Ratios</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Natively supports standard 16:9, ultrawide 21:9, and classic 4:3 ratios, automatically scaling for mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard Accessible</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully compliant with ARIA standards, allowing users to trigger the video and dismiss the modal via keyboard navigation.</p>
   </div>
 </div>
 
 ## Interactive Showcase
+Interact with the Hero Video Player to test its custom play buttons and full-screen capabilities.
 
-Use the interactive control panel below to experiment with aspect ratios, modal dimensions, and ambient glow effects in real time.
 
-<HeroVideoPlayerShowcase />
+<div className="mt-8">
+  <HeroVideoPlayerShowcase />
+</div>
 
 import { HeroVideoPlayerDocsUpdater } from "@/components/custom/blocks/HeroVideoPlayerDocsUpdater";
 
 <HeroVideoPlayerDocsUpdater />
 
-## Usage
-
-The code below dynamically updates based on the **Aspect Ratio** you select in the Interactive Showcase above.
+## Implementation
 
 <div id="usage-block-16-9" className="block">
 ```tsx
