@@ -203,6 +203,7 @@ export function QrCodeShowcase() {
 	}, [activeTab]);
 
 	const getButtonColorClass = () => {
+		if (themeColor.startsWith("#")) return "text-white";
 		switch (themeColor) {
 			case "blue": return "bg-blue-600 hover:bg-blue-700 text-white";
 			case "emerald": return "bg-emerald-600 hover:bg-emerald-700 text-white";
@@ -213,6 +214,7 @@ export function QrCodeShowcase() {
 	};
 
 	const getTextColorClass = () => {
+		if (themeColor.startsWith("#")) return "";
 		switch (themeColor) {
 			case "blue": return "text-blue-600 dark:text-blue-500";
 			case "emerald": return "text-emerald-600 dark:text-emerald-500";
@@ -268,6 +270,25 @@ export function QrCodeShowcase() {
 								aria-label={c.id}
 							/>
 						))}
+
+						<div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
+
+						{/* Custom Color Picker */}
+						<div
+							className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${themeColor.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black" : "border-zinc-300 dark:border-zinc-700 cursor-pointer"}`}
+						>
+							<input
+								type="color"
+								value={themeColor.startsWith("#") ? themeColor : "#8b5cf6"}
+								onChange={(e) => setThemeColor(e.target.value)}
+								className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
+								title="Custom Hex Color"
+							/>
+							<div
+								className="w-full h-full pointer-events-none"
+								style={{ backgroundColor: themeColor.startsWith("#") ? themeColor : "transparent" }}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -313,6 +334,7 @@ export function QrCodeShowcase() {
 										<button
 											key={lvl}
 											onClick={() => setLevel(lvl)}
+											style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
 											className={`cursor-pointer px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 ${
 												level === lvl
 													? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
@@ -334,13 +356,15 @@ export function QrCodeShowcase() {
 									size={220}
 									level={level}
 									bgColor="transparent"
-									fgColor="currentColor"
+									fgColor={themeColor.startsWith("#") ? themeColor : "currentColor"}
+									style={{ color: themeColor.startsWith("#") ? themeColor : undefined }}
 									className="text-zinc-900 dark:text-white"
 								/>
 							</div>
 							<div className="flex flex-col sm:flex-row gap-3 w-full">
 								<button
 									onClick={handleDownloadPNG}
+									style={{ backgroundColor: themeColor.startsWith("#") ? themeColor : undefined }}
 									className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors shadow-sm ${getButtonColorClass()}`}>
 									<ImageIcon className="w-4 h-4" />
 									Save as PNG

@@ -5,6 +5,17 @@ export const metadata = {
   description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support.",
 };
 
+
+<style dangerouslySetInnerHTML={{__html: `
+  .prose h2 {
+    margin-bottom: 12px !important;
+  }
+  .prose h2 + * {
+    margin-top: 0 !important;
+  }
+`}} />
+
+
 # Verify Badge
 
 A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
@@ -14,19 +25,19 @@ It includes distinct customization options to match different areas of your appl
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">SVG Based</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Custom Themes</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily pass any custom hex color or use predefined themes to match your branding.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Micro-Animations</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built-in optional subtle pulse animations to draw attention to verified status.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Flexible Sizing</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
   </div>
@@ -34,11 +45,9 @@ It includes distinct customization options to match different areas of your appl
 
 ## Interactive Showcase
 
-Use the control panel below to test the different styles and configurations for your verify badge!
-
-<VerifyBadgeShowcase />
-
----
+<div className="mt-8">
+  <VerifyBadgeShowcase />
+</div>
 
 ## Installation
 
@@ -48,15 +57,13 @@ This component uses `lucide-react` for the checkmark icon and standard Tailwind 
 npm install lucide-react clsx tailwind-merge
 ```
 
-## Usage
-
-Simply drop the component into your page. You can customize the layout by passing the necessary props.
+## Implementation
 
 import { VerifyBadgeDocsUpdater } from "@/components/custom/blocks/VerifyBadgeDocsUpdater";
 
 <VerifyBadgeDocsUpdater />
 
-<div id="verify-badge-docs">
+<div id="verify-badge-docs" >
 
 ```tsx
 import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";

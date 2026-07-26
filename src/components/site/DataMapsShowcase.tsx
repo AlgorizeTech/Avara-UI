@@ -262,7 +262,7 @@ const SAMPLE_DATA: DataPoint[] = [
 import { useState, useEffect } from "react";
 
 export function DataMapsShowcase() {
-  const [color, setColor] = useState("indigo");
+  const [color, setColor] = useState("default");
   const [variant, setVariant] = useState<"fill" | "dots">("fill");
 
   useEffect(() => {
@@ -286,16 +286,17 @@ export function DataMapsShowcase() {
   const getHexForColor = (c: string) => {
     if (c.startsWith("#")) return c;
     const colors: Record<string, string> = {
-      indigo: "#6366f1",
-      rose: "#f43f5e",
+      default: "#18181b",
+      blue: "#2563eb",
       emerald: "#10b981",
-      zinc: "#18181b", // Will adapt in dark mode automatically via CSS if properly set, but hex is fixed here. Let's pass the raw color name to the component if it supports it, or convert.
+      rose: "#e11d48",
+      violet: "#7c3aed",
     };
-    return colors[c] || "#2563eb"; // Fallback blue
+    return colors[c] || "#18181b"; // Fallback zinc-900
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 not-prose my-8">
+    <div className="w-full flex flex-col gap-0 not-prose">
       {/* --- CONTROL PANEL --- */}
       <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
         {/* Variant Selector */}
@@ -325,20 +326,21 @@ export function DataMapsShowcase() {
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Theme Color
           </label>
-          <div className="flex items-center gap-2 h-[36px]">
+          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 items-center gap-2 px-2">
             {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
+              { id: "default", bg: "bg-zinc-900 dark:bg-zinc-100" },
+              { id: "blue", bg: "bg-blue-600" },
+              { id: "emerald", bg: "bg-emerald-600" },
+              { id: "rose", bg: "bg-rose-600" },
+              { id: "violet", bg: "bg-violet-600" },
             ].map((c) => (
               <button
                 key={c.id}
                 onClick={() => handleColorChange(c.id)}
-                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
+                className={`w-6 h-6 rounded-full cursor-pointer transition-transform outline-none flex items-center justify-center ${c.bg} ${
                   color === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
+                    ? "ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black scale-110"
+                    : ""
                 }`}
                 title={c.id}
               />
@@ -348,7 +350,7 @@ export function DataMapsShowcase() {
 
             {/* Custom Color Picker */}
             <div
-              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
+              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black" : "border-zinc-300 dark:border-zinc-700 cursor-pointer"}`}
             >
               <input
                 type="color"

@@ -6,13 +6,32 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">3 Layout Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">System Sync</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
-Use the control panel below to test the different layout styles. If you change your actual system theme while the `pill` variant is active, you will see the active indicator seamlessly slide to match your OS settings!
-
-<ThemeSwitcherShowcase />
-
----
+<div className="mt-8">
+  <ThemeSwitcherShowcase />
+</div>
 
 ## Installation
 
@@ -53,9 +72,7 @@ export default function RootLayout({
 
 You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ThemeSwitcherBlock.tsx.
 
-## Usage
-
-Simply drop the component into your header or settings page. You can customize the layout by passing the variant prop.
+## Implementation
 
 ```tsx
 import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
@@ -76,6 +93,15 @@ export default function DashboardHeader() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">SSR Considerations</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
+  </div>
+</div>
 
 ## Props Reference
 
