@@ -231,7 +231,7 @@ export default function App() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- REORGANIZED CONTROL PANEL --- */}
-      <ShowcaseControlPanel className="border-red-500/50 dark:border-red-500/50">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-6 rounded-2xl border-red-500/50 dark:border-red-500/50">
         {/* ROW 1: Hero Text Input & Replay Button */}
         <div className="flex flex-col gap-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
