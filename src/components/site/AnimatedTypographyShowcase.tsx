@@ -8,6 +8,7 @@ import {
   TypographyVariant,
 } from "@/components/custom/blocks/AnimatedTypographyBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -214,6 +215,7 @@ export function AnimatedTypographyShowcase() {
     if (customSize) propsStr += `\n      size="${customSize}"`;
 
     return `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 
 export default function App() {
   return (
@@ -228,7 +230,7 @@ export default function App() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- REORGANIZED CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl z-0 relative shadow-sm">
+      <div className="flex flex-col gap-6 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-red-500/50 dark:border-red-500/50 rounded-2xl z-0 relative">
         {/* ROW 1: Hero Text Input & Replay Button */}
         <div className="flex flex-col gap-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -362,71 +364,8 @@ export default function App() {
             />
           </div>
 
-          {/* Text Color */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Text Color
-            </label>
-            <div className="flex items-center justify-between gap-1.5 h-10 px-2 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
-              <button
-                onClick={() => handleColorChange("default")}
-                className={`px-2.5 h-7 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                  color === "default"
-                    ? "bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-                    : "border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                Default
-              </button>
-              <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-700" />
-              <div className="flex items-center gap-1.5">
-                {[
-                  { id: "indigo", bg: "bg-indigo-500" },
-                  { id: "rose", bg: "bg-rose-500" },
-                  { id: "emerald", bg: "bg-emerald-500" },
-                  { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-                ].map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => handleColorChange(c.id)}
-                    className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center cursor-pointer ${c.bg} ${
-                      color === c.id
-                        ? "ring-2 ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500 scale-110"
-                        : "hover:scale-110 opacity-85 hover:opacity-100"
-                    }`}
-                    title={c.id}
-                  />
-                ))}
-
-                <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-700 mx-0.5" />
-
-                {/* Custom Color Picker */}
-                <div
-                  className={`relative flex items-center justify-center w-6 h-6 rounded-full overflow-hidden border transition-all cursor-pointer ${
-                    color.startsWith("#")
-                      ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500"
-                      : "border-zinc-300 dark:border-zinc-700 hover:scale-110"
-                  }`}
-                >
-                  <input
-                    type="color"
-                    value={color.startsWith("#") ? color : "#8b5cf6"}
-                    onChange={(e) => handleColorChange(e.target.value)}
-                    className="absolute inset-[-10px] w-10 h-10 cursor-pointer opacity-0"
-                    title="Custom Hex Color"
-                  />
-                  <div
-                    className="w-full h-full"
-                    style={{
-                      backgroundColor: color.startsWith("#")
-                        ? color
-                        : "transparent",
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Color */}
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Text Color" />
         </div>
       </div>
 

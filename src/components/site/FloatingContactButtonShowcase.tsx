@@ -2,6 +2,7 @@
 
 import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -837,6 +838,7 @@ export function FloatingContactButtonShowcase() {
 
   const generateUsageCode = () => {
     return `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -938,49 +940,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Accent Color
-            </label>
-            <div className="flex items-center justify-between gap-1.5 h-10 px-2.5 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
-              <div className="flex items-center gap-2">
-                {[
-                  { id: "#6366f1", bg: "bg-indigo-500" },
-                  { id: "#f43f5e", bg: "bg-rose-500" },
-                  { id: "#10b981", bg: "bg-emerald-500" },
-                  { id: "#f59e0b", bg: "bg-amber-500" },
-                ].map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => handleColorChange(c.id)}
-                    className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center cursor-pointer ${c.bg} ${
-                      color === c.id
-                        ? "ring-2 ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500 scale-110"
-                        : "hover:scale-110 opacity-85 hover:opacity-100"
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-700 mx-0.5" />
-
-              <div
-                className={`relative flex items-center justify-center w-6 h-6 rounded-full overflow-hidden border transition-all cursor-pointer border-zinc-900 dark:border-white scale-105 ring-1 ring-offset-1 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-zinc-400`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#6366f1"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-10 h-10 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
-                <div
-                  className="w-full h-full"
-                  style={{ backgroundColor: color }}
-                />
-              </div>
-            </div>
-          </div>
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
         </div>
       </div>
 

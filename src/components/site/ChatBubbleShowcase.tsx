@@ -8,6 +8,7 @@ import {
   ChatTypingIndicator,
 } from "@/components/custom/blocks/ChatBubbleBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { Image as ImageIcon, Loader2, PlayCircle, Send, SmilePlus } from "lucide-react";
 import { useState } from "react";
 
@@ -307,49 +308,8 @@ export default function ChatDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
-        <div className="flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Sender Brand Color
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["default", "blue", "indigo", "rose", "emerald"] as const).map(
-                (c) => (
-                  <button
-                    key={c}
-                    onClick={() => setColor(c)}
-                    className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                      color === c
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 w-full xl:w-auto">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Interactive Demo
-            </label>
-            <button
-              onClick={triggerSimulation}
-              disabled={!isTyping}
-              className="flex items-center justify-center gap-2 h-9 px-4 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-sm font-semibold disabled:opacity-50 transition-opacity w-full xl:w-auto"
-            >
-              {isTyping ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <PlayCircle className="w-4 h-4" />
-              )}
-              {isTyping ? "Wait for response..." : "Simulate Reply"}
-            </button>
-          </div>
-        </div>
+      <div className="flex flex-col gap-2 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+        <ThemeColorPicker color={color} onChange={(c) => setColor(c as typeof color)} label="Sender Brand Color" />
       </div>
 
       {/* --- PREVIEW AND CODE --- */}

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
 import jsPDF from "jspdf";
@@ -251,46 +252,7 @@ export function QrCodeShowcase() {
 						))}
 					</div>
 				</div>
-				<div className="flex flex-col gap-2">
-					<label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-						Color Variant
-					</label>
-					<div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 items-center gap-2 px-2">
-						{[
-							{ id: "default", class: "bg-zinc-900 dark:bg-zinc-100" },
-							{ id: "blue", class: "bg-blue-600" },
-							{ id: "emerald", class: "bg-emerald-600" },
-							{ id: "rose", class: "bg-rose-600" },
-							{ id: "violet", class: "bg-violet-600" },
-						].map((c) => (
-							<button
-								key={c.id}
-								onClick={() => setThemeColor(c.id)}
-								className={`w-6 h-6 rounded-full cursor-pointer transition-transform ${c.class} ${themeColor === c.id ? "ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black scale-110" : ""}`}
-								aria-label={c.id}
-							/>
-						))}
-
-						<div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-						{/* Custom Color Picker */}
-						<div
-							className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${themeColor.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black" : "border-zinc-300 dark:border-zinc-700 cursor-pointer"}`}
-						>
-							<input
-								type="color"
-								value={themeColor.startsWith("#") ? themeColor : "#8b5cf6"}
-								onChange={(e) => setThemeColor(e.target.value)}
-								className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-								title="Custom Hex Color"
-							/>
-							<div
-								className="w-full h-full pointer-events-none"
-								style={{ backgroundColor: themeColor.startsWith("#") ? themeColor : "transparent" }}
-							/>
-						</div>
-					</div>
-				</div>
+			<ThemeColorPicker color={themeColor} onChange={setThemeColor} label="Color Variant" />
 			</div>
 
 			{/* Dynamic Component Preview */}

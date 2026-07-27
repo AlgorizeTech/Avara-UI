@@ -5,6 +5,7 @@ import AIChat, {
   AIChatVariant,
 } from "@/components/custom/blocks/Ai-chat";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -778,58 +779,7 @@ export default function AIChatDemo()${typeDef} {
         </div>
 
         {/* Color Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Theme Color
-          </label>
-          <div className="flex items-center gap-2 h-[36px]">
-            {/* Standard Presets */}
-            {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleColorChange(c.id)}
-                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                  color === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
-                }`}
-                title={c.id}
-              />
-            ))}
-
-            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-            {/* Custom Hex Native Color Picker */}
-            <div
-              className={`relative w-7 h-7 rounded-full overflow-hidden transition-all duration-200 flex items-center justify-center ${
-                color.startsWith("#")
-                  ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                  : "border-2 border-dashed border-zinc-400 dark:border-zinc-600 hover:scale-110 hover:opacity-80"
-              }`}
-              title="Custom Hex Color"
-            >
-              <input
-                type="color"
-                value={color.startsWith("#") ? color : "#6366f1"}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-              />
-              <div
-                className="w-full h-full"
-                style={{
-                  backgroundColor: color.startsWith("#")
-                    ? color
-                    : "transparent",
-                }}
-              />
-            </div>
-          </div>
-        </div>
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </div>
 
       {/* --- PREVIEW AND CODE --- */}
