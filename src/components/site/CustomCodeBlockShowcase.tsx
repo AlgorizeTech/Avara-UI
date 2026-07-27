@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 
 const CODE_TS = `"use client";
@@ -457,7 +458,7 @@ export function CustomCodeBlockShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Variant Switcher Above Preview */}
-      <div className="w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-[#09090b] shadow-sm flex flex-col gap-3">
+      <ShowcaseControlPanel className="w-full flex flex-col gap-3 p-4 rounded-xl">
         <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
           SUPPORTED LANGUAGES
         </span>
@@ -477,7 +478,7 @@ export function CustomCodeBlockShowcase() {
             </button>
           ))}
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       <ComponentPreview
         name="CustomCodeBlock"
