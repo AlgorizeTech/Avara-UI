@@ -27,7 +27,7 @@ export function ComponentPreview({
   usageCode,
   jsUsageCode,
   name = "Component",
-  disableFrame = false,
+  framed = false,
 }: {
   children: React.ReactNode;
   tsCode: string;
@@ -36,12 +36,14 @@ export function ComponentPreview({
   jsUsageCode?: string;
   name?: string;
   /**
-   * Render resized previews inline instead of in an iframe viewport.
-   * For demos driven by the page scroll or window size from JS (e.g. GSAP/
-   * framer scroll-linked blocks reading the top window) — those can't run
-   * inside a frame, since their JS still sees the parent window.
+   * Opt-in: render resized previews inside a real iframe viewport so Tailwind
+   * sm:/md:/lg: media queries respond to the preview width. Only enable for
+   * demos whose responsiveness is pure CSS. Demos that position popups via
+   * portals to document.body, measure window size, or hook the page scroll
+   * (tooltips, popovers, maps, scroll-linked blocks) must stay unframed —
+   * their JS sees the parent window, not the frame.
    */
-  disableFrame?: boolean;
+  framed?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<"preview" | "usage" | "code">("preview");
   const [language, setLanguage] = useState<"ts" | "js">("ts");
@@ -88,7 +90,7 @@ export function ComponentPreview({
   // When the chosen device is wider than the area (e.g. tablet preset on a
   // phone), keep the real viewport width and shrink it visually instead.
   const frameScale =
-    !disableFrame &&
+    framed &&
     previewWidth !== "100%" &&
     availableWidth !== null &&
     previewWidth > availableWidth
@@ -96,8 +98,14 @@ export function ComponentPreview({
       : 1;
   const isScaled = frameScale !== 1;
 
-  // Width the preview viewport actually renders at.
-  const effectiveWidth = previewWidth === "100%" ? areaWidth : previewWidth;
+  // Width the preview viewport actually renders at. Unframed previews are
+  // clamped by the container; framed ones keep their true width (scaled).
+  const effectiveWidth =
+    previewWidth === "100%"
+      ? areaWidth
+      : framed || areaWidth === null
+        ? previewWidth
+        : Math.min(previewWidth, areaWidth);
 
   // Active device derives from breakpoint ranges, not exact preset widths,
   // so manual resizing highlights the matching device icon.
@@ -339,7 +347,7 @@ export function ComponentPreview({
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              {previewWidth === "100%" || disableFrame ? (
+              {previewWidth === "100%" || !framed ? (
                 <div
                   key={replayKey}
                   className={cn(
