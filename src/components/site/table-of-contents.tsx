@@ -124,27 +124,31 @@ export const TableOfContents: React.FC = () => {
                   onClick={() => scrollToHeading(item.id)}
                   style={{ paddingLeft: `${32 + indent}px` }}
                   className={cn(
-                    "group relative w-full text-left pr-4 leading-snug transition-colors duration-150 block cursor-pointer flex items-center",
-                    // H1 Root: Bold, slightly larger, padded to act as a document title
+                    "group relative w-full text-left pr-4 leading-snug transition-all duration-200 block cursor-pointer flex items-center",
+                    // ── H1 ROOT STYLING: Clean editorial anchor, bottom divider, zero tacky badges ──
                     isRoot &&
-                      "py-2 mt-1 mb-1 text-[13px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight",
-                    // H2 Section: Semibold, slight top margin to group sub-items together
+                      "py-2 mt-0.5 mb-3 pb-2.5 text-[14px] font-extrabold tracking-tight border-b border-zinc-200/70 dark:border-zinc-800/70 text-zinc-950 dark:text-white",
+                    // ── H2 SECTION STYLING: Semibold, slight top margin ──
                     isSection &&
                       !isRoot &&
                       "py-1.5 mt-1.5 text-[12.5px] font-semibold text-zinc-800 dark:text-zinc-200",
-                    // H3+ Child: Standard weight, compact padding
+                    // ── H3+ CHILD STYLING: Standard weight, compact padding ──
                     isChild && "py-1 text-[12px] font-normal",
-                    // Active vs Inactive State Colors
-                    isActive
-                      ? "text-zinc-900 dark:text-zinc-50 font-semibold"
-                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200",
+                    // Active vs Inactive State Colors for non-root items
+                    !isRoot &&
+                      (isActive
+                        ? "text-zinc-950 dark:text-zinc-50 font-semibold"
+                        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"),
                   )}
                 >
-                  {/* ── Animated Tracker Pill (layoutId removes pixel-math bugs) ── */}
+                  {/* ── Animated Tracker Pill (Scales height automatically for Root H1 vs others) ── */}
                   {isActive && (
                     <motion.div
                       layoutId="active-toc-pill"
-                      className="absolute left-[18px] w-[3px] h-4 rounded-full bg-zinc-900 dark:bg-zinc-100 z-10"
+                      className={cn(
+                        "absolute left-[18px] w-[3px] rounded-full bg-zinc-900 dark:bg-zinc-100 z-10",
+                        isRoot ? "h-5" : "h-4",
+                      )}
                       transition={{
                         type: "spring",
                         stiffness: 380,
