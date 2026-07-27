@@ -10,6 +10,29 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Drag and drop some real files (images, PDFs) from your desktop into the zone below, or click to browse. The showcase includes a built-in network simulator.
@@ -17,8 +40,6 @@ Drag and drop some real files (images, PDFs) from your desktop into the zone bel
 _Note: The simulation will randomly force some files to "fail" at 89% to demonstrate the Inline Retry feature. Click Retry to see it resume seamlessly!_
 
 <UploadShowcase />
-
----
 
 ## Installation
 
@@ -34,9 +55,7 @@ npm install gsap lucide-react
 
 You can copy the full layout code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/UploadBlock.tsx.
 
-## Usage Architecture
-
-The engine is split into two modular parts: the Dropzone and the UploadItem. This allows you to place the queue anywhere in your application layout (e.g. pinned to the bottom of the screen, or inline below the dropzone).
+## Implementation
 
 ```tsx
 import {
@@ -90,6 +109,20 @@ export default function DocumentUploader() {
   );
 }
 ```
+
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
 
 ## Props Reference
 

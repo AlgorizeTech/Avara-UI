@@ -6,13 +6,34 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Use the control panel below to test the different entry animations. **Scroll down inside the preview box** to see the intersection observers trigger the high-end entrance animations dynamically!
 
 <AnimatedTimelineShowcase />
-
----
 
 ## Installation
 
@@ -27,6 +48,8 @@ You can copy the full engine code directly from the **Component** tab in the Int
 ## Usage
 
 Define your `items` array to populate the timeline. You can dynamically switch the `animation` and `layout` props to drastically change the visual feel of the page.
+
+## Implementation
 
 ```tsx
 import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";

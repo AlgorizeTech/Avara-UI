@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { VerifyBadge, VerifyBadgeProps } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const VERIFY_BADGE_TS = `"use client";
 
@@ -120,6 +122,8 @@ export function VerifyBadgeShowcase() {
 
   const getUsageCode = (isTs: boolean) => {
     return `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function ProfilePage() {
   return (
@@ -134,7 +138,7 @@ export default function ProfilePage() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
+      <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
         
 
 
@@ -185,58 +189,9 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Color Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Theme Color
-          </label>
-          <div className="flex items-center gap-2 h-[36px]">
-            {[
-              { id: "#1d9bf0", bg: "bg-[#1d9bf0]" },
-              { id: "#eab308", bg: "bg-[#eab308]" },
-              { id: "#0f172a", bg: "bg-slate-900 dark:bg-slate-100" },
-              { id: "#94a3b8", bg: "bg-slate-400" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleColorChange(c.id)}
-                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                  color === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
-                }`}
-                title={c.id}
-              />
-            ))}
-            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-            {/* Custom Color Picker */}
-            <div
-              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${
-                !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
-                  ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500"
-                  : "border-zinc-300 dark:border-zinc-700 hover:scale-110"
-              }`}
-            >
-              <input
-                type="color"
-                value={!["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color) ? color : "#8b5cf6"}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                title="Custom Hex Color"
-              />
-              <div
-                className="w-full h-full pointer-events-none"
-                style={{
-                  backgroundColor: !["#1d9bf0", "#eab308", "#0f172a", "#94a3b8"].includes(color)
-                    ? color
-                    : "transparent",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        {/* Color */}
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -6,13 +6,34 @@ A hyper-polished list component that staggers its children into view using GSAP 
 
 Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
 ## Interactive Showcase
 
 Hit the replay button below to watch the 3D flip-in sequence. Hover over the rendered cards to see the spotlight gradient and the icon bounce micro-interactions.
 
 <AnimatedListShowcase />
-
----
 
 ## Installation
 
@@ -31,6 +52,8 @@ You can copy the full engine code directly from the Component tab in the Interac
 ## Usage
 
 Structure your feed using the AnimatedList as the parent wrapper. You can adjust the staggerDelay prop to speed up or slow down the cascade effect. Use the provided AnimatedListItem for your individual rows to instantly inherit the mouse-tracking spotlight and deep shadow styling.
+
+## Implementation
 
 ```tsx
 import {
@@ -69,6 +92,20 @@ export default function NotificationFeed() {
   );
 }
 ```
+
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
 
 ## Props Reference
 

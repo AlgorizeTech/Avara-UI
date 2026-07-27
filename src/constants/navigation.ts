@@ -123,12 +123,7 @@ export const navigation: NavigationItem[] = [
       { label: "Animated List", href: "/docs/nextjs/animated-list" },
       // { label: "Split Stepper", href: "/docs/nextjs/split-stepper" },
       // { label: "Split ScrollStepper", href: "/docs/nextjs/split-scroll-stepper", badge: "New" },
-      { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack", children: [
-        { label: "Simple Scroll Stack", href: "/docs/nextjs/scroll-stack" },
-        { label: "Split ScrollStack", href: "/docs/nextjs/split-scroll-stack" },
-        { label: "Sticky ScrollStack", href: "/docs/nextjs/sticky-scroll-stack", badge: "New" },
-        { label: "Horizontal Scroll Stack", href: "/docs/nextjs/horizontal-scroll-stack", badge: "New" },
-      ] },
+      { label: "Scroll Stack", href: "/docs/nextjs/scroll-stack" },
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion" },
       { label: "Network Graph", href: "/docs/nextjs/network-graph", badge: "New" },

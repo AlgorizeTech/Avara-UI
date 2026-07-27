@@ -1,11 +1,15 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const SONNER_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
@@ -95,6 +99,8 @@ function ToastCard({ toast, onDismiss }: { toast: ToastProps; onDismiss: () => v
 
 // --- JAVASCRIPT ENGINE CODE (Hardcoded to prevent regex stripping bugs) ---
 const SONNER_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -236,7 +242,7 @@ export default function App() {
       <Toaster position={position} />
 
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col sm:flex-row gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Stack Position
@@ -264,7 +270,7 @@ export default function App() {
             </button>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

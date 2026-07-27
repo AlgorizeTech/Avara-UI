@@ -501,3 +501,9 @@ input[type="range"]:focus::-moz-range-thumb {
   animation: glow 2s ease-in-out infinite;
 }
 
+
+/* Scroll Stack Dynamic Documentation Styles */
+body:not([data-scroll-stack='Simple']) #stack-docs-Simple { display: none; }
+body:not([data-scroll-stack='Split']) #stack-docs-Split { display: none; }
+body:not([data-scroll-stack='Sticky']) #stack-docs-Sticky { display: none; }
+body:not([data-scroll-stack='Horizontal']) #stack-docs-Horizontal { display: none; }

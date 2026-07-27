@@ -7,6 +7,8 @@ import {
   DatePickerVariant,
 } from "@/components/custom/blocks/DatePickerBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -344,6 +346,8 @@ export function DatePickerShowcase() {
 
     return `import { useState } from "react";
 import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function FormDemo() {
   const [date, setDate] = useState${isTs ? "<Date | null>(null)" : "(null)"};
@@ -360,7 +364,7 @@ export default function FormDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
           {/* Variant Selector */}
           <div className="flex flex-col gap-2">
@@ -414,86 +418,8 @@ export default function FormDemo() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Color Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Theme Color
-            </label>
-            <div className="flex items-center gap-2 h-10 px-2">
-              {[
-                { id: "indigo", bg: "bg-indigo-500" },
-                { id: "rose", bg: "bg-rose-500" },
-                { id: "emerald", bg: "bg-emerald-500" },
-                { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => handleColorChange(c.id)}
-                  className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                    color === c.id
-                      ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                      : "hover:scale-110 hover:opacity-80"
-                  }`}
-                  title={c.id}
-                />
-              ))}
-
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-              {/* Custom Color Picker */}
-              <div
-                className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#e11d48"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
-                <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundColor: color.startsWith("#")
-                      ? color
-                      : "transparent",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* State Toggles */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              States
-            </label>
-            <div className="flex items-center gap-2 h-10">
-              <button
-                onClick={() => setShowError(!showError)}
-                className={`px-4 py-2 text-sm font-bold rounded-lg border transition-all ${
-                  showError
-                    ? "bg-red-50 border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/30 dark:text-red-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                }`}
-              >
-                Error
-              </button>
-              <button
-                onClick={() => setIsDisabled(!isDisabled)}
-                className={`px-4 py-2 text-sm font-bold rounded-lg border transition-all ${
-                  isDisabled
-                    ? "bg-zinc-200 border-zinc-300 text-zinc-600 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                }`}
-              >
-                Disabled
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

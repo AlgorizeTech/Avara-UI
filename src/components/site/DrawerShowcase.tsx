@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Button,
   Drawer,
@@ -15,6 +17,8 @@ import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const DRAWER_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
@@ -127,6 +131,8 @@ Button.displayName = "Button";`;
 // --- JAVASCRIPT ENGINE CODE ---
 const DRAWER_ENGINE_CODE_JS = `"use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
@@ -235,6 +241,8 @@ export function DrawerShowcase() {
   const generateUsageCode = (isTs: boolean) => {
     return `"use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { useState } from "react";
 import {
   Drawer,
@@ -287,7 +295,7 @@ export default function DrawerDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Slide Direction
@@ -308,7 +316,7 @@ export default function DrawerDemo() {
             ))}
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview
