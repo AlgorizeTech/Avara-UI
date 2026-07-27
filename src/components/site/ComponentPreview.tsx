@@ -27,6 +27,7 @@ export function ComponentPreview({
   usageCode,
   jsUsageCode,
   name = "Component",
+  framed = false,
 }: {
   children: React.ReactNode;
   tsCode: string;
@@ -34,6 +35,15 @@ export function ComponentPreview({
   usageCode?: string;
   jsUsageCode?: string;
   name?: string;
+  /**
+   * Opt-in: render resized previews inside a real iframe viewport so Tailwind
+   * sm:/md:/lg: media queries respond to the preview width. Only enable for
+   * demos whose responsiveness is pure CSS. Demos that position popups via
+   * portals to document.body, measure window size, or hook the page scroll
+   * (tooltips, popovers, maps, scroll-linked blocks) must stay unframed —
+   * their JS sees the parent window, not the frame.
+   */
+  framed?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<"preview" | "usage" | "code">("preview");
   const [language, setLanguage] = useState<"ts" | "js">("ts");
@@ -74,11 +84,26 @@ export function ComponentPreview({
     return () => observer.disconnect();
   }, [activeTab]);
 
-  // Width the preview actually renders at (state width clamped to the area).
+  // Content-box width available inside the preview area (minus the 1px border).
+  const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
+
+  // When the chosen device is wider than the area (e.g. tablet preset on a
+  // phone), keep the real viewport width and shrink it visually instead.
+  const frameScale =
+    framed &&
+    previewWidth !== "100%" &&
+    availableWidth !== null &&
+    previewWidth > availableWidth
+      ? availableWidth / previewWidth
+      : 1;
+  const isScaled = frameScale !== 1;
+
+  // Width the preview viewport actually renders at. Unframed previews are
+  // clamped by the container; framed ones keep their true width (scaled).
   const effectiveWidth =
     previewWidth === "100%"
       ? areaWidth
-      : areaWidth === null
+      : framed || areaWidth === null
         ? previewWidth
         : Math.min(previewWidth, areaWidth);
 
@@ -159,7 +184,7 @@ export function ComponentPreview({
           <button
             onClick={() => setActiveTab("preview")}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer",
+              "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all cursor-pointer",
               activeTab === "preview"
                 ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
@@ -172,7 +197,7 @@ export function ComponentPreview({
             <button
               onClick={() => setActiveTab("usage")}
               className={cn(
-                "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer",
+                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all cursor-pointer",
                 activeTab === "usage"
                   ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
                   : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
@@ -185,7 +210,7 @@ export function ComponentPreview({
           <button
             onClick={() => setActiveTab("code")}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer",
+              "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all cursor-pointer",
               activeTab === "code"
                 ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
@@ -198,7 +223,7 @@ export function ComponentPreview({
         {/* Right Side: Replay Button, Language Toggle & Responsive Controls */}
         <div className="flex items-center gap-2 ml-auto">
           {activeTab === "preview" && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Width Display */}
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] text-right tabular-nums">
                 {previewWidth === "100%"
@@ -207,7 +232,7 @@ export function ComponentPreview({
               </span>
 
               {/* Responsive Toggles */}
-              <div className="hidden sm:flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50">
+              <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50">
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
@@ -263,7 +288,7 @@ export function ComponentPreview({
                     TS
                   </span>
                 </div>
-                TypeScript
+                <span className="hidden sm:inline">TypeScript</span>
               </button>
               <button
                 onClick={() => setLanguage("js")}
@@ -279,7 +304,7 @@ export function ComponentPreview({
                     JS
                   </span>
                 </div>
-                JavaScript
+                <span className="hidden sm:inline">JavaScript</span>
               </button>
             </div>
           )}
@@ -309,19 +334,26 @@ export function ComponentPreview({
             </div>
 
             <div
-              /* +1px compensates the right border so the inner viewport is exactly previewWidth */
-              style={{ width: previewWidth === "100%" ? "100%" : `${previewWidth + 1}px`, maxWidth: "100%" }}
+              /* +1px compensates the right border so the inner viewport is exactly previewWidth;
+                 a scaled frame takes the full area and shrinks its content instead */
+              style={{
+                width: previewWidth === "100%" || isScaled ? "100%" : `${previewWidth + 1}px`,
+                maxWidth: "100%",
+              }}
               className={cn(
                 "relative flex justify-center items-center transition-[width] ease-out",
                 isDragging ? "duration-0" : "duration-300",
                 "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
-                previewWidth === "100%" ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
+                previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              {previewWidth === "100%" ? (
+              {previewWidth === "100%" || !framed ? (
                 <div
                   key={replayKey}
-                  className="w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-hidden rounded-b-xl"
+                  className={cn(
+                    "w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-hidden",
+                    previewWidth === "100%" ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
+                  )}
                 >
                   {children}
                 </div>
@@ -330,11 +362,17 @@ export function ComponentPreview({
                    preview width, so components actually become responsive. */
                 <div
                   className={cn(
-                    "w-full overflow-hidden rounded-bl-xl",
+                    "w-full overflow-hidden",
+                    isScaled ? "rounded-b-xl" : "rounded-bl-xl",
                     isDragging && "pointer-events-none select-none"
                   )}
                 >
-                  <PreviewFrame minHeight={400} title={`${name} responsive preview`}>
+                  <PreviewFrame
+                    minHeight={400}
+                    title={`${name} responsive preview`}
+                    frameWidth={previewWidth as number}
+                    scale={frameScale}
+                  >
                     <div
                       key={replayKey}
                       className="w-full flex justify-center items-center animate-in fade-in duration-300"

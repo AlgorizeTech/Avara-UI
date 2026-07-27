@@ -49,7 +49,8 @@ export function ThemeControl() {
 
   return (
     <div
-      className={`fixed top-40 ${dir === "rtl" ? "left-0" : "right-0"} z-40`}
+      /* bottom-right on phones so it doesn't cover content toolbars; edge tab at top-40 from sm up */
+      className={`fixed bottom-24 top-auto sm:top-40 sm:bottom-auto ${dir === "rtl" ? "left-0" : "right-0"} z-40`}
     >
       <Sheet>
         <SheetTrigger asChild>
