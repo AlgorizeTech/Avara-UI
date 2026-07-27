@@ -1,9 +1,24 @@
 "use client";
 
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
+import { PreviewFrame } from "@/components/site/PreviewFrame";
 import { cn } from "@/lib/utils";
 import { Code2, Monitor, MonitorPlay, RotateCcw, Smartphone, Tablet, Terminal, GripVertical } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
+
+const MIN_PREVIEW_WIDTH = 320;
+// Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
+const TABLET_MIN_WIDTH = 640;
+const DESKTOP_MIN_WIDTH = 1024;
+const SNAP_TO_FULL_THRESHOLD = 10;
+
+type Device = "desktop" | "tablet" | "mobile";
+
+const DEVICE_PRESETS: Record<Device, number | "100%"> = {
+  desktop: "100%",
+  tablet: 768,
+  mobile: 375,
+};
 
 export function ComponentPreview({
   children,
@@ -29,8 +44,9 @@ export function ComponentPreview({
 
   // Responsive Preview State
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
+  const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
 
   // Replay Trigger: Increments React key to remount DOM & replay animations
   const handleReplay = () => {
@@ -45,42 +61,94 @@ export function ComponentPreview({
   const showLanguageToggle =
     (activeTab === "code" && jsCode) || (activeTab === "usage" && jsUsageCode);
 
-  // Drag to resize logic
-  const handleDragStart = (e: React.MouseEvent) => {
+  // Track the available preview area width so the device icons stay in sync
+  // when the preview is dragged or the browser window itself is resized.
+  useEffect(() => {
+    if (activeTab !== "preview") return;
+    const area = areaRef.current;
+    if (!area) return;
+    const observer = new ResizeObserver((entries) => {
+      setAreaWidth(entries[0].contentRect.width);
+    });
+    observer.observe(area);
+    return () => observer.disconnect();
+  }, [activeTab]);
+
+  // Width the preview actually renders at (state width clamped to the area).
+  const effectiveWidth =
+    previewWidth === "100%"
+      ? areaWidth
+      : areaWidth === null
+        ? previewWidth
+        : Math.min(previewWidth, areaWidth);
+
+  // Active device derives from breakpoint ranges, not exact preset widths,
+  // so manual resizing highlights the matching device icon.
+  const activeDevice: Device =
+    previewWidth === "100%"
+      ? "desktop"
+      : (effectiveWidth as number) < TABLET_MIN_WIDTH
+        ? "mobile"
+        : (effectiveWidth as number) < DESKTOP_MIN_WIDTH
+          ? "tablet"
+          : "desktop";
+
+  const applyWidth = (width: number, max: number) => {
+    if (width >= max - SNAP_TO_FULL_THRESHOLD) {
+      setPreviewWidth("100%");
+    } else {
+      setPreviewWidth(Math.round(Math.min(Math.max(width, MIN_PREVIEW_WIDTH), max)));
+    }
+  };
+
+  // Drag to resize (pointer capture keeps the drag alive over the iframe)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
     setIsDragging(true);
   };
 
-  useEffect(() => {
-    if (!isDragging) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current && containerRef.current.parentElement) {
-        const parentRect = containerRef.current.parentElement.getBoundingClientRect();
-        // Calculate new width relative to the parent container's left edge
-        let newWidth = e.clientX - parentRect.left;
-        
-        // Add some padding/limits
-        const maxWidth = parentRect.width;
-        if (newWidth > maxWidth) newWidth = maxWidth;
-        if (newWidth < 320) newWidth = 320; // Minimum width like mobile
-        
-        // Snap to 100% if it's very close to full width
-        if (newWidth >= maxWidth - 10) {
-          setPreviewWidth("100%");
-        } else {
-          setPreviewWidth(newWidth);
-        }
-      }
-    };
-    const handleMouseUp = () => setIsDragging(false);
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+    const area = areaRef.current;
+    if (!area) return;
+    const rect = area.getBoundingClientRect();
+    applyWidth(e.clientX - rect.left - 1, rect.width);
+  };
+
+  const handlePointerEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    setIsDragging(false);
+  };
+
+  // Keyboard resize on the drag handle
+  const handleResizeKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const max = areaWidth ?? Infinity;
+    const current = previewWidth === "100%" ? (areaWidth ?? DESKTOP_MIN_WIDTH) : previewWidth;
+    const step = e.shiftKey ? 64 : 16;
+
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setPreviewWidth(Math.round(Math.max(current - step, MIN_PREVIEW_WIDTH)));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      applyWidth(current + step, max);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setPreviewWidth(MIN_PREVIEW_WIDTH);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setPreviewWidth("100%");
+    }
+  };
+
+  const deviceButtons: Array<{ device: Device; icon: React.ReactNode; label: string }> = [
+    { device: "desktop", icon: <Monitor className="w-4 h-4" />, label: "Desktop View" },
+    { device: "tablet", icon: <Tablet className="w-4 h-4" />, label: "Tablet View" },
+    { device: "mobile", icon: <Smartphone className="w-4 h-4" />, label: "Mobile View" },
+  ];
 
   return (
     <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col not-prose relative">
@@ -132,50 +200,33 @@ export function ComponentPreview({
           {activeTab === "preview" && (
             <div className="flex items-center gap-3">
               {/* Width Display */}
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[40px] text-right">
-                {previewWidth === "100%" ? "100%" : `${Math.round(previewWidth as number)}px`}
+              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] text-right tabular-nums">
+                {previewWidth === "100%"
+                  ? "100%"
+                  : `${Math.round(effectiveWidth as number)}px`}
               </span>
-              
+
               {/* Responsive Toggles */}
-              <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50 hidden sm:flex">
-                <button
-                  onClick={() => setPreviewWidth("100%")}
-                  className={cn(
-                    "p-1.5 rounded-md transition-all cursor-pointer",
-                    previewWidth === "100%" 
-                      ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100" 
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  )}
-                  title="Desktop View"
-                >
-                  <Monitor className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setPreviewWidth(768)}
-                  className={cn(
-                    "p-1.5 rounded-md transition-all cursor-pointer",
-                    previewWidth === 768 
-                      ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100" 
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  )}
-                  title="Tablet View"
-                >
-                  <Tablet className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setPreviewWidth(375)}
-                  className={cn(
-                    "p-1.5 rounded-md transition-all cursor-pointer",
-                    previewWidth === 375 
-                      ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100" 
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  )}
-                  title="Mobile View"
-                >
-                  <Smartphone className="w-4 h-4" />
-                </button>
+              <div className="hidden sm:flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50">
+                {deviceButtons.map(({ device, icon, label }) => (
+                  <button
+                    key={device}
+                    onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
+                    className={cn(
+                      "p-1.5 rounded-md transition-all cursor-pointer",
+                      activeDevice === device
+                        ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100"
+                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
+                    )}
+                    title={label}
+                    aria-label={label}
+                    aria-pressed={activeDevice === device}
+                  >
+                    {icon}
+                  </button>
+                ))}
               </div>
-              
+
               {/* Replay Button (Icon Only) */}
               <button
                 onClick={handleReplay}
@@ -238,10 +289,13 @@ export function ComponentPreview({
       {/* Main Content Area */}
       <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
         {activeTab === "preview" ? (
-          <div className={cn(
-            "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
-            "bg-zinc-50/50 dark:bg-[#020202]"
-          )}>
+          <div
+            ref={areaRef}
+            className={cn(
+              "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
+              "bg-zinc-50/50 dark:bg-[#020202]"
+            )}
+          >
             {/* Dashed Grid Background */}
             <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
               <svg width="100%" height="100%">
@@ -255,8 +309,8 @@ export function ComponentPreview({
             </div>
 
             <div
-              ref={containerRef}
-              style={{ width: previewWidth === "100%" ? "100%" : `${previewWidth}px`, maxWidth: "100%" }}
+              /* +1px compensates the right border so the inner viewport is exactly previewWidth */
+              style={{ width: previewWidth === "100%" ? "100%" : `${previewWidth + 1}px`, maxWidth: "100%" }}
               className={cn(
                 "relative flex justify-center items-center transition-[width] ease-out",
                 isDragging ? "duration-0" : "duration-300",
@@ -264,20 +318,48 @@ export function ComponentPreview({
                 previewWidth === "100%" ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              <div
-                key={replayKey}
-                className={cn(
-                  "w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-hidden",
-                  previewWidth === "100%" ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
-                )}
-              >
-                {children}
-              </div>
+              {previewWidth === "100%" ? (
+                <div
+                  key={replayKey}
+                  className="w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-hidden rounded-b-xl"
+                >
+                  {children}
+                </div>
+              ) : (
+                /* A real iframe viewport: media queries inside respond to the
+                   preview width, so components actually become responsive. */
+                <div
+                  className={cn(
+                    "w-full overflow-hidden rounded-bl-xl",
+                    isDragging && "pointer-events-none select-none"
+                  )}
+                >
+                  <PreviewFrame minHeight={400} title={`${name} responsive preview`}>
+                    <div
+                      key={replayKey}
+                      className="w-full flex justify-center items-center animate-in fade-in duration-300"
+                    >
+                      {children}
+                    </div>
+                  </PreviewFrame>
+                </div>
+              )}
 
               {/* Drag Handle */}
               <div
-                onMouseDown={handleDragStart}
-                className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 hidden sm:flex"
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize preview"
+                aria-valuemin={MIN_PREVIEW_WIDTH}
+                aria-valuemax={areaWidth ? Math.round(areaWidth) : undefined}
+                aria-valuenow={effectiveWidth ? Math.round(effectiveWidth) : undefined}
+                tabIndex={0}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerEnd}
+                onPointerCancel={handlePointerEnd}
+                onKeyDown={handleResizeKeyDown}
+                className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
                 <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
               </div>
