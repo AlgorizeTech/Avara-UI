@@ -1,16 +1,14 @@
-import { ScrollStackShowcase } from "@/components/site/ScrollStackShowcase";
+import { ScrollStackMasterShowcase } from "@/components/site/ScrollStackMasterShowcase";
 
 # Scroll Stack
 
-A premium, scroll-driven 3D card stacking layout engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, each full-width feature card sticks to the top of the viewport while the next card slides up to cover it.
-
-Whenever a new card stacks on top, GreenSock dynamically scrubs the background card's `scale` and `opacity` properties, pushing it deeper into a simulated 3D deck with silky 60fps performance across both light and dark modes.
+A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
 ## Interactive Showcase
 
-Use the control panel below to adjust the depth scaling rate and the vertical pixel gap between stacked cards. **Scroll down inside the preview box** to see the ScrollTrigger plugin orchestrate the deck in real time.
+Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
 
-<ScrollStackShowcase />
+<ScrollStackMasterShowcase />
 
 ---
 
@@ -18,7 +16,7 @@ Use the control panel below to adjust the depth scaling rate and the vertical pi
 
 ### Dependencies
 
-This layout relies exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
+These layouts rely exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
 
 ```bash
 npm install gsap lucide-react
@@ -26,47 +24,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ScrollStackBlock.tsx.
-
-## Usage Architecture
-
-The `<ScrollStack>` component automatically calculates sticky positioning and depth reduction. You simply provide an array of feature objects containing your text, optional Lucide icons, and custom JSX payloads.
-
-If you omit the color property on an item, the card will automatically adapt to your site's current light or dark mode theme!
-
-```tsx
-import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-import { Zap, Layers } from "lucide-react";
-
-export default function FeaturesSection() {
-  const items = [
-    {
-      id: "1",
-      title: "Real-time Synchronization",
-      description:
-        "Instantly sync state across clients without writing WebSocket logic.",
-      icon: Zap,
-      // Omitting color uses default adaptive light/dark mode surfaces automatically
-      content: <div className="p-8">Custom Interactive UI 1</div>,
-    },
-    {
-      id: "2",
-      title: "Layered Architecture",
-      description:
-        "Build robust systems with separated concerns and modular backends.",
-      icon: Layers,
-      color: "bg-indigo-600 text-white border-indigo-500/30", // Custom accent color override
-      content: <div className="p-8">Custom Interactive UI 2</div>,
-    },
-  ];
-
-  return (
-    <div className="max-w-7xl mx-auto py-20 px-6">
-      <ScrollStack cardGap="{24}" depthScale="{0.05}" items="{items}" />
-    </div>
-  );
-}
-```
+Select your desired variant (Simple, Split, Sticky, or Horizontal) from the showcase tabs above. Then, open the **Code** tab inside the preview window to copy both the component source code and the implementation example.
 
 ## Props Reference
 
