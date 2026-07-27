@@ -7,12 +7,9 @@ import { motion } from "framer-motion";
 import { ArrowDown, ArrowUp, PanelRightClose } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-// Each TOC row is ~28px tall — used to position the tracker pill
-const ROW_H = 28;
-
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
-  const { setShowTOC } = useTOC(); // Fetch the toggle function from Context
+  const { setShowTOC } = useTOC();
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -26,7 +23,6 @@ export const TableOfContents: React.FC = () => {
         document.documentElement.clientHeight;
 
       const progress = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
-
       setScrollProgress(progress);
 
       // Boundary checks to fix Intersection Observer edge cases
@@ -55,8 +51,6 @@ export const TableOfContents: React.FC = () => {
     }
   }
 
-  const activeIndex = toc.findIndex((item) => item.id === displayActiveId);
-
   // Smoothly transition color from Red (0) to Green (120) based on progress
   const dynamicColor = `hsl(${Math.round(scrollProgress * 1.2)}, 80%, 45%)`;
 
@@ -75,7 +69,6 @@ export const TableOfContents: React.FC = () => {
       <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent">
         {/* ── Header ─────────────────────────────────── */}
         <div className="px-5 pt-8 pb-4 flex-shrink-0">
-          {/* Label row */}
           <div className="flex items-center gap-3 mb-4">
             <span className="text-[10px] font-bold uppercase tracking-[0.08em] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
               On this page
@@ -104,48 +97,75 @@ export const TableOfContents: React.FC = () => {
 
         <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
 
-        {/* ── TOC list ───────────────────────────────── */}
-        <div className="flex-1 overflow-y-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* ── Hierarchical TOC List ──────────────────── */}
+        <div className="flex-1 overflow-y-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <nav
             role="navigation"
             aria-label="Table of contents"
             className="relative py-1"
           >
-            {/* Static track line */}
+            {/* Static vertical track line */}
             <div className="absolute left-[19px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
-
-            {/* Animated tracker pill */}
-            {activeIndex >= 0 && (
-              <motion.div
-                className="absolute left-[18px] w-[3px] rounded-full bg-zinc-900 dark:bg-zinc-100"
-                initial={false}
-                animate={{
-                  top: activeIndex * ROW_H + 6,
-                  height: 16,
-                }}
-                transition={{ type: "spring", stiffness: 340, damping: 32 }}
-              />
-            )}
 
             {toc.map((item) => {
               const isActive = item.id === displayActiveId;
-              const indent = Math.max(0, item.level - 2) * 14;
+
+              // ── Level Classification ──
+              const isRoot = item.level === 1; // e.g., # 🚀 PRE-RELEASE ROADMAP
+              const isSection = item.level === 2; // e.g., ## Phase 1: Core Pages
+              const isChild = item.level >= 3; // e.g., ### 1. Re-design the Home Page
+
+              // Calculate indentation: Root & Sections stay close to the vertical line, children indent inward
+              const indent = isRoot ? 0 : isSection ? 4 : (item.level - 2) * 14;
 
               return (
                 <button
                   key={item.id}
                   onClick={() => scrollToHeading(item.id)}
-                  style={{ paddingLeft: `${36 + indent}px` }}
+                  style={{ paddingLeft: `${32 + indent}px` }}
                   className={cn(
-                    "w-full text-left py-[5px] pr-5 text-[12.5px] leading-snug",
-                    "transition-colors duration-150 truncate block cursor-pointer",
-                    "h-[28px] flex items-center",
+                    "group relative w-full text-left pr-4 leading-snug transition-colors duration-150 block cursor-pointer flex items-center",
+                    // H1 Root: Bold, slightly larger, padded to act as a document title
+                    isRoot &&
+                      "py-2 mt-1 mb-1 text-[13px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight",
+                    // H2 Section: Semibold, slight top margin to group sub-items together
+                    isSection &&
+                      !isRoot &&
+                      "py-1.5 mt-1.5 text-[12.5px] font-semibold text-zinc-800 dark:text-zinc-200",
+                    // H3+ Child: Standard weight, compact padding
+                    isChild && "py-1 text-[12px] font-normal",
+                    // Active vs Inactive State Colors
                     isActive
                       ? "text-zinc-900 dark:text-zinc-50 font-semibold"
-                      : "text-zinc-500 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300",
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200",
                   )}
                 >
-                  {item.text}
+                  {/* ── Animated Tracker Pill (layoutId removes pixel-math bugs) ── */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-toc-pill"
+                      className="absolute left-[18px] w-[3px] h-4 rounded-full bg-zinc-900 dark:bg-zinc-100 z-10"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+
+                  {/* ── Child Branch Dot Indicator (Shows tree structure for H3/H4) ── */}
+                  {isChild && (
+                    <span
+                      className={cn(
+                        "inline-block w-1 h-1 rounded-full mr-2 shrink-0 transition-colors",
+                        isActive
+                          ? "bg-zinc-900 dark:bg-zinc-100"
+                          : "bg-zinc-300 dark:bg-zinc-700 group-hover:bg-zinc-500 dark:group-hover:bg-zinc-400",
+                      )}
+                    />
+                  )}
+
+                  <span className="truncate">{item.text}</span>
                 </button>
               );
             })}

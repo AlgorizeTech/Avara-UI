@@ -27,6 +27,17 @@ export function useTableOfContents() {
         const usedIds = new Set<string>();
 
         headings.forEach((heading, index) => {
+          // ── EXCLUSION FILTER (The Fix) ──────────────────────────────────────────
+          // Skip any heading inside interactive showcases, feature cards, prop tables, or non-prose UI blocks
+          if (
+            heading.closest(
+              ".not-prose, .props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
+            )
+          ) {
+            return;
+          }
+          // ────────────────────────────────────────────────────────────────────────
+
           // Skip if heading is empty or just whitespace
           const text = heading.textContent?.trim();
           if (!text) return;
@@ -35,10 +46,11 @@ export function useTableOfContents() {
 
           // If heading doesn't have an id, create one from the text
           if (!id) {
-            const baseId = text
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, "-")
-              .replace(/(^-|-$)/g, "") || `heading-${index}`;
+            const baseId =
+              text
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "") || `heading-${index}`;
 
             // Ensure the ID is unique
             id = baseId;
@@ -54,7 +66,7 @@ export function useTableOfContents() {
           // Track this ID to prevent duplicates
           usedIds.add(id);
 
-          // Get the heading level from the tag name
+          // Get the heading level from the tag name (1, 2, or 3)
           const level = parseInt(heading.tagName.charAt(1));
 
           tocItems.push({
@@ -93,13 +105,15 @@ export function useTableOfContents() {
   useEffect(() => {
     // Function to handle scroll and update active heading
     const handleScroll = () => {
-      const headings = toc.map(item => document.getElementById(item.id)).filter(Boolean);
-      
+      const headings = toc
+        .map((item) => document.getElementById(item.id))
+        .filter(Boolean);
+
       if (headings.length === 0) return;
 
       // Find the heading that's currently in view
       let activeHeading = headings[0];
-      
+
       for (const heading of headings) {
         if (heading) {
           const rect = heading.getBoundingClientRect();
@@ -119,7 +133,7 @@ export function useTableOfContents() {
 
     // Add scroll listener
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     // Initial check
     handleScroll();
 
@@ -130,13 +144,12 @@ export function useTableOfContents() {
 
   // Function to scroll to a heading
   const scrollToHeading = (id: string, offset: number = 88) => {
-  const element = document.getElementById(id);
-  if (element) {
-    const y = element.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
-
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
 
   return {
     toc,
