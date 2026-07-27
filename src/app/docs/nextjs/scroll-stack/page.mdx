@@ -50,6 +50,113 @@ npm install gsap lucide-react
 Select your desired variant (Simple, Split, Sticky, or Horizontal) from the showcase tabs above. Then, open the **Code** tab inside the preview window to copy both the component source code and the implementation example.
 
 
+## Implementation
+
+<div id="stack-docs-Simple">
+```tsx
+import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { Zap, Layers } from "lucide-react";
+
+export default function FeaturesSection() {
+  const items = [
+    {
+      id: "1",
+      title: "Real-time Synchronization",
+      description: "Instantly sync state across clients.",
+      icon: Zap,
+      content: <div className="p-8">Custom Interactive UI 1</div>,
+    },
+    {
+      id: "2",
+      title: "Layered Architecture",
+      description: "Build robust systems with separated concerns.",
+      icon: Layers,
+      content: <div className="p-8">Custom Interactive UI 2</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <ScrollStack cardGap={24} depthScale={0.05} items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="stack-docs-Split">
+```tsx
+import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+export default function LandingSection() {
+  const items = [
+    {
+      id: "landing",
+      stepNumber: "01",
+      title: "Landing Page Design",
+      description: "We engineer high-converting layouts.",
+      tags: ["Conversion Focused", "Figma To Code"],
+      cardContent: <div className="p-6 bg-amber-500/10">Custom Visual 1</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <SplitScrollStack stickySide="right" cardDepthScale={0.05} items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="stack-docs-Sticky">
+```tsx
+import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+export default function MobileShowcase() {
+  const items = [
+    {
+      id: "step1",
+      title: "Seamless Integration",
+      description: "Connect your existing tools with one click.",
+      color: "bg-blue-600",
+      content: <div>Mobile Screen 1</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto py-20">
+      <StickyScrollStack items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="stack-docs-Horizontal">
+```tsx
+import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+export default function RoadmapSection() {
+  const items = [
+    {
+      id: "q1",
+      title: "Q1 Launch",
+      description: "Initial rollout of core features.",
+      content: <div>Roadmap Details</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-full overflow-hidden py-20">
+      <HorizontalScrollStack items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollStackShowcase } from "./ScrollStackShowcase";
 import { SplitScrollStackShowcase } from "./SplitScrollStackShowcase";
 import { StickyScrollStackShowcase } from "./StickyScrollStackShowcase";
@@ -10,6 +10,13 @@ type Variant = "Simple" | "Split" | "Sticky" | "Horizontal";
 
 export function ScrollStackMasterShowcase() {
   const [variant, setVariant] = useState<Variant>("Simple");
+
+  useEffect(() => {
+    document.body.setAttribute("data-scroll-stack", variant);
+    return () => {
+      document.body.removeAttribute("data-scroll-stack");
+    };
+  }, [variant]);
 
   return (
     <div className="w-full flex flex-col gap-6 not-prose mt-8">
