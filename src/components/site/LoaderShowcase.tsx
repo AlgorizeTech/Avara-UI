@@ -2,6 +2,7 @@
 
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -367,6 +368,7 @@ export default function LoaderShowcase() {
 
     return `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function LoadingState() {
   return (
@@ -381,7 +383,7 @@ export default function LoadingState() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -429,7 +431,7 @@ export default function LoadingState() {
         </div>
 
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

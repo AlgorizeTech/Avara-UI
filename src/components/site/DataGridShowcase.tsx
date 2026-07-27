@@ -7,6 +7,7 @@ import {
 } from "@/components/custom/blocks/DataGridBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { Download, Plus, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -445,6 +446,7 @@ export function DataGridShowcase() {
     return `import { useState } from "react";
 import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const columns = [
   { field: "id", headerName: "ID", readOnly: true },
@@ -473,7 +475,7 @@ export default function Spreadsheet() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Color */}
           <ThemeColorPicker color={color} onChange={handleColorChange} label="Focus Ring Color" />
@@ -527,7 +529,7 @@ export default function Spreadsheet() {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Alert,
   AlertType,
@@ -11,6 +13,8 @@ import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const ALERT_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
@@ -87,6 +91,8 @@ export const Alert: React.FC<AlertProps> = ({
 
 // --- JAVASCRIPT ENGINE CODE ---
 const ALERT_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
@@ -199,7 +205,7 @@ export function AlertShowcase() {
 
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl">
         <div className="flex flex-wrap gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -329,7 +335,7 @@ export function AlertShowcase() {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       <ComponentPreview
         name="Alert"

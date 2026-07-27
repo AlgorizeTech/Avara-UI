@@ -9,6 +9,7 @@ import {
 } from "@/components/custom/blocks/TableBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -588,6 +589,7 @@ export function TableShowcase() {
 
     return `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const columns = [
   { key: "id", label: "ID", sortable: true },
@@ -614,7 +616,7 @@ export default function TableDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
           {/* Variant Selector */}
           <div className="flex flex-col gap-2">
@@ -704,7 +706,7 @@ export default function TableDemo() {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   MemoriesCard,
   MemoryItem,
@@ -8,6 +10,8 @@ import { ComponentPreview } from "@/components/site/ComponentPreview";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const MEMORIES_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from "framer-motion";
@@ -153,6 +157,8 @@ MemoriesCard.displayName = "MemoriesCard";`;
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const MEMORIES_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
@@ -357,7 +363,7 @@ export default function MemoriesSection() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Feature Explainer Panel */}
-      <div className="flex flex-col gap-4 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-4 p-5 rounded-xl z-0 relative">
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           An interactive stack card featuring real-time{" "}
           <strong>3D perspective tilt</strong> that tracks cursor movement, a
@@ -365,7 +371,7 @@ export default function MemoriesSection() {
           and physics-enabled swipe gestures. Swiping any direction cycles the
           front card smoothly to the back of the deck.
         </p>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

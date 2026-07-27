@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState, useEffect } from "react";
 import { ScrollStackShowcase } from "./ScrollStackShowcase";
 import { SplitScrollStackShowcase } from "./SplitScrollStackShowcase";
@@ -21,7 +23,7 @@ export function ScrollStackMasterShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose mt-8">
       {/* --- MASTER CONTROL PANEL --- */}
-      <div className="flex flex-col gap-2 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
         <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
           Scroll Stack Variant
         </label>
@@ -40,7 +42,7 @@ export function ScrollStackMasterShowcase() {
             </button>
           ))}
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- SELECTED SHOWCASE --- */}
       <div className="w-full transition-opacity duration-300">

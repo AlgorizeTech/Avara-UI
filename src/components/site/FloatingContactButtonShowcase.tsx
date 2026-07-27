@@ -3,6 +3,7 @@
 import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -839,6 +840,7 @@ export function FloatingContactButtonShowcase() {
   const generateUsageCode = () => {
     return `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -861,7 +863,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl z-0 relative shadow-sm">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-6 rounded-2xl z-0 relative shadow-sm">
         <div className="flex flex-col gap-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
             Chat Box Title
@@ -942,7 +944,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       <ComponentPreview
         name="FloatingContactButtonBlock"

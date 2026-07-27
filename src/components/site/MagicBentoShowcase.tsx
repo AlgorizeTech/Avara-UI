@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   MagicBento,
   MagicBentoCard,
@@ -18,6 +20,8 @@ import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const BENTO_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
@@ -103,6 +107,8 @@ MagicBentoCard.displayName = "MagicBentoCard";`;
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const BENTO_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
@@ -241,7 +247,7 @@ export default function DashboardLayout() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Feature Explainer Panel */}
-      <div className="flex flex-col gap-4 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-4 p-5 rounded-xl z-0 relative">
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           This grid layout perfectly mirrors the requested 4x3 mapping (with 2x2
           spans in opposite corners). We made it unique by separating the
@@ -250,7 +256,7 @@ export default function DashboardLayout() {
           them feel premium and full. Mobile view natively stacks the grid to
           single-column automatically.
         </p>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

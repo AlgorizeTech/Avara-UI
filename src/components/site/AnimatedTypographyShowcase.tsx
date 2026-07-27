@@ -9,6 +9,7 @@ import {
 } from "@/components/custom/blocks/AnimatedTypographyBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -230,7 +231,7 @@ export default function App() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- REORGANIZED CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-red-500/50 dark:border-red-500/50 rounded-2xl z-0 relative">
+      <ShowcaseControlPanel className="border-red-500/50 dark:border-red-500/50">
         {/* ROW 1: Hero Text Input & Replay Button */}
         <div className="flex flex-col gap-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -367,7 +368,7 @@ export default function App() {
           {/* Color */}
           <ThemeColorPicker color={color} onChange={handleColorChange} label="Text Color" />
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

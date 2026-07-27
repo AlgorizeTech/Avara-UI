@@ -1,11 +1,15 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { Avatar } from "@/components/custom/blocks/Avatar";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const AVATAR_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { AvatarFallback, AvatarImage, Avatar as ShadCNAvatar } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -81,6 +85,8 @@ export const Avatar = ({
 
 // --- JAVASCRIPT ENGINE CODE ---
 const AVATAR_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { AvatarFallback, AvatarImage, Avatar as ShadCNAvatar } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -188,7 +194,7 @@ ${dataString}
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col lg:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
+      <ShowcaseControlPanel className="flex flex-col lg:flex-row gap-6 p-4 rounded-xl flex-wrap">
         {/* Type Selector */}
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -262,7 +268,7 @@ ${dataString}
             ))}
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

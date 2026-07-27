@@ -261,6 +261,7 @@ const SAMPLE_DATA: DataPoint[] = [
 
 import { useState, useEffect } from "react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export function DataMapsShowcase() {
   const [color, setColor] = useState("default");
@@ -299,9 +300,9 @@ export function DataMapsShowcase() {
   return (
     <div className="w-full flex flex-col gap-0 not-prose">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-2 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Variant" />
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW WINDOW --- */}
       <ComponentPreview

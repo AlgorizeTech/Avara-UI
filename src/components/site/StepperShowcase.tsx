@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Step,
   Stepper,
@@ -497,7 +499,7 @@ export default function RealFormWizard() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Control Panel Explanation */}
-      <div className="flex flex-col gap-3 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative text-xs text-zinc-600 dark:text-zinc-400">
+      <ShowcaseControlPanel className="flex flex-col gap-3 p-5 rounded-xl z-0 relative text-xs text-zinc-600 dark:text-zinc-400">
         <strong className="text-zinc-900 dark:text-white font-bold block text-sm">
           Real-Time Form Validation Engine
         </strong>
@@ -505,7 +507,7 @@ export default function RealFormWizard() {
         validation blocks. On Step 4 (Review), use the{" "}
         <strong>Simulate Server Error</strong> checkbox to test both successful
         payload submissions and explicit backend failure alerts.
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

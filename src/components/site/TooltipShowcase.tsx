@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +14,8 @@ import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const TOOLTIP_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
@@ -102,6 +106,8 @@ export function TooltipContent({ side = "top", align = "center", sideOffset = 6,
 
 // --- JAVASCRIPT ENGINE CODE (Hardcoded native ES6) ---
 const TOOLTIP_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
@@ -256,7 +262,7 @@ export default function App() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col xl:flex-row gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col xl:flex-row gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Side Anchor
@@ -298,7 +304,7 @@ export default function App() {
             ))}
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

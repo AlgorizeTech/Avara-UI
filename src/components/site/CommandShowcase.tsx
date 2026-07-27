@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Command,
   CommandDialog,
@@ -26,6 +28,8 @@ import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const COMMAND_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -192,6 +196,8 @@ export function CommandShortcut({ className, ...props }: React.HTMLAttributes<HT
 
 // --- JAVASCRIPT ENGINE CODE (Hardcoded native ES6) ---
 const COMMAND_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -530,7 +536,7 @@ export default function InlineCommand() {
       <Toaster position="bottom-right" />
 
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col md:flex-row gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Layout Mode
@@ -558,7 +564,7 @@ export default function InlineCommand() {
             </button>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

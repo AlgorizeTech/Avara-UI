@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   Hero,
   HeroAction,
@@ -21,6 +23,8 @@ import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const HERO_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import React, { createContext, forwardRef, useContext } from "react";
@@ -139,6 +143,8 @@ HeroVisual.displayName = "HeroVisual";`;
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const HERO_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import React, { createContext, forwardRef, useContext } from "react";
@@ -356,7 +362,7 @@ export default function LandingPage() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
           {/* Layout Selector */}
           <div className="flex flex-col gap-2">
@@ -487,7 +493,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

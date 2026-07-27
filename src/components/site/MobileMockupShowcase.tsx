@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { Button } from "@/components/custom/ui/button";
@@ -305,6 +307,8 @@ GooglePixel10Mockup.displayName = "GooglePixel10Mockup";`;
 
 // ---------------- IPHONE 14 PRO MAX ---------------- //
 const IPHONE14_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { Iphone14ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -329,6 +333,8 @@ export default function AppShowcasePage() {
 
 // ---------------- IPHONE 12 PRO MAX ---------------- //
 const IPHONE12_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { Iphone12ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -353,6 +359,8 @@ export default function AppShowcasePage() {
 
 // ---------------- IPHONE 5 ---------------- //
 const IPHONE5_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -377,6 +385,8 @@ export default function AppShowcasePage() {
 
 // ---------------- SAMSUNG S24 ULTRA ---------------- //
 const SAMSUNG_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { SamsungS24UltraMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -401,6 +411,8 @@ export default function AppShowcasePage() {
 
 // ---------------- GOOGLE PIXEL 8 ---------------- //
 const PIXEL8_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { GooglePixel8Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -425,6 +437,8 @@ export default function AppShowcasePage() {
 
 // ---------------- GOOGLE PIXEL 10 ---------------- //
 const PIXEL10_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import React from "react";
 import { GooglePixel10Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -548,7 +562,7 @@ export function MobileMockupShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Control Panel / Tabs */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
+      <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Device Variant
@@ -576,7 +590,7 @@ export function MobileMockupShowcase() {
             ))}
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* Dynamic Component Preview */}
       <ComponentPreview 

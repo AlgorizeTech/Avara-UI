@@ -1,10 +1,14 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
 const HALF_STARS_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -131,6 +135,8 @@ HalfStars.displayName = "HalfStars";
 
 const FULL_USAGE_TS = `"use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
@@ -152,6 +158,8 @@ export default function AppShowcasePage() {
 
 const HALF_USAGE_TS = `"use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
@@ -172,6 +180,8 @@ export default function AppShowcasePage() {
 
 const CONTINUOUS_USAGE_TS = `"use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
@@ -191,6 +201,8 @@ export default function AppShowcasePage() {
 }`;
 
 const CUSTOM_USAGE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
@@ -322,7 +334,7 @@ export function HalfStarsShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Control Panel / Tabs */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
+      <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Variant
@@ -348,7 +360,7 @@ export function HalfStarsShowcase() {
             ))}
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       <ComponentPreview 
         tsCode={HALF_STARS_TS} 

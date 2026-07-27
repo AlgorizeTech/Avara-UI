@@ -8,6 +8,7 @@ import {
 } from "@/components/custom/blocks/AnimatedTimelineBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import {
   CheckCircle2,
   Loader2,
@@ -256,6 +257,7 @@ export function AnimatedTimelineShowcase() {
     return `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 import { Rocket, Target, Zap } from "lucide-react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const events = [
   { id: "1", title: "Project Start", date: "Jan 2024", icon: Target },
@@ -276,7 +278,7 @@ export default function HistoryPage() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Layout Selector */}
           <div className="flex flex-col gap-2">
@@ -338,7 +340,7 @@ export default function HistoryPage() {
         </div>
 
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Active Focus Color" />
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { cn } from "@/lib/utils";
@@ -8,6 +10,8 @@ import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const TILT_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import {
@@ -86,6 +90,8 @@ TiltedCard.displayName = "TiltedCard";`;
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const TILT_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import {
@@ -216,7 +222,7 @@ export default function FeaturedProduct() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-10 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -272,7 +278,7 @@ export default function FeaturedProduct() {
             />
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

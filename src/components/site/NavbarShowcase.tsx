@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   NavbarBlock,
   NavbarColor,
@@ -10,6 +12,8 @@ import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const NAVBAR_ENGINE_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
@@ -175,6 +179,8 @@ export function NavbarBlock({ variant = "default", color = "indigo", logoText = 
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const NAVBAR_ENGINE_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
@@ -359,7 +365,7 @@ export default function RootLayout({ children }) {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col md:flex-row gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl">
         {/* Variant Selector */}
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -428,7 +434,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview
