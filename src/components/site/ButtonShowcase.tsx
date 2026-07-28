@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import Button from "@/components/custom/blocks/Button";
 import {
@@ -302,33 +303,19 @@ export default function BasicDemo() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Button Category
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full border border-zinc-200 dark:border-white/5">
-            {[
-              { id: "basic", label: "Basic Variants" },
-              { id: "commerce", label: "E-Commerce" },
-              { id: "social", label: "Social Login" },
-              { id: "icon-only", label: "Icon Only" },
-              { id: "right-icon", label: "Trailing Icon" },
-              { id: "others", label: "Status & Nav" },
-            ].map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setLayout(t.id as LayoutType)}
-                className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                  layout === t.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "basic", label: "Basic Variants" },
+            { value: "commerce", label: "E-Commerce" },
+            { value: "social", label: "Social Login" },
+            { value: "icon-only", label: "Icon Only" },
+            { value: "right-icon", label: "Trailing Icon" },
+            { value: "others", label: "Status & Nav" },
+          ]}
+          label="Button Category"
+          defaultValue={layout}
+          onValueChange={(v) => setLayout(v as LayoutType)}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

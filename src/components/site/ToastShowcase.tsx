@@ -10,6 +10,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -371,62 +372,19 @@ function MyComponent() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
-          {/* Variant Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Style Variant
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["default", "glow", "glass", "minimal"] as ToastVariant[]).map(
-                (v) => (
-                  <button
-                    key={v}
-                    onClick={() => setVariant(v)}
-                    className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                      variant === v
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                    }`}
-                  >
-                    {v}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
-
-          {/* Position Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Placement Position
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(
-                [
-                  "top-left",
-                  "top-center",
-                  "top-right",
-                  "bottom-left",
-                  "bottom-center",
-                  "bottom-right",
-                ] as ToastPosition[]
-              ).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPosition(p)}
-                  className={`flex-1 md:flex-none px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                    position === p
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {p.replace("-", " ")}
-                </button>
-              ))}
-            </div>
-          </div>
+          <VariantTabs
+            label="Style Variant"
+            variants={["default", "glow", "glass", "minimal"]}
+            defaultValue="default"
+            onValueChange={(v) => setVariant(v as ToastVariant)}
+          />
+          <VariantTabs
+            label="Placement Position"
+            variants={["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]}
+            defaultValue="top-right"
+            onValueChange={(v) => setPosition(v as ToastPosition)}
+          />
         </div>
-
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </ShowcaseControlPanel>
 

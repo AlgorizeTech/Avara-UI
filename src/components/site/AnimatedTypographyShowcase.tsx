@@ -10,6 +10,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -258,95 +259,30 @@ export default function App() {
         </div>
 
         {/* ROW 2: Animation Variant (Spans Full Width neatly) */}
-        <div className="flex flex-col gap-2">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-            Animation Variant
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-1.5 bg-zinc-200/60 dark:bg-black/40 p-1.5 rounded-xl border border-zinc-200 dark:border-white/5">
-            {(
-              [
-                "fade-up",
-                "reveal",
-                "flip-up",
-                "pop-in",
-                "blur-in",
-                "typewriter",
-                "glitch",
-                "glow",
-                "none",
-              ] as TypographyVariant[]
-            ).map((v) => (
-              <button
-                key={v}
-                onClick={() => {
-                  setVariant(v);
-                  triggerAnimation();
-                }}
-                className={`h-8 px-2.5 text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer truncate ${
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-white/50 dark:hover:bg-white/5"
-                }`}
-              >
-                {v.replace("-", " ")}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          label="Animation Variant"
+          variants={["fade-up", "reveal", "flip-up", "pop-in", "blur-in", "typewriter", "glitch", "glow", "none"]}
+          defaultValue="fade-up"
+          onValueChange={(v) => { setVariant(v as TypographyVariant); triggerAnimation(); }}
+        />
 
         {/* ROW 3: Structured 4-Column Grid for Settings */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
           {/* Semantic Tag */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Semantic Tag
-            </label>
-            <div className="grid grid-cols-5 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
-              {(["h1", "h2", "h3", "p", "blockquote"] as TypographyTag[]).map(
-                (t) => (
-                  <button
-                    key={t}
-                    onClick={() => {
-                      setTag(t);
-                      triggerAnimation();
-                    }}
-                    className={`h-full text-xs font-semibold rounded-lg uppercase transition-all cursor-pointer flex items-center justify-center ${
-                      tag === t
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                    }`}
-                  >
-                    {t === "blockquote" ? "q" : t}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
+          <VariantTabs
+            label="Semantic Tag"
+            variants={["h1", "h2", "h3", "p", "blockquote"]}
+            defaultValue="h1"
+            onValueChange={(v) => { setTag(v as TypographyTag); triggerAnimation(); }}
+          />
 
           {/* Alignment */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Alignment
-            </label>
-            <div className="grid grid-cols-3 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
-              {(["left", "center", "right"] as TypographyAlign[]).map((a) => (
-                <button
-                  key={a}
-                  onClick={() => {
-                    setAlign(a);
-                    triggerAnimation();
-                  }}
-                  className={`h-full text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer flex items-center justify-center ${
-                    align === a
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                  }`}
-                >
-                  {a}
-                </button>
-              ))}
-            </div>
-          </div>
+          <VariantTabs
+            label="Alignment"
+            variants={["left", "center", "right"]}
+            defaultValue="center"
+            onValueChange={(v) => { setAlign(v as TypographyAlign); triggerAnimation(); }}
+          />
 
           {/* Size Override */}
           <div className="flex flex-col gap-2">

@@ -4,6 +4,7 @@ import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingC
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -887,60 +888,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Screen Corner
-            </label>
-            <div className="grid grid-cols-2 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
-              {(["bottom-right", "bottom-left"] as const).map((pos) => (
-                <button
-                  key={pos}
-                  onClick={() => setPosition(pos)}
-                  className={`h-full text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer flex items-center justify-center ${
-                    position === pos
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                  }`}
-                >
-                  {pos.replace("-", " ")}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Initial State
-            </label>
-            <div className="grid grid-cols-2 gap-1 bg-zinc-200/60 dark:bg-black/40 p-1 rounded-xl border border-zinc-200 dark:border-white/5 h-10">
-              <button
-                onClick={() => {
-                  setDefaultOpen(true);
-                  triggerReset();
-                }}
-                className={`h-full text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer flex items-center justify-center ${
-                  defaultOpen
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                Expanded
-              </button>
-              <button
-                onClick={() => {
-                  setDefaultOpen(false);
-                  triggerReset();
-                }}
-                className={`h-full text-xs font-semibold rounded-lg capitalize transition-all cursor-pointer flex items-center justify-center ${
-                  !defaultOpen
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                Collapsed
-              </button>
-            </div>
-          </div>
+          <VariantTabs
+            label="Screen Corner"
+            variants={["bottom-right", "bottom-left"]}
+            defaultValue="bottom-right"
+            onValueChange={(v) => setPosition(v as "bottom-right" | "bottom-left")}
+          />
+          <VariantTabs
+            label="Initial State"
+            variants={["Expanded", "Collapsed"]}
+            defaultValue="Collapsed"
+            onValueChange={(v) => { setDefaultOpen(v === "Expanded"); triggerReset(); }}
+          />
 
           <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
         </div>

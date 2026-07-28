@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   Dropzone,
@@ -660,29 +661,12 @@ export default function UploadFlow() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Queue Entry Animation
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["slide-up", "slide-right", "pop", "flip"] as const).map(
-                (v) => (
-                  <button
-                    key={v}
-                    onClick={() => setVariant(v)}
-                    className={cn(
-                      "flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all",
-                      variant === v
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400",
-                    )}
-                  >
-                    {v.replace("-", " ")}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
+          <VariantTabs
+            label="Queue Entry Animation"
+            variants={["slide-up", "slide-right", "pop", "flip"]}
+            defaultValue="slide-up"
+            onValueChange={(v) => setVariant(v as "slide-up" | "slide-right" | "pop" | "flip")}
+          />
           <div className="text-[13px] text-zinc-500 dark:text-zinc-400 max-w-xs text-right hidden md:block">
             Drag images directly from your desktop to see the visual preview and
             entrance effects.

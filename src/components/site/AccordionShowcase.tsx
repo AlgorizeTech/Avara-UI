@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import { Accordion } from "@/components/custom/blocks/Accordion";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
@@ -250,51 +251,23 @@ export default function AccordionDemo()${typeDef} {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Style Variant
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {(
-              [
-                "default",
-                "bordered",
-                "filled",
-                "elevated",
-                "ghost",
-              ] as AccordionVariant[]
-            ).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={`flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-md capitalize transition-all ${variant === v ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["default", "bordered", "filled", "elevated", "ghost"]}
+          label="Style Variant"
+          defaultValue={variant}
+          onValueChange={(v) => setVariant(v as AccordionVariant)}
+        />
 
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Interaction Type
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full xl:w-max border border-zinc-200 dark:border-white/5">
-            {[
-              { id: "single", label: "Single (Standard)" },
-              { id: "single-mandatory", label: "Mandatory (Always One Open)" },
-              { id: "multiple", label: "Multiple (Independent)" },
-            ].map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setInteraction(t.id as InteractionType)}
-                className={`flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-md transition-all ${interaction === t.id ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "single", label: "Single (Standard)" },
+            { value: "single-mandatory", label: "Mandatory (Always One Open)" },
+            { value: "multiple", label: "Multiple (Independent)" },
+          ]}
+          label="Interaction Type"
+          defaultValue={interaction}
+          onValueChange={(v) => setInteraction(v as InteractionType)}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
