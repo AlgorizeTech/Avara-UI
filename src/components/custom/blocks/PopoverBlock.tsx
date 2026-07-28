@@ -119,6 +119,11 @@ export function PopoverContent({
   useEffect(() => {
     if (!open || !triggerRef.current || !contentRef.current) return;
 
+    // Resolve the document/window the trigger actually lives in, so the
+    // popover works when rendered inside an iframe (e.g. docs device preview).
+    const doc = triggerRef.current.ownerDocument;
+    const win = doc.defaultView ?? window;
+
     const updatePosition = () => {
       const trigger = triggerRef.current!.getBoundingClientRect();
       const content = contentRef.current!.getBoundingClientRect();
@@ -144,16 +149,16 @@ export function PopoverContent({
         if (align === "end") top = trigger.bottom - content.height;
       }
 
-      setCoords({ top: top + window.scrollY, left: left + window.scrollX });
+      setCoords({ top: top + win.scrollY, left: left + win.scrollX });
     };
 
     updatePosition();
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
+    win.addEventListener("scroll", updatePosition, true);
+    win.addEventListener("resize", updatePosition);
 
     return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+      win.removeEventListener("scroll", updatePosition, true);
+      win.removeEventListener("resize", updatePosition);
     };
   }, [open, side, align, sideOffset]);
 
@@ -176,18 +181,24 @@ export function PopoverContent({
       if (e.key === "Escape") setOpen(false);
     };
 
-    document.addEventListener("mousedown", handleInteractOutside);
-    document.addEventListener("touchstart", handleInteractOutside);
-    document.addEventListener("keydown", handleEscape);
+    // Listen on the document the trigger actually lives in (supports iframe rendering).
+    const doc = triggerRef.current?.ownerDocument ?? document;
+
+    doc.addEventListener("mousedown", handleInteractOutside);
+    doc.addEventListener("touchstart", handleInteractOutside);
+    doc.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener("mousedown", handleInteractOutside);
-      document.removeEventListener("touchstart", handleInteractOutside);
-      document.removeEventListener("keydown", handleEscape);
+      doc.removeEventListener("mousedown", handleInteractOutside);
+      doc.removeEventListener("touchstart", handleInteractOutside);
+      doc.removeEventListener("keydown", handleEscape);
     };
   }, [open, setOpen, triggerRef]);
 
   if (!mounted || !open) return null;
+
+  // Portal into the trigger's own document (supports iframe rendering).
+  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
 
   return createPortal(
     <div
@@ -204,6 +215,6 @@ export function PopoverContent({
     >
       {children}
     </div>,
-    document.body,
+    portalTarget,
   );
 }
