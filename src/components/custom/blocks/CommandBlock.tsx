@@ -131,35 +131,46 @@ export function CommandDialog({
   ...props
 }: CommandDialogProps) {
   const [mounted, setMounted] = useState(false);
+  const anchorRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setMounted(true);
+    // Resolve the document the dialog actually lives in (supports iframe rendering).
+    const doc = anchorRef.current?.ownerDocument ?? document;
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onOpenChange(false);
     };
-    if (open) document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    if (open) doc.addEventListener("keydown", handleEscape);
+    return () => doc.removeEventListener("keydown", handleEscape);
   }, [open, onOpenChange]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open) return <span ref={anchorRef} hidden />;
 
-  return createPortal(
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] sm:pt-[20vh] bg-zinc-950/50 dark:bg-zinc-950/80 backdrop-blur-sm">
-      <div
-        className="fixed inset-0 z-40"
-        onClick={() => onOpenChange(false)}
-        aria-hidden="true"
-      />
-      <div className="z-50 w-full max-w-xl animate-in fade-in zoom-in-95 slide-in-from-top-[10%] duration-200 px-4 sm:px-0">
-        <Command
-          className="shadow-2xl h-[400px] border-none ring-1 ring-zinc-200 dark:ring-zinc-800"
-          {...props}
-        >
-          {children}
-        </Command>
-      </div>
-    </div>,
-    document.body,
+  // Portal into the dialog's own document (supports iframe rendering).
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {createPortal(
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] sm:pt-[20vh] bg-zinc-950/50 dark:bg-zinc-950/80 backdrop-blur-sm">
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => onOpenChange(false)}
+            aria-hidden="true"
+          />
+          <div className="z-50 w-full max-w-xl animate-in fade-in zoom-in-95 slide-in-from-top-[10%] duration-200 px-4 sm:px-0">
+            <Command
+              className="shadow-2xl h-[400px] border-none ring-1 ring-zinc-200 dark:ring-zinc-800"
+              {...props}
+            >
+              {children}
+            </Command>
+          </div>
+        </div>,
+        portalTarget,
+      )}
+    </>
   );
 }
 
