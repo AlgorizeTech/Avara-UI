@@ -369,7 +369,7 @@ export function DataMapsShowcase() {
 				jsCode={DATA_MAPS_JS}
 				usageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
 				jsUsageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
-				disableFrame>
+				>
 				<div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
 					<DataMaps
 						variant={variant}

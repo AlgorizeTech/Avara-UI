@@ -1,13 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 // ==========================================
 // TYPES & INTERFACES
@@ -25,11 +19,11 @@ export interface ScrollStackProps extends React.HTMLAttributes<HTMLDivElement> {
   items: StackItem[];
   depthScale?: number; // How much smaller background cards get (default: 0.05)
   cardGap?: number; // Pixel distance between stacked sticky cards (default: 24)
-  scroller?: string | Element | null; // Target viewport for GSAP ScrollTrigger
+  scroller?: string | Element | null; // Scroll viewport driving the effect
 }
 
 // ==========================================
-// MAIN CONTAINER (GSAP POWERED)
+// MAIN CONTAINER (SCROLL-DRIVEN)
 // ==========================================
 export const ScrollStack = ({
   items,
@@ -43,39 +37,76 @@ export const ScrollStack = ({
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const triggers: ScrollTrigger[] = [];
-
-    // Animate each card as the NEXT card scrolls up to stack over it
-    cardRefs.current.forEach((card, index) => {
-      if (!card || index === items.length - 1) return; // Last card doesn't need to shrink
-
-      const nextCard = cardRefs.current[index + 1];
-      if (!nextCard) return;
-
-      const targetScale = 1 - (items.length - 1 - index) * depthScale;
-
-      const tween = gsap.to(card, {
-        scale: targetScale,
-        opacity: 0.65,
-        ease: "none",
-        scrollTrigger: {
-          trigger: nextCard,
-          scroller: scroller || window,
-          start: "top 85%",
-          end: "top 20%",
-          scrub: true,
-        },
-      });
-
-      if (tween.scrollTrigger) {
-        triggers.push(tween.scrollTrigger);
+    // Resolve everything against the document the component actually lives in,
+    // so the effect also works when rendered inside an iframe.
+    const doc = container.ownerDocument;
+    const win = doc.defaultView ?? window;
+    let scrollerEl =
+      typeof scroller === "string"
+        ? doc.querySelector(scroller)
+        : (scroller ?? null);
+    // No explicit scroller (or a ref that was still null when passed):
+    // fall back to the nearest scrollable ancestor.
+    if (!scrollerEl) {
+      let parent = container.parentElement;
+      while (parent && parent !== doc.documentElement) {
+        const style = win.getComputedStyle(parent);
+        if (
+          /(auto|scroll|overlay)/.test(style.overflowY) &&
+          parent.scrollHeight > parent.clientHeight
+        ) {
+          scrollerEl = parent;
+          break;
+        }
+        parent = parent.parentElement;
       }
-    });
+    }
+
+    // Scrub each card as the NEXT card scrolls from 85% to 20% of the viewport
+    const update = () => {
+      const viewportTop = scrollerEl
+        ? scrollerEl.getBoundingClientRect().top
+        : 0;
+      const viewportHeight = scrollerEl
+        ? scrollerEl.clientHeight
+        : win.innerHeight;
+      const start = viewportHeight * 0.85;
+      const end = viewportHeight * 0.2;
+
+      cardRefs.current.forEach((card, index) => {
+        if (!card || index === items.length - 1) return; // Last card doesn't shrink
+        const nextCard = cardRefs.current[index + 1];
+        if (!nextCard) return;
+
+        const nextTop = nextCard.getBoundingClientRect().top - viewportTop;
+        const progress = Math.min(
+          1,
+          Math.max(0, (start - nextTop) / (start - end)),
+        );
+
+        const targetScale = 1 - (items.length - 1 - index) * depthScale;
+        card.style.transform = `scale(${1 + (targetScale - 1) * progress})`;
+        card.style.opacity = String(1 - 0.35 * progress);
+      });
+    };
+
+    update();
+    const scrollTarget: EventTarget = scrollerEl ?? win;
+    scrollTarget.addEventListener("scroll", update, { passive: true });
+    win.addEventListener("resize", update);
 
     return () => {
-      triggers.forEach((t) => t.kill());
+      scrollTarget.removeEventListener("scroll", update);
+      win.removeEventListener("resize", update);
+      cardRefs.current.forEach((card) => {
+        if (card) {
+          card.style.transform = "";
+          card.style.opacity = "";
+        }
+      });
     };
   }, [items.length, depthScale, scroller]);
 

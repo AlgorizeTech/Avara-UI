@@ -13,34 +13,41 @@ export function useTableOfContents() {
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
-    // Function to extract headings from the page
     const extractHeadings = () => {
-      // Wait a bit for MDX content to render
       setTimeout(() => {
-        // Get h1, h2, and h3 headings from the main content area
         const mainContent = document.querySelector("main");
         if (!mainContent) return;
 
         const headings = mainContent.querySelectorAll("h1, h2, h3");
         const tocItems: TOCItem[] = [];
-
         const usedIds = new Set<string>();
 
         headings.forEach((heading, index) => {
-          // Skip if heading is empty or just whitespace
+          // ── EXCLUSION FILTER ──────────────────────────────────────────────────
+          if (
+            heading.closest(
+              ".not-prose, .props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
+            )
+          ) {
+            return;
+          }
+          // ──────────────────────────────────────────────────────────────────────
+
           const text = heading.textContent?.trim();
           if (!text) return;
 
           let id = heading.id;
 
-          // If heading doesn't have an id, create one from the text
-          if (!id) {
-            const baseId = text
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, "-")
-              .replace(/(^-|-$)/g, "") || `heading-${index}`;
+          // ── THE BUG FIX: Enforce global ID uniqueness in the DOM ──
+          // If the Markdown parser generated duplicate IDs across components, rewrite them!
+          if (!id || usedIds.has(id)) {
+            const baseId =
+              id ||
+              text
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "") || `heading-${index}`;
 
-            // Ensure the ID is unique
             id = baseId;
             let counter = 1;
             while (usedIds.has(id)) {
@@ -48,62 +55,46 @@ export function useTableOfContents() {
               counter++;
             }
 
+            // Force-update the browser DOM tag so intersection observers match uniquely
             heading.id = id;
           }
 
-          // Track this ID to prevent duplicates
           usedIds.add(id);
 
-          // Get the heading level from the tag name
           const level = parseInt(heading.tagName.charAt(1));
-
-          tocItems.push({
-            id,
-            text,
-            level,
-          });
+          tocItems.push({ id, text, level });
         });
 
         setToc(tocItems);
-      }, 100); // Small delay to ensure MDX content is rendered
+      }, 100);
     };
 
-    // Extract headings on mount and when content changes
     extractHeadings();
 
-    // Set up a MutationObserver to watch for content changes
     const observer = new MutationObserver(() => {
       extractHeadings();
     });
 
-    // Observe changes to the main content area
     const mainContent = document.querySelector("main");
     if (mainContent) {
-      observer.observe(mainContent, {
-        childList: true,
-        subtree: true,
-      });
+      observer.observe(mainContent, { childList: true, subtree: true });
     }
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    // Function to handle scroll and update active heading
     const handleScroll = () => {
-      const headings = toc.map(item => document.getElementById(item.id)).filter(Boolean);
-      
+      const headings = toc
+        .map((item) => document.getElementById(item.id))
+        .filter(Boolean);
+
       if (headings.length === 0) return;
 
-      // Find the heading that's currently in view
       let activeHeading = headings[0];
-      
       for (const heading of headings) {
         if (heading) {
           const rect = heading.getBoundingClientRect();
-          // Consider a heading active if it's within the top 30% of the viewport
           if (rect.top <= window.innerHeight * 0.3) {
             activeHeading = heading;
           } else {
@@ -117,30 +108,19 @@ export function useTableOfContents() {
       }
     };
 
-    // Add scroll listener
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
-    // Initial check
     handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [toc, activeId]);
 
-  // Function to scroll to a heading
   const scrollToHeading = (id: string, offset: number = 88) => {
-  const element = document.getElementById(id);
-  if (element) {
-    const y = element.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
-
-
-  return {
-    toc,
-    activeId,
-    scrollToHeading,
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
+
+  return { toc, activeId, scrollToHeading };
 }

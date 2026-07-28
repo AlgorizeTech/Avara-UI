@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  MotionValue,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 export type ScrollStackItem = {
@@ -145,6 +150,13 @@ export function HorizontalScrollStack({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Resolve everything against the document the component actually lives in,
+    // so the effect also works when rendered inside an iframe.
+    const doc = container.ownerDocument;
+    const win = doc.defaultView ?? window;
 
     // 1. UNIVERSAL STICKY PATCHER: Intercepts & neutralizes ALL CSS traps (auto, scroll, hidden, overlay, contain)
     const modifiedAncestors: {
@@ -155,13 +167,9 @@ export function HorizontalScrollStack({
       contain: string;
     }[] = [];
 
-    let parent = containerRef.current?.parentElement;
-    while (
-      parent &&
-      parent !== document.body &&
-      parent !== document.documentElement
-    ) {
-      const computed = window.getComputedStyle(parent);
+    let parent = container.parentElement;
+    while (parent && parent !== doc.body && parent !== doc.documentElement) {
+      const computed = win.getComputedStyle(parent);
       const { overflow, overflowX, overflowY, contain } = computed;
 
       const hasOverflowTrap = ["hidden", "auto", "scroll", "overlay"].some(
@@ -190,9 +198,11 @@ export function HorizontalScrollStack({
       parent = parent.parentElement;
     }
 
-    // 2. Responsive layout sizing & Mobile detection
+    // 2. Responsive layout sizing & Mobile detection.
+    // Measures the container (not the top window) so it responds to the
+    // actual viewport when rendered inside an iframe device preview.
     const updateLayout = () => {
-      const w = window.innerWidth;
+      const w = container.clientWidth || win.innerWidth;
       setIsMobile(w < 768); // Below 768px (md breakpoint) triggers simple vertical stack
 
       if (w < 640) {
@@ -214,10 +224,17 @@ export function HorizontalScrollStack({
     };
 
     updateLayout();
-    window.addEventListener("resize", updateLayout);
+    // Realm-correct ResizeObserver: a parent-realm observer never fires for
+    // elements living in another document (e.g. inside an iframe).
+    const RO =
+      (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
+    const observer = new RO(updateLayout);
+    observer.observe(container);
+    win.addEventListener("resize", updateLayout);
 
     return () => {
-      window.removeEventListener("resize", updateLayout);
+      observer.disconnect();
+      win.removeEventListener("resize", updateLayout);
       modifiedAncestors.forEach(
         ({ element, overflow, overflowX, overflowY, contain }) => {
           element.style.overflow = overflow;
@@ -229,11 +246,31 @@ export function HorizontalScrollStack({
     };
   }, [items.length]);
 
-  // Track vertical scroll progress of the tall container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  // Track vertical scroll progress of the tall container.
+  // Manually driven MotionValue instead of useScroll so progress is computed
+  // against the window/document the component actually lives in (works inside
+  // a same-origin iframe device preview, where useScroll would track the
+  // parent page scroll instead). Replicates offset ["start start", "end end"].
+  const scrollYProgress = useMotionValue(0);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const win = el.ownerDocument.defaultView ?? window;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - win.innerHeight;
+      scrollYProgress.set(
+        total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0,
+      );
+    };
+    update();
+    win.addEventListener("scroll", update, { passive: true });
+    win.addEventListener("resize", update);
+    return () => {
+      win.removeEventListener("scroll", update);
+      win.removeEventListener("resize", update);
+    };
+  }, [scrollYProgress]);
 
   const SCROLL_END_THRESHOLD = 0.7;
   const dynamicHeight = Math.max(400, items.length * 70);
