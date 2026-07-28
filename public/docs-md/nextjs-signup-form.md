@@ -8,8 +8,6 @@ Use the control panel below to switch between the `login` and `signup` form type
 
 _Click the **Code** tab in the preview below to copy the full component engine._
 
----
-
 ## Installation
 
 ### 1. Install Dependencies

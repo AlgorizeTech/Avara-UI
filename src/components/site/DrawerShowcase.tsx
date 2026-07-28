@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   Button,
@@ -296,26 +297,12 @@ export default function DrawerDemo() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Slide Direction
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {(["top", "bottom", "left", "right"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setSide(s)}
-                className={`flex-1 md:flex-none px-6 py-2 text-sm font-medium rounded-md capitalize transition-all ${
-                  side === s
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["top", "bottom", "left", "right"]}
+          label="Slide Direction"
+          defaultValue={side}
+          onValueChange={(v) => setSide(v as "top" | "bottom" | "left" | "right")}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

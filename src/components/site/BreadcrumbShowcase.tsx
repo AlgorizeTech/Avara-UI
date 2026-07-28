@@ -8,6 +8,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { FileText, Folder, Home, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -286,49 +287,23 @@ export default function Layout() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl">
         {/* Variant Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Style Variant
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {(
-              ["classic", "slash", "solid", "ghost"] as BreadcrumbVariant[]
-            ).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["classic", "slash", "solid", "ghost"]}
+          label="Style Variant"
+          defaultValue={variant}
+          onValueChange={(v) => setVariant(v as BreadcrumbVariant)}
+        />
 
         {/* Path Length Toggle */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Path Length (Collapsing)
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            <button
-              onClick={() => setIsLongPath(false)}
-              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${!isLongPath ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
-            >
-              Short
-            </button>
-            <button
-              onClick={() => setIsLongPath(true)}
-              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${isLongPath ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"}`}
-            >
-              Long (Truncated)
-            </button>
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "short", label: "Short" },
+            { value: "long", label: "Long (Truncated)" },
+          ]}
+          label="Path Length (Collapsing)"
+          defaultValue={isLongPath ? "long" : "short"}
+          onValueChange={(v) => setIsLongPath(v === "long")}
+        />
 
         {/* Color */}
           <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />

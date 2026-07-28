@@ -9,6 +9,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import {
   CheckCircle2,
   Loader2,
@@ -280,65 +281,19 @@ export default function HistoryPage() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Layout Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Timeline Layout
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["left", "center", "right"] as TimelineLayout[]).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => {
-                    setLayout(l);
-                    triggerReplay();
-                  }}
-                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    layout === l
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Animation Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Entry Animation
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(
-                [
-                  "fade-up",
-                  "slide-in",
-                  "zoom-in",
-                  "flip-up",
-                  "blur-in",
-                ] as TimelineAnimation[]
-              ).map((v) => (
-                <button
-                  key={v}
-                  onClick={() => {
-                    setAnimation(v);
-                    triggerReplay();
-                  }}
-                  className={`flex-1 md:flex-none px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    animation === v
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {v.replace("-", " ")}
-                </button>
-              ))}
-            </div>
-          </div>
+          <VariantTabs
+            label="Timeline Layout"
+            variants={["left", "center", "right"]}
+            defaultValue="left"
+            onValueChange={(v) => { setLayout(v as TimelineLayout); triggerReplay(); }}
+          />
+          <VariantTabs
+            label="Entry Animation"
+            variants={["fade-up", "slide-in", "zoom-in", "flip-up", "blur-in"]}
+            defaultValue="fade-up"
+            onValueChange={(v) => { setAnimation(v as TimelineAnimation); triggerReplay(); }}
+          />
         </div>
-
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Active Focus Color" />
       </ShowcaseControlPanel>
 

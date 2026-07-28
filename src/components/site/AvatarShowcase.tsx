@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import { Avatar } from "@/components/custom/blocks/Avatar";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
@@ -196,78 +197,36 @@ ${dataString}
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col lg:flex-row gap-6 p-4 rounded-xl flex-wrap">
         {/* Type Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Type
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {[
-              { id: "single", label: "Single Avatar" },
-              { id: "group", label: "Avatar Group" },
-            ].map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setType(v.id as AvatarType)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-                  type === v.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "single", label: "Single Avatar" },
+            { value: "group", label: "Avatar Group" },
+          ]}
+          label="Type"
+          defaultValue={type}
+          onValueChange={(v) => setType(v as AvatarType)}
+        />
 
         {/* Size Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Size
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {(["sm", "default", "lg"] as AvatarSize[]).map((s) => (
-              <button
-                key={s}
-                onClick={() => setSize(s)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  size === s
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["sm", "default", "lg"]}
+          label="Size"
+          defaultValue={size}
+          onValueChange={(v) => setSize(v as AvatarSize)}
+        />
 
         {/* Status Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Status Indicator
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {[
-              { id: "none", label: "None" },
-              { id: "default", label: "Default" },
-              { id: "active", label: "Active" },
-              { id: "inactive", label: "Inactive" },
-            ].map((st) => (
-              <button
-                key={st.id}
-                onClick={() => setStatus(st.id as AvatarStatus)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-                  status === st.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {st.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "none", label: "None" },
+            { value: "default", label: "Default" },
+            { value: "active", label: "Active" },
+            { value: "inactive", label: "Inactive" },
+          ]}
+          label="Status Indicator"
+          defaultValue={status}
+          onValueChange={(v) => setStatus(v as AvatarStatus)}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

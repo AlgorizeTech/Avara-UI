@@ -10,6 +10,7 @@ import { InputBlock } from "@/components/custom/blocks/InputBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -358,45 +359,25 @@ export default function EnterpriseForm() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Form Implementation
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            <button
-              onClick={() => setDemoType("native")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${demoType === "native" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
-            >
-              Basic Native State
-            </button>
-            <button
-              onClick={() => setDemoType("zod")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${demoType === "zod" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
-            >
-              Advanced (RHF + Zod)
-            </button>
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "native", label: "Basic Native State" },
+            { value: "zod", label: "Advanced (RHF + Zod)" },
+          ]}
+          label="Form Implementation"
+          defaultValue={demoType}
+          onValueChange={(v) => setDemoType(v as "native" | "zod")}
+        />
 
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Error Style
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            <button
-              onClick={() => setErrorStyle("glitch")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${errorStyle === "glitch" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
-            >
-              Glitch
-            </button>
-            <button
-              onClick={() => setErrorStyle("default")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${errorStyle === "default" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400"}`}
-            >
-              Default
-            </button>
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "glitch", label: "Glitch" },
+            { value: "default", label: "Default" },
+          ]}
+          label="Error Style"
+          defaultValue={errorStyle}
+          onValueChange={(v) => setErrorStyle(v as "glitch" | "default")}
+        />
 
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </ShowcaseControlPanel>

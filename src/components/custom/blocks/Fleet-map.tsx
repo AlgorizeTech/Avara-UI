@@ -148,6 +148,24 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
   return null;
 }
 
+// Leaflet only measures its container once; refit whenever the container
+// resizes (docs device preview, responsive layouts). The ResizeObserver must
+// come from the container's own window — a parent-realm observer never fires
+// for elements inside an iframe.
+function MapResizeHandler() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    const win = container.ownerDocument.defaultView ?? window;
+    const FrameResizeObserver =
+      (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
+    const observer = new FrameResizeObserver(() => map.invalidateSize());
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
+  return null;
+}
+
 // --- MAIN COMPONENT ---
 export default function FleetTracker({
   fleetData = [],
@@ -398,6 +416,7 @@ export default function FleetTracker({
               url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
             />
             <MapController activeVehicle={activeVehicle} />
+            <MapResizeHandler />
             {fleetData.map((vehicle) => (
               <Marker
                 key={vehicle.id}

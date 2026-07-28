@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import React, { useState, useEffect } from "react";
 import { ScrollStackShowcase } from "./ScrollStackShowcase";
