@@ -200,25 +200,62 @@ export const FloatingContactButtonBlock = React.forwardRef<
     const modalWidthClass =
       containerMode === "fixed"
         ? "w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px]"
-        : "w-[calc(100vw-2.5rem)] sm:w-[340px] md:w-[380px] max-w-[380px]";
+        : "w-[380px]";
 
     const modalHeightClass =
       containerMode === "fixed"
-        ? "h-[450px] sm:h-[490px] max-h-[calc(100vh-6rem)]"
-        : "h-[320px] sm:h-[400px] md:h-[440px] lg:h-[480px] max-h-[calc(100vh-4rem)]";
+        ? "h-[400px] sm:h-[480px] max-h-[calc(100vh-6rem)]"
+        : "h-[480px]";
 
     const activeBgGlow = hexToRgba(accentColor, 0.25);
 
+    // Auto-scale: shrink the entire widget when its parent container is narrow
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [autoScale, setAutoScale] = useState(1);
+
+    useEffect(() => {
+      if (containerMode !== "absolute") return;
+      const el = wrapperRef.current;
+      if (!el) return;
+      const parent = el.offsetParent as HTMLElement | null;
+      if (!parent) return;
+
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const w = entry.contentRect.width;
+          // Start scaling when container is narrower than 460px
+          setAutoScale(Math.min(1, Math.max(0.5, w / 460)));
+        }
+      });
+      observer.observe(parent);
+      return () => observer.disconnect();
+    }, [containerMode]);
+
+    const mergedRef = (node: HTMLDivElement | null) => {
+      (wrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+    };
+
     return (
       <div
-        ref={ref}
+        ref={mergedRef}
         className={cn(
           "pointer-events-none select-none",
-          containerMode === "fixed" ? "fixed z-50" : "absolute z-[60]",
+          containerMode === "fixed" ? "fixed z-50" : "absolute z-[5]",
           positionClasses,
-          "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
+          "w-14 h-14 sm:w-16 sm:h-16",
           className,
         )}
+        style={
+          containerMode === "absolute" && autoScale < 1
+            ? {
+                transform: `scale(${autoScale})`,
+                transformOrigin:
+                  position === "bottom-right" ? "bottom right" : "bottom left",
+              }
+            : undefined
+        }
         {...props}
       >
         <AnimatePresence mode="wait">

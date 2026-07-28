@@ -2,9 +2,9 @@
 
 {/* A beautiful map component to visualize your geographic data points */}
 
-A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles.
+A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind, it leverages Next.js dynamic imports to load Leaflet entirely client-side — no hydration mismatches, no broken renders, just a smooth map experience every time.
 
-It features interactive tooltips, multiple visual variants (such as solid region fills or density dots), and seamless theme integration that automatically adapts to your site's dark or light mode. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations.
+It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations right inside your Next.js application.
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
