@@ -348,7 +348,7 @@ export function ComponentPreview({
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              {previewWidth === "100%" || disableFrame ? (
+              {disableFrame ? (
                 <div
                   key={replayKey}
                   className={cn(
@@ -359,19 +359,21 @@ export function ComponentPreview({
                   {children}
                 </div>
               ) : (
-                /* A real iframe viewport: media queries inside respond to the
-                   preview width, so components actually become responsive. */
+                /* A real iframe viewport at EVERY width (incl. 100%): media
+                   queries inside respond to the preview width, and keeping one
+                   frame alive across resizes means content never remounts or
+                   replays its entrance while dragging. */
                 <div
                   className={cn(
                     "w-full overflow-hidden",
-                    isScaled ? "rounded-b-xl" : "rounded-bl-xl",
+                    previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl",
                     isDragging && "pointer-events-none select-none"
                   )}
                 >
                   <PreviewFrame
                     minHeight={400}
                     title={`${name} responsive preview`}
-                    frameWidth={previewWidth as number}
+                    frameWidth={previewWidth === "100%" ? undefined : (previewWidth as number)}
                     scale={frameScale}
                   >
                     <div
