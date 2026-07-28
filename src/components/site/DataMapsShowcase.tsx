@@ -262,6 +262,7 @@ const SAMPLE_DATA: DataPoint[] = [
 import { useState, useEffect } from "react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { cn } from "@/lib/utils";
 
 export function DataMapsShowcase() {
   const [color, setColor] = useState("default");
@@ -301,7 +302,28 @@ export function DataMapsShowcase() {
     <div className="w-full flex flex-col gap-0 not-prose">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
-        <ThemeColorPicker color={color} onChange={handleColorChange} label="Variant" />
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+            Map Variant
+          </label>
+          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
+            {(["fill", "dots"] as const).map((v) => (
+              <button
+                key={v}
+                onClick={() => setVariant(v)}
+                className={cn(
+                  "px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer",
+                  variant === v
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                )}
+              >
+                {v === "fill" ? "Country Fill" : "Marker Dots"}
+              </button>
+            ))}
+          </div>
+        </div>
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW WINDOW --- */}
