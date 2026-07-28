@@ -151,6 +151,8 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
 
     // Close on click outside
     useEffect(() => {
+      // Resolve the document the picker actually lives in (supports iframe rendering).
+      const doc = containerRef.current?.ownerDocument ?? document;
       const handleClickOutside = (event: MouseEvent) => {
         if (
           containerRef.current &&
@@ -159,9 +161,8 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           setIsOpen(false);
         }
       };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
+      doc.addEventListener("mousedown", handleClickOutside);
+      return () => doc.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     // Sync view date with value when opened

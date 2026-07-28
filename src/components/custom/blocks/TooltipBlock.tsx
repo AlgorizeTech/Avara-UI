@@ -128,6 +128,11 @@ export function TooltipContent({
   useEffect(() => {
     if (!open || !triggerRef.current || !contentRef.current) return;
 
+    // Resolve the document/window the trigger actually lives in, so the
+    // tooltip works when rendered inside an iframe (e.g. docs device preview).
+    const doc = triggerRef.current.ownerDocument;
+    const win = doc.defaultView ?? window;
+
     const updatePosition = () => {
       const trigger = triggerRef.current!.getBoundingClientRect();
       const content = contentRef.current!.getBoundingClientRect();
@@ -153,20 +158,23 @@ export function TooltipContent({
         if (align === "end") top = trigger.bottom - content.height;
       }
 
-      setCoords({ top: top + window.scrollY, left: left + window.scrollX });
+      setCoords({ top: top + win.scrollY, left: left + win.scrollX });
     };
 
     updatePosition();
     // Use capture phase for scroll to ensure it updates during nested scroll containers
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
+    win.addEventListener("scroll", updatePosition, true);
+    win.addEventListener("resize", updatePosition);
     return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+      win.removeEventListener("scroll", updatePosition, true);
+      win.removeEventListener("resize", updatePosition);
     };
   }, [open, side, align, sideOffset]);
 
   if (!mounted || !open) return null;
+
+  // Portal into the trigger's own document (supports iframe rendering).
+  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
 
   return createPortal(
     <div
@@ -181,6 +189,6 @@ export function TooltipContent({
     >
       {children}
     </div>,
-    document.body,
+    portalTarget,
   );
 }

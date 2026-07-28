@@ -27,7 +27,7 @@ export function ComponentPreview({
   usageCode,
   jsUsageCode,
   name = "Component",
-  framed = false,
+  disableFrame = false,
 }: {
   children: React.ReactNode;
   tsCode: string;
@@ -36,14 +36,15 @@ export function ComponentPreview({
   jsUsageCode?: string;
   name?: string;
   /**
-   * Opt-in: render resized previews inside a real iframe viewport so Tailwind
-   * sm:/md:/lg: media queries respond to the preview width. Only enable for
-   * demos whose responsiveness is pure CSS. Demos that position popups via
-   * portals to document.body, measure window size, or hook the page scroll
-   * (tooltips, popovers, maps, scroll-linked blocks) must stay unframed —
-   * their JS sees the parent window, not the frame.
+   * Resized previews render inside a real iframe viewport ("the preview is a
+   * screen"), so Tailwind sm:/md:/lg: media queries respond to the preview
+   * width. Components that portal popups must target their own ownerDocument
+   * (see TooltipBlock) to position correctly inside the frame. Set this flag
+   * only for demos that hook the parent page scroll or measure the top window
+   * (GSAP/framer page-scroll blocks, Leaflet maps) — those fall back to the
+   * plain inline preview.
    */
-  framed?: boolean;
+  disableFrame?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState<"preview" | "usage" | "code">("preview");
   const [language, setLanguage] = useState<"ts" | "js">("ts");
@@ -90,7 +91,7 @@ export function ComponentPreview({
   // When the chosen device is wider than the area (e.g. tablet preset on a
   // phone), keep the real viewport width and shrink it visually instead.
   const frameScale =
-    framed &&
+    !disableFrame &&
     previewWidth !== "100%" &&
     availableWidth !== null &&
     previewWidth > availableWidth
@@ -98,12 +99,12 @@ export function ComponentPreview({
       : 1;
   const isScaled = frameScale !== 1;
 
-  // Width the preview viewport actually renders at. Unframed previews are
-  // clamped by the container; framed ones keep their true width (scaled).
+  // Width the preview viewport actually renders at. Framed previews keep
+  // their true width (visually scaled); inline fallbacks are clamped.
   const effectiveWidth =
     previewWidth === "100%"
       ? areaWidth
-      : framed || areaWidth === null
+      : !disableFrame || areaWidth === null
         ? previewWidth
         : Math.min(previewWidth, areaWidth);
 
@@ -337,7 +338,7 @@ export function ComponentPreview({
               /* +1px compensates the right border so the inner viewport is exactly previewWidth;
                  a scaled frame takes the full area and shrinks its content instead */
               style={{
-                width: previewWidth === "100%" || isScaled ? "100%" : `${previewWidth + 1}px`,
+                width: previewWidth === "100%" || isScaled ? "100%" : `${(previewWidth as number) + 1}px`,
                 maxWidth: "100%",
               }}
               className={cn(
@@ -347,7 +348,7 @@ export function ComponentPreview({
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              {previewWidth === "100%" || !framed ? (
+              {disableFrame ? (
                 <div
                   key={replayKey}
                   className={cn(
@@ -358,19 +359,21 @@ export function ComponentPreview({
                   {children}
                 </div>
               ) : (
-                /* A real iframe viewport: media queries inside respond to the
-                   preview width, so components actually become responsive. */
+                /* A real iframe viewport at EVERY width (incl. 100%): media
+                   queries inside respond to the preview width, and keeping one
+                   frame alive across resizes means content never remounts or
+                   replays its entrance while dragging. */
                 <div
                   className={cn(
                     "w-full overflow-hidden",
-                    isScaled ? "rounded-b-xl" : "rounded-bl-xl",
+                    previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl",
                     isDragging && "pointer-events-none select-none"
                   )}
                 >
                   <PreviewFrame
                     minHeight={400}
                     title={`${name} responsive preview`}
-                    frameWidth={previewWidth as number}
+                    frameWidth={previewWidth === "100%" ? undefined : (previewWidth as number)}
                     scale={frameScale}
                   >
                     <div
