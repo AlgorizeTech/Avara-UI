@@ -200,12 +200,12 @@ export const FloatingContactButtonBlock = React.forwardRef<
     const modalWidthClass =
       containerMode === "fixed"
         ? "w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px]"
-        : "w-[340px] sm:w-[380px]";
+        : "w-[calc(100vw-2.5rem)] sm:w-[340px] md:w-[380px] max-w-[380px]";
 
     const modalHeightClass =
       containerMode === "fixed"
         ? "h-[450px] sm:h-[490px] max-h-[calc(100vh-6rem)]"
-        : "h-[440px] sm:h-[480px]";
+        : "h-[320px] sm:h-[400px] md:h-[440px] lg:h-[480px] max-h-[calc(100vh-4rem)]";
 
     const activeBgGlow = hexToRgba(accentColor, 0.25);
 
@@ -213,10 +213,10 @@ export const FloatingContactButtonBlock = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "z-50 pointer-events-none select-none",
-          containerMode === "fixed" ? "fixed" : "absolute",
+          "pointer-events-none select-none",
+          containerMode === "fixed" ? "fixed z-50" : "absolute z-[60]",
           positionClasses,
-          "w-14 h-14 sm:w-16 sm:h-16",
+          "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
           className,
         )}
         {...props}
