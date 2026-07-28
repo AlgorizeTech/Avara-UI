@@ -282,13 +282,6 @@ const Header = () => {
               <Palette className="h-3.5 w-3.5" />
               Themes
             </Link>
-            <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
-              href="/showcase"
-            >
-              <BarChart3 className="h-3.5 w-3.5" />
-              Showcase
-            </Link>
           </nav>
 
           {/* Right Area: Command Palette Trigger, Socials, Theme */}
@@ -296,7 +289,7 @@ const Header = () => {
             {/* Command Palette Omni Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-2.5 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all text-left max-w-[40px] md:max-w-none md:w-[180px] lg:w-[220px]"
+              className="flex items-center gap-2 px-2.5 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all text-left max-w-[40px] md:max-w-none md:w-[150px] xl:w-[220px]"
               aria-label="Open command palette search"
             >
               <Search className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
