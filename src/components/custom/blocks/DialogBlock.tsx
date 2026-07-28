@@ -112,6 +112,7 @@ export function DialogContent({
   const { open, setOpen } = useDialog();
   const [mounted, setMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
 
   // SSR Safety
   useEffect(() => setMounted(true), []);
@@ -120,25 +121,35 @@ export function DialogContent({
   useEffect(() => {
     if (!open) return;
 
+    // Resolve the document/window the dialog actually lives in (supports iframe rendering).
+    const doc = anchorRef.current?.ownerDocument ?? document;
+    const win = doc.defaultView ?? window;
+
     // Lock body scroll
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = "hidden";
+    const originalStyle = win.getComputedStyle(doc.body).overflow;
+    doc.body.style.overflow = "hidden";
 
     // Escape listener
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
-    document.addEventListener("keydown", handleEscape);
+    doc.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.body.style.overflow = originalStyle;
-      document.removeEventListener("keydown", handleEscape);
+      doc.body.style.overflow = originalStyle;
+      doc.removeEventListener("keydown", handleEscape);
     };
   }, [open, setOpen]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open) return <span ref={anchorRef} hidden />;
 
-  return createPortal(
+  // Portal into the anchor's own document (supports iframe rendering).
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
@@ -172,7 +183,9 @@ export function DialogContent({
         )}
       </div>
     </div>,
-    document.body,
+    portalTarget,
+      )}
+    </>
   );
 }
 
