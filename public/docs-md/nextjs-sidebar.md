@@ -11,8 +11,6 @@ Use the interactive preview below. It functions as a complete mini-application s
 1. Try clicking the desktop collapse trigger (the menu icon in the top header) to see how the text hides and icons seamlessly center. Note how native tooltips appear on hover when collapsed!
 2. If you view this page on a mobile device (or shrink your browser window), the sidebar automatically becomes a dismissible flyout drawer.
 
----
-
 ## Installation
 
 ### Copy the Component

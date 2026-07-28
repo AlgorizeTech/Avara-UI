@@ -1,7 +1,13 @@
 {
-  "generatedAt": "2026-05-03T13:30:42.654Z",
-  "totalFiles": 56,
+  "generatedAt": "2026-07-28T07:20:56.787Z",
+  "totalFiles": 107,
   "files": [
+    {
+      "name": "nextjs/3d-carousel",
+      "path": "/docs/nextjs-3d-carousel.md",
+      "url": "/docs/nextjs/3d-carousel",
+      "originalMdx": "nextjs\\3d-carousel\\page.mdx"
+    },
     {
       "name": "nextjs/accordion",
       "path": "/docs/nextjs-accordion.md",
@@ -19,6 +25,30 @@
       "path": "/docs/nextjs-alert.md",
       "url": "/docs/nextjs/alert",
       "originalMdx": "nextjs\\alert\\page.mdx"
+    },
+    {
+      "name": "nextjs/animated-list",
+      "path": "/docs/nextjs-animated-list.md",
+      "url": "/docs/nextjs/animated-list",
+      "originalMdx": "nextjs\\animated-list\\page.mdx"
+    },
+    {
+      "name": "nextjs/animated-timeline",
+      "path": "/docs/nextjs-animated-timeline.md",
+      "url": "/docs/nextjs/animated-timeline",
+      "originalMdx": "nextjs\\animated-timeline\\page.mdx"
+    },
+    {
+      "name": "nextjs/animated-typography",
+      "path": "/docs/nextjs-animated-typography.md",
+      "url": "/docs/nextjs/animated-typography",
+      "originalMdx": "nextjs\\animated-typography\\page.mdx"
+    },
+    {
+      "name": "nextjs/api-playground",
+      "path": "/docs/nextjs-api-playground.md",
+      "url": "/docs/nextjs/api-playground",
+      "originalMdx": "nextjs\\api-playground\\page.mdx"
     },
     {
       "name": "nextjs/api-routes",
@@ -57,6 +87,12 @@
       "originalMdx": "nextjs\\calendar\\page.mdx"
     },
     {
+      "name": "nextjs/card",
+      "path": "/docs/nextjs-card.md",
+      "url": "/docs/nextjs/card",
+      "originalMdx": "nextjs\\card\\page.mdx"
+    },
+    {
       "name": "nextjs/carousel",
       "path": "/docs/nextjs-carousel.md",
       "url": "/docs/nextjs/carousel",
@@ -81,16 +117,64 @@
       "originalMdx": "nextjs\\chat\\page.mdx"
     },
     {
+      "name": "nextjs/chat-bubble",
+      "path": "/docs/nextjs-chat-bubble.md",
+      "url": "/docs/nextjs/chat-bubble",
+      "originalMdx": "nextjs\\chat-bubble\\page.mdx"
+    },
+    {
+      "name": "nextjs/collapsible",
+      "path": "/docs/nextjs-collapsible.md",
+      "url": "/docs/nextjs/collapsible",
+      "originalMdx": "nextjs\\collapsible\\page.mdx"
+    },
+    {
+      "name": "nextjs/command",
+      "path": "/docs/nextjs-command.md",
+      "url": "/docs/nextjs/command",
+      "originalMdx": "nextjs\\command\\page.mdx"
+    },
+    {
+      "name": "nextjs/context-menu",
+      "path": "/docs/nextjs-context-menu.md",
+      "url": "/docs/nextjs/context-menu",
+      "originalMdx": "nextjs\\context-menu\\page.mdx"
+    },
+    {
       "name": "nextjs/counter",
       "path": "/docs/nextjs-counter.md",
       "url": "/docs/nextjs/counter",
       "originalMdx": "nextjs\\counter\\page.mdx"
     },
     {
+      "name": "nextjs/custom-code-block",
+      "path": "/docs/nextjs-custom-code-block.md",
+      "url": "/docs/nextjs/custom-code-block",
+      "originalMdx": "nextjs\\custom-code-block\\page.mdx"
+    },
+    {
       "name": "nextjs/data-fetching",
       "path": "/docs/nextjs-data-fetching.md",
       "url": "/docs/nextjs/data-fetching",
       "originalMdx": "nextjs\\data-fetching\\page.mdx"
+    },
+    {
+      "name": "nextjs/data-grid",
+      "path": "/docs/nextjs-data-grid.md",
+      "url": "/docs/nextjs/data-grid",
+      "originalMdx": "nextjs\\data-grid\\page.mdx"
+    },
+    {
+      "name": "nextjs/data-maps",
+      "path": "/docs/nextjs-data-maps.md",
+      "url": "/docs/nextjs/data-maps",
+      "originalMdx": "nextjs\\data-maps\\page.mdx"
+    },
+    {
+      "name": "nextjs/data-table",
+      "path": "/docs/nextjs-data-table.md",
+      "url": "/docs/nextjs/data-table",
+      "originalMdx": "nextjs\\data-table\\page.mdx"
     },
     {
       "name": "nextjs/date-picker",
@@ -103,6 +187,18 @@
       "path": "/docs/nextjs-deployment.md",
       "url": "/docs/nextjs/deployment",
       "originalMdx": "nextjs\\deployment\\page.mdx"
+    },
+    {
+      "name": "nextjs/dialog",
+      "path": "/docs/nextjs-dialog.md",
+      "url": "/docs/nextjs/dialog",
+      "originalMdx": "nextjs\\dialog\\page.mdx"
+    },
+    {
+      "name": "nextjs/dock",
+      "path": "/docs/nextjs-dock.md",
+      "url": "/docs/nextjs/dock",
+      "originalMdx": "nextjs\\dock\\page.mdx"
     },
     {
       "name": "nextjs/drawer",
@@ -147,6 +243,12 @@
       "originalMdx": "nextjs\\examples\\waitlist\\page.mdx"
     },
     {
+      "name": "nextjs/file-upload",
+      "path": "/docs/nextjs-file-upload.md",
+      "url": "/docs/nextjs/file-upload",
+      "originalMdx": "nextjs\\file-upload\\page.mdx"
+    },
+    {
       "name": "nextjs/first-app",
       "path": "/docs/nextjs-first-app.md",
       "url": "/docs/nextjs/first-app",
@@ -159,10 +261,40 @@
       "originalMdx": "nextjs\\fleet-tracker\\page.mdx"
     },
     {
+      "name": "nextjs/floating-contact-button",
+      "path": "/docs/nextjs-floating-contact-button.md",
+      "url": "/docs/nextjs/floating-contact-button",
+      "originalMdx": "nextjs\\floating-contact-button\\page.mdx"
+    },
+    {
+      "name": "nextjs/flowchart",
+      "path": "/docs/nextjs-flowchart.md",
+      "url": "/docs/nextjs/flowchart",
+      "originalMdx": "nextjs\\flowchart\\page.mdx"
+    },
+    {
       "name": "nextjs/form",
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
       "originalMdx": "nextjs\\form\\page.mdx"
+    },
+    {
+      "name": "nextjs/half-stars",
+      "path": "/docs/nextjs-half-stars.md",
+      "url": "/docs/nextjs/half-stars",
+      "originalMdx": "nextjs\\half-stars\\page.mdx"
+    },
+    {
+      "name": "nextjs/hero",
+      "path": "/docs/nextjs-hero.md",
+      "url": "/docs/nextjs/hero",
+      "originalMdx": "nextjs\\hero\\page.mdx"
+    },
+    {
+      "name": "nextjs/hero-video-player",
+      "path": "/docs/nextjs-hero-video-player.md",
+      "url": "/docs/nextjs/hero-video-player",
+      "originalMdx": "nextjs\\hero-video-player\\page.mdx"
     },
     {
       "name": "nextjs/image-optimization",
@@ -195,10 +327,40 @@
       "originalMdx": "nextjs\\item\\page.mdx"
     },
     {
+      "name": "nextjs/kbd",
+      "path": "/docs/nextjs-kbd.md",
+      "url": "/docs/nextjs/kbd",
+      "originalMdx": "nextjs\\kbd\\page.mdx"
+    },
+    {
       "name": "nextjs/loader",
       "path": "/docs/nextjs-loader.md",
       "url": "/docs/nextjs/loader",
       "originalMdx": "nextjs\\loader\\page.mdx"
+    },
+    {
+      "name": "nextjs/magic-bento",
+      "path": "/docs/nextjs-magic-bento.md",
+      "url": "/docs/nextjs/magic-bento",
+      "originalMdx": "nextjs\\magic-bento\\page.mdx"
+    },
+    {
+      "name": "nextjs/marquee",
+      "path": "/docs/nextjs-marquee.md",
+      "url": "/docs/nextjs/marquee",
+      "originalMdx": "nextjs\\marquee\\page.mdx"
+    },
+    {
+      "name": "nextjs/masonry-grid",
+      "path": "/docs/nextjs-masonry-grid.md",
+      "url": "/docs/nextjs/masonry-grid",
+      "originalMdx": "nextjs\\masonry-grid\\page.mdx"
+    },
+    {
+      "name": "nextjs/memories-card",
+      "path": "/docs/nextjs-memories-card.md",
+      "url": "/docs/nextjs/memories-card",
+      "originalMdx": "nextjs\\memories-card\\page.mdx"
     },
     {
       "name": "nextjs/menubar",
@@ -213,6 +375,12 @@
       "originalMdx": "nextjs\\middleware\\page.mdx"
     },
     {
+      "name": "nextjs/mobile-mockup",
+      "path": "/docs/nextjs-mobile-mockup.md",
+      "url": "/docs/nextjs/mobile-mockup",
+      "originalMdx": "nextjs\\mobile-mockup\\page.mdx"
+    },
+    {
       "name": "nextjs/modal",
       "path": "/docs/nextjs-modal.md",
       "url": "/docs/nextjs/modal",
@@ -223,6 +391,24 @@
       "path": "/docs/nextjs-navbar.md",
       "url": "/docs/nextjs/navbar",
       "originalMdx": "nextjs\\navbar\\page.mdx"
+    },
+    {
+      "name": "nextjs/navigation",
+      "path": "/docs/nextjs-navigation.md",
+      "url": "/docs/nextjs/navigation",
+      "originalMdx": "nextjs\\navigation\\page.mdx"
+    },
+    {
+      "name": "nextjs/network-graph",
+      "path": "/docs/nextjs-network-graph.md",
+      "url": "/docs/nextjs/network-graph",
+      "originalMdx": "nextjs\\network-graph\\page.mdx"
+    },
+    {
+      "name": "nextjs/otp-input",
+      "path": "/docs/nextjs-otp-input.md",
+      "url": "/docs/nextjs/otp-input",
+      "originalMdx": "nextjs\\otp-input\\page.mdx"
     },
     {
       "name": "nextjs/pagination",
@@ -237,10 +423,28 @@
       "originalMdx": "nextjs\\performance\\page.mdx"
     },
     {
+      "name": "nextjs/popover",
+      "path": "/docs/nextjs-popover.md",
+      "url": "/docs/nextjs/popover",
+      "originalMdx": "nextjs\\popover\\page.mdx"
+    },
+    {
       "name": "nextjs/pricing",
       "path": "/docs/nextjs-pricing.md",
       "url": "/docs/nextjs/pricing",
       "originalMdx": "nextjs\\pricing\\page.mdx"
+    },
+    {
+      "name": "nextjs/progress",
+      "path": "/docs/nextjs-progress.md",
+      "url": "/docs/nextjs/progress",
+      "originalMdx": "nextjs\\progress\\page.mdx"
+    },
+    {
+      "name": "nextjs/qr-code-generator",
+      "path": "/docs/nextjs-qr-code-generator.md",
+      "url": "/docs/nextjs/qr-code-generator",
+      "originalMdx": "nextjs\\qr-code-generator\\page.mdx"
     },
     {
       "name": "nextjs/resizable",
@@ -253,6 +457,18 @@
       "path": "/docs/nextjs-routing.md",
       "url": "/docs/nextjs/routing",
       "originalMdx": "nextjs\\routing\\page.mdx"
+    },
+    {
+      "name": "nextjs/scroll-area",
+      "path": "/docs/nextjs-scroll-area.md",
+      "url": "/docs/nextjs/scroll-area",
+      "originalMdx": "nextjs\\scroll-area\\page.mdx"
+    },
+    {
+      "name": "nextjs/scroll-stack",
+      "path": "/docs/nextjs-scroll-stack.md",
+      "url": "/docs/nextjs/scroll-stack",
+      "originalMdx": "nextjs\\scroll-stack\\page.mdx"
     },
     {
       "name": "nextjs/select",
@@ -291,6 +507,24 @@
       "originalMdx": "nextjs\\sonner\\page.mdx"
     },
     {
+      "name": "nextjs/split-scroll-stepper",
+      "path": "/docs/nextjs-split-scroll-stepper.md",
+      "url": "/docs/nextjs/split-scroll-stepper",
+      "originalMdx": "nextjs\\split-scroll-stepper\\page.mdx"
+    },
+    {
+      "name": "nextjs/split-stepper",
+      "path": "/docs/nextjs-split-stepper.md",
+      "url": "/docs/nextjs/split-stepper",
+      "originalMdx": "nextjs\\split-stepper\\page.mdx"
+    },
+    {
+      "name": "nextjs/stepper",
+      "path": "/docs/nextjs-stepper.md",
+      "url": "/docs/nextjs/stepper",
+      "originalMdx": "nextjs\\stepper\\page.mdx"
+    },
+    {
       "name": "nextjs/styling",
       "path": "/docs/nextjs-styling.md",
       "url": "/docs/nextjs/styling",
@@ -309,10 +543,40 @@
       "originalMdx": "nextjs\\table\\page.mdx"
     },
     {
+      "name": "nextjs/terminal",
+      "path": "/docs/nextjs-terminal.md",
+      "url": "/docs/nextjs/terminal",
+      "originalMdx": "nextjs\\terminal\\page.mdx"
+    },
+    {
       "name": "nextjs/testing",
       "path": "/docs/nextjs-testing.md",
       "url": "/docs/nextjs/testing",
       "originalMdx": "nextjs\\testing\\page.mdx"
+    },
+    {
+      "name": "nextjs/text-animation",
+      "path": "/docs/nextjs-text-animation.md",
+      "url": "/docs/nextjs/text-animation",
+      "originalMdx": "nextjs\\text-animation\\page.mdx"
+    },
+    {
+      "name": "nextjs/theme-switcher",
+      "path": "/docs/nextjs-theme-switcher.md",
+      "url": "/docs/nextjs/theme-switcher",
+      "originalMdx": "nextjs\\theme-switcher\\page.mdx"
+    },
+    {
+      "name": "nextjs/tilted-card",
+      "path": "/docs/nextjs-tilted-card.md",
+      "url": "/docs/nextjs/tilted-card",
+      "originalMdx": "nextjs\\tilted-card\\page.mdx"
+    },
+    {
+      "name": "nextjs/timeline",
+      "path": "/docs/nextjs-timeline.md",
+      "url": "/docs/nextjs/timeline",
+      "originalMdx": "nextjs\\timeline\\page.mdx"
     },
     {
       "name": "nextjs/toast",
@@ -321,16 +585,58 @@
       "originalMdx": "nextjs\\toast\\page.mdx"
     },
     {
+      "name": "nextjs/toggle",
+      "path": "/docs/nextjs-toggle.md",
+      "url": "/docs/nextjs/toggle",
+      "originalMdx": "nextjs\\toggle\\page.mdx"
+    },
+    {
+      "name": "nextjs/toggle-group",
+      "path": "/docs/nextjs-toggle-group.md",
+      "url": "/docs/nextjs/toggle-group",
+      "originalMdx": "nextjs\\toggle-group\\page.mdx"
+    },
+    {
+      "name": "nextjs/tooltip",
+      "path": "/docs/nextjs-tooltip.md",
+      "url": "/docs/nextjs/tooltip",
+      "originalMdx": "nextjs\\tooltip\\page.mdx"
+    },
+    {
       "name": "nextjs/typescript",
       "path": "/docs/nextjs-typescript.md",
       "url": "/docs/nextjs/typescript",
       "originalMdx": "nextjs\\typescript\\page.mdx"
     },
     {
+      "name": "nextjs/typography",
+      "path": "/docs/nextjs-typography.md",
+      "url": "/docs/nextjs/typography",
+      "originalMdx": "nextjs\\typography\\page.mdx"
+    },
+    {
+      "name": "nextjs/verify-badge",
+      "path": "/docs/nextjs-verify-badge.md",
+      "url": "/docs/nextjs/verify-badge",
+      "originalMdx": "nextjs\\verify-badge\\page.mdx"
+    },
+    {
       "name": "nextjs/vertical-tabs",
       "path": "/docs/nextjs-vertical-tabs.md",
       "url": "/docs/nextjs/vertical-tabs",
       "originalMdx": "nextjs\\vertical-tabs\\page.mdx"
+    },
+    {
+      "name": "nextjs/video-accordion",
+      "path": "/docs/nextjs-video-accordion.md",
+      "url": "/docs/nextjs/video-accordion",
+      "originalMdx": "nextjs\\video-accordion\\page.mdx"
+    },
+    {
+      "name": "nextjs/wizard",
+      "path": "/docs/nextjs-wizard.md",
+      "url": "/docs/nextjs/wizard",
+      "originalMdx": "nextjs\\wizard\\page.mdx"
     },
     {
       "name": "page.mdx",

@@ -4,13 +4,26 @@ A highly versatile Alert component designed to communicate states and important 
 
 Along with the classic `solid` and `outline` variations, this component now features three completely modern aesthetics: `modern` (SaaS style), `glass` (glassmorphism), and `glow` (dark mode neon).
 
+## Features
+Learn about the Alert component's capabilities, including different severity levels, customizable icons, and dismissible actions.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to cycle through the different permutations. You can toggle icons, rich content elements (like buttons), and dismissibility.
 
 _If you enable `dismissible`, you can use the reset button to replay the entrance animations._
-
----
 
 ## Installation
 
@@ -43,6 +56,11 @@ export default function Dashboard() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

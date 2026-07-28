@@ -4,6 +4,21 @@ A highly functional, fully customizable data table component engineered for mode
 
 We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
 
+## Features
+Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to test the different sizing options, structural variants, and toggle interactive features.
@@ -11,8 +26,6 @@ Use the control panel below to test the different sizing options, structural var
 - Toggle **Expandable Rows** on, then click any row in the table to see the smooth CSS Grid expansion effect.
 - Try clicking the column headers (like _Customer_ or _Amount_) to see the built-in sorting logic trigger the GSAP row-reordering animation.
 - Hover over the right edge of any row to see the Edit/Delete action buttons smoothly slide into view.
-
----
 
 ## Installation
 
@@ -23,6 +36,11 @@ This component relies on `gsap` for the entrance animations and `lucide-react` f
 ```bash
 npm install gsap lucide-react
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

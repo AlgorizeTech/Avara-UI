@@ -4,10 +4,37 @@ import React, { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
+import { useMap } from "react-leaflet";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
 const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
+
+function ResizeHandler({ wrapperRef, initialZoom }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number }) {
+  const map = useMap();
+  const initialWidthRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    initialWidthRef.current = wrapperRef.current.clientWidth;
+
+    const handleResize = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const currentWidth = el.clientWidth;
+      const ratio = Math.min(currentWidth / initialWidthRef.current, 1);
+      const curved = ratio * ratio * ratio;
+      const newZoom = Math.max(0, Math.round(initialZoom * curved));
+      map.invalidateSize();
+      map.setZoom(newZoom);
+    };
+
+    const observer = new ResizeObserver(handleResize);
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, [map, wrapperRef, initialZoom]);
+  return null;
+}
 
 export interface DataPoint {
   id: string; // ISO 3166-1 alpha-3 country code
@@ -61,6 +88,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const variantRef = useRef(variant);
     const [leafletLib, setLeafletLib] = useState<any>(null);
     const [dotCount, setDotCount] = useState(0);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       import("leaflet").then((L) => setLeafletLib(L));
@@ -142,8 +170,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       );
     }
 
-    return (
-      <div ref={ref} className={cn("relative w-full h-full min-h-[400px] overflow-hidden rounded-lg bg-slate-50 dark:bg-slate-900/50 map-wrapper", className)} {...props}>
+      return (
+        <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[400px] overflow-hidden rounded-lg bg-slate-50 dark:bg-slate-900/50 map-wrapper", className)} {...props}>
         <style dangerouslySetInnerHTML={{__html: `
           .map-wrapper {
             --map-default-fill: #e2e8f0;
@@ -202,6 +230,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             zoomControl={false}
             attributionControl={false}
           >
+            <ResizeHandler wrapperRef={wrapperRef} initialZoom={zoom} />
             <GeoJSON
               ref={geoJsonRef}
               data={geoData}

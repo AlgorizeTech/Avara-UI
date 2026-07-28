@@ -8,8 +8,6 @@ Building pagination logic from scratch is notoriously difficult. If you have 100
 
 Use the control panel below to test the calculation logic. Try dragging the `Total Pages` slider all the way up to 100, and then click through the page numbers in the preview to see how the ellipses dynamically shift to keep the UI clean.
 
----
-
 ## Installation
 
 ### Copy the Component

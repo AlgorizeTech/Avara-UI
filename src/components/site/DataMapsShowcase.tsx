@@ -2,7 +2,10 @@
 
 import React from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { DataMaps, type DataPoint } from "@/components/custom/blocks/DataMapsBlock";
+import {
+	DataMaps,
+	type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
 
 const DATA_MAPS_TS = `"use client";
 
@@ -208,7 +211,9 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
 DataMaps.displayName = "DataMaps";
 `;
 
-const DATA_MAPS_JS = DATA_MAPS_TS.replace(/export interface [^}]+}/g, "").replace(/: [A-Za-z\[\]]+/g, "").replace(/<HTMLDivElement, DataMapsProps>/g, ""); // A basic clean for JS
+const DATA_MAPS_JS = DATA_MAPS_TS.replace(/export interface [^}]+}/g, "")
+	.replace(/: [A-Za-z\[\]]+/g, "")
+	.replace(/<HTMLDivElement, DataMapsProps>/g, ""); // A basic clean for JS
 
 const FILL_USAGE_CODE = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
 
@@ -251,101 +256,131 @@ export default function App() {
 `;
 
 const SAMPLE_DATA: DataPoint[] = [
-  { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
-  { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
-  { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
-  { id: "BRA", name: "Brazil", flag: "🇧🇷", active: 5.1, activeTrend: "up", new: 0.2, newTrend: "down" },
-  { id: "GBR", name: "United Kingdom", flag: "🇬🇧", active: 2.8, activeTrend: "down", new: 0.05, newTrend: "up" },
-  { id: "DEU", name: "Germany", flag: "🇩🇪", active: 3.4, activeTrend: "up", new: 0.1, newTrend: "up" },
+	{
+		id: "CHN",
+		name: "China",
+		flag: "🇨🇳",
+		active: 13.7,
+		activeTrend: "up",
+		new: 0.1,
+		newTrend: "down",
+	},
+	{
+		id: "IND",
+		name: "India",
+		flag: "🇮🇳",
+		active: 8.4,
+		activeTrend: "up",
+		new: 0.3,
+		newTrend: "up",
+	},
+	{
+		id: "USA",
+		name: "United States",
+		flag: "🇺🇸",
+		active: 11.2,
+		activeTrend: "down",
+		new: 0.5,
+		newTrend: "down",
+	},
+	{
+		id: "BRA",
+		name: "Brazil",
+		flag: "🇧🇷",
+		active: 5.1,
+		activeTrend: "up",
+		new: 0.2,
+		newTrend: "down",
+	},
+	{
+		id: "GBR",
+		name: "United Kingdom",
+		flag: "🇬🇧",
+		active: 2.8,
+		activeTrend: "down",
+		new: 0.05,
+		newTrend: "up",
+	},
+	{
+		id: "DEU",
+		name: "Germany",
+		flag: "🇩🇪",
+		active: 3.4,
+		activeTrend: "up",
+		new: 0.1,
+		newTrend: "up",
+	},
 ];
 
 import { useState, useEffect } from "react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { cn } from "@/lib/utils";
 
 export function DataMapsShowcase() {
-  const [color, setColor] = useState("default");
-  const [variant, setVariant] = useState<"fill" | "dots">("fill");
+	const [color, setColor] = useState("default");
+	const [variant, setVariant] = useState<"fill" | "dots">("fill");
 
-  useEffect(() => {
-    const savedColor = localStorage.getItem("primaryColor");
-    if (savedColor) setColor(savedColor);
-  }, []);
+	useEffect(() => {
+		const savedColor = localStorage.getItem("primaryColor");
+		if (savedColor) setColor(savedColor);
+	}, []);
 
-  useEffect(() => {
-    document.body.setAttribute("data-active-variant", variant);
-    return () => {
-      document.body.removeAttribute("data-active-variant");
-    };
-  }, [variant]);
+	const handleColorChange = (newColor: string) => {
+		setColor(newColor);
+		localStorage.setItem("primaryColor", newColor);
+	};
 
-  const handleColorChange = (newColor: string) => {
-    setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
-  };
+	// Convert semantic color to actual hex for the map highlight if needed
+	const getHexForColor = (c: string) => {
+		if (c.startsWith("#")) return c;
+		const colors: Record<string, string> = {
+			default: "#18181b",
+			blue: "#2563eb",
+			emerald: "#10b981",
+			rose: "#e11d48",
+			violet: "#7c3aed",
+		};
+		return colors[c] || "#18181b"; // Fallback zinc-900
+	};
 
-  // Convert semantic color to actual hex for the map highlight if needed
-  const getHexForColor = (c: string) => {
-    if (c.startsWith("#")) return c;
-    const colors: Record<string, string> = {
-      default: "#18181b",
-      blue: "#2563eb",
-      emerald: "#10b981",
-      rose: "#e11d48",
-      violet: "#7c3aed",
-    };
-    return colors[c] || "#18181b"; // Fallback zinc-900
-  };
+	return (
+		<div className="w-full flex flex-col gap-0 not-prose">
+			{/* --- CONTROL PANEL --- */}
+			<ShowcaseControlPanel className="flex flex-row gap-6 p-5 rounded-xl border-blue-600">
+				<VariantTabs
+					label="Map Variant"
+					variants={["fill", "dots"]}
+					defaultValue="fill"
+					onValueChange={(v) => setVariant(v as "fill" | "dots")}
+				/>
+				<ThemeColorPicker
+					color={color}
+					onChange={handleColorChange}
+					label="Accent Color"
+				/>
+			</ShowcaseControlPanel>
 
-  return (
-    <div className="w-full flex flex-col gap-0 not-prose">
-      {/* --- CONTROL PANEL --- */}
-      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Map Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {(["fill", "dots"] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={cn(
-                  "px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer",
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                )}
-              >
-                {v === "fill" ? "Country Fill" : "Marker Dots"}
-              </button>
-            ))}
-          </div>
-        </div>
-        <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
-      </ShowcaseControlPanel>
-
-      {/* --- PREVIEW WINDOW --- */}
-      <ComponentPreview
-        name="DataMaps"
-        tsCode={DATA_MAPS_TS}
-        jsCode={DATA_MAPS_JS}
-        usageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
-        jsUsageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
-        disableFrame
-      >
-        <div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
-          <DataMaps 
-            variant={variant}
-            dataPoints={SAMPLE_DATA} 
-            zoom={2} 
-            center={[30, 0]} 
-            className="flex-1" 
-            highlightColor={getHexForColor(color)}
-          />
-        </div>
-      </ComponentPreview>
-    </div>
-  );
+			{/* --- PREVIEW WINDOW --- */}
+			<ComponentPreview
+				name="DataMaps"
+				tsCode={DATA_MAPS_TS}
+				jsCode={DATA_MAPS_JS}
+				usageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
+				jsUsageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
+				disableFrame>
+				<div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
+					<DataMaps
+						variant={variant}
+						dataPoints={SAMPLE_DATA}
+						zoom={2}
+						center={[30, 0]}
+						className="flex-1"
+						highlightColor={getHexForColor(color)}
+					/>
+				</div>
+			</ComponentPreview>
+		</div>
+	);
 }

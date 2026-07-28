@@ -4,11 +4,24 @@ An opinionated, dependency-free toast component that mimics the famous "Sonner" 
 
 Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
 
+## Features
+Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Click the buttons below to spawn toasts. Notice how they stack beautifully in the corner. If you hover your mouse over the floating toast stack, it will gracefully expand.
-
----
 
 ## Installation
 
@@ -60,6 +73,11 @@ export default function SettingsPage() {
   return Save;
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
