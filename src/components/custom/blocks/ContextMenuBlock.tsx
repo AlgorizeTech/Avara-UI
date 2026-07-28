@@ -76,6 +76,7 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
 
   const { open, setOpen, coords } = context;
   const contentRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const [mounted, setMounted] = useState(false);
   const [adjustedCoords, setAdjustedCoords] = useState({ x: -9999, y: -9999 });
   const [visible, setVisible] = useState(false);
@@ -96,18 +97,21 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
       const menu = contentRef.current;
       if (!menu) return;
 
+      // Resolve the window the menu actually lives in (supports iframe rendering).
+      const win = menu.ownerDocument.defaultView ?? window;
+
       const rect = menu.getBoundingClientRect();
       let x = coords.x;
       let y = coords.y;
 
       // Prevent opening off the right edge
-      if (x + rect.width > window.innerWidth) {
-        x = window.innerWidth - rect.width - 8;
+      if (x + rect.width > win.innerWidth) {
+        x = win.innerWidth - rect.width - 8;
       }
-      
+
       // Prevent opening off the bottom edge
-      if (y + rect.height > window.innerHeight) {
-        y = window.innerHeight - rect.height - 8;
+      if (y + rect.height > win.innerHeight) {
+        y = win.innerHeight - rect.height - 8;
       }
 
       setAdjustedCoords({ x, y });
@@ -137,22 +141,32 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
       setOpen(false); // Typically scrolling dismisses a context menu
     };
 
-    document.addEventListener("mousedown", handleInteractOutside);
-    document.addEventListener("touchstart", handleInteractOutside);
-    document.addEventListener("keydown", handleEscape);
-    window.addEventListener("scroll", handleScroll, true);
+    // Listen on the document/window the menu actually lives in (supports iframe rendering).
+    const doc = contentRef.current?.ownerDocument ?? document;
+    const win = doc.defaultView ?? window;
+
+    doc.addEventListener("mousedown", handleInteractOutside);
+    doc.addEventListener("touchstart", handleInteractOutside);
+    doc.addEventListener("keydown", handleEscape);
+    win.addEventListener("scroll", handleScroll, true);
 
     return () => {
-      document.removeEventListener("mousedown", handleInteractOutside);
-      document.removeEventListener("touchstart", handleInteractOutside);
-      document.removeEventListener("keydown", handleEscape);
-      window.removeEventListener("scroll", handleScroll, true);
+      doc.removeEventListener("mousedown", handleInteractOutside);
+      doc.removeEventListener("touchstart", handleInteractOutside);
+      doc.removeEventListener("keydown", handleEscape);
+      win.removeEventListener("scroll", handleScroll, true);
     };
   }, [open, setOpen]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open) return <span ref={anchorRef} hidden />;
 
-  return createPortal(
+  // Portal into the anchor's own document (supports iframe rendering).
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {createPortal(
     <div
       ref={contentRef}
       role="menu"
@@ -171,7 +185,9 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
     >
       {children}
     </div>,
-    document.body
+    portalTarget
+      )}
+    </>
   );
 }
 
