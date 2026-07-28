@@ -8,6 +8,8 @@ import {
   TableVariant,
 } from "@/components/custom/blocks/TableBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -586,6 +588,8 @@ export function TableShowcase() {
     propsStr += `\n        onEdit={(row) => console.log("Edit", row)}\n        onDelete={(row) => console.log("Delete", row)}`;
 
     return `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const columns = [
   { key: "id", label: "ID", sortable: true },
@@ -612,7 +616,7 @@ export default function TableDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
           {/* Variant Selector */}
           <div className="flex flex-col gap-2">
@@ -660,54 +664,8 @@ export default function TableDemo() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6">
-          {/* Color Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Theme Color
-            </label>
-            <div className="flex items-center gap-2 h-10 px-2">
-              {[
-                { id: "indigo", bg: "bg-indigo-500" },
-                { id: "rose", bg: "bg-rose-500" },
-                { id: "emerald", bg: "bg-emerald-500" },
-                { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => handleColorChange(c.id)}
-                  className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                    color === c.id
-                      ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                      : "hover:scale-110 hover:opacity-80"
-                  }`}
-                  title={c.id}
-                />
-              ))}
-
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-              {/* Custom Color Picker */}
-              <div
-                className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#8b5cf6"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
-                <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundColor: color.startsWith("#")
-                      ? color
-                      : "transparent",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+          {/* Color */}
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
 
           {/* Features Toggles */}
           <div className="flex flex-col gap-2">
@@ -748,7 +706,7 @@ export default function TableDemo() {
             </div>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

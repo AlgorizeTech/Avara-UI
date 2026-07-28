@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import {
   CustomCarousel,
   HeroCarousel,
@@ -13,6 +15,8 @@ import { useState } from "react";
 // 1. TYPESCRIPT ENGINE CODES
 // ==========================================
 const CAROUSEL_ENGINE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import Image, { StaticImageData } from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -141,6 +145,8 @@ export function CustomCarousel({
 }`;
 
 const FLUID_GLASS_ENGINE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
@@ -221,6 +227,8 @@ export default function FluidGlassSlider({ className }: { className?: string }) 
 // 2. JAVASCRIPT ENGINE CODES
 // ==========================================
 const CAROUSEL_ENGINE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -347,6 +355,8 @@ export function CustomCarousel({
 }`;
 
 const FLUID_GLASS_ENGINE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
@@ -529,7 +539,7 @@ export default function CarouselDemo()${typeDef} {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
+      <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
         <div className="flex flex-col gap-2">
           <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
             Carousel Variant
@@ -578,7 +588,7 @@ export default function CarouselDemo()${typeDef} {
             </div>
           </div>
         )}
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

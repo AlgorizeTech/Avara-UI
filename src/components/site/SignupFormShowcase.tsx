@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { SignupForm } from "@/components/custom/blocks/SignupForm";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 
@@ -23,7 +25,7 @@ export default function AuthPage() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Feature Highlight Panel */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-zinc-600 dark:text-zinc-400">
           <div>
             <strong className="text-zinc-900 dark:text-zinc-100 block mb-1">
@@ -47,7 +49,7 @@ export default function AuthPage() {
             entrance sequences.
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

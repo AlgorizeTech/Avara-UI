@@ -7,6 +7,8 @@ import {
   ProgressVariant,
 } from "@/components/custom/blocks/ProgressBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -214,6 +216,8 @@ export function ProgressShowcase() {
 
   const generateUsageCode = () => {
     return `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function UsageDemo() {
   return (
@@ -233,14 +237,14 @@ export default function UsageDemo() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL CONTROLLER --- */}
-      <div
+      <ShowcaseControlPanel
         style={
           {
             "--thumb-color":
               color === "zinc" ? "var(--zinc-thumb, #18181b)" : activeHex,
           } as React.CSSProperties
         }
-        className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative"
+        className="flex flex-col gap-6 p-5 rounded-xl z-0 relative"
       >
         {/* Helper style specifically to make 'zinc' color thumb adapt in dark mode */}
         <style>{`
@@ -322,59 +326,9 @@ export default function UsageDemo() {
           </div>
         </div>
 
-        {/* Color Toggles */}
-        <div className="flex flex-col gap-2 border-t border-zinc-200 dark:border-zinc-800/80 pt-4">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Accent Brand Theme
-          </label>
-          <div className="flex items-center gap-2 h-8">
-            {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleColorChange(c.id)}
-                className={cn(
-                  "w-6 h-6 rounded-full transition-transform duration-200 outline-none flex items-center justify-center",
-                  c.bg,
-                  color === c.id
-                    ? "scale-110 ring-2 ring-offset-2 dark:ring-offset-zinc-900 ring-zinc-400"
-                    : "hover:scale-110",
-                )}
-                title={c.id}
-              />
-            ))}
-
-            <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-800 mx-1" />
-
-            {/* Custom Color Native Selector */}
-            <div
-              className={cn(
-                "relative flex items-center justify-center w-6 h-6 rounded-full overflow-hidden border transition-transform",
-                color.startsWith("#")
-                  ? "scale-110 ring-2 ring-offset-2 dark:ring-offset-zinc-900 ring-zinc-400 border-zinc-400"
-                  : "border-zinc-300 dark:border-zinc-700 hover:scale-110",
-              )}
-            >
-              <input
-                type="color"
-                value={color.startsWith("#") ? color : "#6366f1"}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-              />
-              <div
-                className="w-full h-full"
-                style={{
-                  backgroundColor: color.startsWith("#") ? color : "#6366f1",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        {/* Color */}
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Brand Theme" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

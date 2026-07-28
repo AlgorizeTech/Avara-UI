@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { cn } from "@/lib/utils";
@@ -7,6 +9,8 @@ import { useEffect, useState } from "react";
 
 // --- 100% COMPLETE TYPESCRIPT ENGINE CODE ---
 const _CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -202,6 +206,8 @@ HeroVideoPlayer.displayName = "HeroVideoPlayer";`;
 
 // --- 100% COMPLETE PURE JAVASCRIPT ENGINE CODE ---
 const _CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -438,7 +444,7 @@ export default function HeroSection() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-10 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
           {/* Aspect Ratio Selector */}
           <div className="flex flex-col gap-2">
@@ -499,7 +505,7 @@ export default function HeroSection() {
             </label>
           </div>
         </div>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -6,6 +6,8 @@ import type {
   Vehicle,
 } from "@/components/custom/blocks/Fleet-map";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -361,6 +363,8 @@ export function FleetShowcase() {
       : "const fleetData = ";
 
     return `import FleetTracker${isTs ? ", { Vehicle }" : ""} from "@/components/custom/blocks/Fleet-map";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function FleetDemo()${typeDef} {
   ${vehicleType}[
@@ -419,78 +423,9 @@ export default function FleetDemo()${typeDef} {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
-        {/* Variant Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Structural Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {(["default", "minimal", "modern"] as FleetVariant[]).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Color Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Theme Color
-          </label>
-          <div className="flex items-center gap-2 h-[36px]">
-            {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleColorChange(c.id)}
-                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                  color === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
-                }`}
-                title={c.id}
-              />
-            ))}
-
-            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-            {/* Custom Color Picker */}
-            <div
-              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-            >
-              <input
-                type="color"
-                value={color.startsWith("#") ? color : "#8b5cf6"}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                title="Custom Hex Color"
-              />
-              <div
-                className="w-full h-full"
-                style={{
-                  backgroundColor: color.startsWith("#")
-                    ? color
-                    : "transparent",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Structural Variant" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

@@ -6,6 +6,8 @@ import {
   TableColumn,
 } from "@/components/custom/blocks/AdvancedTableBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -673,6 +675,8 @@ export function AdvancedTableShowcase() {
     if (!selectable) propsStr += `\n        selectable={false}`;
 
     return `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 const columns = [
   { key: "name", header: "Name", sortable: true },
@@ -697,85 +701,9 @@ export default function UserManagement() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
-        <div className="flex flex-col sm:flex-row gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Accent Color
-            </label>
-            <div className="flex items-center gap-2 h-10 px-2">
-              {[
-                { id: "indigo", bg: "bg-indigo-600" },
-                { id: "blue", bg: "bg-blue-600" },
-                { id: "emerald", bg: "bg-emerald-600" },
-                { id: "rose", bg: "bg-rose-600" },
-                { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => handleColorChange(c.id)}
-                  className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                    color === c.id
-                      ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                      : "hover:scale-110 hover:opacity-80"
-                  }`}
-                  title={c.id}
-                />
-              ))}
-              <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-              <div
-                className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500" : "border-zinc-300 dark:border-zinc-700 hover:scale-110"}`}
-              >
-                <input
-                  type="color"
-                  value={color.startsWith("#") ? color : "#4f46e5"}
-                  onChange={(e) => handleColorChange(e.target.value)}
-                  className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                  title="Custom Hex Color"
-                />
-                <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundColor: color.startsWith("#")
-                      ? color
-                      : "transparent",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Table Features
-            </label>
-            <div className="flex flex-wrap items-center gap-2 h-10">
-              <button
-                onClick={() => setSearchable(!searchable)}
-                className={cn(
-                  "px-4 py-2 text-sm font-bold rounded-lg border transition-all",
-                  searchable
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800",
-                )}
-              >
-                Search Bar
-              </button>
-              <button
-                onClick={() => setSelectable(!selectable)}
-                className={cn(
-                  "px-4 py-2 text-sm font-bold rounded-lg border transition-all",
-                  selectable
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
-                    : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800",
-                )}
-              >
-                Checkboxes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

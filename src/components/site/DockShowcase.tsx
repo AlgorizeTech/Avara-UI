@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import {
@@ -16,6 +18,8 @@ import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const DOCK_CODE_TS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
@@ -171,6 +175,8 @@ const DockIcon: React.FC<DockIconProps> = ({ item, mouseX, baseSize, magnificati
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const DOCK_CODE_JS = `"use client";
+
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
@@ -390,7 +396,7 @@ export default function AppNavigation() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Feature Explainer Panel */}
-      <div className="flex flex-col gap-4 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl z-0 relative">
+      <ShowcaseControlPanel className="flex flex-col gap-4 p-5 rounded-xl z-0 relative">
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           An ultra-smooth, macOS-inspired navigation dock powered by **Framer
           Motion** spring physics. Fully customizable via direct props
@@ -398,7 +404,7 @@ export default function AppNavigation() {
           unclipped desktop floating tooltips and automatic touch-viewport
           scaling for mobile screens.
         </p>
-      </div>
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
       <ComponentPreview

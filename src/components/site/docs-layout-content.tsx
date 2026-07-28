@@ -6,6 +6,7 @@ import { useTOC } from "@/contexts/toc-context";
 import { cn } from "@/lib/utils";
 import { PanelRightOpen } from "lucide-react";
 import { ReactNode } from "react";
+import { DocsPagination } from "@/components/site/DocsPagination";
 
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
   const { showTOC, setShowTOC } = useTOC();
@@ -41,6 +42,8 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
           >
             {children}
           </div>
+          
+          <DocsPagination />
         </main>
 
         {/* Right Table of Contents */}

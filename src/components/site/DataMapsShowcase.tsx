@@ -260,6 +260,8 @@ const SAMPLE_DATA: DataPoint[] = [
 ];
 
 import { useState, useEffect } from "react";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export function DataMapsShowcase() {
   const [color, setColor] = useState("default");
@@ -298,75 +300,9 @@ export function DataMapsShowcase() {
   return (
     <div className="w-full flex flex-col gap-0 not-prose">
       {/* --- CONTROL PANEL --- */}
-      <div className="flex flex-col sm:flex-row gap-6 p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl flex-wrap">
-        {/* Variant Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 flex-wrap gap-1">
-            {(["fill", "dots"] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer ${
-                  variant === v
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Color Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Theme Color
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 items-center gap-2 px-2">
-            {[
-              { id: "default", bg: "bg-zinc-900 dark:bg-zinc-100" },
-              { id: "blue", bg: "bg-blue-600" },
-              { id: "emerald", bg: "bg-emerald-600" },
-              { id: "rose", bg: "bg-rose-600" },
-              { id: "violet", bg: "bg-violet-600" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleColorChange(c.id)}
-                className={`w-6 h-6 rounded-full cursor-pointer transition-transform outline-none flex items-center justify-center ${c.bg} ${
-                  color === c.id
-                    ? "ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black scale-110"
-                    : ""
-                }`}
-                title={c.id}
-              />
-            ))}
-
-            <div className="w-px h-5 bg-zinc-300 dark:bg-zinc-700 mx-1" />
-
-            {/* Custom Color Picker */}
-            <div
-              className={`relative flex items-center justify-center w-7 h-7 rounded-full overflow-hidden border-2 transition-all ${color.startsWith("#") ? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-600 dark:ring-offset-black" : "border-zinc-300 dark:border-zinc-700 cursor-pointer"}`}
-            >
-              <input
-                type="color"
-                value={color.startsWith("#") ? color : "#8b5cf6"}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className="absolute inset-[-10px] w-12 h-12 cursor-pointer opacity-0"
-                title="Custom Hex Color"
-              />
-              <div
-                className="w-full h-full pointer-events-none"
-                style={{ backgroundColor: color.startsWith("#") ? color : "transparent" }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Variant" />
+      </ShowcaseControlPanel>
 
       {/* --- PREVIEW WINDOW --- */}
       <ComponentPreview

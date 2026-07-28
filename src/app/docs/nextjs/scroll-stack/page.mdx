@@ -1,24 +1,43 @@
-import { ScrollStackShowcase } from "@/components/site/ScrollStackShowcase";
+import { ScrollStackMasterShowcase } from "@/components/site/ScrollStackMasterShowcase";
 
 # Scroll Stack
 
-A premium, scroll-driven 3D card stacking layout engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, each full-width feature card sticks to the top of the viewport while the next card slides up to cover it.
+A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-Whenever a new card stacks on top, GreenSock dynamically scrubs the background card's `scale` and `opacity` properties, pushing it deeper into a simulated 3D deck with silky 60fps performance across both light and dark modes.
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
 
 ## Interactive Showcase
 
-Use the control panel below to adjust the depth scaling rate and the vertical pixel gap between stacked cards. **Scroll down inside the preview box** to see the ScrollTrigger plugin orchestrate the deck in real time.
+Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
 
-<ScrollStackShowcase />
-
----
+<ScrollStackMasterShowcase />
 
 ## Installation
 
 ### Dependencies
 
-This layout relies exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
+These layouts rely exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
 
 ```bash
 npm install gsap lucide-react
@@ -26,14 +45,12 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ScrollStackBlock.tsx.
+Select your desired variant (Simple, Split, Sticky, or Horizontal) from the showcase tabs above. Then, open the **Code** tab inside the preview window to copy both the component source code and the implementation example.
 
-## Usage Architecture
 
-The `<ScrollStack>` component automatically calculates sticky positioning and depth reduction. You simply provide an array of feature objects containing your text, optional Lucide icons, and custom JSX payloads.
+## Implementation
 
-If you omit the color property on an item, the card will automatically adapt to your site's current light or dark mode theme!
-
+<div id="stack-docs-Simple">
 ```tsx
 import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 import { Zap, Layers } from "lucide-react";
@@ -43,30 +60,113 @@ export default function FeaturesSection() {
     {
       id: "1",
       title: "Real-time Synchronization",
-      description:
-        "Instantly sync state across clients without writing WebSocket logic.",
+      description: "Instantly sync state across clients.",
       icon: Zap,
-      // Omitting color uses default adaptive light/dark mode surfaces automatically
       content: <div className="p-8">Custom Interactive UI 1</div>,
     },
     {
       id: "2",
       title: "Layered Architecture",
-      description:
-        "Build robust systems with separated concerns and modular backends.",
+      description: "Build robust systems with separated concerns.",
       icon: Layers,
-      color: "bg-indigo-600 text-white border-indigo-500/30", // Custom accent color override
       content: <div className="p-8">Custom Interactive UI 2</div>,
     },
   ];
 
   return (
     <div className="max-w-7xl mx-auto py-20 px-6">
-      <ScrollStack cardGap="{24}" depthScale="{0.05}" items="{items}" />
+      <ScrollStack cardGap={24} depthScale={0.05} items={items} />
     </div>
   );
 }
 ```
+</div>
+
+<div id="stack-docs-Split">
+```tsx
+import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+export default function LandingSection() {
+  const items = [
+    {
+      id: "landing",
+      stepNumber: "01",
+      title: "Landing Page Design",
+      description: "We engineer high-converting layouts.",
+      tags: ["Conversion Focused", "Figma To Code"],
+      cardContent: <div className="p-6 bg-amber-500/10">Custom Visual 1</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto py-20 px-6">
+      <SplitScrollStack stickySide="right" cardDepthScale={0.05} items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="stack-docs-Sticky">
+```tsx
+import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+export default function MobileShowcase() {
+  const items = [
+    {
+      id: "step1",
+      title: "Seamless Integration",
+      description: "Connect your existing tools with one click.",
+      color: "bg-blue-600",
+      content: <div>Mobile Screen 1</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto py-20">
+      <StickyScrollStack items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+<div id="stack-docs-Horizontal">
+```tsx
+import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+export default function RoadmapSection() {
+  const items = [
+    {
+      id: "q1",
+      title: "Q1 Launch",
+      description: "Initial rollout of core features.",
+      content: <div>Roadmap Details</div>,
+    },
+  ];
+
+  return (
+    <div className="max-w-full overflow-hidden py-20">
+      <HorizontalScrollStack items={items} />
+    </div>
+  );
+}
+```
+</div>
+
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
 
 ## Props Reference
 
