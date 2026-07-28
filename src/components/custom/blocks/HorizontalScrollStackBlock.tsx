@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, MotionValue, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  MotionValue,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 export type ScrollStackItem = {
@@ -221,7 +226,8 @@ export function HorizontalScrollStack({
     updateLayout();
     // Realm-correct ResizeObserver: a parent-realm observer never fires for
     // elements living in another document (e.g. inside an iframe).
-    const RO = (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
+    const RO =
+      (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
     const observer = new RO(updateLayout);
     observer.observe(container);
     win.addEventListener("resize", updateLayout);

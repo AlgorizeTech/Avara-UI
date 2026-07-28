@@ -67,8 +67,12 @@ export const ScrollStack = ({
 
     // Scrub each card as the NEXT card scrolls from 85% to 20% of the viewport
     const update = () => {
-      const viewportTop = scrollerEl ? scrollerEl.getBoundingClientRect().top : 0;
-      const viewportHeight = scrollerEl ? scrollerEl.clientHeight : win.innerHeight;
+      const viewportTop = scrollerEl
+        ? scrollerEl.getBoundingClientRect().top
+        : 0;
+      const viewportHeight = scrollerEl
+        ? scrollerEl.clientHeight
+        : win.innerHeight;
       const start = viewportHeight * 0.85;
       const end = viewportHeight * 0.2;
 
@@ -78,7 +82,10 @@ export const ScrollStack = ({
         if (!nextCard) return;
 
         const nextTop = nextCard.getBoundingClientRect().top - viewportTop;
-        const progress = Math.min(1, Math.max(0, (start - nextTop) / (start - end)));
+        const progress = Math.min(
+          1,
+          Math.max(0, (start - nextTop) / (start - end)),
+        );
 
         const targetScale = 1 - (items.length - 1 - index) * depthScale;
         card.style.transform = `scale(${1 + (targetScale - 1) * progress})`;
