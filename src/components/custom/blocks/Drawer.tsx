@@ -35,41 +35,54 @@ export const Drawer = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [renderLayer, setRenderLayer] = useState(open);
+  const anchorRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    // Resolve the document the drawer actually lives in (supports iframe rendering).
+    const doc = anchorRef.current?.ownerDocument ?? document;
     if (open) {
       setRenderLayer(true);
-      document.body.style.overflow = "hidden";
+      doc.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";
+      doc.body.style.overflow = "";
       // Match GSAP animation duration (300ms) before unmounting from DOM
       const timer = setTimeout(() => setRenderLayer(false), 300);
       return () => clearTimeout(timer);
     }
     return () => {
-      document.body.style.overflow = "";
+      doc.body.style.overflow = "";
     };
   }, [open]);
 
   useEffect(() => {
+    const doc = anchorRef.current?.ownerDocument ?? document;
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onOpenChange(false);
     };
-    if (open) document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
+    if (open) doc.addEventListener("keydown", handleEsc);
+    return () => doc.removeEventListener("keydown", handleEsc);
   }, [open, onOpenChange]);
 
-  if (!mounted || !renderLayer) return null;
+  if (!mounted || !renderLayer) return <span ref={anchorRef} hidden />;
 
-  return createPortal(
-    <DrawerContext.Provider value={{ open, onOpenChange, side }}>
-      <div className="fixed inset-0 z-50 pointer-events-none">{children}</div>
-    </DrawerContext.Provider>,
-    document.body,
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {createPortal(
+        <DrawerContext.Provider value={{ open, onOpenChange, side }}>
+          <div className="fixed inset-0 z-50 pointer-events-none">
+            {children}
+          </div>
+        </DrawerContext.Provider>,
+        portalTarget,
+      )}
+    </>
   );
 };
 

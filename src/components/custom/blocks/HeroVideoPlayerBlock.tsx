@@ -77,13 +77,15 @@ export const HeroVideoPlayer = React.forwardRef<
     };
 
     useEffect(() => {
+      // Resolve the window the player actually lives in (supports iframe rendering).
+      const win = containerRef.current?.ownerDocument.defaultView ?? window;
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && isOpen) {
           handleClose();
         }
       };
-      window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
+      win.addEventListener("keydown", handleKeyDown);
+      return () => win.removeEventListener("keydown", handleKeyDown);
     }, [isOpen]);
 
     return (

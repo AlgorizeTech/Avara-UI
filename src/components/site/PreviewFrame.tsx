@@ -9,8 +9,9 @@ const CLONE_MARK = "data-preview-frame-clone";
 /**
  * Renders children inside a same-origin iframe so viewport-based CSS
  * (Tailwind sm:/md:/lg: media queries) responds to the preview width
- * instead of the browser window. Stylesheets, fonts and the next-themes
- * dark class are mirrored from the parent document and kept in sync.
+ * instead of the browser window — the preview behaves like a real screen.
+ * Stylesheets, fonts and the next-themes dark class are mirrored from the
+ * parent document and kept in sync.
  */
 export function PreviewFrame({
   children,
@@ -25,8 +26,8 @@ export function PreviewFrame({
   minHeight?: number;
   /**
    * Hard cap on the frame height; taller content scrolls inside the frame.
-   * Required: vh-sized content (h-screen, h-[300vh]) resolves against the frame
-   * height, so an uncapped auto-height frame would grow without bound.
+   * Required: vh-sized content (h-screen, h-[300vh]) resolves against the
+   * frame height, so an uncapped auto-height frame would grow without bound.
    */
   maxHeight?: number;
   className?: string;
@@ -152,17 +153,37 @@ export function PreviewFrame({
         mount.remove();
       });
 
-      // Auto-size the iframe to its content so the page keeps a single scroll.
+      // Auto-size the iframe to whatever the frame document contains —
+      // including popups portaled to the frame body below the content —
+      // so nothing gets clipped by the frame edge.
+      const updateHeight = () => {
+        if (disposed) return;
+        const scroller = doc.scrollingElement || doc.documentElement;
+        let needed = minHeight;
+        for (const child of Array.from(doc.body.children)) {
+          const bottom = child.getBoundingClientRect().bottom + scroller.scrollTop;
+          if (bottom > needed) needed = bottom;
+        }
+        setHeight(Math.min(maxHeight, Math.ceil(needed)));
+      };
+
       const FrameResizeObserver =
         (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
-      const sizeObserver = new FrameResizeObserver(() => {
-        if (disposed) return;
-        setHeight(
-          Math.min(maxHeight, Math.max(minHeight, Math.ceil(mount.getBoundingClientRect().height))),
-        );
-      });
+      const sizeObserver = new FrameResizeObserver(updateHeight);
       sizeObserver.observe(mount);
       docCleanups.push(() => sizeObserver.disconnect());
+
+      let heightQueued = false;
+      const bodyObserver = new MutationObserver(() => {
+        if (heightQueued) return;
+        heightQueued = true;
+        requestAnimationFrame(() => {
+          heightQueued = false;
+          updateHeight();
+        });
+      });
+      bodyObserver.observe(doc.body, { childList: true, subtree: true });
+      docCleanups.push(() => bodyObserver.disconnect());
 
       // Hand wheel scrolling back to the page when nothing inside can scroll,
       // otherwise the frame swallows the event and the page freezes under it.
