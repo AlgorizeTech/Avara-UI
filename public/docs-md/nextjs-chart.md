@@ -4,6 +4,21 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
+## Features
+Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to test the completely rewritten architectures.
@@ -11,8 +26,6 @@ Use the control panel below to test the completely rewritten architectures.
 - **Bars** are now built with pure HTML/CSS, meaning they will inherently stack and position perfectly flat on the bottom axis. Tooltips trigger via CSS `group-hover`.
 - **Lines & Areas** use a custom spline function to generate smooth, premium bezier curves instead of harsh angles. The `showArea` toggle seamlessly adds a gradient fill below the stroke.
 - **Pie & Donut** use a dedicated 1:1 aspect ratio container and calculate polar coordinates automatically. They generate a beautiful monochromatic scale by reducing slice opacity based on your chosen theme color.
-
----
 
 ## Installation
 
@@ -47,6 +60,11 @@ export default function AnalyticsWidget() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

@@ -352,7 +352,7 @@ export function ComponentPreview({
                 <div
                   key={replayKey}
                   className={cn(
-                    "w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-hidden",
+                    "w-full h-full flex justify-center items-center animate-in fade-in duration-300 overflow-visible",
                     previewWidth === "100%" ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
                   )}
                 >

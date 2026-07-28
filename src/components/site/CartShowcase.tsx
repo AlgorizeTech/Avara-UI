@@ -8,6 +8,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -469,27 +470,12 @@ export default function Layout() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl">
-        {/* Type Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Cart Layout
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {(["drawer", "modal", "popover", "page"] as CartType[]).map((t) => (
-              <button
-                key={t}
-                onClick={() => setType(t)}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  type === t
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["drawer", "modal", "popover", "page"]}
+          label="Cart Layout"
+          defaultValue={type}
+          onValueChange={(v) => setType(v as CartType)}
+        />
 
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </ShowcaseControlPanel>

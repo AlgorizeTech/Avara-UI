@@ -4,6 +4,21 @@ A versatile layout component for displaying structured content featuring media, 
 
 Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
 
+## Features
+Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to construct your ideal layout.
@@ -11,8 +26,6 @@ Use the control panel below to construct your ideal layout.
 - The `card` variant stacks the elements vertically and pins the actions to the bottom, perfect for grids.
 - The `compact` variant reduces padding and text sizes, ideal for dense dropdown menus or sidebars.
 - Passing an `onClick` handler automatically converts the component into an accessible `` and applies standard hover/active scaling states.
-
----
 
 ## Installation
 
@@ -69,6 +82,11 @@ export default function ProjectGrid() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ---
 

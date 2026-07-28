@@ -5,6 +5,7 @@ import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { VerifyBadge, VerifyBadgeProps } from "@/components/custom/blocks/VerifyBadgeBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 const VERIFY_BADGE_TS = `"use client";
 
@@ -139,58 +140,21 @@ export default function ProfilePage() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
-        
-
-
-        {/* Size Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Size
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {(["sm", "md", "lg", "xl"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setSize(s)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md uppercase transition-all cursor-pointer ${
-                  size === s
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Animation Toggle */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Animation
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-            {[
-              { label: "ON", value: true },
-              { label: "OFF", value: false }
-            ].map((opt) => (
-              <button
-                key={opt.label}
-                onClick={() => setAnimate(opt.value)}
-                className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer ${
-                  animate === opt.value
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          label="Size"
+          variants={["sm", "md", "lg", "xl"]}
+          defaultValue="md"
+          onValueChange={(v) => setSize(v as "sm" | "md" | "lg" | "xl")}
+        />
+        <VariantTabs
+          label="Animation"
+          variants={["ON", "OFF"]}
+          defaultValue="ON"
+          onValueChange={(v) => setAnimate(v === "ON")}
+        />
 
         {/* Color */}
-          <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
+        <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
