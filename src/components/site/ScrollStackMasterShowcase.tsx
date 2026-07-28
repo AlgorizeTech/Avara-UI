@@ -23,7 +23,7 @@ export function ScrollStackMasterShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose mt-8">
       {/* --- MASTER CONTROL PANEL --- */}
-      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
+      {/* <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
         <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
           Scroll Stack Variant
         </label>
@@ -42,7 +42,7 @@ export function ScrollStackMasterShowcase() {
             </button>
           ))}
         </div>
-      </ShowcaseControlPanel>
+      </ShowcaseControlPanel> */}
 
       {/* --- SELECTED SHOWCASE --- */}
       <div className="w-full transition-opacity duration-300">
