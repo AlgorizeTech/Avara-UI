@@ -100,29 +100,41 @@ export function PreviewFrame({
         const sources = document.querySelectorAll<HTMLLinkElement | HTMLStyleElement>(
           'head link[rel="stylesheet"], head style',
         );
-        const loading: Promise<void>[] = [];
         sources.forEach((node) => {
           const clone = node.cloneNode(true) as HTMLLinkElement | HTMLStyleElement;
           clone.setAttribute(CLONE_MARK, "");
           if (node instanceof HTMLLinkElement) {
             (clone as HTMLLinkElement).href = node.href;
-            loading.push(
-              new Promise((resolve) => {
-                clone.addEventListener("load", () => resolve(), { once: true });
-                clone.addEventListener("error", () => resolve(), { once: true });
-              }),
-            );
           }
           doc.head.appendChild(clone);
         });
         if (firstSync) {
           firstSync = false;
+          let revealed = false;
           const reveal = () => {
-            if (!disposed) setReady(true);
+            if (!disposed && !revealed) {
+              revealed = true;
+              setReady(true);
+            }
           };
-          Promise.all(loading).then(reveal);
-          // Safety net if a stylesheet never fires load/error (slow dev compiles)
-          window.setTimeout(reveal, 4000);
+          // A parsed stylesheet exposes .sheet — poll the LIVE clones in the
+          // frame (resyncs replace them, so captured references go stale) and
+          // don't trust load events, which are unreliable on cloned links.
+          const poll = window.setInterval(() => {
+            const liveLinks = Array.from(
+              doc.querySelectorAll<HTMLLinkElement>(`link[${CLONE_MARK}]`),
+            );
+            if (liveLinks.every((l) => l.sheet !== null)) {
+              window.clearInterval(poll);
+              reveal();
+            }
+          }, 60);
+          // Safety net if a stylesheet never parses (slow dev compiles)
+          window.setTimeout(() => {
+            window.clearInterval(poll);
+            reveal();
+          }, 4000);
+          docCleanups.push(() => window.clearInterval(poll));
         }
       };
       syncStyles();
@@ -184,6 +196,32 @@ export function PreviewFrame({
       });
       bodyObserver.observe(doc.body, { childList: true, subtree: true });
       docCleanups.push(() => bodyObserver.disconnect());
+
+      // Animation libraries running in the parent realm (framer-motion)
+      // schedule WAAPI startTimes on the parent page's clock, but the
+      // animations run on this document's timeline, which starts at zero when
+      // the frame is created. That schedules every entrance animation seconds
+      // into the future — frozen at its first keyframe. Rebase such
+      // animations by the constant timeline offset (staggers/delays survive).
+      const rebased = new WeakSet<Animation>();
+      const rebaseAnimations = () => {
+        if (disposed || !doc.getAnimations) return;
+        const frameNow = Number(doc.timeline?.currentTime);
+        const parentNow = Number(document.timeline?.currentTime);
+        if (!Number.isFinite(frameNow) || !Number.isFinite(parentNow)) return;
+        const skew = parentNow - frameNow;
+        if (skew < 1000) return;
+        for (const anim of doc.getAnimations()) {
+          if (rebased.has(anim)) continue;
+          const start = Number(anim.startTime);
+          if (Number.isFinite(start) && start - frameNow > Math.min(1000, skew / 2)) {
+            anim.startTime = start - skew;
+            rebased.add(anim);
+          }
+        }
+      };
+      const rebaseTimer = window.setInterval(rebaseAnimations, 250);
+      docCleanups.push(() => window.clearInterval(rebaseTimer));
 
       // Hand wheel scrolling back to the page when nothing inside can scroll,
       // otherwise the frame swallows the event and the page freezes under it.
@@ -267,7 +305,10 @@ export function PreviewFrame({
           }}
         />
       </div>
-      {mountNode ? createPortal(children, mountNode) : null}
+      {/* Mount children only once the frame is revealed: a hidden (opacity-0)
+          iframe is render-throttled by the browser, which freezes WAAPI/framer
+          entrance animations at their initial state. */}
+      {mountNode && ready ? createPortal(children, mountNode) : null}
     </>
   );
 }
