@@ -15,13 +15,26 @@ const CLONE_MARK = "data-preview-frame-clone";
 export function PreviewFrame({
   children,
   minHeight = 400,
+  maxHeight = 820,
   className,
   title = "Component preview",
+  frameWidth,
+  scale = 1,
 }: {
   children: React.ReactNode;
   minHeight?: number;
+  /**
+   * Hard cap on the frame height; taller content scrolls inside the frame.
+   * Required: vh-sized content (h-screen, h-[300vh]) resolves against the frame
+   * height, so an uncapped auto-height frame would grow without bound.
+   */
+  maxHeight?: number;
   className?: string;
   title?: string;
+  /** Fixed viewport width in px; required when scale < 1. Omit to fill the container. */
+  frameWidth?: number;
+  /** Visually shrinks the frame (real viewport stays frameWidth) so wide devices fit small screens. */
+  scale?: number;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
@@ -107,7 +120,8 @@ export function PreviewFrame({
             if (!disposed) setReady(true);
           };
           Promise.all(loading).then(reveal);
-          window.setTimeout(reveal, 1500);
+          // Safety net if a stylesheet never fires load/error (slow dev compiles)
+          window.setTimeout(reveal, 4000);
         }
       };
       syncStyles();
@@ -143,7 +157,9 @@ export function PreviewFrame({
         (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
       const sizeObserver = new FrameResizeObserver(() => {
         if (disposed) return;
-        setHeight(Math.max(minHeight, Math.ceil(mount.getBoundingClientRect().height)));
+        setHeight(
+          Math.min(maxHeight, Math.max(minHeight, Math.ceil(mount.getBoundingClientRect().height))),
+        );
       });
       sizeObserver.observe(mount);
       docCleanups.push(() => sizeObserver.disconnect());
@@ -178,6 +194,15 @@ export function PreviewFrame({
             return;
           el = el.parentElement;
         }
+        // Capped frames scroll at the document level — let that happen natively.
+        const scroller = doc.scrollingElement || doc.documentElement;
+        if (
+          scroller.scrollHeight > scroller.clientHeight &&
+          (event.deltaY < 0
+            ? scroller.scrollTop > 0
+            : scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 1)
+        )
+          return;
         event.preventDefault();
         window.scrollBy({ top: event.deltaY, left: event.deltaX });
       };
@@ -196,20 +221,31 @@ export function PreviewFrame({
       docCleanups.forEach((fn) => fn());
       docCleanups = [];
     };
-  }, [minHeight]);
+  }, [minHeight, maxHeight]);
+
+  const scaled = scale !== 1 && frameWidth !== undefined;
 
   return (
     <>
-      <iframe
-        ref={iframeRef}
-        title={title}
-        className={cn(
-          "block w-full border-0 transition-opacity duration-300",
-          ready && mountNode ? "opacity-100" : "opacity-0",
-          className,
-        )}
-        style={{ height }}
-      />
+      <div
+        className={cn("relative w-full overflow-hidden", className)}
+        style={{ height: Math.round(height * (scaled ? scale : 1)) }}
+      >
+        <iframe
+          ref={iframeRef}
+          title={title}
+          className={cn(
+            "absolute top-0 left-0 block border-0 transition-opacity duration-300",
+            ready && mountNode ? "opacity-100" : "opacity-0",
+          )}
+          style={{
+            width: scaled ? `${frameWidth}px` : "100%",
+            height,
+            transform: scaled ? `scale(${scale})` : undefined,
+            transformOrigin: "top left",
+          }}
+        />
+      </div>
       {mountNode ? createPortal(children, mountNode) : null}
     </>
   );

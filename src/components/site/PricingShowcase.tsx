@@ -1713,6 +1713,7 @@ export function PricingShowcase() {
         jsCode={PRICING_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        framed
       >
         <div
           className={`w-full py-12 md:py-24 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "bg-zinc-50/50 dark:bg-transparent"}`}
