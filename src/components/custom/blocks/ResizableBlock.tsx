@@ -111,6 +111,10 @@ export function ResizableHandle({
     const handle = handleRef.current;
     if (!handle) return;
 
+    // Resolve the document/window the handle actually lives in (supports iframe rendering).
+    const doc = handle.ownerDocument;
+    const win = doc.defaultView ?? window;
+
     const prev = handle.previousElementSibling as HTMLElement;
     const next = handle.nextElementSibling as HTMLElement;
     if (
@@ -141,8 +145,8 @@ export function ResizableHandle({
     const nextMin = parseFloat(next.getAttribute("data-min-size") || "0");
     const nextMax = parseFloat(next.getAttribute("data-max-size") || "100");
 
-    document.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
-    document.body.style.userSelect = "none";
+    doc.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
+    doc.body.style.userSelect = "none";
 
     const onPointerMove = (moveEvent: PointerEvent) => {
       const currentPos = isHorizontal ? moveEvent.clientX : moveEvent.clientY;
@@ -167,14 +171,14 @@ export function ResizableHandle({
     };
 
     const onPointerUp = () => {
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
+      doc.body.style.cursor = "";
+      doc.body.style.userSelect = "";
+      win.removeEventListener("pointermove", onPointerMove);
+      win.removeEventListener("pointerup", onPointerUp);
     };
 
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
+    win.addEventListener("pointermove", onPointerMove);
+    win.addEventListener("pointerup", onPointerUp);
   };
 
   // --- ACCESSIBILITY: KEYBOARD NAVIGATION ---
