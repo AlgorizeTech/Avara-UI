@@ -2,6 +2,21 @@
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
 
+## Features
+Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to flip between the four counter layouts. **When using the `stepper` type, you unlock four unique structural variants** (`default`, `outline`, `soft`, `vertical`) to fit perfectly into horizontal product bars or tight vertical sidebars.
@@ -9,8 +24,6 @@ Use the control panel below to flip between the four counter layouts. **When usi
 You can also apply global color themes (or custom hex codes) that cascade instantly across buttons, strokes, and text elements.
 
 _Click the **Code** tab in the preview below to copy the full component engine._
-
----
 
 ## Installation
 
@@ -21,6 +34,11 @@ This component relies heavily on `gsap` to handle the rapid number interpolation
 ```bash
 npm install gsap lucide-react
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
@@ -446,51 +447,18 @@ export default function HeroSection() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
-          {/* Aspect Ratio Selector */}
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Aspect Ratio
-            </span>
-            <div className="inline-flex rounded-xl bg-zinc-200/60 dark:bg-zinc-800 p-1 w-fit">
-              {(["16/9", "21/9", "4/3"] as const).map((ratio) => (
-                <button
-                  key={ratio}
-                  onClick={() => setAspectRatio(ratio)}
-                  className={cn(
-                    "px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer",
-                    aspectRatio === ratio
-                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white",
-                  )}
-                >
-                  {ratio}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Modal Size Selector */}
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Modal Size
-            </span>
-            <div className="inline-flex rounded-xl bg-zinc-200/60 dark:bg-zinc-800 p-1 w-fit">
-              {(["lg", "xl", "full"] as const).map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setModalSize(size)}
-                  className={cn(
-                    "px-3 py-1 rounded-lg text-xs font-semibold transition-all uppercase cursor-pointer",
-                    modalSize === size
-                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white",
-                  )}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
+          <VariantTabs
+            label="Aspect Ratio"
+            variants={["16/9", "21/9", "4/3"]}
+            defaultValue="16/9"
+            onValueChange={(v) => setAspectRatio(v as "16/9" | "21/9" | "4/3")}
+          />
+          <VariantTabs
+            label="Modal Size"
+            variants={["lg", "xl", "full"]}
+            defaultValue="xl"
+            onValueChange={(v) => setModalSize(v as "lg" | "xl" | "full")}
+          />
 
           {/* Glow Toggle */}
           <div className="flex items-center justify-start sm:justify-end pt-2">

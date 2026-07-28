@@ -8,6 +8,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -279,53 +280,19 @@ export default function DocsPage() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col xl:flex-row gap-6">
-          {/* Variant Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Style Variant
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["default", "glass", "minimal"] as TerminalVariant[]).map(
-                (v) => (
-                  <button
-                    key={v}
-                    onClick={() => setVariant(v)}
-                    className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                      variant === v
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                    }`}
-                  >
-                    {v}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
-
-          {/* Code Sample Selector */}
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Sample Code
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["React", "Python", "Bash"] as const).map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setActiveTab(s)}
-                  className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    activeTab === s
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
+          <VariantTabs
+            label="Style Variant"
+            variants={["default", "glass", "minimal"]}
+            defaultValue="default"
+            onValueChange={(v) => setVariant(v as TerminalVariant)}
+          />
+          <VariantTabs
+            label="Sample Code"
+            variants={["React", "Python", "Bash"]}
+            defaultValue="React"
+            onValueChange={(v) => setActiveTab(v as "React" | "Python" | "Bash")}
+          />
         </div>
-
         <ThemeColorPicker color={color} onChange={handleColorChange} label="Accent Color" />
       </ShowcaseControlPanel>
 

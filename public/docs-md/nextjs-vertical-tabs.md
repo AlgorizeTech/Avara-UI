@@ -8,8 +8,6 @@ Interact with the menu below to see the GSAP crossfade animations. Use the contr
 
 _Click the **Code** tab in the preview below to copy the full component engine._
 
----
-
 ## Installation
 
 ### 1. Install Dependencies

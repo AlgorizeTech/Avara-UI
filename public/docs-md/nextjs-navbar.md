@@ -12,8 +12,6 @@ Use the control panel below to switch between layouts.
 
 _(Resize your browser window or use mobile view to see the GSAP animated hamburger drawer in action!)_
 
----
-
 ## Installation
 
 ### 1. Install Dependencies

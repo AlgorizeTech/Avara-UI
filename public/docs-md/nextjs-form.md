@@ -4,14 +4,27 @@ A high-fidelity Form toolkit engineered for both simple landing pages and comple
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
+## Features
+Explore the Form component's validation integration, accessible error messages, and loading state management.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to test the different implementations.
 
 - The **Basic Native State** demo shows how to easily wrap a simple email input. Try submitting an invalid email to see the custom glitching `FormError` text in action.
 - The **Advanced (RHF + Zod)** demo showcases a complex grid layout. Because the `FormWrapper` is unopinionated, it natively accepts the `onSubmit={handleSubmit()}` methods from `react-hook-form` without breaking child `refs`.
-
----
 
 ## Installation
 
@@ -68,6 +81,11 @@ export default function EnterpriseForm() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ---
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   Wizard,
@@ -278,29 +279,12 @@ export default function OnboardingFlow() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Active Theme Color
-            </label>
-            <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-              {(["indigo", "blue", "rose", "emerald", "zinc"] as const).map(
-                (c) => (
-                  <button
-                    key={c}
-                    onClick={() => setColor(c)}
-                    className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                      color === c
-                        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ),
-              )}
-            </div>
-          </div>
-
+          <VariantTabs
+            label="Active Theme Color"
+            variants={["indigo", "blue", "rose", "emerald", "zinc"]}
+            defaultValue="indigo"
+            onValueChange={(v) => setColor(v as "indigo" | "blue" | "rose" | "emerald" | "zinc")}
+          />
           <button
             onClick={() => setKey((prev) => prev + 1)}
             className="px-4 py-2 text-sm font-bold rounded-lg border bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center justify-center w-full sm:w-auto"

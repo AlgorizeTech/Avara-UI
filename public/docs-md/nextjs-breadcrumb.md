@@ -4,13 +4,26 @@ A navigational aid that helps users understand their current location within a w
 
 This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
 
+## Features
+Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to test the different visual styles. Toggle the **Path Length** to see how the component intelligently handles deep page hierarchies without breaking the UI.
 
 _Click the **Code** tab in the preview below to copy the full component engine._
-
----
 
 ## Installation
 
@@ -21,6 +34,11 @@ This component utilizes `lucide-react` for standard UI icons like the Home butto
 ```bash
 npm install lucide-react
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

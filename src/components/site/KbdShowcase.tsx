@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { Kbd } from "@/components/custom/blocks/KbdBlock";
@@ -100,26 +101,12 @@ export default function App() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl z-0 relative">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Size
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {(["sm", "md", "lg"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setSize(s)}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                  size === s
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={["sm", "md", "lg"]}
+          label="Size"
+          defaultValue={size}
+          onValueChange={(v) => setSize(v as "sm" | "md" | "lg")}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

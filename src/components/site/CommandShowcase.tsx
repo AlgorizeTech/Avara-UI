@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   Command,
@@ -537,33 +538,15 @@ export default function InlineCommand() {
 
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl z-0 relative">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Layout Mode
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            <button
-              onClick={() => setLayout("inline")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                layout === "inline"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Inline Static
-            </button>
-            <button
-              onClick={() => setLayout("dialog")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                layout === "dialog"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Modal Dialog
-            </button>
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "inline", label: "Inline Static" },
+            { value: "dialog", label: "Modal Dialog" },
+          ]}
+          label="Layout Mode"
+          defaultValue={layout}
+          onValueChange={(v) => setLayout(v as "inline" | "dialog")}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

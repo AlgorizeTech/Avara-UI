@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   CustomCarousel,
@@ -540,52 +541,26 @@ export default function CarouselDemo()${typeDef} {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Carousel Variant
-          </label>
-          <div className="flex flex-wrap sm:flex-nowrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            {[
-              { id: "image", label: "Standard Image" },
-              { id: "hero", label: "Hero Slider" },
-              { id: "thumbnails", label: "Thumbnails" },
-              { id: "fluid", label: "Fluid Glass" },
-            ].map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setCarouselType(v.id as CarouselType)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all flex-1 sm:flex-none ${
-                  carouselType === v.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "image", label: "Standard Image" },
+            { value: "hero", label: "Hero Slider" },
+            { value: "thumbnails", label: "Thumbnails" },
+            { value: "fluid", label: "Fluid Glass" },
+          ]}
+          label="Carousel Variant"
+          defaultValue={carouselType}
+          onValueChange={(v) => setCarouselType(v as CarouselType)}
+        />
 
         {carouselType === "thumbnails" && (
-          <div className="flex flex-col gap-2 animate-in fade-in duration-300">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Thumbnail Position
-            </label>
-            <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5">
-              {(["bottom", "left", "right"] as ThumbPosition[]).map((pos) => (
-                <button
-                  key={pos}
-                  onClick={() => setThumbPosition(pos)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all ${
-                    thumbPosition === pos
-                      ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {pos}
-                </button>
-              ))}
-            </div>
+          <div className="animate-in fade-in duration-300">
+            <VariantTabs
+              variants={["bottom", "left", "right"]}
+              label="Thumbnail Position"
+              defaultValue={thumbPosition}
+              onValueChange={(v) => setThumbPosition(v as ThumbPosition)}
+            />
           </div>
         )}
       </ShowcaseControlPanel>

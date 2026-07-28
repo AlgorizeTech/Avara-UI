@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import React, { useState } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
@@ -563,33 +564,12 @@ export function MobileMockupShowcase() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Control Panel / Tabs */}
       <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Device Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 flex-wrap gap-1">
-            {[
-              { id: "iphone5", label: "iPhone 5" },
-              { id: "iphone12", label: "iPhone 12 Pro Max" },
-              { id: "iphone14", label: "iPhone 14 Pro Max" },
-              { id: "samsung", label: "Samsung S24 Ultra" },
-              { id: "pixel8", label: "Google Pixel 8" },
-              { id: "pixel10", label: "Google Pixel 10" }
-            ].map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setActiveDevice(v.id as any)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer ${
-                  activeDevice === v.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          label="Device Variant"
+          variants={["iphone5", "iphone12", "iphone14", "samsung", "pixel8", "pixel10"]}
+          defaultValue="iphone14"
+          onValueChange={(v) => setActiveDevice(v as any)}
+        />
       </ShowcaseControlPanel>
 
       {/* Dynamic Component Preview */}

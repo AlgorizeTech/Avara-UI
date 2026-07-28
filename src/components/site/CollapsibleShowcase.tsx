@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
   Collapsible,
@@ -267,43 +268,16 @@ export default function BasicFAQ() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl z-0 relative">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Layout Example
-          </label>
-          <div className="flex flex-wrap bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-full md:w-max border border-zinc-200 dark:border-white/5">
-            <button
-              onClick={() => setLayout("basic")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                layout === "basic"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Basic (FAQ)
-            </button>
-            <button
-              onClick={() => setLayout("settings")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                layout === "settings"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Settings Panel
-            </button>
-            <button
-              onClick={() => setLayout("filetree")}
-              className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                layout === "filetree"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              File Tree (Nested)
-            </button>
-          </div>
-        </div>
+        <VariantTabs
+          variants={[
+            { value: "basic", label: "Basic (FAQ)" },
+            { value: "settings", label: "Settings Panel" },
+            { value: "filetree", label: "File Tree (Nested)" },
+          ]}
+          label="Layout Example"
+          defaultValue={layout}
+          onValueChange={(v) => setLayout(v as "basic" | "settings" | "filetree")}
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}

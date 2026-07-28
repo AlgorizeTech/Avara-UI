@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 
 const CODE_TS = `"use client";
@@ -457,27 +459,14 @@ export function CustomCodeBlockShowcase() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Variant Switcher Above Preview */}
-      <div className="w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-[#09090b] shadow-sm flex flex-col gap-3">
-        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
-          SUPPORTED LANGUAGES
-        </span>
-        <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800/50 p-1 rounded-lg w-max flex-wrap">
-          {Object.keys(SNIPPETS).map((key) => (
-            <button
-              key={key}
-              onClick={() => setActiveTab(key as keyof typeof SNIPPETS)}
-              className={cn(
-                "cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-all",
-                activeTab === key
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-              )}
-            >
-              {key}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ShowcaseControlPanel className="w-full flex flex-col gap-3 p-4 rounded-xl">
+        <VariantTabs
+          label="Supported Languages"
+          variants={["HTML", "CSS", "JavaScript", "TypeScript"]}
+          defaultValue="HTML"
+          onValueChange={(v) => setActiveTab(v as keyof typeof SNIPPETS)}
+        />
+      </ShowcaseControlPanel>
 
       <ComponentPreview
         name="CustomCodeBlock"

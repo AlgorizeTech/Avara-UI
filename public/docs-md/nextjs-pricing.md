@@ -10,8 +10,6 @@ You can customize the visual structure of the cards (`default`, `premium`, `eleg
 
 _Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
 
----
-
 ## Installation
 
 ### 1. Install Dependencies

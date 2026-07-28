@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { VariantTabs } from "@/components/site/VariantTabs";
 
 import React, { useState } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
@@ -335,31 +336,12 @@ export function HalfStarsShowcase() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Control Panel / Tabs */}
       <ShowcaseControlPanel className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl flex-wrap">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Variant
-          </label>
-          <div className="flex bg-zinc-200/50 dark:bg-black/50 p-1 rounded-lg w-max border border-zinc-200 dark:border-white/5 flex-wrap gap-1">
-            {[
-              { id: "full", label: "Full Stars" },
-              { id: "half", label: "Half Stars" },
-              { id: "continuous", label: "Continuous" },
-              { id: "custom", label: "Custom (10 Stars)" },
-            ].map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setActiveVariant(v.id as any)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-all cursor-pointer ${
-                  activeVariant === v.id
-                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <VariantTabs
+          label="Variant"
+          variants={["full", "half", "continuous", "custom"]}
+          defaultValue="full"
+          onValueChange={(v) => setActiveVariant(v as any)}
+        />
       </ShowcaseControlPanel>
 
       <ComponentPreview 

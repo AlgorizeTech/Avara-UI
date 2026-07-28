@@ -2,13 +2,26 @@
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
+## Features
+Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Explore the different variants of the carousel component. Switch between standard image sliders, full-width hero banners, positionable thumbnails, and GSAP-powered fluid glass sliders.
 
 _Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
-
----
 
 ## Installation: Standard Carousels
 
@@ -40,6 +53,11 @@ This installation covers the Fluid Glass variation, which requires the GSAP anim
 ```bash
 npm install gsap
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference: ImageCarousel
 

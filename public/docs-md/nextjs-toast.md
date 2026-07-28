@@ -4,6 +4,21 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
+## Features
+Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Interactive Showcase
 
 Use the control panel below to test the different visual variants and placement locations on the screen.
@@ -11,8 +26,6 @@ Use the control panel below to test the different visual variants and placement 
 - The **Glass** variant uses a high-intensity backdrop blur, making it perfect for apps with complex or photographic backgrounds.
 - The **Glow** variant and **Minimal** variant automatically inherit the custom hex color you select in the control panel.
 - Toasts auto-dismiss after 5 seconds, but you can hover them to keep them open, or click the `X` to dismiss manually.
-
----
 
 ## Installation
 
@@ -84,6 +97,11 @@ export default function ProfileForm() {
   );
 }
 ```
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
