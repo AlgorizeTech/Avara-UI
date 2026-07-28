@@ -55,6 +55,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   ) => {
     const [isMounted, setIsMounted] = useState(false);
     const [geoData, setGeoData] = useState<any>(null);
+    const mapRef = useRef<any>(null);
+    const mapWrapperRef = useRef<HTMLDivElement>(null);
     const geoJsonRef = useRef<any>(null);
     const markersGroupRef = useRef<any>(null);
     const highlightColorRef = useRef(highlightColor);
@@ -134,6 +136,20 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         .catch((err) => console.error("Error loading map GeoJSON:", err));
     }, [mapGeoJsonUrl]);
 
+    // Leaflet sizes its canvas once at creation — refit whenever the wrapper
+    // resizes (responsive preview, layout changes) so the full map stays visible.
+    useEffect(() => {
+      const wrapper = mapWrapperRef.current;
+      if (!wrapper) return;
+      const win = wrapper.ownerDocument.defaultView ?? window;
+      const Observer = (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
+      const observer = new Observer(() => {
+        mapRef.current?.invalidateSize();
+      });
+      observer.observe(wrapper);
+      return () => observer.disconnect();
+    }, [isMounted, geoData]);
+
     if (!isMounted || !geoData) {
       return (
         <div ref={ref} className={cn("w-full h-full min-h-[400px] bg-slate-50 dark:bg-slate-900/50 rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
@@ -193,11 +209,12 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0; }
           }
         `}} />
-        <div className="absolute inset-0 z-0">
-          <MapContainer 
-            center={center} 
-            zoom={zoom} 
-            style={{ height: "100%", width: "100%", background: "transparent" }} 
+        <div ref={mapWrapperRef} className="absolute inset-0 z-0">
+          <MapContainer
+            ref={mapRef}
+            center={center}
+            zoom={zoom}
+            style={{ height: "100%", width: "100%", background: "transparent" }}
             scrollWheelZoom={false}
             zoomControl={false}
             attributionControl={false}
