@@ -423,7 +423,6 @@ export default function ProcessSection() {
         jsCode={_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
-        disableFrame
       >
         <div className="w-full relative rounded-3xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950">
           <HorizontalScrollStack items={demoProcessItems} />
