@@ -19,6 +19,13 @@ export type ModalVariant = "default" | "glass" | "minimal" | "bordered";
 export type ModalType = "standard" | "form" | "fullscreen" | "confirmation";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    bgSoft: "bg-primary/10",
+    ring: "focus:ring-primary",
+  },
   indigo: {
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -79,7 +86,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -219,7 +226,7 @@ const ModalContent = ({
 export function ModalBlock({
   type = "standard",
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   type?: ModalType;
   variant?: ModalVariant;

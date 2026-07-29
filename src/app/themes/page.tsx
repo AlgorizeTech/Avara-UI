@@ -7,28 +7,25 @@
  * Wrapped in ThemeCustomizerProvider for local state management.
  */
 
-import { ThemeCustomizerProvider } from "@/contexts/theme-customizer-context";
 import { ThemeCustomizerSidebar } from "@/components/theme-control/theme-customizer-sidebar";
 import { ThemePreview } from "@/components/theme-control/theme-preview";
 
 export default function ThemesPage() {
   return (
-    <ThemeCustomizerProvider>
-      <div className="flex min-h-[calc(100vh-52px)]">
-        {/* Customizer Sidebar — sticky left panel */}
-        <aside className="hidden lg:flex lg:w-[380px] xl:w-[400px] flex-col border-r border-border bg-background/50 backdrop-blur-sm sticky top-[52px] h-[calc(100vh-52px)] shrink-0">
-          <ThemeCustomizerSidebar />
-        </aside>
+    <div className="flex min-h-[calc(100vh-52px)]">
+      {/* Customizer Sidebar — sticky left panel */}
+      <aside className="hidden lg:flex lg:w-[380px] xl:w-[400px] flex-col border-r border-border bg-background/50 backdrop-blur-sm sticky top-[52px] h-[calc(100vh-52px)] shrink-0">
+        <ThemeCustomizerSidebar />
+      </aside>
 
-        {/* Mobile Sidebar — sheet/drawer on smaller screens */}
-        <MobileSidebar />
+      {/* Mobile Sidebar — sheet/drawer on smaller screens */}
+      <MobileSidebar />
 
-        {/* Live Preview — scrollable right panel */}
-        <main className="flex-1 min-w-0 bg-background">
-          <ThemePreview />
-        </main>
-      </div>
-    </ThemeCustomizerProvider>
+      {/* Live Preview — scrollable right panel */}
+      <main className="flex-1 min-w-0 bg-background">
+        <ThemePreview />
+      </main>
+    </div>
   );
 }
 

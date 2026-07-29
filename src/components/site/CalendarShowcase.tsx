@@ -871,44 +871,16 @@ export { Calendar, CalendarDashboard, CalendarDayButton };`;
 export function CalendarShowcase() {
   const [variant, setVariant] = useState<CalendarVariant>("default");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<CalendarColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<CalendarColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Dynamic code generation based on selected state
-  const generateUsageCode = (isTs: boolean) => `"use client";
+  const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    return `"use client";
 
 import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
@@ -924,12 +896,12 @@ export default function CalendarDemo()${isTs ? " : React.JSX.Element" : ""} {
     <div className="w-full h-screen p-4">
       <CalendarDashboard
         mockEvents={initialEvents}
-        variant="${variant}"
-        color="${color}"
+        variant="${variant}"${colorPropStr}
       />
     </div>
   );
-}`;
+};`;
+  };
 
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">

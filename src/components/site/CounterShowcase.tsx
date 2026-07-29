@@ -24,6 +24,7 @@ export type CounterType = "stepper" | "animated" | "circular" | "countdown";
 export type CounterVariant = "default" | "outline" | "soft" | "vertical";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary text-primary-foreground", text: "text-primary", border: "border-primary", ring: "ring-primary/20", fill: "stroke-primary", bgSoft: "bg-primary/10 text-primary" },
   indigo: { bg: "bg-indigo-600 text-white", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-600", ring: "ring-indigo-600/20", fill: "stroke-indigo-600", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" },
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", border: "border-rose-600", ring: "ring-rose-600/20", fill: "stroke-rose-600", bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-600", ring: "ring-emerald-600/20", fill: "stroke-emerald-600", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -45,7 +46,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 const StepperCounter = ({ theme, style, label, initialValue, min, max, variant }: any) => {
@@ -374,9 +375,9 @@ export function CounterShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<CounterColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "emerald";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "emerald";
+    return "primary";
   });
 
   // Automatically listen for updates to the primaryColor in localStorage
@@ -418,15 +419,12 @@ export function CounterShowcase() {
     if (type === "countdown") exampleProps = `label="Product Launch"`;
 
     return `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
-import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function Page() {
   return (
     <div className="flex items-center justify-center p-12">
       <CounterBlock 
         type="${type}" 
-        color="${color}" 
         ${exampleProps}
       />
     </div>

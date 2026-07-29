@@ -314,44 +314,14 @@ NavigationMenuIndicator.displayName = "NavigationMenuIndicator";`;
 
 export function NavigationMenuShowcase() {
   const [variant, setVariant] = useState<NavVariant>("default");
+  const [color, setColor] = useState<NavColor | string>("primary");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<NavColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
-
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? ` color="${color}"` : "";
     return `import { 
   NavigationMenu, 
   NavigationMenuList, 
@@ -364,7 +334,7 @@ export function NavigationMenuShowcase() {
 
 export default function App() {
   return (
-    <NavigationMenu variant="${variant}" color="${color}">
+    <NavigationMenu variant="${variant}"${colorPropStr}>
       <NavigationMenuList>
         <NavigationMenuItem value="features">
           <NavigationMenuTrigger>Features</NavigationMenuTrigger>

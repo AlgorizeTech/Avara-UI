@@ -12,7 +12,7 @@ export interface VerifyBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
   (
-    { color = "#1d9bf0", size = "md", animate = false, className, ...props },
+    { color = "var(--primary)", size = "md", animate = false, className, ...props },
     ref
   ) => {
     const sizeClasses = {

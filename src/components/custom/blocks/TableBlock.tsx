@@ -23,6 +23,13 @@ export type TableVariant = "default" | "minimal" | "glass";
 export type TableSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    bgSoft: "bg-primary/10 text-primary",
+    border: "border-primary",
+    focusRing: "focus-visible:ring-primary",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -83,7 +90,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -117,7 +124,7 @@ export function TableBlock<T extends { id: string | number }>({
   data,
   columns,
   variant = "default",
-  color = "indigo",
+  color = "primary",
   tableSize = "md",
   selectable = false,
   expandable = false,

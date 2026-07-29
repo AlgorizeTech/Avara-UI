@@ -65,6 +65,13 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    lightBg: "bg-primary/10 text-primary",
+    border: "border-primary/30",
+    focusRing: "focus:ring-primary/20 focus:border-primary",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20",
@@ -129,7 +136,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export type InvoiceItem = {
@@ -170,7 +177,7 @@ export type InvoiceData = {
 export default function Invoice({
   invoiceData,
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   invoiceData: InvoiceData;
   variant?: InvoiceVariant;

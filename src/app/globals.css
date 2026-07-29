@@ -395,10 +395,14 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-xs: min(calc(var(--radius) - 6px), var(--radius));
+  --radius-sm: min(calc(var(--radius) - 4px), var(--radius));
+  --radius-md: min(calc(var(--radius) - 2px), var(--radius));
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius: var(--radius);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -439,6 +443,12 @@ input[type="range"]:focus::-moz-range-thumb {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Force zero border radius across all elements when --radius is 0rem */
+[style*="--radius: 0rem"] *,
+[style*="--radius:0rem"] * {
+  border-radius: 0 !important;
 }
 
 /* Custom animations for badge components */

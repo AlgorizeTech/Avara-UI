@@ -319,30 +319,25 @@ import { VariantTabs } from "@/components/site/VariantTabs";
 import { cn } from "@/lib/utils";
 
 export function DataMapsShowcase() {
-	const [color, setColor] = useState("default");
+	const [color, setColor] = useState("primary");
 	const [variant, setVariant] = useState<"fill" | "dots">("fill");
-
-	useEffect(() => {
-		const savedColor = localStorage.getItem("primaryColor");
-		if (savedColor) setColor(savedColor);
-	}, []);
 
 	const handleColorChange = (newColor: string) => {
 		setColor(newColor);
-		localStorage.setItem("primaryColor", newColor);
 	};
 
 	// Convert semantic color to actual hex for the map highlight if needed
 	const getHexForColor = (c: string) => {
 		if (c.startsWith("#")) return c;
 		const colors: Record<string, string> = {
-			default: "#18181b",
+			primary: "var(--primary)",
+			default: "var(--primary)",
 			blue: "#2563eb",
 			emerald: "#10b981",
 			rose: "#e11d48",
 			violet: "#7c3aed",
 		};
-		return colors[c] || "#18181b"; // Fallback zinc-900
+		return colors[c] || "var(--primary)";
 	};
 
 	return (

@@ -105,11 +105,11 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
 ChatAvatar.displayName = "ChatAvatar";
 
 export interface ChatMessageProps extends React.HTMLAttributes<HTMLDivElement> {
-  color?: "default" | "blue" | "indigo" | "rose" | "emerald";
+  color?: "primary" | "default" | "blue" | "indigo" | "rose" | "emerald";
 }
 
 export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
-  ({ children, color = "default", className, ...props }, ref) => {
+  ({ children, color = "primary", className, ...props }, ref) => {
     const { variant, layout } = useChat();
     const nodeRef = useRef<HTMLDivElement>(null);
 
@@ -128,7 +128,8 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
 
     // Theming logic for sent messages
     const sentColors: Record<string, string> = {
-      default: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
+      primary: "bg-primary text-primary-foreground",
+      default: "bg-primary text-primary-foreground",
       blue: "bg-blue-600 text-white",
       indigo: "bg-indigo-600 text-white",
       rose: "bg-rose-600 text-white",

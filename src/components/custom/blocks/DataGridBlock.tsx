@@ -21,6 +21,11 @@ export type GridColor =
   | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    outline: "outline-primary",
+    bgActive: "bg-primary/10",
+    handle: "bg-primary",
+  },
   indigo: {
     outline: "outline-indigo-500",
     bgActive: "bg-indigo-50 dark:bg-indigo-500/10",
@@ -67,16 +72,16 @@ export const getThemeStyles = (color: string) => {
     return {
       theme: {
         outline: "outline-[var(--grid-color)]",
-        bgActive: "bg-[rgba(var(--grid-rgb),0.1)]",
+        bgActive: "bg-[rgba(var(--grid-color-rgb),0.1)]",
         handle: "bg-[var(--grid-color)]",
       },
       style: {
         "--grid-color": color,
-        "--grid-rgb": rgb,
+        "--grid-color-rgb": rgb,
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.blue, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -108,7 +113,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
     {
       columns,
       data: initialData,
-      color = "blue",
+      color = "primary",
       onChange,
       showRowNumbers = true,
       readOnly = false,

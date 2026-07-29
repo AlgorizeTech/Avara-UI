@@ -26,6 +26,7 @@ export type TableVariant = "default" | "minimal" | "glass";
 export type TableSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary text-primary-foreground", text: "text-primary", bgSoft: "bg-primary/10 text-primary", border: "border-primary", focusRing: "focus-visible:ring-primary" },
   indigo: { bg: "bg-indigo-600 text-white", text: "text-indigo-600 dark:text-indigo-400", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10", border: "border-indigo-600", focusRing: "focus-visible:ring-indigo-500" },
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", bgSoft: "bg-rose-50 dark:bg-rose-500/10", border: "border-rose-600", focusRing: "focus-visible:ring-rose-500" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-600", focusRing: "focus-visible:ring-emerald-500" },
@@ -47,13 +48,13 @@ export const getThemeStyles = (color: string) => {
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface TableColumn<T> { key: keyof T | "actions"; label: string; sortable?: boolean; align?: "left" | "center" | "right"; render?: (row: T) => React.ReactNode; }
 export interface TableBlockProps<T> { data: T[]; columns: TableColumn<T>[]; variant?: TableVariant; color?: TableColor; tableSize?: TableSize; selectable?: boolean; expandable?: boolean; pagination?: { itemsPerPage: number }; onSelectionChange?: (selectedRows: T[]) => void; onEdit?: (row: T) => void; onDelete?: (row: T) => void; renderExpanded?: (row: T) => React.ReactNode; className?: string; }
 
-export function TableBlock<T extends { id: string | number }>({ data, columns, variant = "default", color = "indigo", tableSize = "md", selectable = false, expandable = false, pagination, onSelectionChange, onEdit, onDelete, renderExpanded, className }: TableBlockProps<T>) {
+export function TableBlock<T extends { id: string | number }>({ data, columns, variant = "default", color = "primary", tableSize = "md", selectable = false, expandable = false, pagination, onSelectionChange, onEdit, onDelete, renderExpanded, className }: TableBlockProps<T>) {
   const { theme, style } = getThemeStyles(color as string);
   const tbodyRef = useRef<HTMLTableSectionElement>(null);
   
@@ -435,40 +436,10 @@ export function TableShowcase() {
   const [isPaginated, setIsPaginated] = useState(true);
   const [isExpandable, setIsExpandable] = useState(true);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<TableColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<TableColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Sample Data
@@ -580,7 +551,8 @@ export function TableShowcase() {
   ];
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        data={data}\n        columns={columns}\n        variant="${variant}"\n        color="${color}"\n        tableSize="${tableSize}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    let propsStr = `\n        data={data}\n        columns={columns}\n        variant="${variant}"${colorPropStr}\n        tableSize="${tableSize}"`;
     if (isSelectable)
       propsStr += `\n        selectable\n        onSelectionChange={(rows) => console.log(rows)}`;
     if (isExpandable)

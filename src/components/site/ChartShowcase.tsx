@@ -316,40 +316,10 @@ export function ChartShowcase() {
   const [showGrid, setShowGrid] = useState(true);
   const [showArea, setShowArea] = useState(true);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ChartColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "primary";
-    }
-    return "primary";
-  });
+  const [color, setColor] = useState<ChartColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Sample Financial Data
@@ -374,9 +344,6 @@ export function ChartShowcase() {
 
   const generateUsageCode = (isTs: boolean) => {
     let propsStr = `\n        data={data}\n        type="${type}"`;
-    if (color && color !== "primary" && color !== "var(--primary)") {
-      propsStr += `\n        color="${color}"`;
-    }
     if (!showGrid) propsStr += `\n        showGrid={false}`;
     if (!showArea && type === "line") propsStr += `\n        showArea={false}`;
     propsStr += `\n        valuePrefix="$"`;

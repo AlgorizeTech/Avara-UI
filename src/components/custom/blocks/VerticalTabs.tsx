@@ -17,6 +17,12 @@ export type TabsColor =
 export type TabsVariant = "default" | "glass" | "minimal" | "bordered";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    dot: "bg-primary-foreground",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -78,7 +84,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.purple, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -101,7 +107,7 @@ export interface VerticalTabsProps {
 
 export function VerticalTabs({
   tabs,
-  color = "purple",
+  color = "primary",
   variant = "default",
   defaultActiveId,
   className,

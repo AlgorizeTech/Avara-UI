@@ -320,40 +320,10 @@ export default function FleetTracker({ fleetData = [], variant = "default", colo
 export function FleetShowcase() {
   const [variant, setVariant] = useState<FleetVariant>("modern");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<FleetColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<FleetColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
@@ -361,6 +331,7 @@ export function FleetShowcase() {
     const vehicleType = isTs
       ? "const fleetData: Vehicle[] = "
       : "const fleetData = ";
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
 
     return `import FleetTracker${isTs ? ", { Vehicle }" : ""} from "@/components/custom/blocks/Fleet-map";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
@@ -377,8 +348,7 @@ export default function FleetDemo()${typeDef} {
     <div className="w-full">
       <FleetTracker 
         fleetData={fleetData} 
-        variant="${variant}"
-        color="${color}"
+        variant="${variant}"${colorPropStr}
       />
     </div>
   );

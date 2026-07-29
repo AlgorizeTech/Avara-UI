@@ -10,6 +10,11 @@ export type OtpVariant = "default" | "filled" | "underlined";
 export type OtpColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    focusRing: "focus:ring-primary focus:border-primary",
+    text: "text-primary",
+    border: "border-primary",
+  },
   indigo: {
     focusRing: "focus:ring-indigo-500 focus:border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -62,7 +67,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -89,7 +94,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
       onComplete,
       mask = false,
       variant = "default",
-      color = "indigo",
+      color = "primary",
       disabled = false,
       className,
       ...props

@@ -178,7 +178,7 @@ export default function MetricGrid() {
               onClick={() => setInteractive(!interactive)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md border transition-all ${
                 interactive
-                  ? "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400"
+                  ? "bg-primary/10 border-primary/30 text-primary"
                   : "bg-white border-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               }`}
             >
@@ -233,7 +233,7 @@ export default function MetricGrid() {
                 </div>
               </CardContent>
               <CardFooter className="border-t border-zinc-100 dark:border-zinc-800/50 pt-6">
-                <button className="w-full py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
+                <button className="w-full py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
                   Mark all as read
                 </button>
               </CardFooter>

@@ -22,6 +22,7 @@ export type OtpVariant = "default" | "filled" | "underlined";
 export type OtpColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { focusRing: "focus:ring-primary focus:border-primary", text: "text-primary", border: "border-primary" },
   indigo: { focusRing: "focus:ring-indigo-500 focus:border-indigo-500", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-500" },
   rose: { focusRing: "focus:ring-rose-500 focus:border-rose-500", text: "text-rose-600 dark:text-rose-400", border: "border-rose-500" },
   emerald: { focusRing: "focus:ring-emerald-500 focus:border-emerald-500", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500" },
@@ -43,7 +44,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--otp-color": color, "--otp-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface OtpInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> { length?: number; value?: string; onChange?: (value: string) => void; onComplete?: (value: string) => void; mask?: boolean; variant?: OtpVariant; color?: OtpColor; disabled?: boolean; }
@@ -221,39 +222,10 @@ export function OtpInputShowcase() {
   const [currentValue, setCurrentValue] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<OtpColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
-
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<OtpColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const handleComplete = (val: string) => {
@@ -265,7 +237,8 @@ export function OtpInputShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        length={${length}}\n        variant="${variant}"\n        color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    let propsStr = `\n        length={${length}}\n        variant="${variant}"${colorPropStr}`;
     if (isMasked) propsStr += `\n        mask`;
     if (isDisabled) propsStr += `\n        disabled`;
     propsStr += `\n        onChange={(val) => console.log(val)}\n        onComplete={(val) => alert(\`Verification code: \${val}\`)}`;

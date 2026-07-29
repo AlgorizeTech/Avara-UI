@@ -107,7 +107,7 @@ export function ThemePreview() {
               <ChartBlock
                 data={chartData}
                 type="bar"
-                color={primaryHex}
+                color="var(--primary)"
                 height={280}
                 valuePrefix="$"
               />

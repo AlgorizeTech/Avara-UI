@@ -26,11 +26,12 @@ export type TypographyColor = "indigo" | "rose" | "emerald" | "zinc" | "default"
 export type TypographyAlign = "left" | "center" | "right" | "justify";
 
 const colorThemes: Record<string, string> = {
+  primary: "text-primary",
   indigo: "text-indigo-600 dark:text-indigo-400",
   rose: "text-rose-600 dark:text-rose-400",
   emerald: "text-emerald-600 dark:text-emerald-400",
   zinc: "text-zinc-900 dark:text-zinc-100",
-  default: "text-inherit",
+  default: "text-primary",
 };
 
 const hexToRgb = (hex: string) => {
@@ -45,7 +46,7 @@ export const getThemeStyles = (color: string) => {
     const rgb = hexToRgb(color);
     return { className: "text-[var(--typo-color)]", style: { "--typo-color": color, "--typo-rgb": rgb } as React.CSSProperties };
   }
-  return { className: colorThemes[color] || colorThemes.default, style: {} };
+  return { className: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 const alignStyles: Record<TypographyAlign, string> = { left: "text-left", center: "text-center", right: "text-right", justify: "text-justify" };
@@ -177,34 +178,10 @@ export function AnimatedTypographyShowcase() {
   );
   const [animationKey, setAnimationKey] = useState(0);
 
-  const [color, setColor] = useState<TypographyColor | string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("primaryColor") || "default";
-    return "default";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<TypographyColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const triggerAnimation = () => {
@@ -213,7 +190,7 @@ export function AnimatedTypographyShowcase() {
 
   const generateUsageCode = (isTs: boolean) => {
     let propsStr = `\n      as="${tag}"\n      variant="${variant}"\n      align="${align}"\n      text="${customText}"`;
-    if (color !== "default") propsStr += `\n      color="${color}"`;
+    if (color && color !== "primary" && color !== "default") propsStr += `\n      color="${color}"`;
     if (customSize) propsStr += `\n      size="${customSize}"`;
 
     return `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";

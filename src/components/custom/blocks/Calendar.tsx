@@ -82,6 +82,13 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    primaryBg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    primaryText: "text-primary",
+    lightBg: "bg-primary/10 text-primary",
+    focusRing: "focus:ring-primary",
+    pulse: "bg-primary",
+  },
   indigo: {
     primaryBg:
       "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20",
@@ -322,7 +329,7 @@ const formatDateForInput = (dateKey: string) => {
 function CalendarDashboard({
   mockEvents = {},
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   mockEvents?: Record<string, string[]>;
   variant?: CalendarVariant;
@@ -350,7 +357,7 @@ function CalendarDashboard({
         focusRing: "focus:ring-2 focus:ring-[var(--cal-custom-20)]",
         pulse: "bg-[var(--cal-custom)]",
       }
-    : colorThemes[color] || colorThemes["indigo"];
+    : colorThemes[color] || colorThemes["primary"];
 
   // Convert dict prop to rich array state
   const [events, setEvents] = useState<any[]>([]);

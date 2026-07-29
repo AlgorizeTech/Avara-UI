@@ -15,6 +15,11 @@ export type ScrollAreaColor =
   | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    thumb: "var(--primary)",
+    thumbHover: "var(--primary)",
+    track: "rgba(var(--primary), 0.1)",
+  },
   indigo: {
     thumb: "#4f46e5",
     thumbHover: "#4338ca",
@@ -61,7 +66,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  const theme = colorThemes[color] || colorThemes.zinc;
+  const theme = colorThemes[color] || colorThemes.primary;
   return {
     style: {
       "--scroll-thumb": theme.thumb,
@@ -87,7 +92,7 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
   (
     {
       children,
-      color = "zinc",
+      color = "primary",
       variant = "default",
       orientation = "vertical",
       hideTrack = false,

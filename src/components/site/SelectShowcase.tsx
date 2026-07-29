@@ -395,9 +395,9 @@ export function SelectShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<SelectColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "indigo";
+    return "primary";
   });
 
   // Automatically listen for updates to the primaryColor in localStorage
@@ -456,7 +456,7 @@ export function SelectShowcase() {
   ];
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        options={options}\n        value={value}\n        onChange={setValue}\n        variant="${variant}"\n        color="${color}"\n        inputSize="${inputSize}"\n        label="Technologies"\n        placeholder="Select options..."`;
+    let propsStr = `\n        options={options}\n        value={value}\n        onChange={setValue}\n        variant="${variant}"\n        inputSize="${inputSize}"\n        label="Technologies"\n        placeholder="Select options..."`;
 
     if (showError)
       propsStr += `\n        error="Please select a valid option."`;

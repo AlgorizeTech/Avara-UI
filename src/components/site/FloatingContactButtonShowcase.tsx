@@ -804,34 +804,10 @@ export function FloatingContactButtonShowcase() {
   const [defaultOpen, setDefaultOpen] = useState(true);
   const [renderKey, setRenderKey] = useState(0);
 
-  const [color, setColor] = useState<string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("primaryColor") || "#6366f1";
-    return "#6366f1";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const triggerReset = () => {
@@ -839,6 +815,7 @@ export function FloatingContactButtonShowcase() {
   };
 
   const generateUsageCode = () => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n          defaultAccentColor="${color}"` : "";
     return `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
@@ -851,9 +828,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FloatingContactButtonBlock
           position="${position}"
           containerMode="fixed"
-          title="${title}"
-          defaultAccentColor="${color}"
-          localStorageKey="primaryColor"
+          title="${title}"${colorPropStr}
         />
       </body>
     </html>
