@@ -28,7 +28,7 @@ export interface TiltedCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
-  ({ children, className, tiltIntensity = 15, glareOpacity = 0.15, scaleOnHover = 1.02, ...props }, ref) => {
+  ({ children, className, tiltIntensity = 15, glareOpacity = 0.2, scaleOnHover = 1.02, ...props }, ref) => {
     const cardRef = useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
@@ -44,7 +44,9 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
 
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
+    
+    const glareBackgroundLight = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(0,0,0,\${glareOpacity}), transparent 60%)\`;
+    const glareBackgroundDark = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
@@ -69,14 +71,18 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
+          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
-          <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ background: glareBackground }}
-          />
           <div className="relative w-full h-full z-10" style={{ transform: "translateZ(30px)" }}>
             {children}
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl dark:hidden"
+              style={{ background: glareBackgroundLight }}
+            />
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl hidden dark:block"
+              style={{ background: glareBackgroundDark }}
+            />
           </div>
         </motion.div>
       </div>
@@ -99,7 +105,7 @@ import {
 import React, { useRef } from "react";
 
 export const TiltedCard = React.forwardRef(
-  ({ children, className, tiltIntensity = 15, glareOpacity = 0.15, scaleOnHover = 1.02, ...props }, ref) => {
+  ({ children, className, tiltIntensity = 15, glareOpacity = 0.2, scaleOnHover = 1.02, ...props }, ref) => {
     const cardRef = useRef(null);
     React.useImperativeHandle(ref, () => cardRef.current);
 
@@ -115,7 +121,9 @@ export const TiltedCard = React.forwardRef(
 
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
+    
+    const glareBackgroundLight = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(0,0,0,\${glareOpacity}), transparent 60%)\`;
+    const glareBackgroundDark = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
 
     const handleMouseMove = (e) => {
       if (!cardRef.current) return;
@@ -140,14 +148,18 @@ export const TiltedCard = React.forwardRef(
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
+          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
-          <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ background: glareBackground }}
-          />
           <div className="relative w-full h-full z-10" style={{ transform: "translateZ(30px)" }}>
             {children}
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl dark:hidden"
+              style={{ background: glareBackgroundLight }}
+            />
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl hidden dark:block"
+              style={{ background: glareBackgroundDark }}
+            />
           </div>
         </motion.div>
       </div>
@@ -158,7 +170,7 @@ TiltedCard.displayName = "TiltedCard";`;
 
 export function TiltedCardShowcase() {
   const [tiltIntensity, setTiltIntensity] = useState(20);
-  const [glareOpacity, setGlareOpacity] = useState(0.25);
+  const [glareOpacity, setGlareOpacity] = useState(0.2);
   const [scaleOnHover, setScaleOnHover] = useState(1.04);
 
   const [color, setColor] = useState<string>("#FFAB1D");
@@ -282,22 +294,18 @@ export default function FeaturedProduct() {
         jsUsageCode={generateUsageCode()}
       >
         <div className="w-full flex items-center justify-center bg-zinc-100/70 dark:bg-[#050505] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]">
-          {/* Decorative Mesh Background */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.06)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-          {/* Wrapper dictates the card's physical size */}
           <div className="w-full max-w-[340px] aspect-[3/4] relative z-10">
             <TiltedCard
               tiltIntensity={tiltIntensity}
               glareOpacity={glareOpacity}
               scaleOnHover={scaleOnHover}
             >
-              {/* Card Surface Design: Subtle gradient + inner border highlight + delicate texture */}
-              <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/95 to-zinc-100/90 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-                {/* Subtle Inner Surface Texture (Dot matrix inside the card) */}
+              {/* Back to the cleaner white surface for light mode! */}
+              <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/80 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:12px_12px] pointer-events-none" />
 
-                {/* Ambient Corner Glows (Balanced so they add sheen without looking like muddy smudges) */}
                 <div
                   className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"
                   style={{ backgroundColor: color }}

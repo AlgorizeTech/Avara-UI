@@ -23,7 +23,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       children,
       className,
       tiltIntensity = 15,
-      glareOpacity = 0.15, // Slightly lower default so light mode doesn't wash out
+      glareOpacity = 0.2, // Back to a balanced default
       scaleOnHover = 1.02,
       ...props
     },
@@ -53,7 +53,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
 
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`;
+
+    // THE FIX: Two separate glares - Black for light mode, White for dark mode
+    const glareBackgroundLight = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(0,0,0,${glareOpacity}), transparent 60%)`;
+    const glareBackgroundDark = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
@@ -85,20 +88,25 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
+          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
-          {/* Glare Layer */}
-          <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ background: glareBackground }}
-          />
-
-          {/* Content Wrapper */}
           <div
             className="relative w-full h-full z-10"
             style={{ transform: "translateZ(30px)" }}
           >
             {children}
+
+            {/* Light Mode Glare (Dark) */}
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl dark:hidden"
+              style={{ background: glareBackgroundLight }}
+            />
+
+            {/* Dark Mode Glare (White) */}
+            <motion.div
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl hidden dark:block"
+              style={{ background: glareBackgroundDark }}
+            />
           </div>
         </motion.div>
       </div>

@@ -83,10 +83,10 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    primaryBg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    primaryBg: "bg-primary hover:brightness-110 text-primary-foreground shadow-sm",
     primaryText: "text-primary",
     lightBg: "bg-primary/10 text-primary",
-    focusRing: "focus:ring-primary",
+    focusRing: "focus:ring-ring",
     pulse: "bg-primary",
   },
   indigo: {
@@ -155,7 +155,7 @@ function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString("en-US", { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -299,7 +299,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: any) {
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString()}
+      data-day={day.date.toLocaleDateString("en-US")}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&
@@ -326,8 +326,10 @@ const formatDateForInput = (dateKey: string) => {
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 };
 
+const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {};
+
 function CalendarDashboard({
-  mockEvents = {},
+  mockEvents = DEFAULT_MOCK_EVENTS,
   variant = "default",
   color = "primary",
 }: {
@@ -400,7 +402,7 @@ function CalendarDashboard({
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const date = currentDate.getDate();
-  const monthName = currentDate.toLocaleString("default", { month: "long" });
+  const monthName = currentDate.toLocaleString("en-US", { month: "long" });
 
   const nextPeriod = () => {
     if (view === "month") setCurrentDate(new Date(year, month + 1, 1));

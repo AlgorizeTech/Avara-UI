@@ -127,8 +127,8 @@ function CarouselCard({
           "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
           "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
           isCenter
-            ? "shadow-zinc-400/50 dark:shadow-black/80 ring-1 ring-black/5 dark:ring-white/20"
-            : "hover:border-zinc-400 dark:hover:border-white/30 shadow-md",
+            ? "shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
+            : "hover:border-primary/50 shadow-md",
         )}
       >
         {/* Image Background */}
@@ -144,7 +144,7 @@ function CarouselCard({
 
           {/* Content Payload */}
           <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end pointer-events-none text-white">
-            <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md w-fit mb-2 text-white/90">
+            <span className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md w-fit mb-2 text-primary-foreground shadow-sm">
               {item.category}
             </span>
             <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">
@@ -250,7 +250,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={handlePrev}
             aria-label="Previous Slide"
-            className="p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -259,7 +259,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             aria-label={isPlaying ? "Pause Auto-play" : "Start Auto-play"}
-            className="p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             {isPlaying ? (
               <Pause className="w-5 h-5" />
@@ -271,7 +271,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={handleNext}
             aria-label="Next Slide"
-            className="p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -287,8 +287,8 @@ export const ThreeDCarousel = React.forwardRef<
               className={cn(
                 "h-1.5 rounded-full transition-all duration-300",
                 idx === activeIndex
-                  ? "w-8 bg-zinc-900 dark:bg-white"
-                  : "w-1.5 bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600",
+                  ? "w-8 bg-primary"
+                  : "w-1.5 bg-zinc-300 dark:bg-zinc-700 hover:bg-primary/50",
               )}
             />
           ))}
