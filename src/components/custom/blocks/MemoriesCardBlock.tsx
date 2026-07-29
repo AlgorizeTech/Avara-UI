@@ -150,8 +150,8 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                     "absolute inset-0 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
                     "bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-white/10",
                     isFront
-                      ? "cursor-grab active:cursor-grabbing shadow-zinc-400/60 dark:shadow-black/90 ring-1 ring-black/5 dark:ring-white/20"
-                      : "pointer-events-none shadow-md shadow-zinc-300/40 dark:shadow-black/50",
+                      ? "cursor-grab active:cursor-grabbing shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
+                      : "pointer-events-none hover:border-primary/50 shadow-md shadow-zinc-300/40 dark:shadow-black/50",
                   )}
                 >
                   {/* Card Background Image */}
@@ -168,8 +168,8 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                     {/* Top Bar Badges */}
                     <div className="absolute top-5 inset-x-5 flex items-center justify-between pointer-events-none text-white">
                       {item.tag ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md text-white/95 border border-white/20">
-                          <Sparkles className="w-3 h-3 text-amber-300" />
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-primary-foreground shadow-sm">
+                          <Sparkles className="w-3 h-3" />
                           {item.tag}
                         </span>
                       ) : (
@@ -187,13 +187,13 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                       <div className="flex items-center gap-4 text-xs font-medium text-zinc-300 dark:text-zinc-400 mb-2">
                         {item.date && (
                           <span className="inline-flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-zinc-400" />
+                            <Calendar className="w-3.5 h-3.5 text-primary" />
                             {item.date}
                           </span>
                         )}
                         {item.location && (
                           <span className="inline-flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-rose-400" />
+                            <MapPin className="w-3.5 h-3.5 text-primary" />
                             {item.location}
                           </span>
                         )}
@@ -225,7 +225,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           <button
             onClick={handleReset}
             title="Reset stack order"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-zinc-100 dark:hover:bg-zinc-700 active:scale-95 transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground bg-background border border-border px-3 py-1.5 rounded-full shadow-sm hover:bg-primary hover:text-primary-foreground hover:border-primary active:scale-95 transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset
