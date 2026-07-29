@@ -12,8 +12,8 @@ import {
   NavVariant,
 } from "@/components/custom/blocks/NavigationMenu";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { cn } from "@/lib/utils";
 import { Code, Layers, Palette, Shield, Smartphone, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 // --- TYPESCRIPT ENGINE CODE ---
 const NAV_ENGINE_CODE_TS = `"use client";
 
-import React, { createContext, useContext, useState, useRef, useEffect, forwardRef } from "react";
+import React, { createContext, useContext, useState, useRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -83,8 +83,8 @@ export const NavigationMenuList = forwardRef<HTMLUListElement, React.HTMLAttribu
   const { listRef, variant } = useNavContext();
   const vStyles = { default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm", glass: "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg", minimal: "bg-transparent border-none" };
   return (
-    <div className={cn("relative flex justify-center w-max rounded-full p-1.5", vStyles[variant])}>
-      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-1 list-none items-center justify-center gap-1", className)} {...props}>
+    <div className={cn("relative flex justify-center max-w-full w-max rounded-full p-1 sm:p-1.5", vStyles[variant])}>
+      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-wrap sm:flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1", className)} {...props}>
         {children}
       </ul>
     </div>
@@ -93,7 +93,7 @@ export const NavigationMenuList = forwardRef<HTMLUListElement, React.HTMLAttribu
 NavigationMenuList.displayName = "NavigationMenuList";
 
 export const NavigationMenuItem = forwardRef<HTMLLIElement, React.HTMLAttributes<HTMLLIElement> & { value: string }>(({ children, className, value, ...props }, ref) => (
-  <NavItemContext.Provider value={{ value }}><li ref={ref} className={cn("relative", className)} {...props}>{children}</li></NavItemContext.Provider>
+  <NavItemContext.Provider value={{ value }}><li ref={ref} className={cn("list-none", className)} {...props}>{children}</li></NavItemContext.Provider>
 ));
 NavigationMenuItem.displayName = "NavigationMenuItem";
 
@@ -103,8 +103,7 @@ export const NavigationMenuTrigger = forwardRef<HTMLButtonElement, React.ButtonH
   const triggerRef = useRef<HTMLButtonElement>(null);
   const isActive = activeValue === value;
 
-  const handleHover = () => {
-    setActiveValue(value); setHoveredValue(value);
+  const updateIndicator = () => {
     if (triggerRef.current && listRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const listRect = listRef.current.getBoundingClientRect();
@@ -112,9 +111,26 @@ export const NavigationMenuTrigger = forwardRef<HTMLButtonElement, React.ButtonH
     }
   };
 
+  const handlePointerEnter = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType === "mouse") {
+      setActiveValue(value); setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
+  const handleClick = () => {
+    if (isActive) {
+      setActiveValue(null); setHoveredValue(null);
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+    } else {
+      setActiveValue(value); setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
   return (
-    <button ref={(n) => { if (typeof ref === "function") ref(n); else if (ref) ref.current = n; triggerRef.current = n; }} onMouseEnter={handleHover} onFocus={handleHover} className={cn("relative z-10 flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors outline-none", isActive ? "text-zinc-900 dark:text-zinc-50" : "text-zinc-600 dark:text-zinc-400", className)} {...props}>
-      {children}<ChevronDown className={cn("relative top-[1px] w-3.5 h-3.5 transition-transform duration-300", isActive && "rotate-180")} />
+    <button ref={(n) => { if (typeof ref === "function") ref(n); else if (ref) ref.current = n; triggerRef.current = n; }} onPointerEnter={handlePointerEnter} onFocus={() => { setActiveValue(value); setHoveredValue(value); updateIndicator(); }} onClick={handleClick} className={cn("relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap", isActive ? "text-zinc-900 dark:text-zinc-50" : "text-zinc-600 dark:text-zinc-400", className)} {...props}>
+      {children}<ChevronDown className={cn("relative top-[1px] w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 shrink-0", isActive && "rotate-180")} />
     </button>
   );
 });
@@ -127,8 +143,10 @@ export const NavigationMenuContent = forwardRef<HTMLDivElement, React.HTMLAttrib
   const vStyles = { default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl", glass: "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl", minimal: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg" };
 
   return (
-    <div ref={ref} className={cn("absolute left-1/2 top-full mt-4 -translate-x-1/2 w-max origin-top rounded-2xl overflow-hidden transition-all duration-300 ease-out", isActive ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-4 pointer-events-none", vStyles[variant], className)} {...props}>
-      <div className="p-4 md:p-6 w-full h-full">{children}</div>
+    <div ref={ref} className={cn("absolute left-1/2 top-full -translate-x-1/2 pt-2 sm:pt-3 w-max max-w-[calc(100vw-1.5rem)] origin-top transition-all duration-300 ease-out z-[100]", isActive ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none", className)} {...props}>
+      <div className={cn("w-full h-full rounded-2xl overflow-hidden transition-colors", vStyles[variant])}>
+        <div className="p-3 sm:p-4 md:p-6 w-full h-full max-h-[75vh] overflow-y-auto">{children}</div>
+      </div>
     </div>
   );
 });
@@ -137,7 +155,7 @@ NavigationMenuContent.displayName = "NavigationMenuContent";
 export const NavigationMenuLink = forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { active?: boolean }>(({ children, className, active, ...props }, ref) => {
   const { theme } = useNavContext();
   return (
-    <a ref={ref} className={cn("block select-none space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50", active && theme.bgSoft, className)} {...props}>
+    <a ref={ref} className={cn("block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer", active && theme.bgSoft, className)} {...props}>
       {children}
     </a>
   );
@@ -146,14 +164,14 @@ NavigationMenuLink.displayName = "NavigationMenuLink";
 
 export const NavigationMenuIndicator = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
   const { indicatorStyle, theme } = useNavContext();
-  return <div ref={ref} className={cn("absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full", theme.bgSoft, className)} style={indicatorStyle} {...props} />;
+  return <div ref={ref} className={cn("absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full pointer-events-none", theme.bgSoft, className)} style={indicatorStyle} {...props} />;
 });
 NavigationMenuIndicator.displayName = "NavigationMenuIndicator";`;
 
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const NAV_ENGINE_CODE_JS = `"use client";
 
-import React, { createContext, useContext, useState, useRef, useEffect, forwardRef } from "react";
+import React, { createContext, useContext, useState, useRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -209,8 +227,8 @@ export const NavigationMenuList = forwardRef(({ children, className, ...props },
   const { listRef, variant } = useNavContext();
   const vStyles = { default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm", glass: "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg", minimal: "bg-transparent border-none" };
   return (
-    <div className={cn("relative flex justify-center w-max rounded-full p-1.5", vStyles[variant])}>
-      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-1 list-none items-center justify-center gap-1", className)} {...props}>
+    <div className={cn("relative flex justify-center max-w-full w-max rounded-full p-1 sm:p-1.5", vStyles[variant])}>
+      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-wrap sm:flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1", className)} {...props}>
         {children}
       </ul>
     </div>
@@ -219,7 +237,7 @@ export const NavigationMenuList = forwardRef(({ children, className, ...props },
 NavigationMenuList.displayName = "NavigationMenuList";
 
 export const NavigationMenuItem = forwardRef(({ children, className, value, ...props }, ref) => (
-  <NavItemContext.Provider value={{ value }}><li ref={ref} className={cn("relative", className)} {...props}>{children}</li></NavItemContext.Provider>
+  <NavItemContext.Provider value={{ value }}><li ref={ref} className={cn("list-none", className)} {...props}>{children}</li></NavItemContext.Provider>
 ));
 NavigationMenuItem.displayName = "NavigationMenuItem";
 
@@ -229,8 +247,7 @@ export const NavigationMenuTrigger = forwardRef(({ children, className, ...props
   const triggerRef = useRef(null);
   const isActive = activeValue === value;
 
-  const handleHover = () => {
-    setActiveValue(value); setHoveredValue(value);
+  const updateIndicator = () => {
     if (triggerRef.current && listRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const listRect = listRef.current.getBoundingClientRect();
@@ -238,9 +255,26 @@ export const NavigationMenuTrigger = forwardRef(({ children, className, ...props
     }
   };
 
+  const handlePointerEnter = (e) => {
+    if (e.pointerType === "mouse") {
+      setActiveValue(value); setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
+  const handleClick = () => {
+    if (isActive) {
+      setActiveValue(null); setHoveredValue(null);
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+    } else {
+      setActiveValue(value); setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
   return (
-    <button ref={(n) => { if (typeof ref === "function") ref(n); else if (ref) ref.current = n; triggerRef.current = n; }} onMouseEnter={handleHover} onFocus={handleHover} className={cn("relative z-10 flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors outline-none", isActive ? "text-zinc-900 dark:text-zinc-50" : "text-zinc-600 dark:text-zinc-400", className)} {...props}>
-      {children}<ChevronDown className={cn("relative top-[1px] w-3.5 h-3.5 transition-transform duration-300", isActive && "rotate-180")} />
+    <button ref={(n) => { if (typeof ref === "function") ref(n); else if (ref) ref.current = n; triggerRef.current = n; }} onPointerEnter={handlePointerEnter} onFocus={() => { setActiveValue(value); setHoveredValue(value); updateIndicator(); }} onClick={handleClick} className={cn("relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap", isActive ? "text-zinc-900 dark:text-zinc-50" : "text-zinc-600 dark:text-zinc-400", className)} {...props}>
+      {children}<ChevronDown className={cn("relative top-[1px] w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 shrink-0", isActive && "rotate-180")} />
     </button>
   );
 });
@@ -253,8 +287,10 @@ export const NavigationMenuContent = forwardRef(({ children, className, ...props
   const vStyles = { default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl", glass: "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl", minimal: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg" };
 
   return (
-    <div ref={ref} className={cn("absolute left-1/2 top-full mt-4 -translate-x-1/2 w-max origin-top rounded-2xl overflow-hidden transition-all duration-300 ease-out", isActive ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-4 pointer-events-none", vStyles[variant], className)} {...props}>
-      <div className="p-4 md:p-6 w-full h-full">{children}</div>
+    <div ref={ref} className={cn("absolute left-1/2 top-full -translate-x-1/2 pt-2 sm:pt-3 w-max max-w-[calc(100vw-1.5rem)] origin-top transition-all duration-300 ease-out z-[100]", isActive ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none", className)} {...props}>
+      <div className={cn("w-full h-full rounded-2xl overflow-hidden transition-colors", vStyles[variant])}>
+        <div className="p-3 sm:p-4 md:p-6 w-full h-full max-h-[75vh] overflow-y-auto">{children}</div>
+      </div>
     </div>
   );
 });
@@ -263,7 +299,7 @@ NavigationMenuContent.displayName = "NavigationMenuContent";
 export const NavigationMenuLink = forwardRef(({ children, className, active, ...props }, ref) => {
   const { theme } = useNavContext();
   return (
-    <a ref={ref} className={cn("block select-none space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50", active && theme.bgSoft, className)} {...props}>
+    <a ref={ref} className={cn("block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer", active && theme.bgSoft, className)} {...props}>
       {children}
     </a>
   );
@@ -272,7 +308,7 @@ NavigationMenuLink.displayName = "NavigationMenuLink";
 
 export const NavigationMenuIndicator = forwardRef(({ className, ...props }, ref) => {
   const { indicatorStyle, theme } = useNavContext();
-  return <div ref={ref} className={cn("absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full", theme.bgSoft, className)} style={indicatorStyle} {...props} />;
+  return <div ref={ref} className={cn("absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full pointer-events-none", theme.bgSoft, className)} style={indicatorStyle} {...props} />;
 });
 NavigationMenuIndicator.displayName = "NavigationMenuIndicator";`;
 
@@ -317,8 +353,6 @@ export function NavigationMenuShowcase() {
 
   const generateUsageCode = (isTs: boolean) => {
     return `import { 
-import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
   NavigationMenu, 
   NavigationMenuList, 
   NavigationMenuItem, 
@@ -356,8 +390,12 @@ export default function App() {
   return (
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
-      <ShowcaseControlPanel className="flex flex-col gap-2 p-5 rounded-xl">
-        <ThemeColorPicker color={color} onChange={handleColorChange} label="Style Variant" />
+      <ShowcaseControlPanel className="flex flex-col gap-2 p-4 sm:p-5 rounded-xl">
+        <ThemeColorPicker
+          color={color}
+          onChange={handleColorChange}
+          label="Style Variant"
+        />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
@@ -369,7 +407,11 @@ export default function App() {
         jsUsageCode={generateUsageCode(false)}
       >
         <div
-          className={`relative overflow-hidden w-full flex items-start justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center" : "bg-zinc-50 dark:bg-[#050505]"} p-6 sm:p-12`}
+          className={`relative overflow-visible w-full flex items-start justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${
+            variant === "glass"
+              ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"
+              : "bg-zinc-50 dark:bg-[#050505]"
+          } p-3 sm:p-6 md:p-12`}
         >
           <NavigationMenu
             key={`${variant}-${color}`}
@@ -380,17 +422,18 @@ export default function App() {
               <NavigationMenuItem value="features">
                 <NavigationMenuTrigger>Features</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-3 p-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                  {/* ── MOBILE-FLUID GRID WIDTH: w-[calc(100vw-2.5rem)] sm:w-[380px] md:w-[440px] lg:w-[500px] ── */}
+                  <ul className="grid gap-2 sm:gap-3 p-1 sm:p-2 w-[calc(100vw-2.5rem)] sm:w-[380px] md:w-[440px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
                       <NavigationMenuLink
                         href="#"
-                        className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-zinc-100/50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900 p-6 no-underline outline-none focus:shadow-md"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-zinc-100/50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900 p-4 sm:p-6 no-underline outline-none focus:shadow-md"
                       >
-                        <Zap className="h-6 w-6 text-zinc-900 dark:text-zinc-100 mb-4" />
-                        <div className="mb-2 mt-4 text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                        <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-zinc-100 mb-3 sm:mb-4" />
+                        <div className="mb-1.5 sm:mb-2 mt-2 sm:mt-4 text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                           Lightning Fast
                         </div>
-                        <p className="text-sm leading-tight text-zinc-500 dark:text-zinc-400">
+                        <p className="text-xs sm:text-sm leading-tight text-zinc-500 dark:text-zinc-400">
                           Experience uncompromised performance with our
                           edge-first architecture.
                         </p>
@@ -414,7 +457,8 @@ export default function App() {
               <NavigationMenuItem value="resources">
                 <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[300px] gap-3 p-2 md:w-[400px] md:grid-cols-2 lg:w-[500px]">
+                  {/* ── MOBILE-FLUID GRID WIDTH: w-[calc(100vw-2.5rem)] sm:w-[360px] md:w-[420px] ── */}
+                  <ul className="grid w-[calc(100vw-2.5rem)] sm:w-[360px] md:w-[420px] gap-2 sm:gap-3 p-1 sm:p-2 md:grid-cols-2">
                     <ListItem href="#" title="Documentation" icon={Layers}>
                       Everything you need to get up and running quickly.
                     </ListItem>
@@ -426,12 +470,10 @@ export default function App() {
               </NavigationMenuItem>
 
               <NavigationMenuItem value="pricing">
-                {/* To create a standard link that matches the styling, 
-                  we wrap it in a trigger-like class but without the dropdown chevron 
-                */}
+                {/* Standard link wrapped in trigger-like styles without the chevron */}
                 <a
                   href="#"
-                  className="relative z-10 flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors outline-none"
+                  className="relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors outline-none whitespace-nowrap"
                 >
                   Pricing
                 </a>
@@ -452,16 +494,16 @@ function ListItem({ className, title, children, icon: Icon, ...props }: any) {
     <li>
       <NavigationMenuLink
         className={cn(
-          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 focus:bg-zinc-100 focus:text-zinc-900",
+          "block select-none space-y-1 rounded-md p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 focus:bg-zinc-100 focus:text-zinc-900",
           className,
         )}
         {...props}
       >
-        <div className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-          {Icon && <Icon className="w-4 h-4 text-zinc-500" />}
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
+          {Icon && <Icon className="w-4 h-4 text-zinc-500 shrink-0" />}
           {title}
         </div>
-        <p className="line-clamp-2 text-sm leading-snug text-zinc-500 dark:text-zinc-400 mt-1.5">
+        <p className="line-clamp-2 text-xs sm:text-sm leading-snug text-zinc-500 dark:text-zinc-400 mt-1 sm:mt-1.5">
           {children}
         </p>
       </NavigationMenuLink>

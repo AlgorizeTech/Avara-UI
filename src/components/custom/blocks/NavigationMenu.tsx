@@ -186,7 +186,7 @@ export const NavigationMenuList = forwardRef<
   return (
     <div
       className={cn(
-        "relative flex justify-center w-max rounded-full p-1.5",
+        "relative flex justify-center max-w-full w-max rounded-full p-1 sm:p-1.5",
         variantStyles[variant],
       )}
     >
@@ -197,7 +197,7 @@ export const NavigationMenuList = forwardRef<
           listRef.current = node;
         }}
         className={cn(
-          "group flex flex-1 list-none items-center justify-center gap-1",
+          "group flex flex-wrap sm:flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1",
           className,
         )}
         {...props}
@@ -215,7 +215,8 @@ export const NavigationMenuItem = forwardRef<
 >(({ children, className, value, ...props }, ref) => {
   return (
     <NavItemContext.Provider value={{ value }}>
-      <li ref={ref} className={cn("relative", className)} {...props}>
+      {/* ── THE FIX: Removed 'relative' from li so dropdowns center to the entire <nav>! ── */}
+      <li ref={ref} className={cn("list-none", className)} {...props}>
         {children}
       </li>
     </NavItemContext.Provider>
@@ -238,9 +239,7 @@ export const NavigationMenuTrigger = forwardRef<
   const triggerRef = useRef<HTMLButtonElement>(null);
   const isActive = activeValue === value;
 
-  const handleHover = () => {
-    setActiveValue(value);
-    setHoveredValue(value);
+  const updateIndicator = () => {
     if (triggerRef.current && listRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const listRect = listRef.current.getBoundingClientRect();
@@ -252,6 +251,28 @@ export const NavigationMenuTrigger = forwardRef<
     }
   };
 
+  // ── TOUCH-SAFE HOVER (Only triggers for real mouse cursors) ──────────
+  const handlePointerEnter = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType === "mouse") {
+      setActiveValue(value);
+      setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
+  // ── TOUCH/CLICK TOGGLE SUPPORT ───────────────────────────────────────
+  const handleClick = () => {
+    if (isActive) {
+      setActiveValue(null);
+      setHoveredValue(null);
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+    } else {
+      setActiveValue(value);
+      setHoveredValue(value);
+      updateIndicator();
+    }
+  };
+
   return (
     <button
       ref={(node) => {
@@ -259,10 +280,15 @@ export const NavigationMenuTrigger = forwardRef<
         else if (ref) ref.current = node;
         triggerRef.current = node;
       }}
-      onMouseEnter={handleHover}
-      onFocus={handleHover}
+      onPointerEnter={handlePointerEnter}
+      onFocus={() => {
+        setActiveValue(value);
+        setHoveredValue(value);
+        updateIndicator();
+      }}
+      onClick={handleClick}
       className={cn(
-        "relative z-10 flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors outline-none",
+        "relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap",
         isActive
           ? "text-zinc-900 dark:text-zinc-50"
           : "text-zinc-600 dark:text-zinc-400",
@@ -273,7 +299,7 @@ export const NavigationMenuTrigger = forwardRef<
       {children}
       <ChevronDown
         className={cn(
-          "relative top-[1px] w-3.5 h-3.5 transition-transform duration-300",
+          "relative top-[1px] w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 shrink-0",
           isActive && "rotate-180",
         )}
         aria-hidden="true"
@@ -304,16 +330,25 @@ export const NavigationMenuContent = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute left-1/2 top-full mt-4 -translate-x-1/2 w-max origin-top rounded-2xl overflow-hidden transition-all duration-300 ease-out",
+        // ── THE FIX: Starts immediately at top-full with pt-2/pt-3 padding so there is ZERO hover gap! ──
+        "absolute left-1/2 top-full -translate-x-1/2 pt-2 sm:pt-3 w-max max-w-[calc(100vw-1.5rem)] origin-top transition-all duration-300 ease-out z-[100]",
         isActive
           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 scale-95 -translate-y-4 pointer-events-none",
-        variantStyles[variant],
+          : "opacity-0 scale-95 -translate-y-2 pointer-events-none",
         className,
       )}
       {...props}
     >
-      <div className="p-4 md:p-6 w-full h-full">{children}</div>
+      <div
+        className={cn(
+          "w-full h-full rounded-2xl overflow-hidden transition-colors",
+          variantStyles[variant],
+        )}
+      >
+        <div className="p-3 sm:p-4 md:p-6 w-full h-full max-h-[75vh] overflow-y-auto">
+          {children}
+        </div>
+      </div>
     </div>
   );
 });
@@ -328,7 +363,7 @@ export const NavigationMenuLink = forwardRef<
     <a
       ref={ref}
       className={cn(
-        "block select-none space-y-1 rounded-xl p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer",
         active && theme.bgSoft,
         className,
       )}
@@ -350,7 +385,7 @@ export const NavigationMenuIndicator = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full",
+        "absolute top-0 bottom-0 z-0 transition-all duration-300 ease-out rounded-full pointer-events-none",
         theme.bgSoft,
         className,
       )}
