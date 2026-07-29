@@ -26,7 +26,8 @@ const colorMap: Record<string, string> = {
 };
 
 const getThemeColor = (color: string) => {
-  return color.startsWith("#") ? color : colorMap[color] || colorMap.indigo;
+  if (color.startsWith("#") || color.startsWith("var(")) return color;
+  return colorMap[color] || "var(--primary)";
 };
 
 // ==========================================
@@ -55,7 +56,7 @@ export interface ChartBlockProps {
 export function ChartBlock({
   data,
   type = "bar",
-  color = "indigo",
+  color = "var(--primary)",
   height = 300,
   className,
   valuePrefix = "",

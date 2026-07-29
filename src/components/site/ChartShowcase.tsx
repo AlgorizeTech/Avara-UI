@@ -21,12 +21,12 @@ export type ChartColor = "indigo" | "rose" | "emerald" | "zinc" | "amber" | "blu
 export type ChartType = "bar" | "line" | "pie" | "donut";
 
 const colorMap: Record<string, string> = { indigo: "#4f46e5", rose: "#e11d48", emerald: "#10b981", zinc: "#3f3f46", amber: "#f59e0b", blue: "#3b82f6" };
-const getThemeColor = (color: string) => color.startsWith("#") ? color : colorMap[color] || colorMap.indigo;
+const getThemeColor = (color: string) => (color.startsWith("#") || color.startsWith("var(")) ? color : colorMap[color] || "var(--primary)";
 
 export interface ChartDataPoint { label: string; value: number; }
 export interface ChartBlockProps { data: ChartDataPoint[]; type?: ChartType; color?: ChartColor; height?: number; className?: string; valuePrefix?: string; valueSuffix?: string; showGrid?: boolean; showArea?: boolean; }
 
-export function ChartBlock({ data, type = "bar", color = "indigo", height = 300, className, valuePrefix = "", valueSuffix = "", showGrid = true, showArea = true }: ChartBlockProps) {
+export function ChartBlock({ data, type = "bar", color = "var(--primary)", height = 300, className, valuePrefix = "", valueSuffix = "", showGrid = true, showArea = true }: ChartBlockProps) {
   const themeColor = getThemeColor(color);
 
   return (
@@ -373,7 +373,7 @@ export function ChartShowcase() {
     type === "pie" || type === "donut" ? sampleData.slice(0, 5) : sampleData;
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        data={data}\n        type="${type}"\n        color="${color}"`;
+    let propsStr = `\n        data={data}\n        type="${type}"`;
     if (!showGrid) propsStr += `\n        showGrid={false}`;
     if (!showArea && type === "line") propsStr += `\n        showArea={false}`;
     propsStr += `\n        valuePrefix="$"`;
