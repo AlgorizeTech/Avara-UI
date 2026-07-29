@@ -381,44 +381,15 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
 export function InvoiceShowcase() {
   const [variant, setVariant] = useState<InvoiceVariant>("default");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<InvoiceColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<InvoiceColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
 
     return `import Invoice from "@/components/custom/blocks/Invoice";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
@@ -459,8 +430,7 @@ export default function InvoiceDemo()${typeDef} {
     <div className="w-full">
       <Invoice 
         invoiceData={initialData} 
-        variant="${variant}"
-        color="${color}"
+        variant="${variant}"${colorPropStr}
       />
     </div>
   );

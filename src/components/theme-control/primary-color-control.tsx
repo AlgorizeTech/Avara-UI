@@ -1,80 +1,38 @@
 "use client";
 
-import { Edit } from "lucide-react";
-import { useEffect, useState } from "react";
-
-import { useThemeContext } from "@/contexts/theme-context";
+import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
+import { THEME_PRESETS } from "@/lib/theme-presets";
 import { cn } from "@/lib/utils";
 
-const themeColors = ["#6356d1", "#7F22FE", "#0D9394", "#FFAB1D", "#EB3D63"];
-
 export function PrimaryColorControl() {
-  const { primaryColor, setPrimaryColor } = useThemeContext();
-  const [colorInput, setColorInput] = useState(primaryColor);
-
-  useEffect(() => {
-    setColorInput(primaryColor);
-  }, [primaryColor]);
-
-
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (colorInput !== primaryColor) {
-        handleColorChange(colorInput);
-      }
-    }, 500);
-    return () => clearTimeout(handler);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colorInput]);
-
-  function handleColorChange(color: string) {
-    setPrimaryColor(color);
-    const root = window.document.documentElement;
-    root.style.setProperty("--primary", color);
-    localStorage.setItem("primaryColor", color);
-  }
+  const { activePreset, applyPreset, currentMode } = useThemeCustomizer();
 
   return (
     <div className="space-y-3 relative">
-      <p>Primary Color</p>
-      <div className="flex gap-2">
-        {themeColors.map((color) => (
-          <div
-            key={color}
-            className={cn(
-              "grid w-1/6 place-content-center rounded border-2 p-2",
-              primaryColor === color
-                ? "border-primary"
-                : "hover:border-neutral-400 dark:hover:border-neutral-700",
-            )}
-            onClick={() => handleColorChange(color)}
-          >
-            <span
-              className="block size-7 min-w-7 cursor-pointer rounded"
-              style={{ backgroundColor: color }}
-            />
-          </div>
-        ))}
-        <div
-          className={cn(
-            "relative grid place-content-center rounded border-2 p-2",
-            !themeColors.includes(primaryColor)
-              ? "border-primary"
-              : "hover:border-neutral-400 dark:hover:border-neutral-700",
-          )}
-        >
-          <label htmlFor="theme-control-color-input">
-            <Edit className="text-primary size-7 min-w-7 cursor-pointer" />
-          </label>
-          <input
-            type="color"
-            id="theme-control-color-input"
-            className="absolute inset-0 opacity-0 cursor-pointer"
-            onChange={(e) => setColorInput(e.target.value)}
-            value={colorInput}
-          />
-        </div>
+      <p className="text-sm font-medium">Theme Presets</p>
+      <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+        {THEME_PRESETS.map((preset) => {
+          const isActive = activePreset === preset.name;
+          const color = preset.colors[currentMode]["primary"];
+          return (
+            <div
+              key={preset.name}
+              className={cn(
+                "grid place-content-center rounded-lg border-2 p-1.5 cursor-pointer transition-all",
+                isActive
+                  ? "border-primary scale-105 shadow-sm bg-accent/30"
+                  : "border-transparent hover:border-muted-foreground/30",
+              )}
+              onClick={() => applyPreset(preset.name)}
+              title={preset.label}
+            >
+              <span
+                className="block size-6 rounded-md shadow-sm"
+                style={{ backgroundColor: color }}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

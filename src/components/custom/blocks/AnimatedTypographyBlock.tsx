@@ -36,11 +36,12 @@ export type TypographyColor =
 export type TypographyAlign = "left" | "center" | "right" | "justify";
 
 const colorThemes: Record<string, string> = {
+  primary: "text-primary",
   indigo: "text-indigo-600 dark:text-indigo-400",
   rose: "text-rose-600 dark:text-rose-400",
   emerald: "text-emerald-600 dark:text-emerald-400",
   zinc: "text-zinc-900 dark:text-zinc-100",
-  default: "text-inherit",
+  default: "text-primary",
 };
 
 const hexToRgb = (hex: string) => {
@@ -67,7 +68,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { className: colorThemes[color] || colorThemes.default, style: {} };
+  return { className: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 const alignStyles: Record<TypographyAlign, string> = {
@@ -134,7 +135,7 @@ export const AnimatedTypographyBlock = forwardRef<
       as: Tag = "p",
       variant = "fade-up",
       text,
-      color = "default",
+      color = "primary",
       align = "left",
       size,
       delay = 0,

@@ -343,7 +343,7 @@ export function InputShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        type="${inputType}"\n        variant="${variant}"\n        color="${color}"\n        inputSize="${inputSize}"\n        label="${inputType === "file" ? "Upload Documents" : "Email Address"}"`;
+    let propsStr = `\n        type="${inputType}"\n        variant="${variant}"\n        inputSize="${inputSize}"\n        label="${inputType === "file" ? "Upload Documents" : "Email Address"}"`;
 
     if (inputType === "file") {
       if (isMultiple) propsStr += `\n        multiple`;
@@ -361,8 +361,6 @@ export function InputShowcase() {
     if (isDisabled) propsStr += `\n        disabled`;
 
     return `import { InputBlock } from "@/components/custom/blocks/InputBlock";
-import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 export default function FormDemo() {
   return (

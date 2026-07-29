@@ -27,6 +27,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { text: "text-primary", bg: "bg-primary hover:bg-primary/90 text-primary-foreground", lightBg: "bg-primary/10 text-primary", gradient: "from-primary to-primary/80", shadow: "shadow-primary/20", focusRing: "focus-within:border-primary/30 focus-within:ring-primary/10 dark:focus-within:ring-primary/20" },
   indigo: { text: "text-indigo-500 dark:text-indigo-400", bg: "bg-indigo-500 hover:bg-indigo-600 text-white", lightBg: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300", gradient: "from-indigo-500 to-purple-600", shadow: "shadow-indigo-500/20", focusRing: "focus-within:border-indigo-500/30 focus-within:ring-indigo-500/10 dark:focus-within:ring-indigo-500/20" },
   rose: { text: "text-rose-500 dark:text-rose-400", bg: "bg-rose-500 hover:bg-rose-600 text-white", lightBg: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-300", gradient: "from-rose-500 to-orange-500", shadow: "shadow-rose-500/20", focusRing: "focus-within:border-rose-500/30 focus-within:ring-rose-500/10 dark:focus-within:ring-rose-500/20" },
   emerald: { text: "text-emerald-500 dark:text-emerald-400", bg: "bg-emerald-500 hover:bg-emerald-600 text-white", lightBg: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300", gradient: "from-emerald-500 to-teal-500", shadow: "shadow-emerald-500/20", focusRing: "focus-within:border-emerald-500/30 focus-within:ring-emerald-500/10 dark:focus-within:ring-emerald-500/20" },
@@ -45,7 +46,7 @@ const BulletproofAvatar = ({ src, initials, color, status, size = 40, statusBord
   </div>
 );
 
-export default function ChatApp({ currentUser, contactsData, variant = "default", color = "indigo" }: { currentUser: CurrentUser; contactsData: Contact[]; variant?: ChatVariant; color?: ChatColor; }) {
+export default function ChatApp({ currentUser, contactsData, variant = "default", color = "primary" }: { currentUser: CurrentUser; contactsData: Contact[]; variant?: ChatVariant; color?: ChatColor; }) {
   const isCustomHex = color?.startsWith("#");
   const customVars = isCustomHex ? {
     "--chat-custom": color,
@@ -61,7 +62,7 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
     gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
     shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
     focusRing: "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
-  } : colorThemes[color] || colorThemes["indigo"];
+  } : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
 
@@ -509,44 +510,15 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
 export function ChatShowcase() {
   const [variant, setVariant] = useState<ChatVariant>("default");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ChatColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<ChatColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
     const typeDef = isTs ? " : React.JSX.Element" : "";
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
 
     return `import ChatApp from "@/components/custom/blocks/Chat";
 
@@ -583,8 +555,7 @@ export default function ChatDemo()${typeDef} {
       <ChatApp 
         currentUser={currentUser} 
         contactsData={contactsData}
-        variant="${variant}"
-        color="${color}"
+        variant="${variant}"${colorPropStr}
       />
     </div>
   );

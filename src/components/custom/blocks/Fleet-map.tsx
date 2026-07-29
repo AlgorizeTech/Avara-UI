@@ -66,6 +66,15 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    border: "border-primary",
+    lightBg: "bg-primary/10",
+    focusRing:
+      "focus-within:ring-primary/20 focus-within:border-primary/50",
+    marker: "violet",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -170,7 +179,7 @@ function MapResizeHandler() {
 export default function FleetTracker({
   fleetData = [],
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: FleetTrackerProps) {
   // Custom hex injection logic
   const isCustomHex = color?.startsWith("#");
@@ -193,7 +202,7 @@ export default function FleetTracker({
           "focus-within:ring-[var(--fleet-custom-20)] focus-within:border-[var(--fleet-custom-50)]",
         marker: "black", // Fallback marker for arbitrary colors
       }
-    : colorThemes[color as string] || colorThemes["indigo"];
+    : colorThemes[color as string] || colorThemes["primary"];
 
   const styles = fleetVariants[variant];
 

@@ -22,6 +22,7 @@ export type TabsColor = "indigo" | "rose" | "emerald" | "zinc" | "purple" | (str
 export type TabsVariant = "default" | "glass" | "minimal" | "bordered";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary text-primary-foreground", text: "text-primary", border: "border-primary", dot: "bg-primary-foreground" },
   indigo: { bg: "bg-indigo-600 text-white", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-600", dot: "bg-white" },
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", border: "border-rose-600", dot: "bg-white" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-600", dot: "bg-white" },
@@ -44,7 +45,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.purple, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface TabItem { id: string; label: string; icon?: React.ElementType; content: React.ReactNode; }
@@ -190,40 +191,10 @@ export function VerticalTabs({ tabs, color = "purple", variant = "default", defa
 export function VerticalTabsShowcase() {
   const [variant, setVariant] = useState<TabsVariant>("default");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<TabsColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<TabsColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const sampleTabs = [
@@ -278,6 +249,7 @@ export function VerticalTabsShowcase() {
   ];
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
     return `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 import { Camera, Music, Clapperboard } from "lucide-react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
@@ -309,12 +281,11 @@ export default function Dashboard() {
     <div className="w-full max-w-5xl mx-auto p-8">
       <VerticalTabs 
         tabs={tabs} 
-        variant="${variant}" 
-        color="${color}" 
+        variant="${variant}"${colorPropStr} 
       />
     </div>
   );
-}`;
+};`;
   };
 
   return (

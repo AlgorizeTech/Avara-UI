@@ -57,7 +57,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
       avatarUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop",
       defaultOpen = false,
       localStorageKey = "primaryColor",
-      defaultAccentColor = "#6366f1",
+      defaultAccentColor = "var(--primary)",
       initialMessages = [
         {
           id: "1",

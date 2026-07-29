@@ -16,6 +16,11 @@ export type TerminalColor =
   | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary/10 text-primary",
+    border: "border-primary/30",
+    text: "text-primary",
+  },
   indigo: {
     bg: "bg-indigo-500/10 text-indigo-400",
     border: "border-indigo-500/30",
@@ -66,7 +71,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -90,7 +95,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
       filename,
       copyable = true,
       variant = "default",
-      color = "zinc",
+      color = "primary",
       className,
       ...props
     },

@@ -238,9 +238,7 @@ export const ChatTypingIndicator = forwardRef(({ className, ...props }, ref) => 
 ChatTypingIndicator.displayName = "ChatTypingIndicator";`;
 
 export function ChatBubbleShowcase() {
-  const [color, setColor] = useState<
-    "default" | "blue" | "indigo" | "rose" | "emerald"
-  >("default");
+  const [color, setColor] = useState<string>("primary");
   const [isTyping, setIsTyping] = useState(true);
   const [messages, setMessages] = useState<number[]>([1, 2, 3]);
 
@@ -260,6 +258,7 @@ export function ChatBubbleShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? ` color="${color}"` : "";
     return `import { 
   ChatBubble, 
   ChatAvatar, 
@@ -289,7 +288,7 @@ export default function ChatDemo() {
       {/* Sent Message */}
       <ChatBubble variant="sent">
         <ChatAvatar fallback="ME" />
-        <ChatMessage color="${color}">
+        <ChatMessage${colorPropStr}>
           Yeah, it looks super premium! I'm going to use it for our support dashboard.
           <ChatTimestamp time="10:25 AM" status="read" />
         </ChatMessage>

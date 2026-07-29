@@ -48,7 +48,7 @@ export const Wizard = forwardRef<HTMLDivElement, WizardProps>(
     {
       children,
       initialStep = 0,
-      color = "indigo",
+      color = "primary",
       onComplete,
       className,
       ...props

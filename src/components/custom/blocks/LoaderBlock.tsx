@@ -17,6 +17,7 @@ export type LoaderVariant = "spinner" | "dots" | "pulse" | "ring" | "bar";
 export type LoaderSize = "sm" | "md" | "lg" | "xl";
 
 const colorMap: Record<string, string> = {
+  primary: "var(--primary)",
   indigo: "#4f46e5",
   rose: "#e11d48",
   emerald: "#10b981",
@@ -26,7 +27,7 @@ const colorMap: Record<string, string> = {
 };
 
 export const getThemeColor = (color: string) => {
-  return color.startsWith("#") ? color : colorMap[color] || colorMap.indigo;
+  return color.startsWith("#") ? color : colorMap[color] || colorMap.primary;
 };
 
 // ==========================================
@@ -43,7 +44,7 @@ export interface LoaderBlockProps {
 export function LoaderBlock({
   variant = "spinner",
   size = "md",
-  color = "indigo",
+  color = "primary",
   text,
   className,
 }: LoaderBlockProps) {

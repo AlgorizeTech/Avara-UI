@@ -654,9 +654,9 @@ export function AIChatShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<AIChatColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "indigo";
+    return "primary";
   });
 
   // Automatically listen for updates to the primaryColor in localStorage

@@ -3,6 +3,7 @@
 import { Palette, Settings, TimerReset } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 
 import {
   Sheet,
@@ -23,11 +24,12 @@ import { DarkModeControl } from "./darkmode-control";
 import { FontFamilyControl } from "./font-family-control";
 import { FontSizeControl } from "./font-size-control";
 import { PrimaryColorControl } from "./primary-color-control";
+import { RadiusPicker } from "./radius-picker";
 
 export function ThemeControl() {
-  const { dir, setPrimaryColor, setFontSize, setFontFamily } =
+  const { dir, setFontSize, setFontFamily } =
     useThemeContext();
-  const { setTheme } = useTheme();
+  const { resetToDefaults } = useThemeCustomizer();
 
   function resetThemeCustomization() {
     localStorage.removeItem("primaryColor");
@@ -35,14 +37,13 @@ export function ThemeControl() {
     localStorage.removeItem("fontFamily");
 
     const root = window.document.documentElement;
-    root.style.setProperty("--primary", DEFAULT_PRIMARY_COLOR);
     root.style.fontSize = DEFAULT_FONT_SIZE + "%";
     document.body.style.fontFamily = "";
 
     const dynamicFontLink = document.getElementById("dynamic-google-font");
     if (dynamicFontLink) dynamicFontLink.remove();
 
-    setPrimaryColor(DEFAULT_PRIMARY_COLOR);
+    resetToDefaults();
     setFontSize(DEFAULT_FONT_SIZE);
     setFontFamily(DEFAULT_FONT_FAMILY);
     setTheme("system");
@@ -73,6 +74,7 @@ export function ThemeControl() {
             </SheetHeader>
             <div className="space-y-8 px-4 py-6">
               <PrimaryColorControl />
+              <RadiusPicker />
               <DarkModeControl />
               <FontSizeControl />
               <FontFamilyControl />

@@ -81,6 +81,19 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    primaryText: "text-primary",
+    primaryBg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    primaryHover:
+      "hover:text-primary hover:bg-primary/10",
+    lightBg:
+      "bg-primary/10 text-foreground",
+    gradient: "from-primary to-primary/80",
+    shadow: "shadow-primary/20",
+    ring: "focus-within:border-primary/50 focus-within:ring-primary/10",
+    focusRing: "focus:ring-primary/20",
+    inputBorder: "border-primary/30",
+  },
   indigo: {
     primaryText: "text-indigo-500 dark:text-indigo-400",
     primaryBg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -151,7 +164,7 @@ export default function AIChat({
   chatHistory = [],
   initialMessages = [],
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   chatHistory?: ChatThread[];
   initialMessages?: Message[];
@@ -184,7 +197,7 @@ export default function AIChat({
         focusRing: "focus:ring-2 focus:ring-[var(--chat-custom-20)]",
         inputBorder: "border-[var(--chat-custom-50)]",
       }
-    : colorThemes[color] || colorThemes["indigo"];
+    : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
 

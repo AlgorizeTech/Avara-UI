@@ -116,12 +116,10 @@ export default function App() {
 
 export function QrCodeShowcase() {
 	const [activeTab, setActiveTab] = useState<"generator" | "reader">("generator");
-	const [themeColor, setThemeColor] = useState("default");
+	const [themeColor, setThemeColor] = useState("primary");
 	
 	const [value, setValue] = useState("https://algorizetech.com");
 	const [level, setLevel] = useState<"L" | "M" | "Q" | "H">("L");
-
-
 
 	const getSvgDataUrl = (): Promise<string> => {
 		return new Promise((resolve, reject) => {
@@ -208,22 +206,24 @@ export function QrCodeShowcase() {
 	const getButtonColorClass = () => {
 		if (themeColor.startsWith("#")) return "text-white";
 		switch (themeColor) {
+			case "primary": return "bg-primary hover:bg-primary/90 text-primary-foreground";
 			case "blue": return "bg-blue-600 hover:bg-blue-700 text-white";
 			case "emerald": return "bg-emerald-600 hover:bg-emerald-700 text-white";
 			case "rose": return "bg-rose-600 hover:bg-rose-700 text-white";
 			case "violet": return "bg-violet-600 hover:bg-violet-700 text-white";
-			default: return "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200";
+			default: return "bg-primary hover:bg-primary/90 text-primary-foreground";
 		}
 	};
 
 	const getTextColorClass = () => {
 		if (themeColor.startsWith("#")) return "";
 		switch (themeColor) {
+			case "primary": return "text-primary";
 			case "blue": return "text-blue-600 dark:text-blue-500";
 			case "emerald": return "text-emerald-600 dark:text-emerald-500";
 			case "rose": return "text-rose-600 dark:text-rose-500";
 			case "violet": return "text-violet-600 dark:text-violet-500";
-			default: return "text-zinc-900 dark:text-white";
+			default: return "text-primary";
 		}
 	};
 

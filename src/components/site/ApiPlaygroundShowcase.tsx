@@ -22,6 +22,7 @@ export type ApiColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary text-primary-foreground", text: "text-primary", border: "border-primary", glow: "shadow-[0_0_15px_var(--primary)]" },
   indigo: { bg: "bg-indigo-600 text-white", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-500", glow: "shadow-[0_0_15px_rgba(99,102,241,0.3)]" },
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", border: "border-rose-500", glow: "shadow-[0_0_15px_rgba(225,29,72,0.3)]" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500", glow: "shadow-[0_0_15px_rgba(16,185,129,0.3)]" },
@@ -51,7 +52,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--api-color": color, "--api-glow": \`rgba(\${rgb}, 0.3)\` } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface KeyValuePair { id: string; key: string; value: string; enabled: boolean; }
@@ -296,37 +297,10 @@ export function ApiPlaygroundShowcase() {
   const [simulateError, setSimulateError] = useState(false);
 
   // Initialize with localStorage if available
-  const [color, setColor] = useState<ApiColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "emerald";
-    }
-    return "emerald";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<ApiColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Advanced Mock Handler to simulate real API interactions for documentation
@@ -380,7 +354,8 @@ export function ApiPlaygroundShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    const propsStr = `\n      defaultUrl="https://api.stripe.com/v1/customers"\n      defaultMethod="${defaultMethod}"\n      color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n      color="${color}"` : "";
+    const propsStr = `\n      defaultUrl="https://api.stripe.com/v1/customers"\n      defaultMethod="${defaultMethod}"${colorPropStr}`;
 
     return `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";

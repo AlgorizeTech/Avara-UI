@@ -22,6 +22,12 @@ export type TimelineColor =
   | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary",
+    text: "text-primary",
+    border: "border-primary",
+    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
+  },
   indigo: {
     bg: "bg-indigo-600",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -83,7 +89,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -126,107 +132,71 @@ function AnimatedTimelineNode({
   const [isVisible, setIsVisible] = useState(false);
   const nodeRef = useRef<HTMLDivElement>(null);
   const Icon = item.icon;
-
   const isEven = index % 2 === 0;
   const isCenter = layout === "center";
 
-  // Intersection Observer for scroll triggers
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Optional: disconnect if you only want it to animate once
-          // observer.disconnect();
-        } else {
-          // Reset if you want it to re-animate when scrolling back up
-          setIsVisible(false);
-        }
+        if (entry.isIntersecting) setIsVisible(true);
+        else setIsVisible(false);
       },
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
     );
-
     if (nodeRef.current) observer.observe(nodeRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Determine slide direction based on layout and index
-  let slideDirectionClass = "translate-y-8"; // default fade-up
-  if (animation === "slide-in") {
-    if (layout === "left") slideDirectionClass = "-translate-x-12";
-    else if (layout === "right") slideDirectionClass = "translate-x-12";
-    else if (layout === "center")
-      slideDirectionClass = isEven ? "-translate-x-12" : "translate-x-12";
-  }
+  let slideDir = "translate-y-8";
 
-  // Map animations to Tailwind classes
   const getAnimationClasses = () => {
-    if (!isVisible) {
-      return cn(
-        "opacity-0",
-        animation === "fade-up" && "translate-y-8",
-        animation === "slide-in" && slideDirectionClass,
-        animation === "zoom-in" && "scale-90",
-        animation === "flip-up" && "rotate-x-90",
-        animation === "blur-in" && "blur-xl scale-95",
-      );
-    }
-    return cn(
-      "opacity-100 translate-y-0 translate-x-0 scale-100 rotate-x-0 blur-0",
-      "transition-all duration-700 ease-out",
-    );
+    if (!isVisible) return "opacity-0 " + slideDir;
+    return "opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0 blur-0";
   };
 
   return (
     <div
       ref={nodeRef}
-      className="relative flex flex-col sm:flex-row w-full group perspective-[1000px]"
+      className={cn(
+        "relative flex items-center w-full my-6 group",
+        layout === "left" && "justify-start",
+        layout === "right" && "justify-start sm:justify-end",
+        isCenter && "justify-start sm:justify-center",
+      )}
     >
-      {/* VERTICAL LINE */}
+      {/* Line connecting nodes */}
       {!isLast && (
         <div
           className={cn(
-            "absolute w-[2px] bg-zinc-200 dark:bg-zinc-800 transition-all duration-1000 origin-top",
-            "left-[19px] sm:left-auto top-10 bottom-[-32px] sm:bottom-[-48px]",
-            layout === "left" && "sm:left-[19px]",
-            layout === "right" && "sm:right-[19px]",
-            layout === "center" && "sm:left-1/2 sm:-translate-x-1/2",
-            isVisible ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0",
+            "absolute top-8 bottom-0 w-0.5 bg-zinc-200 dark:bg-zinc-800 left-4 sm:left-4",
+            layout === "left" && "sm:left-4",
+            layout === "right" && "sm:left-auto sm:right-4",
+            isCenter && "sm:left-1/2 sm:-translate-x-1/2",
           )}
         />
       )}
 
-      {/* ICON / DOT */}
+      {/* Node Dot / Icon Container */}
       <div
         className={cn(
-          "absolute z-10 flex items-center justify-center rounded-full border-2 bg-white dark:bg-[#09090b] transition-all duration-500 delay-300",
-          "w-10 h-10 left-0 sm:left-auto",
+          "absolute z-10 flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-500 left-0 sm:left-0",
           layout === "left" && "sm:left-0",
-          layout === "right" && "sm:right-0",
-          layout === "center" && "sm:left-1/2 sm:-translate-x-1/2",
-          isVisible
-            ? cn(theme.border, theme.glow, "scale-100 opacity-100")
-            : "border-zinc-200 dark:border-zinc-800 scale-50 opacity-0",
+          layout === "right" && "sm:left-auto sm:right-0",
+          isCenter && "sm:left-1/2 sm:-translate-x-1/2",
+          theme.bg,
+          theme.border,
+          theme.glow,
+          "text-white",
         )}
       >
         {Icon ? (
-          <Icon
-            className={cn(
-              "w-4 h-4 transition-colors duration-500 delay-500",
-              isVisible ? theme.text : "text-transparent",
-            )}
-          />
+          <Icon className="w-4 h-4" />
         ) : (
-          <div
-            className={cn(
-              "w-3 h-3 rounded-full transition-colors duration-500 delay-500",
-              isVisible ? theme.bg : "bg-transparent",
-            )}
-          />
+          <div className="w-2 h-2 rounded-full bg-white" />
         )}
       </div>
 
-      {/* CONTENT CARD */}
+      {/* Content Card */}
       <div
         className={cn(
           "flex flex-col w-full pl-16 sm:pl-0",
@@ -261,12 +231,7 @@ function AnimatedTimelineNode({
             >
               {item.title}
             </h3>
-            <span
-              className={cn(
-                "text-xs font-semibold px-2.5 py-1 rounded-md shrink-0 w-max bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors duration-500",
-                isVisible && theme.text,
-              )}
-            >
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 w-max shrink-0">
               {item.date}
             </span>
           </div>
@@ -293,7 +258,7 @@ export const AnimatedTimelineBlock = forwardRef<
       items,
       layout = "left",
       animation = "fade-up",
-      color = "indigo",
+      color = "primary",
       className,
       ...props
     },

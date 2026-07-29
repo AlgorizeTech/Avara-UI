@@ -213,12 +213,11 @@ export const WizardNavigation = forwardRef(({ children, className, ...props }, r
 WizardNavigation.displayName = "WizardNavigation";`;
 
 export function WizardShowcase() {
-  const [color, setColor] = useState<
-    "blue" | "indigo" | "rose" | "emerald" | "zinc"
-  >("indigo");
+  const [color, setColor] = useState<string>("primary");
   const [key, setKey] = useState(0); // Force remount to restart wizard
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? ` color="${color}"` : "";
     return `import { 
   Wizard, 
   WizardProgress, 
@@ -232,7 +231,7 @@ export function WizardShowcase() {
 
 export default function OnboardingFlow() {
   return (
-    <Wizard color="${color}">
+    <Wizard${colorPropStr}>
       <WizardProgress />
       
       <WizardContainer>

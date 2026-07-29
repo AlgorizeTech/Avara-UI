@@ -89,7 +89,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -468,7 +468,7 @@ export interface CounterProps {
 export function CounterBlock({
   type = "stepper",
   variant = "default",
-  color = "indigo",
+  color = "primary",
   label = "Counter",
   initialValue = 1,
   min = 0,

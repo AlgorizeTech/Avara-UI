@@ -298,44 +298,15 @@ export function ToastShowcase() {
   const [variant, setVariant] = useState<ToastVariant>("default");
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ToastColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<ToastColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    const propsStr = `\n      variant="${variant}"\n      color="${color}"\n      position="${position}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n      color="${color}"` : "";
+    const propsStr = `\n      variant="${variant}"${colorPropStr}\n      position="${position}"`;
 
     return `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
