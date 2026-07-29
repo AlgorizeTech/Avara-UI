@@ -32,6 +32,7 @@ export type TimelineAnimation = "fade-up" | "slide-in" | "zoom-in" | "flip-up" |
 export type TimelineColor = "indigo" | "rose" | "emerald" | "blue" | "zinc" | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary", text: "text-primary", border: "border-primary", glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]" },
   indigo: { bg: "bg-indigo-600", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-500", glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]" },
   rose: { bg: "bg-rose-600", text: "text-rose-600 dark:text-rose-400", border: "border-rose-500", glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]" },
   emerald: { bg: "bg-emerald-600", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500", glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]" },
@@ -40,7 +41,7 @@ const colorThemes: Record<string, Record<string, string>> = {
 };
 
 const hexToRgb = (hex: string) => { let cleanHex = hex.replace(/^#/, ""); if (cleanHex.length === 3) cleanHex = cleanHex.split("").map((x) => x + x).join(""); const result = /^([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(cleanHex); return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241"; };
-export const getThemeStyles = (color: string) => { if (color && color.startsWith("#")) { const rgb = hexToRgb(color); return { theme: { bg: "bg-[var(--atl-color)]", text: "text-[var(--atl-color)]", border: "border-[var(--atl-color)]", glow: "shadow-[0_0_15px_var(--atl-glow)]" }, style: { "--atl-color": color, "--atl-glow": \`rgba(\${rgb}, 0.5)\` } as React.CSSProperties, }; } return { theme: colorThemes[color] || colorThemes.indigo, style: {} }; };
+export const getThemeStyles = (color: string) => { if (color && color.startsWith("#")) { const rgb = hexToRgb(color); return { theme: { bg: "bg-[var(--atl-color)]", text: "text-[var(--atl-color)]", border: "border-[var(--atl-color)]", glow: "shadow-[0_0_15px_var(--atl-glow)]" }, style: { "--atl-color": color, "--atl-glow": \`rgba(\${rgb}, 0.5)\` } as React.CSSProperties, }; } return { theme: colorThemes[color] || colorThemes.primary, style: {} }; };
 
 export interface AnimatedTimelineItem { id: string | number; title: string; date: string; description?: string; icon?: React.ElementType; }
 export interface AnimatedTimelineProps extends React.HTMLAttributes<HTMLDivElement> { items: AnimatedTimelineItem[]; layout?: TimelineLayout; animation?: TimelineAnimation; color?: TimelineColor; }
@@ -224,36 +225,17 @@ export function AnimatedTimelineShowcase() {
   const [animation, setAnimation] = useState<TimelineAnimation>("flip-up");
   const [resetKey, setResetKey] = useState(0); // Force re-render to replay animations
 
-  const [color, setColor] = useState<TimelineColor | string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("primaryColor") || "indigo";
-    return "indigo";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) setColor(stored);
-    }, 1000);
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) setColor(e.newValue);
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<TimelineColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const triggerReplay = () => setResetKey((prev) => prev + 1);
 
   const generateUsageCode = (isTs: boolean) => {
-    const propsStr = `\n        items={events}\n        layout="${layout}"\n        animation="${animation}"\n        color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    const propsStr = `\n        items={events}\n        layout="${layout}"\n        animation="${animation}"${colorPropStr}`;
 
     return `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 import { Rocket, Target, Zap } from "lucide-react";

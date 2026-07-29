@@ -22,9 +22,9 @@ export function ThemeColorPicker({
       </label>
 			<div className="flex items-center justify-between gap-1.5 p-1 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
 				<button
-					onClick={() => onChange("default")}
+					onClick={() => onChange("primary")}
 					className={`px-4 py-1.5 text-sm font-medium rounded-lg capitalize transition-all cursor-pointer ${
-						color === "default"
+						color === "default" || color === "primary" || !color
 							? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm"
                 : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
 					}`}>

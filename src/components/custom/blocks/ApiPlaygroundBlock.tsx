@@ -20,6 +20,12 @@ export type ApiColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    glow: "shadow-[0_0_15px_var(--primary)]",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -84,7 +90,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -128,7 +134,7 @@ export const ApiPlaygroundBlock = forwardRef<
     {
       defaultUrl = "https://api.example.com/v1/users",
       defaultMethod = "GET",
-      color = "emerald",
+      color = "primary",
       mockHandler,
       className,
       ...props

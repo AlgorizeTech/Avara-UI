@@ -18,6 +18,12 @@ export type TimelineVariant = "default" | "glass" | "minimal";
 export type TimelineLayout = "left" | "center" | "right";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary",
+    text: "text-primary",
+    border: "border-primary",
+    glow: "shadow-[0_0_15px_var(--primary)]",
+  },
   indigo: {
     bg: "bg-indigo-600",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -73,7 +79,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -108,7 +114,7 @@ export const TimelineBlock = forwardRef<HTMLDivElement, TimelineBlockProps>(
   (
     {
       items,
-      color = "indigo",
+      color = "primary",
       variant = "default",
       layout = "left",
       animate = true,

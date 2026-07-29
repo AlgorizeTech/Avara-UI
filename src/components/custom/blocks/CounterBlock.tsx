@@ -13,6 +13,14 @@ export type CounterType = "stepper" | "animated" | "circular" | "countdown";
 export type CounterVariant = "default" | "outline" | "soft" | "vertical";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    ring: "ring-primary/20",
+    fill: "stroke-primary",
+    bgSoft: "bg-primary/10 text-primary",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -81,7 +89,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -460,7 +468,7 @@ export interface CounterProps {
 export function CounterBlock({
   type = "stepper",
   variant = "default",
-  color = "indigo",
+  color = "primary",
   label = "Counter",
   initialValue = 1,
   min = 0,

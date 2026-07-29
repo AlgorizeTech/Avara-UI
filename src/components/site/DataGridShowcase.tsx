@@ -392,37 +392,10 @@ export function DataGridShowcase() {
   const [currentData, setCurrentData] =
     useState<Record<string, any>[]>(INITIAL_DATA);
 
-  const [color, setColor] = useState<GridColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "blue";
-    }
-    return "blue";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<GridColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const handleAddRow = () => {
@@ -439,7 +412,8 @@ export function DataGridShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        columns={columns}\n        data={data}\n        color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    let propsStr = `\n        columns={columns}\n        data={data}${colorPropStr}`;
     if (!showRowNumbers) propsStr += `\n        showRowNumbers={false}`;
     if (readOnly) propsStr += `\n        readOnly`;
 

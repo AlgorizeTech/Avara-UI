@@ -17,6 +17,12 @@ export type NavColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type NavVariant = "default" | "minimal" | "glass";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    bgSoft: "bg-primary/10",
+    border: "border-primary/30",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -72,7 +78,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -119,7 +125,7 @@ export interface NavigationMenuProps extends React.HTMLAttributes<HTMLElement> {
 
 export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
   (
-    { children, color = "indigo", variant = "default", className, ...props },
+    { children, color = "primary", variant = "default", className, ...props },
     ref,
   ) => {
     const [activeValue, setActiveValue] = useState<string | null>(null);

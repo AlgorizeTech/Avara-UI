@@ -2,6 +2,12 @@
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
+## Sticky Scroll Stack
+
+## Split Scroll Stack
+
+## Horizontal Scroll Stack
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 

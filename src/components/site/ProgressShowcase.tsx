@@ -163,7 +163,7 @@ export function ProgressShowcase() {
   const [max, setMax] = useState(100);
   const [variant, setVariant] = useState<ProgressVariant>("glow");
   const [barSize, setBarSize] = useState<ProgressSize>("md");
-  const [color, setColor] = useState<string>("indigo");
+  const [color, setColor] = useState<string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
@@ -171,14 +171,15 @@ export function ProgressShowcase() {
 
   // Resolve active color for the slider thumbs
   const colorMap: Record<string, string> = {
+    primary: "var(--primary)",
     indigo: "#4f46e5",
     rose: "#e11d48",
     emerald: "#10b981",
-    zinc: "#18181b", // Note: The actual progress thumb for zinc switches to white in dark mode, but the control slider stays dark here for simplicity.
+    zinc: "#18181b",
   };
   const activeHex = color.startsWith("#")
     ? color
-    : colorMap[color] || "#4f46e5";
+    : colorMap[color] || "var(--primary)";
 
   // Cross-browser targeted structural selectors to keep range track line visible permanently
   const sliderClasses = cn(
@@ -215,6 +216,7 @@ export function ProgressShowcase() {
   );
 
   const generateUsageCode = () => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
     return `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
@@ -226,12 +228,11 @@ export default function UsageDemo() {
         value={${value}} 
         max={${max}} 
         variant="${variant}" 
-        barSize="${barSize}" 
-        color="${color}" 
+        barSize="${barSize}"${colorPropStr} 
       />
     </ProgressField>
   );
-}`;
+};`;
   };
 
   return (

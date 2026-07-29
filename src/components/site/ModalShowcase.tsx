@@ -25,6 +25,7 @@ export type ModalVariant = "default" | "glass" | "minimal" | "bordered";
 export type ModalType = "standard" | "form" | "fullscreen" | "confirmation";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary hover:bg-primary/90 text-primary-foreground", text: "text-primary", border: "border-primary", bgSoft: "bg-primary/10", ring: "focus:ring-primary" },
   indigo: { bg: "bg-indigo-600 hover:bg-indigo-700 text-white", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-600", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10", ring: "focus:ring-indigo-600" },
   rose: { bg: "bg-rose-600 hover:bg-rose-700 text-white", text: "text-rose-600 dark:text-rose-400", border: "border-rose-600", bgSoft: "bg-rose-50 dark:bg-rose-500/10", ring: "focus:ring-rose-600" },
   emerald: { bg: "bg-emerald-600 hover:bg-emerald-700 text-white", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-600", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10", ring: "focus:ring-emerald-600" },
@@ -52,7 +53,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 interface ModalContextType { open: boolean; onOpenChange: (open: boolean) => void; type: ModalType; }
@@ -331,43 +332,14 @@ export function ModalShowcase() {
   const [type, setType] = useState<ModalType>("standard");
   const [variant, setVariant] = useState<ModalVariant>("default");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ModalColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<ModalColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
     return `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
 export default function Page() {
@@ -375,12 +347,11 @@ export default function Page() {
     <div className="relative overflow-hidden w-full h-screen">
       <ModalBlock 
         type="${type}" 
-        variant="${variant}" 
-        color="${color}" 
+        variant="${variant}"${colorPropStr} 
       />
     </div>
   );
-}`;
+};`;
   };
 
   return (

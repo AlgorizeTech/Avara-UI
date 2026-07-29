@@ -36,10 +36,10 @@ export const getThemeStyles = (color: string) => {
   const rgb = isHex ? hexToRgb(color) : "99, 102, 241";
   
   const colorMap: Record<string, string> = {
-    indigo: "#4f46e5", rose: "#e11d48", emerald: "#10b981", zinc: "#18181b"
+    primary: "var(--primary)", indigo: "#4f46e5", rose: "#e11d48", emerald: "#10b981", zinc: "#18181b"
   };
 
-  const finalColor = isHex ? color : colorMap[color] || colorMap.indigo;
+  const finalColor = isHex ? color : colorMap[color] || colorMap.primary;
 
   return { style: { "--theme-color": finalColor, "--theme-color-rgb": isHex ? rgb : hexToRgb(finalColor) } as React.CSSProperties };
 };
@@ -211,40 +211,10 @@ export function FormShowcase() {
   const [demoType, setDemoType] = useState<"native" | "zod">("zod");
   const [errorStyle, setErrorStyle] = useState<"glitch" | "default">("glitch");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<FormColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<FormColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Native State Logic
@@ -292,6 +262,8 @@ export function FormShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? ` color="${color}"` : "";
+
     if (demoType === "native") {
       return `import { useState } from "react";
 import { FormWrapper, FormField, FormSubmit } from "@/components/custom/blocks/FormBlock";
@@ -308,9 +280,9 @@ export default function NativeForm() {
   };
 
   return (
-    <FormWrapper title="Basic Login" onSubmit={onSubmit} color="${color}">
+    <FormWrapper title="Basic Login" onSubmit={onSubmit}${colorPropStr}>
       <FormField label="Email Address" error={error} errorVariant="${errorStyle}">
-        <InputBlock value={email} onChange={e => setEmail(e.target.value)} color="${color}" />
+        <InputBlock value={email} onChange={e => setEmail(e.target.value)}${colorPropStr} />
       </FormField>
       
       <FormSubmit>Sign In</FormSubmit>
@@ -338,21 +310,21 @@ export default function EnterpriseForm() {
   });
 
   return (
-    <FormWrapper title="Enterprise Registration" onSubmit={handleSubmit(console.log)} color="${color}">
+    <FormWrapper title="Enterprise Registration" onSubmit={handleSubmit(console.log)}${colorPropStr}>
       <div className="grid grid-cols-2 gap-4">
         <FormField label="Company Name" error={errors.companyName?.message} errorVariant="${errorStyle}">
-          <InputBlock {...register("companyName")} color="${color}" />
+          <InputBlock {...register("companyName")}${colorPropStr} />
         </FormField>
         
         <FormField label="Work Email" error={errors.workEmail?.message} errorVariant="${errorStyle}">
-          <InputBlock {...register("workEmail")} type="email" color="${color}" />
+          <InputBlock {...register("workEmail")} type="email"${colorPropStr} />
         </FormField>
       </div>
       
       <FormSubmit isSubmitting={isSubmitting}>Create Account</FormSubmit>
     </FormWrapper>
   );
-}`;
+};`;
   };
 
   return (

@@ -74,6 +74,15 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    lightBg: "bg-primary/10 text-primary",
+    gradient: "from-primary to-primary/80",
+    shadow: "shadow-primary/20",
+    focusRing:
+      "focus-within:border-primary/30 focus-within:ring-primary/10 dark:focus-within:ring-primary/20",
+  },
   indigo: {
     text: "text-indigo-500 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -178,7 +187,7 @@ export default function ChatApp({
   currentUser,
   contactsData,
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   currentUser: CurrentUser;
   contactsData: Contact[];
@@ -206,7 +215,7 @@ export default function ChatApp({
         focusRing:
           "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
       }
-    : colorThemes[color] || colorThemes["indigo"];
+    : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
 

@@ -90,7 +90,7 @@ const VERIFY_BADGE_JS = VERIFY_BADGE_TS
   .replace(/,\n    ref\n  \) => {/g, ", ref) => {");
 
 export function VerifyBadgeShowcase() {
-  const [color, setColor] = useState<string>("#1d9bf0"); // Default blue
+  const [color, setColor] = useState<string>("primary"); // Default primary
   const [size, setSize] = useState<"sm" | "md" | "lg" | "xl">("md");
   const [animate, setAnimate] = useState<boolean>(true);
 
@@ -122,6 +122,7 @@ export function VerifyBadgeShowcase() {
   }, [color, size, animate]);
 
   const getUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? ` color="${color}"` : "";
     return `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
@@ -130,10 +131,10 @@ export default function ProfilePage() {
   return (
     <div className="flex items-center gap-2">
       <span className="font-semibold text-lg">Elon Musk</span>
-      <VerifyBadge color="${color}" size="${size}" animate={${animate}} />
+      <VerifyBadge${colorPropStr} size="${size}" animate={${animate}} />
     </div>
   );
-}`;
+};`;
   };
 
   return (

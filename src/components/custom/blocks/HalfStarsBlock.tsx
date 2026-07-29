@@ -23,7 +23,7 @@ export const HalfStars = React.forwardRef<HTMLDivElement, HalfStarsProps>(
       rating,
       maxStars = 5,
       size = 24,
-      activeColor = "text-yellow-400",
+      activeColor = "text-primary",
       inactiveColor = "text-slate-200 dark:text-slate-700",
       showText = true, // Default to true as per user request
       interactive = false,

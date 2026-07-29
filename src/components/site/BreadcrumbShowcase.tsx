@@ -204,40 +204,10 @@ export function BreadcrumbShowcase() {
   const [variant, setVariant] = useState<BreadcrumbVariant>("classic");
   const [isLongPath, setIsLongPath] = useState(false);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<BreadcrumbColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<BreadcrumbColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   // Mock Paths
@@ -257,6 +227,7 @@ export function BreadcrumbShowcase() {
   ];
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
     return `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
 import { Home, Settings } from "lucide-react";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
@@ -273,8 +244,7 @@ export default function Layout() {
     <div className="p-8">
       <BreadcrumbBlock 
         items={path} 
-        variant="${variant}" 
-        color="${color}" 
+        variant="${variant}"${colorPropStr} 
         maxItems={4} 
       />
     </div>

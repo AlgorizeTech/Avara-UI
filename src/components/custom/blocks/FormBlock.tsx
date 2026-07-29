@@ -27,13 +27,14 @@ export const getThemeStyles = (color: string) => {
 
   // Map standard colors to tailwind variables if not hex
   const colorMap: Record<string, string> = {
+    primary: "var(--primary)",
     indigo: "#4f46e5",
     rose: "#e11d48",
     emerald: "#10b981",
     zinc: "#18181b",
   };
 
-  const finalColor = isHex ? color : colorMap[color] || colorMap.indigo;
+  const finalColor = isHex ? color : colorMap[color] || colorMap.primary;
 
   return {
     style: {
@@ -57,7 +58,7 @@ export interface FormWrapperProps {
 
 export function FormWrapper({
   children,
-  color = "indigo",
+  color = "primary",
   title,
   description,
   className,

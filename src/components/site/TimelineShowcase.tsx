@@ -236,9 +236,9 @@ export function TimelineShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<TimelineColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "indigo";
+    return "primary";
   });
 
   useEffect(() => {
@@ -322,7 +322,7 @@ export function TimelineShowcase() {
   ];
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        items={events}\n        variant="${variant}"\n        layout="${layout}"\n        color="${color}"`;
+    let propsStr = `\n        items={events}\n        variant="${variant}"\n        layout="${layout}"`;
     if (!animate) propsStr += `\n        animate={false}`;
 
     return `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";

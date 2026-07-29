@@ -80,6 +80,15 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    lightBg: "bg-primary/10 text-primary",
+    border: "border-primary",
+    focusRing:
+      "focus:border-primary/30 focus:ring-primary/10 dark:focus:ring-primary/20",
+    dot: "bg-primary",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20",
@@ -184,7 +193,7 @@ const BulletproofAvatar = ({
 export default function EmailApp({
   initialEmails,
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   initialEmails: Email[];
   variant?: EmailVariant;
@@ -219,7 +228,7 @@ export default function EmailApp({
           "focus:border-[var(--email-custom-50)] focus:ring-2 focus:ring-[var(--email-custom-20)]",
         dot: "bg-[var(--email-custom)]",
       }
-    : colorThemes[color] || colorThemes["indigo"];
+    : colorThemes[color] || colorThemes["primary"];
 
   const styles = emailVariants[variant];
 

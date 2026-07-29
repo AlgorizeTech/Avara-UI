@@ -23,7 +23,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       children,
       className,
       tiltIntensity = 15,
-      glareOpacity = 0.2,
+      glareOpacity = 0.15, // Slightly lower default so light mode doesn't wash out
       scaleOnHover = 1.02,
       ...props
     },
@@ -31,21 +31,15 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
   ) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
-    // Merge refs
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
-    // Mouse position relative to the center of the card (-1 to 1)
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Smooth spring physics for the rotation and glare
     const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
     const smoothX = useSpring(mouseX, springConfig);
     const smoothY = useSpring(mouseY, springConfig);
 
-    // Calculate rotation:
-    // Moving mouse right (positive X) rotates card right (positive rotateY)
-    // Moving mouse down (positive Y) rotates card down (negative rotateX)
     const rotateX = useTransform(
       smoothY,
       [-1, 1],
@@ -57,26 +51,20 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       [-tiltIntensity, tiltIntensity],
     );
 
-    // Glare positioning based on mouse
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 50%)`;
+    const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
-
-      // Calculate mouse position relative to the center (-0.5 to 0.5)
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-      // Scale up to -1 to 1 for easier math
       mouseX.set(x * 2);
       mouseY.set(y * 2);
     };
 
     const handleMouseLeave = () => {
-      // Reset to center smoothly
       mouseX.set(0);
       mouseY.set(0);
     };
@@ -97,11 +85,11 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group"
+          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
           {/* Glare Layer */}
           <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-overlay dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{ background: glareBackground }}
           />
 

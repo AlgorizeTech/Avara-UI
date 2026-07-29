@@ -257,7 +257,7 @@ export function ComponentPreview({
               <button
                 onClick={handleReplay}
                 className={cn(
-                  "h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border",
+                  "h-[38px] w-[38px] flex items-center justify-center rounded-lg border transition-all active:scale-95 cursor-pointer shrink-0 shadow-sm",
                   "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
                 )}
                 title="Replay component animations"
@@ -274,7 +274,7 @@ export function ComponentPreview({
 
           {/* TS vs JS Language Toggle */}
           {showLanguageToggle && (
-            <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg animate-in fade-in duration-200 ml-1 pl-2 border-l border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg animate-in fade-in duration-200">
               <button
                 onClick={() => setLanguage("ts")}
                 className={cn(

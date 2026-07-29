@@ -22,6 +22,7 @@ export type TerminalVariant = "default" | "glass" | "minimal";
 export type TerminalColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary/10 text-primary", border: "border-primary/30", text: "text-primary" },
   indigo: { bg: "bg-indigo-500/10 text-indigo-400", border: "border-indigo-500/30", text: "text-indigo-400" },
   rose: { bg: "bg-rose-500/10 text-rose-400", border: "border-rose-500/30", text: "text-rose-400" },
   emerald: { bg: "bg-emerald-500/10 text-emerald-400", border: "border-emerald-500/30", text: "text-emerald-400" },
@@ -43,7 +44,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--term-color": color, "--term-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface TerminalBlockProps extends React.HTMLAttributes<HTMLDivElement> { code: string; language?: string; filename?: string; copyable?: boolean; variant?: TerminalVariant; color?: TerminalColor; }
@@ -216,44 +217,17 @@ export function TerminalShowcase() {
   const [showFilename, setShowFilename] = useState(true);
   const [isCopyable, setIsCopyable] = useState(true);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<TerminalColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<TerminalColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const currentSample = sampleCodes[activeTab];
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        code={myCodeString}\n        language="${currentSample.language}"\n        variant="${variant}"\n        color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    let propsStr = `\n        code={myCodeString}\n        language="${currentSample.language}"\n        variant="${variant}"${colorPropStr}`;
 
     if (showFilename)
       propsStr += `\n        filename="${currentSample.filename}"`;

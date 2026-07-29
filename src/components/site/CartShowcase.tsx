@@ -415,55 +415,25 @@ export function CartBlock({ type = "drawer", color = "indigo" }) {
 export function CartShowcase() {
   const [type, setType] = useState<CartType>("drawer");
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<CartColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "rose";
-    }
-    return "rose";
-  });
+  const [color, setColor] = useState<CartColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
     return `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
 export default function Layout() {
   return (
     <div className="relative w-full min-h-screen">
       <CartBlock 
-        type="${type}" 
-        color="${color}" 
+        type="${type}"${colorPropStr} 
       />
     </div>
   );
-}`;
+};`;
   };
 
   return (

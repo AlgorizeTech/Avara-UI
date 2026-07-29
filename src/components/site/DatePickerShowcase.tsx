@@ -302,9 +302,9 @@ export function DatePickerShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<DatePickerColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "indigo";
+    return "primary";
   });
 
   // Automatically listen for updates to the primaryColor in localStorage
@@ -336,7 +336,7 @@ export function DatePickerShowcase() {
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        value={date}\n        onChange={setDate}\n        variant="${variant}"\n        color="${color}"\n        inputSize="${inputSize}"\n        label="Launch Date"`;
+    let propsStr = `\n        value={date}\n        onChange={setDate}\n        variant="${variant}"\n        inputSize="${inputSize}"\n        label="Launch Date"`;
 
     if (showError)
       propsStr += `\n        error="Launch date cannot be in the past."`;

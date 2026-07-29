@@ -22,6 +22,7 @@ export type ScrollAreaVariant = "default" | "minimal" | "glass";
 export type ScrollAreaColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { thumb: "var(--primary)", thumbHover: "var(--primary)", track: "rgba(var(--primary), 0.1)" },
   indigo: { thumb: "#4f46e5", thumbHover: "#4338ca", track: "rgba(79, 70, 229, 0.1)" },
   rose: { thumb: "#e11d48", thumbHover: "#be123c", track: "rgba(225, 29, 72, 0.1)" },
   emerald: { thumb: "#10b981", thumbHover: "#059669", track: "rgba(16, 185, 129, 0.1)" },
@@ -46,7 +47,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  const theme = colorThemes[color] || colorThemes.zinc;
+  const theme = colorThemes[color] || colorThemes.primary;
   return {
     style: {
       "--scroll-thumb": theme.thumb,
@@ -185,44 +186,15 @@ export function ScrollAreaShowcase() {
   const [hideTrack, setHideTrack] = useState(false);
   const [autoHide, setAutoHide] = useState(false);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<ScrollAreaColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
+  const [color, setColor] = useState<ScrollAreaColor | string>("primary");
 
-  // Automatically listen for updates to the primaryColor in localStorage
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
-
-  // Sync manual UI changes down to local storage
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const generateUsageCode = (isTs: boolean) => {
-    let propsStr = `\n        variant="${variant}"\n        color="${color}"`;
+    const colorPropStr = color && color !== "primary" && color !== "default" ? `\n        color="${color}"` : "";
+    let propsStr = `\n        variant="${variant}"${colorPropStr}`;
 
     if (orientation !== "vertical")
       propsStr += `\n        orientation="${orientation}"`;

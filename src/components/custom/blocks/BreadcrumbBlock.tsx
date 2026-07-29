@@ -12,6 +12,12 @@ export type BreadcrumbColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type BreadcrumbVariant = "classic" | "slash" | "solid" | "ghost";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary text-primary-foreground hover:opacity-90",
+    bgSoft: "bg-primary/10 text-primary",
+    hoverText: "hover:text-primary",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
@@ -70,7 +76,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -92,7 +98,7 @@ export interface BreadcrumbProps {
 export function BreadcrumbBlock({
   items,
   variant = "classic",
-  color = "indigo",
+  color = "primary",
   maxItems = 4,
 }: BreadcrumbProps) {
   const { theme, style } = getThemeStyles(color);

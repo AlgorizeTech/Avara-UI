@@ -21,6 +21,15 @@ export type InputVariant = "default" | "filled" | "underlined" | "glow";
 export type InputSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    ring: "focus-within:ring-primary/30 focus-within:border-primary",
+    text: "text-primary",
+    bg: "bg-primary text-primary-foreground",
+    bgSoft:
+      "bg-primary/10 text-foreground",
+    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
+    dragActive: "border-primary bg-primary/10",
+  },
   indigo: {
     ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -91,7 +100,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -119,7 +128,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
     {
       type = "text",
       variant = "default",
-      color = "indigo",
+      color = "primary",
       inputSize = "md",
       label,
       helperText,

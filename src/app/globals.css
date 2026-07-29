@@ -235,27 +235,6 @@ html.dark .shiki span {
     Monaco, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
   --default-mono-font-feature-settings: normal;
   --default-mono-font-variation-settings: normal;
-
-  /* Color palette for markdown elements */
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
 }
 /* Grid background with light/dark mode and more visible lines */
 .grid-bg {
@@ -416,10 +395,14 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-xs: min(calc(var(--radius) - 6px), var(--radius));
+  --radius-sm: min(calc(var(--radius) - 4px), var(--radius));
+  --radius-md: min(calc(var(--radius) - 2px), var(--radius));
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius: var(--radius);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -460,6 +443,12 @@ input[type="range"]:focus::-moz-range-thumb {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Force zero border radius across all elements when --radius is 0rem */
+[style*="--radius: 0rem"] *,
+[style*="--radius:0rem"] * {
+  border-radius: 0 !important;
 }
 
 /* Custom animations for badge components */
