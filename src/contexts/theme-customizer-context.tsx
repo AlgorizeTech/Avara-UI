@@ -151,37 +151,12 @@ export function ThemeCustomizerProvider({
   const { theme, resolvedTheme } = useTheme();
   const [activeMode, setActiveMode] = useState<"light" | "dark">("dark");
 
-  // Keep activeMode strictly synced with document.documentElement class or resolvedTheme
+  // Keep activeMode strictly synced with resolvedTheme
   useEffect(() => {
-    const checkAndInject = () => {
-      if (typeof document !== "undefined") {
-        const isDark = document.documentElement.classList.contains("dark");
-        const newMode = isDark ? "dark" : "light";
-        setActiveMode(newMode);
-        if (hydrated) {
-          const modeColors = state.colors[newMode];
-          injectCSSVariables(modeColors, state.radius);
-        }
-      } else if (resolvedTheme === "dark" || resolvedTheme === "light") {
-        setActiveMode(resolvedTheme);
-      }
-    };
-
-    checkAndInject();
-
-    // Observe class attribute changes on <html> tag for instant mode sync
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "class") {
-          checkAndInject();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => observer.disconnect();
-  }, [resolvedTheme, theme, hydrated, state]);
+    if (resolvedTheme === "dark" || resolvedTheme === "light") {
+      setActiveMode(resolvedTheme);
+    }
+  }, [resolvedTheme]);
 
   const currentMode: "light" | "dark" = activeMode;
 

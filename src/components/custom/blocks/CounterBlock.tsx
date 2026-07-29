@@ -247,7 +247,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
                 theme.bg,
               )}
             >

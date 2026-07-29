@@ -81,7 +81,7 @@ function ColorSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border border-border rounded-lg overflow-hidden">
+    <div className="border border-border rounded-lg">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium text-foreground hover:bg-accent/50 transition-colors"

@@ -264,6 +264,7 @@ const Header = () => {
             <Link
               className="flex items-center gap-1.5 px-3 py-1 rounded-md text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-100 dark:bg-zinc-900"
               href="/docs"
+              prefetch={false}
             >
               <BookOpen className="h-3.5 w-3.5" />
               Docs
@@ -271,6 +272,7 @@ const Header = () => {
             <Link
               className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
               href="/docs/nextjs/avatar"
+              prefetch={false}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
               Components
@@ -278,6 +280,7 @@ const Header = () => {
             <Link
               className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
               href="/themes"
+              prefetch={false}
             >
               <Palette className="h-3.5 w-3.5" />
               Themes

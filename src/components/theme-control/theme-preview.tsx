@@ -75,7 +75,7 @@ export function ThemePreview() {
           <div className="flex items-center justify-center p-6 rounded-2xl border border-border bg-card h-full min-h-[400px]">
             <div className="w-full max-w-[280px] aspect-[3/4]">
               <TiltedCard>
-                <div className="w-full h-full bg-primary text-primary-foreground rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+                <div className="w-full h-full bg-primary text-primary-foreground rounded-2xl p-6 flex flex-col justify-between shadow-xl border border-black/10 dark:border-white/10">
                   <ShieldCheck className="w-10 h-10 opacity-90" />
                   <div>
                     <h3 className="text-xl font-bold mb-1">
@@ -143,7 +143,7 @@ export function ThemePreview() {
       {/* Full Width Calendar Section */}
       <PreviewSection title="Calendar Dashboard">
         <div className="rounded-2xl border border-border overflow-hidden">
-          <CalendarDashboard color={primaryHex} variant="default" />
+          <CalendarDashboard color="primary" variant="default" />
         </div>
       </PreviewSection>
     </div>

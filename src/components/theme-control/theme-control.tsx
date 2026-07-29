@@ -4,6 +4,7 @@ import { Palette, Settings, TimerReset } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
+import { usePathname } from "next/navigation";
 
 import {
   Sheet,
@@ -30,6 +31,12 @@ export function ThemeControl() {
   const { dir, setFontSize, setFontFamily } =
     useThemeContext();
   const { resetToDefaults } = useThemeCustomizer();
+  const { setTheme } = useTheme();
+  const pathname = usePathname();
+
+  if (pathname === "/themes") {
+    return null;
+  }
 
   function resetThemeCustomization() {
     localStorage.removeItem("primaryColor");
