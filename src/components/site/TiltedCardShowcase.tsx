@@ -1,17 +1,14 @@
 "use client";
 
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
-
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { cn } from "@/lib/utils";
 import { Cpu, Fingerprint, Nfc } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const TILT_CODE_TS = `"use client";
-
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 
 import { cn } from "@/lib/utils";
 import {
@@ -31,7 +28,7 @@ export interface TiltedCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
-  ({ children, className, tiltIntensity = 15, glareOpacity = 0.2, scaleOnHover = 1.02, ...props }, ref) => {
+  ({ children, className, tiltIntensity = 15, glareOpacity = 0.15, scaleOnHover = 1.02, ...props }, ref) => {
     const cardRef = useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
@@ -47,7 +44,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
 
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 50%)\`;
+    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
@@ -72,10 +69,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group"
+          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
           <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-overlay dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{ background: glareBackground }}
           />
           <div className="relative w-full h-full z-10" style={{ transform: "translateZ(30px)" }}>
@@ -91,8 +88,6 @@ TiltedCard.displayName = "TiltedCard";`;
 // --- PURE JAVASCRIPT ENGINE CODE ---
 const TILT_CODE_JS = `"use client";
 
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
-
 import { cn } from "@/lib/utils";
 import {
   motion,
@@ -104,7 +99,7 @@ import {
 import React, { useRef } from "react";
 
 export const TiltedCard = React.forwardRef(
-  ({ children, className, tiltIntensity = 15, glareOpacity = 0.2, scaleOnHover = 1.02, ...props }, ref) => {
+  ({ children, className, tiltIntensity = 15, glareOpacity = 0.15, scaleOnHover = 1.02, ...props }, ref) => {
     const cardRef = useRef(null);
     React.useImperativeHandle(ref, () => cardRef.current);
 
@@ -120,7 +115,7 @@ export const TiltedCard = React.forwardRef(
 
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
-    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 50%)\`;
+    const glareBackground = useMotionTemplate\`radial-gradient(circle at \${glareX}% \${glareY}%, rgba(255,255,255,\${glareOpacity}), transparent 60%)\`;
 
     const handleMouseMove = (e) => {
       if (!cardRef.current) return;
@@ -145,10 +140,10 @@ export const TiltedCard = React.forwardRef(
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group"
+          className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
         >
           <motion.div
-            className="absolute inset-0 z-50 pointer-events-none mix-blend-overlay dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute inset-0 z-50 pointer-events-none mix-blend-normal dark:mix-blend-screen opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{ background: glareBackground }}
           />
           <div className="relative w-full h-full z-10" style={{ transform: "translateZ(30px)" }}>
@@ -163,10 +158,10 @@ TiltedCard.displayName = "TiltedCard";`;
 
 export function TiltedCardShowcase() {
   const [tiltIntensity, setTiltIntensity] = useState(20);
-  const [glareOpacity, setGlareOpacity] = useState(0.4);
-  const [scaleOnHover, setScaleOnHover] = useState(1.05);
+  const [glareOpacity, setGlareOpacity] = useState(0.25);
+  const [scaleOnHover, setScaleOnHover] = useState(1.04);
 
-  const [color, setColor] = useState<string>("#FFAB1D"); // Theme context sync
+  const [color, setColor] = useState<string>("#FFAB1D");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -189,19 +184,18 @@ import { ShieldCheck } from "lucide-react";
 
 export default function FeaturedProduct() {
   return (
-    // Note: The parent container must specify a width and height (or aspect ratio)
     <div className="w-full max-w-[340px] aspect-[3/4]">
       <TiltedCard 
         tiltIntensity={${tiltIntensity}} 
         glareOpacity={${glareOpacity}} 
         scaleOnHover={${scaleOnHover}}
       >
-        <div className="w-full h-full bg-zinc-900 rounded-2xl p-8 flex flex-col justify-between border border-white/10">
+        <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/80 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950 rounded-2xl p-8 flex flex-col justify-between border border-zinc-200/80 dark:border-white/10 shadow-sm">
           <ShieldCheck className="w-12 h-12 text-indigo-500" />
           
           <div>
-            <h3 className="text-2xl font-bold text-white mb-2">Vault Security</h3>
-            <p className="text-zinc-400">Military-grade encryption securing your assets automatically.</p>
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Vault Security</h3>
+            <p className="text-zinc-600 dark:text-zinc-400">Military-grade encryption securing your assets automatically.</p>
           </div>
         </div>
       </TiltedCard>
@@ -210,7 +204,6 @@ export default function FeaturedProduct() {
 }`;
   };
 
-  // Cross-browser targeted structural selectors for sliders
   const sliderClasses = cn(
     "w-full appearance-none bg-transparent cursor-pointer outline-none",
     "[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:bg-zinc-200 dark:[&::-webkit-slider-runnable-track]:bg-zinc-800 [&::-webkit-slider-runnable-track]:rounded-full",
@@ -253,7 +246,7 @@ export default function FeaturedProduct() {
               type="range"
               min="0"
               max="1"
-              step="0.1"
+              step="0.05"
               value={glareOpacity}
               onChange={(e) => setGlareOpacity(parseFloat(e.target.value))}
               className={sliderClasses}
@@ -288,43 +281,46 @@ export default function FeaturedProduct() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#020202] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]">
+        <div className="w-full flex items-center justify-center bg-zinc-100/70 dark:bg-[#050505] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]">
           {/* Decorative Mesh Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.06)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-          {/* Wrapper dictates the card's physical size. Responsive classes applied! */}
+          {/* Wrapper dictates the card's physical size */}
           <div className="w-full max-w-[340px] aspect-[3/4] relative z-10">
             <TiltedCard
               tiltIntensity={tiltIntensity}
               glareOpacity={glareOpacity}
               scaleOnHover={scaleOnHover}
             >
-              {/* Card Surface Design (Glassmorphic Mock Credit Card / ID) */}
-              <div className="w-full h-full bg-white/60 dark:bg-zinc-900/60 backdrop-blur-2xl border border-white/50 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-                {/* Decorative gradients inside the card to enhance the 3D parallax */}
+              {/* Card Surface Design: Subtle gradient + inner border highlight + delicate texture */}
+              <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/95 to-zinc-100/90 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                {/* Subtle Inner Surface Texture (Dot matrix inside the card) */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:12px_12px] pointer-events-none" />
+
+                {/* Ambient Corner Glows (Balanced so they add sheen without looking like muddy smudges) */}
                 <div
-                  className="absolute -top-16 sm:-top-24 -right-16 sm:-right-24 w-32 sm:w-48 h-32 sm:h-48 rounded-full blur-[40px] sm:blur-[60px] opacity-60 dark:opacity-40"
+                  className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"
                   style={{ backgroundColor: color }}
                 />
                 <div
-                  className="absolute -bottom-16 sm:-bottom-24 -left-16 sm:-left-24 w-48 sm:w-64 h-48 sm:h-64 rounded-full blur-[60px] sm:blur-[80px] opacity-40 dark:opacity-20"
+                  className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[60px] opacity-15 dark:opacity-20 pointer-events-none"
                   style={{ backgroundColor: color }}
                 />
 
                 <div className="relative z-10 flex justify-between items-start">
                   <div
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg border border-white/20 dark:border-black/20"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-zinc-200/60 dark:border-white/10"
                     style={{ backgroundColor: color, color: "#fff" }}
                   >
                     <Nfc className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-zinc-300 dark:text-zinc-600" />
+                  <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-zinc-400 dark:text-zinc-600" />
                 </div>
 
                 <div className="relative z-10 mt-auto">
                   <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                    <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-400 dark:text-zinc-500" />
-                    <div className="h-1.5 w-12 sm:w-16 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                    <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-500 dark:text-zinc-500" />
+                    <div className="h-1.5 w-12 sm:w-16 bg-zinc-200/80 dark:bg-zinc-800 rounded-full overflow-hidden">
                       <div className="h-full w-full bg-gradient-to-r from-transparent via-zinc-400 dark:via-zinc-500 to-transparent animate-[shimmer_2s_infinite]" />
                     </div>
                   </div>
@@ -332,7 +328,7 @@ export default function FeaturedProduct() {
                   <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-1 drop-shadow-sm">
                     Access Key
                   </h3>
-                  <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 font-mono tracking-widest">
+                  <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400 font-mono tracking-widest">
                     ID // 0x8F92A
                   </p>
                 </div>

@@ -84,13 +84,13 @@ export function ThemePreview() {
           <div className="flex items-center justify-center p-6 rounded-2xl border border-border bg-card h-full min-h-[400px]">
             <div className="w-full max-w-[280px] aspect-[3/4]">
               <TiltedCard>
-                <div className="w-full h-full bg-zinc-900 dark:bg-zinc-950 rounded-2xl p-6 flex flex-col justify-between border border-border shadow-xl">
-                  <ShieldCheck className="w-10 h-10 text-primary" />
+                <div className="w-full h-full bg-primary text-primary-foreground rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+                  <ShieldCheck className="w-10 h-10 opacity-90" />
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-1">
+                    <h3 className="text-xl font-bold mb-1">
                       Secure Vault
                     </h3>
-                    <p className="text-sm text-zinc-400">
+                    <p className="text-sm opacity-80">
                       Your data is encrypted and safely stored using
                       military-grade standards.
                     </p>
@@ -117,7 +117,7 @@ export function ThemePreview() {
 
         {/* ROW 2 */}
         <PreviewSection title="Counter">
-          <div className="flex flex-col justify-center gap-8 p-6 rounded-2xl border border-border bg-card h-full min-h-[300px]">
+          <div className="flex flex-col items-center justify-center gap-8 p-6 rounded-2xl border border-border bg-card h-full min-h-[300px]">
             <CounterBlock
               type="stepper"
               variant="default"
