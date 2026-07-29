@@ -11,16 +11,7 @@ import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 import { oklchToHex } from "@/lib/color-utils";
 import { ShieldCheck } from "lucide-react";
 
-import {
-  Wizard,
-  WizardContainer,
-  WizardStep,
-  WizardTitle,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardProgress,
-} from "@/components/custom/blocks/WizardBlock";
+import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
@@ -149,31 +140,10 @@ export function ThemePreview() {
         </PreviewSection>
       </div>
 
-      {/* Full Width Wizard Section */}
-      <PreviewSection title="Wizard">
+      {/* Full Width Calendar Section */}
+      <PreviewSection title="Calendar Dashboard">
         <div className="rounded-2xl border border-border overflow-hidden">
-          <Wizard color="primary">
-            <WizardProgress />
-            <WizardContainer className="bg-card">
-              <WizardStep index={0}>
-                <WizardTitle>What is your name?</WizardTitle>
-                <WizardDescription>
-                  We'll use this to personalize your experience.
-                </WizardDescription>
-                <WizardInput placeholder="Enter your name" />
-                <WizardNavigation />
-              </WizardStep>
-
-              <WizardStep index={1}>
-                <WizardTitle>What's your email?</WizardTitle>
-                <WizardDescription>
-                  We won't spam you, promise.
-                </WizardDescription>
-                <WizardInput type="email" placeholder="name@example.com" />
-                <WizardNavigation />
-              </WizardStep>
-            </WizardContainer>
-          </Wizard>
+          <CalendarDashboard color={primaryHex} variant="default" />
         </div>
       </PreviewSection>
     </div>
