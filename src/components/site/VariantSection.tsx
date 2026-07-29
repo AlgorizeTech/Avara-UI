@@ -30,5 +30,5 @@ export function VariantSection({
 
   if (active === null) return null;
 
-  return active ? {children} : null;
+  return active ? <>{children}</> : null;
 }
