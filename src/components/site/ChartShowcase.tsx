@@ -319,9 +319,9 @@ export function ChartShowcase() {
   // Initialize with localStorage if available
   const [color, setColor] = useState<ChartColor | string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
+      return localStorage.getItem("primaryColor") || "primary";
     }
-    return "indigo";
+    return "primary";
   });
 
   // Automatically listen for updates to the primaryColor in localStorage
@@ -374,6 +374,9 @@ export function ChartShowcase() {
 
   const generateUsageCode = (isTs: boolean) => {
     let propsStr = `\n        data={data}\n        type="${type}"`;
+    if (color && color !== "primary" && color !== "var(--primary)") {
+      propsStr += `\n        color="${color}"`;
+    }
     if (!showGrid) propsStr += `\n        showGrid={false}`;
     if (!showArea && type === "line") propsStr += `\n        showArea={false}`;
     propsStr += `\n        valuePrefix="$"`;

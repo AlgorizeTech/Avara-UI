@@ -16,6 +16,11 @@ export type ProgressColor =
   | (string & {});
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary",
+    bgSoft: "bg-primary/20",
+    glow: "shadow-[0_0_15px_var(--primary)]",
+  },
   indigo: {
     bg: "bg-indigo-600",
     bgSoft: "bg-indigo-500/20",
@@ -67,7 +72,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -145,7 +150,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       value = 0,
       max = 100,
       variant = "default",
-      color = "indigo",
+      color = "primary",
       barSize = "md",
       className,
       indicatorClassName,

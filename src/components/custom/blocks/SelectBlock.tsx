@@ -12,6 +12,14 @@ export type SelectVariant = "default" | "filled" | "underlined" | "glow";
 export type SelectSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    ring: "ring-primary/30 border-primary",
+    text: "text-primary",
+    bg: "bg-primary text-primary-foreground",
+    bgSoft:
+      "bg-primary/10 text-foreground",
+    glow: "shadow-[0_0_20px_var(--primary)] border-primary",
+  },
   indigo: {
     ring: "ring-indigo-500/30 border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -75,7 +83,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -114,7 +122,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
       onChange,
       placeholder = "Select an option",
       variant = "default",
-      color = "indigo",
+      color = "primary",
       inputSize = "md",
       label,
       helperText,

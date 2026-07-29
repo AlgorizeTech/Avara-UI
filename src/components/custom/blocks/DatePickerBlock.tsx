@@ -17,6 +17,14 @@ export type DatePickerVariant = "default" | "filled" | "underlined" | "glow";
 export type DatePickerSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    ring: "focus-within:ring-primary/30 focus-within:border-primary",
+    text: "text-primary",
+    bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+    bgSoft:
+      "bg-primary/10 text-foreground hover:bg-primary/20",
+    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
+  },
   indigo: {
     ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -82,7 +90,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -132,7 +140,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       onChange,
       placeholder = "Pick a date",
       variant = "default",
-      color = "indigo",
+      color = "primary",
       inputSize = "md",
       label,
       helperText,
