@@ -1,7 +1,8 @@
 "use client";
 
-import { Settings, TimerReset } from "lucide-react";
+import { Palette, Settings, TimerReset } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 import {
   Sheet,
@@ -76,15 +77,24 @@ export function ThemeControl() {
               <FontSizeControl />
               <FontFamilyControl />
             </div>
-          {/* Bottom Right Reset Button Footer */}
-          <div className="mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-end">
-            <button
-              onClick={resetThemeCustomization}
-              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-95 transition-all rounded-lg border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm cursor-pointer"
+          {/* Full Customizer Link + Reset Button Footer */}
+          <div className="mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
+            <Link
+              href="/themes"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-semibold text-white bg-primary hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm"
             >
-              <TimerReset className="w-4 h-4" />
-              Reset Defaults
-            </button>
+              <Palette className="w-4 h-4" />
+              Full Theme Customizer
+            </Link>
+            <div className="flex justify-end">
+              <button
+                onClick={resetThemeCustomization}
+                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-95 transition-all rounded-lg border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm cursor-pointer"
+              >
+                <TimerReset className="w-4 h-4" />
+                Reset Defaults
+              </button>
+            </div>
           </div>
           </div>
 

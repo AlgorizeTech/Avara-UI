@@ -118,6 +118,7 @@ export const WizardProgress = forwardRef<
 
   // Tailwind color mapping
   const colorMap: Record<string, string> = {
+    primary: "bg-primary",
     indigo: "bg-indigo-600 dark:bg-indigo-500",
     blue: "bg-blue-600 dark:bg-blue-500",
     rose: "bg-rose-600 dark:bg-rose-500",
@@ -266,6 +267,7 @@ export const WizardInput = forwardRef<
   const { color } = useWizard();
 
   const focusColors: Record<string, string> = {
+    primary: "focus:border-primary",
     indigo: "focus:border-indigo-500",
     blue: "focus:border-blue-500",
     rose: "focus:border-rose-500",
@@ -294,6 +296,7 @@ export const WizardNavigation = forwardRef<
   const { currentStep, nextStep, prevStep, color } = useWizard();
 
   const btnColors: Record<string, string> = {
+    primary: "bg-primary text-primary-foreground hover:opacity-90",
     indigo: "bg-indigo-600 hover:bg-indigo-700 text-white",
     blue: "bg-blue-600 hover:bg-blue-700 text-white",
     rose: "bg-rose-600 hover:bg-rose-700 text-white",
