@@ -165,31 +165,48 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+  if (color === "primary" || color === "default" || !colorThemes[color]) {
+    if (color && color.startsWith("#")) {
+      const rgb = hexToRgb(color);
+      return {
+        theme: {
+          text: "text-[var(--theme-color)]",
+          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
+          bgSoft:
+            "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+          border: "border-[var(--theme-color)]",
+          shadow: "shadow-[var(--theme-color)]/20",
+          gradient:
+            "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
+          gradientSoft: "from-[rgba(var(--theme-color-rgb),0.15)] to-transparent",
+          ring: "ring-[var(--theme-color)]",
+          slider:
+            "accent-[var(--theme-color)] [&::-webkit-slider-thumb]:bg-[var(--theme-color)]",
+          fill: "fill-[var(--theme-color)]",
+        },
+        style: {
+          "--theme-color": color,
+          "--theme-color-rgb": rgb,
+        } as React.CSSProperties,
+      };
+    }
     return {
       theme: {
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-        border: "border-[var(--theme-color)]",
-        shadow: "shadow-[var(--theme-color)]/20",
-        gradient:
-          "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
-        gradientSoft: "from-[rgba(var(--theme-color-rgb),0.15)] to-transparent",
-        ring: "ring-[var(--theme-color)]",
-        slider:
-          "accent-[var(--theme-color)] [&::-webkit-slider-thumb]:bg-[var(--theme-color)]",
-        fill: "fill-[var(--theme-color)]",
+        text: "text-primary",
+        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+        bgSoft: "bg-primary/10 text-primary",
+        border: "border-primary",
+        shadow: "shadow-primary/20",
+        gradient: "from-primary to-primary/80",
+        gradientSoft: "from-primary/10 to-transparent",
+        ring: "ring-primary",
+        slider: "accent-primary [&::-webkit-slider-thumb]:bg-primary",
+        fill: "fill-primary",
       },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
+      style: {} as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color], style: {} };
 };
 
 const ICON_MAP: Record<string, React.ElementType> = {

@@ -103,7 +103,7 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
               className={cn(
                 'text-xs font-medium px-2 py-0.5 rounded-full ml-1.5',
                 item.badge === 'New'
-                  ? 'bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-400'
+                  ? 'bg-primary/10 text-primary border border-primary/20'
                   : item.badge === 'Updated'
                     ? 'bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-400'
                     : 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400'

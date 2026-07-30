@@ -60,7 +60,7 @@ const menuData = transformNavigation();
 const getBadgeStyle = (badge: string) => {
   switch (badge) {
     case "New":
-      return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20";
+      return "bg-primary/10 text-primary border border-primary/20";
     case "Updated":
       return "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20";
     case "Tool":
@@ -273,7 +273,7 @@ const Sidebar = () => {
       <ScrollArea className="h-full w-full">
         <div className="py-6 px-4 pl-0 flex flex-col h-full">
           {/* --- SEARCH INPUT --- */}
-          <div className="pl-4 mb-6 relative">
+          <div className="px-3 mb-6 relative">
             <div className="relative flex items-center w-full">
               <Search className="absolute left-3 w-4 h-4 text-zinc-400 pointer-events-none" />
               <input
@@ -281,7 +281,7 @@ const Sidebar = () => {
                 placeholder="Search components..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-100/80 hover:bg-zinc-100 focus:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 dark:focus:bg-zinc-800/60 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-sm [&::-webkit-search-cancel-button]:appearance-none"
+                className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-sm [&::-webkit-search-cancel-button]:appearance-none"
                 aria-label="Search documentation components"
               />
               {isSearching && (

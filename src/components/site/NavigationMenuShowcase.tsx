@@ -364,7 +364,7 @@ export default function App() {
         <ThemeColorPicker
           color={color}
           onChange={handleColorChange}
-          label="Style Variant"
+          label="Theme Color"
         />
       </ShowcaseControlPanel>
 

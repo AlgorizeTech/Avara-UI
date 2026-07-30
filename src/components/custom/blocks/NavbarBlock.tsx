@@ -53,22 +53,32 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+  if (color === "primary" || color === "default" || !colorThemes[color]) {
+    if (color && color.startsWith("#")) {
+      const rgb = hexToRgb(color);
+      return {
+        theme: {
+          text: "text-[var(--theme-color)]",
+          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
+          bgSoft:
+            "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        },
+        style: {
+          "--theme-color": color,
+          "--theme-color-rgb": rgb,
+        } as React.CSSProperties,
+      };
+    }
     return {
       theme: {
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        text: "text-primary",
+        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+        bgSoft: "bg-primary/10 text-primary",
       },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
+      style: {} as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color], style: {} };
 };
 
 const NAV_LINKS = [

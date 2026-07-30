@@ -27,7 +27,7 @@ import { useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type SupportVariant = "default" | "minimal" | "glass";
-export type SupportColor = "indigo" | "rose" | "emerald" | "zinc";
+export type SupportColor = "primary" | "indigo" | "rose" | "emerald" | "zinc";
 export type SupportLayout = "chat" | "table";
 
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
@@ -117,6 +117,15 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
 };
 
 const colorThemes: Record<SupportColor, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    lightBg: "bg-primary/10 text-primary",
+    border: "border-primary",
+    activeBorder: "border-b-2 border-primary",
+    focusRing: "focus:ring-primary/20 focus:border-primary",
+    iconBg: "bg-primary/10 text-primary",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20",
@@ -257,8 +266,8 @@ export default function SupportDashboard({
       </div>
     );
 
-  const theme = colorThemes[color];
-  const styles = supportVariants[variant];
+  const theme = colorThemes[color] || colorThemes.indigo;
+  const styles = supportVariants[variant] || supportVariants.default;
 
   // Derive active ticket and metrics from STATE, not static data
   const selectedTicket = tickets.find((t) => t.id === selectedTicketId);

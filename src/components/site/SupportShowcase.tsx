@@ -9,6 +9,7 @@ import SupportDashboard, {
   SupportVariant,
 } from "@/components/custom/blocks/Support-dashboard";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -21,7 +22,7 @@ import { ArrowLeft, CheckCircle2, ChevronDown, Clock, Image as ImageIcon, Inbox,
 import { useState } from "react";
 
 export type SupportVariant = "default" | "minimal" | "glass";
-export type SupportColor = "indigo" | "rose" | "emerald" | "zinc";
+export type SupportColor = "primary" | "indigo" | "rose" | "emerald" | "zinc";
 export type SupportLayout = "chat" | "table";
 
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
@@ -68,8 +69,8 @@ export default function SupportDashboard({ data, variant = "default", color = "i
 
   if (!data || !data.tickets) return <div className="w-full h-[500px] flex items-center justify-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-500">Please pass the data prop to SupportDashboard</div>;
 
-  const theme = colorThemes[color];
-  const styles = supportVariants[variant];
+  const theme = colorThemes[color] || colorThemes.indigo;
+  const styles = supportVariants[variant] || supportVariants.default;
   const selectedTicket = tickets.find((t) => t.id === selectedTicketId);
 
   const totalTickets = tickets.length;
@@ -609,7 +610,7 @@ export default function SupportDashboard({ data, variant = "default", color = "i
 
 export function SupportShowcase() {
   const [variant, setVariant] = useState<SupportVariant>("default");
-  const [color, setColor] = useState<SupportColor>("indigo");
+  const [color, setColor] = useState<SupportColor>("primary");
   const [layout, setLayout] = useState<SupportLayout>("chat");
 
   const generateUsageCode = (isTs: boolean) => {
@@ -819,30 +820,7 @@ export default function SupportDemo()${typeDef} {
         </div>
 
         {/* Color Selector */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Accent Color
-          </label>
-          <div className="flex items-center gap-2 h-[36px]">
-            {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setColor(c.id as SupportColor)}
-                className={`w-6 h-6 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                  color === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
-                }`}
-                title={c.id}
-              />
-            ))}
-          </div>
-        </div>
+        <ThemeColorPicker color={color} onChange={(c) => setColor(c as SupportColor)} label="Accent Color" />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
