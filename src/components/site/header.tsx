@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SearchModal } from "./search-modal";
 import { SidebarMobile } from "./sidebar-mobile";
@@ -68,6 +69,7 @@ const SupportAlertBanner = () => {
 // PREMIUM HEADER COMPONENT
 // ==========================================
 const Header = () => {
+  const pathname = usePathname() || "";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -262,7 +264,12 @@ const Header = () => {
           {/* Center Area: Absolute Centered Core Actions */}
           <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 text-[13.5px] font-medium text-zinc-500 dark:text-zinc-400">
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-100 dark:bg-zinc-900"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname === "/docs"
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/docs"
               prefetch={false}
             >
@@ -270,7 +277,12 @@ const Header = () => {
               Docs
             </Link>
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname.startsWith("/docs/")
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/docs/nextjs/avatar"
               prefetch={false}
             >
@@ -278,7 +290,12 @@ const Header = () => {
               Components
             </Link>
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname.startsWith("/themes")
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/themes"
               prefetch={false}
             >
