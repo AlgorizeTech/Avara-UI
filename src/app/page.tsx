@@ -42,8 +42,7 @@ import {
   ShieldCheck,
   Send,
   Mic,
-  ThumbsUp,
-  ThumbsDown,
+  GitPullRequest,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
@@ -64,12 +63,18 @@ const sampleChartData = [
 ];
 
 const sampleTerminalCode = `$ npx docs-ui@latest init
-✔ Initialized Docs UI configuration.
-✔ Installed dependencies: framer-motion, gsap, lucide-react.
+✔ Initialized Docs UI configuration in project root.
+✔ Installed dependencies: framer-motion, gsap, lucide-react, clsx.
 
 $ npx docs-ui@latest add ai-chat chart-block
-✔ Copying Ai-chat.tsx to components/
-✔ All components ready to import!`;
+✔ Copying Ai-chat.tsx to src/components/custom/blocks/
+✔ Copying ChartBlock.tsx to src/components/custom/blocks/
+✔ All components ready to import!
+
+$ npm run dev
+▲ Next.js (Turbopack)
+- Local: http://localhost:3000
+✓ Ready in 1.8s`;
 
 const techStack = [
   { name: "React JS", color: "var(--primary)" },
@@ -144,7 +149,7 @@ const sampleCarouselItems: CarouselItem[] = [
 ];
 
 /* ═══════════════════════════════════════════════
-   HERO INTERACTIVE HUB (100% FLUID & RESPONSIVE NO-GAP DESIGN)
+   HERO INTERACTIVE HUB (100% FLUID RESPONSIVE PREVIEW)
    ═══════════════════════════════════════════════ */
 
 function HeroInteractiveHub() {
@@ -445,7 +450,7 @@ function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden pt-10 pb-14">
+    <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden pt-16 pb-14">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, var(--primary) 0%, transparent 65%)", opacity: 0.12 }}
@@ -762,162 +767,242 @@ function ComponentShowcase() {
 }
 
 /* ═══════════════════════════════════════════════
-   SECTION 4: WHY DOCS UI?
+   SECTION 4: WHY DOCS UI? (USER'S EXACT CUSTOM SECTION)
    ═══════════════════════════════════════════════ */
 
 function WhyChooseUsSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-20 md:py-28 px-6 md:px-8 border-t border-border bg-muted/30">
-      <div className="max-w-[1320px] mx-auto">
+    <section
+      ref={ref}
+      className="py-20 md:py-28 px-6 md:px-8 border-y border-border/30 bg-background relative overflow-hidden"
+    >
+      {/* Background Subtle Ambient Lighting */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-primary/5 rounded-[100%] blur-[120px] pointer-events-none mix-blend-screen" />
+
+      {/* Subtle Grid overlay for texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black_40%,transparent_100%)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)]" />
+
+      <div className="max-w-[1140px] mx-auto relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16 md:mb-20"
         >
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-foreground mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
             Why Docs UI?
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Built to explore unique interaction patterns from displacement hover effects to animated tooltips and scroll-driven components.
+          <p className="text-muted-foreground/80 text-[15px] md:text-base max-w-xl mx-auto leading-relaxed font-medium">
+            Engineered to explore unique interaction patterns—from 3D
+            displacement hover effects to beautiful physics animations and
+            scalable layouts.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 2x2 Bento Grid - Scaled down for breathing room */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          {/* Card 1: Components You Won't Find Anywhere */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-border bg-card p-8 flex flex-col justify-between relative overflow-hidden group shadow-sm hover:border-primary/50 transition-all min-h-[380px]"
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700"
           >
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-2">
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
                 Components You Won&apos;t Find Anywhere
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Unique interaction patterns like displacement hover effects, animated tooltips, and scroll-driven cards that stand out from typical UI libraries.
+              <p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+                Unique interaction patterns like displacement hover effects,
+                fluid animations, and cards that stand out from typical UI
+                libraries.
               </p>
             </div>
 
-            <div className="mt-8 flex justify-center items-center py-6">
-              <div className="w-full max-w-xs rounded-2xl border border-border bg-muted/60 p-5 shadow-2xl relative group-hover:scale-105 transition-transform duration-300">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="size-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center font-bold text-xs">
-                    UI
-                  </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/20 text-primary">
-                    LIVE
-                  </span>
+            {/* Visual Block */}
+            <div className="mt-auto flex justify-center items-center h-48 sm:h-60 perspective-[1200px] relative">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-primary/20 blur-[50px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+              <div className="w-[240px] h-[150px] sm:w-[280px] sm:h-[180px] rounded-2xl border border-white/10 dark:border-white/5 bg-gradient-to-b from-white/50 to-white/10 dark:from-white/10 dark:to-white/5 backdrop-blur-xl shadow-2xl relative transition-transform duration-700 ease-out group-hover:[transform:rotateX(18deg)_rotateY(-18deg)_scale(1.03)] flex flex-col items-center justify-center p-5 overflow-hidden transform-gpu ring-1 ring-black/5 dark:ring-white/5">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+                <div className="size-14 sm:size-16 rounded-full bg-background border border-primary/20 text-primary flex items-center justify-center mb-4 transition-transform duration-700 group-hover:translate-z-[30px] shadow-xl shadow-primary/20">
+                  <Layers className="size-6 sm:size-7" />
                 </div>
-                <div className="h-3 w-32 rounded bg-muted mb-2" />
-                <div className="h-2 w-20 rounded bg-muted/80 mb-4" />
-                <div className="p-2.5 rounded-xl bg-card border border-border text-xs font-mono text-foreground flex items-center justify-between">
-                  <span>Interactive Card</span>
-                  <ArrowRight className="size-3.5 text-primary" />
-                </div>
+                <p className="font-bold text-[14px] sm:text-base transition-transform duration-700 group-hover:translate-z-[20px] text-foreground tracking-tight">
+                  Interactive Card
+                </p>
+                <p className="text-[10px] text-muted-foreground/80 mt-1.5 transition-transform duration-700 group-hover:translate-z-[15px] font-medium uppercase tracking-widest">
+                  Hover to preview
+                </p>
               </div>
             </div>
           </motion.div>
 
+          {/* Card 2: Built with Modern Frameworks */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="rounded-2xl border border-border bg-card p-8 flex flex-col justify-between relative overflow-hidden group shadow-sm hover:border-primary/50 transition-all min-h-[380px]"
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700"
           >
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-2">
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
                 Built with Modern Frameworks
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Designed to work seamlessly with popular frameworks like React JS and Next.js, making it easy to integrate into real-world production projects.
+              <p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+                Designed to work seamlessly with Next.js, React, and Tailwind
+                CSS. Engineered for rapid integration into real-world production
+                projects.
               </p>
             </div>
 
-            <div className="mt-8 flex justify-center items-center py-6">
-              <div className="grid grid-cols-3 gap-3 max-w-xs">
+            {/* Visual Block: Scaled Down Isometric Grid */}
+            <div className="mt-auto flex justify-center items-center h-48 sm:h-60 perspective-[1000px]">
+              <div
+                className="grid grid-cols-3 gap-4 sm:gap-5 transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
+                style={{ transform: "rotateX(55deg) rotateZ(-40deg)" }}
+              >
                 {[
-                  { name: "Next.js", icon: "N" },
-                  { name: "React JS", icon: "⚛" },
-                  { name: "TypeScript", icon: "TS" },
-                  { name: "Tailwind", icon: "TW" },
-                  { name: "Motion", icon: "FM" },
-                  { name: "GSAP", icon: "G" },
+                  { name: "React", icon: <Cpu className="size-5 sm:size-6" /> },
+                  {
+                    name: "Next.js",
+                    icon: <Boxes className="size-5 sm:size-6" />,
+                  },
+                  {
+                    name: "Tailwind",
+                    icon: <Paintbrush className="size-5 sm:size-6" />,
+                  },
+                  {
+                    name: "Framer",
+                    icon: <Sparkles className="size-5 sm:size-6" />,
+                  },
+                  {
+                    name: "TypeScript",
+                    icon: <Code2 className="size-5 sm:size-6" />,
+                  },
+                  { name: "GSAP", icon: <Zap className="size-5 sm:size-6" /> },
                 ].map((f, idx) => (
                   <div
                     key={f.name}
-                    className="p-3 rounded-xl border border-border bg-muted/60 flex flex-col items-center justify-center gap-1 group-hover:-translate-y-1 transition-transform"
+                    className="size-14 sm:size-16 rounded-2xl bg-background/80 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-[0_12px_24px_rgba(0,0,0,0.06)] flex items-center justify-center text-muted-foreground/70 transition-all duration-700 ease-out hover:-translate-y-4 sm:hover:-translate-y-6 hover:shadow-[0_24px_40px_rgba(var(--primary-rgb),0.15)] hover:border-primary/50 hover:text-primary relative group/icon before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/20 before:to-transparent before:opacity-0 hover:before:opacity-100"
                     style={{ transitionDelay: `${idx * 40}ms` }}
                   >
-                    <span className="font-mono font-bold text-sm text-primary">
+                    <div className="transform-gpu rotate-x-[0deg] rotate-z-[0deg] relative z-10">
                       {f.icon}
-                    </span>
-                    <span className="text-[10px] font-semibold text-muted-foreground">
-                      {f.name}
-                    </span>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </motion.div>
 
+          {/* Card 3: Open Source With Story */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="rounded-2xl border border-border bg-card p-8 flex flex-col justify-between relative overflow-hidden group shadow-sm hover:border-primary/50 transition-all min-h-[380px]"
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700"
           >
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-2">
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
                 Open Source With Story
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Every component is open source and crafted with intention. Each block explores a unique interaction pattern and reasoning behind the design.
+              <p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+                Every component is crafted with intention. Each block explores a
+                unique interaction pattern and the reasoning behind its
+                structural design.
               </p>
             </div>
 
-            <div className="mt-8 flex justify-center items-center py-6">
-              <div className="w-full max-w-sm flex items-center justify-between relative">
-                <div className="size-10 rounded-full border-2 border-primary/40 bg-muted flex items-center justify-center text-xs font-bold">
-                  👨‍💻
+            {/* Visual Block: Scaled Down Nodes */}
+            <div className="mt-auto flex justify-center items-center h-48 sm:h-60 relative w-full">
+              <div className="w-full max-w-[260px] sm:max-w-[300px] relative flex items-center justify-between z-10 h-full">
+                <svg
+                  className="absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-[2px] overflow-visible -z-10"
+                  preserveAspectRatio="none"
+                >
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="100%"
+                    y2="0"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 4"
+                    className="text-border/60"
+                  />
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="100%"
+                    y2="0"
+                    stroke="var(--primary)"
+                    strokeWidth="2"
+                    className="stroke-[var(--primary)] drop-shadow-[0_0_6px_var(--primary)] transition-all duration-[2s] ease-in-out opacity-0 group-hover:opacity-100"
+                    strokeDasharray="20 1000"
+                    strokeDashoffset="100"
+                    style={{ animation: "dash-sweep 3s infinite linear" }}
+                  />
+                </svg>
+
+                <div className="size-12 sm:size-14 rounded-2xl border border-white/10 dark:border-white/5 bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-black/5 dark:ring-white/5">
+                  <Code2 className="size-5 sm:size-6 opacity-70 group-hover:opacity-100" />
                 </div>
-                <div className="h-0.5 flex-1 bg-primary/40 mx-2" />
-                <div className="size-12 rounded-full border-2 border-primary bg-primary text-primary-foreground flex items-center justify-center font-black text-sm shadow-xl">
-                  UI
+
+                <div className="size-16 sm:size-20 rounded-2xl border border-primary/50 bg-gradient-to-br from-primary/20 to-primary/5 backdrop-blur-md text-primary shadow-[0_12px_24px_rgba(var(--primary-rgb),0.15)] flex items-center justify-center transition-all duration-700 group-hover:-translate-y-3 group-hover:shadow-[0_20px_40px_rgba(var(--primary-rgb),0.25)] group-hover:scale-110 relative before:absolute before:inset-0 before:rounded-2xl before:bg-white/10 before:opacity-0 hover:before:opacity-100">
+                  <GitPullRequest className="size-7 sm:size-8 relative z-10" />
                 </div>
-                <div className="h-0.5 flex-1 bg-primary/40 mx-2" />
-                <div className="size-10 rounded-full border-2 border-primary/40 bg-muted flex items-center justify-center text-xs font-bold">
-                  🚀
+
+                <div className="size-12 sm:size-14 rounded-2xl border border-white/10 dark:border-white/5 bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-black/5 dark:ring-white/5">
+                  <Share2 className="size-5 sm:size-6 opacity-70 group-hover:opacity-100" />
                 </div>
               </div>
             </div>
           </motion.div>
 
+          {/* Card 4: Build Landing Pages Faster */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="rounded-2xl border border-border bg-card p-8 flex flex-col justify-between relative overflow-hidden group shadow-sm hover:border-primary/50 transition-all min-h-[380px]"
+            transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700"
           >
-            <div>
-              <h3 className="text-xl font-bold text-foreground mb-2">
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
                 Build Landing Pages Faster
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Launch polished landing pages in minutes using pre-built UI blocks designed for speed and consistency. Skip repetitive work and focus on shipping.
+              <p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+                Launch polished interfaces in minutes using pre-built UI blocks
+                designed for speed. Skip repetitive scaffolding and focus on
+                shipping.
               </p>
             </div>
 
-            <div className="mt-8 flex justify-center items-center py-6">
-              <div className="w-full max-w-xs rounded-xl border border-dashed border-border p-4 space-y-2 bg-muted/40">
-                <div className="h-2.5 w-full rounded bg-muted" />
-                <div className="h-2 w-3/4 rounded bg-muted" />
-                <div className="flex gap-2 pt-2">
-                  <div className="h-7 flex-1 rounded bg-primary/20 border border-primary/30" />
-                  <div className="h-7 flex-1 rounded bg-muted" />
+            {/* Visual Block: Scaled Down Skeletons */}
+            <div className="mt-auto flex justify-center items-center h-48 sm:h-60 relative">
+              <div className="w-full max-w-[280px] rounded-2xl border border-black/5 dark:border-white/5 p-4 sm:p-5 space-y-3 sm:space-y-4 bg-background/80 backdrop-blur-sm shadow-xl relative group-hover:border-primary/30 transition-all duration-700 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
+                {/* Dark-mode aware shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 dark:via-white/5 to-transparent group-hover:animate-[shimmer_2s_infinite] z-0" />
+
+                {/* Skeletons with proper light/dark contrast */}
+                <div className="h-3 w-1/3 rounded-md bg-zinc-200 dark:bg-muted/60 relative z-10" />
+                <div className="h-16 sm:h-20 w-full rounded-xl bg-zinc-100 dark:bg-muted/40 relative z-10" />
+                <div className="flex gap-3 relative z-10">
+                  <div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
+                  <div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
+                </div>
+
+                <div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
+                  <div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-zinc-700 dark:border-zinc-300">
+                    <Zap className="size-3.5 sm:size-4 text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
+                    Ship at lightspeed
+                  </div>
                 </div>
               </div>
             </div>
@@ -1354,7 +1439,7 @@ function FooterSection() {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-sans">
       <HeroSection />
       <TechStackMarquee />
       <ComponentShowcase />
