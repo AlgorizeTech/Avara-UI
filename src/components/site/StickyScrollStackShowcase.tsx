@@ -9,6 +9,7 @@ import {
 import { ComponentPreview } from "@/components/site/ComponentPreview";
 import { cn } from "@/lib/utils";
 import { Palette, Smartphone, Sparkles } from "lucide-react";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { useEffect, useState } from "react";
 
 // --- 100% COMPLETE TYPESCRIPT ENGINE CODE ---
@@ -77,7 +78,7 @@ const StackCard: React.FC<{
             {item.icon && <div className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/50">{item.icon}</div>}
             <div>
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">{item.title}</h3>
-              {item.badge && <span className="inline-block text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">{item.badge}</span>}
+              {item.badge && <span className="inline-block text-xs font-semibold uppercase tracking-wider text-[var(--theme-color)] dark:text-[var(--theme-color)]">{item.badge}</span>}
             </div>
           </div>
           <span className="font-mono text-xs font-semibold text-zinc-400 dark:text-zinc-500">0{index + 1} / 0{total}</span>
@@ -90,7 +91,7 @@ const StackCard: React.FC<{
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                 {item.listItems.map((listItem, i) => (
                   <li key={i} className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[var(--theme-color)] shrink-0" />
                     <span>{listItem}</span>
                   </li>
                 ))}
@@ -118,7 +119,7 @@ const StackCard: React.FC<{
                 <ul className="space-y-2 pt-1">
                   {item.listItems.map((listItem, i) => (
                     <li key={i} className="flex items-center gap-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[var(--theme-color)] shrink-0" />
                       <span>{listItem}</span>
                     </li>
                   ))}
@@ -154,11 +155,11 @@ export const StickyScrollStack = React.forwardRef<HTMLDivElement, StickyScrollSt
 
     return (
       <div ref={containerRef} className={cn("relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20", className)} {...props}>
-        {enableGlow && <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/5 blur-[120px] rounded-full -z-10" />}
+        {enableGlow && <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[var(--theme-color)]/20 via-[var(--theme-color)]/10 to-[var(--theme-color)]/5 blur-[120px] rounded-full -z-10" />}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-28 flex flex-col justify-center text-left z-10">
             {headerBadge && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider w-fit mb-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--theme-color)]/20 dark:bg-[var(--theme-color)]/20 border border-[var(--theme-color)]/30 dark:border-[var(--theme-color)]/30 text-[var(--theme-color)] dark:text-[var(--theme-color)] text-xs font-semibold uppercase tracking-wider w-fit mb-5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{headerBadge}</span>
               </div>
@@ -219,7 +220,7 @@ const StackCard = ({ item, index, total, progress, stackOffsetStep, scaleStep })
             {item.icon && <div className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/50">{item.icon}</div>}
             <div>
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">{item.title}</h3>
-              {item.badge && <span className="inline-block text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">{item.badge}</span>}
+              {item.badge && <span className="inline-block text-xs font-semibold uppercase tracking-wider text-[var(--theme-color)] dark:text-[var(--theme-color)]">{item.badge}</span>}
             </div>
           </div>
           <span className="font-mono text-xs font-semibold text-zinc-400 dark:text-zinc-500">0{index + 1} / 0{total}</span>
@@ -232,7 +233,7 @@ const StackCard = ({ item, index, total, progress, stackOffsetStep, scaleStep })
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                 {item.listItems.map((listItem, i) => (
                   <li key={i} className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[var(--theme-color)] shrink-0" />
                     <span>{listItem}</span>
                   </li>
                 ))}
@@ -260,7 +261,7 @@ const StackCard = ({ item, index, total, progress, stackOffsetStep, scaleStep })
                 <ul className="space-y-2 pt-1">
                   {item.listItems.map((listItem, i) => (
                     <li key={i} className="flex items-center gap-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[var(--theme-color)] shrink-0" />
                       <span>{listItem}</span>
                     </li>
                   ))}
@@ -296,11 +297,11 @@ export const StickyScrollStack = React.forwardRef(
 
     return (
       <div ref={containerRef} className={cn("relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20", className)} {...props}>
-        {enableGlow && <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/5 blur-[120px] rounded-full -z-10" />}
+        {enableGlow && <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[var(--theme-color)]/20 via-[var(--theme-color)]/10 to-[var(--theme-color)]/5 blur-[120px] rounded-full -z-10" />}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-28 flex flex-col justify-center text-left z-10">
             {headerBadge && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider w-fit mb-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--theme-color)]/20 dark:bg-[var(--theme-color)]/20 border border-[var(--theme-color)]/30 dark:border-[var(--theme-color)]/30 text-[var(--theme-color)] dark:text-[var(--theme-color)] text-xs font-semibold uppercase tracking-wider w-fit mb-5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{headerBadge}</span>
               </div>
@@ -340,7 +341,13 @@ export function StickyScrollStackShowcase() {
   const [headerMode, setHeaderMode] = useState<
     "text-button" | "image-button" | "text-only"
   >("text-button");
-  const [color, setColor] = useState<string>("#6366F1");
+  const [color, setColor] = useState<string>("primary");
+  const getThemeColorHex = (c: string) => {
+    if (c.startsWith('#')) return c;
+    const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: '#6366f1', rose: '#f43f5e', emerald: '#10b981', zinc: '#18181b' };
+    return map[c] || "var(--primary)";
+  };
+
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -362,7 +369,7 @@ export function StickyScrollStackShowcase() {
       id: "ui-design",
       title: "UI Design",
       badge: "Visual Identity",
-      icon: <Palette className="w-5 h-5" style={{ color }} />,
+      icon: <Palette className="w-5 h-5" style={{ color: getThemeColorHex(color) }} />,
       contentType: "list",
       description:
         "Crafting intuitive, pixel-perfect interfaces designed to engage and convert real users.",
@@ -379,7 +386,7 @@ export function StickyScrollStackShowcase() {
       id: "branding",
       title: "Branding & Identity",
       badge: "Brand Strategy",
-      icon: <Sparkles className="w-5 h-5 text-pink-500" />,
+      icon: <Sparkles className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "split",
       description:
         "Building memorable, iconic brand identities that stand out in crowded markets.",
@@ -397,7 +404,7 @@ export function StickyScrollStackShowcase() {
       id: "fullstack-dev",
       title: "Full-Stack Development",
       badge: "Engineering",
-      icon: <Smartphone className="w-5 h-5 text-blue-500" />,
+      icon: <Smartphone className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "image",
       description:
         "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
@@ -410,7 +417,7 @@ export function StickyScrollStackShowcase() {
       id: "fullstack-dev-2",
       title: "Backend Architecture",
       badge: "Infrastructure",
-      icon: <Smartphone className="w-5 h-5 text-emerald-500" />,
+      icon: <Smartphone className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "image",
       description:
         "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
@@ -437,7 +444,7 @@ export default function ServicesSection() {
       id: "ui-design",
       title: "UI Design",
       badge: "Visual Identity",
-      icon: <Palette className="w-5 h-5 text-indigo-500" />,
+      icon: <Palette className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "list",
       description: "Crafting intuitive, pixel-perfect interfaces designed to convert.",
       listItems: ["Landing Pages", "Mobile Apps", "SaaS Dashboards"],
@@ -447,7 +454,7 @@ export default function ServicesSection() {
       id: "branding",
       title: "Branding & Identity",
       badge: "Brand Strategy",
-      icon: <Sparkles className="w-5 h-5 text-pink-500" />,
+      icon: <Sparkles className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "split",
       description: "Building iconic brand identities that stand out.",
       listItems: ["Logo Assets", "Color Palettes", "Brand Guidelines"],
@@ -458,7 +465,7 @@ export default function ServicesSection() {
       id: "fullstack-dev",
       title: "Full-Stack Development",
       badge: "Engineering",
-      icon: <Smartphone className="w-5 h-5 text-blue-500" />,
+      icon: <Smartphone className="w-5 h-5 text-[var(--theme-color)]" />,
       contentType: "image",
       description: "High-performance web applications built with Next.js and Tailwind CSS.",
       imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
@@ -493,6 +500,9 @@ export default function ServicesSection() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
+        <div className="flex justify-between items-center w-full">
+          <ThemeColorPicker color={color} onChange={(c) => { setColor(c); localStorage.setItem("primaryColor", c); }} />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-center">
           <div className="flex flex-col gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -564,7 +574,7 @@ export default function ServicesSection() {
                 type="checkbox"
                 checked={enableGlow}
                 onChange={(e) => setEnableGlow(e.target.checked)}
-                className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-indigo-600 focus:ring-indigo-500"
+                className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-[var(--theme-color)] focus:ring-[var(--theme-color)]"
               />
               <span>Ambient Glow</span>
             </label>
@@ -581,7 +591,7 @@ export default function ServicesSection() {
         jsUsageCode={generateUsageCode()}
         disableFrame={false}
       >
-        <div className="w-full bg-zinc-50 dark:bg-[#020202] relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80">
+        <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80" style={{ "--theme-color": getThemeColorHex(color), backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" } as React.CSSProperties}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
           <div className="relative z-10 max-h-[750px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">

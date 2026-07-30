@@ -7,6 +7,7 @@ import {
   StackItem,
 } from "@/components/custom/blocks/ScrollStackBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { cn } from "@/lib/utils";
 import { Blocks, Layers, ShieldCheck, Zap } from "lucide-react";
 import { useRef, useState } from "react";
@@ -147,7 +148,20 @@ export const ScrollStack = ({ items, depthScale = 0.05, cardGap = 24, scroller, 
 export function ScrollStackShowcase() {
   const [depthScale, setDepthScale] = useState(0.05);
   const [cardGap, setCardGap] = useState(24);
+  const [color, setColor] = useState("primary");
   const viewportRef = useRef<HTMLDivElement>(null);
+
+  const getThemeCardClass = () => {
+    if (color === "primary" || color === "default" || !color) {
+      return "bg-primary text-primary-foreground border-primary/30";
+    }
+    if (color.startsWith("#")) {
+      return `bg-[${color}] text-white border-white/20`;
+    }
+    return `bg-${color}-600 text-white border-${color}-500/30`;
+  };
+
+  const themeCardClass = getThemeCardClass();
 
   const mockItems: StackItem[] = [
     {
@@ -156,11 +170,10 @@ export function ScrollStackShowcase() {
       description:
         "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
       icon: Zap,
-      // Uses default adaptive surface (bg-white in light mode, bg-zinc-900 in dark mode)
       content: (
         <div className="w-full h-full flex items-center justify-center p-8">
-          <div className="w-full h-full bg-zinc-200/50 dark:bg-white/5 rounded-xl border border-zinc-300/80 dark:border-white/10 shadow-inner flex items-center justify-center">
-            <span className="text-zinc-500 dark:text-white/40 font-mono text-sm font-semibold">
+          <div className="w-full h-full bg-white/10 rounded-xl border border-white/20 shadow-inner flex items-center justify-center">
+            <span className="text-white/60 font-mono text-sm font-semibold">
               [Animation Interface]
             </span>
           </div>
@@ -173,7 +186,7 @@ export function ScrollStackShowcase() {
       description:
         "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
       icon: Layers,
-      color: "bg-indigo-600 text-white border-indigo-500/30",
+      color: themeCardClass,
       content: (
         <div className="w-full h-full flex flex-col gap-3 items-center justify-center p-8">
           <div className="w-3/4 h-12 bg-white/10 rounded-lg border border-white/10" />
@@ -188,13 +201,12 @@ export function ScrollStackShowcase() {
       description:
         "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
       icon: Blocks,
-      // Default adaptive surface
       content: (
         <div className="w-full h-full flex items-center justify-center p-8">
           <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="h-24 bg-zinc-200/60 dark:bg-white/10 rounded-xl border border-zinc-300/80 dark:border-white/10" />
-            <div className="h-24 bg-zinc-200/60 dark:bg-white/10 rounded-xl border border-zinc-300/80 dark:border-white/10" />
-            <div className="h-24 bg-zinc-200/60 dark:bg-white/10 rounded-xl border border-zinc-300/80 dark:border-white/10 col-span-2" />
+            <div className="h-24 bg-white/10 rounded-xl border border-white/20" />
+            <div className="h-24 bg-white/10 rounded-xl border border-white/20" />
+            <div className="h-24 bg-white/10 rounded-xl border border-white/20 col-span-2" />
           </div>
         </div>
       ),
@@ -205,7 +217,7 @@ export function ScrollStackShowcase() {
       description:
         "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
       icon: ShieldCheck,
-      color: "bg-emerald-600 text-white border-emerald-500/30",
+      color: themeCardClass,
       content: (
         <div className="w-full h-full flex items-center justify-center p-8">
           <div className="w-32 h-32 rounded-full border-4 border-white flex items-center justify-center bg-white/10 shadow-lg">
@@ -234,7 +246,7 @@ export default function FeatureSection() {
       title: "Layered Architecture",
       description: "Build robust systems with separated concerns.",
       icon: Layers,
-      color: "bg-indigo-600 text-white", // Or apply accent colors
+      color: "bg-primary text-white", // Or apply accent colors
     },
   ];
 
@@ -263,7 +275,7 @@ export default function FeatureSection() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           <div className="flex flex-col gap-3">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
               Depth Scale (Shrink Rate)
@@ -298,6 +310,8 @@ export default function FeatureSection() {
               className={sliderClasses}
             />
           </div>
+
+          <ThemeColorPicker color={color} onChange={setColor} label="Theme Color" />
         </div>
       </ShowcaseControlPanel>
 
@@ -309,7 +323,7 @@ export default function FeatureSection() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-100/60 dark:bg-[#050505] relative overflow-hidden transition-colors">
+        <div className="w-full rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#050505] relative overflow-hidden transition-colors">
           {/* Scroll Instruction Badge */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-white/90 dark:bg-black/80 backdrop-blur-md text-zinc-800 dark:text-white text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-zinc-300 dark:border-white/10 pointer-events-none shadow-lg">
             ↓ Scroll inside preview box to trigger stack ↓

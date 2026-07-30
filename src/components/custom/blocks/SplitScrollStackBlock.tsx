@@ -192,14 +192,14 @@ export const SplitScrollStack = React.forwardRef<
                     : "bg-zinc-50/50 dark:bg-zinc-900/30 border-zinc-200/80 dark:border-zinc-800/60 opacity-60 hover:opacity-90",
                 )}
                 style={{
-                  borderColor: isActive && isHex ? color : undefined,
+                  borderColor: isActive ? color : undefined,
                 }}
               >
                 {/* Active Side Glowing Bar */}
                 {isActive && (
                   <div
                     className="absolute top-6 bottom-6 left-0 w-1.5 rounded-r-full transition-colors duration-300"
-                    style={{ backgroundColor: isHex ? color : undefined }}
+                    style={{ backgroundColor: color }}
                   />
                 )}
 
@@ -216,7 +216,7 @@ export const SplitScrollStack = React.forwardRef<
                             : "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 border-zinc-200 dark:border-zinc-700",
                       )}
                       style={{
-                        backgroundColor: isActive && isHex ? color : undefined,
+                        backgroundColor: isActive ? color : undefined,
                       }}
                     >
                       {isPassed ? (
@@ -247,7 +247,7 @@ export const SplitScrollStack = React.forwardRef<
                         : "opacity-0 scale-75",
                     )}
                     style={{
-                      backgroundColor: isActive ? `${color}15` : "transparent",
+                      backgroundColor: isActive ? (color.startsWith('#') ? `${color}15` : `color-mix(in srgb, ${color} 15%, transparent)`) : "transparent",
                       color: isActive ? color : "currentColor",
                     }}
                   >
@@ -280,7 +280,7 @@ export const SplitScrollStack = React.forwardRef<
                             : "bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600",
                         )}
                         style={{
-                          backgroundColor: isActive ? `${color}15` : undefined,
+                          backgroundColor: isActive ? (color.startsWith('#') ? `${color}15` : `color-mix(in srgb, ${color} 15%, transparent)`) : undefined,
                           color: isActive ? color : undefined,
                         }}
                       >

@@ -71,17 +71,17 @@ function StackCard({
         x: isMobile || index === 0 ? 0 : x,
       }}
       className={cn(
-        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-indigo-500/50 dark:hover:border-zinc-700 transition-colors duration-300 relative",
+        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] hover:shadow-lg hover:shadow-[var(--theme-color,var(--primary))]/15 transition-all duration-300 relative",
         isMobile ? "w-full" : "",
       )}
     >
       <div>
         {/* Top Row: Icon & Step Number */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700/50 flex items-center justify-center text-slate-700 dark:text-zinc-300 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 dark:group-hover:bg-indigo-500 transition-all duration-300">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-white group-hover:[&_svg]:!text-white">
             {item.icon}
           </div>
-          <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-indigo-100 dark:group-hover:text-zinc-700/50 transition-colors duration-300">
+          <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
             {displayNum}
           </span>
         </div>
@@ -97,7 +97,7 @@ function StackCard({
 
       {/* Card Bottom Indicator line */}
       <div className="mt-8 w-full h-1 bg-slate-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-        <div className="h-full bg-indigo-600 dark:bg-indigo-500 w-0 group-hover:w-full transition-all duration-500 ease-out" />
+        <div className="h-full bg-[var(--theme-color,var(--primary))] w-0 group-hover:w-full transition-all duration-500 ease-out" />
       </div>
     </motion.div>
   );
@@ -122,7 +122,7 @@ function ProgressBarItem({
   return (
     <div className="h-1.5 flex-1 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
       <motion.div
-        className="h-full bg-indigo-600 dark:bg-indigo-500"
+        className="h-full bg-[var(--theme-color,var(--primary))]"
         style={{ scaleX, transformOrigin: "left" }}
       />
     </div>
@@ -278,9 +278,13 @@ export function HorizontalScrollStack({
   return (
     <div
       ref={containerRef}
-      style={{ height: isMobile ? "auto" : `${dynamicHeight}vh`, ...style }}
+      style={{
+        height: isMobile ? "auto" : `${dynamicHeight}vh`,
+        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
+        ...style,
+      }}
       className={cn(
-        "relative w-full bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white transition-colors duration-300",
+        "relative w-full text-slate-900 dark:text-white transition-colors duration-300",
         isMobile ? "py-12 px-4 sm:px-8" : "",
         className,
       )}

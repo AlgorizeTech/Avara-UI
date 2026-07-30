@@ -27,8 +27,7 @@ export function FontFamilyControl() {
     : null;
 
   return (
-    <div className="space-y-3">
-      <p>Font Family</p>
+    <div className="w-full">
       <MultiSelect
         options={fonts}
         value={currentValue}
@@ -36,7 +35,7 @@ export function FontFamilyControl() {
         placeholder="Select font family..."
         isClearable={true}
         isMulti={false}
-        className="w-full"
+        className="w-full text-xs"
         portal={false}
         loading={isLoading}
       />

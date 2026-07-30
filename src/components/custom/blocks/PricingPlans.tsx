@@ -302,7 +302,7 @@ export default function PricingPlans() {
             </div>
 
             <Link
-              href={"/book-call"}
+              href="#"
               className="w-full text-center bg-lime-400 dark:bg-[#CCFF00] text-black hover:bg-lime-500 dark:hover:bg-[#b3e600] transition-colors font-bold text-xl py-5 rounded-xl shadow-[0_0_20px_rgba(163,230,53,0.3)] dark:shadow-[0_0_30px_rgba(204,255,0,0.15)] mt-auto flex items-center justify-center"
             >
               Book a 45-min call

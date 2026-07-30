@@ -50,7 +50,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "ui-design",
     title: "UI Design",
     badge: "Visual Identity",
-    icon: <Palette className="w-5 h-5 text-indigo-500" />,
+    icon: <Palette className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "list",
     description:
       "Crafting intuitive, pixel-perfect interfaces designed to engage and convert real audiences.",
@@ -66,7 +66,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "ux-design",
     title: "UX Design",
     badge: "User Research",
-    icon: <Layers className="w-5 h-5 text-purple-500" />,
+    icon: <Layers className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "list",
     description:
       "Data-driven architecture mapping out frictionless customer journeys.",
@@ -81,7 +81,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "branding",
     title: "Branding & Identity",
     badge: "Brand Strategy",
-    icon: <Sparkles className="w-5 h-5 text-pink-500" />,
+    icon: <Sparkles className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "split",
     description:
       "Building memorable, iconic brand identities that stand out in crowded markets.",
@@ -94,7 +94,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "webflow-dev",
     title: "Webflow Development",
     badge: "No-Code / Low-Code",
-    icon: <Code2 className="w-5 h-5 text-emerald-500" />,
+    icon: <Code2 className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "list",
     description:
       "High-performance, enterprise-grade Webflow websites built for marketing speed.",
@@ -109,7 +109,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "fullstack-dev",
     title: "Full-Stack Development",
     badge: "Engineering",
-    icon: <Smartphone className="w-5 h-5 text-blue-500" />,
+    icon: <Smartphone className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "image",
     description:
       "Scalable, secure web applications built with modern React and Next.js frameworks.",
@@ -122,7 +122,7 @@ const defaultStackItems: ScrollStackItem[] = [
     id: "digital-marketing",
     title: "Digital Marketing",
     badge: "Growth",
-    icon: <TrendingUp className="w-5 h-5 text-amber-500" />,
+    icon: <TrendingUp className="w-5 h-5 text-[var(--theme-color,var(--primary))]" />,
     contentType: "list",
     description:
       "Strategic acquisition and retention campaigns tailored for sustainable ROI.",
@@ -185,7 +185,7 @@ const StackCard: React.FC<{
                 {item.title}
               </h3>
               {item.badge && (
-                <span className="inline-block text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                <span className="inline-block text-xs font-semibold uppercase tracking-wider text-[var(--theme-color,var(--primary))]">
                   {item.badge}
                 </span>
               )}
@@ -255,7 +255,7 @@ const StackCard: React.FC<{
                       key={i}
                       className="flex items-center gap-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[var(--theme-color,var(--primary))] shrink-0" />
                       <span>{listItem}</span>
                     </li>
                   ))}
@@ -289,7 +289,7 @@ const StackCard: React.FC<{
             <button
               onClick={item.onButtonClick}
               type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-200 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-md transition-all duration-200 cursor-pointer active:scale-95"
             >
               <span>{item.buttonText}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -342,13 +342,13 @@ export const StickyScrollStack = React.forwardRef<
         {...props}
       >
         {enableGlow && (
-          <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/5 blur-[120px] rounded-full -z-10" />
+          <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[var(--theme-color,var(--primary))]/10 via-[var(--theme-color,var(--primary))]/10 to-transparent blur-[120px] rounded-full -z-10" />
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           <div className="lg:col-span-5 lg:sticky lg:top-28 flex flex-col justify-center text-left z-10">
             {headerBadge && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider w-fit mb-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 text-[var(--theme-color,var(--primary))] text-xs font-semibold uppercase tracking-wider w-fit mb-5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{headerBadge}</span>
               </div>
@@ -384,7 +384,7 @@ export const StickyScrollStack = React.forwardRef<
                   <button
                     onClick={onHeaderButtonClick}
                     type="button"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm text-white bg-zinc-900 dark:bg-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm text-white bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
                   >
                     <span>{headerButtonText}</span>
                     <ArrowRight className="w-4 h-4" />
