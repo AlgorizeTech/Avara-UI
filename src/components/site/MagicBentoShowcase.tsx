@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 
 import {
   MagicBento,
@@ -16,7 +17,7 @@ import {
   Users,
   Workflow,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
 const BENTO_CODE_TS = `"use client";
@@ -190,11 +191,24 @@ const hexToRgb = (hex: string) => {
   const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
   return result
     ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "255, 171, 29";
+    : "99, 102, 241";
 };
 
 export function MagicBentoShowcase() {
-  const [color, setColor] = useState<string>("#FFAB1D");
+  const [color, setColor] = useState<string>("primary");
+
+  const getThemeColorHex = (c: string) => {
+    if (c.startsWith("#")) return c;
+    const map: Record<string, string> = {
+      primary: "var(--primary)",
+      default: "var(--primary)",
+      indigo: "#6366f1",
+      rose: "#f43f5e",
+      emerald: "#10b981",
+      zinc: "#18181b",
+    };
+    return map[c] || "var(--primary)";
+  };
 
   // Sync with localStorage
   useEffect(() => {
@@ -212,8 +226,14 @@ export function MagicBentoShowcase() {
     };
   }, [color]);
 
-  const activeHex = color;
-  const rgb = hexToRgb(activeHex);
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("primaryColor", newColor);
+    }
+  };
+
+  const activeHex = getThemeColorHex(color);
 
   const generateUsageCode = () => {
     return `import { MagicBento, MagicBentoCard } from "@/components/custom/blocks/MagicBentoBlock";
@@ -222,7 +242,7 @@ import { Users, Workflow, Activity, Globe2 } from "lucide-react";
 export default function DashboardLayout() {
   return (
     {/* CSS Variables drive the tracking glow colors */}
-    <div style={{ "--magic-color": "rgba(255,171,29,1)", "--magic-glow": "rgba(255,171,29,0.15)" } as React.CSSProperties}>
+    <div style={{ "--magic-color": "var(--primary)", "--magic-glow": "color-mix(in srgb, var(--primary) 15%, transparent)" } as React.CSSProperties}>
       
       {/* Set auto-rows to control uniform height mapping */}
       <MagicBento className="auto-rows-[220px]">
@@ -248,6 +268,9 @@ export default function DashboardLayout() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* Feature Explainer Panel */}
       <ShowcaseControlPanel className="flex flex-col gap-4 p-5 rounded-xl z-0 relative">
+        <div className="flex justify-between items-center w-full pb-2 border-b border-zinc-200/60 dark:border-zinc-800/60">
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
+        </div>
         <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
           This grid layout perfectly mirrors the requested 4x3 mapping (with 2x2
           spans in opposite corners). We made it unique by separating the
@@ -266,22 +289,25 @@ export default function DashboardLayout() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#020202] py-16 px-4 transition-colors duration-300 relative overflow-hidden">
+        <div
+          className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80"
+          style={{
+            "--theme-color": activeHex,
+            backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
+          } as React.CSSProperties}
+        >
           {/* Inject Dynamic CSS Variables for the Magic Colors */}
           <div
             className="w-full relative z-10"
             style={
               {
-                "--magic-color": `rgba(${rgb}, 1)`,
-                "--magic-glow": `rgba(${rgb}, 0.12)`,
+                "--magic-color": "var(--theme-color, var(--primary))",
+                "--magic-glow": "color-mix(in srgb, var(--theme-color, var(--primary)) 15%, transparent)",
               } as React.CSSProperties
             }
           >
-            {/* Set a fixed auto-row height so the 2x2 spans look perfectly symmetrical */}
             <MagicBento className="auto-rows-[220px]">
-              {/* ============================== */}
-              {/* CARD 1: TOP LEFT (1x1)         */}
-              {/* ============================== */}
+              {/* CARD 1: TOP LEFT (1x1) */}
               <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Activity className="w-4 h-4" />
@@ -297,9 +323,7 @@ export default function DashboardLayout() {
                 </div>
               </MagicBentoCard>
 
-              {/* ============================== */}
-              {/* CARD 2: TOP MID-LEFT (1x1)     */}
-              {/* ============================== */}
+              {/* CARD 2: TOP MID-LEFT (1x1) */}
               <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Globe2 className="w-4 h-4" />
@@ -315,9 +339,7 @@ export default function DashboardLayout() {
                 </div>
               </MagicBentoCard>
 
-              {/* ============================== */}
-              {/* CARD 3: TOP RIGHT (2x2)        */}
-              {/* ============================== */}
+              {/* CARD 3: TOP RIGHT (2x2) */}
               <MagicBentoCard
                 highlight
                 className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative"
@@ -327,7 +349,6 @@ export default function DashboardLayout() {
                   Teamwork
                 </div>
 
-                {/* Decorative Visual inside Large Card */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                   <div className="relative flex items-center justify-center scale-[0.8] sm:scale-100">
                     <div className="absolute w-40 h-40 border border-zinc-200 dark:border-zinc-800 rounded-full animate-[spin_10s_linear_infinite] border-dashed" />
@@ -335,9 +356,9 @@ export default function DashboardLayout() {
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
                       style={{
-                        backgroundColor: `rgba(${rgb}, 0.1)`,
-                        color: activeHex,
-                        border: `1px solid rgba(${rgb}, 0.3)`,
+                        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 10%, transparent)",
+                        color: "var(--theme-color, var(--primary))",
+                        border: "1px solid color-mix(in srgb, var(--theme-color, var(--primary)) 30%, transparent)",
                       }}
                     >
                       <Sparkles className="w-6 h-6" />
@@ -355,16 +376,13 @@ export default function DashboardLayout() {
                 </div>
               </MagicBentoCard>
 
-              {/* ============================== */}
-              {/* CARD 4: BOTTOM LEFT (2x2)      */}
-              {/* ============================== */}
+              {/* CARD 4: BOTTOM LEFT (2x2) */}
               <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
                   <Workflow className="w-4 h-4" />
                   Efficiency
                 </div>
 
-                {/* Decorative Pipeline Mockup */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50 dark:opacity-100">
                   <div className="flex flex-col gap-3 w-full max-w-[200px] sm:max-w-none sm:w-3/4 scale-[0.85] sm:scale-100">
                     <div className="h-8 w-full bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
@@ -375,8 +393,8 @@ export default function DashboardLayout() {
                     <div
                       className="h-8 w-1/2 rounded-md shadow-sm border"
                       style={{
-                        backgroundColor: `rgba(${rgb}, 0.1)`,
-                        borderColor: `rgba(${rgb}, 0.3)`,
+                        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 10%, transparent)",
+                        borderColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 30%, transparent)",
                       }}
                     />
                   </div>
@@ -392,9 +410,7 @@ export default function DashboardLayout() {
                 </div>
               </MagicBentoCard>
 
-              {/* ============================== */}
               {/* CARD 5: BOTTOM MID-RIGHT (1x1) */}
-              {/* ============================== */}
               <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <Network className="w-4 h-4" />
@@ -410,9 +426,7 @@ export default function DashboardLayout() {
                 </div>
               </MagicBentoCard>
 
-              {/* ============================== */}
-              {/* CARD 6: BOTTOM RIGHT (1x1)     */}
-              {/* ============================== */}
+              {/* CARD 6: BOTTOM RIGHT (1x1) */}
               <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   <LockKeyhole className="w-4 h-4" />
