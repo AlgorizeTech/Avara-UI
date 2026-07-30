@@ -20,6 +20,8 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { ColorTokenPicker } from "./color-token-picker";
 import { CSSExportDialog } from "./css-export-dialog";
+import { FontFamilyControl } from "./font-family-control";
+import { FontSizeControl } from "./font-size-control";
 import { RadiusPicker } from "./radius-picker";
 import { ThemePresetSelector } from "./theme-preset-selector";
 
@@ -175,6 +177,22 @@ export function ThemeCustomizerSidebar() {
         <div className="space-y-2.5">
           <SectionLabel>Radius</SectionLabel>
           <RadiusPicker />
+        </div>
+
+        <Divider />
+
+        {/* Font Size */}
+        <div className="space-y-2.5">
+          <SectionLabel>Font Size</SectionLabel>
+          <FontSizeControl />
+        </div>
+
+        <Divider />
+
+        {/* Font Family */}
+        <div className="space-y-2.5">
+          <SectionLabel>Font Family</SectionLabel>
+          <FontFamilyControl />
         </div>
       </div>
 

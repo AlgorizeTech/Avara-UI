@@ -18,8 +18,7 @@ export function RadiusPicker() {
   const radius = state.radius;
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm font-medium">Radius</p>
+    <div>
       <div className="flex gap-1.5">
       {RADIUS_OPTIONS.map((option) => (
         <button
