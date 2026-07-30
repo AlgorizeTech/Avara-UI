@@ -496,3 +496,139 @@ body:not([data-scroll-stack='Simple']) #stack-docs-Simple { display: none; }
 body:not([data-scroll-stack='Split']) #stack-docs-Split { display: none; }
 body:not([data-scroll-stack='Sticky']) #stack-docs-Sticky { display: none; }
 body:not([data-scroll-stack='Horizontal']) #stack-docs-Horizontal { display: none; }
+
+/* ============================================ */
+/* HOMEPAGE STYLES                              */
+/* ============================================ */
+
+/* 3D Rotating Cube */
+@keyframes cube-spin {
+  from { transform: rotateX(-22deg) rotateY(0deg); }
+  to   { transform: rotateX(-22deg) rotateY(360deg); }
+}
+
+.cube-scene {
+  perspective: 600px;
+}
+
+.cube {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cube-spin 25s linear infinite;
+}
+
+.cube-face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  background:
+    linear-gradient(to right, rgba(99,102,241,0.025) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
+    linear-gradient(to bottom, rgba(99,102,241,0.025) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
+    rgba(99, 102, 241, 0.008);
+}
+
+.cube-face.front  { transform: translateZ(100px); }
+.cube-face.back   { transform: translateZ(-100px) rotateY(180deg); }
+.cube-face.right  { transform: rotateY(90deg) translateZ(100px); }
+.cube-face.left   { transform: rotateY(-90deg) translateZ(100px); }
+.cube-face.top    { transform: rotateX(90deg) translateZ(100px); }
+.cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+/* Light mode cube adjustments */
+html:not(.dark) .cube-face {
+  border-color: rgba(99, 102, 241, 0.18);
+  background:
+    linear-gradient(to right, rgba(99,102,241,0.06) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
+    linear-gradient(to bottom, rgba(99,102,241,0.06) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
+    rgba(99, 102, 241, 0.025);
+}
+
+/* Rotating conic border */
+@keyframes border-rotate {
+  from { --border-angle: 0deg; }
+  to   { --border-angle: 360deg; }
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Marquee */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-scroll 35s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Showcase card hover */
+.showcase-card {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.showcase-card:hover {
+  transform: translateY(-3px);
+}
+.dark .showcase-card:hover {
+  border-color: rgba(255,255,255,0.1) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.04);
+}
+html:not(.dark) .showcase-card:hover {
+  border-color: rgba(0,0,0,0.12) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+/* Terminal block */
+.terminal-block {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16162a 50%, #0f0f1a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+html:not(.dark) .terminal-block {
+  background: linear-gradient(135deg, #f8f9fc 0%, #f3f4f8 50%, #eef0f5 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Scrollbar hidden */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Feature card glow on hover */
+.feature-glow {
+  position: relative;
+}
+.feature-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--border-angle, 0deg), transparent 40%, rgba(99,102,241,0.3) 50%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: border-rotate 4s linear infinite;
+}
+.feature-glow:hover::before {
+  opacity: 1;
+}
