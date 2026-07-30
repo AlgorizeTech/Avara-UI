@@ -221,6 +221,10 @@ export default function DataTable() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
+        <div className="flex justify-between items-center w-full pb-2 border-b border-zinc-200/60 dark:border-zinc-800/60">
+          <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
+        </div>
+
         <div className="flex flex-col xl:flex-row gap-8">
           <div className="flex flex-col gap-3 flex-1">
             <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
@@ -282,9 +286,6 @@ export default function DataTable() {
             </div>
           </div>
         </div>
-
-        {/* Color */}
-        <ThemeColorPicker color={color} onChange={handleColorChange} label="Theme Color" />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
