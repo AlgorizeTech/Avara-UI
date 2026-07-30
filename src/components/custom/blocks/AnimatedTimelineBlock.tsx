@@ -23,40 +23,60 @@ export type TimelineColor =
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    bg: "bg-primary",
-    text: "text-primary",
-    border: "border-primary",
-    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
+    bg: "bg-[var(--theme-color,var(--primary))]",
+    text: "text-[var(--theme-color,var(--primary))]",
+    icon: "text-white",
+    dot: "bg-white",
+    border: "border-[var(--theme-color,var(--primary))]",
+    glow: "shadow-[0_0_15px_color-mix(in_srgb,var(--theme-color,var(--primary))_50%,transparent)]",
   },
   indigo: {
     bg: "bg-indigo-600",
     text: "text-indigo-600 dark:text-indigo-400",
+    icon: "text-white",
+    dot: "bg-white",
     border: "border-indigo-500",
     glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]",
   },
   rose: {
     bg: "bg-rose-600",
     text: "text-rose-600 dark:text-rose-400",
+    icon: "text-white",
+    dot: "bg-white",
     border: "border-rose-500",
     glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]",
   },
   emerald: {
     bg: "bg-emerald-600",
     text: "text-emerald-600 dark:text-emerald-400",
+    icon: "text-white",
+    dot: "bg-white",
     border: "border-emerald-500",
     glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]",
   },
   blue: {
     bg: "bg-blue-600",
     text: "text-blue-600 dark:text-blue-400",
+    icon: "text-white",
+    dot: "bg-white",
     border: "border-blue-500",
     glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]",
   },
   zinc: {
     bg: "bg-zinc-900 dark:bg-zinc-100",
     text: "text-zinc-900 dark:text-zinc-100",
+    icon: "text-white dark:text-zinc-900",
+    dot: "bg-white dark:bg-zinc-900",
     border: "border-zinc-900 dark:border-zinc-100",
     glow: "shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]",
+  },
+  white: {
+    bg: "bg-white dark:bg-zinc-100",
+    text: "text-zinc-900 dark:text-zinc-900",
+    icon: "text-zinc-900 dark:text-zinc-900",
+    dot: "bg-zinc-900 dark:bg-zinc-900",
+    border: "border-zinc-300 dark:border-zinc-400",
+    glow: "shadow-[0_0_15px_rgba(0,0,0,0.15)]",
   },
 };
 
@@ -75,17 +95,23 @@ const hexToRgb = (hex: string) => {
 
 export const getThemeStyles = (color: string) => {
   if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+    const rgbStr = hexToRgb(color);
+    const [r, g, b] = rgbStr.split(",").map((x) => parseInt(x.trim(), 10));
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    const isLight = luminance > 0.6;
+
     return {
       theme: {
         bg: "bg-[var(--atl-color)]",
         text: "text-[var(--atl-color)]",
+        icon: isLight ? "text-zinc-900" : "text-white",
+        dot: isLight ? "bg-zinc-900" : "bg-white",
         border: "border-[var(--atl-color)]",
         glow: "shadow-[0_0_15px_var(--atl-glow)]",
       },
       style: {
         "--atl-color": color,
-        "--atl-glow": `rgba(${rgb}, 0.5)`,
+        "--atl-glow": `rgba(${rgbStr}, 0.5)`,
       } as React.CSSProperties,
     };
   }
@@ -179,20 +205,18 @@ function AnimatedTimelineNode({
       {/* Node Dot / Icon Container */}
       <div
         className={cn(
-          "absolute z-10 flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-500 left-0 sm:left-0",
+          "absolute z-10 flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-500 left-0 sm:left-0 bg-white dark:bg-[#09090b]",
           layout === "left" && "sm:left-0",
           layout === "right" && "sm:left-auto sm:right-0",
           isCenter && "sm:left-1/2 sm:-translate-x-1/2",
-          theme.bg,
           theme.border,
           theme.glow,
-          "text-white",
         )}
       >
         {Icon ? (
-          <Icon className="w-4 h-4" />
+          <Icon className={cn("w-4 h-4 transition-colors duration-300", theme.text)} />
         ) : (
-          <div className="w-2 h-2 rounded-full bg-white" />
+          <div className={cn("w-2 h-2 rounded-full", theme.bg)} />
         )}
       </div>
 
