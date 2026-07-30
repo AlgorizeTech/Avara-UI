@@ -1,6 +1,6 @@
 "use client";
 
-import AIChat from "@/components/custom/blocks/Ai-chat";
+import AIChat, { ChatThread, Message } from "@/components/custom/blocks/Ai-chat";
 import AuthForm from "@/components/custom/blocks/AuthForm";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
@@ -55,26 +55,46 @@ const sampleChartData = [
   { label: "Sun", value: 990 },
 ];
 
-const sampleAiMessages = [
+const sampleChatHistory: ChatThread[] = [
+  { id: "chat-1", title: "Next.js UI Component Setup", date: "Today" },
+  { id: "chat-2", title: "Tailwind Theme Customizer", date: "Yesterday" },
+  { id: "chat-3", title: "GSAP & Framer Motion Physics", date: "3 days ago" },
+];
+
+const sampleAiMessages: Message[] = [
   {
     id: 1,
     role: "ai" as const,
-    content: "Hello! How can I assist you with your Next.js project today?",
+    content: "Hello! Welcome to Docs UI. How can I assist you with your React project today?",
     time: "10:24 AM",
   },
   {
     id: 2,
     role: "user" as const,
-    content: "Show me a chart component built with Tailwind CSS.",
+    content: "How do I add these interactive components to my codebase?",
     time: "10:25 AM",
   },
   {
     id: 3,
     role: "ai" as const,
-    content: "Here is a fully responsive Chart component with dark mode support!",
+    content: "Run `npx docs-ui@latest add <component-name>` or simply copy the source code directly into your components folder. Zero npm lock-in!",
     time: "10:25 AM",
   },
 ];
+
+const sampleTerminalCode = `$ npx docs-ui@latest init
+✔ Initialized Docs UI configuration in project root.
+✔ Installed dependencies: framer-motion, gsap, lucide-react, clsx.
+
+$ npx docs-ui@latest add ai-chat chart-block
+✔ Copying Ai-chat.tsx to src/components/custom/blocks/
+✔ Copying ChartBlock.tsx to src/components/custom/blocks/
+✔ All components ready to import!
+
+$ npm run dev
+▲ Next.js (Turbopack)
+- Local: http://localhost:3000
+✓ Ready in 1.8s`;
 
 const techStack = [
   { name: "React JS", color: "var(--primary)" },
@@ -82,9 +102,8 @@ const techStack = [
   { name: "TypeScript", color: "var(--primary)" },
   { name: "Tailwind CSS", color: "var(--primary)" },
   { name: "Framer Motion", color: "var(--primary)" },
-  { name: "Radix UI", color: "var(--primary)" },
+  { name: "GSAP", color: "var(--primary)" },
   { name: "Lucide Icons", color: "var(--primary)" },
-  { name: "Shiki Syntax", color: "var(--primary)" },
 ];
 
 const sampleDockItems: DockItem[] = [
@@ -237,6 +256,7 @@ function HeroInteractiveHub() {
               <AIChat
                 variant="default"
                 color="primary"
+                chatHistory={sampleChatHistory}
                 initialMessages={sampleAiMessages}
               />
             </motion.div>
@@ -290,17 +310,9 @@ function HeroInteractiveHub() {
               <TerminalBlock
                 variant="default"
                 color="primary"
-                title="docs-ui-cli"
-                commands={[
-                  {
-                    input: "npx docs-ui@latest add ai-chat",
-                    output: "✔ Copying components/custom/blocks/Ai-chat.tsx...\n✔ Added dependencies: lucide-react, motion\n✔ Setup complete!",
-                  },
-                  {
-                    input: "npx docs-ui@latest add chart",
-                    output: "✔ Copying components/custom/blocks/ChartBlock.tsx...\n✔ Ready to render!",
-                  },
-                ]}
+                language="bash"
+                filename="docs-ui.sh"
+                code={sampleTerminalCode}
               />
             </motion.div>
           )}
@@ -385,7 +397,7 @@ function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-[16px] sm:text-[18px] text-muted-foreground max-w-[540px] leading-relaxed"
             >
-              A meticulous library of copy-paste React components & interactive blocks. Crafted with Tailwind CSS, TypeScript, and Framer Motion.
+              A meticulous library of copy-paste React components & interactive blocks. Crafted with Tailwind CSS, TypeScript, GSAP, and Framer Motion.
             </motion.p>
 
             <motion.div
@@ -452,27 +464,48 @@ function HeroSection() {
 }
 
 /* ═══════════════════════════════════════════════
-   SECTION 2: TECH STACK MARQUEE
+   SECTION 2: TECH STACK MARQUEE (GAPLESS INFINITE LOOP)
    ═══════════════════════════════════════════════ */
 
 function TechStackMarquee() {
-  const items = [...techStack, ...techStack];
+  const marqueeItems = [
+    ...techStack,
+    ...techStack,
+    ...techStack,
+    ...techStack,
+  ];
+
   return (
-    <section className="border-y border-border bg-muted/40 py-5 overflow-hidden">
-      <div className="flex items-center marquee-track w-max">
-        {items.map((tech, i) => (
-          <div
-            key={`${tech.name}-${i}`}
-            className="flex items-center gap-2.5 px-8 shrink-0"
-          >
+    <section className="border-y border-border bg-muted/40 py-4 overflow-hidden relative select-none">
+      <div className="flex w-max marquee-track">
+        {/* Unit 1 */}
+        <div className="flex items-center shrink-0">
+          {marqueeItems.map((tech, i) => (
             <div
-              className="size-2 rounded-full shrink-0 bg-primary"
-            />
-            <span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
-              {tech.name}
-            </span>
-          </div>
-        ))}
+              key={`m1-${tech.name}-${i}`}
+              className="flex items-center gap-2.5 px-7 shrink-0"
+            >
+              <div className="size-2 rounded-full shrink-0 bg-primary" />
+              <span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
+                {tech.name}
+              </span>
+            </div>
+          ))}
+        </div>
+        {/* Unit 2 (Exact Duplicate for Infinite Loop) */}
+        <div className="flex items-center shrink-0" aria-hidden="true">
+          {marqueeItems.map((tech, i) => (
+            <div
+              key={`m2-${tech.name}-${i}`}
+              className="flex items-center gap-2.5 px-7 shrink-0"
+            >
+              <div className="size-2 rounded-full shrink-0 bg-primary" />
+              <span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
+                {tech.name}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -731,7 +764,7 @@ function WhyChooseUsSection() {
                   { name: "TypeScript", icon: "TS" },
                   { name: "Tailwind", icon: "TW" },
                   { name: "Motion", icon: "FM" },
-                  { name: "Radix UI", icon: "RX" },
+                  { name: "GSAP", icon: "G" },
                 ].map((f, idx) => (
                   <div
                     key={f.name}
