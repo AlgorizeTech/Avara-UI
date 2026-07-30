@@ -426,10 +426,12 @@ function HeroSection() {
                 Build{" "}
               </span>
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-primary to-primary/70 drop-shadow-sm">
-                {" "}Exceptional{" "}
+                {" "}
+                Exceptional{" "}
               </span>
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-                {" "}Interfaces.
+                {" "}
+                Interfaces.
               </span>
             </motion.h1>
 
@@ -980,7 +982,22 @@ function ComponentBrowser() {
   const [activeCategory, setActiveCategory] = useState(
     navigation[0]?.label || "",
   );
+
   const activeNav = navigation.find((n) => n.label === activeCategory);
+
+  // 1. Sort to prioritize "New" components
+  // 2. Limit the display array to a maximum of 34 items
+  const displayComponents = activeNav?.children
+    ? [...activeNav.children]
+        .sort((a, b) => {
+          const aIsNew = a.badge?.toLowerCase() === "new";
+          const bIsNew = b.badge?.toLowerCase() === "new";
+          if (aIsNew && !bIsNew) return -1;
+          if (!aIsNew && bIsNew) return 1;
+          return 0;
+        })
+        .slice(0, 34)
+    : [];
 
   return (
     <section ref={ref} className="py-20 md:py-28 px-6 md:px-8">
@@ -1040,7 +1057,7 @@ function ComponentBrowser() {
           transition={{ duration: 0.4 }}
           className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto"
         >
-          {activeNav?.children.map((child, i) => (
+          {displayComponents.map((child, i) => (
             <motion.div
               key={child.href}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -1056,7 +1073,7 @@ function ComponentBrowser() {
                   <span
                     className={cn(
                       "text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider",
-                      child.badge === "New"
+                      child.badge.toLowerCase() === "new"
                         ? "bg-primary/10 text-primary border border-primary/20"
                         : "bg-secondary text-secondary-foreground",
                     )}
