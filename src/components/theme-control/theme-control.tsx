@@ -64,7 +64,7 @@ export function ThemeControl() {
       <Sheet>
         <SheetTrigger asChild>
           <div
-            className={`bg-zinc-900 dark:bg-zinc-100 cursor-pointer rounded ${dir === "rtl" ? "rounded-l-none" : "rounded-r-none"} px-3 py-2 text-white dark:text-zinc-900 shadow-md`}
+            className={`bg-primary text-primary-foreground hover:opacity-90 transition-all cursor-pointer rounded ${dir === "rtl" ? "rounded-l-none" : "rounded-r-none"} px-3 py-2 shadow-md`}
           >
             <Settings />
           </div>
@@ -86,26 +86,24 @@ export function ThemeControl() {
               <FontSizeControl />
               <FontFamilyControl />
             </div>
-          {/* Full Customizer Link + Reset Button Footer */}
-          <div className="mt-auto pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
+          {/* Theme Customizer Link + Reset Button Footer */}
+          <div className="mt-auto pt-4 px-4 border-t border-border flex items-center justify-between gap-3">
             <Link
               href="/themes"
-              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-semibold text-white dark:text-zinc-900 bg-zinc-900 dark:bg-zinc-100 hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm"
+              className="flex-1 flex items-center justify-center gap-2 h-9 px-3 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm cursor-pointer"
             >
               <Palette className="w-4 h-4" />
-              Full Theme Customizer
+              <span>Theme Customizer</span>
             </Link>
-            <div className="flex justify-end">
-              <button
-                onClick={resetThemeCustomization}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-95 transition-all rounded-lg border border-zinc-200/80 dark:border-zinc-700/80 shadow-sm cursor-pointer"
-              >
-                <TimerReset className="w-4 h-4" />
-                Reset Defaults
-              </button>
-            </div>
+            <button
+              onClick={resetThemeCustomization}
+              className="flex items-center justify-center gap-1.5 h-9 px-3 text-xs font-medium text-muted-foreground hover:text-foreground bg-background hover:bg-accent border border-border transition-all rounded-lg shadow-sm cursor-pointer shrink-0"
+            >
+              <TimerReset className="w-4 h-4" />
+              <span>Reset</span>
+            </button>
           </div>
-          </div>
+        </div>
 
         </SheetContent>
       </Sheet>

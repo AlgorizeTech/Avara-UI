@@ -10,7 +10,7 @@ export function PrimaryColorControl() {
   return (
     <div className="space-y-3 relative">
       <p className="text-sm font-medium">Theme Presets</p>
-      <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+      <div className="flex flex-wrap gap-2">
         {THEME_PRESETS.map((preset) => {
           const isActive = activePreset === preset.name;
           const color = preset.colors[currentMode]["primary"];
@@ -18,7 +18,7 @@ export function PrimaryColorControl() {
             <div
               key={preset.name}
               className={cn(
-                "grid place-content-center rounded-lg border-2 p-1.5 cursor-pointer transition-all",
+                "w-10 h-10 flex items-center justify-center rounded-lg border-2 p-0.5 cursor-pointer transition-all shrink-0",
                 isActive
                   ? "border-primary scale-105 shadow-sm bg-accent/30"
                   : "border-transparent hover:border-muted-foreground/30",
@@ -27,7 +27,7 @@ export function PrimaryColorControl() {
               title={preset.label}
             >
               <span
-                className="block size-6 rounded-md shadow-sm"
+                className="w-full h-full rounded-md shadow-sm"
                 style={{ backgroundColor: color }}
               />
             </div>
