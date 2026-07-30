@@ -174,10 +174,7 @@ export function ThemeCustomizerSidebar() {
         <Divider />
 
         {/* Radius */}
-        <div className="space-y-2.5">
-          <SectionLabel>Radius</SectionLabel>
-          <RadiusPicker />
-        </div>
+        <RadiusPicker />
 
         <Divider />
 
