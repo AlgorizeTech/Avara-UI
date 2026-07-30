@@ -19,34 +19,24 @@ export function RadiusPicker() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Radius
-        </label>
-        <div 
-          className="w-12 h-6 border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 transition-all duration-300"
-          style={{ borderRadius: `${radius}rem` }}
-          title={`Preview: ${radius}rem`}
-        />
-      </div>
-      
+      <p className="text-sm font-medium">Radius</p>
       <div className="flex gap-1.5">
-        {RADIUS_OPTIONS.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setRadius(option.value)}
-            className={cn(
-              "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200",
-              "border outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600",
-              radius === option.value
-                ? "bg-zinc-900 text-zinc-50 border-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-100 shadow-sm"
-                : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 dark:bg-zinc-950 dark:text-zinc-400 dark:border-zinc-800 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
-            )}
-          >
-            {option.label}
-          </button>
-        ))}
+      {RADIUS_OPTIONS.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          onClick={() => setRadius(option.value)}
+          className={cn(
+            "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer",
+            "border outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            radius === option.value
+              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+              : "bg-background text-muted-foreground border-border hover:bg-accent hover:text-foreground"
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
       </div>
     </div>
   );

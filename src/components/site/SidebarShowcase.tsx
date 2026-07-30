@@ -15,6 +15,8 @@ import {
   SidebarTrigger,
 } from "@/components/custom/blocks/SidebarBlock";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { cn } from "@/lib/utils";
 import {
   Bell,
   CreditCard,
@@ -127,7 +129,7 @@ const SIDEBAR_ENGINE_CODE_JS = SIDEBAR_ENGINE_CODE_TS.replace(
 
 export function SidebarShowcase() {
   const [variant, setVariant] = useState<"attached" | "floating">("attached");
-  const [themeColor, setThemeColor] = useState("indigo");
+  const [themeColor, setThemeColor] = useState("primary");
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   const generateUsageCode = () => {
@@ -199,30 +201,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            Theme Color
-          </label>
-          <div className="flex items-center gap-2 h-10 px-2">
-            {[
-              { id: "indigo", bg: "bg-indigo-500" },
-              { id: "rose", bg: "bg-rose-500" },
-              { id: "emerald", bg: "bg-emerald-500" },
-              { id: "amber", bg: "bg-amber-500" },
-              { id: "zinc", bg: "bg-zinc-900 dark:bg-zinc-100" },
-            ].map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setThemeColor(c.id)}
-                className={`w-7 h-7 rounded-full transition-all duration-200 outline-none flex items-center justify-center ${c.bg} ${
-                  themeColor === c.id
-                    ? "ring-2 ring-offset-2 ring-offset-zinc-50 dark:ring-offset-zinc-900 ring-zinc-400 dark:ring-zinc-500 scale-110"
-                    : "hover:scale-110 hover:opacity-80"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        <ThemeColorPicker color={themeColor} onChange={setThemeColor} label="Theme Color" />
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
@@ -240,7 +219,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <SidebarBrand
                   icon={
                     <Hexagon
-                      className={`w-6 h-6 text-${themeColor}-500`}
+                      className={cn(
+                        "w-6 h-6",
+                        themeColor === "primary" || themeColor === "default" || !themeColor
+                          ? "text-primary"
+                          : `text-${themeColor}-500`
+                      )}
                       fill="currentColor"
                     />
                   }

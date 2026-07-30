@@ -58,23 +58,35 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+  if (color === "primary" || color === "default" || !colorThemes[color]) {
+    if (color && color.startsWith("#")) {
+      const rgb = hexToRgb(color);
+      return {
+        theme: {
+          bg: "bg-[var(--hero-color)] text-white",
+          text: "text-[var(--hero-color)]",
+          bgSoft: "bg-[rgba(var(--hero-rgb),0.1)] text-[var(--hero-color)]",
+          border: "border-[rgba(var(--hero-rgb),0.2)]",
+          glow: `rgba(${rgb}, 0.5)`,
+        },
+        style: {
+          "--hero-color": color,
+          "--hero-rgb": rgb,
+        } as React.CSSProperties,
+      };
+    }
     return {
       theme: {
-        bg: "bg-[var(--hero-color)] text-white",
-        text: "text-[var(--hero-color)]",
-        bgSoft: "bg-[rgba(var(--hero-rgb),0.1)] text-[var(--hero-color)]",
-        border: "border-[rgba(var(--hero-rgb),0.2)]",
-        glow: `rgba(${rgb}, 0.5)`,
+        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+        text: "text-primary",
+        bgSoft: "bg-primary/10 text-primary",
+        border: "border-primary/20",
+        glow: "var(--primary)",
       },
-      style: {
-        "--hero-color": color,
-        "--hero-rgb": rgb,
-      } as React.CSSProperties,
+      style: {} as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color], style: {} };
 };
 
 interface HeroContextType {

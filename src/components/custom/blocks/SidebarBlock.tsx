@@ -259,7 +259,9 @@ export function SidebarItem({
         "group relative flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 outline-none",
         !expanded && "justify-center px-0",
         active
-          ? `bg-${color}-50 text-${color}-600 dark:bg-${color}-500/10 dark:text-${color}-400`
+          ? color === "primary" || color === "default" || !color
+            ? "bg-primary/10 text-primary font-medium"
+            : `bg-${color}-50 text-${color}-600 dark:bg-${color}-500/10 dark:text-${color}-400`
           : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-50",
         className,
       )}

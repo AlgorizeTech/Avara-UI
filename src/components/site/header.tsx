@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SearchModal } from "./search-modal";
 import { SidebarMobile } from "./sidebar-mobile";
@@ -68,6 +69,7 @@ const SupportAlertBanner = () => {
 // PREMIUM HEADER COMPONENT
 // ==========================================
 const Header = () => {
+  const pathname = usePathname() || "";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -184,7 +186,7 @@ const Header = () => {
       {/* Global Sticky Navigation Shell */}
       <div
         className={cn(
-          "w-full sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b transition-colors duration-200",
+          "w-full sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b transition-colors duration-200",
           isScrolled
             ? "border-zinc-200 dark:border-zinc-800/80 shadow-sm"
             : "border-zinc-200/50 dark:border-zinc-900/50",
@@ -262,7 +264,12 @@ const Header = () => {
           {/* Center Area: Absolute Centered Core Actions */}
           <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 text-[13.5px] font-medium text-zinc-500 dark:text-zinc-400">
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-100 dark:bg-zinc-900"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname === "/docs"
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/docs"
               prefetch={false}
             >
@@ -270,7 +277,12 @@ const Header = () => {
               Docs
             </Link>
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname.startsWith("/docs/")
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/docs/nextjs/avatar"
               prefetch={false}
             >
@@ -278,7 +290,12 @@ const Header = () => {
               Components
             </Link>
             <Link
-              className="flex items-center gap-1.5 px-3 py-1 rounded-md hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 rounded-md transition-colors font-medium",
+                pathname.startsWith("/themes")
+                  ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900"
+                  : "hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
+              )}
               href="/themes"
               prefetch={false}
             >
@@ -292,7 +309,7 @@ const Header = () => {
             {/* Command Palette Omni Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-2.5 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all text-left max-w-[40px] md:max-w-none md:w-[150px] xl:w-[220px]"
+              className="flex items-center gap-2 px-2.5 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all text-left max-w-[40px] md:max-w-none md:w-[150px] xl:w-[220px] cursor-pointer"
               aria-label="Open command palette search"
             >
               <Search className="w-3.5 h-3.5 text-zinc-400 shrink-0" />

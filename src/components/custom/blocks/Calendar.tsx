@@ -43,17 +43,17 @@ export type CalendarColor =
 const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-sm",
+      "bg-card text-card-foreground border border-border shadow-sm",
     sidebar:
-      "bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800",
+      "bg-card text-card-foreground border-r border-border",
     header:
-      "bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800",
-    gridOuter: "bg-gray-200 dark:bg-gray-800 p-px",
+      "bg-card text-card-foreground border-b border-border",
+    gridOuter: "bg-border p-px",
     gridGap: "gap-px",
     gridHeader:
-      "bg-white/95 dark:bg-gray-950/95 border-b border-gray-200 dark:border-gray-800",
+      "bg-card/95 border-b border-border",
     cellBg:
-      "bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-900/50",
+      "bg-card hover:bg-accent/50 text-card-foreground",
   },
   minimal: {
     wrapper: "bg-transparent border-none",
@@ -83,9 +83,9 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    primaryBg: "bg-primary hover:brightness-110 text-primary-foreground shadow-sm",
+    primaryBg: "bg-primary hover:opacity-90 text-primary-foreground shadow-sm",
     primaryText: "text-primary",
-    lightBg: "bg-primary/10 text-primary",
+    lightBg: "bg-primary/15 text-primary dark:bg-primary/20 dark:text-primary",
     focusRing: "focus:ring-ring",
     pulse: "bg-primary",
   },
@@ -604,14 +604,14 @@ function CalendarDashboard({
           <hr className="border-gray-200 dark:border-gray-800/50 my-6" />
 
           <div className="mb-6">
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-3 cursor-pointer">
+            <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
               <h3 className="text-sm font-medium">Events</h3>
               <ChevronDown className="w-4 h-4 cursor-pointer" />
             </div>
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("types", "pentest")}
-                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-4 bg-yellow-400 rounded-full"></div>
@@ -622,15 +622,15 @@ function CalendarDashboard({
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("types", "kickoff")}
-                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-1 h-4 bg-green-500 rounded-full"></div>
+                  <div className="w-1 h-4 bg-emerald-500 rounded-full"></div>
                   <span className="text-sm font-medium">Kick-Off</span>
                 </div>
                 {filters.types.kickoff ? (
@@ -638,24 +638,24 @@ function CalendarDashboard({
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
                 )}
               </div>
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 mb-3 cursor-pointer">
+            <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
               <h3 className="text-sm font-medium">Platforms</h3>
               <ChevronDown className="w-4 h-4 cursor-pointer" />
             </div>
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("platforms", "meet")}
-                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Video className="w-4 h-4 text-green-600" />
+                  <Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span className="text-sm font-medium">Google Meet</span>
                 </div>
                 {filters.platforms.meet ? (
@@ -663,15 +663,15 @@ function CalendarDashboard({
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "slack")}
-                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Hash className="w-4 h-4 text-blue-500" />
+                  <Hash className="w-4 h-4 text-sky-500" />
                   <span className="text-sm font-medium">Slack</span>
                 </div>
                 {filters.platforms.slack ? (
@@ -679,14 +679,14 @@ function CalendarDashboard({
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "discord")}
-                className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
               >
-                <div className="flex items-center gap-2 text-gray-500">
+                <div className="flex items-center gap-2">
                   <MessageSquare className="w-4 h-4 text-indigo-500" />
                   <span className="text-sm font-medium">Discord</span>
                 </div>
@@ -695,7 +695,7 @@ function CalendarDashboard({
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
                 )}
               </div>
             </div>
@@ -747,10 +747,10 @@ function CalendarDashboard({
             </div>
 
             <div className="flex items-center w-full sm:w-auto gap-2 sm:gap-4 justify-between sm:justify-end">
-              <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-1 text-xs sm:text-sm font-medium w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex bg-muted/60 p-1 rounded-lg text-xs sm:text-sm font-medium w-full sm:w-auto justify-between sm:justify-start">
                 <button
                   onClick={goToToday}
-                  className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-gray-900 dark:hover:text-white text-gray-500 transition-colors"
+                  className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-foreground text-muted-foreground transition-colors"
                 >
                   Today
                 </button>
@@ -760,7 +760,7 @@ function CalendarDashboard({
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
                     view === "day"
                       ? theme.lightBg
-                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                      : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Day
@@ -771,7 +771,7 @@ function CalendarDashboard({
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors hidden sm:block",
                     view === "week"
                       ? theme.lightBg
-                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                      : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Week
@@ -782,7 +782,7 @@ function CalendarDashboard({
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
                     view === "month"
                       ? theme.lightBg
-                      : "hover:text-gray-900 dark:hover:text-white text-gray-500",
+                      : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Month

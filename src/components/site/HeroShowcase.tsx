@@ -262,38 +262,11 @@ export function HeroShowcase() {
   const [glowAction, setGlowAction] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<HeroColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "indigo";
-    }
-    return "indigo";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  // Initialize with primary default color
+  const [color, setColor] = useState<HeroColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const forceReplay = () => setResetKey((prev) => prev + 1);

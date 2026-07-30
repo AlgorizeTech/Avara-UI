@@ -56,24 +56,36 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+  if (color === "primary" || color === "default" || !colorThemes[color]) {
+    if (color && color.startsWith("#")) {
+      const rgb = hexToRgb(color);
+      return {
+        theme: {
+          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
+          text: "text-[var(--theme-color)]",
+          border: "border-[var(--theme-color)]",
+          ring: "focus:ring-[var(--theme-color)]",
+          gradient:
+            "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
+        },
+        style: {
+          "--theme-color": color,
+          "--theme-color-rgb": rgb,
+        } as React.CSSProperties,
+      };
+    }
     return {
       theme: {
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        text: "text-[var(--theme-color)]",
-        border: "border-[var(--theme-color)]",
-        ring: "focus:ring-[var(--theme-color)]",
-        gradient:
-          "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
+        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+        text: "text-primary",
+        border: "border-primary",
+        ring: "focus:ring-primary/40",
+        gradient: "from-primary to-primary/70",
       },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
+      style: {} as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color], style: {} };
 };
 
 // --- INLINE UI COMPONENTS ---

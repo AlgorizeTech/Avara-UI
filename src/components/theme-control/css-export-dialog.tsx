@@ -30,7 +30,7 @@ export function CSSExportDialog() {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button
-          className="flex items-center gap-2 w-full justify-center px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-50 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 rounded-md text-sm font-medium transition-colors"
+          className="flex items-center gap-2 w-full justify-center h-9 px-4 bg-primary hover:opacity-90 text-primary-foreground rounded-lg text-sm font-medium transition-all shadow-sm cursor-pointer"
         >
           <ClipboardCopy className="w-4 h-4" />
           <span>Copy Code</span>
@@ -38,20 +38,20 @@ export function CSSExportDialog() {
       </Dialog.Trigger>
       
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 animate-in fade-in duration-200" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[85vh] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 animate-in fade-in duration-200" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[85vh] bg-background border border-border rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-muted/30">
             <div>
-              <Dialog.Title className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+              <Dialog.Title className="text-lg font-semibold text-foreground">
                 Theme CSS
               </Dialog.Title>
-              <Dialog.Description className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              <Dialog.Description className="text-sm text-muted-foreground mt-1">
                 Copy and paste this code into your root css file (e.g., globals.css).
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
               <button
-                className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-900 hover:bg-zinc-200 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
@@ -65,14 +65,14 @@ export function CSSExportDialog() {
             </pre>
           </div>
           
-          <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex justify-end">
+          <div className="p-4 border-t border-border bg-muted/30 flex justify-end">
             <button
               onClick={copyToClipboard}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm cursor-pointer",
                 copied 
-                  ? "bg-green-600 hover:bg-green-700 text-white" 
-                  : "bg-zinc-900 hover:bg-zinc-800 text-zinc-50 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900"
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
+                  : "bg-primary hover:opacity-90 text-primary-foreground"
               )}
             >
               <AnimatePresence mode="wait">

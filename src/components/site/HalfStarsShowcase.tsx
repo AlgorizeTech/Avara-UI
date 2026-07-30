@@ -5,6 +5,7 @@ import { VariantTabs } from "@/components/site/VariantTabs";
 
 import React, { useState } from "react";
 import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 
 const HALF_STARS_TS = `"use client";
@@ -230,6 +231,7 @@ export default function AppShowcasePage() {
 
 export function HalfStarsShowcase() {
   const [activeVariant, setActiveVariant] = useState<"full" | "half" | "continuous" | "custom">("full");
+  const [color, setColor] = useState<string>("primary");
 
   const [fullRating, setFullRating] = useState<number>(3);
   const [halfRating, setHalfRating] = useState<number>(3.5);
@@ -255,7 +257,14 @@ export function HalfStarsShowcase() {
     }
   };
 
+  const getActiveColorClass = () => {
+    if (color === "primary" || color === "default" || !color) return "text-primary";
+    if (color && color.startsWith("#")) return `text-[${color}]`;
+    return `text-${color}-500`;
+  };
+
   const renderContent = () => {
+    const starActiveColor = getActiveColorClass();
     switch (activeVariant) {
       case "full":
         return (
@@ -269,6 +278,7 @@ export function HalfStarsShowcase() {
               size={40} 
               interactive={true}
               allowHalf={false} 
+              activeColor={starActiveColor}
               onRatingChange={(v) => setFullRating(v)}
               className="flex-wrap justify-center"
               showText={false}
@@ -287,6 +297,7 @@ export function HalfStarsShowcase() {
               size={40} 
               interactive={true}
               allowHalf={true} 
+              activeColor={starActiveColor}
               onRatingChange={(v) => setHalfRating(v)}
               className="flex-wrap justify-center"
             />
@@ -304,6 +315,7 @@ export function HalfStarsShowcase() {
               size={40} 
               interactive={true}
               step={0.1}
+              activeColor={starActiveColor}
               onRatingChange={(v) => setPreciseRating(v)}
               className="flex-wrap justify-center"
             />
@@ -320,7 +332,7 @@ export function HalfStarsShowcase() {
               rating={customRating} 
               maxStars={10}
               size={40} 
-              activeColor="text-red-500" 
+              activeColor={color !== "primary" ? starActiveColor : "text-red-500"} 
               inactiveColor="text-red-200 dark:text-red-900"
               interactive={true}
               allowHalf={true} 
@@ -341,6 +353,11 @@ export function HalfStarsShowcase() {
           variants={["full", "half", "continuous", "custom"]}
           defaultValue="full"
           onValueChange={(v) => setActiveVariant(v as any)}
+        />
+        <ThemeColorPicker
+          color={color}
+          onChange={setColor}
+          label="Theme Color"
         />
       </ShowcaseControlPanel>
 
