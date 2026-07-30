@@ -46,12 +46,14 @@ const SupportAlertBanner = () => {
         <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-[pulse_2s_ease-in-out_infinite]" />
         <span>
           Love Docs? Help it reach more developers —{" "}
-          <Link
-            href="/sponsor"
+          <a
+            href="https://github.com/AlgorizeTech/Reusable-Component-Documentation"
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-semibold text-zinc-900 dark:text-zinc-50 border-b border-zinc-400 hover:border-zinc-900 dark:border-zinc-600 dark:hover:border-zinc-100 transition-colors pb-0.5"
           >
             Sponsor the project
-          </Link>
+          </a>
         </span>
       </div>
       <button

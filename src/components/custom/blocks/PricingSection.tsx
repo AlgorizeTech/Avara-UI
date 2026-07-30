@@ -153,7 +153,7 @@ const PricingSection = ({ packages }: any) => {
                     </div>
 
                     <Link
-                      href="/book-call"
+                      href="#"
                       className={`group mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-bold transition ${
                         plan.isFeatured
                           ? "bg-lime-400 dark:bg-[#CCFF00] text-black hover:bg-lime-500 dark:hover:bg-[#b3e600]"
