@@ -15,6 +15,7 @@ import {
   Smartphone,
   Sparkles,
 } from "lucide-react";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { useEffect, useRef, useState } from "react";
 
 // --- TYPESCRIPT ENGINE CODE ---
@@ -292,7 +293,12 @@ export function SplitScrollStackShowcase() {
   const [stickySide, setStickySide] = useState<"left" | "right">("right");
   const [cardDepthScale, setCardDepthScale] = useState(0.06);
   const [cardOffset, setCardOffset] = useState(20);
-  const [color, setColor] = useState<string>("#FFAB1D");
+  const [color, setColor] = useState<string>("primary");
+  const getThemeColorHex = (c: string) => {
+    if (c.startsWith('#')) return c;
+    const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: '#6366f1', rose: '#f43f5e', emerald: '#10b981', zinc: '#18181b' };
+    return map[c] || "var(--primary)";
+  };
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -506,6 +512,9 @@ export default function LandingSection() {
     <div className="w-full flex flex-col gap-6 not-prose my-8">
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-10 relative">
+        <div className="flex justify-between items-center w-full">
+          <ThemeColorPicker color={color} onChange={(c) => { setColor(c); localStorage.setItem("primaryColor", c); }} />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {/* Side Toggle */}
           <div className="flex flex-col gap-2">
@@ -590,7 +599,7 @@ export default function LandingSection() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-[#040406] relative overflow-hidden transition-colors">
+        <div className="w-full rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 relative overflow-hidden transition-colors" style={{ "--theme-color": getThemeColorHex(color), backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" } as React.CSSProperties}>
           {/* Scroll instruction banner */}
           <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-black/80 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 pointer-events-none shadow-lg">
             ↓ Scroll inside preview box to trigger stack ↓
@@ -606,7 +615,7 @@ export default function LandingSection() {
               stickySide={stickySide}
               cardDepthScale={cardDepthScale}
               cardOffset={cardOffset}
-              color={color}
+              color={getThemeColorHex(color)}
               scrollerRef={viewportRef} // CRITICAL FIX: Pass ref object directly
               onActiveIndexChange={setActiveStepIndex}
             />

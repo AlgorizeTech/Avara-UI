@@ -424,7 +424,7 @@ export default function ProcessSection() {
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
       >
-        <div className="w-full relative rounded-3xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950">
+        <div className="w-full relative rounded-3xl border border-slate-200/80 dark:border-zinc-800" style={{ backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" }}>
           <HorizontalScrollStack items={demoProcessItems} />
         </div>
       </ComponentPreview>
