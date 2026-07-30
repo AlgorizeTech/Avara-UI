@@ -49,7 +49,7 @@ function ModeToggle() {
               key={mode.value}
               onClick={() => setTheme(mode.value)}
               className={cn(
-                "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-all",
+                "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-all cursor-pointer",
                 active
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -84,7 +84,7 @@ function ColorSection({
     <div className="border border-border rounded-lg">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium text-foreground hover:bg-accent/50 transition-colors"
+        className="flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium text-foreground hover:bg-accent/50 transition-colors cursor-pointer"
       >
         {label}
         <ChevronDown
@@ -183,7 +183,7 @@ export function ThemeCustomizerSidebar() {
         <CSSExportDialog />
         <button
           onClick={resetToDefaults}
-          className="flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          className="flex items-center justify-center gap-1.5 h-9 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           Reset

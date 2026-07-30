@@ -184,7 +184,7 @@ const Header = () => {
       {/* Global Sticky Navigation Shell */}
       <div
         className={cn(
-          "w-full sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b transition-colors duration-200",
+          "w-full sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b transition-colors duration-200",
           isScrolled
             ? "border-zinc-200 dark:border-zinc-800/80 shadow-sm"
             : "border-zinc-200/50 dark:border-zinc-900/50",

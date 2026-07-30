@@ -30,7 +30,7 @@ export function CSSExportDialog() {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button
-          className="flex items-center gap-2 w-full justify-center px-4 py-2 bg-primary hover:opacity-90 text-primary-foreground rounded-lg text-sm font-medium transition-all shadow-sm"
+          className="flex items-center gap-2 w-full justify-center h-9 px-4 bg-primary hover:opacity-90 text-primary-foreground rounded-lg text-sm font-medium transition-all shadow-sm cursor-pointer"
         >
           <ClipboardCopy className="w-4 h-4" />
           <span>Copy Code</span>
@@ -51,7 +51,7 @@ export function CSSExportDialog() {
             </div>
             <Dialog.Close asChild>
               <button
-                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
@@ -69,7 +69,7 @@ export function CSSExportDialog() {
             <button
               onClick={copyToClipboard}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm",
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm cursor-pointer",
                 copied 
                   ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
                   : "bg-primary hover:opacity-90 text-primary-foreground"

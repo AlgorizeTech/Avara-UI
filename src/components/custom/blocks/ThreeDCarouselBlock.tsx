@@ -246,7 +246,7 @@ export const ThreeDCarousel = React.forwardRef<
         </div>
 
         {/* Navigation Controls Bar */}
-        <div className="flex items-center gap-4 mt-6 z-40">
+        <div className="flex items-center gap-4 mt-6 z-10">
           <button
             onClick={handlePrev}
             aria-label="Previous Slide"
@@ -278,7 +278,7 @@ export const ThreeDCarousel = React.forwardRef<
         </div>
 
         {/* Pagination Dots */}
-        <div className="flex items-center gap-2 mt-4 z-40">
+        <div className="flex items-center gap-2 mt-4 z-10">
           {items.map((_, idx) => (
             <button
               key={idx}
