@@ -6,29 +6,6 @@ A specialized typography component used to display keyboard buttons, shortcuts, 
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `<kbd>` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Features
-Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
-
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
 ## Interactive Showcase
 
 Use the controls below to change the size of the keys. `sm` is ideal for placing inside dense dropdown menus, while `md` and `lg` work well for documentation or large onboarding modals.
@@ -64,6 +41,29 @@ export default function ShortcutHint() {
   );
 }
 ```
+
+## Features
+Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
 
 ## Best Practices & Guidelines
 

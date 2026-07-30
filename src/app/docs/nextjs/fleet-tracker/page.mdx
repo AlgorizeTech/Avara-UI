@@ -4,6 +4,27 @@ import { FleetShowcase } from "@/components/site/FleetShowcase";
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
+## Interactive Showcase
+
+Explore the different architectural variants of the fleet tracker. Switch between the classic split-view (`default`), a floating panel over a light map (`minimal`), or a stunning backdrop-blurred panel (`modern`).
+
+Click on any vehicle in the sidebar to dynamically fly the map to its precise latitude/longitude, or click a map marker to highlight it in the sidebar.
+
+_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+
+<FleetShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
+
+```bash
+npm install leaflet react-leaflet lucide-react
+npm install -D @types/leaflet
+```
+
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
 
@@ -26,27 +47,6 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
-
-## Interactive Showcase
-
-Explore the different architectural variants of the fleet tracker. Switch between the classic split-view (`default`), a floating panel over a light map (`minimal`), or a stunning backdrop-blurred panel (`modern`).
-
-Click on any vehicle in the sidebar to dynamically fly the map to its precise latitude/longitude, or click a map marker to highlight it in the sidebar.
-
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
-
-<FleetShowcase />
-
-## Installation
-
-### 1. Install Dependencies
-
-This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
-
-```bash
-npm install leaflet react-leaflet lucide-react
-npm install -D @types/leaflet
-```
 
 ## Best Practices & Guidelines
 

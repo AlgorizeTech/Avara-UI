@@ -4,6 +4,24 @@ import { ModalShowcase } from "@/components/site/ModalShowcase";
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
+## Interactive Showcase
+
+Use the control panel below to test the different modal layouts (`standard`, `form`, `fullscreen`, `confirmation`).
+
+_Note: For the documentation preview, the modal uses absolute positioning to stay contained within the box. In your actual application, you can swap it to `fixed` positioning to cover the entire viewport!_
+
+<ModalShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies heavily on `gsap` to handle the mounting/unmounting lifecycle perfectly without harsh visual jumping, and `lucide-react` for standard UI icons.
+
+```bash
+npm install gsap lucide-react
+```
+
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
 
@@ -26,24 +44,6 @@ Discover the Modal's flexible overlay features, designed for important user prom
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
-
-## Interactive Showcase
-
-Use the control panel below to test the different modal layouts (`standard`, `form`, `fullscreen`, `confirmation`).
-
-_Note: For the documentation preview, the modal uses absolute positioning to stay contained within the box. In your actual application, you can swap it to `fixed` positioning to cover the entire viewport!_
-
-<ModalShowcase />
-
-## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the mounting/unmounting lifecycle perfectly without harsh visual jumping, and `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
 
 ## Best Practices & Guidelines
 

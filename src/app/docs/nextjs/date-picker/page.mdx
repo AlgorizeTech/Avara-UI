@@ -6,6 +6,25 @@ A completely custom, dependency-free Date Picker component. Native HTML `<input 
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and error states.
+
+- The calendar dropdown automatically highlights today's date in a subtle way, while strongly highlighting your selected date.
+- It uses absolute positioning and CSS transitions for a smooth popover effect without needing heavy animation libraries.
+
+<DatePickerShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component only requires standard `lucide-react` icons (Calendar, ChevronLeft, ChevronRight, AlertCircle). It does **not** require heavy date libraries like `date-fns` or `moment`.
+
+```bash
+npm install lucide-react
+```
+
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
 
@@ -28,25 +47,6 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
-
-## Interactive Showcase
-
-Use the control panel below to test the different sizing options, structural variants, and error states.
-
-- The calendar dropdown automatically highlights today's date in a subtle way, while strongly highlighting your selected date.
-- It uses absolute positioning and CSS transitions for a smooth popover effect without needing heavy animation libraries.
-
-<DatePickerShowcase />
-
-## Installation
-
-### 1. Install Dependencies
-
-This component only requires standard `lucide-react` icons (Calendar, ChevronLeft, ChevronRight, AlertCircle). It does **not** require heavy date libraries like `date-fns` or `moment`.
-
-```bash
-npm install lucide-react
-```
 
 ## Best Practices & Guidelines
 

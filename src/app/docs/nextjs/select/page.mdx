@@ -6,6 +6,26 @@ A completely custom, headless-style dropdown component. Native HTML `<select>` e
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and advanced features.
+
+- **Multi-Select:** Automatically renders selected items as removable, colored tags.
+- **Searchable:** Injects a sticky search bar at the top of the dropdown to filter large lists.
+- **Grouped Options:** Pass a `group` string to your options, and the component will automatically categorize and label them.
+
+<SelectShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
+
+```bash
+npm install lucide-react
+```
+
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
 
@@ -28,26 +48,6 @@ Discover the Select component's accessible dropdown features, including keyboard
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
-
-## Interactive Showcase
-
-Use the control panel below to test the different sizing options, structural variants, and advanced features.
-
-- **Multi-Select:** Automatically renders selected items as removable, colored tags.
-- **Searchable:** Injects a sticky search bar at the top of the dropdown to filter large lists.
-- **Grouped Options:** Pass a `group` string to your options, and the component will automatically categorize and label them.
-
-<SelectShowcase />
-
-## Installation
-
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
-
-```bash
-npm install lucide-react
-```
 
 ## Best Practices & Guidelines
 

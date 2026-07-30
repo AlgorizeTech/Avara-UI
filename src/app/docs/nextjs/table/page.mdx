@@ -6,6 +6,26 @@ A highly functional, fully customizable data table component engineered for mode
 
 We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
 
+## Interactive Showcase
+
+Use the control panel below to test the different sizing options, structural variants, and toggle interactive features.
+
+- Toggle **Expandable Rows** on, then click any row in the table to see the smooth CSS Grid expansion effect.
+- Try clicking the column headers (like _Customer_ or _Amount_) to see the built-in sorting logic trigger the GSAP row-reordering animation.
+- Hover over the right edge of any row to see the Edit/Delete action buttons smoothly slide into view.
+
+<TableShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `gsap` for the entrance animations and `lucide-react` for standard UI icons (Chevron Up/Down, Check, Edit, Trash).
+
+```bash
+npm install gsap lucide-react
+```
+
 ## Features
 Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
 
@@ -28,26 +48,6 @@ Learn about the Table component's structured layout features, designed for displ
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
-
-## Interactive Showcase
-
-Use the control panel below to test the different sizing options, structural variants, and toggle interactive features.
-
-- Toggle **Expandable Rows** on, then click any row in the table to see the smooth CSS Grid expansion effect.
-- Try clicking the column headers (like _Customer_ or _Amount_) to see the built-in sorting logic trigger the GSAP row-reordering animation.
-- Hover over the right edge of any row to see the Edit/Delete action buttons smoothly slide into view.
-
-<TableShowcase />
-
-## Installation
-
-### 1. Install Dependencies
-
-This component relies on `gsap` for the entrance animations and `lucide-react` for standard UI icons (Chevron Up/Down, Check, Edit, Trash).
-
-```bash
-npm install gsap lucide-react
-```
 
 ## Best Practices & Guidelines
 

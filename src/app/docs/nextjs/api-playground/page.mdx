@@ -8,29 +8,6 @@ This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or 
 
 Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
 
-## Features
-Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
-
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
 ## Interactive Showcase
 
 Use the control panel to set the default method and color. Click **Force 401 Error** and then hit the "Send" button in the playground to see how it elegantly handles and formats error responses. Try adding some parameters!
@@ -89,6 +66,29 @@ export default function UsersEndpointDocs() {
   );
 }
 ```
+
+## Features
+Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
 
 ## Best Practices & Guidelines
 

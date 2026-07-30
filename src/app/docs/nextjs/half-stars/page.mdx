@@ -6,29 +6,6 @@ A sleek, customizable star rating component for Next.js applications that suppor
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
-## Features
-Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
-
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High Precision</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Interactive Mode</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Custom</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
-  </div>
-</div>
-
 ## Interactive Showcase
 Hover and click the Half Stars rating system to test its interactive fraction selection.
 
@@ -141,6 +118,29 @@ export default function AppShowcasePage() {
   );
 }
 ```
+</div>
+
+## Features
+Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High Precision</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Interactive Mode</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Custom</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
+  </div>
 </div>
 
 ## Best Practices & Guidelines

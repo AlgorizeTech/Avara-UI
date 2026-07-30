@@ -6,29 +6,6 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Features
-Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
-
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">3 Layout Variants</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">System Sync</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
-  </div>
-</div>
-
 ## Interactive Showcase
 Interact with the Theme Switcher to see the smooth sliding animation and immediate color scheme change.
 
@@ -97,6 +74,29 @@ export default function DashboardHeader() {
   );
 }
 ```
+
+## Features
+Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">3 Layout Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">System Sync</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  </div>
+</div>
 
 ## Best Practices & Guidelines
 
