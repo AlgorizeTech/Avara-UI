@@ -1,0 +1,60 @@
+export const metadata = {
+    title: 'Architecture Overview - Next.js Documentation',
+    description: 'Learn about the project architecture, directory layout, and design principles.',
+    keywords: [
+        'Next.js architecture',
+        'Project structure',
+        'Component design',
+        'Directory layout'
+    ],
+    openGraph: {
+        title: 'Architecture Overview - Next.js Documentation',
+        description: 'Learn about the project architecture, directory layout, and design principles.',
+        type: 'article',
+        url: '/docs/nextjs/architecture',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Architecture Overview - Next.js Documentation',
+        description: 'Learn about the project architecture, directory layout, and design principles.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/architecture',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+
+# Architecture Overview
+
+This section outlines the architectural foundation of our reusable component library and documentation system.
+
+## Project Structure
+
+```bash
+├── src/
+│   ├── app/                # Next.js App Router pages and routes
+│   ├── components/         # Reusable UI components & showcases
+│   │   ├── site/           # Navigation, header, sidebar & layout elements
+│   │   ├── ui/             # Core UI components
+│   │   └── custom/         # Custom block components
+│   ├── constants/          # Site-wide navigation and configuration
+│   └── lib/                # Utility functions and helper scripts
+└── public/                 # Static assets and markdown documentation
+```
+
+## Core Design Principles
+
+1. **Modular Components**: Built with isolation and flexibility in mind using Tailwind CSS and Radix UI / Motion primitives.
+2. **Static Export Ready**: Configured for static HTML generation and seamless hosting.
+3. **Dark / Light Mode**: Built-in dynamic theme system powered by `next-themes`.
