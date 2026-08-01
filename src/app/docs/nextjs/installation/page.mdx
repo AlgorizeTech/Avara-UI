@@ -104,29 +104,59 @@ You can also combine flags:
 npx create-next-app@latest my-app --typescript --app
 ```
 
-## Project Structure
+## CLI & Manual Component Setup Guide
 
-### App Router Structure (Recommended)
+Whether you prefer automated CLI scaffolding or manual copy-paste integration, follow our enterprise-grade architecture for setting up `/src/components/` and `/src/lib/` directories.
+
+### Option 1: Automated CLI Scaffolding (Recommended)
+
+Quickly initialize the directory structure and copy components using our CLI:
 
 ```bash
-my-next-app/
-├── app/
-│   ├── layout.js
-│   ├── page.js
-│   ├── api/
-│   └── [slug]/
-│       └── page.js
-├── public/
-│   └── favicon.ico
-├── styles/
-│   └── globals.css
-├── components/
-├── lib/
-├── next.config.js
-├── package.json
-├── README.md
-└── .gitignore
+# Initialize project configuration & directories
+npx docs-ui@latest init
+
+# Add specific UI component blocks to your project
+npx docs-ui@latest add hero-block avatar cart-block
 ```
+
+### Option 2: Production Manual Setup & Directory Layout
+
+To maintain zero bundle bloat and ensure 100% code ownership, structure your repository using our standardized layout:
+
+```bash
+src/
+├── components/
+│   ├── ui/                   # Base primitives (e.g. avatar.tsx, dialog.tsx)
+│   ├── custom/               # Reusable blocks & custom components
+│   │   ├── blocks/           # Hero, Navigation, Cart & Feature blocks
+│   │   └── ui/               # Advanced UI extensions (codeblocks, cards)
+│   └── site/                 # Layout wrappers, headers, & sidebars
+└── lib/
+    ├── utils.ts              # Class merging helper (cn function)
+    └── docs.ts               # Content parsing & utility scripts
+```
+
+### TypeScript Path Alias Setup (`tsconfig.json`)
+
+Ensure your `@/*` path aliases are properly configured so all component imports resolve cleanly across your application:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+### Manual Setup Workflow
+
+1. **Base Primitives (`/src/components/ui/`)**: Place underlying Radix UI or base primitives here.
+2. **Custom Blocks (`/src/components/custom/blocks/`)**: Copy-paste high-level UI blocks (e.g. `HeroBlock.tsx`, `Avatar.tsx`, `CartBlock.tsx`).
+3. **Utility Helper (`/src/lib/utils.ts`)**: Keep your class merging `cn` helper in the `lib` folder so all components can import it cleanly via `@/lib/utils`.
 
 ## Installation & Peer Dependencies Setup
 
