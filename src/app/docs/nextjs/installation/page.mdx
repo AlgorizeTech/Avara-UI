@@ -148,12 +148,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-### Step 3: Configure `tailwind.config.ts`
+### Step 3: Install & Configure Container Queries (`@container`)
 
-Ensure your Tailwind CSS configuration file is set up to scan components and app directories:
+To enable native container queries for responsive component boundaries, install the official plugin:
+
+```bash
+npm install -D @tailwindcss/container-queries
+```
+
+### Step 4: Configure `tailwind.config.ts`
+
+Ensure your Tailwind CSS configuration file is set up with plugins and content paths:
 
 ```typescript
 import type { Config } from "tailwindcss";
+import containerQueries from "@tailwindcss/container-queries";
 
 const config: Config = {
   darkMode: ["class"],
@@ -175,7 +184,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [containerQueries],
 };
 
 export default config;
