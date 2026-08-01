@@ -17,7 +17,7 @@ import { PlayCircle } from "lucide-react";
 
 export default function HeroData() {
   return (
-    <Hero layout="split-left" color="blue">
+    <Hero layout="split-left" color="primary">
       <HeroContent>
         <HeroTitle>
           Where your data turns into software with a click
@@ -26,7 +26,7 @@ export default function HeroData() {
           Build custom portals, CRMs, and tools effortlessly. From concept to launch in minutes, not months.
         </HeroDescription>
         <HeroActions>
-          <HeroAction variant="secondary">
+          <HeroAction variant="primary">
             <PlayCircle className="w-5 h-5 mr-2 -ml-1" /> Watch Demo
           </HeroAction>
         </HeroActions>
@@ -48,7 +48,7 @@ export function HeroDataShowcase() {
       tsCode={USAGE_CODE}
     >
       <div className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b]">
-        <Hero layout="split-left" color="blue">
+        <Hero layout="split-left" color="primary">
           <HeroContent>
             <HeroTitle>
               Where your data turns into software with a click
@@ -58,7 +58,7 @@ export function HeroDataShowcase() {
               to launch in minutes, not months.
             </HeroDescription>
             <HeroActions>
-              <HeroAction variant="secondary">
+              <HeroAction variant="primary">
                 <PlayCircle className="w-5 h-5 mr-2 -ml-1" /> Watch Demo
               </HeroAction>
             </HeroActions>

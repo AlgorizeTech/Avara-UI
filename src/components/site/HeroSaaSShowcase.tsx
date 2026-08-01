@@ -15,7 +15,7 @@ const USAGE_CODE = `import { Hero, HeroContent, HeroBadge, HeroBadgeText, HeroTi
 
 export default function HeroSaaS() {
   return (
-    <Hero layout="center" color="indigo" pattern="grid">
+    <Hero layout="center" color="primary" pattern="grid">
       <HeroContent>
         <HeroBadge href="#">
           <HeroBadgeText>SETUP_EASY-PEASY!</HeroBadgeText>
@@ -53,7 +53,7 @@ export function HeroSaaSShowcase() {
       tsCode={USAGE_CODE}
     >
       <div className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b]">
-        <Hero layout="center" color="indigo" pattern="grid">
+        <Hero layout="center" color="primary" pattern="grid">
           <HeroContent>
             <HeroBadge href="#">
               <HeroBadgeText>SETUP_EASY-PEASY!</HeroBadgeText>

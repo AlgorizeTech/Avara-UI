@@ -1,0 +1,82 @@
+export const metadata = {
+    title: 'Architecture Overview - Next.js Documentation',
+    description: 'Learn about the project architecture, directory layout, and design principles.',
+    keywords: [
+        'Next.js architecture',
+        'Project structure',
+        'Component design',
+        'Directory layout'
+    ],
+    openGraph: {
+        title: 'Architecture Overview - Next.js Documentation',
+        description: 'Learn about the project architecture, directory layout, and design principles.',
+        type: 'article',
+        url: '/docs/nextjs/architecture',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Architecture Overview - Next.js Documentation',
+        description: 'Learn about the project architecture, directory layout, and design principles.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/architecture',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+
+# Architecture Overview
+
+This section outlines the architectural foundation of our reusable component library and documentation system.
+
+## Project Structure
+
+```bash
+├── src/
+│   ├── app/                # Next.js App Router pages and routes
+│   ├── components/         # Reusable UI components & showcases
+│   │   ├── site/           # Navigation, header, sidebar & layout elements
+│   │   ├── ui/             # Core UI components
+│   │   └── custom/         # Custom block components
+│   ├── constants/          # Site-wide navigation and configuration
+│   └── lib/                # Utility functions and helper scripts
+└── public/                 # Static assets and markdown documentation
+```
+
+## Core Design Principles
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8 not-prose">
+  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">01. Architecture</div>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Copy & Paste Model</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Zero dependency bloat. Copy component code directly into your repository with 100% ownership.</p>
+  </div>
+
+  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">02. Modularity</div>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Modular Primitives</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Built with complete isolation using Tailwind CSS, Framer Motion, and Radix UI primitives.</p>
+  </div>
+
+  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">03. Build</div>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Static Export Ready</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Fully optimized for Next.js static HTML exports, SSG, and ultra-fast hosting deployments.</p>
+  </div>
+
+  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">04. Theming</div>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Dynamic Dark Mode</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Built-in theme engine with custom color tokens powered by <code className="text-xs px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">next-themes</code>.</p>
+  </div>
+</div>
