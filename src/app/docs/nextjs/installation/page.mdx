@@ -120,6 +120,67 @@ my-next-app/
 └── .gitignore
 ```
 
+## Tailwind CSS & Utility Helpers Setup
+
+Follow this step-by-step guide to configure Tailwind CSS and set up the class name helper utility (`cn`).
+
+### Step 1: Install Utility Packages
+
+Install `clsx` and `tailwind-merge` to handle dynamic class merging seamlessly:
+
+```bash
+npm install clsx tailwind-merge
+```
+
+### Step 2: Create the `cn` Helper Function
+
+Create a file at `src/lib/utils.ts` (or `lib/utils.js`) and paste the following helper implementation:
+
+```typescript
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+/**
+ * Merges Tailwind CSS classes cleanly without class conflicts.
+ */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+### Step 3: Configure `tailwind.config.ts`
+
+Ensure your Tailwind CSS configuration file is set up to scan components and app directories:
+
+```typescript
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  darkMode: ["class"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;
+```
+
 ## Development Server
 
 Start the development server:
