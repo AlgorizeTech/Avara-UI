@@ -120,17 +120,43 @@ my-next-app/
 └── .gitignore
 ```
 
-## Tailwind CSS & Utility Helpers Setup
+## Installation & Peer Dependencies Setup
 
-Follow this step-by-step guide to configure Tailwind CSS and set up the class name helper utility (`cn`).
+Follow this step-by-step guide to install common peer dependencies, configure Tailwind CSS, and set up the class name helper utility (`cn`).
 
-### Step 1: Install Utility Packages
+### Step 1: Install Common Peer Dependencies
 
-Install `clsx` and `tailwind-merge` to handle dynamic class merging seamlessly:
+Install the core peer dependencies used across our UI components for animations, icons, themes, and interactive resizable layouts:
 
 ```bash
-npm install clsx tailwind-merge
+npm install framer-motion lucide-react next-themes re-resizable clsx tailwind-merge
 ```
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Animation Engine</div>
+    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">framer-motion</h4>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Physics-based spring animations & 3D drag gestures</p>
+  </div>
+
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Icon System</div>
+    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">lucide-react</h4>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Clean, responsive SVG icon suite for all components</p>
+  </div>
+
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Theme Engine</div>
+    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">next-themes</h4>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Seamless Light / Dark mode switching & system sync</p>
+  </div>
+
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
+    <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Layout Handling</div>
+    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">re-resizable</h4>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Drag-to-resize split containers & preview panels</p>
+  </div>
+</div>
 
 ### Step 2: Create the `cn` Helper Function
 
