@@ -16,7 +16,7 @@ import { Check, ArrowRight } from "lucide-react";
 
 export default function HeroMinimal() {
   return (
-    <Hero layout="center" color="zinc">
+    <Hero layout="center" color="primary">
       <HeroContent>
         <HeroTitle className="text-5xl md:text-7xl font-black">
           Simple. Clean.<br />
@@ -40,7 +40,7 @@ export default function HeroMinimal() {
         </div>
 
         <HeroActions>
-          <HeroAction variant="secondary">
+          <HeroAction variant="primary">
             Get Started Free <ArrowRight className="w-4 h-4 ml-2 -mr-1" />
           </HeroAction>
           <HeroAction variant="outline">View Demo</HeroAction>
@@ -73,7 +73,7 @@ export function HeroMinimalShowcase() {
       tsCode={USAGE_CODE}
     >
       <div className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b]">
-        <Hero layout="center" color="zinc">
+        <Hero layout="center" color="primary">
           <HeroContent>
             <HeroTitle className="text-5xl md:text-7xl font-black">
               Simple. Clean.
@@ -104,7 +104,7 @@ export function HeroMinimalShowcase() {
             </div>
 
             <HeroActions>
-              <HeroAction variant="secondary">
+              <HeroAction variant="primary">
                 Get Started Free <ArrowRight className="w-4 h-4 ml-2 -mr-1" />
               </HeroAction>
               <HeroAction variant="outline">View Demo</HeroAction>
