@@ -407,14 +407,14 @@ export function ComponentPreview({
             </div>
           </div>
         ) : activeTab === "usage" && usageCode ? (
-          <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="relative w-full rounded-b-xl overflow-x-auto">
             <CodeBlocks
               code={language === "ts" ? usageCode : jsUsageCode || usageCode}
               language={language === "ts" ? "tsx" : "jsx"}
             />
           </div>
         ) : (
-          <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="relative w-full rounded-b-xl overflow-x-auto">
             <CodeBlocks
               code={language === "ts" ? tsCode : jsCode || tsCode}
               language={language === "ts" ? "tsx" : "jsx"}
