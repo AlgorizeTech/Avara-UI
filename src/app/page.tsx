@@ -40,13 +40,14 @@ import {
   CheckCircle2,
   Activity,
   ShieldCheck,
+  LayoutGrid,
   Send,
   Mic,
   GitPullRequest,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -1098,186 +1099,1476 @@ const matrixNodes: SystemNode[] = [
   },
 ];
 
-function ComponentCatalogSection() {
-  const [selectedNode, setSelectedNode] = useState<SystemNode>(matrixNodes[0]);
-  const [copied, setCopied] = useState(false);
+/* ═══════════════════════════════════════════════
+   SECTION 5.5: COMPONENT PREVIEW CARDS CATALOG
+   ═══════════════════════════════════════════════ */
+
+type PreviewCardItem = {
+  title: string;
+  countText: string;
+  href: string;
+  badge?: string;
+  illustrationType:
+    | "hero"
+    | "pricing"
+    | "chart"
+    | "bento"
+    | "dock"
+    | "carousel"
+    | "auth"
+    | "chat"
+    | "navbar"
+    | "table"
+    | "modal"
+    | "stepper"
+    | "card"
+    | "counter"
+    | "cart"
+    | "item"
+    | "resizable"
+    | "scroll-area"
+    | "masonry"
+    | "qr"
+    | "file-upload"
+    | "tilted-card"
+    | "memories-card"
+    | "scroll-stack"
+    | "magic-bento"
+    | "network-graph"
+    | "sidebar"
+    | "marquee"
+    | "dashboard"
+    | "floating-contact"
+    | "video-accordion"
+    | "timeline"
+    | "typography"
+    | "animated-list"
+    | "avatar"
+    | "accordion"
+    | "api-playground"
+    | "breadcrumb"
+    | "button"
+    | "command"
+    | "calendar"
+    | "collapsible"
+    | "context-menu"
+    | "drawer"
+    | "dialog"
+    | "data-grid"
+    | "data-table"
+    | "date-picker"
+    | "form"
+    | "input"
+    | "invoice"
+    | "kbd"
+    | "mails"
+    | "map"
+    | "menubar"
+    | "otp-input"
+    | "popover"
+    | "progress"
+    | "select"
+    | "toast"
+    | "toggle"
+    | "tooltip"
+    | "toggle-group"
+    | "loader"
+    | "skeleton"
+    | "sonner"
+    | "terminal"
+    | "pagination"
+    | "tabs"
+    | "theme-switcher"
+    | "wizard"
+    | "data-maps"
+    | "hero-videoplayer"
+    | "verify-badge"
+    | "mobile-mockup"
+    | "half-stars"
+    | "code-block";
+};
+
+type PreviewCategoryGroup = {
+  categoryTitle: string;
+  categorySubtitle: string;
+  icon: any;
+  items: PreviewCardItem[];
+};
+
+const componentPreviewData: PreviewCategoryGroup[] = [
+  {
+    categoryTitle: "Ui Components",
+    categorySubtitle: "Essential primitive building blocks for clean, high-performance web applications.",
+    icon: Boxes,
+    items: [
+      { title: "Avatar", countText: "User Profile Badge", href: "/docs/nextjs/avatar", illustrationType: "avatar" },
+      { title: "Accordion", countText: "Expandable Panels", href: "/docs/nextjs/accordion", illustrationType: "accordion" },
+      { title: "Alert", countText: "Notification Banners", href: "/docs/nextjs/alert", illustrationType: "modal" },
+      { title: "Ai-Chat", countText: "Streaming Interface", href: "/docs/nextjs/ai-chat", illustrationType: "chat" },
+      { title: "Api Playground", countText: "API Tester", href: "/docs/nextjs/api-playground", badge: "New", illustrationType: "api-playground" },
+      { title: "Breadcrumb", countText: "Path Navigation", href: "/docs/nextjs/breadcrumb", illustrationType: "breadcrumb" },
+      { title: "Modern Buttons", countText: "5+ Action Styles", href: "/docs/nextjs/button", illustrationType: "button" },
+      { title: "Card", countText: "Content Containers", href: "/docs/nextjs/card", illustrationType: "card" },
+      { title: "Chart", countText: "SVG Data Viz", href: "/docs/nextjs/chart", illustrationType: "chart" },
+      { title: "Carousel", countText: "Slide Showcase", href: "/docs/nextjs/carousel", illustrationType: "carousel" },
+      { title: "Counter", countText: "Animated Numbers", href: "/docs/nextjs/counter", illustrationType: "counter" },
+      { title: "Command", countText: "Cmd+K Palette", href: "/docs/nextjs/command", illustrationType: "command" },
+      { title: "Calendar", countText: "Date Picker Grid", href: "/docs/nextjs/calendar", illustrationType: "calendar" },
+      { title: "Chat", countText: "Messaging Feed", href: "/docs/nextjs/chat", illustrationType: "chat" },
+      { title: "Cart", countText: "E-commerce Drawer", href: "/docs/nextjs/cart", illustrationType: "cart" },
+      { title: "Collapsible", countText: "Toggle Content", href: "/docs/nextjs/collapsible", illustrationType: "collapsible" },
+      { title: "ContextMenu", countText: "Right Click Menu", href: "/docs/nextjs/context-menu", illustrationType: "context-menu" },
+      { title: "Drawer", countText: "Slideover Sheet", href: "/docs/nextjs/drawer", illustrationType: "drawer" },
+      { title: "Dialog", countText: "Modal Dialog", href: "/docs/nextjs/dialog", illustrationType: "dialog" },
+      { title: "Data Grid", countText: "Advanced Grid", href: "/docs/nextjs/data-grid", badge: "New", illustrationType: "data-grid" },
+      { title: "Data Table", countText: "Sortable Table", href: "/docs/nextjs/data-table", badge: "New", illustrationType: "data-table" },
+      { title: "Date Picker", countText: "Calendar Input", href: "/docs/nextjs/date-picker", illustrationType: "date-picker" },
+      { title: "Form", countText: "Validated Forms", href: "/docs/nextjs/form", illustrationType: "form" },
+      { title: "Input", countText: "Text & Fields", href: "/docs/nextjs/input", illustrationType: "input" },
+      { title: "Item", countText: "List Items", href: "/docs/nextjs/item", illustrationType: "item" },
+      { title: "Invoice", countText: "Billing Paper", href: "/docs/nextjs/invoice", illustrationType: "invoice" },
+      { title: "Kbd", countText: "Key Badges", href: "/docs/nextjs/kbd", illustrationType: "kbd" },
+      { title: "Mails", countText: "Inbox Feed", href: "/docs/nextjs/email", illustrationType: "mails" },
+      { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
+      { title: "Menubar", countText: "Top App Navigation", href: "/docs/nextjs/menubar", illustrationType: "menubar" },
+      { title: "Modal", countText: "Overlays & Popups", href: "/docs/nextjs/modal", illustrationType: "modal" },
+      { title: "Navigation", countText: "Responsive Header", href: "/docs/nextjs/navigation", illustrationType: "navbar" },
+      { title: "OTP Input", countText: "Verification Code", href: "/docs/nextjs/otp-input", illustrationType: "otp-input" },
+      { title: "Popover", countText: "Context Popup", href: "/docs/nextjs/popover", illustrationType: "popover" },
+      { title: "Progress", countText: "Loading Bars", href: "/docs/nextjs/progress", illustrationType: "progress" },
+      { title: "Resizable", countText: "Split Panels", href: "/docs/nextjs/resizable", illustrationType: "resizable" },
+      { title: "Loader", countText: "Spinners & Pulse", href: "/docs/nextjs/loader", illustrationType: "loader" },
+      { title: "Sonner", countText: "Toast Stream", href: "/docs/nextjs/sonner", illustrationType: "sonner" },
+      { title: "Stepper", countText: "Wizard Flow", href: "/docs/nextjs/stepper", illustrationType: "stepper" },
+      { title: "Select", countText: "Dropdown Menu", href: "/docs/nextjs/select", illustrationType: "select" },
+      { title: "Scroll Area", countText: "Custom Scrollbar", href: "/docs/nextjs/scroll-area", illustrationType: "scroll-area" },
+      { title: "Skeleton", countText: "Shimmer States", href: "/docs/nextjs/skeleton", illustrationType: "skeleton" },
+      { title: "Toast", countText: "Popup Alert", href: "/docs/nextjs/toast", illustrationType: "toast" },
+      { title: "Toggle", countText: "Switch Button", href: "/docs/nextjs/toggle", illustrationType: "toggle" },
+      { title: "Table", countText: "Data Layout", href: "/docs/nextjs/table", illustrationType: "table" },
+      { title: "Tooltip", countText: "Hover Labels", href: "/docs/nextjs/tooltip", illustrationType: "tooltip" },
+      { title: "Toggle Group", countText: "Segmented Control", href: "/docs/nextjs/toggle-group", illustrationType: "toggle-group" },
+      { title: "Timeline", countText: "History Feed", href: "/docs/nextjs/timeline", illustrationType: "timeline" },
+      { title: "Terminal", countText: "Dev Console", href: "/docs/nextjs/terminal", illustrationType: "terminal" },
+      { title: "Typography", countText: "Headings & Text", href: "/docs/nextjs/typography", illustrationType: "typography" },
+      { title: "Pagination", countText: "Page Controls", href: "/docs/nextjs/pagination", illustrationType: "pagination" },
+      { title: "Tabs", countText: "Vertical & Horizontal", href: "/docs/nextjs/vertical-tabs", illustrationType: "tabs" },
+      { title: "Theme Switcher", countText: "Light/Dark Toggle", href: "/docs/nextjs/theme-switcher", badge: "New", illustrationType: "theme-switcher" },
+      { title: "Wizard", countText: "Multi-Step Form", href: "/docs/nextjs/wizard", badge: "New", illustrationType: "wizard" },
+      { title: "Masonry Grid", countText: "Staggered Layout", href: "/docs/nextjs/masonry-grid", badge: "New", illustrationType: "masonry" },
+      { title: "QR Code", countText: "QR Generator", href: "/docs/nextjs/qr-code-generator", badge: "New", illustrationType: "qr" },
+      { title: "Data Maps", countText: "Vector Map Analytics", href: "/docs/nextjs/data-maps", badge: "New", illustrationType: "data-maps" },
+      { title: "Hero VideoPlayer", countText: "Action Video Hero", href: "/docs/nextjs/hero-video-player", badge: "New", illustrationType: "hero-videoplayer" },
+      { title: "Verify Badge", countText: "Trust Badge", href: "/docs/nextjs/verify-badge", badge: "New", illustrationType: "verify-badge" },
+      { title: "Mobile Mockups", countText: "Device Frame", href: "/docs/nextjs/mobile-mockup", badge: "New", illustrationType: "mobile-mockup" },
+      { title: "Half Stars", countText: "Rating Stars", href: "/docs/nextjs/half-stars", badge: "New", illustrationType: "half-stars" },
+      { title: "Custom Code Block", countText: "Code Highlighter", href: "/docs/nextjs/custom-code-block", badge: "New", illustrationType: "code-block" },
+    ],
+  },
+  {
+    categoryTitle: "Animated Ui Components",
+    categorySubtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
+    icon: Sparkles,
+    items: [
+      { title: "Chat Bubble", countText: "Spring Motion Feed", href: "/docs/nextjs/chat-bubble", illustrationType: "chat" },
+      { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
+      { title: "Typography", countText: "Animated Text", href: "/docs/nextjs/animated-typography", illustrationType: "typography" },
+      { title: "File Upload", countText: "Drag & Drop Motion", href: "/docs/nextjs/file-upload", illustrationType: "file-upload" },
+      { title: "3D Carousel", countText: "3D Physics Spring", href: "/docs/nextjs/3d-carousel", illustrationType: "carousel" },
+      { title: "Memories Card", countText: "Stackable Cards", href: "/docs/nextjs/memories-card", illustrationType: "memories-card" },
+      { title: "Timeline", countText: "Animated History", href: "/docs/nextjs/animated-timeline", illustrationType: "timeline" },
+      { title: "Tilted Card", countText: "3D Parallax Tilt", href: "/docs/nextjs/tilted-card", illustrationType: "tilted-card" },
+      { title: "Animated List", countText: "Staggered Entrance", href: "/docs/nextjs/animated-list", illustrationType: "animated-list" },
+      { title: "Scroll Stack", countText: "Stacking Cards", href: "/docs/nextjs/scroll-stack", illustrationType: "scroll-stack" },
+      { title: "Magic Bento", countText: "Glow & Tilt Grid", href: "/docs/nextjs/magic-bento", illustrationType: "magic-bento" },
+      { title: "Video Accordion", countText: "Interactive Media", href: "/docs/nextjs/video-accordion", illustrationType: "video-accordion" },
+      { title: "Network Graph", countText: "Node Graph Canvas", href: "/docs/nextjs/network-graph", badge: "New", illustrationType: "network-graph" },
+      { title: "Floating ContactButton", countText: "Animated Action", href: "/docs/nextjs/floating-contact-button", badge: "New", illustrationType: "floating-contact" },
+    ],
+  },
+  {
+    categoryTitle: "Website Sections",
+    categorySubtitle: "Production-ready full section blocks for landing pages and SaaS platforms.",
+    icon: LayoutTemplate,
+    items: [
+      { title: "Navbar", countText: "Responsive Header", href: "/docs/nextjs/navbar", badge: "Core", illustrationType: "navbar" },
+      { title: "Sign-Up", countText: "Glassmorphic Form", href: "/docs/nextjs/signup-form", badge: "Core", illustrationType: "auth" },
+      { title: "Hero", countText: "Landing Page Showcase", href: "/docs/nextjs/hero", badge: "New", illustrationType: "hero" },
+      { title: "Marquee", countText: "Infinite Logo Ticker", href: "/docs/nextjs/marquee", badge: "New", illustrationType: "marquee" },
+      { title: "Pricing Section", countText: "Tier & Feature Matrix", href: "/docs/nextjs/pricing", badge: "Core", illustrationType: "pricing" },
+      { title: "Sidebar Section", countText: "App Shell Layout", href: "/docs/nextjs/sidebar", badge: "New", illustrationType: "sidebar" },
+      { title: "Support Dashboard", countText: "Full SaaS Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core", illustrationType: "dashboard" },
+    ],
+  },
+];
+
+function CardHeaderMockup({ title }: { title: string }) {
+  return (
+    <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
+      <div className="flex items-center gap-1">
+        <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
+        <span className="size-1.5 rounded-full bg-amber-500/80 inline-block" />
+        <span className="size-1.5 rounded-full bg-emerald-500/80 inline-block" />
+      </div>
+      <span className="text-[9px] font-mono text-muted-foreground/70 truncate max-w-[120px] font-semibold">
+        {title.toLowerCase().replace(/\s+/g, "-")}.tsx
+      </span>
+      <div className="size-2 rounded-full bg-primary/40" />
+    </div>
+  );
+}
+
+function MiniatureIllustration({ title, type }: { title: string; type: PreviewCardItem["illustrationType"] }) {
+  return (
+    <div className="w-full h-full rounded-xl border border-border/60 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden shadow-xs relative group-hover:border-primary/50 transition-colors">
+      <CardHeaderMockup title={title} />
+
+      {/* Realistic Mini UI Preview Content */}
+      <div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
+        {type === "hero" && (
+          <div className="w-full text-center space-y-1.5 px-1 my-auto">
+            <span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-bold border border-primary/20">
+              Next.js 15
+            </span>
+            <div className="text-[11px] font-black tracking-tight text-foreground leading-tight">
+              Build Next-Gen UI
+            </div>
+            <div className="flex justify-center gap-1 pt-0.5">
+              <span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-bold shadow-xs">
+                Get Started
+              </span>
+              <span className="px-2 py-0.5 rounded border border-border text-[8px] font-bold text-foreground">
+                Docs
+              </span>
+            </div>
+          </div>
+        )}
+
+        {type === "pricing" && (
+          <div className="w-full flex flex-col justify-between my-auto space-y-1 px-0.5">
+            {/* Monthly / Annual Pill Toggle */}
+            <div className="mx-auto px-1.5 py-0.5 rounded-full bg-muted border border-border/60 flex items-center gap-0.5 text-[6px]">
+              <span className="font-bold text-primary px-1 rounded-full bg-background shadow-2xs">Monthly</span>
+              <span className="text-muted-foreground font-semibold">Annual</span>
+            </div>
+            {/* 3 Cards Showcase */}
+            <div className="w-full flex items-center justify-between gap-1 pt-0.5">
+              <div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
+                <div className="text-[6px] font-bold text-muted-foreground truncate">Free</div>
+                <div className="text-[8px] font-black text-foreground">$0</div>
+                <div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">Free</div>
+              </div>
+              <div className="flex-1 p-1 rounded-md border border-primary bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
+                <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-black px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">HOT</span>
+                <div className="text-[6px] font-black text-primary truncate">Pro</div>
+                <div className="text-[8px] font-black text-primary">$29</div>
+                <div className="h-1.5 w-full rounded bg-primary text-[5px] font-bold text-primary-foreground flex items-center justify-center shadow-2xs">Pro</div>
+              </div>
+              <div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
+                <div className="text-[6px] font-bold text-muted-foreground truncate">Enterprise</div>
+                <div className="text-[8px] font-black text-foreground">$99</div>
+                <div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">VIP</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "chart" && (
+          <div className="w-full h-full flex flex-col justify-between py-1 relative">
+            <div className="flex justify-between items-center text-[7.5px] font-bold text-muted-foreground px-1 z-10">
+              <span>Revenue Stream</span>
+              <span className="text-emerald-500 font-extrabold">+34.2%</span>
+            </div>
+            {/* SVG Curved Area Line Chart */}
+            <div className="w-full h-12 relative my-auto">
+              <svg className="w-full h-full overflow-visible" viewBox="0 0 100 40">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M 0 35 Q 25 5, 50 20 T 100 5 L 100 40 L 0 40 Z"
+                  fill="url(#chartGrad)"
+                />
+                <path
+                  d="M 0 35 Q 25 5, 50 20 T 100 5"
+                  fill="none"
+                  stroke="var(--primary)"
+                  strokeWidth="2"
+                />
+                <circle cx="50" cy="20" r="2.5" className="fill-primary stroke-background stroke-2" />
+                <circle cx="100" cy="5" r="2.5" className="fill-emerald-500 stroke-background stroke-2" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {type === "dock" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="px-2.5 py-1.5 rounded-2xl bg-background border border-border/80 shadow-md flex items-end gap-1.5">
+              <div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-bold">A</div>
+              <div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-bold">B</div>
+              <div className="size-5 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-[9px] font-bold shadow-sm -translate-y-1">★</div>
+              <div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-bold">C</div>
+            </div>
+          </div>
+        )}
+
+        {type === "navbar" && (
+          <div className="w-full my-auto px-0.5">
+            <div className="w-full p-1.5 rounded-xl bg-background border border-border/80 flex items-center justify-between shadow-xs px-2.5">
+              <div className="flex items-center gap-1.5 text-[8.5px] font-black text-foreground">
+                <span className="size-2 rounded bg-primary" />
+                <span>DocsUI</span>
+              </div>
+              <div className="flex items-center gap-2 text-[7px] font-bold text-muted-foreground">
+                <span>Features</span>
+                <span>Docs</span>
+                <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold text-[6.5px]">Login</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "table" && (
+          <div className="w-full space-y-1 my-auto text-[8px] font-mono">
+            <div className="flex items-center justify-between border-b border-border/60 pb-0.5 font-bold text-primary">
+              <span>Name</span>
+              <span>Status</span>
+            </div>
+            <div className="flex items-center justify-between text-foreground">
+              <span>Button.tsx</span>
+              <span className="text-emerald-500 font-bold">Ready</span>
+            </div>
+            <div className="flex items-center justify-between text-foreground">
+              <span>Card.tsx</span>
+              <span className="text-emerald-500 font-bold">Ready</span>
+            </div>
+          </div>
+        )}
+
+        {type === "modal" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="w-4/5 p-2 rounded-xl bg-background border border-border shadow-lg space-y-1.5">
+              <div className="flex justify-between items-center border-b border-border/40 pb-0.5">
+                <span className="text-[9px] font-bold text-foreground">Modal Dialog</span>
+                <span className="text-[8px] text-muted-foreground">✕</span>
+              </div>
+              <div className="text-[7px] text-muted-foreground">Confirm action step?</div>
+              <div className="flex justify-end gap-1 pt-0.5">
+                <span className="px-1.5 py-0.5 rounded bg-muted text-[7px] font-bold">Cancel</span>
+                <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7px] font-bold">Confirm</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "stepper" && (
+          <div className="w-full space-y-2 my-auto px-1">
+            <div className="flex items-center justify-between">
+              <span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">1</span>
+              <div className="h-0.5 flex-1 bg-primary mx-1" />
+              <span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">2</span>
+              <div className="h-0.5 flex-1 bg-muted-foreground/30 mx-1" />
+              <span className="size-3.5 rounded-full bg-muted border border-border text-[7px] text-muted-foreground font-bold flex items-center justify-center">3</span>
+            </div>
+            <div className="text-center text-[8px] font-bold text-foreground">Step 2: Configuration</div>
+          </div>
+        )}
+
+        {type === "chat" && (
+          <div className="w-full space-y-1.5 my-auto text-[7px]">
+            <div className="p-1 rounded-lg bg-muted text-foreground max-w-[80%]">
+              Hello! How can I help?
+            </div>
+            <div className="p-1 rounded-lg bg-primary text-primary-foreground max-w-[80%] ml-auto font-medium">
+              Show component docs!
+            </div>
+          </div>
+        )}
+
+        {type === "auth" && (
+          <div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 text-center my-auto">
+            <div className="text-[8px] font-bold text-foreground">Sign In</div>
+            <div className="h-3 w-full bg-muted border border-border rounded flex items-center px-1 text-[7px] text-muted-foreground">email@app.com</div>
+            <div className="h-3 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">Submit</div>
+          </div>
+        )}
+
+        {type === "carousel" && (
+          <div className="w-full flex items-center justify-between gap-1 my-auto px-0.5">
+            <div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">‹</div>
+            <div className="flex-1 h-14 rounded-xl bg-background border border-primary/50 p-1.5 shadow-sm flex flex-col justify-between items-center text-center">
+              <span className="text-[7.5px] font-extrabold text-primary">Slide 02</span>
+              <div className="flex gap-1">
+                <span className="size-1 rounded-full bg-primary/40" />
+                <span className="size-1 rounded-full bg-primary" />
+                <span className="size-1 rounded-full bg-primary/40" />
+              </div>
+            </div>
+            <div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">›</div>
+          </div>
+        )}
+
+        {type === "card" && (
+          <div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border/80 shadow-xs space-y-1.5 my-auto">
+            <div className="h-7 w-full bg-primary/10 rounded-lg border border-primary/20 flex items-center justify-center text-[8px] font-bold text-primary">Card View</div>
+            <div className="h-1.5 w-3/4 bg-foreground/80 rounded" />
+            <div className="h-1 w-1/2 bg-muted-foreground/40 rounded" />
+          </div>
+        )}
+
+        {type === "counter" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="px-3 py-2 rounded-xl bg-background border border-border shadow-xs flex items-center gap-2">
+              <span className="size-4 rounded bg-muted border border-border font-black text-[9px] flex items-center justify-center text-foreground">-</span>
+              <span className="text-sm font-black text-primary px-1">99+</span>
+              <span className="size-4 rounded bg-primary text-primary-foreground font-black text-[9px] flex items-center justify-center">+</span>
+            </div>
+          </div>
+        )}
+
+        {type === "cart" && (
+          <div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 my-auto text-[7px]">
+            <div className="flex justify-between items-center font-bold text-foreground border-b border-border pb-0.5">
+              <span>Shopping Cart</span>
+              <span className="text-primary">2 Items</span>
+            </div>
+            <div className="flex justify-between items-center text-muted-foreground">
+              <span>Next UI Kit</span>
+              <span className="font-bold text-foreground">$49</span>
+            </div>
+            <div className="h-3 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">Checkout</div>
+          </div>
+        )}
+
+        {type === "item" && (
+          <div className="w-full space-y-1.5 my-auto px-1">
+            <div className="p-1.5 rounded-lg bg-background border border-border flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-primary" />
+                <span className="text-[8px] font-bold text-foreground">Item Component</span>
+              </div>
+              <span className="text-[7px] text-muted-foreground">→</span>
+            </div>
+          </div>
+        )}
+
+        {type === "resizable" && (
+          <div className="w-full h-full flex gap-1.5 p-1 my-auto">
+            <div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
+              <span className="text-[7px] font-bold text-muted-foreground">Left</span>
+            </div>
+            <div className="w-1 h-full rounded bg-primary/40 my-auto cursor-col-resize" />
+            <div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
+              <span className="text-[7px] font-bold text-muted-foreground">Right</span>
+            </div>
+          </div>
+        )}
+
+        {type === "scroll-area" && (
+          <div className="w-full h-full p-1.5 rounded-lg bg-background border border-border flex justify-between my-auto relative">
+            <div className="space-y-1 text-[7px] text-foreground">
+              <div className="font-bold text-primary">Scroll Area</div>
+              <div className="text-muted-foreground">Row item 1</div>
+              <div className="text-muted-foreground">Row item 2</div>
+            </div>
+            <div className="w-1 h-4/5 bg-primary/60 rounded-full my-auto" />
+          </div>
+        )}
+
+        {type === "masonry" && (
+          <div className="w-full grid grid-cols-3 gap-1 my-auto px-0.5">
+            <div className="space-y-1">
+              <div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex items-end">
+                <span className="text-[5px] font-black text-primary">#01</span>
+              </div>
+              <div className="h-6 rounded-lg bg-muted border border-border" />
+            </div>
+            <div className="space-y-1">
+              <div className="h-6 rounded-lg bg-muted border border-border" />
+              <div className="h-11 rounded-lg bg-emerald-500/20 border border-emerald-500/40 p-1 flex items-end">
+                <span className="text-[5px] font-black text-emerald-500">#02</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="h-12 rounded-lg bg-primary/10 border border-primary/20 p-1 flex items-end">
+                <span className="text-[5px] font-black text-primary">#03</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "qr" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="size-14 rounded-xl bg-background border border-border p-1.5 shadow-md flex flex-col justify-between items-center relative">
+              {/* Realistic QR Code Matrix */}
+              <div className="w-full h-full grid grid-cols-4 gap-0.5">
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-primary rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-background border border-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-primary rounded-xs" />
+                <div className="bg-primary rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-primary rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+                <div className="bg-foreground rounded-xs" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "file-upload" && (
+          <div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-dashed border-primary/60 text-center space-y-1 my-auto">
+            <span className="text-xs text-primary font-bold">☁</span>
+            <div className="text-[8px] font-bold text-foreground">Drag & Drop File</div>
+          </div>
+        )}
+
+        {type === "tilted-card" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="w-20 h-12 rounded-xl bg-background border border-primary shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
+              <span className="text-[8px] font-extrabold text-primary">3D Tilted Card</span>
+            </div>
+          </div>
+        )}
+
+        {type === "memories-card" && (
+          <div className="w-full flex items-center justify-center my-auto relative h-12">
+            <div className="w-16 h-10 rounded-lg bg-muted/60 border border-border absolute -top-1 rotate-3" />
+            <div className="w-16 h-10 rounded-lg bg-background border border-primary shadow-md z-10 p-1 text-center flex flex-col justify-center">
+              <span className="text-[7px] font-bold text-primary">Memories</span>
+            </div>
+          </div>
+        )}
+
+        {type === "scroll-stack" && (
+          <div className="w-full flex flex-col items-center gap-1 my-auto">
+            <div className="w-20 h-3 rounded-t-lg bg-muted border border-border" />
+            <div className="w-22 h-6 rounded-lg bg-background border border-primary shadow-xs p-1 text-center text-[7px] font-bold text-primary">
+              Scroll Stack Card
+            </div>
+          </div>
+        )}
+
+        {type === "magic-bento" && (
+          <div className="w-full grid grid-cols-2 gap-1 my-auto px-1">
+            <div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex flex-col justify-between">
+              <span className="text-[7px] font-bold text-primary">Glow</span>
+            </div>
+            <div className="h-10 rounded-lg bg-card border border-border p-1 flex flex-col justify-between">
+              <span className="text-[7px] font-bold text-foreground">Tilt</span>
+            </div>
+          </div>
+        )}
+
+        {type === "network-graph" && (
+          <div className="w-full h-full relative flex items-center justify-center p-1 my-auto overflow-hidden">
+            {/* Layer 2 Outer Orbital Circle */}
+            <div className="size-24 rounded-full border border-dashed border-primary/25 absolute flex items-center justify-center pointer-events-none">
+              {/* Outer Orbit Nodes */}
+              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+                A
+              </div>
+              <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+                B
+              </div>
+              <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-3 rounded-full bg-indigo-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+                C
+              </div>
+              <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-3 rounded-full bg-sky-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+                D
+              </div>
+            </div>
+
+            {/* Layer 1 Inner Orbital Circle */}
+            <div className="size-14 rounded-full border border-primary/40 bg-primary/5 absolute flex items-center justify-center pointer-events-none">
+              <div className="absolute top-0 right-1 size-2.5 rounded-full bg-primary/70" />
+              <div className="absolute bottom-0 left-1 size-2.5 rounded-full bg-primary/70" />
+            </div>
+
+            {/* Central Node */}
+            <div className="size-6 rounded-full bg-primary text-primary-foreground font-black text-[7.5px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-primary/20">
+              Core
+            </div>
+          </div>
+        )}
+
+        {type === "sidebar" && (
+          <div className="w-full h-full p-1 flex gap-1.5 my-auto overflow-hidden">
+            {/* Sidebar Navigation */}
+            <div className="w-2/5 h-full rounded-lg bg-background border border-border/80 p-1 flex flex-col justify-between shadow-2xs">
+              <div className="space-y-1">
+                <div className="flex items-center gap-1 border-b border-border/40 pb-1">
+                  <span className="size-2 rounded bg-primary" />
+                  <span className="text-[7px] font-extrabold text-foreground">Dashboard</span>
+                </div>
+                <div className="space-y-0.5 pt-0.5">
+                  <div className="px-1 py-0.5 rounded bg-primary/10 text-primary text-[6px] font-bold flex items-center justify-between">
+                    <span>Overview</span>
+                    <span className="size-1 rounded-full bg-primary" />
+                  </div>
+                  <div className="px-1 py-0.5 text-muted-foreground text-[6px] font-medium flex items-center justify-between">
+                    <span>Analytics</span>
+                  </div>
+                  <div className="px-1 py-0.5 text-muted-foreground text-[6px] font-medium flex items-center justify-between">
+                    <span>Settings</span>
+                  </div>
+                </div>
+              </div>
+              <div className="px-1 py-0.5 rounded bg-muted text-[5.5px] font-mono text-muted-foreground">Admin Pro</div>
+            </div>
+            {/* Main Content App Shell */}
+            <div className="flex-1 h-full rounded-lg border border-border/60 bg-card p-1.5 flex flex-col justify-between space-y-1">
+              <div className="flex items-center justify-between">
+                <div className="h-1.5 w-1/2 rounded bg-foreground/80 font-bold" />
+                <div className="size-2 rounded-full bg-primary/40" />
+              </div>
+              <div className="grid grid-cols-2 gap-1 my-auto">
+                <div className="h-5 rounded bg-muted/60 p-1 flex flex-col justify-between">
+                  <div className="h-1 w-2/3 bg-muted-foreground/40 rounded" />
+                  <div className="h-1.5 w-1/2 bg-primary rounded" />
+                </div>
+                <div className="h-5 rounded bg-muted/60 p-1 flex flex-col justify-between">
+                  <div className="h-1 w-2/3 bg-muted-foreground/40 rounded" />
+                  <div className="h-1.5 w-1/2 bg-emerald-500 rounded" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "dashboard" && (
+          <div className="w-full h-full p-1 flex flex-col justify-between my-auto space-y-1 overflow-hidden">
+            {/* Top Stat Widgets */}
+            <div className="grid grid-cols-3 gap-1">
+              <div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
+                <div className="text-[5.5px] font-bold text-muted-foreground">Tickets</div>
+                <div className="text-[8px] font-black text-foreground">1,240</div>
+              </div>
+              <div className="p-1 rounded-md bg-primary/10 border border-primary/20 text-center space-y-0.5">
+                <div className="text-[5.5px] font-bold text-primary">Resolved</div>
+                <div className="text-[8px] font-black text-primary">98%</div>
+              </div>
+              <div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
+                <div className="text-[5.5px] font-bold text-muted-foreground">Avg Time</div>
+                <div className="text-[8px] font-black text-emerald-500">12m</div>
+              </div>
+            </div>
+            {/* Support Feed / Chart Area */}
+            <div className="w-full p-1 rounded-lg bg-background border border-border flex items-center justify-between text-[6px]">
+              <div className="space-y-0.5">
+                <div className="font-bold text-foreground">Active Customer Queue</div>
+                <div className="text-[5.5px] text-muted-foreground">14 Agent Agents Online</div>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white font-bold text-[5.5px]">Live</span>
+            </div>
+          </div>
+        )}
+
+        {type === "marquee" && (
+          <div className="w-full flex flex-col justify-between my-auto space-y-2 px-1 relative overflow-hidden">
+            <div className="text-center text-[7px] font-bold text-muted-foreground uppercase tracking-widest">
+              Trusted by 500+ Companies
+            </div>
+            {/* Infinite Horizontal Logo Ticker Strip */}
+            <div className="w-full flex items-center justify-between gap-1.5 py-1 px-1 rounded-xl bg-background border border-border/80 relative shadow-2xs">
+              <div className="px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20 text-[7px] font-extrabold text-primary flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-primary" /> React
+              </div>
+              <div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-sky-500" /> Next.js
+              </div>
+              <div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-indigo-500" /> Tailwind
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "floating-contact" && (
+          <div className="w-full h-full relative flex flex-col justify-end items-end p-1.5 my-auto overflow-hidden">
+            {/* Single Chat Popup Window Card */}
+            <div className="w-22 p-1 mb-1 rounded-lg bg-background border border-border shadow-xs space-y-0.5 text-[5.5px]">
+              <div className="flex items-center gap-1 font-bold text-foreground border-b border-border/40 pb-0.5">
+                <span className="size-1 rounded-full bg-emerald-500" />
+                <span>Support</span>
+              </div>
+              <div className="p-0.5 rounded bg-muted text-muted-foreground truncate">
+                Help Chat
+              </div>
+            </div>
+            {/* Floating Trigger FAB Button */}
+            <div className="size-5 rounded-full bg-primary text-primary-foreground font-bold text-[9px] flex items-center justify-center shadow-xs border border-background ring-1 ring-primary/20 shrink-0">
+              💬
+            </div>
+          </div>
+        )}
+
+        {type === "video-accordion" && (
+          <div className="w-full h-full flex gap-1 p-1 my-auto overflow-hidden">
+            {/* Active Expanded Video Panel */}
+            <div className="flex-[2] h-full rounded-lg bg-primary/10 border border-primary/40 p-1 flex flex-col justify-between relative shadow-xs">
+              <span className="text-[5.5px] font-extrabold text-primary px-1 py-0.2 rounded bg-background border border-primary/20 self-start">Active Stream</span>
+              <div className="size-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[7px] mx-auto shadow-md">
+                ▶
+              </div>
+              <div className="h-1 w-3/4 bg-primary/60 rounded" />
+            </div>
+            {/* Collapsed Video Panels */}
+            <div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
+              <span className="text-[6px] text-muted-foreground font-bold">▶</span>
+            </div>
+            <div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
+              <span className="text-[6px] text-muted-foreground font-bold">▶</span>
+            </div>
+          </div>
+        )}
+
+        {type === "timeline" && (
+          <div className="w-full h-full p-1.5 flex flex-col justify-between my-auto relative overflow-hidden">
+            {/* Vertical Connecting Line */}
+            <div className="absolute left-[13px] top-2 bottom-2 w-0.5 bg-border/80" />
+            
+            {/* Timeline Event Node 1 (Active) */}
+            <div className="flex items-center gap-2 relative z-10">
+              <div className="size-2.5 rounded-full bg-primary ring-2 ring-primary/20 flex items-center justify-center shrink-0">
+                <span className="size-1 rounded-full bg-primary-foreground" />
+              </div>
+              <div className="flex-1 p-1 rounded-lg bg-background border border-primary/40 shadow-2xs text-[6px]">
+                <div className="font-extrabold text-primary flex justify-between">
+                  <span>v2.0 Released</span>
+                  <span className="text-[5px] text-muted-foreground">Today</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline Event Node 2 */}
+            <div className="flex items-center gap-2 relative z-10">
+              <div className="size-2.5 rounded-full bg-muted border border-border flex items-center justify-center shrink-0">
+                <span className="size-1 rounded-full bg-muted-foreground/60" />
+              </div>
+              <div className="flex-1 p-1 rounded-lg bg-background border border-border/70 text-[6px]">
+                <div className="font-bold text-foreground flex justify-between">
+                  <span>Beta Testing</span>
+                  <span className="text-[5px] text-muted-foreground">Yesterday</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "typography" && (
+          <div className="w-full flex flex-col justify-between my-auto space-y-1 px-1">
+            <div className="text-xs font-black tracking-tight text-foreground border-b border-border/40 pb-0.5">
+              H1. Heading Text
+            </div>
+            <div className="text-[8px] font-bold text-primary">
+              H2. Subtitle Paragraph
+            </div>
+            <div className="text-[6.5px] text-muted-foreground leading-tight">
+              Flexible & accessible type system tokens.
+            </div>
+          </div>
+        )}
+
+        {type === "animated-list" && (
+          <div className="w-full space-y-1 my-auto px-1">
+            <div className="p-1 rounded-md bg-background border border-primary/50 shadow-2xs flex items-center justify-between text-[6.5px] translate-x-1 transition-transform">
+              <div className="flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-emerald-500" />
+                <span className="font-extrabold text-foreground">New Order #108</span>
+              </div>
+              <span className="text-[5.5px] font-bold text-primary">Just now</span>
+            </div>
+            <div className="p-1 rounded-md bg-background border border-border text-[6.5px] flex items-center justify-between opacity-80">
+              <div className="flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-sky-500" />
+                <span className="font-bold text-foreground">User Signed Up</span>
+              </div>
+              <span className="text-[5.5px] text-muted-foreground">2m ago</span>
+            </div>
+          </div>
+        )}
+
+        {type === "avatar" && (
+          <div className="w-full flex items-center justify-center gap-2 my-auto">
+            <div className="size-8 rounded-full bg-primary text-primary-foreground font-black text-xs flex items-center justify-center shadow-md ring-2 ring-primary/20 relative">
+              JD
+              <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-background" />
+            </div>
+            <div className="size-6 rounded-full bg-muted border border-border font-bold text-[9px] text-muted-foreground flex items-center justify-center">
+              AB
+            </div>
+          </div>
+        )}
+
+        {type === "accordion" && (
+          <div className="w-full space-y-1 my-auto px-0.5 text-[7px]">
+            <div className="p-1.5 rounded-lg bg-background border border-primary/50 shadow-2xs space-y-1">
+              <div className="flex justify-between items-center font-extrabold text-primary">
+                <span>Is it accessible?</span>
+                <span className="text-[8px]">▲</span>
+              </div>
+              <div className="text-[6px] text-muted-foreground border-t border-border/40 pt-1">
+                Yes. Adheres to WAI-ARIA standards.
+              </div>
+            </div>
+            <div className="p-1 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-bold text-foreground">
+              <span>Is it styled?</span>
+              <span className="text-[8px] text-muted-foreground">▼</span>
+            </div>
+          </div>
+        )}
+
+        {type === "api-playground" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border shadow-2xs space-y-1 my-auto text-[6.5px] font-mono">
+            <div className="flex items-center justify-between border-b border-border/40 pb-0.5">
+              <span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-500 font-extrabold text-[5.5px]">GET</span>
+              <span className="text-muted-foreground font-bold">/api/v1/users</span>
+            </div>
+            <div className="flex items-center justify-between text-foreground">
+              <span className="text-primary font-bold">Status: 200 OK</span>
+              <span className="px-1 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">Send</span>
+            </div>
+          </div>
+        )}
+
+        {type === "breadcrumb" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="px-2 py-1 rounded-lg bg-background border border-border shadow-2xs flex items-center gap-1 text-[7px] font-bold">
+              <span className="text-muted-foreground">Docs</span>
+              <span className="text-muted-foreground/60">/</span>
+              <span className="text-muted-foreground">Components</span>
+              <span className="text-muted-foreground/60">/</span>
+              <span className="text-primary font-extrabold">Breadcrumb</span>
+            </div>
+          </div>
+        )}
+
+        {type === "button" && (
+          <div className="w-full flex flex-col items-center justify-center gap-1 my-auto">
+            <div className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[7.5px] font-extrabold shadow-sm flex items-center gap-1">
+              <span>Primary</span>
+              <span className="text-[6.5px]">→</span>
+            </div>
+            <div className="px-2 py-0.5 rounded-lg border border-border text-[6.5px] font-bold text-foreground">
+              Outline Button
+            </div>
+          </div>
+        )}
+
+        {type === "command" && (
+          <div className="w-full p-1.5 rounded-xl bg-background border border-border shadow-md space-y-1 my-auto text-[6.5px]">
+            <div className="flex items-center gap-1 border-b border-border/40 pb-1 px-1">
+              <span className="text-[7.5px] text-primary">🔍</span>
+              <span className="font-bold text-foreground">Search docs...</span>
+              <span className="ml-auto text-[5.5px] px-1 bg-muted rounded border border-border text-muted-foreground">⌘K</span>
+            </div>
+            <div className="space-y-0.5">
+              <div className="px-1 py-0.5 rounded bg-primary/10 text-primary font-bold flex justify-between">
+                <span>&gt; Components</span>
+                <span>Enter</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "calendar" && (
+          <div className="w-full p-1 rounded-lg bg-background border border-border text-center space-y-1 my-auto text-[6px]">
+            <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">August 2026</div>
+            <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
+              <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
+              <span className="opacity-40">1</span><span className="opacity-40">2</span><span>3</span>
+              <span className="bg-primary text-primary-foreground rounded-full font-bold">14</span>
+              <span>15</span><span>16</span><span>17</span>
+            </div>
+          </div>
+        )}
+
+        {type === "collapsible" && (
+          <div className="w-full space-y-1 my-auto px-1 text-[7px]">
+            <div className="p-1.5 rounded-lg bg-background border border-border flex justify-between items-center font-extrabold text-foreground shadow-2xs">
+              <span>Toggle Details</span>
+              <span className="text-[7px] text-primary">▲</span>
+            </div>
+            <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[6.5px] font-bold text-primary">
+              Expanded Panel Content
+            </div>
+          </div>
+        )}
+
+        {type === "context-menu" && (
+          <div className="w-full h-full relative flex items-center justify-center my-auto">
+            <div className="w-24 p-1 rounded-lg bg-background border border-border shadow-lg space-y-0.5 text-[6px]">
+              <div className="px-1.5 py-0.5 rounded hover:bg-primary/10 text-foreground font-medium flex justify-between">
+                <span>Copy Link</span>
+                <span className="text-muted-foreground">⌘C</span>
+              </div>
+              <div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold flex justify-between">
+                <span>Inspect Element</span>
+                <span>⌘I</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "drawer" && (
+          <div className="w-full h-full relative flex flex-col justify-end items-center my-auto overflow-hidden bg-black/10 dark:bg-black/40 rounded-lg">
+            {/* Bottom-Up Drag Sheet Overlay */}
+            <div className="w-full h-3/4 rounded-t-2xl bg-background border-t border-border shadow-2xl p-1.5 flex flex-col justify-between text-[6.5px]">
+              {/* Top Drag Handle Pill */}
+              <div className="w-6 h-1 rounded-full bg-muted-foreground/40 mx-auto" />
+              
+              <div className="space-y-1 my-auto">
+                <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5 text-center">
+                  Drawer Sheet
+                </div>
+                <div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold text-[5.5px]">
+                  Option 1: Edit Profile
+                </div>
+                <div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium text-[5.5px]">
+                  Option 2: Settings
+                </div>
+              </div>
+
+              <div className="h-3 w-full bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold text-[6px] shadow-2xs">
+                Submit
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "dialog" && (
+          <div className="w-full h-full flex items-center justify-center my-auto">
+            <div className="w-4/5 p-1.5 rounded-xl bg-background border border-border shadow-xl space-y-1 text-[6.5px]">
+              <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">Dialog Title</div>
+              <div className="text-[5.5px] text-muted-foreground">Are you sure you want to continue?</div>
+              <div className="flex justify-end gap-1 pt-0.5">
+                <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">Confirm</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "data-grid" && (
+          <div className="w-full p-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px] font-mono">
+            <div className="grid grid-cols-3 gap-1 font-bold text-primary border-b border-border/40 pb-0.5">
+              <span>ID</span><span>Name</span><span>Role</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1 text-foreground">
+              <span>#01</span><span>Alex</span><span className="text-emerald-500 font-bold">Admin</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1 text-foreground">
+              <span>#02</span><span>Sarah</span><span className="text-sky-500 font-bold">User</span>
+            </div>
+          </div>
+        )}
+
+        {type === "data-table" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
+            <div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
+              <span>Item Name ▲</span>
+              <span className="text-[5px] font-mono text-primary bg-primary/10 px-1 rounded">24 Items</span>
+            </div>
+            <div className="space-y-0.5">
+              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
+                <span className="font-bold text-foreground">Pro Plan Sub</span>
+                <span className="text-emerald-500 font-extrabold">$29.00</span>
+              </div>
+              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
+                <span className="font-medium text-foreground">Domain Renew</span>
+                <span className="font-bold text-foreground">$14.00</span>
+              </div>
+              <div className="flex justify-between items-center text-muted-foreground">
+                <span className="font-medium text-foreground">API Access</span>
+                <span className="font-bold text-foreground">$99.00</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "date-picker" && (
+          <div className="w-full h-full p-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
+            {/* Input Trigger Bar */}
+            <div className="flex justify-between items-center px-1 py-0.5 rounded bg-muted/60 border border-primary/40 text-primary font-bold">
+              <span>Aug 14, 2026</span>
+              <span className="text-[6.5px]">📅</span>
+            </div>
+            {/* Dropdown Popover Mini Calendar Grid */}
+            <div className="p-1 rounded bg-card border border-border shadow-xs text-center space-y-0.5">
+              <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
+                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+              </div>
+              <div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
+                <span className="opacity-40">12</span><span className="opacity-40">13</span>
+                <span className="bg-primary text-primary-foreground rounded-full font-bold">14</span>
+                <span>15</span><span>16</span><span>17</span><span>18</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "form" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px]">
+            <div className="space-y-0.5">
+              <div className="font-bold text-foreground">Username</div>
+              <div className="h-2.5 w-full rounded bg-muted border border-primary/40 px-1 flex items-center text-[5.5px] text-primary font-bold">alex_dev</div>
+            </div>
+            <div className="h-3 w-full rounded bg-primary text-primary-foreground font-bold flex items-center justify-center text-[6px]">Submit Form</div>
+          </div>
+        )}
+
+        {type === "input" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6.5px]">
+            <div className="h-4 w-full rounded-md border border-primary bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
+              <span>Input value...</span>
+              <span className="size-1 rounded-full bg-primary animate-pulse" />
+            </div>
+          </div>
+        )}
+
+        {type === "invoice" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
+            <div className="flex justify-between items-center border-b border-border/40 pb-0.5">
+              <span className="font-black text-foreground">INV-#402</span>
+              <span className="text-[5px] font-extrabold text-emerald-500 bg-emerald-500/10 px-1 rounded">PAID</span>
+            </div>
+            <div className="space-y-0.5 border-b border-border/20 pb-0.5">
+              <div className="flex justify-between text-muted-foreground">
+                <span>UI Kit License</span>
+                <span className="font-bold text-foreground">$149.00</span>
+              </div>
+              <div className="flex justify-between text-muted-foreground">
+                <span>Support Addon</span>
+                <span className="font-bold text-foreground">$49.00</span>
+              </div>
+            </div>
+            <div className="flex justify-between font-extrabold text-foreground pt-0.5">
+              <span>Total:</span>
+              <span className="text-primary">$198.00</span>
+            </div>
+          </div>
+        )}
+
+        {type === "kbd" && (
+          <div className="w-full flex items-center justify-center gap-1 my-auto">
+            <span className="px-1.5 py-0.5 rounded-md bg-muted border-b-2 border-border text-[7px] font-mono font-bold text-foreground shadow-2xs">Ctrl</span>
+            <span className="text-[7px] text-muted-foreground">+</span>
+            <span className="px-1.5 py-0.5 rounded-md bg-primary border-b-2 border-primary/70 text-[7px] font-mono font-bold text-primary-foreground shadow-2xs">K</span>
+          </div>
+        )}
+
+        {type === "mails" && (
+          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px]">
+            <div className="p-1 rounded bg-primary/10 border border-primary/20 space-y-0.5">
+              <div className="font-extrabold text-primary flex justify-between">
+                <span>Sarah Connor</span>
+                <span className="text-[5px] text-muted-foreground">10:42 AM</span>
+              </div>
+              <div className="text-[5.5px] text-foreground font-bold truncate">Project Assets Ready</div>
+            </div>
+          </div>
+        )}
+
+        {type === "map" && (
+          <div className="w-full h-full rounded-lg bg-muted/20 border border-border relative flex items-center justify-center my-auto overflow-hidden">
+            {/* Grayscale World Map Continents SVG */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-muted-foreground/30" viewBox="0 0 200 100">
+              {/* North America */}
+              <path d="M 15 20 Q 30 15 45 25 Q 50 35 35 50 Q 25 55 15 45 Z" />
+              {/* South America */}
+              <path d="M 40 55 Q 55 52 50 85 Q 40 90 35 68 Z" />
+              {/* Europe & Asia */}
+              <path d="M 75 15 Q 120 10 160 25 Q 170 45 140 55 Q 100 50 80 35 Z" />
+              {/* Africa */}
+              <path d="M 80 40 Q 115 38 110 75 Q 90 85 78 60 Z" />
+              {/* Australia */}
+              <path d="M 145 65 Q 175 60 170 85 Q 150 90 142 75 Z" />
+            </svg>
+
+            {/* Small Sleek Red Dot Markers */}
+            <div className="absolute top-[28%] left-[22%] z-10">
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            </div>
+
+            <div className="absolute bottom-[30%] left-[30%] z-10">
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            </div>
+
+            <div className="absolute top-[28%] left-[58%] z-10">
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs animate-ping" />
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs absolute inset-0" />
+            </div>
+
+            <div className="absolute bottom-[22%] right-[20%] z-10">
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            </div>
+          </div>
+        )}
+
+        {type === "menubar" && (
+          <div className="w-full p-1 rounded-lg bg-background border border-border shadow-xs my-auto text-[6px]">
+            <div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-bold text-foreground">
+              <span className="text-primary font-black">File</span>
+              <span className="text-muted-foreground">Edit</span>
+              <span className="text-muted-foreground">View</span>
+            </div>
+            <div className="p-1 rounded bg-card border border-border mt-0.5 space-y-0.5 text-[5.5px]">
+              <div className="font-extrabold text-primary">New Tab ⌘N</div>
+              <div className="text-muted-foreground">Open File...</div>
+            </div>
+          </div>
+        )}
+
+        {type === "otp-input" && (
+          <div className="w-full flex items-center justify-center gap-1 my-auto">
+            <div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">4</div>
+            <div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">8</div>
+            <div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-black text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">2</div>
+            <div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">•</div>
+          </div>
+        )}
+
+        {type === "popover" && (
+          <div className="w-full h-full relative flex items-center justify-center my-auto">
+            <div className="w-28 p-1.5 rounded-xl bg-background border border-border shadow-lg space-y-1 text-[6px]">
+              <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">Dimensions</div>
+              <div className="flex justify-between text-muted-foreground">
+                <span>Width: <strong className="text-foreground">100%</strong></span>
+                <span>Height: <strong className="text-foreground">Auto</strong></span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "progress" && (
+          <div className="w-full space-y-1.5 my-auto px-1">
+            <div className="flex justify-between text-[6.5px] font-extrabold">
+              <span className="text-foreground">Uploading Assets</span>
+              <span className="text-primary">78%</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-muted overflow-hidden p-0.5 border border-border/40">
+              <div className="h-full w-[78%] rounded-full bg-primary transition-all duration-500 shadow-xs" />
+            </div>
+          </div>
+        )}
+
+        {type === "loader" && (
+          <div className="w-full flex items-center justify-center my-auto relative">
+            {/* Outer Slow Orbit Ring */}
+            <div className="size-8 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+            {/* Inner Fast Counter Spin Ring */}
+            <div className="size-5 rounded-full border-2 border-emerald-500/40 border-b-emerald-500 animate-[spin_0.8s_linear_infinite] absolute" />
+            {/* Core Pulsing Glowing Center */}
+            <span className="size-1.5 rounded-full bg-primary animate-pulse absolute shadow-sm" />
+          </div>
+        )}
+
+        {type === "sonner" && (
+          <div className="w-full h-full relative flex flex-col justify-end p-1 my-auto">
+            <div className="p-1.5 rounded-xl bg-background border border-primary/50 shadow-lg flex items-center justify-between text-[6px]">
+              <div className="flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-emerald-500" />
+                <span className="font-extrabold text-foreground">Event Triggered</span>
+              </div>
+              <span className="text-[5.5px] text-primary font-bold">Undo</span>
+            </div>
+          </div>
+        )}
+
+        {type === "select" && (
+          <div className="w-full p-1 rounded-lg bg-background border border-border shadow-2xs space-y-1 my-auto text-[6.5px]">
+            <div className="flex justify-between items-center px-1.5 py-0.5 rounded bg-muted border border-border font-bold text-foreground">
+              <span>Select Option</span>
+              <span className="text-[6px] text-primary">▼</span>
+            </div>
+          </div>
+        )}
+
+        {type === "skeleton" && (
+          <div className="w-full space-y-1.5 my-auto px-1">
+            <div className="h-3 w-3/4 rounded bg-muted animate-pulse" />
+            <div className="h-2 w-full rounded bg-muted/60 animate-pulse" />
+            <div className="h-2 w-1/2 rounded bg-muted/60 animate-pulse" />
+          </div>
+        )}
+
+        {type === "toast" && (
+          <div className="w-full h-full relative flex items-end justify-center p-1 my-auto">
+            <div className="w-full p-1.5 rounded-lg bg-foreground text-background shadow-md flex items-center justify-between text-[6px] font-bold">
+              <span>Notification Sent!</span>
+              <span className="text-[7px]">✓</span>
+            </div>
+          </div>
+        )}
+
+        {type === "toggle" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="w-8 h-4 rounded-full bg-primary p-0.5 flex items-center justify-end shadow-2xs">
+              <div className="size-3 rounded-full bg-primary-foreground shadow-xs" />
+            </div>
+          </div>
+        )}
+
+        {type === "tooltip" && (
+          <div className="w-full flex flex-col items-center justify-center my-auto space-y-1">
+            <div className="px-2 py-0.5 rounded bg-foreground text-background text-[6px] font-bold shadow-xs relative">
+              Tooltip Label
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
+            </div>
+            <span className="text-[6.5px] font-bold text-muted-foreground">Hover Element</span>
+          </div>
+        )}
+
+        {type === "toggle-group" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="p-0.5 rounded-lg bg-muted border border-border flex items-center gap-0.5 text-[6.5px] font-bold">
+              <span className="px-1.5 py-0.5 rounded bg-background text-foreground shadow-2xs">Left</span>
+              <span className="px-1.5 py-0.5 text-muted-foreground">Center</span>
+              <span className="px-1.5 py-0.5 text-muted-foreground">Right</span>
+            </div>
+          </div>
+        )}
+
+        {type === "terminal" && (
+          <div className="w-full p-1.5 rounded-xl bg-card border border-border text-primary font-mono text-[6px] space-y-1 shadow-xs my-auto">
+            <div className="flex gap-1 border-b border-border/40 pb-0.5">
+              <span className="size-1.5 rounded-full bg-rose-500/80" />
+              <span className="size-1.5 rounded-full bg-amber-500/80" />
+              <span className="size-1.5 rounded-full bg-emerald-500/80" />
+            </div>
+            <div className="font-bold">$ npm run dev</div>
+            <div className="text-muted-foreground">Ready in 2.4s</div>
+          </div>
+        )}
+
+        {type === "pagination" && (
+          <div className="w-full flex items-center justify-center gap-1 my-auto text-[6.5px] font-bold">
+            <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">Prev</span>
+            <span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-black shadow-2xs">1</span>
+            <span className="size-4 rounded bg-background border border-border text-foreground flex items-center justify-center">2</span>
+            <span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">Next</span>
+          </div>
+        )}
+
+        {type === "tabs" && (
+          <div className="w-full space-y-1 my-auto px-0.5 text-[6.5px]">
+            <div className="p-0.5 rounded-lg bg-muted border border-border flex gap-0.5 font-bold">
+              <span className="flex-1 py-0.5 rounded bg-background text-primary text-center font-extrabold shadow-2xs">Account</span>
+              <span className="flex-1 py-0.5 text-muted-foreground text-center">Password</span>
+            </div>
+            <div className="p-1 rounded bg-background border border-border text-[6px] text-muted-foreground">
+              Tab content panel...
+            </div>
+          </div>
+        )}
+
+        {type === "theme-switcher" && (
+          <div className="w-full flex items-center justify-center my-auto">
+            <div className="p-1 rounded-full bg-muted border border-border flex items-center gap-1 text-[8px] font-bold shadow-2xs">
+              <span className="p-1 rounded-full bg-background text-amber-500 shadow-xs">☀️</span>
+              <span className="p-1 text-muted-foreground">🌙</span>
+            </div>
+          </div>
+        )}
+
+        {type === "wizard" && (
+          <div className="w-full space-y-1.5 my-auto px-0.5 text-[6px]">
+            <div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
+              <span className="text-primary font-black">Step 2: Profile</span>
+              <span className="text-[5.5px] text-muted-foreground">2 of 4</span>
+            </div>
+            <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+              <div className="h-full w-1/2 bg-primary rounded-full" />
+            </div>
+          </div>
+        )}
+
+        {type === "data-maps" && (
+          <div className="w-full h-full rounded-lg bg-muted/20 border border-border relative flex items-center justify-center my-auto overflow-hidden">
+            {/* Grayscale World Map Continents SVG */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-muted-foreground/30" viewBox="0 0 200 100">
+              <path d="M 15 20 Q 30 15 45 25 Q 50 35 35 50 Q 25 55 15 45 Z" />
+              <path d="M 40 55 Q 55 52 50 85 Q 40 90 35 68 Z" />
+              <path d="M 75 15 Q 120 10 160 25 Q 170 45 140 55 Q 100 50 80 35 Z" />
+              <path d="M 80 40 Q 115 38 110 75 Q 90 85 78 60 Z" />
+              <path d="M 145 65 Q 175 60 170 85 Q 150 90 142 75 Z" />
+            </svg>
+
+            {/* Analytics Heat Pulse Circles on World Map */}
+            <div className="absolute top-[28%] left-[22%] z-10">
+              <span className="size-4 rounded-full bg-primary/20 block animate-ping absolute inset-0" />
+              <span className="size-2.5 rounded-full bg-primary block border border-white shadow-xs" />
+            </div>
+
+            <div className="absolute top-[28%] left-[58%] z-10">
+              <span className="size-5 rounded-full bg-emerald-500/20 block animate-ping absolute inset-0" />
+              <span className="size-2.5 rounded-full bg-emerald-500 block border border-white shadow-xs" />
+            </div>
+
+            {/* Top Right Analytics Pill */}
+            <div className="absolute top-1 right-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-xs">
+              +42% Data Flow
+            </div>
+          </div>
+        )}
+
+        {type === "hero-videoplayer" && (
+          <div className="w-full h-full rounded-xl bg-card border border-border relative flex items-center justify-center my-auto overflow-hidden shadow-sm">
+            <div className="size-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-black text-xs shadow-lg ring-4 ring-primary/20">
+              ▶
+            </div>
+            <div className="absolute bottom-1.5 left-2 right-2 h-1 rounded-full bg-muted overflow-hidden">
+              <div className="h-full w-2/3 bg-primary" />
+            </div>
+          </div>
+        )}
+
+        {type === "verify-badge" && (
+          <div className="w-full flex items-center justify-center gap-1.5 my-auto">
+            <div className="px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[7px] font-extrabold flex items-center gap-1 shadow-2xs">
+              <span className="size-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[6px]">✓</span>
+              <span>Verified Account</span>
+            </div>
+          </div>
+        )}
+
+        {type === "mobile-mockup" && (
+          <div className="w-full h-full flex items-center justify-center my-auto">
+            <div className="w-16 h-full rounded-[14px] border-2 border-border bg-background p-1 flex flex-col justify-between items-center shadow-md relative overflow-hidden">
+              <div className="w-6 h-1 bg-border rounded-full mb-1" />
+              <div className="flex-1 w-full rounded-md bg-primary/10 border border-primary/20 p-1 flex flex-col justify-between">
+                <div className="size-2 rounded-full bg-primary" />
+                <div className="h-1 w-3/4 rounded bg-primary/60" />
+              </div>
+              <div className="w-4 h-1 bg-border rounded-full mt-1" />
+            </div>
+          </div>
+        )}
+
+        {type === "half-stars" && (
+          <div className="w-full flex items-center justify-center gap-1 my-auto text-amber-400 text-xs">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span className="opacity-40">★</span>
+            <span className="text-[7.5px] font-black text-foreground ml-1">4.8</span>
+          </div>
+        )}
+
+        {type === "code-block" && (
+          <div className="w-full p-1.5 rounded-xl bg-muted/60 border border-border font-mono text-[6px] space-y-1 my-auto">
+            <div className="flex justify-between text-[5.5px] text-muted-foreground border-b border-border/40 pb-0.5">
+              <span>component.tsx</span>
+              <span className="text-primary font-bold">Copy</span>
+            </div>
+            <div className="text-primary font-bold"><span className="text-rose-500">const</span> App = () =&gt;</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ComponentPreviewGridSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
-  const handleCopy = (cmd: string) => {
-    navigator.clipboard.writeText(cmd);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const SelectedIcon = selectedNode.icon;
-
   return (
-    <section ref={ref} className="py-16 md:py-24 px-6 md:px-8">
+    <section ref={ref} className="py-20 md:py-28 px-6 md:px-8 border-t border-border/40 bg-muted/20">
       <div className="max-w-[1320px] mx-auto">
+        {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10"
+          className="text-center mb-16"
         >
           <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
-            <Package className="size-3.5" />
-            Production Component Catalog
+            <LayoutGrid className="size-3.5" />
+            Component Preview Catalog
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-black tracking-tight text-foreground mb-3">
-            Explore 100+ Production Components
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
+            Explore Built-in Component Previews
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-            Inspect component specifications, features, and CLI quick-add commands directly from the matrix.
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            Click any component card below to inspect interactive live previews, installation guides, and full source code.
           </p>
         </motion.div>
 
-        {/* Interactive Matrix Grid + Inspector Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] gap-6 items-stretch my-6">
-          {/* Left Panel: Interactive Matrix Nodes Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {matrixNodes.map((node) => {
-              const Icon = node.icon;
-              const isSelected = selectedNode.id === node.id;
-
-              return (
-                <motion.div
-                  key={node.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedNode(node)}
-                  className={cn(
-                    "p-5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between group relative overflow-hidden",
-                    isSelected
-                      ? "border-primary bg-primary/10 shadow-lg ring-2 ring-primary/20"
-                      : "border-border bg-card/60 hover:border-primary/50 hover:bg-card"
-                  )}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div
-                      className={cn(
-                        "size-10 rounded-xl flex items-center justify-center border transition-all",
-                        isSelected
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-muted text-muted-foreground border-border group-hover:text-primary group-hover:border-primary/40"
-                      )}
-                    >
-                      <Icon className="size-5" />
+        {/* Categorized Component Preview Cards */}
+        <div className="space-y-16">
+          {componentPreviewData.map((group, groupIdx) => (
+            <motion.div
+              key={group.categoryTitle}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: groupIdx * 0.15 }}
+            >
+              {/* Category Header */}
+              <div className="mb-6 pb-3 border-b border-border/60 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="size-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs shrink-0">
+                      <group.icon className="size-4.5" />
                     </div>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-card border border-border text-muted-foreground">
-                      {node.tag}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
-                      {node.title}
-                    </h4>
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                      {node.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between text-[11px] font-semibold text-muted-foreground">
-                    <span className="flex items-center gap-1 text-primary">
-                      <Activity className="size-3" /> Node Active
-                    </span>
-                    <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform text-primary" />
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Right Panel: Live Node Inspector Card */}
-          <motion.div
-            key={selectedNode.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-2xl border border-border bg-card/90 backdrop-blur-2xl p-6 sm:p-7 flex flex-col justify-between shadow-xl relative overflow-hidden ring-1 ring-white/10 dark:ring-white/5"
-          >
-            {/* Radial Ambient Glow */}
-            <div
-              className="absolute -top-20 -right-20 size-60 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-            />
-
-            <div>
-              {/* Inspector Header */}
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="size-11 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center shadow-md">
-                    <SelectedIcon className="size-6" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-                      {selectedNode.category}
-                    </span>
-                    <h3 className="text-lg font-black text-foreground">
-                      {selectedNode.title}
+                    <h3 className="text-xl md:text-2xl font-black tracking-tight text-foreground leading-tight">
+                      {group.categoryTitle}
                     </h3>
                   </div>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">
+                    {group.categorySubtitle}
+                  </p>
                 </div>
-                <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                  ● Live Specs
+                <span className="text-xs font-mono font-bold text-primary px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto">
+                  {group.items.length} Components
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6">
-                {selectedNode.description}
-              </p>
+              {/* Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
+                {group.items.map((item) => (
+                  <Link key={item.title} href={item.href} className="group block rounded-2xl">
+                    <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
+                      {/* Card Thumbnail / Illustration */}
+                      <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
+                        <MiniatureIllustration title={item.title} type={item.illustrationType} />
+                        {item.badge && (
+                          <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
 
-              {/* Feature Checklist */}
-              <div className="space-y-2 mb-6">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
-                  Architecture Specs
-                </span>
-                {selectedNode.features.map((feat) => (
-                  <div key={feat} className="flex items-center gap-2 text-xs text-foreground font-medium">
-                    <CheckCircle2 className="size-4 text-primary shrink-0" />
-                    <span>{feat}</span>
-                  </div>
+                      {/* Card Info */}
+                      <div className="flex items-center justify-between pt-1">
+                        <div>
+                          <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
+                            {item.countText}
+                          </p>
+                        </div>
+                        <div className="size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                          <ArrowRight className="size-3.5" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
-
-              {/* CLI Command Box */}
-              <div className="mb-6">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">
-                  CLI Quick Add Command
-                </span>
-                <button
-                  onClick={() => handleCopy(selectedNode.cliCommand)}
-                  className="w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border border-border bg-muted/40 hover:border-primary/50 transition-all cursor-pointer group"
-                >
-                  <code className="text-xs font-mono text-foreground flex-1 text-left">
-                    {selectedNode.cliCommand}
-                  </code>
-                  <div className="flex items-center gap-1 text-xs font-semibold text-muted-foreground group-hover:text-foreground">
-                    {copied ? (
-                      <span className="text-emerald-500 font-bold flex items-center gap-1">
-                        <Check className="size-3.5" /> Copied!
-                      </span>
-                    ) : (
-                      <Copy className="size-3.5" />
-                    )}
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Action Links */}
-            <div className="pt-4 border-t border-border flex items-center gap-3">
-              <Link
-                href={selectedNode.docPath}
-                className="flex-1 px-5 py-3 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md"
-              >
-                Inspect Component Specs
-                <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -1292,90 +2583,154 @@ function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const [copied, setCopied] = useState(false);
+  const [typedText, setTypedText] = useState("");
+  const fullCommand = "npx docs-ui@latest init";
+
+  useEffect(() => {
+    let index = 0;
+    let isDeleting = false;
+    const interval = setInterval(() => {
+      if (!isDeleting) {
+        setTypedText(fullCommand.slice(0, index + 1));
+        index++;
+        if (index === fullCommand.length) {
+          isDeleting = true;
+          setTimeout(() => {}, 2000);
+        }
+      } else {
+        setTypedText(fullCommand.slice(0, index - 1));
+        index--;
+        if (index === 0) {
+          isDeleting = false;
+        }
+      }
+    }, 120);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("npx docs-ui@latest init");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const textToCopy = "npx docs-ui@latest init";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(() => {
+        fallbackCopy(textToCopy);
+      });
+    } else {
+      fallbackCopy(textToCopy);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+    document.body.removeChild(textArea);
   };
 
   return (
-    <section ref={ref} className="py-20 md:py-28 px-6 md:px-8 relative overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden border border-border/80 bg-card/60 backdrop-blur-3xl shadow-2xl"
-      >
-        {/* Dynamic Glowing Radial Glows */}
-        <div
-          className="absolute -top-32 -left-32 size-96 rounded-full blur-3xl opacity-30 pointer-events-none"
-          style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute -bottom-32 -right-32 size-96 rounded-full blur-3xl opacity-20 pointer-events-none"
-          style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-        />
+    <section ref={ref} className="py-24 md:py-32 px-6 md:px-8 relative overflow-hidden">
+      {/* Dynamic Background Mesh */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
 
-        <div className="relative z-10 px-8 py-14 sm:px-14 sm:py-18 text-center flex flex-col items-center">
-          {/* Top Feature Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary mb-6">
-            <CheckCircle2 className="size-3.5 text-primary" />
-            <span>Zero Dependencies · 100% Copy & Paste · Free Forever</span>
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950 p-8 sm:p-12 md:p-16 text-white shadow-2xl"
+      >
+        {/* Glowing Radial Mesh Accents on Black */}
+        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-emerald-500/15 blur-[120px] pointer-events-none" />
+
+        {/* Subtle Background Mesh for Depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
+
+        {/* Centered Content Container */}
+        <div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-black text-primary">
+            <Sparkles className="size-3.5 text-primary" />
+            <span>Developer-First Component Library</span>
           </div>
 
-          {/* Main Headline */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-6 leading-[1.08]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.08]">
             Build Next-Gen <br className="hidden sm:block" />
-            <span className="text-primary">React Interfaces</span> Today.
+            <span className="bg-gradient-to-r from-primary via-emerald-400 to-primary bg-clip-text text-transparent">
+              React Interfaces Today.
+            </span>
           </h2>
 
-          <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed font-medium">
-            Join thousands of developers building stunning, production-ready websites with our open source React & Tailwind CSS blocks.
+          <p className="text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
+            Copy-paste fully responsive, accessible, and animated UI components built for Next.js, React, and Tailwind CSS.
           </p>
 
-          {/* Interactive CLI Box */}
-          <div className="mb-8 w-full max-w-md">
-            <button
+          {/* Interactive CLI Quick Copy Pill Box - Dark Variant */}
+          <div className="w-full max-w-md pt-1">
+            <div
               onClick={handleCopy}
-              className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border bg-background/80 hover:border-primary/50 transition-all cursor-pointer group shadow-sm"
+              title="Click to copy command"
+              className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-zinc-100"
             >
-              <div className="flex items-center gap-2.5 text-xs font-mono text-foreground">
-                <Terminal className="size-4 text-primary shrink-0" />
-                <span>npx docs-ui@latest init</span>
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <span className="text-emerald-400 font-bold font-mono text-sm sm:text-base cursor-pointer">&gt;_</span>
+                <span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">npx docs-ui@latest init</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover:text-foreground">
-                {copied ? (
-                  <span className="flex items-center gap-1 text-emerald-500 font-bold">
-                    <Check className="size-3.5" /> Copied!
-                  </span>
-                ) : (
-                  <>
-                    <span>Copy</span>
-                    <Copy className="size-3.5" />
-                  </>
-                )}
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="h-4 w-px bg-zinc-800" />
+                <button
+                  type="button"
+                  className="p-1.5 rounded-xl group-hover:bg-primary/20 text-zinc-400 group-hover:text-primary transition-all cursor-pointer"
+                >
+                  {copied ? (
+                    <Check className="size-4 text-emerald-400" />
+                  ) : (
+                    <Copy className="size-4" />
+                  )}
+                </button>
               </div>
-            </button>
+            </div>
           </div>
 
-          {/* CTA Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full max-w-md">
+          {/* Feature Badges Strip */}
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-zinc-400 pt-1">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
+              <CheckCircle2 className="size-4 text-emerald-400" /> Free Forever
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-border/40">
+              <CheckCircle2 className="size-4 text-emerald-400" /> Fully Customizable
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
+              <CheckCircle2 className="size-4 text-emerald-400" /> 100% Type-Safe
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <Link
               href="/docs"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-              Explore Components
+              Browse All Components
               <ArrowRight className="size-4" />
             </Link>
             <Link
               href="https://github.com/docs/docs"
               target="_blank"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-border bg-background text-foreground text-xs font-bold hover:bg-accent hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-zinc-800 bg-zinc-900/80 text-zinc-200 text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 shadow-xs"
             >
-              <Github className="size-4" />
+              <Github className="size-4 text-zinc-300" />
               <span>Star on GitHub</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-muted text-[10px] text-muted-foreground border border-border ml-1">
+              <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-[10px] text-zinc-400 border border-zinc-700 ml-1 font-mono">
                 2.1k
               </span>
             </Link>
@@ -1444,7 +2799,7 @@ export default function HomePage() {
       <TechStackMarquee />
       <ComponentShowcase />
       <WhyChooseUsSection />
-      <ComponentCatalogSection />
+      <ComponentPreviewGridSection />
       <CTASection />
       <FooterSection />
     </div>

@@ -632,3 +632,30 @@ html:not(.dark) .terminal-block {
 .feature-glow:hover::before {
   opacity: 1;
 }
+
+/* Completely hide scrollbars on Code blocks while retaining scrollability */
+.shiki pre,
+pre.shiki,
+.overflow-x-auto,
+.overflow-x-auto pre {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-x: auto !important;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.shiki pre code,
+pre.shiki code {
+  white-space: pre !important;
+  word-break: normal !important;
+}
+
+.shiki pre::-webkit-scrollbar,
+pre.shiki::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-auto pre::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
