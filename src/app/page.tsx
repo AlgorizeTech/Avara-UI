@@ -47,7 +47,7 @@ import {
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -1098,192 +1098,6 @@ const matrixNodes: SystemNode[] = [
     docPath: "/docs/nextjs/terminal",
   },
 ];
-
-function ComponentCatalogSection() {
-  const [selectedNode, setSelectedNode] = useState<SystemNode>(matrixNodes[0]);
-  const [copied, setCopied] = useState(false);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
-  const handleCopy = (cmd: string) => {
-    navigator.clipboard.writeText(cmd);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const SelectedIcon = selectedNode.icon;
-
-  return (
-    <section ref={ref} className="py-16 md:py-24 px-6 md:px-8">
-      <div className="max-w-[1320px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10"
-        >
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
-            <Package className="size-3.5" />
-            Production Component Catalog
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-black tracking-tight text-foreground mb-3">
-            Explore 100+ Production Components
-          </h2>
-          <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-            Inspect component specifications, features, and CLI quick-add commands directly from the matrix.
-          </p>
-        </motion.div>
-
-        {/* Interactive Matrix Grid + Inspector Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] gap-6 items-stretch my-6">
-          {/* Left Panel: Interactive Matrix Nodes Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {matrixNodes.map((node) => {
-              const Icon = node.icon;
-              const isSelected = selectedNode.id === node.id;
-
-              return (
-                <motion.div
-                  key={node.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedNode(node)}
-                  className={cn(
-                    "p-5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between group relative overflow-hidden",
-                    isSelected
-                      ? "border-primary bg-primary/10 shadow-lg ring-2 ring-primary/20"
-                      : "border-border bg-card/60 hover:border-primary/50 hover:bg-card"
-                  )}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div
-                      className={cn(
-                        "size-10 rounded-xl flex items-center justify-center border transition-all",
-                        isSelected
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-muted text-muted-foreground border-border group-hover:text-primary group-hover:border-primary/40"
-                      )}
-                    >
-                      <Icon className="size-5" />
-                    </div>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-card border border-border text-muted-foreground">
-                      {node.tag}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
-                      {node.title}
-                    </h4>
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                      {node.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between text-[11px] font-semibold text-muted-foreground">
-                    <span className="flex items-center gap-1 text-primary">
-                      <Activity className="size-3" /> Node Active
-                    </span>
-                    <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform text-primary" />
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Right Panel: Live Node Inspector Card */}
-          <motion.div
-            key={selectedNode.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-2xl border border-border bg-card/90 backdrop-blur-2xl p-6 sm:p-7 flex flex-col justify-between shadow-xl relative overflow-hidden ring-1 ring-white/10 dark:ring-white/5"
-          >
-            {/* Radial Ambient Glow */}
-            <div
-              className="absolute -top-20 -right-20 size-60 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-            />
-
-            <div>
-              {/* Inspector Header */}
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="size-11 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center shadow-md">
-                    <SelectedIcon className="size-6" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-                      {selectedNode.category}
-                    </span>
-                    <h3 className="text-lg font-black text-foreground">
-                      {selectedNode.title}
-                    </h3>
-                  </div>
-                </div>
-                <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                  ● Live Specs
-                </span>
-              </div>
-
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6">
-                {selectedNode.description}
-              </p>
-
-              {/* Feature Checklist */}
-              <div className="space-y-2 mb-6">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
-                  Architecture Specs
-                </span>
-                {selectedNode.features.map((feat) => (
-                  <div key={feat} className="flex items-center gap-2 text-xs text-foreground font-medium">
-                    <CheckCircle2 className="size-4 text-primary shrink-0" />
-                    <span>{feat}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* CLI Command Box */}
-              <div className="mb-6">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block mb-1.5">
-                  CLI Quick Add Command
-                </span>
-                <button
-                  onClick={() => handleCopy(selectedNode.cliCommand)}
-                  className="w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border border-border bg-muted/40 hover:border-primary/50 transition-all cursor-pointer group"
-                >
-                  <code className="text-xs font-mono text-foreground flex-1 text-left">
-                    {selectedNode.cliCommand}
-                  </code>
-                  <div className="flex items-center gap-1 text-xs font-semibold text-muted-foreground group-hover:text-foreground">
-                    {copied ? (
-                      <span className="text-emerald-500 font-bold flex items-center gap-1">
-                        <Check className="size-3.5" /> Copied!
-                      </span>
-                    ) : (
-                      <Copy className="size-3.5" />
-                    )}
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Action Links */}
-            <div className="pt-4 border-t border-border flex items-center gap-3">
-              <Link
-                href={selectedNode.docPath}
-                className="flex-1 px-5 py-3 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md"
-              >
-                Inspect Component Specs
-                <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ═══════════════════════════════════════════════
    SECTION 5.5: COMPONENT PREVIEW CARDS CATALOG
@@ -2769,90 +2583,154 @@ function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const [copied, setCopied] = useState(false);
+  const [typedText, setTypedText] = useState("");
+  const fullCommand = "npx docs-ui@latest init";
+
+  useEffect(() => {
+    let index = 0;
+    let isDeleting = false;
+    const interval = setInterval(() => {
+      if (!isDeleting) {
+        setTypedText(fullCommand.slice(0, index + 1));
+        index++;
+        if (index === fullCommand.length) {
+          isDeleting = true;
+          setTimeout(() => {}, 2000);
+        }
+      } else {
+        setTypedText(fullCommand.slice(0, index - 1));
+        index--;
+        if (index === 0) {
+          isDeleting = false;
+        }
+      }
+    }, 120);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("npx docs-ui@latest init");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const textToCopy = "npx docs-ui@latest init";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(() => {
+        fallbackCopy(textToCopy);
+      });
+    } else {
+      fallbackCopy(textToCopy);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+    document.body.removeChild(textArea);
   };
 
   return (
-    <section ref={ref} className="py-20 md:py-28 px-6 md:px-8 relative overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden border border-border/80 bg-card/60 backdrop-blur-3xl shadow-2xl"
-      >
-        {/* Dynamic Glowing Radial Glows */}
-        <div
-          className="absolute -top-32 -left-32 size-96 rounded-full blur-3xl opacity-30 pointer-events-none"
-          style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute -bottom-32 -right-32 size-96 rounded-full blur-3xl opacity-20 pointer-events-none"
-          style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }}
-        />
+    <section ref={ref} className="py-24 md:py-32 px-6 md:px-8 relative overflow-hidden">
+      {/* Dynamic Background Mesh */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
 
-        <div className="relative z-10 px-8 py-14 sm:px-14 sm:py-18 text-center flex flex-col items-center">
-          {/* Top Feature Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary mb-6">
-            <CheckCircle2 className="size-3.5 text-primary" />
-            <span>Zero Dependencies · 100% Copy & Paste · Free Forever</span>
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950 p-8 sm:p-12 md:p-16 text-white shadow-2xl"
+      >
+        {/* Glowing Radial Mesh Accents on Black */}
+        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-emerald-500/15 blur-[120px] pointer-events-none" />
+
+        {/* Subtle Background Mesh for Depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
+
+        {/* Centered Content Container */}
+        <div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-black text-primary">
+            <Sparkles className="size-3.5 text-primary" />
+            <span>Developer-First Component Library</span>
           </div>
 
-          {/* Main Headline */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-6 leading-[1.08]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.08]">
             Build Next-Gen <br className="hidden sm:block" />
-            <span className="text-primary">React Interfaces</span> Today.
+            <span className="bg-gradient-to-r from-primary via-emerald-400 to-primary bg-clip-text text-transparent">
+              React Interfaces Today.
+            </span>
           </h2>
 
-          <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed font-medium">
-            Join thousands of developers building stunning, production-ready websites with our open source React & Tailwind CSS blocks.
+          <p className="text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
+            Copy-paste fully responsive, accessible, and animated UI components built for Next.js, React, and Tailwind CSS.
           </p>
 
-          {/* Interactive CLI Box */}
-          <div className="mb-8 w-full max-w-md">
-            <button
+          {/* Interactive CLI Quick Copy Pill Box - Dark Variant */}
+          <div className="w-full max-w-md pt-1">
+            <div
               onClick={handleCopy}
-              className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border bg-background/80 hover:border-primary/50 transition-all cursor-pointer group shadow-sm"
+              title="Click to copy command"
+              className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-zinc-100"
             >
-              <div className="flex items-center gap-2.5 text-xs font-mono text-foreground">
-                <Terminal className="size-4 text-primary shrink-0" />
-                <span>npx docs-ui@latest init</span>
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <span className="text-emerald-400 font-bold font-mono text-sm sm:text-base cursor-pointer">&gt;_</span>
+                <span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">npx docs-ui@latest init</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover:text-foreground">
-                {copied ? (
-                  <span className="flex items-center gap-1 text-emerald-500 font-bold">
-                    <Check className="size-3.5" /> Copied!
-                  </span>
-                ) : (
-                  <>
-                    <span>Copy</span>
-                    <Copy className="size-3.5" />
-                  </>
-                )}
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="h-4 w-px bg-zinc-800" />
+                <button
+                  type="button"
+                  className="p-1.5 rounded-xl group-hover:bg-primary/20 text-zinc-400 group-hover:text-primary transition-all cursor-pointer"
+                >
+                  {copied ? (
+                    <Check className="size-4 text-emerald-400" />
+                  ) : (
+                    <Copy className="size-4" />
+                  )}
+                </button>
               </div>
-            </button>
+            </div>
           </div>
 
-          {/* CTA Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full max-w-md">
+          {/* Feature Badges Strip */}
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-zinc-400 pt-1">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
+              <CheckCircle2 className="size-4 text-emerald-400" /> Free Forever
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-border/40">
+              <CheckCircle2 className="size-4 text-emerald-400" /> Fully Customizable
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
+              <CheckCircle2 className="size-4 text-emerald-400" /> 100% Type-Safe
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <Link
               href="/docs"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-              Explore Components
+              Browse All Components
               <ArrowRight className="size-4" />
             </Link>
             <Link
               href="https://github.com/docs/docs"
               target="_blank"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-border bg-background text-foreground text-xs font-bold hover:bg-accent hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-zinc-800 bg-zinc-900/80 text-zinc-200 text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 shadow-xs"
             >
-              <Github className="size-4" />
+              <Github className="size-4 text-zinc-300" />
               <span>Star on GitHub</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-muted text-[10px] text-muted-foreground border border-border ml-1">
+              <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-[10px] text-zinc-400 border border-zinc-700 ml-1 font-mono">
                 2.1k
               </span>
             </Link>
@@ -2921,7 +2799,6 @@ export default function HomePage() {
       <TechStackMarquee />
       <ComponentShowcase />
       <WhyChooseUsSection />
-      <ComponentCatalogSection />
       <ComponentPreviewGridSection />
       <CTASection />
       <FooterSection />
