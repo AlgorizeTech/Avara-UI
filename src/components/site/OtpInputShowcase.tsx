@@ -292,6 +292,8 @@ export default function VerificationForm() {
         jsCode={OTP_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="otp-input"
+        sandboxProps={{ variant, length, isMasked, isDisabled, color }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
           <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">

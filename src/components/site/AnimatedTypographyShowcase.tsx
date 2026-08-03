@@ -290,6 +290,16 @@ export default function App() {
         jsCode={TYPO_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="animated-typography"
+        sandboxProps={{
+          tag,
+          variant,
+          align,
+          customSize,
+          customText,
+          animationKey,
+          color,
+        }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 lg:p-24 overflow-hidden min-h-[350px]">
           <div className="w-full max-w-4xl flex flex-col justify-center">

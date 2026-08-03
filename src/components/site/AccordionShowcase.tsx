@@ -277,6 +277,8 @@ export default function AccordionDemo()${typeDef} {
         jsCode={ACCORDION_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="accordion"
+        sandboxProps={{ variant, interaction }}
       >
         <div className="w-full max-w-2xl mx-auto p-4 md:p-8 bg-transparent">
           <Accordion

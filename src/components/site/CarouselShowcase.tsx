@@ -582,6 +582,8 @@ export default function CarouselDemo()${typeDef} {
         }
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="carousel"
+        sandboxProps={{ carouselType, thumbPosition }}
       >
         <div className="w-full">
           {carouselType === "image" && (

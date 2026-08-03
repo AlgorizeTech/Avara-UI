@@ -522,6 +522,8 @@ export default function ServicesSection() {
         jsCode={RAW_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="split-stepper"
+        sandboxProps={{ stickySide, cardDepthScale, cardOffset, color }}
       >
         <div className="w-full rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-[#040406] relative overflow-hidden transition-colors">
           {/* Internal Scrollable Viewport for easy previewing */}

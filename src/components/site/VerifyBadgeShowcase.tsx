@@ -195,6 +195,8 @@ export default function ProfilePage() {
         jsCode={VERIFY_BADGE_JS}
         usageCode={getUsageCode(true)}
         jsUsageCode={getUsageCode(false)}
+        sandbox="verify-badge"
+        sandboxProps={{ color, size, animate }}
       >
         <div
           className="w-full min-h-[380px] rounded-2xl border border-slate-200/80 dark:border-zinc-800/80 flex flex-col items-center justify-center p-8 transition-colors"

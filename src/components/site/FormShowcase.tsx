@@ -361,6 +361,8 @@ export default function EnterpriseForm() {
         jsCode={FORM_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="form"
+        sandboxProps={{ demoType, errorStyle, color }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-4 sm:p-12 relative z-10 overflow-hidden">
           <div className="w-full max-w-lg mx-auto">

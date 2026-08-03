@@ -211,6 +211,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         jsCode={SIDEBAR_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="sidebar"
+        sandboxProps={{ variant, themeColor }}
       >
         <div className="w-full h-[500px] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden relative">
           <SidebarProvider color={themeColor} defaultExpanded={true}>

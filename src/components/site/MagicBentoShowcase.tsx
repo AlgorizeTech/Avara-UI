@@ -288,6 +288,8 @@ export default function DashboardLayout() {
         jsCode={BENTO_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="magic-bento"
+        sandboxProps={{ color }}
       >
         <div
           className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80"

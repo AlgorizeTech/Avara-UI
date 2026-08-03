@@ -482,6 +482,8 @@ export default function HeroSection() {
         jsCode={_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="hero-video-player"
+        sandboxProps={{ enableGlow, aspectRatio, modalSize }}
       >
         <div className="w-full bg-zinc-50 dark:bg-[#020202] relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 p-3 sm:p-8 md:p-12 lg:p-16 flex items-center justify-center">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />

@@ -1,0 +1,129 @@
+"use client";
+
+import {
+  DataGridBlock,
+  GridColor,
+  GridColumn,
+} from "@/components/custom/blocks/DataGridBlock";
+import { Download } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const INITIAL_DATA = [
+  {
+    id: "TX-101",
+    customer: "Acme Corp",
+    amount: 4500.5,
+    status: "Paid",
+    date: "2023-10-12",
+  },
+  {
+    id: "TX-102",
+    customer: "Global Tech",
+    amount: 1200.0,
+    status: "Pending",
+    date: "2023-10-14",
+  },
+  {
+    id: "TX-103",
+    customer: "Stark Ind.",
+    amount: 8900.25,
+    status: "Overdue",
+    date: "2023-09-30",
+  },
+  {
+    id: "TX-104",
+    customer: "Wayne Ent.",
+    amount: 15500.0,
+    status: "Paid",
+    date: "2023-10-01",
+  },
+  {
+    id: "TX-105",
+    customer: "Initech",
+    amount: 340.0,
+    status: "Paid",
+    date: "2023-10-15",
+  },
+  {
+    id: "TX-106",
+    customer: "Soylent Corp",
+    amount: 950.75,
+    status: "Pending",
+    date: "2023-10-16",
+  },
+  {
+    id: "TX-107",
+    customer: "Umbrella Corp",
+    amount: 12000.0,
+    status: "Paid",
+    date: "2023-10-10",
+  },
+  {
+    id: "TX-108",
+    customer: "Massive Dynamic",
+    amount: 450.0,
+    status: "Paid",
+    date: "2023-10-05",
+  },
+];
+
+const COLUMNS: GridColumn[] = [
+  { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
+  { field: "customer", headerName: "Customer Name", width: 200 },
+  { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
+  { field: "status", headerName: "Status", width: 120 },
+  { field: "date", headerName: "Date", width: 140 },
+];
+
+export default function DataGridDemo({
+  color = "primary",
+  showRowNumbers = true,
+  readOnly = false,
+  data = INITIAL_DATA,
+}: {
+  color?: GridColor | string;
+  showRowNumbers?: boolean;
+  readOnly?: boolean;
+  data?: Record<string, unknown>[];
+}) {
+  const [currentData, setCurrentData] =
+    useState<Record<string, unknown>[]>(data);
+
+  useEffect(() => {
+    setCurrentData(data);
+  }, [data]);
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-2 sm:p-6 lg:p-12">
+      <div className="w-full max-w-5xl flex flex-col gap-2">
+        <div className="flex items-center justify-between px-2 mb-2">
+          <div className="flex flex-col">
+            <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+              Financial Ledger
+            </h3>
+            <p className="text-sm text-zinc-500">
+              {readOnly
+                ? "View mode only."
+                : "Double-click any cell or press Enter to edit."}
+            </p>
+          </div>
+          <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+            <Download className="w-3.5 h-3.5" />
+            Export CSV
+          </button>
+        </div>
+
+        <DataGridBlock
+          key={`${showRowNumbers}`}
+          columns={COLUMNS}
+          data={currentData as Record<string, any>[]}
+          onChange={setCurrentData}
+          color={color}
+          showRowNumbers={showRowNumbers}
+          readOnly={readOnly}
+          className="shadow-xl"
+        />
+      </div>
+    </div>
+  );
+}

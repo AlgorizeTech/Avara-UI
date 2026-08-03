@@ -236,6 +236,8 @@ ${dataString}
         jsCode={AVATAR_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="avatar"
+        sandboxProps={{ type, size, status }}
       >
         <div className="w-full flex items-center justify-center p-12 min-h-[200px]">
           <Avatar

@@ -277,6 +277,8 @@ export default function NotificationFeed() {
         jsCode={LIST_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="animated-list"
+        sandboxProps={{ variant, ease, animKey: key }}
       >
         <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative">
           {/* Subtle Abstract Background Glows */}

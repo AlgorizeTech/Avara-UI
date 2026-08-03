@@ -286,6 +286,8 @@ export default function HistoryPage() {
         jsCode={ANIMATED_TIMELINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="animated-timeline"
+        sandboxProps={{ layout, animation, color, resetKey }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] overflow-hidden">
           {/* Scrollable container to demonstrate the intersection observer */}

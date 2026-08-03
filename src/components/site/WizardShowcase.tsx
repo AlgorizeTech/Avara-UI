@@ -310,6 +310,8 @@ export default function OnboardingFlow() {
         jsCode={WIZARD_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="wizard"
+        sandboxProps={{ color, wizardKey: key }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] overflow-hidden">
           <Wizard key={key} color={color}>

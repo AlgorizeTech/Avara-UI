@@ -382,6 +382,8 @@ export default function LoadingState() {
         jsCode={LOADER_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="loader"
+        sandboxProps={{ variant, size, color, showText }}
       >
         <div className="w-full flex items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
           <LoaderBlock

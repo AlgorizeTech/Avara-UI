@@ -657,6 +657,15 @@ export default function TableDemo() {
         jsCode={TABLE_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="table"
+        sandboxProps={{
+          variant,
+          tableSize,
+          color,
+          isSelectable,
+          isPaginated,
+          isExpandable,
+        }}
       >
         <div
           className={`w-full flex flex-col items-start justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "p-4 sm:p-8 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center" : "bg-zinc-50 dark:bg-[#050505] p-2 sm:p-8"} relative z-10`}

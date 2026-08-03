@@ -274,6 +274,8 @@ export default function DataTable() {
         jsCode={PAGINATION_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="pagination"
+        sandboxProps={{ color, currentPage, totalPages, showEdges }}
       >
         <div
           className="w-full flex flex-col items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-slate-200/80 dark:border-zinc-800/80 pl-[10px] pr-4 py-4 sm:p-6 relative z-10 overflow-hidden"

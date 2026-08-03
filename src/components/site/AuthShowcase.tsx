@@ -449,6 +449,8 @@ export default function AuthPage() {
         jsCode={AUTH_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="auth"
+        sandboxProps={{ type, variant, color }}
       >
         <div
           className={`w-full flex items-center justify-center min-h-[600px] transition-colors duration-300 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "bg-zinc-50/50 dark:bg-transparent py-12"}`}

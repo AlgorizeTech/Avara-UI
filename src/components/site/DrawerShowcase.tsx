@@ -312,6 +312,8 @@ export default function DrawerDemo() {
         jsCode={DRAWER_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="drawer"
+        sandboxProps={{ side, open: isOpen }}
       >
         <div className="w-full flex items-center justify-center min-h-[400px] bg-white dark:bg-transparent transition-colors duration-300">
           <Button onClick={() => setIsOpen(true)}>Open Drawer ({side})</Button>

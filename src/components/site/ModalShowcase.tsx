@@ -384,6 +384,8 @@ export default function Page() {
         jsCode={MODAL_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="modal"
+        sandboxProps={{ type, variant, color }}
       >
         {/* CRITICAL: relative and overflow-hidden trap the absolute modal inside the preview box */}
         <div

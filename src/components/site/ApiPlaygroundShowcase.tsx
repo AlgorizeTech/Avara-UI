@@ -431,6 +431,8 @@ export default function DocumentationPage() {
         jsCode={API_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="api-playground"
+        sandboxProps={{ defaultMethod, color, simulateError }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#050505] py-[12px] px-0 min-w-0 overflow-hidden">
           <ApiPlaygroundBlock

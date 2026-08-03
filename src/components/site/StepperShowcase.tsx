@@ -516,6 +516,8 @@ export default function RealFormWizard() {
         jsCode={STEPPER_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="stepper"
+        sandboxProps={{ color }}
       >
         <div className="w-full flex justify-center bg-zinc-50 dark:bg-[#020202] py-16 px-4 transition-colors duration-300 relative overflow-hidden min-h-[600px]">
           {/* Main Wizard Card Container */}
