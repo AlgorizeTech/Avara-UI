@@ -4,21 +4,6 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
-## Features
-Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
-
-    Zero Dependencies
-    Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.
-
-    Language Badges
-    Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.
-
-    Clipboard Copy
-    Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.
-
-    Dark Mode Ready
-    The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.
-
 ## Interactive Showcase
 Interact with the Custom Code Block to test the copy button and view its scrolling behavior.
 
@@ -225,6 +210,21 @@ npm run dev
   );
 }
 ```
+
+## Features
+Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
+
+    Zero Dependencies
+    Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.
+
+    Language Badges
+    Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.
+
+    Clipboard Copy
+    Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.
+
+    Dark Mode Ready
+    The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.
 
 ## Best Practices & Guidelines
 

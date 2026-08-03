@@ -2,21 +2,6 @@
 
 A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
 ## Interactive Showcase
 
 Interact with the active center card by dragging it left or right, or use the navigation controls below the carousel.
@@ -67,6 +52,21 @@ export default function ShowcaseSection() {
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 

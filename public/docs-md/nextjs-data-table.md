@@ -4,21 +4,6 @@ A high-performance record management table featuring global search, multi-column
 
 This component is the engine for SaaS dashboards and administrative panels. Unlike our spreadsheet-focused `DataGrid`, this `AdvancedTableBlock` is optimized for displaying, filtering, and manipulating large datasets with a beautiful, modern aesthetic. It perfectly replicates the UI of top-tier platforms with a floating dark-mode batch actions pill and staggered CSS entry animations.
 
-## Features
-Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel to customize the features. Try searching for "Admin", sorting by "Last Active", and selecting a few rows to see the **floating batch actions toolbar** smoothly slide into view.
@@ -79,6 +64,21 @@ export default function UserManagement() {
   );
 }
 ```
+
+## Features
+Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

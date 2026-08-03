@@ -2,21 +2,6 @@
 
 A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
-## Features
-Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to switch the `side` prop and see the drawer slide in from different edges of the screen.
@@ -32,6 +17,21 @@ This component relies on `gsap` to handle the fluid animations and manage the en
 ```bash
 npm install gsap lucide-react
 ```
+
+## Features
+Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

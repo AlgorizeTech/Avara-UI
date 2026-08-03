@@ -6,21 +6,6 @@ This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
 to track pointer coordinates without triggering heavy React state re-renders,
 ensuring the volumetric glows remain silky smooth.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
 ## Interactive Showcase
 
 Move your cursor over the grid below to reveal the interactive 1px border track and inner card glow. The large primary card demonstrates the **Highlight Mode**, executing a continuously spinning conic gradient behind the mask.
@@ -63,6 +48,21 @@ export default function FeatureGrid() {
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 

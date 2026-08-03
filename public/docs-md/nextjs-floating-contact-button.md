@@ -2,21 +2,6 @@
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
 ## Interactive Showcase
 
 Test out the interactive chat box below. Type a message and hit enter to see simulated typing indicators and auto-replies. Use the control panel to flip screen corners or customize brand colors in real-time.
@@ -53,6 +38,21 @@ export default function RootLayout({
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 

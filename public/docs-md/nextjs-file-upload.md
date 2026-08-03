@@ -8,21 +8,6 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
 ## Interactive Showcase
 
 Drag and drop some real files (images, PDFs) from your desktop into the zone below, or click to browse. The showcase includes a built-in network simulator.
@@ -86,6 +71,21 @@ export default function DocumentUploader() {
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 

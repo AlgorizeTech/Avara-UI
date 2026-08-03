@@ -4,21 +4,6 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into two composable pieces: the core `` bar for the visual fill, and the optional `` wrapper which automatically handles the layout for labels and percentage text.
 
-## Features
-Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different styles, colors, and layout wrappers.
@@ -166,6 +151,21 @@ export default function StorageWidget() {
           undefined
         
         A custom formatter function. If not provided, it defaults to calculating and displaying [percentage]%.
+
+## Features
+Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

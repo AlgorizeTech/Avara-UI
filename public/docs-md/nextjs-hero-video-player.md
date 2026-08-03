@@ -2,21 +2,6 @@
 
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-## Features
-Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
-
-    Immersive Previews
-    Captivate users with autoplaying, loop-ready thumbnail videos that elegantly transition into a full modal player.
-
-    Cinematic Glow
-    Optional ambient background glow derived directly from the video thumbnail for a premium, theater-like aesthetic.
-
-    Responsive Aspect Ratios
-    Natively supports standard 16:9, ultrawide 21:9, and classic 4:3 ratios, automatically scaling for mobile devices.
-
-    Keyboard Accessible
-    Fully compliant with ARIA standards, allowing users to trigger the video and dismiss the modal via keyboard navigation.
-
 ## Interactive Showcase
 Interact with the Hero Video Player to test its custom play buttons and full-screen capabilities.
 
@@ -48,6 +33,21 @@ export default function HeroSection() {
   );
 }
 ```
+
+## Features
+Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
+
+    Immersive Previews
+    Captivate users with autoplaying, loop-ready thumbnail videos that elegantly transition into a full modal player.
+
+    Cinematic Glow
+    Optional ambient background glow derived directly from the video thumbnail for a premium, theater-like aesthetic.
+
+    Responsive Aspect Ratios
+    Natively supports standard 16:9, ultrawide 21:9, and classic 4:3 ratios, automatically scaling for mobile devices.
+
+    Keyboard Accessible
+    Fully compliant with ARIA standards, allowing users to trigger the video and dismiss the modal via keyboard navigation.
 
 ## Best Practices & Guidelines
 

@@ -4,21 +4,6 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
 
-## Features
-Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different styles, orientations, and features.
@@ -114,6 +99,21 @@ export default function LongList() {
 
           If true, the scrollbar thumb fades to transparent when the container
           is not being actively hovered.
+
+## Features
+Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

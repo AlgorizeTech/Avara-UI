@@ -4,21 +4,6 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Features
-Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
-
-    Fully Client-side
-    Runs securely in the browser without relying on any external APIs.
-
-    High-Fidelity Output
-    Generates crisp, scalable SVG QR codes that never lose visual quality.
-
-    Highly Customizable
-    Easily tweak foreground/background colors, sizes, and error correction levels.
-
-    Drag-and-Drop Scan
-    The reader supports both file selection and drag-and-drop for a premium UX.
-
 ## Interactive Showcase
 Adjust the settings in the interactive QR Code demo to see the code regenerate in real-time.
 
@@ -61,6 +46,21 @@ export default function ReaderExample() {
   );
 }
 ```
+
+## Features
+Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
+
+    Fully Client-side
+    Runs securely in the browser without relying on any external APIs.
+
+    High-Fidelity Output
+    Generates crisp, scalable SVG QR codes that never lose visual quality.
+
+    Highly Customizable
+    Easily tweak foreground/background colors, sizes, and error correction levels.
+
+    Drag-and-Drop Scan
+    The reader supports both file selection and drag-and-drop for a premium UX.
 
 ## Best Practices & Guidelines
 

@@ -6,21 +6,6 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
-## Features
-Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
-
-    Pure CSS Layout
-    Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.
-
-    Headless Design
-    Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
-
-    Staggered Entrances
-    Powered by Framer Motion to deliver beautiful, Apple-style staggered blur-fade entrances on scroll.
-
-    Fluid Resizing
-    Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
-
 ## Interactive Showcase
 Resize your browser window to see how the Masonry Grid intelligently recalculates its columns.
 
@@ -59,6 +44,21 @@ export default function BentoFeatures() {
   );
 }
 ```
+
+## Features
+Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+
+    Pure CSS Layout
+    Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.
+
+    Headless Design
+    Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
+
+    Staggered Entrances
+    Powered by Framer Motion to deliver beautiful, Apple-style staggered blur-fade entrances on scroll.
+
+    Fluid Resizing
+    Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
 
 ## Best Practices & Guidelines
 

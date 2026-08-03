@@ -4,21 +4,6 @@ A versatile verified badge component that can be customized with various styles 
 
 It includes distinct customization options to match different areas of your application.
 
-## Features
-Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
-
-    SVG Based
-    Uses standard SVG elements that scale perfectly to any size without losing quality.
-
-    Custom Themes
-    Easily pass any custom hex color or use predefined themes to match your branding.
-
-    Micro-Animations
-    Built-in optional subtle pulse animations to draw attention to verified status.
-
-    Flexible Sizing
-    Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.
-
 ## Interactive Showcase
 Hover over the Verify Badge to see its interactive shine effect and tooltip context.
 
@@ -42,6 +27,21 @@ export default function ProfilePage() {
   );
 }
 ```
+
+## Features
+Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
+
+    SVG Based
+    Uses standard SVG elements that scale perfectly to any size without losing quality.
+
+    Custom Themes
+    Easily pass any custom hex color or use predefined themes to match your branding.
+
+    Micro-Animations
+    Built-in optional subtle pulse animations to draw attention to verified status.
+
+    Flexible Sizing
+    Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.
 
 ## Best Practices & Guidelines
 

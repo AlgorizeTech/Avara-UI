@@ -6,21 +6,6 @@ Building a Context Menu is difficult because it involves intercepting the browse
 
 This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
 
-## Features
-Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Right-click anywhere inside the dashed box below to see the context menu in action. Try clicking near the extreme edges of the dashed box to see how the boundary-collision math prevents the menu from falling off the screen.
@@ -64,6 +49,21 @@ export default function RightClickTable() {
   );
 }
 ```
+
+## Features
+Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

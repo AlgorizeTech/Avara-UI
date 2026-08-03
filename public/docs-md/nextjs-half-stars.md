@@ -4,21 +4,6 @@ A sleek, customizable star rating component for Next.js applications that suppor
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
-## Features
-Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
-
-    High Precision
-    Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.
-
-    Interactive Mode
-    Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.
-
-    Fully Custom
-    Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.
-
-    Zero Dependencies
-    Built entirely with React and raw SVGs. No heavy external rating libraries required.
-
 ## Interactive Showcase
 Hover and click the Half Stars rating system to test its interactive fraction selection.
 
@@ -71,6 +56,21 @@ export default function AppShowcasePage() {
   );
 }
 ```
+
+## Features
+Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
+
+    High Precision
+    Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.
+
+    Interactive Mode
+    Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.
+
+    Fully Custom
+    Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.
+
+    Zero Dependencies
+    Built entirely with React and raw SVGs. No heavy external rating libraries required.
 
 ## Best Practices & Guidelines
 

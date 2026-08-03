@@ -2,21 +2,6 @@
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Features
-Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 This component is fully encapsulated. Use the control panel to switch between UI layouts (including minimal and glassmorphism) and select custom color themes.
@@ -34,6 +19,21 @@ This component relies heavily on `lucide-react` for its interface iconography. R
 ```bash
 npm install lucide-react
 ```
+
+## Features
+Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

@@ -4,21 +4,6 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Features
-Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
-
-    Compound Components
-    Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
-
-    GSAP Animations
-    Features premium, buttery smooth vertical sliding transitions engineered with GSAP.
-
-    Keyboard Navigation
-    Natively supports "Enter" key progression to submit forms and move to the next step instantly.
-
-    Auto-Progress Bar
-    Automatically calculates completion percentage based on the number of active steps rendered.
-
 ## Interactive Showcase
 Navigate through the interactive Wizard steps to test the transition animations and form state.
 
@@ -71,6 +56,21 @@ export default function OnboardingFlow() {
   );
 }
 ```
+
+## Features
+Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+
+    Compound Components
+    Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
+
+    GSAP Animations
+    Features premium, buttery smooth vertical sliding transitions engineered with GSAP.
+
+    Keyboard Navigation
+    Natively supports "Enter" key progression to submit forms and move to the next step instantly.
+
+    Auto-Progress Bar
+    Automatically calculates completion percentage based on the number of active steps rendered.
 
 ## Best Practices & Guidelines
 

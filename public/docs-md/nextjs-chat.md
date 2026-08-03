@@ -2,21 +2,6 @@
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 
-## Features
-Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel to switch between UI layouts (including standard, minimal, and glassmorphism) and select custom color themes. Test the UI by sending a message or searching for a contact.
@@ -32,6 +17,21 @@ This component relies heavily on `lucide-react` for its interface iconography. R
 ```bash
 npm install lucide-react
 ```
+
+## Features
+Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

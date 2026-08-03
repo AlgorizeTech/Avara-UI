@@ -6,21 +6,6 @@ Building an interactive spreadsheet is notoriously difficult. Most developers gi
 
 This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
 
-## Features
-Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel to customize the data grid. Try clicking a cell and using your arrow keys to navigate around. **Press `Enter` or double-click to edit the value, and press `Enter` again to save it and move down!**
@@ -65,6 +50,21 @@ export default function Gradebook() {
   );
 }
 ```
+
+## Features
+Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

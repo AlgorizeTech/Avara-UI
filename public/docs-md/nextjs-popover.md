@@ -4,21 +4,6 @@ Displays rich, interactive content in a portal, triggered by a click.
 
 While tooltips are meant for small text hints on hover, Popovers are designed to hold rich HTML (like forms, grids, and settings menus) triggered by a click. This `PopoverBlock` solves the biggest problem with complex layouts: clipping. By utilizing React's `createPortal`, the popover content is rendered at the root `document.body` level, meaning it will **never** be hidden or cropped by parent layout constraints like `overflow-hidden`.
 
-## Features
-Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Click the "Configure Settings" trigger below to open the Popover. You can interact with the inputs inside without it closing. Try clicking outside the bubble, or pressing the `Escape` key, to see it automatically dismiss itself.
@@ -53,6 +38,21 @@ export default function FilterMenu() {
   );
 }
 ```
+
+## Features
+Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

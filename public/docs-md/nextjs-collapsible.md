@@ -6,21 +6,6 @@ Traditional collapsible components rely on Javascript (like `Element.scrollHeigh
 
 The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
 
-## Features
-Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the controls below to see how incredibly versatile this component is. It can be used for simple FAQs, rich settings panels, or even deeply nested File Trees.
@@ -73,6 +58,21 @@ export default function AnimatedChevron() {
   );
 }
 ```
+
+## Features
+Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

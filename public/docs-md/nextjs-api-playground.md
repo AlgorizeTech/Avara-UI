@@ -6,21 +6,6 @@ This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or 
 
 Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
 
-## Features
-Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel to set the default method and color. Click **Force 401 Error** and then hit the "Send" button in the playground to see how it elegantly handles and formats error responses. Try adding some parameters!
@@ -70,6 +55,21 @@ export default function UsersEndpointDocs() {
   );
 }
 ```
+
+## Features
+Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

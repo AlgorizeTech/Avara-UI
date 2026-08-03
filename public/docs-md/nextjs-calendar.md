@@ -2,21 +2,6 @@
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
 
-## Features
-Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 A fully encapsulated, page-builder-ready calendar dashboard. All state (modals, event editing, filters, exporting) is handled internally. Use the controls below to test the different architectural variants and color themes.
@@ -33,6 +18,21 @@ This component relies heavily on `react-day-picker` and the standard `shadcn/ui`
 npm install lucide-react date-fns react-day-picker
 npx shadcn-ui@latest add button
 ```
+
+## Features
+Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

@@ -4,21 +4,6 @@ A visually persistent, OS-style menu component that provides quick access to a c
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Features
-Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Interact with the simulated application header below. Try clicking a menu to open it, and then simply hover over the adjacent triggers to see the seamless switching behavior. Clicking outside the menu or hitting `Escape` will close it.
@@ -59,6 +44,21 @@ export default function TopNav() {
   );
 }
 ```
+
+## Features
+Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

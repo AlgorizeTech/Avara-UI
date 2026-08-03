@@ -4,21 +4,6 @@ A highly composable, accessible, and smoothly animated navigation menu built for
 
 This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
 
-## Features
-Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different styles and colors.
@@ -107,6 +92,21 @@ export default function TopNav() {
 
           Manually forces the link into an active state, applying the soft
           background color of your currently selected theme.
+
+## Features
+Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

@@ -2,21 +2,6 @@
 
 A powerful, drop-in extension of the standard shadcn/ui avatar. This custom wrapper adds built-in support for avatar groups (stacks), predefined sizing, and dynamic online/offline status indicators.
 
-## Features
-Explore the core features of the Avatar component, including fallback initials, image loading states, and customizable shapes.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Explore the different variations of the Avatar component. Toggle between single and grouped users, adjust the sizing, and test the activity status indicators.
@@ -32,6 +17,21 @@ This component relies on the standard `shadcn/ui` avatar base. Run the following
 ```bash
 npx shadcn-ui@latest add avatar
 ```
+
+## Features
+Explore the core features of the Avatar component, including fallback initials, image loading states, and customizable shapes.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

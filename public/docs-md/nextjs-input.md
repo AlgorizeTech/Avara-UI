@@ -4,21 +4,6 @@ A powerful, multi-purpose Input component that natively supports advanced File U
 
 By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
 
-## Features
-Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different structural variants, colors, and input types.
@@ -36,6 +21,21 @@ This component relies on `lucide-react` for standard UI icons and the `next/imag
 ```bash
 npm install lucide-react
 ```
+
+## Features
+Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

@@ -4,21 +4,6 @@ A production-grade, highly animated multi-step wizard component engineered exclu
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
-## Features
-Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Fill in the fields below and step through the wizard. If you try clicking Next without filling required fields, red validation errors will prevent navigation. On the final **Review** step, toggle the **Simulate Server Error** checkbox to test both successful completions and backend failure alerts.
@@ -118,6 +103,21 @@ export default function RealFormWizard() {
   );
 }
 ```
+
+## Features
+Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

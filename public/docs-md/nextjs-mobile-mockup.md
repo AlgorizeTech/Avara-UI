@@ -4,6 +4,20 @@ A stunning, fully responsive collection of mobile device mockups engineered for 
 
 The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhone 12 Pro Max, the ultra-modern iPhone 14 Pro Max, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10. Whether you want to evoke nostalgia with a classic home button or highlight the future with a dynamic island and edge-to-edge glass, these mockups seamlessly wrap your React content to create the perfect showcase.
 
+## Interactive Showcase
+Scroll through the Mobile Mockup demo to see how internal content behaves within the device frame.
+
+## Implementation
+
+```tsx
+
+export default function AppShowcasePage() {
+  return (
+
+  );
+}
+```
+
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
 
@@ -18,20 +32,6 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 
     Theme Adapting
     The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.
-
-## Interactive Showcase
-Scroll through the Mobile Mockup demo to see how internal content behaves within the device frame.
-
-## Implementation
-
-```tsx
-
-export default function AppShowcasePage() {
-  return (
-
-  );
-}
-```
 
 ## Best Practices & Guidelines
 

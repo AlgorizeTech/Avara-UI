@@ -4,21 +4,6 @@ A specialized typography component used to display keyboard buttons, shortcuts, 
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Features
-Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the controls below to change the size of the keys. `sm` is ideal for placing inside dense dropdown menus, while `md` and `lg` work well for documentation or large onboarding modals.
@@ -50,6 +35,21 @@ export default function ShortcutHint() {
   );
 }
 ```
+
+## Features
+Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

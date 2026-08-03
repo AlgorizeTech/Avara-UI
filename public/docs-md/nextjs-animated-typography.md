@@ -6,21 +6,6 @@ Building animated text that scales responsively and doesn't break screen readers
 
 It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different semantic tags, alignment options, and the newly added 3D animation variants (`flip-up`, `reveal`, `pop-in`).
@@ -53,6 +38,21 @@ export default function LandingHeader() {
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 

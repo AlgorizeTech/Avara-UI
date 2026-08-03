@@ -2,30 +2,15 @@
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
+## Interactive Showcase
+
+Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
+
 ## Sticky Scroll Stack
 
 ## Split Scroll Stack
 
 ## Horizontal Scroll Stack
-
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
-
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
-
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
-## Interactive Showcase
-
-Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
 
 ## Installation
 
@@ -125,6 +110,21 @@ export default function RoadmapSection() {
   );
 }
 ```
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 
