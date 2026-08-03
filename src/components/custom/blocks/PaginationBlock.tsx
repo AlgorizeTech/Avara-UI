@@ -20,7 +20,7 @@ export function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-  siblingCount = 1,
+  siblingCount = 2,
   showEdges = true,
   children,
   ...props
@@ -68,17 +68,62 @@ export function Pagination({
     return [];
   }, [totalPages, currentPage, siblingCount]);
 
-  // Pass down the calculated state via Context (or implicitly via children rendering)
-  // To keep it simple and composable, we pass props to standard children
+  // Mobile pagination logic (smaller sibling count to fit nicely: 1 2 3 4 5 ... 10 style)
+  const mobilePaginationRange = useMemo(() => {
+    const mobSibling = 1;
+    const totalPageNumbers = mobSibling + 5;
+
+    if (totalPageNumbers >= totalPages) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    const leftSiblingIndex = Math.max(currentPage - mobSibling, 1);
+    const rightSiblingIndex = Math.min(currentPage + mobSibling, totalPages);
+
+    const shouldShowLeftDots = leftSiblingIndex > 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPages - 2;
+
+    const firstPageIndex = 1;
+    const lastPageIndex = totalPages;
+
+    if (!shouldShowLeftDots && shouldShowRightDots) {
+      const leftItemCount = 3 + 2 * mobSibling;
+      const leftRange = Array.from({ length: leftItemCount }, (_, i) => i + 1);
+      return [...leftRange, "dots", totalPages];
+    }
+
+    if (shouldShowLeftDots && !shouldShowRightDots) {
+      const rightItemCount = 3 + 2 * mobSibling;
+      const rightRange = Array.from(
+        { length: rightItemCount },
+        (_, i) => totalPages - rightItemCount + i + 1
+      );
+      return [firstPageIndex, "dots", ...rightRange];
+    }
+
+    if (shouldShowLeftDots && shouldShowRightDots) {
+      const middleRange = Array.from(
+        { length: rightSiblingIndex - leftSiblingIndex + 1 },
+        (_, i) => leftSiblingIndex + i
+      );
+      return [firstPageIndex, "dots", ...middleRange, "dots", lastPageIndex];
+    }
+
+    return [];
+  }, [totalPages, currentPage]);
+
   return (
     <nav
       role="navigation"
       aria-label="pagination"
-      className={cn("mx-auto flex w-full justify-center", className)}
+      className={cn(
+        "mx-auto flex w-full max-w-full flex-col items-center gap-3 px-2 sm:px-4 md:flex-row md:justify-center md:gap-0 md:px-0",
+        className
+      )}
       {...props}
     >
-      <ul className="flex flex-row items-center gap-1 sm:gap-2">
-        {/* Render Previous Button */}
+      {/* Desktop / Tablet List (md:flex) */}
+      <ul className="hidden flex-wrap items-center justify-center gap-1.5 md:flex md:gap-2 p-0 m-0 w-full">
         {showEdges && (
           <PaginationPrevious
             onClick={() => onPageChange?.(currentPage - 1)}
@@ -86,15 +131,14 @@ export function Pagination({
           />
         )}
 
-        {/* Render Page Numbers & Ellipses */}
         {paginationRange.map((pageNumber, index) => {
           if (pageNumber === "dots") {
-            return <PaginationEllipsis key={`dots-${index}`} />;
+            return <PaginationEllipsis key={`desktop-dots-${index}`} />;
           }
 
           return (
             <PaginationItem
-              key={pageNumber}
+              key={`desktop-${pageNumber}`}
               isActive={pageNumber === currentPage}
               onClick={() => onPageChange?.(pageNumber as number)}
             >
@@ -103,7 +147,6 @@ export function Pagination({
           );
         })}
 
-        {/* Render Next Button */}
         {showEdges && (
           <PaginationNext
             onClick={() => onPageChange?.(currentPage + 1)}
@@ -111,6 +154,39 @@ export function Pagination({
           />
         )}
       </ul>
+
+      {/* Mobile List (md:hidden) */}
+      <ul className="flex items-center justify-center gap-1 sm:gap-1.5 md:hidden w-full p-0 m-0">
+        {mobilePaginationRange.map((pageNumber, index) => {
+          if (pageNumber === "dots") {
+            return <PaginationEllipsis key={`mobile-dots-${index}`} />;
+          }
+
+          return (
+            <PaginationItem
+              key={`mobile-${pageNumber}`}
+              isActive={pageNumber === currentPage}
+              onClick={() => onPageChange?.(pageNumber as number)}
+            >
+              {pageNumber}
+            </PaginationItem>
+          );
+        })}
+      </ul>
+
+      {/* Small device: Previous & Next buttons together side-by-side on the bottom line */}
+      {showEdges && (
+        <div className="flex items-center justify-center gap-2 md:hidden">
+          <PaginationPrevious
+            onClick={() => onPageChange?.(currentPage - 1)}
+            disabled={currentPage <= 1}
+          />
+          <PaginationNext
+            onClick={() => onPageChange?.(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+          />
+        </div>
+      )}
     </nav>
   );
 }
@@ -130,11 +206,11 @@ export function PaginationItem({
   ...props
 }: PaginationItemProps) {
   return (
-    <li>
+    <li className="list-none m-0 p-0">
       <button
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]",
+          "flex h-8 w-8 items-center justify-center rounded-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] sm:h-9 sm:w-9",
           isActive
             ? "bg-[var(--theme-color,var(--primary))]/10 text-[var(--theme-color,var(--primary))] border border-[var(--theme-color,var(--primary))]/30 shadow-sm"
             : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 border border-transparent",
@@ -149,20 +225,22 @@ export function PaginationItem({
 export interface PaginationButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
+  showLabel?: boolean;
 }
 
 export function PaginationPrevious({
   className,
   disabled,
+  showLabel,
   ...props
 }: PaginationButtonProps) {
   return (
-    <li>
+    <li className="list-none m-0 p-0">
       <button
         aria-label="Go to previous page"
         disabled={disabled}
         className={cn(
-          "flex h-9 items-center justify-center gap-1 pl-2.5 pr-3 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]",
+          "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-2.5 pr-3",
           disabled
             ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
             : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50",
@@ -171,7 +249,7 @@ export function PaginationPrevious({
         {...props}
       >
         <ChevronLeft className="h-4 w-4" />
-        <span className="hidden sm:inline-block">Previous</span>
+        <span>Previous</span>
       </button>
     </li>
   );
@@ -180,15 +258,16 @@ export function PaginationPrevious({
 export function PaginationNext({
   className,
   disabled,
+  showLabel,
   ...props
 }: PaginationButtonProps) {
   return (
-    <li>
+    <li className="list-none m-0 p-0">
       <button
         aria-label="Go to next page"
         disabled={disabled}
         className={cn(
-          "flex h-9 items-center justify-center gap-1 pl-3 pr-2.5 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]",
+          "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-3 pr-2.5",
           disabled
             ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
             : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50",
@@ -196,7 +275,7 @@ export function PaginationNext({
         )}
         {...props}
       >
-        <span className="hidden sm:inline-block">Next</span>
+        <span>Next</span>
         <ChevronRight className="h-4 w-4" />
       </button>
     </li>
@@ -208,10 +287,10 @@ export function PaginationEllipsis({
   ...props
 }: React.ComponentProps<"span">) {
   return (
-    <li aria-hidden>
+    <li aria-hidden className="list-none m-0 p-0">
       <span
         className={cn(
-          "flex h-9 w-9 items-center justify-center text-zinc-500 dark:text-zinc-400",
+          "flex h-8 w-8 items-center justify-center text-zinc-500 dark:text-zinc-400 sm:h-9 sm:w-9",
           className,
         )}
         {...props}
