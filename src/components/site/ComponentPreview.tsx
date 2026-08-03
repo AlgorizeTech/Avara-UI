@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Code2, Monitor, MonitorPlay, RotateCcw, Smartphone, Tablet, Terminal, GripVertical } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
-const MIN_PREVIEW_WIDTH = 320;
+const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;

@@ -39,7 +39,7 @@ export type AIChatColor =
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl",
+      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-none rounded-2xl",
     sidebar:
       "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
     main: "bg-white dark:bg-[#09090b]",
