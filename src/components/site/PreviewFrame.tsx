@@ -93,21 +93,59 @@ export function PreviewFrame({
       themeObserver.observe(document.body, { attributes: true });
       docCleanups.push(() => themeObserver.disconnect());
 
-      // Mirror stylesheets from the parent document into the frame.
+      // Mirror stylesheets from the parent document into the frame. Clones are
+      // keyed to their source node so an unrelated head mutation (e.g. the
+      // scroll-lock <style> injected while the theme sheet is open) doesn't
+      // tear down and re-apply every stylesheet in the frame, which makes the
+      // preview flash, jump and reflow.
       let firstSync = true;
+      const cloneMap = new Map<
+        HTMLLinkElement | HTMLStyleElement,
+        HTMLLinkElement | HTMLStyleElement
+      >();
       const syncStyles = () => {
-        doc.querySelectorAll(`[${CLONE_MARK}]`).forEach((node) => node.remove());
-        const sources = document.querySelectorAll<HTMLLinkElement | HTMLStyleElement>(
-          'head link[rel="stylesheet"], head style',
+        // Remove any stray clones not tracked here (leftover from a re-init).
+        const tracked = new Set(cloneMap.values());
+        doc
+          .querySelectorAll<HTMLLinkElement | HTMLStyleElement>(`[${CLONE_MARK}]`)
+          .forEach((clone) => {
+            if (!tracked.has(clone)) clone.remove();
+          });
+
+        const sources = Array.from(
+          document.querySelectorAll<HTMLLinkElement | HTMLStyleElement>(
+            'head link[rel="stylesheet"], head style',
+          ),
         );
-        sources.forEach((node) => {
-          const clone = node.cloneNode(true) as HTMLLinkElement | HTMLStyleElement;
-          clone.setAttribute(CLONE_MARK, "");
-          if (node instanceof HTMLLinkElement) {
-            (clone as HTMLLinkElement).href = node.href;
+        const sourceSet = new Set(sources);
+
+        // Drop clones whose source element left the parent head.
+        for (const [source, clone] of Array.from(cloneMap.entries())) {
+          if (!sourceSet.has(source)) {
+            clone.remove();
+            cloneMap.delete(source);
           }
-          doc.head.appendChild(clone);
-        });
+        }
+
+        // Clone new sources; refresh <style> text in place so the frame keeps
+        // mirroring content without discarding the existing stylesheets.
+        for (const node of sources) {
+          let clone = cloneMap.get(node);
+          if (!clone || !clone.isConnected) {
+            clone = node.cloneNode(true) as HTMLLinkElement | HTMLStyleElement;
+            clone.setAttribute(CLONE_MARK, "");
+            if (node instanceof HTMLLinkElement) {
+              (clone as HTMLLinkElement).href = node.href;
+            }
+            doc.head.appendChild(clone);
+            cloneMap.set(node, clone);
+          } else if (
+            node instanceof HTMLStyleElement &&
+            clone.textContent !== node.textContent
+          ) {
+            clone.textContent = node.textContent;
+          }
+        }
         if (firstSync) {
           firstSync = false;
           let revealed = false;
@@ -118,8 +156,8 @@ export function PreviewFrame({
             }
           };
           // A parsed stylesheet exposes .sheet — poll the LIVE clones in the
-          // frame (resyncs replace them, so captured references go stale) and
-          // don't trust load events, which are unreliable on cloned links.
+          // frame and don't trust load events, which are unreliable on cloned
+          // links.
           const poll = window.setInterval(() => {
             const liveLinks = Array.from(
               doc.querySelectorAll<HTMLLinkElement>(`link[${CLONE_MARK}]`),
