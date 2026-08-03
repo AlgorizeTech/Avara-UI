@@ -408,6 +408,8 @@ export default function RootLayout({ children }) {
         jsCode={NAVBAR_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="navbar"
+        sandboxProps={{ variant, color }}
       >
         <div className="relative overflow-hidden w-full flex flex-col items-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] z-0">
           {/* Decorative Orbs to show off the glass blur. These sit UNDER the navbar. */}

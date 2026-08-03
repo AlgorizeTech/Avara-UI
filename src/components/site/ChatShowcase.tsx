@@ -4,7 +4,8 @@ import ChatApp, {
   ChatColor,
   ChatVariant,
 } from "@/components/custom/blocks/Chat";
-import { ComponentPreview } from "@/components/site/ComponentPreview";
+import { Sandbox } from "@/components/site/Sandbox";
+import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
 import { VariantTabs } from "@/components/site/VariantTabs";
@@ -623,25 +624,24 @@ export default function ChatDemo()${typeDef} {
       </ShowcaseControlPanel>
 
       {/* --- PREVIEW AND CODE --- */}
-      <ComponentPreview
-        name="ChatApp"
-        tsCode={CHAT_ENGINE_CODE_TS}
-        jsCode={CHAT_ENGINE_CODE_JS}
-        usageCode={generateUsageCode(true)}
-        jsUsageCode={generateUsageCode(false)}
-      >
-        <div
-          className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
-        >
-          <ChatApp
-            key={`${variant}-${color}`} // Forces a re-render on style change to guarantee fresh state
-            variant={variant}
-            color={color}
-            currentUser={sampleCurrentUser}
-            contactsData={sampleContactsData}
-          />
-        </div>
-      </ComponentPreview>
+      <Sandbox
+        name="chat"
+        sandboxProps={{ variant, color }}
+        tabs={[
+          { id: "preview", label: "Preview", resizable: true },
+          {
+            id: "usage",
+            label: "Usage",
+            content: <CodeBlocks code={generateUsageCode(true)} language="tsx" />,
+          },
+          {
+            id: "component",
+            label: "Component",
+            content: <CodeBlocks code={CHAT_ENGINE_CODE_TS} language="tsx" />,
+          },
+        ]}
+        options={{ zoom: true, deviceSwitcher: true, reset: true }}
+      />
     </div>
   );
 }

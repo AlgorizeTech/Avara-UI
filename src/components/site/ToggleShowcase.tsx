@@ -150,6 +150,8 @@ export default function App() {
         jsCode={TOGGLE_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="toggle"
+        sandboxProps={{ variant, size, format, muted }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-12 transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
           {/* Group 1: Editor Toolbar Example */}

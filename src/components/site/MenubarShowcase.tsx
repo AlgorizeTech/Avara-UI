@@ -220,6 +220,8 @@ export default function AppNavigation() {
         jsCode={MENUBAR_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="menubar"
+        sandboxProps={{ theme }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-6 sm:p-12 relative z-10">
           <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-[280px]">

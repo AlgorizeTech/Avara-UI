@@ -359,6 +359,7 @@ export default function IDE_Layout() {
         jsCode={RESIZABLE_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="resizable"
       >
         <div className="w-full flex items-center justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-6 sm:p-12 relative z-10">
           {/* Simulated Application UI */}

@@ -423,6 +423,7 @@ export default function ProcessSection() {
         jsCode={_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="horizontal-scroll-stack"
       >
         <div className="w-full relative rounded-3xl border border-slate-200/80 dark:border-zinc-800" style={{ backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" }}>
           <HorizontalScrollStack items={demoProcessItems} />

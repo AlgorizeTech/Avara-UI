@@ -325,6 +325,8 @@ export default function BasicDemo() {
         jsCode={BUTTON_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="button"
+        sandboxProps={{ layout }}
       >
         <div className="w-full flex items-center justify-center min-h-[350px] bg-white dark:bg-black py-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
           {layout === "basic" && (

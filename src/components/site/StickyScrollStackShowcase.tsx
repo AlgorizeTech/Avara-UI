@@ -589,7 +589,8 @@ export default function ServicesSection() {
         jsCode={STACK_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
-        disableFrame={false}
+        sandbox="sticky-scroll-stack"
+        sandboxProps={{ enableGlow, scaleStep, stackOffsetStep, headerMode, color }}
       >
         <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80" style={{ "--theme-color": getThemeColorHex(color), backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" } as React.CSSProperties}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />

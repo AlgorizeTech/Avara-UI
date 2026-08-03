@@ -246,7 +246,9 @@ export function QrCodeShowcase() {
 				tsCode={getCurrentCode()}
 				jsCode={getCurrentCode()}
 				usageCode={getCurrentUsage()}
-				jsUsageCode={getCurrentUsage()}>
+				jsUsageCode={getCurrentUsage()}
+				sandbox="qr-code"
+				sandboxProps={{ activeTab, themeColor, value, level }}>
 				
 				{activeTab === "generator" ? (
 					<div className="w-full flex flex-col lg:flex-row gap-8 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">

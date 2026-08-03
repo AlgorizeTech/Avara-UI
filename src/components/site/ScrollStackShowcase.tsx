@@ -322,6 +322,8 @@ export default function FeatureSection() {
         jsCode={STACK_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="scroll-stack"
+        sandboxProps={{ depthScale, cardGap, color }}
       >
         <div className="w-full rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#050505] relative overflow-hidden transition-colors">
           {/* Scroll Instruction Badge */}

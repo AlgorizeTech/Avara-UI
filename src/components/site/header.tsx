@@ -318,4 +318,11 @@ const Header = () => {
   );
 };
 
-export default Header;
+// Preview pages are embedded as bare component stages — no site chrome.
+function HeaderGate() {
+  const pathname = usePathname() || "";
+  if (pathname.startsWith("/preview")) return null;
+  return <Header />;
+}
+
+export default HeaderGate;

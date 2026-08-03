@@ -483,6 +483,8 @@ export default function App() {
         jsCode={TEXT_ANIM_JS}
         usageCode={getUsageCode(true)}
         jsUsageCode={getUsageCode(false)}
+        sandbox="text-animation"
+        sandboxProps={{ variant, text, textColor, animKey: key }}
       >
         <div className="w-full min-h-[300px] bg-white dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center overflow-hidden">
           <TextAnimation

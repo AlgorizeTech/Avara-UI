@@ -556,6 +556,8 @@ export default function InlineCommand() {
         jsCode={COMMAND_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="command"
+        sandboxProps={{ layout, open }}
       >
         <div className="w-full flex items-center justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-6 relative z-10 overflow-hidden">
           {layout === "inline" ? (

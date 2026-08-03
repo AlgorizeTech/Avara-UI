@@ -475,6 +475,16 @@ export default function LandingPage() {
         jsCode={HERO_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="hero"
+        sandboxProps={{
+          layout,
+          variant,
+          pattern,
+          titleAnimation,
+          glowAction,
+          color,
+          resetKey,
+        }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] overflow-hidden">
           <Hero

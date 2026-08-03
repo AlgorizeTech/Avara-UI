@@ -501,6 +501,8 @@ export default function InvoiceDemo()${typeDef} {
         jsCode={INVOICE_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="invoice"
+        sandboxProps={{ variant, color }}
       >
         <div
           className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}

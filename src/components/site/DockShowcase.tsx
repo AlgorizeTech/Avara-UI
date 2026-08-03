@@ -413,6 +413,8 @@ export default function AppNavigation() {
         jsCode={DOCK_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="dock"
+        sandboxProps={{ activeTab }}
       >
         <div className="w-full flex flex-col items-center justify-end bg-zinc-50 dark:bg-[#0a0a0a] py-16 px-2 sm:px-8 relative overflow-hidden min-h-[420px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
           {/* Subtle Ambient Backglow */}

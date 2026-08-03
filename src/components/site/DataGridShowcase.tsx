@@ -512,6 +512,8 @@ export default function Spreadsheet() {
         jsCode={DATAGRID_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="data-grid"
+        sandboxProps={{ color, showRowNumbers, readOnly, data: currentData }}
       >
         <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-2 sm:p-6 lg:p-12">
           <div className="w-full max-w-5xl flex flex-col gap-2">

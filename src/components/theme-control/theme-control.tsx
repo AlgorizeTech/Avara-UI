@@ -34,7 +34,7 @@ export function ThemeControl() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
-  if (pathname === "/themes") {
+  if (pathname === "/themes" || pathname?.startsWith("/preview")) {
     return null;
   }
 

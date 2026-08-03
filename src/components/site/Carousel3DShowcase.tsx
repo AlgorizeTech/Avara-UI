@@ -447,6 +447,7 @@ export default function ShowcaseSection() {
         jsCode={CAROUSEL_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="carousel-3d"
       >
         <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
           {/* Subtle Ambient Backglow */}
