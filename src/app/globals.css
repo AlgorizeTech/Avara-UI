@@ -227,6 +227,17 @@ html.dark .shiki span {
 
 }
 
+/* Radix dialogs (theme sheet, modals) scroll-lock <body> while open.
+   react-remove-scroll-bar compensates for the hidden scrollbar by adding a
+   right margin equal to the scrollbar width, but `scrollbar-gutter: stable`
+   already reserves that space, so the compensation only narrows the layout —
+   which makes every component preview iframe reflow (the component inside
+   grows taller/shorter and a scrollbar appears, so the card jumps). Neutralize
+   the extra margin while a dialog is open so the page width stays put. */
+html body[data-scroll-locked] {
+  margin-right: 0 !important;
+}
+
 @theme {
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,

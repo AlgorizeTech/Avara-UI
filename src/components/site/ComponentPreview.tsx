@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Code2, Monitor, MonitorPlay, RotateCcw, Smartphone, Tablet, Terminal, GripVertical } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
-const MIN_PREVIEW_WIDTH = 320;
+const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;
@@ -335,16 +335,14 @@ export function ComponentPreview({
             </div>
 
             <div
-              /* +1px compensates the right border so the inner viewport is exactly previewWidth;
-                 a scaled frame takes the full area and shrinks its content instead */
               style={{
                 width: previewWidth === "100%" || isScaled ? "100%" : `${(previewWidth as number) + 1}px`,
                 maxWidth: "100%",
               }}
               className={cn(
-                "relative flex justify-center items-center transition-[width] ease-out",
+                "relative flex justify-center items-center transition-[width] ease-out bg-white dark:bg-[#09090b]",
                 isDragging ? "duration-0" : "duration-300",
-                "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
+                previewWidth !== "100%" && !isScaled && "border-r border-zinc-200 dark:border-zinc-800",
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
@@ -378,7 +376,7 @@ export function ComponentPreview({
                   >
                     <div
                       key={replayKey}
-                      className="w-full flex justify-center items-center animate-in fade-in duration-300"
+                      className="w-full flex justify-center items-center animate-in fade-in duration-300 pl-[12px]"
                     >
                       {children}
                     </div>

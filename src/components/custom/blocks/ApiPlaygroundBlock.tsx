@@ -306,7 +306,7 @@ export const ApiPlaygroundBlock = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl p-3 sm:p-4 bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-xl",
+          "w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl p-3 sm:p-4 bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-none",
           className,
         )}
         style={style}
