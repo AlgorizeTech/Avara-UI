@@ -1204,6 +1204,7 @@ export default function ServicesSection() {
         jsCode={ACCORDION_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="scroll-accordion"
       >
         <div className="w-full bg-zinc-50 dark:bg-[#0a0a0a] py-8 px-2 sm:px-8 relative rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
           <ScrollAccordionShowcase

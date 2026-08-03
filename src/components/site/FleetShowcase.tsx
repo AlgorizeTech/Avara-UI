@@ -404,6 +404,8 @@ export default function FleetDemo()${typeDef} {
         jsCode={FLEET_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="fleet"
+        sandboxProps={{ variant, color }}
       >
         <div className="w-full transition-all duration-500 bg-transparent">
           {/* Key forces a re-render to gracefully destroy/recreate the Leaflet instance when variants change */}

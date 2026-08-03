@@ -304,6 +304,8 @@ export default function TextEditorToolbar() {
         jsCode={TOGGLE_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="toggle-group"
+        sandboxProps={{ variant, size, color, singleValue, multipleValue }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[400px] gap-12 transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
           {/* Example 1: Single Selection (Alignment) */}

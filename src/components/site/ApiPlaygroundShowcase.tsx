@@ -240,7 +240,7 @@ export const ApiPlaygroundBlock = forwardRef(({ defaultUrl = "https://api.exampl
   );
 
   return (
-    <div ref={ref} className={cn("w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl p-3 sm:p-4 bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-xl", className)} style={style} {...props}>
+    <div ref={ref} className={cn("w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl p-3 sm:p-4 bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-none", className)} style={style} {...props}>
       <div className="flex flex-col gap-4 min-w-0">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
           <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -431,8 +431,10 @@ export default function DocumentationPage() {
         jsCode={API_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="api-playground"
+        sandboxProps={{ defaultMethod, color, simulateError }}
       >
-        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-2 sm:p-4 lg:p-8 min-w-0 overflow-hidden">
+        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#050505] py-[12px] px-0 min-w-0 overflow-hidden">
           <ApiPlaygroundBlock
             key={`${defaultMethod}-${color}-${simulateError}`} // Force remount on config changes
             defaultUrl="https://api.acme.com/v1/customers"

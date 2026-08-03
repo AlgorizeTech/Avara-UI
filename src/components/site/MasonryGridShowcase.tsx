@@ -238,6 +238,8 @@ export default function PremiumGallery() {
         jsCode={_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="masonry-grid"
+        sandboxProps={{ triggerKey }}
       >
         <div className="w-full relative p-4 sm:p-8 md:p-12 bg-[#f8f9fa] dark:bg-[#0a0a0a] rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
           <div className="absolute top-0 left-1/4 w-[40rem] h-[40rem] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen" />

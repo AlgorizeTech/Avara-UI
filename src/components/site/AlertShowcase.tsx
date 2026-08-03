@@ -284,6 +284,15 @@ export function AlertShowcase() {
         jsCode={ALERT_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="alert"
+        sandboxProps={{
+          type,
+          variant,
+          iconType,
+          isDismissible,
+          showRichContent,
+          resetKey,
+        }}
       >
         <div
           className={`w-full max-w-2xl mx-auto p-4 md:p-8 min-h-[300px] flex items-center justify-center rounded-2xl transition-colors duration-500 ${variant === "glass" ? "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100 via-zinc-100 to-zinc-50 dark:from-blue-900/40 dark:via-zinc-950 dark:to-black" : variant === "glow" ? "bg-black" : "bg-transparent"}`}

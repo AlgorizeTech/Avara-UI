@@ -367,6 +367,15 @@ export function HalfStarsShowcase() {
         usageCode={getCurrentCode()}
         jsUsageCode={getCurrentCode()}
         name="HalfStars"
+        sandbox="half-stars"
+        sandboxProps={{
+          activeVariant,
+          color,
+          fullRating,
+          halfRating,
+          preciseRating,
+          customRating,
+        }}
       >
         <div className="flex items-center justify-center w-full min-h-[300px] p-8 md:p-12 overflow-x-hidden">
           {renderContent()}

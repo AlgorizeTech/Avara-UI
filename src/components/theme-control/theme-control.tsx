@@ -24,7 +24,7 @@ import {
 import { DarkModeControl } from "./darkmode-control";
 import { FontFamilyControl } from "./font-family-control";
 import { FontSizeControl } from "./font-size-control";
-import { PrimaryColorControl } from "./primary-color-control";
+import { ThemePresetSelector } from "./theme-preset-selector";
 import { RadiusPicker } from "./radius-picker";
 
 export function ThemeControl() {
@@ -34,7 +34,7 @@ export function ThemeControl() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
-  if (pathname === "/themes") {
+  if (pathname === "/themes" || pathname?.startsWith("/preview")) {
     return null;
   }
 
@@ -80,14 +80,14 @@ export function ThemeControl() {
               </SheetDescription>
             </SheetHeader>
             <div className="space-y-8 px-4 py-6">
-              <PrimaryColorControl />
+              <ThemePresetSelector />
               <RadiusPicker />
               <DarkModeControl />
               <FontSizeControl />
               <FontFamilyControl />
             </div>
           {/* Theme Customizer Link + Reset Button Footer */}
-          <div className="mt-auto pt-4 px-4 border-t border-border flex items-center justify-between gap-3">
+          <div className="mt-auto pt-4 pb-10 px-4 border-t border-border flex items-center justify-between gap-3">
             <Link
               href="/themes"
               className="flex-1 flex items-center justify-center gap-2 h-9 px-3 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm cursor-pointer"

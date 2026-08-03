@@ -4,21 +4,6 @@ A powerful, composable command menu palette for searching data and triggering qu
 
 Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
 
-## Features
-Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the layout controls below to test the static and modal variants.
@@ -85,6 +70,21 @@ export default function QuickActions() {
   );
 }
 ```
+## Features
+Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
 ## Best Practices & Guidelines
 
     Usage Guidelines

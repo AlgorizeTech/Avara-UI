@@ -598,6 +598,8 @@ export default function LandingSection() {
         jsCode={SCROLL_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="split-scroll-stack"
+        sandboxProps={{ stickySide, cardDepthScale, cardOffset, color }}
       >
         <div className="w-full rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 relative overflow-hidden transition-colors" style={{ "--theme-color": getThemeColorHex(color), backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" } as React.CSSProperties}>
           {/* Scroll instruction banner */}

@@ -2,11 +2,12 @@
 
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import { PreviewFrame } from "@/components/site/PreviewFrame";
+import { SandboxFrame } from "@/components/site/SandboxFrame";
 import { cn } from "@/lib/utils";
 import { Code2, Monitor, MonitorPlay, RotateCcw, Smartphone, Tablet, Terminal, GripVertical } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
-const MIN_PREVIEW_WIDTH = 320;
+const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;
@@ -28,6 +29,8 @@ export function ComponentPreview({
   jsUsageCode,
   name = "Component",
   disableFrame = false,
+  sandbox,
+  sandboxProps,
 }: {
   children: React.ReactNode;
   tsCode: string;
@@ -35,6 +38,15 @@ export function ComponentPreview({
   usageCode?: string;
   jsUsageCode?: string;
   name?: string;
+  /**
+   * Preferred mode: registry name of a demo in src/preview/registry.tsx. The
+   * preview loads /sandbox/[name] in an iframe, so the demo runs as a REAL
+   * standalone page — nothing (portals, GSAP, maps, window measurements) can
+   * break. `children` then only serve as the fallback when this is unset.
+   */
+  sandbox?: string;
+  /** JSON-serializable props bridged live into the sandbox demo. */
+  sandboxProps?: Record<string, unknown>;
   /**
    * Resized previews render inside a real iframe viewport ("the preview is a
    * screen"), so Tailwind sm:/md:/lg: media queries respond to the preview
@@ -75,15 +87,17 @@ export function ComponentPreview({
   // Track the available preview area width so the device icons stay in sync
   // when the preview is dragged or the browser window itself is resized.
   useEffect(() => {
-    if (activeTab !== "preview") return;
     const area = areaRef.current;
     if (!area) return;
     const observer = new ResizeObserver((entries) => {
-      setAreaWidth(entries[0].contentRect.width);
+      // display:none while on other tabs reports 0 — keep the last real width
+      if (entries[0].contentRect.width > 0) {
+        setAreaWidth(entries[0].contentRect.width);
+      }
     });
     observer.observe(area);
     return () => observer.disconnect();
-  }, [activeTab]);
+  }, []);
 
   // Content-box width available inside the preview area (minus the 1px border).
   const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
@@ -314,14 +328,16 @@ export function ComponentPreview({
 
       {/* Main Content Area */}
       <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
-        {activeTab === "preview" ? (
-          <div
-            ref={areaRef}
-            className={cn(
-              "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
-              "bg-zinc-50/50 dark:bg-[#020202]"
-            )}
-          >
+        {/* The preview stays MOUNTED across tab switches (hidden, not removed)
+            so the sandbox iframe never reloads when returning to Preview. */}
+        <div
+          ref={areaRef}
+          className={cn(
+            "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
+            "bg-zinc-50/50 dark:bg-[#020202]",
+            activeTab !== "preview" && "hidden"
+          )}
+        >
             {/* Dashed Grid Background */}
             <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
               <svg width="100%" height="100%">
@@ -335,20 +351,36 @@ export function ComponentPreview({
             </div>
 
             <div
-              /* +1px compensates the right border so the inner viewport is exactly previewWidth;
-                 a scaled frame takes the full area and shrinks its content instead */
               style={{
                 width: previewWidth === "100%" || isScaled ? "100%" : `${(previewWidth as number) + 1}px`,
                 maxWidth: "100%",
               }}
               className={cn(
-                "relative flex justify-center items-center transition-[width] ease-out",
+                "relative flex justify-center items-center transition-[width] ease-out bg-white dark:bg-[#09090b]",
                 isDragging ? "duration-0" : "duration-300",
-                "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
+                previewWidth !== "100%" && !isScaled && "border-r border-zinc-200 dark:border-zinc-800",
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"
               )}
             >
-              {disableFrame ? (
+              {sandbox ? (
+                /* Full isolation: the demo loads as its own page. Replay
+                   reloads the sandbox document. */
+                <div
+                  className={cn(
+                    "w-full overflow-hidden",
+                    previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl",
+                    isDragging && "pointer-events-none select-none"
+                  )}
+                >
+                  <SandboxFrame
+                    name={sandbox}
+                    sandboxProps={sandboxProps}
+                    viewportWidth={previewWidth === "100%" ? null : (previewWidth as number)}
+                    scale={frameScale}
+                    resetKey={replayKey}
+                  />
+                </div>
+              ) : disableFrame ? (
                 <div
                   key={replayKey}
                   className={cn(
@@ -378,7 +410,7 @@ export function ComponentPreview({
                   >
                     <div
                       key={replayKey}
-                      className="w-full flex justify-center items-center animate-in fade-in duration-300"
+                      className="w-full flex justify-center items-center animate-in fade-in duration-300 pl-[12px]"
                     >
                       {children}
                     </div>
@@ -406,14 +438,16 @@ export function ComponentPreview({
               </div>
             </div>
           </div>
-        ) : activeTab === "usage" && usageCode ? (
+
+        {activeTab === "usage" && usageCode && (
           <div className="relative w-full rounded-b-xl overflow-x-auto">
             <CodeBlocks
               code={language === "ts" ? usageCode : jsUsageCode || usageCode}
               language={language === "ts" ? "tsx" : "jsx"}
             />
           </div>
-        ) : (
+        )}
+        {activeTab === "code" && (
           <div className="relative w-full rounded-b-xl overflow-x-auto">
             <CodeBlocks
               code={language === "ts" ? tsCode : jsCode || tsCode}

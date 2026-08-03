@@ -681,6 +681,8 @@ export default function UploadFlow() {
         jsCode={UPLOAD_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="upload"
+        sandboxProps={{ variant }}
       >
         <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[600px]">
           {/* Subtle Grid Background */}

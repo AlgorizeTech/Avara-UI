@@ -289,6 +289,8 @@ export default function LayoutHeader() {
         jsCode={THEME_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="theme-switcher"
+        sandboxProps={{ variant }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-24 overflow-hidden relative">
           {/* Render the component based on active state */}

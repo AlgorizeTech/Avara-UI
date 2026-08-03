@@ -22,7 +22,7 @@ export type AIChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {})
 
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
-    wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl",
+    wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-none rounded-2xl",
     sidebar: "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
     main: "bg-white dark:bg-[#09090b]",
     header: "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl",
@@ -777,9 +777,11 @@ export default function AIChatDemo()${typeDef} {
         jsCode={AICHAT_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="ai-chat"
+        sandboxProps={{ variant, color }}
       >
         <div
-          className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+          className={`w-full transition-all duration-500 py-[12px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
         >
           <AIChat
             key={`${variant}-${color}`} // Force re-render to reset internal state gracefully if needed

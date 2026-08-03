@@ -4,21 +4,6 @@ A completely custom, dependency-free Date Picker component. Native HTML `` eleme
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-## Features
-Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different sizing options, structural variants, and error states.
@@ -35,6 +20,21 @@ This component only requires standard `lucide-react` icons (Calendar, ChevronLef
 ```bash
 npm install lucide-react
 ```
+
+## Features
+Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

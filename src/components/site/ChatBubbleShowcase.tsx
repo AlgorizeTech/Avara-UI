@@ -319,6 +319,8 @@ export default function ChatDemo() {
         jsCode={CHAT_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="chat-bubble"
+        sandboxProps={{ color, isTyping, messages }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#fbfbfb] dark:bg-[#050505] p-0 overflow-hidden relative">
           {/* Mock Phone Container */}
@@ -358,14 +360,16 @@ export default function ChatDemo() {
 
               <ChatBubble variant="sent" layout="group-top">
                 <ChatAvatar fallback="ME" />
-                <ChatMessage color={color}>
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                <ChatMessage color={color as any}>
                   Yeah, I'm playing with it right now.
                 </ChatMessage>
               </ChatBubble>
 
               <ChatBubble variant="sent" layout="group-bottom">
                 <ChatAvatar fallback="ME" />
-                <ChatMessage color={color}>
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                <ChatMessage color={color as any}>
                   The grouping logic is built right into the context, so the
                   border radius adjusts automatically when messages stack.
                   <ChatTimestamp time="10:25 AM" status="read" />

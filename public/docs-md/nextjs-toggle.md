@@ -4,21 +4,6 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Features
-Explore the Toggle button's simple two-state functionality, perfect for on/off switches and boolean preferences with smooth transitions.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the controls below to test different visual variants and sizing. Notice how you can use a Toggle as an icon-only button, or pair it with text for complex actions.
@@ -62,6 +47,21 @@ export default function Toolbar() {
   );
 }
 ```
+
+## Features
+Explore the Toggle button's simple two-state functionality, perfect for on/off switches and boolean preferences with smooth transitions.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

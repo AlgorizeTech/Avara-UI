@@ -2,21 +2,6 @@
 
 A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
 
-## Features
-Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to cycle through the different button permutations, ranging from basic sizing and variants to specific e-commerce and social login implementations.
@@ -145,6 +130,21 @@ export const PhoneIcon = () => (
 
 );
 ```
+
+## Features
+Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

@@ -11,6 +11,7 @@
     "export": "next build",
     "build:registry": "tsx ./src/scripts/auto-generate-components.ts && tsx ./src/scripts/build-registry.ts",
     "build:md": "tsx ./src/scripts/build-md-files.ts",
+    "generate:preview": "tsx ./src/scripts/generate-preview-registry.ts",
     "generate:components": "tsx ./src/scripts/auto-generate-components.ts",
     "watch:components": "tsx ./src/scripts/watch-components.ts",
     "perf:audit": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",

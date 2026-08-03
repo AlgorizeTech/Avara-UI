@@ -23,7 +23,7 @@ export interface PaginationProps extends React.ComponentProps<"nav"> {
   showEdges?: boolean;
 }
 
-export function Pagination({ className, currentPage, totalPages, onPageChange, siblingCount = 1, showEdges = true, ...props }: PaginationProps) {
+export function Pagination({ className, currentPage, totalPages, onPageChange, siblingCount = 2, showEdges = true, ...props }: PaginationProps) {
   const paginationRange = useMemo(() => {
     const totalPageNumbers = siblingCount + 5;
     if (totalPageNumbers >= totalPages) return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -53,8 +53,8 @@ export function Pagination({ className, currentPage, totalPages, onPageChange, s
   }, [totalPages, currentPage, siblingCount]);
 
   return (
-    <nav role="navigation" aria-label="pagination" className={cn("mx-auto flex w-full justify-center", className)} {...props}>
-      <ul className="flex flex-row items-center gap-1 sm:gap-2">
+    <nav role="navigation" aria-label="pagination" className={cn("mx-auto flex w-full max-w-full justify-center", className)} {...props}>
+      <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 md:gap-2">
         {showEdges && <PaginationPrevious onClick={() => onPageChange?.(currentPage - 1)} disabled={currentPage <= 1} />}
         {paginationRange.map((pageNumber, index) => {
           if (pageNumber === "dots") return <PaginationEllipsis key={\`dots-\${index}\`} />;
@@ -73,7 +73,7 @@ export function Pagination({ className, currentPage, totalPages, onPageChange, s
 export function PaginationItem({ className, isActive, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { isActive?: boolean }) {
   return (
     <li>
-      <button aria-current={isActive ? "page" : undefined} className={cn("flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]", isActive ? "bg-[var(--theme-color,var(--primary))]/10 text-[var(--theme-color,var(--primary))] border border-[var(--theme-color,var(--primary))]/30 shadow-sm" : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 border border-transparent", className)} {...props} />
+      <button aria-current={isActive ? "page" : undefined} className={cn("flex h-7 w-7 items-center justify-center rounded-md text-xs font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] sm:h-8 sm:w-8 sm:text-sm md:h-9 md:w-9", isActive ? "bg-[var(--theme-color,var(--primary))]/10 text-[var(--theme-color,var(--primary))] border border-[var(--theme-color,var(--primary))]/30 shadow-sm" : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 border border-transparent", className)} {...props} />
     </li>
   );
 }
@@ -81,8 +81,8 @@ export function PaginationItem({ className, isActive, ...props }: React.ButtonHT
 export function PaginationPrevious({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <li>
-      <button aria-label="Go to previous page" disabled={disabled} className={cn("flex h-9 items-center justify-center gap-1 pl-2.5 pr-3 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]", disabled ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600" : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50", className)} {...props}>
-        <ChevronLeft className="h-4 w-4" /><span className="hidden sm:inline-block">Previous</span>
+      <button aria-label="Go to previous page" disabled={disabled} className={cn("flex h-7 w-7 items-center justify-center gap-1 p-0 rounded-md text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] sm:h-8 sm:w-8 sm:text-sm md:h-9 md:w-auto md:pl-2.5 md:pr-3", disabled ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600" : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50", className)} {...props}>
+        <ChevronLeft className="h-4 w-4" /><span className="hidden md:inline-block">Previous</span>
       </button>
     </li>
   );
@@ -91,8 +91,8 @@ export function PaginationPrevious({ className, disabled, ...props }: React.Butt
 export function PaginationNext({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <li>
-      <button aria-label="Go to next page" disabled={disabled} className={cn("flex h-9 items-center justify-center gap-1 pl-3 pr-2.5 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))]", disabled ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600" : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50", className)} {...props}>
-        <span className="hidden sm:inline-block">Next</span><ChevronRight className="h-4 w-4" />
+      <button aria-label="Go to next page" disabled={disabled} className={cn("flex h-7 w-7 items-center justify-center gap-1 p-0 rounded-md text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] sm:h-8 sm:w-8 sm:text-sm md:h-9 md:w-auto md:pl-3 md:pr-2.5", disabled ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600" : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50", className)} {...props}>
+        <span className="hidden md:inline-block">Next</span><ChevronRight className="h-4 w-4" />
       </button>
     </li>
   );
@@ -100,7 +100,7 @@ export function PaginationNext({ className, disabled, ...props }: React.ButtonHT
 
 export function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span">) {
   return (
-    <li aria-hidden><span className={cn("flex h-9 w-9 items-center justify-center text-zinc-500 dark:text-zinc-400", className)} {...props}><MoreHorizontal className="h-4 w-4" /><span className="sr-only">More pages</span></span></li>
+    <li aria-hidden><span className={cn("flex h-7 w-7 items-center justify-center text-zinc-500 dark:text-zinc-400 sm:h-8 sm:w-8 md:h-9 md:w-9", className)} {...props}><MoreHorizontal className="h-4 w-4" /><span className="sr-only">More pages</span></span></li>
   );
 }`;
 
@@ -116,7 +116,6 @@ export function PaginationShowcase() {
   const [color, setColor] = useState<string>("primary");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
-  const [siblingCount, setSiblingCount] = useState(1);
   const [showEdges, setShowEdges] = useState(true);
 
   const getThemeColorHex = (c: string) => {
@@ -156,8 +155,6 @@ export function PaginationShowcase() {
 
   const generateUsageCode = (isTs: boolean) => {
     let propsStr = `\n        currentPage={currentPage}\n        totalPages={${totalPages}}\n        onPageChange={setCurrentPage}`;
-    if (siblingCount !== 1)
-      propsStr += `\n        siblingCount={${siblingCount}}`;
     if (!showEdges) propsStr += `\n        showEdges={false}`;
 
     return `import { useState } from "react";
@@ -248,24 +245,6 @@ export default function DataTable() {
             />
           </div>
 
-          <div className="flex flex-col gap-3 flex-1">
-            <label className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500">
-              Sibling Count
-              <span className="text-zinc-900 dark:text-zinc-100 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
-                {siblingCount}
-              </span>
-            </label>
-            <input
-              type="range"
-              min="1"
-              max="3"
-              value={siblingCount}
-              onChange={(e) => setSiblingCount(parseInt(e.target.value))}
-              className={sliderClasses}
-              style={{ "--theme-color": activeHex } as React.CSSProperties}
-            />
-          </div>
-
           <div className="flex flex-col gap-3">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Features
@@ -295,17 +274,19 @@ export default function DataTable() {
         jsCode={PAGINATION_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="pagination"
+        sandboxProps={{ color, currentPage, totalPages, showEdges }}
       >
         <div
-          className="w-full flex flex-col items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-slate-200/80 dark:border-zinc-800/80 p-6 relative z-10 overflow-hidden"
+          className="w-full flex flex-col items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-slate-200/80 dark:border-zinc-800/80 pl-[10px] pr-4 py-4 sm:p-6 relative z-10 overflow-hidden"
           style={{
             "--theme-color": activeHex,
             backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
           } as React.CSSProperties}
         >
-          <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
+          <div className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 sm:p-6 shadow-sm">
             {/* Simulated Data Header */}
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center justify-between mb-4 sm:mb-8 pb-4 border-b border-zinc-200 dark:border-zinc-800">
               <div className="flex flex-col gap-1">
                 <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                   Customer Directory
@@ -329,7 +310,6 @@ export default function DataTable() {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}
-              siblingCount={siblingCount}
               showEdges={showEdges}
             />
           </div>

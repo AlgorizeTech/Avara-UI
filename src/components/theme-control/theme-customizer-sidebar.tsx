@@ -148,10 +148,7 @@ export function ThemeCustomizerSidebar() {
         <Divider />
 
         {/* Presets */}
-        <div className="space-y-2.5">
-          <SectionLabel>Theme</SectionLabel>
-          <ThemePresetSelector />
-        </div>
+        <ThemePresetSelector />
 
         <Divider />
 
@@ -194,7 +191,7 @@ export function ThemeCustomizerSidebar() {
       </div>
 
       {/* Sticky Footer Actions */}
-      <div className="border-t border-border p-4 flex items-center gap-2 bg-background/80 backdrop-blur-sm">
+      <div className="border-t border-border p-4 pb-10 flex items-center gap-2 bg-background/80 backdrop-blur-sm">
         <CSSExportDialog />
         <button
           onClick={resetToDefaults}

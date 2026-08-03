@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-29T04:36:08.248Z",
-  "totalFiles": 107,
+  "generatedAt": "2026-08-03T17:25:21.675Z",
+  "totalFiles": 109,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -55,6 +55,12 @@
       "path": "/docs/nextjs-api-routes.md",
       "url": "/docs/nextjs/api-routes",
       "originalMdx": "nextjs\\api-routes\\page.mdx"
+    },
+    {
+      "name": "nextjs/architecture",
+      "path": "/docs/nextjs-architecture.md",
+      "url": "/docs/nextjs/architecture",
+      "originalMdx": "nextjs\\architecture\\page.mdx"
     },
     {
       "name": "nextjs/authentication",
@@ -301,6 +307,12 @@
       "path": "/docs/nextjs-image-optimization.md",
       "url": "/docs/nextjs/image-optimization",
       "originalMdx": "nextjs\\image-optimization\\page.mdx"
+    },
+    {
+      "name": "nextjs/index",
+      "path": "/docs/nextjs-index.md",
+      "url": "/docs/nextjs/index",
+      "originalMdx": "nextjs\\index\\page.mdx"
     },
     {
       "name": "nextjs/input",

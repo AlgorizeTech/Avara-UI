@@ -58,6 +58,7 @@ export default function AuthPage() {
         jsCode={SIGNUP_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="signup-form"
       >
         <div className="w-full flex items-center justify-center min-h-[800px] bg-zinc-50 dark:bg-[#020202] py-16 px-4 transition-colors duration-300 relative overflow-hidden">
           {/* Decorative Background Elements */}

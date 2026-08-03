@@ -4,21 +4,6 @@ A completely custom, headless-style dropdown component. Native HTML `` elements 
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
-## Features
-Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Interactive Showcase
 
 Use the control panel below to test the different sizing options, structural variants, and advanced features.
@@ -36,6 +21,21 @@ This component relies on `lucide-react` for standard UI icons (ChevronDown, Aler
 ```bash
 npm install lucide-react
 ```
+
+## Features
+Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 

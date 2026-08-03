@@ -51,6 +51,7 @@ export function HeroSaaSShowcase() {
       name="HeroSaaSShowcase"
       usageCode={USAGE_CODE}
       tsCode={USAGE_CODE}
+      sandbox="hero-saas"
     >
       <div className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b]">
         <Hero layout="center" color="primary" pattern="grid">

@@ -463,6 +463,8 @@ export default function Page() {
         jsCode={COUNTER_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="counter"
+        sandboxProps={{ type, variant, color }}
       >
         <div className="w-full flex items-center justify-center min-h-[400px] bg-zinc-50/50 dark:bg-transparent py-12 transition-colors duration-300">
           <CounterBlock

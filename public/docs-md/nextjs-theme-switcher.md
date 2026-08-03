@@ -4,21 +4,6 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Features
-Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
-
-    Hydration Safe
-    Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.
-
-    GSAP Animations
-    Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.
-
-    3 Layout Variants
-    Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.
-
-    System Sync
-    Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.
-
 ## Interactive Showcase
 Interact with the Theme Switcher to see the smooth sliding animation and immediate color scheme change.
 
@@ -73,6 +58,21 @@ export default function DashboardHeader() {
   );
 }
 ```
+
+## Features
+Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+
+    Hydration Safe
+    Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.
+
+    GSAP Animations
+    Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.
+
+    3 Layout Variants
+    Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.
+
+    System Sync
+    Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.
 
 ## Best Practices & Guidelines
 

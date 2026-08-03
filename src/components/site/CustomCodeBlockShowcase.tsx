@@ -472,6 +472,8 @@ export function CustomCodeBlockShowcase() {
         name="CustomCodeBlock"
         tsCode={CODE_TS}
         usageCode={getUsageCode(activeTab)}
+        sandbox="custom-code-block"
+        sandboxProps={{ activeTab }}
       >
         <div className="w-full h-full p-0 sm:p-4">
           <div className="w-full h-full">

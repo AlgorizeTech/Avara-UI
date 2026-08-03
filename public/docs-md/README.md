@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-07-29T04:36:08.261Z
-**Total files:** 107
+**Generated at:** 2026-08-03T17:25:21.735Z
+**Total files:** 109
 
 ## Available Files
 
@@ -16,6 +16,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/animated-typography](/docs/nextjs-animated-typography.md) - Source: `nextjs\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs/nextjs-api-playground.md) - Source: `nextjs\api-playground\page.mdx`
 - [nextjs/api-routes](/docs/nextjs-api-routes.md) - Source: `nextjs\api-routes\page.mdx`
+- [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `nextjs\architecture\page.mdx`
 - [nextjs/authentication](/docs/nextjs-authentication.md) - Source: `nextjs\authentication\page.mdx`
 - [nextjs/avatar](/docs/nextjs-avatar.md) - Source: `nextjs\avatar\page.mdx`
 - [nextjs/breadcrumb](/docs/nextjs-breadcrumb.md) - Source: `nextjs\breadcrumb\page.mdx`
@@ -57,6 +58,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `nextjs\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `nextjs\hero-video-player\page.mdx`
 - [nextjs/image-optimization](/docs/nextjs-image-optimization.md) - Source: `nextjs\image-optimization\page.mdx`
+- [nextjs/index](/docs/nextjs-index.md) - Source: `nextjs\index\page.mdx`
 - [nextjs/input](/docs/nextjs-input.md) - Source: `nextjs\input\page.mdx`
 - [nextjs/installation](/docs/nextjs-installation.md) - Source: `nextjs\installation\page.mdx`
 - [nextjs/invoice](/docs/nextjs-invoice.md) - Source: `nextjs\invoice\page.mdx`

@@ -6,21 +6,6 @@ A powerful, highly-customizable React-Leaflet based choropleth map component des
 
 It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations right inside your Next.js application.
 
-## Features
-Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
-
-    SSR Compatible
-    Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.
-
-    Lightweight Vectors
-    Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.
-
-    Dual Variants
-    Supports both solid polygon fills and modern pulsing dots for geographic emphasis.
-
-    Rich Hover Cards
-    Elegant tooltips with country flags, data metrics, and up/down trend indicators.
-
 ## Interactive Showcase
 Hover over the interactive Data Map regions to see dynamic tooltips and data values.
 
@@ -64,6 +49,21 @@ export default function AnalyticsDashboard() {
   );
 }
 ```
+
+## Features
+Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
+
+    SSR Compatible
+    Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.
+
+    Lightweight Vectors
+    Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.
+
+    Dual Variants
+    Supports both solid polygon fills and modern pulsing dots for geographic emphasis.
+
+    Rich Hover Cards
+    Elegant tooltips with country flags, data metrics, and up/down trend indicators.
 
 ## Best Practices & Guidelines
 

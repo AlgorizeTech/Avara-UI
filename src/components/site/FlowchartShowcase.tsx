@@ -136,6 +136,8 @@ export default function PipelineDemo() {
         jsCode={FLOW_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="flowchart"
+        sandboxProps={{ color, replayKey: key }}
       >
         <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">
           <Flowchart

@@ -882,11 +882,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <ComponentPreview
         name="FloatingContactButtonBlock"
-        disableFrame={true}
         tsCode={CONTACT_CODE_TS}
         jsCode={CONTACT_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="floating-contact-button"
+        sandboxProps={{ position, title, defaultOpen, color, renderKey }}
       >
         <div className="w-full relative flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] overflow-hidden min-h-[640px] p-4 sm:p-6">
           <div className="absolute top-8 left-8 right-8 text-center max-w-sm mx-auto pointer-events-none opacity-40">

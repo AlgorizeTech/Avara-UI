@@ -286,8 +286,10 @@ export default function Layout() {
         jsCode={BREADCRUMB_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="breadcrumb"
+        sandboxProps={{ variant, color, isLongPath }}
       >
-        <div className="w-full flex items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 sm:p-12">
+        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 py-[50px] px-4 sm:px-8">
           {/* Key forces re-render so the "expansion" state resets when user changes length */}
           <BreadcrumbBlock
             key={`${variant}-${color}-${isLongPath}`}

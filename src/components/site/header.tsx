@@ -120,8 +120,9 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <span className="font-bold text-[16px] tracking-tight text-foreground">
+            <span className="font-bold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
               Docs UI
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
             </span>
           </Link>
 
@@ -204,10 +205,11 @@ const Header = () => {
                   />
                 </svg>
               </div>
-              <span className="font-extrabold text-[16px] tracking-tight text-foreground">
-                Docs <span className="text-primary font-normal">UI</span>
-              </span>
-            </Link>
+            <span className="font-extrabold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
+              Docs <span className="text-primary font-normal">UI</span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
+            </span>
+          </Link>
           </div>
 
           {/* Center Area: Absolute Centered Core Actions */}
@@ -316,4 +318,11 @@ const Header = () => {
   );
 };
 
-export default Header;
+// Preview pages are embedded as bare component stages — no site chrome.
+function HeaderGate() {
+  const pathname = usePathname() || "";
+  if (pathname.startsWith("/preview")) return null;
+  return <Header />;
+}
+
+export default HeaderGate;

@@ -338,6 +338,8 @@ export default function UsageDemo() {
         jsCode={PROGRESS_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="progress"
+        sandboxProps={{ value, max, variant, barSize, color }}
       >
         <div className="w-full flex flex-col items-center justify-center min-h-[220px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10 overflow-hidden">
           <div className="w-full max-w-md mx-auto">

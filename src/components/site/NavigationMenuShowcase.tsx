@@ -375,6 +375,8 @@ export default function App() {
         jsCode={NAV_ENGINE_CODE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="navigation-menu"
+        sandboxProps={{ variant, color }}
       >
         <div
           className={`relative overflow-visible w-full flex items-start justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${

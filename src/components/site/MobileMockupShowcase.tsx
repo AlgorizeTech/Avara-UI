@@ -579,6 +579,8 @@ export function MobileMockupShowcase() {
         usageCode={currentCode}
         jsUsageCode={currentCode}
         name={getComponentName()}
+        sandbox="mobile-mockup"
+        sandboxProps={{ activeDevice }}
       >
         <div className="flex items-center justify-center w-full min-h-[750px] p-8">
           {renderMockup()}

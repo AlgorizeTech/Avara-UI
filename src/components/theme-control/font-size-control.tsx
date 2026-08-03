@@ -16,8 +16,10 @@ export function FontSizeControl() {
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-xs">
-        <span className="text-xs text-muted-foreground font-normal">Scale</span>
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Scale
+        </span>
         <span className="font-semibold text-primary">{fontSize}%</span>
       </div>
       <Slider

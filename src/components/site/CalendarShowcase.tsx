@@ -924,6 +924,8 @@ export default function CalendarDemo()${isTs ? " : React.JSX.Element" : ""} {
         jsCode={CALENDAR_ENGINE_JS}
         usageCode={generateUsageCode(true)}
         jsUsageCode={generateUsageCode(false)}
+        sandbox="calendar"
+        sandboxProps={{ variant, color }}
       >
         <div
           className={`w-full transition-all duration-500 ${variant === "glass" ? "p-8 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl" : ""}`}

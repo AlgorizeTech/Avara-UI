@@ -27,7 +27,10 @@ export function FontFamilyControl() {
     : null;
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-2.5">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+        Font Family
+      </span>
       <MultiSelect
         options={fonts}
         value={currentValue}

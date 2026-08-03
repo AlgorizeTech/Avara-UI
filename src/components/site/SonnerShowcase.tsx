@@ -262,6 +262,8 @@ export default function App() {
         jsCode={SONNER_ENGINE_CODE_JS}
         usageCode={generateUsageCode()}
         jsUsageCode={generateUsageCode()}
+        sandbox="sonner"
+        sandboxProps={{ position }}
       >
         <div className="w-full flex flex-wrap gap-4 items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
           <button
