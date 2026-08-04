@@ -2534,38 +2534,53 @@ function ComponentPreviewGridSection() {
                 </span>
               </div>
 
-              {/* Cards Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
-                {group.items.map((item) => (
-                  <Link key={item.title} href={item.href} className="group block rounded-2xl">
-                    <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
-                      {/* Card Thumbnail / Illustration */}
-                      <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
-                        <MiniatureIllustration title={item.title} type={item.illustrationType} />
-                        {item.badge && (
-                          <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
-                            {item.badge}
-                          </span>
-                        )}
-                      </div>
+              {/* Cards Grid with Bottom Gradient Fade & View All Overlay */}
+              <div className="relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
+                  {group.items.slice(0, 12).map((item) => (
+                    <Link key={item.title} href={item.href} className="group block rounded-2xl">
+                      <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
+                        {/* Card Thumbnail / Illustration */}
+                        <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
+                          <MiniatureIllustration title={item.title} type={item.illustrationType} />
+                          {item.badge && (
+                            <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
 
-                      {/* Card Info */}
-                      <div className="flex items-center justify-between pt-1">
-                        <div>
-                          <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                            {item.title}
-                          </h4>
-                          <p className="text-xs text-muted-foreground mt-0.5 font-medium">
-                            {item.countText}
-                          </p>
-                        </div>
-                        <div className="size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                          <ArrowRight className="size-3.5" />
+                        {/* Card Info */}
+                        <div className="flex items-center justify-between pt-1">
+                          <div>
+                            <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                              {item.title}
+                            </h4>
+                            <p className="text-xs text-muted-foreground mt-0.5 font-medium">
+                              {item.countText}
+                            </p>
+                          </div>
+                          <div className="size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                            <ArrowRight className="size-3.5" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Gradient Fade Mask & Centered View All Button (Only rendered if items > 12) */}
+                {group.items.length > 12 && (
+                  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl">
+                    <Link
+                      href={group.items[0].href}
+                      className="pointer-events-auto inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-300 backdrop-blur-md group/btn"
+                    >
+                      View all {group.categoryTitle}
+                      <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
