@@ -80,8 +80,19 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
   const EditableInput = ({ value, onChange, placeholder, className = "", align = "left" }: any) => isEditing ? (<input value={value} onChange={onChange} placeholder={placeholder} className={cn(\`w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-\${align}\`, styles.inputBg, theme.focusRing, className)} />) : (<span className={\`block \${className}\`}>{value}</span>);
 
   return (
-    <div style={style} className={cn("flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300", styles.wrapper)}>
-      <div className={cn("flex-1 min-w-0 p-6 sm:p-10 rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300", styles.invoicePanel)}>
+    <div
+      style={style}
+      className={cn(
+        "flex flex-col lg:flex-row gap-4 sm:gap-6 p-2 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300 w-full max-w-full overflow-x-hidden",
+        styles.wrapper,
+      )}
+    >
+      <div
+        className={cn(
+          "flex-1 min-w-0 p-3 sm:p-6 md:p-10 rounded-xl sm:rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300 w-full overflow-hidden",
+          styles.invoicePanel,
+        )}
+      >
         <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
           <div className="flex gap-4 items-start">
             <div className={cn("p-3 rounded-xl shrink-0", theme.lightBg)}><Heart className={cn("w-8 h-8", theme.text)} fill="currentColor" fillOpacity={0.2} /></div>
@@ -180,7 +191,7 @@ export default function Invoice({ invoiceData, variant = "default", color = "ind
         </footer>
       </div>
 
-      <aside className="w-full lg:w-[280px] flex-shrink-0 print:hidden h-fit lg:sticky top-8">
+      <aside className="w-full lg:w-[280px] shrink-0 print:hidden h-fit lg:sticky top-0">
         <div className={cn("p-5 space-y-4 transition-colors duration-300", styles.sidebarCard)}>
           <button onClick={() => alert("Invoice Sent!")} className={cn("cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98] shadow-sm", theme.bg)}><Send className="w-4 h-4" /> Send Invoice</button>
           <button onClick={handleDownload} className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-zinc-100 text-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-all active:scale-[0.98]">Download JSON</button>
@@ -505,7 +516,7 @@ export default function InvoiceDemo()${typeDef} {
         sandboxProps={{ variant, color }}
       >
         <div
-          className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+          className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "p-0 bg-transparent"}`}
         >
           <Invoice
             key={`${variant}-${color}`} // Force re-render to clear edit state on theme change

@@ -19,7 +19,7 @@ export type InvoiceColor =
 
 const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   default: {
-    wrapper: "bg-zinc-50 dark:bg-zinc-950/50",
+    wrapper: "bg-transparent",
     invoicePanel:
       "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
     sidebarCard:
@@ -263,32 +263,32 @@ export default function Invoice({
     <div
       style={style}
       className={cn(
-        "flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 min-h-[800px] font-sans transition-colors duration-300",
+        "flex flex-col lg:flex-row items-start gap-4 sm:gap-6 p-0 min-h-[800px] font-sans transition-colors duration-300 w-full max-w-full overflow-x-hidden",
         styles.wrapper,
       )}
     >
       {/* === MAIN INVOICE AREA === */}
       <div
         className={cn(
-          "flex-1 min-w-0 p-6 sm:p-10 rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300",
+          "flex-1 min-w-0 p-3 sm:p-6 md:p-10 rounded-xl sm:rounded-2xl print:shadow-none print:border-none print:p-0 transition-colors duration-300 w-full overflow-hidden",
           styles.invoicePanel,
         )}
       >
         {/* HEADER */}
-        <header className="flex flex-col sm:flex-row justify-between items-start mb-12 gap-8">
-          <div className="flex gap-4 items-start">
-            <div className={cn("p-3 rounded-xl shrink-0", theme.lightBg)}>
+        <header className="flex flex-col sm:flex-row justify-between items-start mb-8 sm:mb-12 gap-6 sm:gap-8">
+          <div className="flex gap-3 sm:gap-4 items-start w-full sm:w-auto">
+            <div className={cn("p-2.5 sm:p-3 rounded-xl shrink-0", theme.lightBg)}>
               <Heart
-                className={cn("w-8 h-8", theme.text)}
+                className={cn("w-6 h-6 sm:w-8 sm:h-8", theme.text)}
                 fill="currentColor"
                 fillOpacity={0.2}
               />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
                 Algorize
               </h1>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px] leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px] leading-relaxed break-words">
                 Office 149, 450 South Brand Brooklyn San Diego County, CA 91905,
                 USA
                 <br />
@@ -298,10 +298,10 @@ export default function Invoice({
           </div>
 
           <div
-            className={cn("w-full sm:w-auto p-5 rounded-xl", styles.blockBg)}
+            className={cn("w-full sm:w-auto p-4 sm:p-5 rounded-xl", styles.blockBg)}
           >
-            <div className="flex items-center sm:justify-end gap-3 mb-4">
-              <span className="text-xl font-medium text-zinc-400 uppercase tracking-widest">
+            <div className="flex items-center justify-between sm:justify-end gap-3 mb-3 sm:mb-4">
+              <span className="text-base sm:text-xl font-medium text-zinc-400 uppercase tracking-widest">
                 INVOICE
               </span>
               {isEditing ? (
@@ -312,19 +312,19 @@ export default function Invoice({
                     handleMainChange("invoiceNumber", e.target.value)
                   }
                   className={cn(
-                    "font-bold text-xl rounded-md px-3 py-1 w-28 text-right outline-none focus:ring-2 transition-all text-zinc-900 dark:text-zinc-100",
+                    "font-bold text-base sm:text-xl rounded-md px-2.5 py-1 w-24 sm:w-28 text-right outline-none focus:ring-2 transition-all text-zinc-900 dark:text-zinc-100",
                     styles.inputBg,
                     theme.focusRing,
                   )}
                 />
               ) : (
-                <span className="font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+                <span className="font-bold text-xl sm:text-2xl text-zinc-900 dark:text-zinc-100">
                   {data.invoiceNumber}
                 </span>
               )}
             </div>
 
-            <div className="grid grid-cols-[auto,1fr] gap-x-4 gap-y-2 text-sm items-center sm:text-right text-left">
+            <div className="grid grid-cols-[auto,1fr] gap-x-3 sm:gap-x-4 gap-y-2 text-xs sm:text-sm items-center sm:text-right text-left">
               <span className="text-zinc-500 dark:text-zinc-400 font-medium">
                 Date Issued:
               </span>
@@ -352,19 +352,19 @@ export default function Invoice({
         </header>
 
         {/* BILLING INFO */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 mb-8 sm:mb-12">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
               Invoice To
             </span>
-            <div className="space-y-1.5 text-sm">
+            <div className="space-y-1.5 text-xs sm:text-sm break-words">
               <EditableInput
                 value={data.invoiceTo.name}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "name", e.target.value)
                 }
                 placeholder="Name"
-                className="font-semibold text-base text-zinc-900 dark:text-zinc-100 mb-2"
+                className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-zinc-100 mb-2"
               />
               <EditableInput
                 value={data.invoiceTo.company}
@@ -396,7 +396,7 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "email", e.target.value)
                 }
                 placeholder="Email"
-                className="text-zinc-600 dark:text-zinc-300"
+                className="text-zinc-600 dark:text-zinc-300 break-all"
               />
             </div>
           </div>
@@ -406,9 +406,9 @@ export default function Invoice({
               Payment Details
             </span>
             <div
-              className={cn("p-4 rounded-lg space-y-3 text-sm", styles.blockBg)}
+              className={cn("p-3.5 sm:p-4 rounded-lg space-y-2.5 sm:space-y-3 text-xs sm:text-sm", styles.blockBg)}
             >
-              <div className="flex justify-between items-center pb-3 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-zinc-200 dark:border-zinc-800">
                 <span className="font-medium text-zinc-600 dark:text-zinc-400">
                   Total Due:
                 </span>
@@ -418,17 +418,17 @@ export default function Invoice({
                     handleNestedChange("billTo", "totalDue", e.target.value)
                   }
                   align="right"
-                  className={cn("font-bold text-lg", theme.text)}
+                  className={cn("font-bold text-base sm:text-lg", theme.text)}
                 />
               </div>
-              <div className="grid grid-cols-[100px,1fr] gap-2 items-center">
+              <div className="grid grid-cols-[75px,1fr] sm:grid-cols-[100px,1fr] gap-2 items-center">
                 <span className="text-zinc-500 dark:text-zinc-400">Bank:</span>
                 <EditableInput
                   value={data.billTo.bankName}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "bankName", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium truncate"
                 />
                 <span className="text-zinc-500 dark:text-zinc-400">
                   Country:
@@ -438,7 +438,7 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "country", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium truncate"
                 />
                 <span className="text-zinc-500 dark:text-zinc-400">IBAN:</span>
                 <EditableInput
@@ -446,7 +446,7 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "iban", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-xs"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-[11px] sm:text-xs break-all"
                 />
                 <span className="text-zinc-500 dark:text-zinc-400">SWIFT:</span>
                 <EditableInput
@@ -454,126 +454,206 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "swift", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-xs"
+                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-[11px] sm:text-xs break-all"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ITEMS TABLE */}
+        {/* ITEMS TABLE / CARD VIEW ON MOBILE */}
         <section
           className={cn(
-            "mb-10 overflow-x-auto rounded-xl",
+            "mb-8 sm:mb-10 rounded-xl w-full max-w-full overflow-hidden",
             variant !== "minimal"
               ? "border border-zinc-200 dark:border-zinc-800"
               : "",
           )}
         >
-          <table className="w-full min-w-[600px] text-left text-sm text-zinc-800 dark:text-zinc-200 border-collapse">
-            <thead
-              className={cn(
-                "text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold",
-                styles.tableHeader,
-              )}
-            >
-              <tr>
-                <th className="px-4 py-4">Item Details</th>
-                <th className="px-4 py-4 text-right w-24">Hours</th>
-                <th className="px-4 py-4 text-right w-24">Qty</th>
-                <th className="px-4 py-4 text-right w-32">Total</th>
-                {isEditing && (
-                  <th className="px-4 py-4 text-center w-16 print:hidden">
-                    Act
-                  </th>
-                )}
-              </tr>
-            </thead>
-            <tbody className={styles.tableRow}>
-              {data.items.map((item, idx) => (
-                <tr key={idx} className={styles.tableRow}>
-                  <td className="px-4 py-4 align-top">
+          {/* Mobile Card-style View (< sm breakpoint) */}
+          <div className="block sm:hidden divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className={cn("px-3 py-2.5 text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400", styles.tableHeader)}>
+              Item Details
+            </div>
+            {data.items.map((item, idx) => (
+              <div key={idx} className="p-3 space-y-2.5 bg-white/40 dark:bg-zinc-900/40">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0">
                     {isEditing ? (
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         <input
                           value={item.item}
-                          onChange={(e) =>
-                            handleItemChange(idx, "item", e.target.value)
-                          }
+                          onChange={(e) => handleItemChange(idx, "item", e.target.value)}
                           placeholder="Item Name"
-                          className={cn(
-                            "w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 font-medium",
-                            styles.inputBg,
-                            theme.focusRing,
-                          )}
+                          className={cn("w-full rounded-md px-2.5 py-1 text-xs font-semibold outline-none focus:ring-2", styles.inputBg, theme.focusRing)}
                         />
                         <textarea
                           value={item.description}
-                          onChange={(e) =>
-                            handleItemChange(idx, "description", e.target.value)
-                          }
+                          onChange={(e) => handleItemChange(idx, "description", e.target.value)}
                           rows={2}
                           placeholder="Description"
-                          className={cn(
-                            "w-full rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500",
-                            styles.inputBg,
-                            theme.focusRing,
-                          )}
+                          className={cn("w-full rounded-md px-2.5 py-1 text-[11px] outline-none resize-none text-zinc-500", styles.inputBg, theme.focusRing)}
                         />
                       </div>
                     ) : (
                       <div>
-                        <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                        <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                           {item.item}
                         </p>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight mt-0.5">
                           {item.description}
                         </p>
                       </div>
                     )}
-                  </td>
-                  <td className="px-4 py-4 text-right align-top">
+                  </div>
+                  {isEditing && (
+                    <button
+                      onClick={() => removeItem(idx)}
+                      className="text-rose-400 hover:text-rose-600 bg-rose-50 dark:bg-rose-500/10 p-1.5 rounded-md shrink-0"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 text-xs items-center">
+                  <div>
+                    <span className="text-[10px] text-zinc-400 block uppercase">Hours</span>
                     <EditableInput
                       value={item.hours}
-                      onChange={(e: any) =>
-                        handleItemChange(idx, "hours", e.target.value)
-                      }
-                      align="right"
+                      onChange={(e: any) => handleItemChange(idx, "hours", e.target.value)}
+                      className="font-medium text-zinc-800 dark:text-zinc-200"
                     />
-                  </td>
-                  <td className="px-4 py-4 text-right align-top">
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-zinc-400 block uppercase">Qty</span>
                     <EditableInput
                       value={item.qty}
-                      onChange={(e: any) =>
-                        handleItemChange(idx, "qty", e.target.value)
-                      }
-                      align="right"
+                      onChange={(e: any) => handleItemChange(idx, "qty", e.target.value)}
+                      className="font-medium text-zinc-800 dark:text-zinc-200"
                     />
-                  </td>
-                  <td className="px-4 py-4 text-right align-top">
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-zinc-400 block uppercase">Total</span>
                     <EditableInput
                       value={item.total}
-                      onChange={(e: any) =>
-                        handleItemChange(idx, "total", e.target.value)
-                      }
+                      onChange={(e: any) => handleItemChange(idx, "total", e.target.value)}
                       align="right"
-                      className="font-semibold text-zinc-900 dark:text-zinc-100"
+                      className="font-bold text-zinc-900 dark:text-zinc-100"
                     />
-                  </td>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop & Tablet Table View (>= sm breakpoint) */}
+          <div className="hidden sm:block overflow-x-auto w-full">
+            <table className="w-full text-left text-sm text-zinc-800 dark:text-zinc-200 border-collapse">
+              <thead
+                className={cn(
+                  "text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold",
+                  styles.tableHeader,
+                )}
+              >
+                <tr>
+                  <th className="px-4 py-4">Item Details</th>
+                  <th className="px-4 py-4 text-right w-24">Hours</th>
+                  <th className="px-4 py-4 text-right w-24">Qty</th>
+                  <th className="px-4 py-4 text-right w-32">Total</th>
                   {isEditing && (
-                    <td className="px-4 py-4 text-center align-top print:hidden">
-                      <button
-                        onClick={() => removeItem(idx)}
-                        className="text-rose-400 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 p-2 rounded-md transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
+                    <th className="px-4 py-4 text-center w-16 print:hidden">
+                      Act
+                    </th>
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className={styles.tableRow}>
+                {data.items.map((item, idx) => (
+                  <tr key={idx} className={styles.tableRow}>
+                    <td className="px-4 py-4 align-top">
+                      {isEditing ? (
+                        <div className="space-y-2">
+                          <input
+                            value={item.item}
+                            onChange={(e) =>
+                              handleItemChange(idx, "item", e.target.value)
+                            }
+                            placeholder="Item Name"
+                            className={cn(
+                              "w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 font-medium",
+                              styles.inputBg,
+                              theme.focusRing,
+                            )}
+                          />
+                          <textarea
+                            value={item.description}
+                            onChange={(e) =>
+                              handleItemChange(idx, "description", e.target.value)
+                            }
+                            rows={2}
+                            placeholder="Description"
+                            className={cn(
+                              "w-full rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500",
+                              styles.inputBg,
+                              theme.focusRing,
+                            )}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                            {item.item}
+                          </p>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                            {item.description}
+                          </p>
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-4 py-4 text-right align-top">
+                      <EditableInput
+                        value={item.hours}
+                        onChange={(e: any) =>
+                          handleItemChange(idx, "hours", e.target.value)
+                        }
+                        align="right"
+                      />
+                    </td>
+                    <td className="px-4 py-4 text-right align-top">
+                      <EditableInput
+                        value={item.qty}
+                        onChange={(e: any) =>
+                          handleItemChange(idx, "qty", e.target.value)
+                        }
+                        align="right"
+                      />
+                    </td>
+                    <td className="px-4 py-4 text-right align-top">
+                      <EditableInput
+                        value={item.total}
+                        onChange={(e: any) =>
+                          handleItemChange(idx, "total", e.target.value)
+                        }
+                        align="right"
+                        className="font-semibold text-zinc-900 dark:text-zinc-100"
+                      />
+                    </td>
+                    {isEditing && (
+                      <td className="px-4 py-4 text-center align-top print:hidden">
+                        <button
+                          onClick={() => removeItem(idx)}
+                          className="text-rose-400 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 p-2 rounded-md transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {isEditing && (
             <div
@@ -703,7 +783,7 @@ export default function Invoice({
       </div>
 
       {/* === RIGHT SIDEBAR / ACTIONS === */}
-      <aside className="w-full lg:w-[280px] flex-shrink-0 print:hidden h-fit lg:sticky top-8">
+      <aside className="w-full lg:w-[280px] shrink-0 print:hidden h-fit lg:sticky top-0">
         <div
           className={cn(
             "p-5 space-y-4 transition-colors duration-300",
