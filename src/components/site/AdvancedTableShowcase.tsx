@@ -36,7 +36,7 @@ const hexToRgb = (hex: string) => {
   return result ? \`\${parseInt(result[1], 16)}, \${parseInt(result[2], 16)}, \${parseInt(result[3], 16)}\` : "99, 102, 241";
 };
 
-export const getThemeStyles = (color: string) => {
+export const getThemeStyles = (color?: string) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
@@ -44,7 +44,13 @@ export const getThemeStyles = (color: string) => {
       style: { "--table-color": color, "--table-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  if (color && colorThemes[color]) {
+    return { theme: colorThemes[color], style: {} };
+  }
+  return {
+    theme: { bg: "bg-primary text-primary-foreground", text: "text-primary", border: "border-primary", bgSoft: "bg-primary/10", ring: "focus:border-primary focus:ring-primary/20" },
+    style: {},
+  };
 };
 
 export interface TableColumn<T> { key: keyof T | string; header: string; sortable?: boolean; width?: string; render?: (row: T) => React.ReactNode; sortType?: "string" | "number"; }
@@ -120,28 +126,31 @@ export const AdvancedTableBlock = forwardRef<HTMLDivElement, AdvancedTableProps<
             <input type="text" placeholder="Search all columns…" value={search} onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }} className={cn("w-full pl-9 pr-3 py-2 text-[13px] bg-white dark:bg-zinc-950 border-[1.5px] border-zinc-200 dark:border-zinc-800 rounded-lg outline-none transition-all shadow-sm", theme.ring, "focus:ring-[3px]")} />
           </div>
         ) : <div />}
-        <div className="flex items-center gap-2 relative h-10 min-w-[200px] justify-end">
-          <div className={cn("flex items-center gap-1.5 text-[13px] text-zinc-500 absolute right-0 transition-opacity duration-200", selectedIds.size > 0 ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto")}>
-            Show
-            <select value={itemsPerPage} onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }} className="bg-white dark:bg-zinc-900 border-[1.5px] border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 outline-none cursor-pointer text-zinc-700 dark:text-zinc-300">
-              {itemsPerPageOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-            </select>
-            entries
+          <div className="flex items-center gap-2 relative h-10 min-w-[180px] sm:min-w-[220px] justify-end overflow-visible">
+            <div className={cn("flex items-center gap-1.5 text-[13px] text-zinc-500 transition-opacity duration-200", selectedIds.size > 0 ? "opacity-0 pointer-events-none hidden" : "opacity-100 pointer-events-auto")}>
+              Show
+              <select value={itemsPerPage} onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }} className="bg-white dark:bg-zinc-900 border-[1.5px] border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 outline-none cursor-pointer text-zinc-700 dark:text-zinc-300">
+                {itemsPerPageOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+              </select>
+              entries
+            </div>
+            <div className={cn("flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-xl shadow-lg border border-primary-foreground/20 overflow-hidden transition-all duration-300 ease-out z-20", selectedIds.size > 0 ? "opacity-100 pointer-events-auto translate-y-0 scale-100 flex" : "opacity-0 pointer-events-none -translate-y-2 scale-95 hidden")}>
+              <span className="text-[11px] sm:text-[12px] font-black whitespace-nowrap pl-0.5">{selectedIds.size} selected</span>
+              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
+              {batchActions ? batchActions(Array.from(selectedIds), clearSelection) : (
+                <div className="flex items-center gap-1">
+                  {onBatchEdit && (<button onClick={() => onBatchEdit(Array.from(selectedIds))} className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors whitespace-nowrap active:scale-95 text-primary-foreground"><Edit2 className="w-3 h-3" /> <span className="hidden sm:inline">Edit</span></button>)}
+                  {onBatchDelete && (<button onClick={() => { onBatchDelete(Array.from(selectedIds)); clearSelection(); }} className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-rose-500/80 text-white hover:bg-rose-600 transition-colors whitespace-nowrap active:scale-95"><Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Delete</span></button>)}
+                </div>
+              )}
+              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
+              <button onClick={clearSelection} className="p-1 text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0"><X className="w-3.5 h-3.5" /></button>
+            </div>
           </div>
-          <div className={cn("flex items-center gap-2 px-3 py-2 bg-[#1e1b4b] dark:bg-indigo-950 rounded-xl shadow-[0_4px_20px_rgba(79,70,229,0.35)] overflow-hidden absolute right-0 transition-all duration-300 ease-out origin-right", selectedIds.size > 0 ? "max-w-[400px] opacity-100 pointer-events-auto translate-y-0" : "max-w-0 opacity-0 pointer-events-none -translate-y-1")}>
-            <span className="text-[12px] font-bold text-indigo-200 whitespace-nowrap pl-1">{selectedIds.size} selected</span>
-            <div className="w-px h-[18px] bg-white/15 shrink-0 mx-1" />
-            {batchActions ? batchActions(Array.from(selectedIds), clearSelection) : (
-              <>{onBatchEdit && (<button onClick={() => onBatchEdit(Array.from(selectedIds))} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] font-semibold bg-indigo-300/15 text-indigo-300 hover:bg-indigo-300/25 transition-colors whitespace-nowrap active:scale-95"><Edit2 className="w-[13px] h-[13px]" /> Edit</button>)}{onBatchDelete && (<button onClick={() => { onBatchDelete(Array.from(selectedIds)); clearSelection(); }} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] font-semibold bg-red-400/10 text-red-400 hover:bg-red-400/20 transition-colors whitespace-nowrap active:scale-95"><Trash2 className="w-[13px] h-[13px]" /> Delete</button>)}</>
-            )}
-            <div className="w-px h-[18px] bg-white/15 shrink-0 mx-1" />
-            <button onClick={clearSelection} className="px-1.5 text-white/40 hover:text-white/70 text-lg leading-none transition-colors"><X className="w-4 h-4" /></button>
-          </div>
-        </div>
       </div>
-      <div className="w-full overflow-x-auto rounded-2xl border-[1.5px] border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+      <div className="w-full overflow-x-auto rounded-2xl border border-border/80 bg-card shadow-sm">
         <table className="w-full text-[13.5px] text-left border-collapse whitespace-nowrap">
-          <thead className="bg-[#f9fafb] dark:bg-zinc-900 border-b-[1.5px] border-zinc-200 dark:border-zinc-800">
+          <thead className="bg-primary/5 border-b border-border/60">
             <tr>
               {selectable && (<th className="w-11 px-4 py-[11px] text-center"><div className="flex items-center justify-center"><button onClick={toggleAllPageSelection} className={cn("w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-colors shrink-0", (isAllPageSelected || isSomePageSelected) ? cn(theme.bg, theme.border) : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950")}>{isAllPageSelected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}{isSomePageSelected && <Minus className="w-2.5 h-2.5 text-white" strokeWidth={3} />}</button></div></th>)}
               {columns.map((col) => (<th key={String(col.key)} className={cn("px-4 py-[11px] font-semibold text-[12px] text-zinc-500 uppercase tracking-[0.04em]", col.sortable && cn("cursor-pointer select-none group hover:", theme.text))} style={{ width: col.width }} onClick={() => col.sortable && handleSort(String(col.key), col.sortType)}><div className="flex items-center gap-1.5">{col.header}{col.sortable && (<div className="flex flex-col opacity-50 group-hover:opacity-100 transition-opacity">{sortConfig?.key === String(col.key) ? (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cn("w-3 h-3 block", theme.text)}>{sortConfig.direction === "asc" ? <polyline points="18 15 12 9 6 15"/> : <polyline points="6 9 12 15 18 9"/>}</svg>) : (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3 block"><polyline points="18 15 12 9 6 15"/><polyline points="6 9 12 15 18 9" opacity=".4"/></svg>)}</div>)}</div></th>))}
@@ -153,7 +162,7 @@ export const AdvancedTableBlock = forwardRef<HTMLDivElement, AdvancedTableProps<
                 const id = String(row[primaryKey]);
                 const isSelected = selectedIds.has(id);
                 return (
-                  <tr key={id} className={cn("border-b border-[#f3f4f6] dark:border-zinc-800/50 transition-colors duration-150", isSelected ? theme.bgSoft : "hover:bg-[#f9fafb] dark:hover:bg-zinc-900/50")} style={{ animation: \`fadeUp-\${tableId} 0.2s ease \${rowIndex * 30}ms both\` }}>
+                  <tr key={id} className={cn("border-b border-zinc-100 dark:border-zinc-800/60 transition-all duration-150", isSelected ? "bg-primary/10 border-l-2 border-l-primary" : "hover:bg-primary/5")} style={{ animation: \`fadeUp-\${tableId} 0.2s ease \${rowIndex * 30}ms both\` }}>
                     {selectable && (<td className="px-4 py-3 text-center"><div className="flex items-center justify-center"><button onClick={() => toggleSelection(id)} className={cn("w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-colors shrink-0", isSelected ? cn(theme.bg, theme.border) : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950")}>{isSelected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}</button></div></td>)}
                     {columns.map((col) => (<td key={String(col.key)} className="px-4 py-3 text-[#374151] dark:text-zinc-300 align-middle">{col.render ? col.render(row) : String(row[col.key] || "")}</td>))}
                   </tr>
@@ -516,15 +525,15 @@ export function AdvancedTableShowcase() {
 
   const [color, setColor] = useState<TableColor | string>(() => {
     if (typeof window !== "undefined")
-      return localStorage.getItem("primaryColor") || "indigo";
-    return "indigo";
+      return localStorage.getItem("primaryColor") || "";
+    return "";
   });
 
   useEffect(() => {
     const interval = setInterval(() => {
       const stored = localStorage.getItem("primaryColor");
       if (stored && stored !== color) setColor(stored);
-    }, 1000);
+    }, 500);
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "primaryColor" && e.newValue) setColor(e.newValue);
     };
@@ -715,7 +724,7 @@ export default function UserManagement() {
         sandbox="advanced-table"
         sandboxProps={{ color, searchable, selectable }}
       >
-        <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f4f4f8] dark:bg-[#050505] p-2 sm:p-6 lg:p-8 overflow-hidden relative">
+        <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-border/70 bg-card p-2 sm:p-6 lg:p-8 overflow-hidden relative">
           <AdvancedTableBlock
             key={`${searchable}-${selectable}`}
             data={data}

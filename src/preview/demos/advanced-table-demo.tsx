@@ -169,7 +169,7 @@ const getDotClass = (ts: number) => {
 };
 
 export default function AdvancedTableDemo({
-  color = "indigo",
+  color,
   searchable = true,
   selectable = true,
 }: {
@@ -315,7 +315,7 @@ export default function AdvancedTableDemo({
       : `${editingNames.slice(0, 3).join(", ")} +${editingNames.length - 3} more`;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f4f4f8] dark:bg-[#050505] p-2 sm:p-6 lg:p-8 overflow-hidden relative">
+    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-border/70 bg-card p-2 sm:p-6 lg:p-8 overflow-hidden relative">
       <AdvancedTableBlock
         key={`${searchable}-${selectable}`}
         data={data}
