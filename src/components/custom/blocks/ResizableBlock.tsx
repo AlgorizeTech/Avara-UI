@@ -236,31 +236,31 @@ export function ResizableHandle({
       onPointerDown={handlePointerDown}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative flex shrink-0 items-center justify-center bg-zinc-200 dark:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
-        isHorizontal ? "w-1 cursor-col-resize" : "h-1 cursor-row-resize",
+        "relative flex shrink-0 items-center justify-center bg-border/80 hover:bg-primary/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        isHorizontal ? "w-1.5 cursor-col-resize" : "h-1.5 cursor-row-resize",
         className,
       )}
       {...props}
     >
-      {/* Invisible wider grab area for easier clicking */}
+      {/* Invisible wider grab area for easier touch and drag clicking */}
       <div
         className={cn(
           "absolute z-10",
-          isHorizontal ? "inset-y-0 -inset-x-2" : "inset-x-0 -inset-y-2",
+          isHorizontal ? "inset-y-0 -inset-x-3" : "inset-x-0 -inset-y-3",
         )}
       />
 
       {withHandle && (
         <div
           className={cn(
-            "z-20 flex items-center justify-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm",
-            isHorizontal ? "h-6 w-3" : "h-3 w-6",
+            "z-20 flex items-center justify-center rounded-md border border-border bg-card shadow-xs text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors",
+            isHorizontal ? "h-6 w-3.5" : "h-3.5 w-6",
           )}
         >
           {isHorizontal ? (
-            <GripVertical className="h-2.5 w-2.5 text-zinc-500" />
+            <GripVertical className="h-3 w-3" />
           ) : (
-            <GripHorizontal className="h-2.5 w-2.5 text-zinc-500" />
+            <GripHorizontal className="h-3 w-3" />
           )}
         </div>
       )}
