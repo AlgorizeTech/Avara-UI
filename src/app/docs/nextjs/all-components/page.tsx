@@ -9,6 +9,8 @@ import {
   ArrowRight,
   LayoutGrid,
 } from "lucide-react";
+import { useTOC } from "@/contexts/toc-context";
+import { cn } from "@/lib/utils";
 
 /* ═══════════════════════════════════════════════
    PREVIEW CARD DATA MODEL & ITEMS (EXACT HOMEPAGE DATA)
@@ -154,7 +156,7 @@ function CardHeaderMockup({ title }: { title: string }) {
 
 function MiniatureIllustration({ title, type }: { title: string; type: string }) {
   return (
-    <div className="w-full h-full rounded-xl border border-border/60 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden shadow-xs relative group-hover:border-primary/50 transition-colors">
+    <div className="w-full h-full rounded-xl border border-border/80 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/50 transition-colors">
       <CardHeaderMockup title={title} />
 
       <div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
@@ -769,13 +771,34 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "button" && (
-          <div className="w-full flex flex-col items-center justify-center gap-1 my-auto">
-            <div className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[7.5px] font-extrabold shadow-sm flex items-center gap-1">
-              <span>Primary</span>
-              <span className="text-[6.5px]">→</span>
+          <div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6.5px] space-y-1.5">
+            {/* Top Row: Primary + Secondary + Outline */}
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <div className="px-2 py-1 rounded-lg bg-primary text-primary-foreground text-[6.5px] font-extrabold shadow-2xs flex items-center gap-1 hover:bg-primary/90 cursor-pointer">
+                <span>Deploy</span>
+                <span className="text-[5.5px]">🚀</span>
+              </div>
+              <div className="px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-bold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
+                <span>Secondary</span>
+              </div>
+              <div className="px-2 py-0.5 rounded-lg border border-border bg-background text-[6.5px] font-bold text-foreground hover:bg-muted cursor-pointer">
+                Outline
+              </div>
             </div>
-            <div className="px-2 py-0.5 rounded-lg border border-border text-[6.5px] font-bold text-foreground">
-              Outline Button
+
+            {/* Bottom Row: Destructive + Loading + Icon Only */}
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <div className="px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-bold flex items-center gap-1 cursor-pointer">
+                <span>Delete</span>
+                <span className="text-[5.5px]">🗑</span>
+              </div>
+              <div className="px-2 py-0.5 rounded-lg bg-primary/20 text-primary text-[6px] font-extrabold flex items-center gap-1 cursor-pointer">
+                <span className="size-2 rounded-full border border-primary border-t-transparent animate-spin" />
+                <span>Loading...</span>
+              </div>
+              <div className="size-5 rounded-lg bg-muted border border-border flex items-center justify-center text-[7px] text-foreground font-extrabold shadow-2xs cursor-pointer">
+                ★
+              </div>
             </div>
           </div>
         )}
@@ -797,15 +820,75 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "calendar" && (
-          <div className="w-full p-1 rounded-lg bg-background border border-border text-center space-y-1 my-auto text-[6px]">
-            <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">August 2026</div>
-            <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
+          <div className="w-full p-2 rounded-xl bg-background border-y border-border/80 space-y-1.5 my-auto text-[6.5px]">
+            {/* Top Toolbar: Selected Date Badge + Year Quick Select */}
+            <div className="flex items-center justify-between border-b border-border/40 pb-1 px-0.5">
+              <div className="flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+                <span className="font-extrabold text-[7.5px] text-foreground">August 2026</span>
+              </div>
+              <div className="flex items-center gap-0.5 text-muted-foreground text-[6px]">
+                <span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">‹</span>
+                <span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">›</span>
+              </div>
+            </div>
+
+            {/* Days of Week */}
+            <div className="grid grid-cols-7 gap-0.5 font-extrabold text-muted-foreground/70 text-center text-[5.5px] uppercase">
               <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
             </div>
-            <div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
-              <span className="opacity-40">1</span><span className="opacity-40">2</span><span>3</span>
-              <span className="bg-primary text-primary-foreground rounded-full font-bold">14</span>
-              <span>15</span><span>16</span><span>17</span>
+
+            {/* Full Month Calendar Matrix */}
+            <div className="grid grid-cols-7 gap-0.5 text-center font-bold text-[6px] items-center">
+              <span className="text-muted-foreground/30 py-0.5">26</span>
+              <span className="text-muted-foreground/30 py-0.5">27</span>
+              <span className="text-muted-foreground/30 py-0.5">28</span>
+              <span className="text-muted-foreground/30 py-0.5">29</span>
+              <span className="text-muted-foreground/30 py-0.5">30</span>
+              <span className="text-muted-foreground/30 py-0.5">31</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">1</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">2</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">3</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">4</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">5</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">6</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">7</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">8</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">9</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">10</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">11</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">12</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">13</span>
+
+              {/* Start Date Selection Range */}
+              <span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-black shadow-2xs">14</span>
+              <span className="py-0.5 bg-primary/20 text-primary font-extrabold">15</span>
+              <span className="py-0.5 bg-primary/20 text-primary font-extrabold">16</span>
+              {/* End Date Selection Range */}
+              <span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-black shadow-2xs">17</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">18</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">19</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">20</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">21</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">22</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">23</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">24</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">25</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">26</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">27</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">28</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">29</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">30</span>
+            </div>
+
+            {/* Bottom Footer Action Bar */}
+            <div className="flex items-center justify-between border-t border-border/40 pt-1 px-0.5 text-[5.5px]">
+              <span className="text-muted-foreground font-semibold">Today: Aug 14</span>
+              <span className="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-extrabold border border-primary/20">Apply</span>
             </div>
           </div>
         )}
@@ -886,23 +969,63 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "data-table" && (
-          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
-            <div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
-              <span>Item Name ▲</span>
-              <span className="text-[5px] font-mono text-primary bg-primary/10 px-1 rounded">24 Items</span>
+          <div className="w-full p-1.5 rounded-xl bg-card border border-border/80 space-y-1 my-auto text-[6px]">
+            {/* Table Toolbar Header */}
+            <div className="flex justify-between items-center border-b border-border/40 pb-1 px-0.5">
+              <div className="flex items-center gap-1">
+                <span className="font-extrabold text-foreground text-[6.5px]">Invoices</span>
+                <span className="px-1 py-0.2 rounded bg-primary/10 text-primary font-mono text-[5px]">128 total</span>
+              </div>
+              <div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-[5px] flex items-center gap-0.5">
+                <span>Filter</span>
+                <span className="text-[4.5px]">▼</span>
+              </div>
             </div>
-            <div className="space-y-0.5">
-              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
-                <span className="font-bold text-foreground">Pro Plan Sub</span>
-                <span className="text-emerald-500 font-extrabold">$29.00</span>
+
+            {/* Table Column Headers */}
+            <div className="grid grid-cols-12 gap-1 font-extrabold text-muted-foreground border-b border-border/40 pb-0.5 px-0.5 text-[5.5px]">
+              <span className="col-span-1 text-center">☐</span>
+              <span className="col-span-4">Customer</span>
+              <span className="col-span-3">Status</span>
+              <span className="col-span-4 text-right">Amount</span>
+            </div>
+
+            {/* Table Rows */}
+            <div className="space-y-0.5 text-[5.5px]">
+              <div className="grid grid-cols-12 gap-1 items-center bg-primary/5 p-0.5 rounded border border-primary/20">
+                <span className="col-span-1 text-center text-primary font-bold">☑</span>
+                <span className="col-span-4 font-bold text-foreground truncate">Alex Rivers</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-extrabold text-[5px]">Paid</span>
+                </span>
+                <span className="col-span-4 text-right font-extrabold text-foreground">$1,250.00</span>
               </div>
-              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
-                <span className="font-medium text-foreground">Domain Renew</span>
-                <span className="font-bold text-foreground">$14.00</span>
+
+              <div className="grid grid-cols-12 gap-1 items-center p-0.5 border-b border-border/20">
+                <span className="col-span-1 text-center text-muted-foreground/60">☐</span>
+                <span className="col-span-4 font-medium text-foreground truncate">Sarah Chen</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 font-extrabold text-[5px]">Pending</span>
+                </span>
+                <span className="col-span-4 text-right font-bold text-foreground">$420.00</span>
               </div>
-              <div className="flex justify-between items-center text-muted-foreground">
-                <span className="font-medium text-foreground">API Access</span>
-                <span className="font-bold text-foreground">$99.00</span>
+
+              <div className="grid grid-cols-12 gap-1 items-center p-0.5">
+                <span className="col-span-1 text-center text-muted-foreground/60">☐</span>
+                <span className="col-span-4 font-medium text-foreground truncate">TechCorp Inc</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-extrabold text-[5px]">Paid</span>
+                </span>
+                <span className="col-span-4 text-right font-bold text-foreground">$3,890.00</span>
+              </div>
+            </div>
+
+            {/* Table Footer Pagination */}
+            <div className="flex justify-between items-center border-t border-border/40 pt-1 px-0.5 text-[5px] text-muted-foreground font-medium">
+              <span>Page 1 of 12</span>
+              <div className="flex gap-0.5 font-bold">
+                <span className="px-1 py-0.2 rounded bg-muted">‹ Prev</span>
+                <span className="px-1 py-0.2 rounded bg-muted text-foreground">Next ›</span>
               </div>
             </div>
           </div>
@@ -991,25 +1114,35 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
 
         {type === "map" && (
           <div className="w-full h-full rounded-lg bg-muted/20 border border-border relative flex items-center justify-center my-auto overflow-hidden">
-            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-muted-foreground/30" viewBox="0 0 200 100">
-              <path d="M 15 20 Q 30 15 45 25 Q 50 35 35 50 Q 25 55 15 45 Z" />
-              <path d="M 40 55 Q 55 52 50 85 Q 40 90 35 68 Z" />
-              <path d="M 75 15 Q 120 10 160 25 Q 170 45 140 55 Q 100 50 80 35 Z" />
-              <path d="M 80 40 Q 115 38 110 75 Q 90 85 78 60 Z" />
-              <path d="M 145 65 Q 175 60 170 85 Q 150 90 142 75 Z" />
+            {/* Bangladesh Map Silhouette SVG */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-primary/20 stroke-primary/50 stroke-1" viewBox="0 0 100 100">
+              <path d="M 45 10 Q 55 12, 60 20 Q 65 25, 75 30 Q 80 40, 70 50 Q 75 60, 68 75 Q 60 85, 55 90 Q 50 82, 45 78 Q 40 70, 32 65 Q 25 60, 28 50 Q 30 40, 35 30 Q 32 20, 45 10 Z" />
             </svg>
-            <div className="absolute top-[28%] left-[22%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+
+            {/* Dhaka (Center Pulse Pin) */}
+            <div className="absolute top-[48%] left-[50%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-3 rounded-full bg-rose-500/30 block animate-ping absolute inset-0" />
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/40 border border-white shadow-xs" />
             </div>
-            <div className="absolute bottom-[30%] left-[30%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+
+            {/* Chattogram Pin */}
+            <div className="absolute top-[68%] left-[66%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-emerald-500 block ring-1 ring-emerald-500/40 border border-white shadow-xs" />
             </div>
-            <div className="absolute top-[28%] left-[58%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs animate-ping" />
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs absolute inset-0" />
+
+            {/* Sylhet Pin */}
+            <div className="absolute top-[30%] left-[65%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-amber-500 block ring-1 ring-amber-500/40 border border-white shadow-xs" />
             </div>
-            <div className="absolute bottom-[22%] right-[20%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+
+            {/* Rajshahi Pin */}
+            <div className="absolute top-[35%] left-[32%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-sky-500 block ring-1 ring-sky-500/40 border border-white shadow-xs" />
+            </div>
+
+            {/* Bangladesh Tag */}
+            <div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-2xs">
+              Bangladesh
             </div>
           </div>
         )}
@@ -1099,10 +1232,17 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "toast" && (
-          <div className="w-full h-full relative flex items-end justify-center p-1 my-auto">
-            <div className="w-full p-1.5 rounded-lg bg-foreground text-background shadow-md flex items-center justify-between text-[6px] font-bold">
-              <span>Notification Sent!</span>
-              <span className="text-[7px]">✓</span>
+          <div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6px] space-y-1.5 shadow-2xs">
+            {/* Multi-layered Toast Banner */}
+            <div className="p-1.5 rounded-lg bg-background border border-emerald-500/40 flex items-start gap-1.5 shadow-xs">
+              <div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-black shrink-0">
+                ✓
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-extrabold text-foreground text-[6.5px] leading-none">Changes Saved</div>
+                <div className="text-[5.5px] text-muted-foreground mt-0.5 truncate">Your profile settings have updated.</div>
+              </div>
+              <span className="text-[6px] text-muted-foreground/60 hover:text-foreground cursor-pointer shrink-0">✕</span>
             </div>
           </div>
         )}
@@ -1116,12 +1256,17 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "tooltip" && (
-          <div className="w-full flex flex-col items-center justify-center my-auto space-y-1">
-            <div className="px-2 py-0.5 rounded bg-foreground text-background text-[6px] font-bold shadow-xs relative">
-              Tooltip Label
+          <div className="w-full flex flex-col items-center justify-center my-auto space-y-2 py-1">
+            {/* Realistic Floating Tooltip Bubble with Down Arrow */}
+            <div className="px-2.5 py-1 rounded-md bg-foreground text-background text-[6.5px] font-extrabold shadow-md relative animate-bounce">
+              <span>Add to Favorites</span>
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
             </div>
-            <span className="text-[6.5px] font-bold text-muted-foreground">Hover Element</span>
+            {/* Target Interactive Trigger Element */}
+            <div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-bold flex items-center gap-1">
+              <span>★</span>
+              <span>Bookmark</span>
+            </div>
           </div>
         )}
 
@@ -1267,6 +1412,8 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
 }
 
 export default function AllComponentsDocsPage() {
+  const { showTOC } = useTOC();
+
   return (
     <div className="not-prose w-full py-4 text-foreground">
       <div className="w-full space-y-12">
@@ -1285,7 +1432,7 @@ export default function AllComponentsDocsPage() {
           </p>
         </div>
 
-        {/* Categorized Component Preview Cards - Full Homepage Illustrations & Exact Layout */}
+        {/* Categorized Component Preview Cards - Dynamic Grid Cols based on TOC Visibility */}
         <div className="space-y-14">
           {componentPreviewData.map((group) => (
             <div key={group.categoryTitle} className="space-y-6">
@@ -1309,8 +1456,13 @@ export default function AllComponentsDocsPage() {
                 </span>
               </div>
 
-              {/* Cards Grid - Homepage Replica Preview Box + Icon Hover Effect */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {/* Dynamic Cards Grid: 4 cols on 2XL+ devices when TOC sidebar is hidden (OFF), 3 cols when TOC sidebar is visible (ON) */}
+              <div
+                className={cn(
+                  "grid grid-cols-1 sm:grid-cols-2 gap-5",
+                  showTOC ? "lg:grid-cols-3" : "lg:grid-cols-3 2xl:grid-cols-4"
+                )}
+              >
                 {group.items.map((item) => (
                   <Link key={item.title} href={item.href} className="group block rounded-2xl">
                     <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">

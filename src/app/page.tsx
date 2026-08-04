@@ -1188,118 +1188,19 @@ type PreviewCardItem = {
     | "code-block";
 };
 
-type PreviewCategoryGroup = {
-  categoryTitle: string;
-  categorySubtitle: string;
-  icon: any;
-  items: PreviewCardItem[];
-};
-
-const componentPreviewData: PreviewCategoryGroup[] = [
-  {
-    categoryTitle: "Ui Components",
-    categorySubtitle: "Essential primitive building blocks for clean, high-performance web applications.",
-    icon: Boxes,
-    items: [
-      { title: "Avatar", countText: "User Profile Badge", href: "/docs/nextjs/avatar", illustrationType: "avatar" },
-      { title: "Accordion", countText: "Expandable Panels", href: "/docs/nextjs/accordion", illustrationType: "accordion" },
-      { title: "Alert", countText: "Notification Banners", href: "/docs/nextjs/alert", illustrationType: "modal" },
-      { title: "Ai-Chat", countText: "Streaming Interface", href: "/docs/nextjs/ai-chat", illustrationType: "chat" },
-      { title: "Api Playground", countText: "API Tester", href: "/docs/nextjs/api-playground", badge: "New", illustrationType: "api-playground" },
-      { title: "Breadcrumb", countText: "Path Navigation", href: "/docs/nextjs/breadcrumb", illustrationType: "breadcrumb" },
-      { title: "Modern Buttons", countText: "5+ Action Styles", href: "/docs/nextjs/button", illustrationType: "button" },
-      { title: "Card", countText: "Content Containers", href: "/docs/nextjs/card", illustrationType: "card" },
-      { title: "Chart", countText: "SVG Data Viz", href: "/docs/nextjs/chart", illustrationType: "chart" },
-      { title: "Carousel", countText: "Slide Showcase", href: "/docs/nextjs/carousel", illustrationType: "carousel" },
-      { title: "Counter", countText: "Animated Numbers", href: "/docs/nextjs/counter", illustrationType: "counter" },
-      { title: "Command", countText: "Cmd+K Palette", href: "/docs/nextjs/command", illustrationType: "command" },
-      { title: "Calendar", countText: "Date Picker Grid", href: "/docs/nextjs/calendar", illustrationType: "calendar" },
-      { title: "Chat", countText: "Messaging Feed", href: "/docs/nextjs/chat", illustrationType: "chat" },
-      { title: "Cart", countText: "E-commerce Drawer", href: "/docs/nextjs/cart", illustrationType: "cart" },
-      { title: "Collapsible", countText: "Toggle Content", href: "/docs/nextjs/collapsible", illustrationType: "collapsible" },
-      { title: "ContextMenu", countText: "Right Click Menu", href: "/docs/nextjs/context-menu", illustrationType: "context-menu" },
-      { title: "Drawer", countText: "Slideover Sheet", href: "/docs/nextjs/drawer", illustrationType: "drawer" },
-      { title: "Dialog", countText: "Modal Dialog", href: "/docs/nextjs/dialog", illustrationType: "dialog" },
-      { title: "Data Grid", countText: "Advanced Grid", href: "/docs/nextjs/data-grid", badge: "New", illustrationType: "data-grid" },
-      { title: "Data Table", countText: "Sortable Table", href: "/docs/nextjs/data-table", badge: "New", illustrationType: "data-table" },
-      { title: "Date Picker", countText: "Calendar Input", href: "/docs/nextjs/date-picker", illustrationType: "date-picker" },
-      { title: "Form", countText: "Validated Forms", href: "/docs/nextjs/form", illustrationType: "form" },
-      { title: "Input", countText: "Text & Fields", href: "/docs/nextjs/input", illustrationType: "input" },
-      { title: "Item", countText: "List Items", href: "/docs/nextjs/item", illustrationType: "item" },
-      { title: "Invoice", countText: "Billing Paper", href: "/docs/nextjs/invoice", illustrationType: "invoice" },
-      { title: "Kbd", countText: "Key Badges", href: "/docs/nextjs/kbd", illustrationType: "kbd" },
-      { title: "Mails", countText: "Inbox Feed", href: "/docs/nextjs/email", illustrationType: "mails" },
-      { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
-      { title: "Menubar", countText: "Top App Navigation", href: "/docs/nextjs/menubar", illustrationType: "menubar" },
-      { title: "Modal", countText: "Overlays & Popups", href: "/docs/nextjs/modal", illustrationType: "modal" },
-      { title: "Navigation", countText: "Responsive Header", href: "/docs/nextjs/navigation", illustrationType: "navbar" },
-      { title: "OTP Input", countText: "Verification Code", href: "/docs/nextjs/otp-input", illustrationType: "otp-input" },
-      { title: "Popover", countText: "Context Popup", href: "/docs/nextjs/popover", illustrationType: "popover" },
-      { title: "Progress", countText: "Loading Bars", href: "/docs/nextjs/progress", illustrationType: "progress" },
-      { title: "Resizable", countText: "Split Panels", href: "/docs/nextjs/resizable", illustrationType: "resizable" },
-      { title: "Loader", countText: "Spinners & Pulse", href: "/docs/nextjs/loader", illustrationType: "loader" },
-      { title: "Sonner", countText: "Toast Stream", href: "/docs/nextjs/sonner", illustrationType: "sonner" },
-      { title: "Stepper", countText: "Wizard Flow", href: "/docs/nextjs/stepper", illustrationType: "stepper" },
-      { title: "Select", countText: "Dropdown Menu", href: "/docs/nextjs/select", illustrationType: "select" },
-      { title: "Scroll Area", countText: "Custom Scrollbar", href: "/docs/nextjs/scroll-area", illustrationType: "scroll-area" },
-      { title: "Skeleton", countText: "Shimmer States", href: "/docs/nextjs/skeleton", illustrationType: "skeleton" },
-      { title: "Toast", countText: "Popup Alert", href: "/docs/nextjs/toast", illustrationType: "toast" },
-      { title: "Toggle", countText: "Switch Button", href: "/docs/nextjs/toggle", illustrationType: "toggle" },
-      { title: "Table", countText: "Data Layout", href: "/docs/nextjs/table", illustrationType: "table" },
-      { title: "Tooltip", countText: "Hover Labels", href: "/docs/nextjs/tooltip", illustrationType: "tooltip" },
-      { title: "Toggle Group", countText: "Segmented Control", href: "/docs/nextjs/toggle-group", illustrationType: "toggle-group" },
-      { title: "Timeline", countText: "History Feed", href: "/docs/nextjs/timeline", illustrationType: "timeline" },
-      { title: "Terminal", countText: "Dev Console", href: "/docs/nextjs/terminal", illustrationType: "terminal" },
-      { title: "Typography", countText: "Headings & Text", href: "/docs/nextjs/typography", illustrationType: "typography" },
-      { title: "Pagination", countText: "Page Controls", href: "/docs/nextjs/pagination", illustrationType: "pagination" },
-      { title: "Tabs", countText: "Vertical & Horizontal", href: "/docs/nextjs/vertical-tabs", illustrationType: "tabs" },
-      { title: "Theme Switcher", countText: "Light/Dark Toggle", href: "/docs/nextjs/theme-switcher", badge: "New", illustrationType: "theme-switcher" },
-      { title: "Wizard", countText: "Multi-Step Form", href: "/docs/nextjs/wizard", badge: "New", illustrationType: "wizard" },
-      { title: "Masonry Grid", countText: "Staggered Layout", href: "/docs/nextjs/masonry-grid", badge: "New", illustrationType: "masonry" },
-      { title: "QR Code", countText: "QR Generator", href: "/docs/nextjs/qr-code-generator", badge: "New", illustrationType: "qr" },
-      { title: "Data Maps", countText: "Vector Map Analytics", href: "/docs/nextjs/data-maps", badge: "New", illustrationType: "data-maps" },
-      { title: "Hero VideoPlayer", countText: "Action Video Hero", href: "/docs/nextjs/hero-video-player", badge: "New", illustrationType: "hero-videoplayer" },
-      { title: "Verify Badge", countText: "Trust Badge", href: "/docs/nextjs/verify-badge", badge: "New", illustrationType: "verify-badge" },
-      { title: "Mobile Mockups", countText: "Device Frame", href: "/docs/nextjs/mobile-mockup", badge: "New", illustrationType: "mobile-mockup" },
-      { title: "Half Stars", countText: "Rating Stars", href: "/docs/nextjs/half-stars", badge: "New", illustrationType: "half-stars" },
-      { title: "Custom Code Block", countText: "Code Highlighter", href: "/docs/nextjs/custom-code-block", badge: "New", illustrationType: "code-block" },
-    ],
-  },
-  {
-    categoryTitle: "Animated Ui Components",
-    categorySubtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
-    icon: Sparkles,
-    items: [
-      { title: "Chat Bubble", countText: "Spring Motion Feed", href: "/docs/nextjs/chat-bubble", illustrationType: "chat" },
-      { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
-      { title: "Typography", countText: "Animated Text", href: "/docs/nextjs/animated-typography", illustrationType: "typography" },
-      { title: "File Upload", countText: "Drag & Drop Motion", href: "/docs/nextjs/file-upload", illustrationType: "file-upload" },
-      { title: "3D Carousel", countText: "3D Physics Spring", href: "/docs/nextjs/3d-carousel", illustrationType: "carousel" },
-      { title: "Memories Card", countText: "Stackable Cards", href: "/docs/nextjs/memories-card", illustrationType: "memories-card" },
-      { title: "Timeline", countText: "Animated History", href: "/docs/nextjs/animated-timeline", illustrationType: "timeline" },
-      { title: "Tilted Card", countText: "3D Parallax Tilt", href: "/docs/nextjs/tilted-card", illustrationType: "tilted-card" },
-      { title: "Animated List", countText: "Staggered Entrance", href: "/docs/nextjs/animated-list", illustrationType: "animated-list" },
-      { title: "Scroll Stack", countText: "Stacking Cards", href: "/docs/nextjs/scroll-stack", illustrationType: "scroll-stack" },
-      { title: "Magic Bento", countText: "Glow & Tilt Grid", href: "/docs/nextjs/magic-bento", illustrationType: "magic-bento" },
-      { title: "Video Accordion", countText: "Interactive Media", href: "/docs/nextjs/video-accordion", illustrationType: "video-accordion" },
-      { title: "Network Graph", countText: "Node Graph Canvas", href: "/docs/nextjs/network-graph", badge: "New", illustrationType: "network-graph" },
-      { title: "Floating ContactButton", countText: "Animated Action", href: "/docs/nextjs/floating-contact-button", badge: "New", illustrationType: "floating-contact" },
-    ],
-  },
-  {
-    categoryTitle: "Website Sections",
-    categorySubtitle: "Production-ready full section blocks for landing pages and SaaS platforms.",
-    icon: LayoutTemplate,
-    items: [
-      { title: "Navbar", countText: "Responsive Header", href: "/docs/nextjs/navbar", badge: "Core", illustrationType: "navbar" },
-      { title: "Sign-Up", countText: "Glassmorphic Form", href: "/docs/nextjs/signup-form", badge: "Core", illustrationType: "auth" },
-      { title: "Hero", countText: "Landing Page Showcase", href: "/docs/nextjs/hero", badge: "New", illustrationType: "hero" },
-      { title: "Marquee", countText: "Infinite Logo Ticker", href: "/docs/nextjs/marquee", badge: "New", illustrationType: "marquee" },
-      { title: "Pricing Section", countText: "Tier & Feature Matrix", href: "/docs/nextjs/pricing", badge: "Core", illustrationType: "pricing" },
-      { title: "Sidebar Section", countText: "App Shell Layout", href: "/docs/nextjs/sidebar", badge: "New", illustrationType: "sidebar" },
-      { title: "Support Dashboard", countText: "Full SaaS Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core", illustrationType: "dashboard" },
-    ],
-  },
+const featuredHomepageComponents: PreviewCardItem[] = [
+  { title: "Avatar", countText: "User Profile Badge", href: "/docs/nextjs/avatar", illustrationType: "avatar" },
+  { title: "Breadcrumb", countText: "Path Navigation", href: "/docs/nextjs/breadcrumb", illustrationType: "breadcrumb" },
+  { title: "Modern Buttons", countText: "5+ Action Styles", href: "/docs/nextjs/button", illustrationType: "button" },
+  { title: "Counter", countText: "Animated Numbers", href: "/docs/nextjs/counter", illustrationType: "counter" },
+  { title: "Calendar", countText: "Date Picker Grid", href: "/docs/nextjs/calendar", illustrationType: "calendar" },
+  { title: "Data Table", countText: "Sortable Table", href: "/docs/nextjs/data-table", badge: "New", illustrationType: "data-table" },
+  { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
+  { title: "Loader", countText: "Spinners & Pulse", href: "/docs/nextjs/loader", illustrationType: "loader" },
+  { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
+  { title: "File Upload", countText: "Drag & Drop Motion", href: "/docs/nextjs/file-upload", illustrationType: "file-upload" },
+  { title: "Network Graph", countText: "Node Graph Canvas", href: "/docs/nextjs/network-graph", badge: "New", illustrationType: "network-graph" },
+  { title: "Navbar", countText: "Responsive Header", href: "/docs/nextjs/navbar", badge: "Core", illustrationType: "navbar" },
 ];
 
 function CardHeaderMockup({ title }: { title: string }) {
@@ -1320,7 +1221,7 @@ function CardHeaderMockup({ title }: { title: string }) {
 
 function MiniatureIllustration({ title, type }: { title: string; type: PreviewCardItem["illustrationType"] }) {
   return (
-    <div className="w-full h-full rounded-xl border border-border/60 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden shadow-xs relative group-hover:border-primary/50 transition-colors">
+    <div className="w-full h-full rounded-xl border border-border/80 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/50 transition-colors">
       <CardHeaderMockup title={title} />
 
       {/* Realistic Mini UI Preview Content */}
@@ -1956,13 +1857,34 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
         )}
 
         {type === "button" && (
-          <div className="w-full flex flex-col items-center justify-center gap-1 my-auto">
-            <div className="px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-[7.5px] font-extrabold shadow-sm flex items-center gap-1">
-              <span>Primary</span>
-              <span className="text-[6.5px]">→</span>
+          <div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6.5px] space-y-1.5">
+            {/* Top Row: Primary + Secondary + Outline */}
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <div className="px-2 py-1 rounded-lg bg-primary text-primary-foreground text-[6.5px] font-extrabold shadow-2xs flex items-center gap-1 hover:bg-primary/90 cursor-pointer">
+                <span>Deploy</span>
+                <span className="text-[5.5px]">🚀</span>
+              </div>
+              <div className="px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-bold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
+                <span>Secondary</span>
+              </div>
+              <div className="px-2 py-1 rounded-lg border border-border bg-background text-[6.5px] font-bold text-foreground hover:bg-muted cursor-pointer">
+                Outline
+              </div>
             </div>
-            <div className="px-2 py-0.5 rounded-lg border border-border text-[6.5px] font-bold text-foreground">
-              Outline Button
+
+            {/* Bottom Row: Destructive + Loading + Icon Only */}
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <div className="px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-bold flex items-center gap-1 cursor-pointer">
+                <span>Delete</span>
+                <span className="text-[5.5px]">🗑</span>
+              </div>
+              <div className="px-2 py-0.5 rounded-lg bg-primary/20 text-primary text-[6px] font-extrabold flex items-center gap-1 cursor-pointer">
+                <span className="size-2 rounded-full border border-primary border-t-transparent animate-spin" />
+                <span>Loading...</span>
+              </div>
+              <div className="size-5 rounded-lg bg-muted border border-border flex items-center justify-center text-[7px] text-foreground font-extrabold shadow-2xs cursor-pointer">
+                ★
+              </div>
             </div>
           </div>
         )}
@@ -1984,15 +1906,75 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
         )}
 
         {type === "calendar" && (
-          <div className="w-full p-1 rounded-lg bg-background border border-border text-center space-y-1 my-auto text-[6px]">
-            <div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">August 2026</div>
-            <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
+          <div className="w-full p-2 rounded-xl bg-background border-y border-border/80 space-y-1.5 my-auto text-[6.5px]">
+            {/* Top Toolbar: Selected Date Badge + Year Quick Select */}
+            <div className="flex items-center justify-between border-b border-border/40 pb-1 px-0.5">
+              <div className="flex items-center gap-1">
+                <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+                <span className="font-extrabold text-[7.5px] text-foreground">August 2026</span>
+              </div>
+              <div className="flex items-center gap-0.5 text-muted-foreground text-[6px]">
+                <span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">‹</span>
+                <span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">›</span>
+              </div>
+            </div>
+
+            {/* Days of Week */}
+            <div className="grid grid-cols-7 gap-0.5 font-extrabold text-muted-foreground/70 text-center text-[5.5px] uppercase">
               <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
             </div>
-            <div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
-              <span className="opacity-40">1</span><span className="opacity-40">2</span><span>3</span>
-              <span className="bg-primary text-primary-foreground rounded-full font-bold">14</span>
-              <span>15</span><span>16</span><span>17</span>
+
+            {/* Full Month Calendar Matrix */}
+            <div className="grid grid-cols-7 gap-0.5 text-center font-bold text-[6px] items-center">
+              <span className="text-muted-foreground/30 py-0.5">26</span>
+              <span className="text-muted-foreground/30 py-0.5">27</span>
+              <span className="text-muted-foreground/30 py-0.5">28</span>
+              <span className="text-muted-foreground/30 py-0.5">29</span>
+              <span className="text-muted-foreground/30 py-0.5">30</span>
+              <span className="text-muted-foreground/30 py-0.5">31</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">1</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">2</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">3</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">4</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">5</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">6</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">7</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">8</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">9</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">10</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">11</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">12</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">13</span>
+
+              {/* Start Date Selection Range */}
+              <span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-black shadow-2xs">14</span>
+              <span className="py-0.5 bg-primary/20 text-primary font-extrabold">15</span>
+              <span className="py-0.5 bg-primary/20 text-primary font-extrabold">16</span>
+              {/* End Date Selection Range */}
+              <span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-black shadow-2xs">17</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">18</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">19</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">20</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">21</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">22</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">23</span>
+
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">24</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">25</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">26</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">27</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">28</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">29</span>
+              <span className="py-0.5 rounded hover:bg-muted text-foreground">30</span>
+            </div>
+
+            {/* Bottom Footer Action Bar */}
+            <div className="flex items-center justify-between border-t border-border/40 pt-1 px-0.5 text-[5.5px]">
+              <span className="text-muted-foreground font-semibold">Today: Aug 14</span>
+              <span className="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-extrabold border border-primary/20">Apply</span>
             </div>
           </div>
         )}
@@ -2077,23 +2059,63 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
         )}
 
         {type === "data-table" && (
-          <div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
-            <div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
-              <span>Item Name ▲</span>
-              <span className="text-[5px] font-mono text-primary bg-primary/10 px-1 rounded">24 Items</span>
+          <div className="w-full p-1.5 rounded-xl bg-card border border-border/80 space-y-1 my-auto text-[6px]">
+            {/* Table Toolbar Header */}
+            <div className="flex justify-between items-center border-b border-border/40 pb-1 px-0.5">
+              <div className="flex items-center gap-1">
+                <span className="font-extrabold text-foreground text-[6.5px]">Invoices</span>
+                <span className="px-1 py-0.2 rounded bg-primary/10 text-primary font-mono text-[5px]">128 total</span>
+              </div>
+              <div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-[5px] flex items-center gap-0.5">
+                <span>Filter</span>
+                <span className="text-[4.5px]">▼</span>
+              </div>
             </div>
-            <div className="space-y-0.5">
-              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
-                <span className="font-bold text-foreground">Pro Plan Sub</span>
-                <span className="text-emerald-500 font-extrabold">$29.00</span>
+
+            {/* Table Column Headers */}
+            <div className="grid grid-cols-12 gap-1 font-extrabold text-muted-foreground border-b border-border/40 pb-0.5 px-0.5 text-[5.5px]">
+              <span className="col-span-1 text-center">☐</span>
+              <span className="col-span-4">Customer</span>
+              <span className="col-span-3">Status</span>
+              <span className="col-span-4 text-right">Amount</span>
+            </div>
+
+            {/* Table Rows */}
+            <div className="space-y-0.5 text-[5.5px]">
+              <div className="grid grid-cols-12 gap-1 items-center bg-primary/5 p-0.5 rounded border border-primary/20">
+                <span className="col-span-1 text-center text-primary font-bold">☑</span>
+                <span className="col-span-4 font-bold text-foreground truncate">Alex Rivers</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-extrabold text-[5px]">Paid</span>
+                </span>
+                <span className="col-span-4 text-right font-extrabold text-foreground">$1,250.00</span>
               </div>
-              <div className="flex justify-between items-center text-muted-foreground border-b border-border/20 pb-0.5">
-                <span className="font-medium text-foreground">Domain Renew</span>
-                <span className="font-bold text-foreground">$14.00</span>
+
+              <div className="grid grid-cols-12 gap-1 items-center p-0.5 border-b border-border/20">
+                <span className="col-span-1 text-center text-muted-foreground/60">☐</span>
+                <span className="col-span-4 font-medium text-foreground truncate">Sarah Chen</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 font-extrabold text-[5px]">Pending</span>
+                </span>
+                <span className="col-span-4 text-right font-bold text-foreground">$420.00</span>
               </div>
-              <div className="flex justify-between items-center text-muted-foreground">
-                <span className="font-medium text-foreground">API Access</span>
-                <span className="font-bold text-foreground">$99.00</span>
+
+              <div className="grid grid-cols-12 gap-1 items-center p-0.5">
+                <span className="col-span-1 text-center text-muted-foreground/60">☐</span>
+                <span className="col-span-4 font-medium text-foreground truncate">TechCorp Inc</span>
+                <span className="col-span-3">
+                  <span className="px-1 py-0.2 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-extrabold text-[5px]">Paid</span>
+                </span>
+                <span className="col-span-4 text-right font-bold text-foreground">$3,890.00</span>
+              </div>
+            </div>
+
+            {/* Table Footer Pagination */}
+            <div className="flex justify-between items-center border-t border-border/40 pt-1 px-0.5 text-[5px] text-muted-foreground font-medium">
+              <span>Page 1 of 12</span>
+              <div className="flex gap-0.5 font-bold">
+                <span className="px-1 py-0.2 rounded bg-muted">‹ Prev</span>
+                <span className="px-1 py-0.2 rounded bg-muted text-foreground">Next ›</span>
               </div>
             </div>
           </div>
@@ -2184,36 +2206,35 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
 
         {type === "map" && (
           <div className="w-full h-full rounded-lg bg-muted/20 border border-border relative flex items-center justify-center my-auto overflow-hidden">
-            {/* Grayscale World Map Continents SVG */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-muted-foreground/30" viewBox="0 0 200 100">
-              {/* North America */}
-              <path d="M 15 20 Q 30 15 45 25 Q 50 35 35 50 Q 25 55 15 45 Z" />
-              {/* South America */}
-              <path d="M 40 55 Q 55 52 50 85 Q 40 90 35 68 Z" />
-              {/* Europe & Asia */}
-              <path d="M 75 15 Q 120 10 160 25 Q 170 45 140 55 Q 100 50 80 35 Z" />
-              {/* Africa */}
-              <path d="M 80 40 Q 115 38 110 75 Q 90 85 78 60 Z" />
-              {/* Australia */}
-              <path d="M 145 65 Q 175 60 170 85 Q 150 90 142 75 Z" />
+            {/* Bangladesh Map Silhouette SVG */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none fill-primary/20 stroke-primary/50 stroke-1" viewBox="0 0 100 100">
+              <path d="M 45 10 Q 55 12, 60 20 Q 65 25, 75 30 Q 80 40, 70 50 Q 75 60, 68 75 Q 60 85, 55 90 Q 50 82, 45 78 Q 40 70, 32 65 Q 25 60, 28 50 Q 30 40, 35 30 Q 32 20, 45 10 Z" />
             </svg>
 
-            {/* Small Sleek Red Dot Markers */}
-            <div className="absolute top-[28%] left-[22%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            {/* Dhaka (Center Pulse Pin) */}
+            <div className="absolute top-[48%] left-[50%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-3 rounded-full bg-rose-500/30 block animate-ping absolute inset-0" />
+              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/40 border border-white shadow-xs" />
             </div>
 
-            <div className="absolute bottom-[30%] left-[30%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            {/* Chattogram Pin */}
+            <div className="absolute top-[68%] left-[66%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-emerald-500 block ring-1 ring-emerald-500/40 border border-white shadow-xs" />
             </div>
 
-            <div className="absolute top-[28%] left-[58%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs animate-ping" />
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs absolute inset-0" />
+            {/* Sylhet Pin */}
+            <div className="absolute top-[30%] left-[65%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-amber-500 block ring-1 ring-amber-500/40 border border-white shadow-xs" />
             </div>
 
-            <div className="absolute bottom-[22%] right-[20%] z-10">
-              <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/30 border border-white shadow-xs" />
+            {/* Rajshahi Pin */}
+            <div className="absolute top-[35%] left-[32%] z-10 -translate-x-1/2 -translate-y-1/2">
+              <span className="size-1.5 rounded-full bg-sky-500 block ring-1 ring-sky-500/40 border border-white shadow-xs" />
+            </div>
+
+            {/* Bangladesh Tag */}
+            <div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-2xs">
+              Bangladesh
             </div>
           </div>
         )}
@@ -2306,10 +2327,17 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
         )}
 
         {type === "toast" && (
-          <div className="w-full h-full relative flex items-end justify-center p-1 my-auto">
-            <div className="w-full p-1.5 rounded-lg bg-foreground text-background shadow-md flex items-center justify-between text-[6px] font-bold">
-              <span>Notification Sent!</span>
-              <span className="text-[7px]">✓</span>
+          <div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6px] space-y-1.5 shadow-2xs">
+            {/* Multi-layered Toast Banner */}
+            <div className="p-1.5 rounded-lg bg-background border border-emerald-500/40 flex items-start gap-1.5 shadow-xs">
+              <div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-black shrink-0">
+                ✓
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-extrabold text-foreground text-[6.5px] leading-none">Changes Saved</div>
+                <div className="text-[5.5px] text-muted-foreground mt-0.5 truncate">Your profile settings have updated.</div>
+              </div>
+              <span className="text-[6px] text-muted-foreground/60 hover:text-foreground cursor-pointer shrink-0">✕</span>
             </div>
           </div>
         )}
@@ -2323,12 +2351,17 @@ function MiniatureIllustration({ title, type }: { title: string; type: PreviewCa
         )}
 
         {type === "tooltip" && (
-          <div className="w-full flex flex-col items-center justify-center my-auto space-y-1">
-            <div className="px-2 py-0.5 rounded bg-foreground text-background text-[6px] font-bold shadow-xs relative">
-              Tooltip Label
+          <div className="w-full flex flex-col items-center justify-center my-auto space-y-2 py-1">
+            {/* Realistic Floating Tooltip Bubble with Down Arrow */}
+            <div className="px-2.5 py-1 rounded-md bg-foreground text-background text-[6.5px] font-extrabold shadow-md relative animate-bounce">
+              <span>Add to Favorites</span>
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
             </div>
-            <span className="text-[6.5px] font-bold text-muted-foreground">Hover Element</span>
+            {/* Target Interactive Trigger Element */}
+            <div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-bold flex items-center gap-1">
+              <span>★</span>
+              <span>Bookmark</span>
+            </div>
           </div>
         )}
 
@@ -2491,7 +2524,7 @@ function ComponentPreviewGridSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
             <LayoutGrid className="size-3.5" />
@@ -2505,86 +2538,75 @@ function ComponentPreviewGridSection() {
           </p>
         </motion.div>
 
-        {/* Categorized Component Preview Cards */}
-        <div className="space-y-16">
-          {componentPreviewData.map((group, groupIdx) => (
-            <motion.div
-              key={group.categoryTitle}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: groupIdx * 0.15 }}
-            >
-              {/* Category Header */}
-              <div className="mb-6 pb-3 border-b border-border/60 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-3">
-                    <div className="size-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs shrink-0">
-                      <group.icon className="size-4.5" />
+        {/* Flat Grid for Featured 12 Components with Bottom Gradient Blur Overlay */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="relative"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
+            {featuredHomepageComponents.map((item, index) => {
+              const isLastRow = index >= 8;
+              return (
+                <Link key={item.title} href={item.href} className="group block rounded-2xl">
+                  <div
+                    className={cn(
+                      "rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 flex flex-col h-full justify-between overflow-hidden",
+                      !isLastRow ? "hover:border-primary hover:-translate-y-1.5" : "hover:border-primary"
+                    )}
+                  >
+                    {/* Card Thumbnail / Illustration */}
+                    <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
+                      <MiniatureIllustration title={item.title} type={item.illustrationType} />
+                      {item.badge && (
+                        <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
+                          {item.badge}
+                        </span>
+                      )}
                     </div>
-                    <h3 className="text-xl md:text-2xl font-black tracking-tight text-foreground leading-tight">
-                      {group.categoryTitle}
-                    </h3>
-                  </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">
-                    {group.categorySubtitle}
-                  </p>
-                </div>
-                <span className="text-xs font-mono font-bold text-primary px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto">
-                  {group.items.length} Components
-                </span>
-              </div>
 
-              {/* Cards Grid with Bottom Gradient Fade & View All Overlay */}
-              <div className="relative">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
-                  {group.items.slice(0, 12).map((item) => (
-                    <Link key={item.title} href={item.href} className="group block rounded-2xl">
-                      <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
-                        {/* Card Thumbnail / Illustration */}
-                        <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
-                          <MiniatureIllustration title={item.title} type={item.illustrationType} />
-                          {item.badge && (
-                            <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
-                              {item.badge}
-                            </span>
+                    {/* Card Info */}
+                    <div className="flex items-center justify-between pt-1">
+                      <div>
+                        <h4
+                          className={cn(
+                            "text-sm font-bold text-foreground transition-colors",
+                            !isLastRow && "group-hover:text-primary"
                           )}
-                        </div>
-
-                        {/* Card Info */}
-                        <div className="flex items-center justify-between pt-1">
-                          <div>
-                            <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                              {item.title}
-                            </h4>
-                            <p className="text-xs text-muted-foreground mt-0.5 font-medium">
-                              {item.countText}
-                            </p>
-                          </div>
-                          <div className="size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                            <ArrowRight className="size-3.5" />
-                          </div>
-                        </div>
+                        >
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-medium">
+                          {item.countText}
+                        </p>
                       </div>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Gradient Fade Mask & Centered View All Button (Only rendered if items > 12) */}
-                {group.items.length > 12 && (
-                  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl">
-                    <Link
-                      href={group.items[0].href}
-                      className="pointer-events-auto inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-300 backdrop-blur-md group/btn"
-                    >
-                      View all {group.categoryTitle}
-                      <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
-                    </Link>
+                      <div
+                        className={cn(
+                          "size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground transition-all",
+                          !isLastRow && "group-hover:bg-primary group-hover:text-primary-foreground"
+                        )}
+                      >
+                        <ArrowRight className="size-3.5" />
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Bottom Gradient Fade Mask & Centered Backdrop Blur Button */}
+          <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/90 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl z-20">
+            <Link
+              href="/docs/nextjs/all-components"
+              className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-300 backdrop-blur-md group/btn"
+            >
+              Explore All Components
+              <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
