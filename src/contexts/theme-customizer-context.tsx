@@ -241,7 +241,7 @@ export function ThemeCustomizerProvider({
     saveState(initial);
   }, []);
 
-  const generateCSS = useCallback((): string => {
+  const generateCSS = useCallback((exportMode: "both" | "light" | "dark" = "both"): string => {
     const indent = "  ";
     const lightVars = COLOR_TOKENS.map(
       (token) => `${indent}--${token}: ${state.colors.light[token]};`
@@ -251,7 +251,42 @@ export function ThemeCustomizerProvider({
       (token) => `${indent}--${token}: ${state.colors.dark[token]};`
     ).join("\n");
 
-    const themeBlock = `@theme inline {\n  --radius-xs: min(calc(var(--radius) - 6px), var(--radius));\n  --radius-sm: min(calc(var(--radius) - 4px), var(--radius));\n  --radius-md: min(calc(var(--radius) - 2px), var(--radius));\n  --radius-lg: var(--radius);\n  --radius-xl: calc(var(--radius) + 4px);\n  --radius-2xl: calc(var(--radius) * 1.5);\n  --radius-3xl: calc(var(--radius) * 2);\n  --radius: var(--radius);\n  --color-background: var(--background);\n  --color-foreground: var(--foreground);\n  --color-card: var(--card);\n  --color-card-foreground: var(--card-foreground);\n  --color-popover: var(--popover);\n  --color-popover-foreground: var(--popover-foreground);\n  --color-primary: var(--primary);\n  --color-primary-foreground: var(--primary-foreground);\n  --color-secondary: var(--secondary);\n  --color-secondary-foreground: var(--secondary-foreground);\n  --color-muted: var(--muted);\n  --color-muted-foreground: var(--muted-foreground);\n  --color-accent: var(--accent);\n  --color-accent-foreground: var(--accent-foreground);\n  --color-destructive: var(--destructive);\n  --color-border: var(--border);\n  --color-input: var(--input);\n  --color-ring: var(--ring);\n}`;
+    const themeBlock = `@theme inline {
+  --radius-xs: min(calc(var(--radius) - 6px), var(--radius));
+  --radius-sm: min(calc(var(--radius) - 4px), var(--radius));
+  --radius-md: min(calc(var(--radius) - 2px), var(--radius));
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius: var(--radius);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}`;
+
+    if (exportMode === "light") {
+      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+    }
+
+    if (exportMode === "dark") {
+      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+    }
 
     return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
   }, [state]);

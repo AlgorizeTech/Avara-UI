@@ -60,7 +60,7 @@ export function RadiusPicker() {
               "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer border outline-none focus-visible:ring-2 focus-visible:ring-ring",
               radius === option.value
                 ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                : "bg-background text-muted-foreground border-border hover:bg-accent hover:text-foreground"
+                : "bg-background text-muted-foreground border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
             )}
           >
             {option.label}

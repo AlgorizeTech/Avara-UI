@@ -83,16 +83,21 @@ function ColorSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border border-border rounded-lg">
+    <div className={cn("border border-border rounded-lg transition-all duration-200 overflow-hidden", isOpen && "border-primary/30")}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium text-foreground hover:bg-accent/50 transition-colors cursor-pointer"
+        className={cn(
+          "flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer",
+          isOpen
+            ? "bg-primary/10 text-primary font-semibold"
+            : "text-foreground hover:bg-primary/10 hover:text-primary"
+        )}
       >
         {label}
         <ChevronDown
           className={cn(
             "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
-            isOpen && "rotate-180"
+            isOpen && "rotate-180 text-primary"
           )}
         />
       </button>
@@ -131,7 +136,7 @@ export function ThemeCustomizerSidebar() {
   return (
     <div className="flex flex-col h-full">
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-5 py-6 pb-6 space-y-6">
         {/* Header */}
         <div>
           <h2 className="text-lg font-bold tracking-tight text-foreground">
@@ -175,19 +180,13 @@ export function ThemeCustomizerSidebar() {
 
         <Divider />
 
-        {/* Font Size */}
-        <div className="space-y-2.5">
-          <SectionLabel>Font Size</SectionLabel>
-          <FontSizeControl />
-        </div>
+        {/* Font Size Control */}
+        <FontSizeControl />
 
         <Divider />
 
-        {/* Font Family */}
-        <div className="space-y-2.5">
-          <SectionLabel>Font Family</SectionLabel>
-          <FontFamilyControl />
-        </div>
+        {/* Font Family Control */}
+        <FontFamilyControl />
       </div>
 
       {/* Sticky Footer Actions */}
