@@ -39,8 +39,12 @@ export function ContextMenu({ children }: { children: React.ReactNode }) {
 export function ContextMenuTrigger({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const context = useContext(ContextMenuContext);
   if (!context) throw new Error("ContextMenuTrigger must be used within a ContextMenu");
-  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => { e.preventDefault(); e.stopPropagation(); context.setCoords({ x: e.clientX, y: e.clientY }); context.setOpen(true); };
-  return <div onContextMenu={handleContextMenu} className={cn("w-full h-full", className)} {...props}>{children}</div>;
+  const timerRef = useRef<any>(null);
+  const openMenuAt = (x: number, y: number) => { context.setCoords({ x, y }); context.setOpen(true); };
+  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => { e.preventDefault(); e.stopPropagation(); openMenuAt(e.clientX, e.clientY); };
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => { if (e.touches.length === 1) { const t = e.touches[0]; timerRef.current = setTimeout(() => openMenuAt(t.clientX, t.clientY), 500); } };
+  const handleTouchEnd = () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  return <div onContextMenu={handleContextMenu} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTouchMove={handleTouchEnd} className={cn("w-full h-full select-none", className)} {...props}>{children}</div>;
 }
 
 export function ContextMenuContent({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
@@ -48,6 +52,7 @@ export function ContextMenuContent({ className, children, ...props }: React.HTML
   if (!context) throw new Error("ContextMenuContent must be used within a ContextMenu");
   const { open, setOpen, coords } = context;
   const contentRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const [mounted, setMounted] = useState(false);
   const [adjustedCoords, setAdjustedCoords] = useState({ x: -9999, y: -9999 });
   const [visible, setVisible] = useState(false);
@@ -59,10 +64,13 @@ export function ContextMenuContent({ className, children, ...props }: React.HTML
     const adjustPosition = () => {
       const menu = contentRef.current;
       if (!menu) return;
+      const win = menu.ownerDocument.defaultView ?? window;
       const rect = menu.getBoundingClientRect();
       let x = coords.x; let y = coords.y;
-      if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - 8;
-      if (y + rect.height > window.innerHeight) y = window.innerHeight - rect.height - 8;
+      if (x + rect.width > win.innerWidth) x = win.innerWidth - rect.width - 8;
+      if (x < 8) x = 8;
+      if (y + rect.height > win.innerHeight) y = win.innerHeight - rect.height - 8;
+      if (y < 8) y = 8;
       setAdjustedCoords({ x, y });
       setVisible(true);
     };
@@ -75,15 +83,18 @@ export function ContextMenuContent({ className, children, ...props }: React.HTML
     const handleInteractOutside = (e: MouseEvent | TouchEvent) => { if (contentRef.current && !contentRef.current.contains(e.target as Node)) setOpen(false); };
     const handleEscape = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     const handleScroll = () => { setOpen(false); };
-    document.addEventListener("mousedown", handleInteractOutside); document.addEventListener("touchstart", handleInteractOutside); document.addEventListener("keydown", handleEscape); window.addEventListener("scroll", handleScroll, true);
-    return () => { document.removeEventListener("mousedown", handleInteractOutside); document.removeEventListener("touchstart", handleInteractOutside); document.removeEventListener("keydown", handleEscape); window.removeEventListener("scroll", handleScroll, true); };
+    const doc = contentRef.current?.ownerDocument ?? document;
+    const win = doc.defaultView ?? window;
+    doc.addEventListener("mousedown", handleInteractOutside); doc.addEventListener("touchstart", handleInteractOutside); doc.addEventListener("keydown", handleEscape); win.addEventListener("scroll", handleScroll, true);
+    return () => { doc.removeEventListener("mousedown", handleInteractOutside); doc.removeEventListener("touchstart", handleInteractOutside); doc.removeEventListener("keydown", handleEscape); win.removeEventListener("scroll", handleScroll, true); };
   }, [open, setOpen]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open) return <span ref={anchorRef} hidden />;
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
   return createPortal(
-    <div ref={contentRef} role="menu" style={{ top: adjustedCoords.y, left: adjustedCoords.x, opacity: visible ? 1 : 0 }} className={cn("fixed z-[9999] min-w-[12rem] overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150", className)} onClick={(e) => e.stopPropagation()} onContextMenu={(e) => e.preventDefault()} {...props}>
+    <div ref={contentRef} role="menu" style={{ top: adjustedCoords.y, left: adjustedCoords.x, opacity: visible ? 1 : 0 }} className={cn("fixed z-[9999] min-w-[12rem] max-w-[calc(100vw-16px)] max-h-[calc(100vh-16px)] overflow-y-auto rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150", className)} onClick={(e) => e.stopPropagation()} onContextMenu={(e) => e.preventDefault()} {...props}>
       {children}
-    </div>, document.body
+    </div>, portalTarget
   );
 }
 
@@ -229,18 +240,20 @@ export default function FileBrowser() {
         jsUsageCode={generateUsageCode()}
         sandbox="context-menu"
       >
-        <div className="w-full flex items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-6 relative z-10 overflow-hidden">
+        <div className="w-full flex items-center justify-center min-h-[260px] sm:min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-2 sm:p-6 relative z-10 overflow-hidden">
           <ContextMenu>
-            <ContextMenuTrigger className="w-full max-w-lg h-[250px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center transition-colors hover:border-indigo-400 dark:hover:border-indigo-500/50 cursor-context-menu">
-              <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
-                Right-Click Area
-              </h3>
-              <p className="text-sm text-zinc-500 mt-1">
-                Right click inside this dashed box to open the context menu.
-              </p>
+            <ContextMenuTrigger className="w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-indigo-400 dark:hover:border-indigo-500/50 cursor-pointer">
+              <div className="flex flex-col items-center justify-center w-full px-2">
+                <h3 className="font-semibold text-xs sm:text-base text-zinc-900 dark:text-zinc-100">
+                  Click / Right-Click / Touch Area
+                </h3>
+                <p className="text-[11px] sm:text-sm text-zinc-500 mt-1.5 leading-relaxed">
+                  Click or right-click (long-press on mobile) inside this box to open the context menu.
+                </p>
+              </div>
             </ContextMenuTrigger>
 
-            <ContextMenuContent className="w-64">
+            <ContextMenuContent className="w-48 sm:w-64">
               <ContextMenuLabel>Document Actions</ContextMenuLabel>
               <ContextMenuItem onSelect={() => handleAction("Edit")}>
                 <FileEdit className="w-4 h-4 mr-2" />

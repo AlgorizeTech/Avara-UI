@@ -27,18 +27,20 @@ export default function ContextMenuDemo() {
   return (
     <>
       <Toaster position="bottom-right" />
-      <div className="w-full flex items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-6 relative z-10 overflow-hidden">
+      <div className="w-full flex items-center justify-center min-h-[260px] sm:min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-2 sm:p-6 relative z-10 overflow-hidden">
         <ContextMenu>
-          <ContextMenuTrigger className="w-full max-w-lg h-[250px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center transition-colors hover:border-indigo-400 dark:hover:border-indigo-500/50 cursor-context-menu">
-            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
-              Right-Click Area
-            </h3>
-            <p className="text-sm text-zinc-500 mt-1">
-              Right click inside this dashed box to open the context menu.
-            </p>
+          <ContextMenuTrigger className="w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-indigo-400 dark:hover:border-indigo-500/50 cursor-pointer">
+            <div className="flex flex-col items-center justify-center w-full px-4">
+              <h3 className="font-semibold text-xs sm:text-base text-zinc-900 dark:text-zinc-100">
+                Click / Right-Click / Touch Area
+              </h3>
+              <p className="text-[11px] sm:text-sm text-zinc-500 mt-1.5 leading-relaxed">
+                Click or right-click (long-press on mobile) inside this box to open the context menu.
+              </p>
+            </div>
           </ContextMenuTrigger>
 
-          <ContextMenuContent className="w-64">
+          <ContextMenuContent className="w-48 sm:w-64">
             <ContextMenuLabel>Document Actions</ContextMenuLabel>
             <ContextMenuItem onSelect={() => handleAction("Edit")}>
               <FileEdit className="w-4 h-4 mr-2" />
