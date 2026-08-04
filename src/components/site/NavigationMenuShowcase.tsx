@@ -83,8 +83,8 @@ export const NavigationMenuList = forwardRef<HTMLUListElement, React.HTMLAttribu
   const { listRef, variant } = useNavContext();
   const vStyles = { default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm", glass: "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg", minimal: "bg-transparent border-none" };
   return (
-    <div className={cn("relative flex justify-center max-w-full w-max rounded-full p-1 sm:p-1.5", vStyles[variant])}>
-      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-wrap sm:flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1", className)} {...props}>
+    <div className={cn("relative flex justify-center max-w-full w-auto rounded-full p-1 sm:p-1.5", vStyles[variant])}>
+      <ul ref={(node) => { if (typeof ref === "function") ref(node); else if (ref) ref.current = node; listRef.current = node; }} className={cn("group flex flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1 max-w-full", className)} {...props}>
         {children}
       </ul>
     </div>
@@ -394,33 +394,31 @@ export default function App() {
               <NavigationMenuItem value="features">
                 <NavigationMenuTrigger>Features</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  {/* ── MOBILE-FLUID GRID WIDTH: w-[calc(100vw-2.5rem)] sm:w-[380px] md:w-[440px] lg:w-[500px] ── */}
-                  <ul className="grid gap-2 sm:gap-3 p-1 sm:p-2 w-[calc(100vw-2.5rem)] sm:w-[380px] md:w-[440px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
+                  {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+                  <ul className="grid gap-1 p-1 w-[calc(100vw-3.5rem)] max-w-[240px] sm:max-w-[440px] sm:w-[380px] md:w-[440px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                    <li className="hidden lg:block lg:row-span-3">
                       <NavigationMenuLink
                         href="#"
-                        className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-zinc-100/50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900 p-4 sm:p-6 no-underline outline-none focus:shadow-md"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-zinc-100/50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900 p-3 sm:p-6 no-underline outline-none focus:shadow-md"
                       >
-                        <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-zinc-100 mb-3 sm:mb-4" />
-                        <div className="mb-1.5 sm:mb-2 mt-2 sm:mt-4 text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                        <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-zinc-900 dark:text-zinc-100 mb-2 sm:mb-4" />
+                        <div className="mb-1 sm:mb-2 mt-1 sm:mt-4 text-sm sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                           Lightning Fast
                         </div>
-                        <p className="text-xs sm:text-sm leading-tight text-zinc-500 dark:text-zinc-400">
+                        <p className="text-[11px] sm:text-sm leading-snug sm:leading-tight text-zinc-500 dark:text-zinc-400">
                           Experience uncompromised performance with our
                           edge-first architecture.
                         </p>
                       </NavigationMenuLink>
                     </li>
                     <ListItem href="#" title="Security" icon={Shield}>
-                      Advanced encryption protocols keeping your data completely
-                      safe.
+                      Advanced encryption protocols.
                     </ListItem>
                     <ListItem href="#" title="Developers" icon={Code}>
-                      Comprehensive APIs and webhooks for endless integrations.
+                      APIs & webhooks.
                     </ListItem>
                     <ListItem href="#" title="Customization" icon={Palette}>
-                      Tailor the experience perfectly to your unique brand
-                      identity.
+                      Tailor experience.
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -429,13 +427,13 @@ export default function App() {
               <NavigationMenuItem value="resources">
                 <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  {/* ── MOBILE-FLUID GRID WIDTH: w-[calc(100vw-2.5rem)] sm:w-[360px] md:w-[420px] ── */}
-                  <ul className="grid w-[calc(100vw-2.5rem)] sm:w-[360px] md:w-[420px] gap-2 sm:gap-3 p-1 sm:p-2 md:grid-cols-2">
+                  {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+                  <ul className="grid w-[calc(100vw-3.5rem)] max-w-[240px] sm:max-w-[420px] sm:w-[360px] md:w-[420px] gap-1 p-1 md:grid-cols-2">
                     <ListItem href="#" title="Documentation" icon={Layers}>
-                      Everything you need to get up and running quickly.
+                      Quick setup guide.
                     </ListItem>
                     <ListItem href="#" title="Mobile Apps" icon={Smartphone}>
-                      Take your workflow on the go with iOS and Android.
+                      iOS & Android.
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -445,7 +443,7 @@ export default function App() {
                 {/* Standard link wrapped in trigger-like styles without the chevron */}
                 <a
                   href="#"
-                  className="relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors outline-none whitespace-nowrap"
+                  className="relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors outline-none whitespace-nowrap"
                 >
                   Pricing
                 </a>

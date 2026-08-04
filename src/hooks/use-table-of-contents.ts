@@ -26,7 +26,7 @@ export function useTableOfContents() {
           // ── EXCLUSION FILTER ──────────────────────────────────────────────────
           if (
             heading.closest(
-              ".not-prose, .props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
+              ".props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
             )
           ) {
             return;

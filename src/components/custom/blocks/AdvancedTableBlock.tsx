@@ -75,7 +75,7 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
-export const getThemeStyles = (color: string) => {
+export const getThemeStyles = (color?: string) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
@@ -92,7 +92,20 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  if (color && colorThemes[color]) {
+    return { theme: colorThemes[color], style: {} };
+  }
+  // Default to dynamic site primary theme color
+  return {
+    theme: {
+      bg: "bg-primary text-primary-foreground",
+      text: "text-primary",
+      border: "border-primary",
+      bgSoft: "bg-primary/10",
+      ring: "focus:border-primary focus:ring-primary/20",
+    },
+    style: {},
+  };
 };
 
 // ==========================================
@@ -135,7 +148,7 @@ export const AdvancedTableBlock = forwardRef<
     {
       data,
       columns,
-      color = "indigo",
+      color,
       searchable = true,
       selectable = true,
       primaryKey,
@@ -270,9 +283,9 @@ export const AdvancedTableBlock = forwardRef<
         `}</style>
 
         {/* --- TOOLBAR --- */}
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
           {searchable ? (
-            <div className="relative w-[260px]">
+            <div className="relative w-full sm:w-[260px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
               <input
                 type="text"
@@ -293,13 +306,13 @@ export const AdvancedTableBlock = forwardRef<
             <div />
           )}
 
-          <div className="flex items-center gap-2 relative h-10 min-w-[200px] justify-end">
+          <div className="flex items-center gap-2 relative h-10 min-w-[180px] sm:min-w-[220px] justify-end overflow-visible">
             {/* Entries Dropdown */}
             <div
               className={cn(
-                "flex items-center gap-1.5 text-[13px] text-zinc-500 absolute right-0 transition-opacity duration-200",
+                "flex items-center gap-1.5 text-[13px] text-zinc-500 transition-opacity duration-200",
                 selectedIds.size > 0
-                  ? "opacity-0 pointer-events-none"
+                  ? "opacity-0 pointer-events-none hidden"
                   : "opacity-100 pointer-events-auto",
               )}
             >
@@ -321,30 +334,30 @@ export const AdvancedTableBlock = forwardRef<
               entries
             </div>
 
-            {/* Floating Batch Actions Pill */}
+            {/* Floating Batch Actions Pill - Dynamic Theme Color & Perfectly Aligned */}
             <div
               className={cn(
-                "flex items-center gap-2 px-3 py-2 bg-[#1e1b4b] dark:bg-indigo-950 rounded-xl shadow-[0_4px_20px_rgba(79,70,229,0.35)] overflow-hidden absolute right-0 transition-all duration-300 ease-out origin-right",
+                "flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-xl shadow-lg border border-primary-foreground/20 overflow-hidden transition-all duration-300 ease-out z-20",
                 selectedIds.size > 0
-                  ? "max-w-[400px] opacity-100 pointer-events-auto translate-y-0"
-                  : "max-w-0 opacity-0 pointer-events-none -translate-y-1",
+                  ? "opacity-100 pointer-events-auto translate-y-0 scale-100 flex"
+                  : "opacity-0 pointer-events-none -translate-y-2 scale-95 hidden",
               )}
             >
-              <span className="text-[12px] font-bold text-indigo-200 whitespace-nowrap pl-1">
+              <span className="text-[11px] sm:text-[12px] font-black whitespace-nowrap pl-0.5">
                 {selectedIds.size} selected
               </span>
-              <div className="w-px h-[18px] bg-white/15 shrink-0 mx-1" />
+              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
 
               {batchActions ? (
                 batchActions(Array.from(selectedIds), clearSelection)
               ) : (
-                <>
+                <div className="flex items-center gap-1">
                   {onBatchEdit && (
                     <button
                       onClick={() => onBatchEdit(Array.from(selectedIds))}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] font-semibold bg-indigo-300/15 text-indigo-300 hover:bg-indigo-300/25 transition-colors whitespace-nowrap active:scale-95"
+                      className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors whitespace-nowrap active:scale-95 text-primary-foreground"
                     >
-                      <Edit2 className="w-[13px] h-[13px]" /> Edit
+                      <Edit2 className="w-3 h-3" /> <span className="hidden sm:inline">Edit</span>
                     </button>
                   )}
                   {onBatchDelete && (
@@ -353,30 +366,30 @@ export const AdvancedTableBlock = forwardRef<
                         onBatchDelete(Array.from(selectedIds));
                         clearSelection();
                       }}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] font-semibold bg-red-400/10 text-red-400 hover:bg-red-400/20 transition-colors whitespace-nowrap active:scale-95"
+                      className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-rose-500/80 text-white hover:bg-rose-600 transition-colors whitespace-nowrap active:scale-95"
                     >
-                      <Trash2 className="w-[13px] h-[13px]" /> Delete
+                      <Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Delete</span>
                     </button>
                   )}
-                </>
+                </div>
               )}
 
-              <div className="w-px h-[18px] bg-white/15 shrink-0 mx-1" />
+              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
               <button
                 onClick={clearSelection}
-                className="px-1.5 text-white/40 hover:text-white/70 text-lg leading-none transition-colors"
+                className="p-1 text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0"
                 title="Clear selection"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
         </div>
 
         {/* --- TABLE CONTAINER --- */}
-        <div className="w-full overflow-x-auto rounded-2xl border-[1.5px] border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <table className="w-full text-[13.5px] text-left border-collapse whitespace-nowrap">
-            <thead className="bg-[#f9fafb] dark:bg-zinc-900 border-b-[1.5px] border-zinc-200 dark:border-zinc-800">
+        <div className="w-full overflow-x-auto rounded-xl sm:rounded-2xl border border-border/80 bg-card shadow-sm">
+          <table className="w-full text-[13px] sm:text-[13.5px] text-left border-collapse whitespace-nowrap">
+            <thead className="bg-primary/5 border-b border-border/60">
               <tr>
                 {selectable && (
                   <th className="w-11 px-4 py-[11px] text-center">
@@ -479,10 +492,10 @@ export const AdvancedTableBlock = forwardRef<
                     <tr
                       key={id}
                       className={cn(
-                        "border-b border-[#f3f4f6] dark:border-zinc-800/50 transition-colors duration-150",
+                        "border-b border-zinc-100 dark:border-zinc-800/60 transition-all duration-150",
                         isSelected
-                          ? theme.bgSoft
-                          : "hover:bg-[#f9fafb] dark:hover:bg-zinc-900/50",
+                          ? "bg-primary/10 border-l-2 border-l-primary"
+                          : "hover:bg-primary/5",
                       )}
                       style={{
                         animation: `fadeUp-${tableId} 0.2s ease ${rowIndex * 30}ms both`,
@@ -513,7 +526,7 @@ export const AdvancedTableBlock = forwardRef<
                       {columns.map((col) => (
                         <td
                           key={String(col.key)}
-                          className="px-4 py-3 text-[#374151] dark:text-zinc-300 align-middle"
+                          className="px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-[13.5px] text-zinc-800 dark:text-zinc-200"
                         >
                           {col.render
                             ? col.render(row)

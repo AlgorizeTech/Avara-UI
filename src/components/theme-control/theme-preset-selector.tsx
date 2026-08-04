@@ -52,7 +52,7 @@ export function ThemePresetSelector() {
                 "relative group flex flex-col justify-between p-2.5 rounded-lg border text-left transition-all duration-150 cursor-pointer h-[76px]",
                 isActive
                   ? "bg-white dark:bg-zinc-900 shadow-sm"
-                  : "bg-white border-zinc-200 hover:border-zinc-300 dark:bg-zinc-950 dark:border-zinc-800 dark:hover:border-zinc-700"
+                  : "bg-background border-border hover:bg-primary/5 hover:border-primary/30"
               )}
             >
               {/* Row of Color Swatches */}

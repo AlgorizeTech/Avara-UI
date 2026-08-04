@@ -106,7 +106,7 @@ export function ColorTokenPicker({ token, mode, label }: ColorTokenPickerProps) 
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-border bg-background hover:bg-primary/10 hover:border-primary/30 transition-all duration-150"
         aria-expanded={isOpen}
       >
         <span 

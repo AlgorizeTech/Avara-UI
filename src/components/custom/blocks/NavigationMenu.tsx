@@ -192,7 +192,7 @@ export const NavigationMenuList = forwardRef<
   return (
     <div
       className={cn(
-        "relative flex justify-center max-w-full w-max rounded-full p-1 sm:p-1.5",
+        "relative flex justify-center max-w-full w-auto rounded-full p-1 sm:p-1.5",
         variantStyles[variant],
       )}
     >
@@ -203,7 +203,7 @@ export const NavigationMenuList = forwardRef<
           listRef.current = node;
         }}
         className={cn(
-          "group flex flex-wrap sm:flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1",
+          "group flex flex-nowrap flex-1 list-none items-center justify-center gap-0.5 sm:gap-1 max-w-full",
           className,
         )}
         {...props}
@@ -294,7 +294,7 @@ export const NavigationMenuTrigger = forwardRef<
       }}
       onClick={handleClick}
       className={cn(
-        "relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap",
+        "relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap",
         isActive
           ? "text-zinc-900 dark:text-zinc-50"
           : "text-zinc-600 dark:text-zinc-400",
@@ -336,8 +336,7 @@ export const NavigationMenuContent = forwardRef<
     <div
       ref={ref}
       className={cn(
-        // ── THE FIX: Starts immediately at top-full with pt-2/pt-3 padding so there is ZERO hover gap! ──
-        "absolute left-1/2 top-full -translate-x-1/2 pt-2 sm:pt-3 w-max max-w-[calc(100vw-1.5rem)] origin-top transition-all duration-300 ease-out z-[100]",
+        "absolute left-1/2 top-full -translate-x-1/2 pt-1.5 sm:pt-3 w-max max-w-[calc(100vw-1rem)] origin-top transition-all duration-300 ease-out z-[100]",
         isActive
           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
           : "opacity-0 scale-95 -translate-y-2 pointer-events-none",
@@ -351,7 +350,7 @@ export const NavigationMenuContent = forwardRef<
           variantStyles[variant],
         )}
       >
-        <div className="p-3 sm:p-4 md:p-6 w-full h-full max-h-[75vh] overflow-y-auto">
+        <div className="p-2 sm:p-4 md:p-6 w-full h-full max-h-[70vh] sm:max-h-[75vh] overflow-y-auto">
           {children}
         </div>
       </div>

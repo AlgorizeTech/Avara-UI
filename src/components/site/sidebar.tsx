@@ -60,15 +60,15 @@ const menuData = transformNavigation();
 const getBadgeStyle = (badge: string) => {
   switch (badge) {
     case "New":
-      return "bg-primary/10 text-primary border border-primary/20";
+      return "bg-primary/15 text-primary border border-primary/30";
     case "Updated":
-      return "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20";
+      return "bg-primary/10 text-primary border border-primary/20";
     case "Tool":
-      return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20";
+      return "bg-primary/10 text-primary border border-primary/20";
     case "Premium":
-      return "bg-gradient-to-r from-indigo-500/10 to-purple-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20";
+      return "bg-primary/15 text-primary border border-primary/30";
     default:
-      return "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20";
+      return "bg-primary/10 text-primary border border-primary/20";
   }
 };
 
@@ -124,8 +124,8 @@ const MenuItem: React.FC<{
       return cn(
         "font-semibold text-[14px] py-1.5 px-3",
         isExactActive || isParentActive
-          ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white"
-          : "text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
+          ? "bg-primary/10 text-primary font-bold"
+          : "text-zinc-900 dark:text-zinc-100 hover:bg-primary/5 hover:text-primary",
       );
     }
     if (level === 1) {
@@ -133,16 +133,16 @@ const MenuItem: React.FC<{
         "font-medium text-[13.5px] py-1.5 px-2.5",
         // Highlights the Level 1 parent (e.g., "Scroll Stack") when any child is clicked!
         isExactActive || isParentActive
-          ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white font-semibold"
-          : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/30",
+          ? "bg-primary/10 text-primary font-semibold"
+          : "text-zinc-600 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
       );
     }
     // Level 2+ (Sub-children and deeper)
     return cn(
       "text-[13px] py-1 px-2.5",
       isExactActive || isParentActive
-        ? "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-white font-medium"
-        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/20",
+        ? "bg-primary/10 text-primary font-medium"
+        : "text-zinc-500 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
     );
   };
 
@@ -196,7 +196,7 @@ const MenuItem: React.FC<{
           {isExactActive && (
             <motion.div
               layoutId="sidebar-active-indicator"
-              className="absolute left-0 w-[3px] h-[16px] bg-zinc-900 dark:bg-zinc-100 rounded-full -ml-[7px]"
+              className="absolute left-0 w-[3px] h-[16px] bg-primary rounded-full -ml-[7px]"
             />
           )}
           {triggerContent}
