@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 const CALENDAR_ENGINE_TS = `"use client";
 
 import {
-  Calendar1, CheckSquare, ChevronDown, ChevronDownIcon, ChevronLeft, ChevronLeftIcon, ChevronRight, ChevronRightIcon, Download, Edit2, Hash, MessageSquare, Plus, Square, Trash2, Video, X,
+  Calendar1, CheckSquare, ChevronDown, ChevronDownIcon, ChevronLeft, ChevronLeftIcon, ChevronRight, ChevronRightIcon, Download, Edit2, Hash, Menu, MessageSquare, Plus, Square, Trash2, Video, X,
 } from "lucide-react";
 import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -155,12 +155,14 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
   const [editingEvent, setEditingEvent] = useState<any | null>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [filters, setFilters] = useState({ types: { pentest: true, kickoff: true }, platforms: { meet: true, slack: true, discord: true } });
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const date = currentDate.getDate();
   const monthName = currentDate.toLocaleString("default", { month: "long" });
+  const monthShortName = currentDate.toLocaleString("default", { month: "short" });
 
   const nextPeriod = () => {
     if (view === "month") setCurrentDate(new Date(year, month + 1, 1));
@@ -235,8 +237,58 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
   };
 
   return (
-    <div className={\`\${isDark ? "dark" : ""} w-full h-full\`} style={customVars}>
-      <div className={cn("w-full h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300", styles.wrapper, variant !== "minimal" ? "rounded-xl overflow-hidden" : "")}>
+    <div className={(isDark ? "dark" : "") + " w-full h-full max-w-full overflow-hidden"} style={customVars}>
+      <div className={cn("w-full max-w-full h-auto lg:h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 overflow-hidden", styles.wrapper, variant !== "minimal" ? "rounded-xl" : "")}>
+        {/* MOBILE SIDEBAR DRAWER OVERLAY */}
+        <div className={cn("fixed inset-0 z-50 lg:hidden transition-all duration-300 ease-in-out", isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none")}>
+          <div className={cn("fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300 cursor-pointer", isMobileSidebarOpen ? "opacity-100" : "opacity-0")} onClick={() => setIsMobileSidebarOpen(false)} />
+          <div className={cn("relative w-72 max-w-[80vw] h-full p-5 overflow-y-auto z-10 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out transform bg-card text-card-foreground", isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full", styles.sidebar)}>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-semibold text-lg">{monthName} {year}</h2>
+                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors cursor-pointer" aria-label="Close Sidebar"><X className="w-5 h-5 cursor-pointer" /></button>
+              </div>
+                <hr className="border-border my-4" />
+                <div className="mb-6">
+                  <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer"><h3 className="text-sm font-medium">Events</h3><ChevronDown className="w-4 h-4 cursor-pointer" /></div>
+                  <div className="space-y-2">
+                    <div onClick={() => toggleFilter("types", "pentest")} className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3"><div className="w-1.5 h-4 bg-yellow-400 rounded-full"></div><span className="text-sm font-medium">Pentest</span></div>
+                      {filters.types.pentest ? <CheckSquare className={cn("w-4 h-4 cursor-pointer", theme.primaryText)} /> : <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />}
+                    </div>
+                    <div onClick={() => toggleFilter("types", "kickoff")} className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3"><div className="w-1.5 h-4 bg-emerald-500 rounded-full"></div><span className="text-sm font-medium">Kick-Off</span></div>
+                      {filters.types.kickoff ? <CheckSquare className={cn("w-4 h-4 cursor-pointer", theme.primaryText)} /> : <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer"><h3 className="text-sm font-medium">Platforms</h3><ChevronDown className="w-4 h-4 cursor-pointer" /></div>
+                  <div className="space-y-2">
+                    <div onClick={() => toggleFilter("platforms", "meet")} className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-2"><Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /><span className="text-sm font-medium">Google Meet</span></div>
+                      {filters.platforms.meet ? <CheckSquare className={cn("w-4 h-4 cursor-pointer", theme.primaryText)} /> : <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />}
+                    </div>
+                    <div onClick={() => toggleFilter("platforms", "slack")} className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-2"><Hash className="w-4 h-4 text-sky-500" /><span className="text-sm font-medium">Slack</span></div>
+                      {filters.platforms.slack ? <CheckSquare className={cn("w-4 h-4 cursor-pointer", theme.primaryText)} /> : <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />}
+                    </div>
+                    <div onClick={() => toggleFilter("platforms", "discord")} className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-2"><MessageSquare className="w-4 h-4 text-indigo-500" /><span className="text-sm font-medium">Discord</span></div>
+                      {filters.platforms.discord ? <CheckSquare className={cn("w-4 h-4 cursor-pointer", theme.primaryText)} /> : <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />}
+                    </div>
+                  </div>
+                </div>
+                <hr className="border-border my-5" />
+                <button onClick={() => { handleExportCSV(); setIsMobileSidebarOpen(false); }} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-border bg-muted/50 hover:bg-muted text-foreground text-sm font-medium transition-colors cursor-pointer">
+                  Export CSV <Download className="w-4 h-4" />
+                </button>
+              </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <aside className={cn("w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300", styles.sidebar)}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-lg">{monthName} {year}</h2>
@@ -283,41 +335,43 @@ export function CalendarDashboard({ mockEvents = {}, variant = "default", color 
         </aside>
 
         <main className="flex-1 flex flex-col min-w-0 h-full">
-          <header className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-5 gap-4 flex-shrink-0 z-10 transition-colors duration-300", styles.header)}>
-            <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+          <header className={cn("flex flex-col lg:flex-row items-start lg:items-center justify-between p-4 sm:p-5 gap-4 flex-shrink-0 z-10 transition-colors duration-300", styles.header)}>
+            <div className="flex items-center justify-between w-full lg:w-auto gap-4">
               <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+                <button onClick={() => setIsMobileSidebarOpen(true)} className="p-2 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-gray-200 dark:border-gray-800 text-foreground transition-colors cursor-pointer" aria-label="Open Calendar Filters">
+                  <Menu className="w-5 h-5 cursor-pointer" />
+                </button>
                 <div className="flex gap-1 text-gray-400">
-                  <button onClick={prevPeriod} className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"><ChevronLeft className="w-5 h-5 cursor-pointer" /></button>
-                  <button onClick={nextPeriod} className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"><ChevronRight className="w-5 h-5 cursor-pointer" /></button>
+                  <button onClick={prevPeriod} className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors cursor-pointer"><ChevronLeft className="w-5 h-5 cursor-pointer" /></button>
+                  <button onClick={nextPeriod} className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors cursor-pointer"><ChevronRight className="w-5 h-5 cursor-pointer" /></button>
                 </div>
               </div>
-              <h1 className="text-xl sm:text-2xl font-semibold sm:w-48 whitespace-nowrap lg:hidden">{view === "day" ? \`\${monthName} \${date}, \${year}\` : \`\${monthName} \${year}\`}</h1>
-              <button onClick={() => { setEditingEvent(null); setIsAddModalOpen(true); }} className={cn("sm:hidden flex items-center justify-center p-2 rounded-md transition-colors shadow-sm", theme.primaryBg)}><Plus className="w-5 h-5 cursor-pointer" /></button>
+              <h1 className="text-xl sm:text-2xl font-semibold whitespace-nowrap lg:hidden">{view === "day" ? monthName + " " + date + ", " + year : monthName + " " + year}</h1>
+              <button onClick={() => { setEditingEvent(null); setSelectedDateKey(""); setIsAddModalOpen(true); }} className={cn("flex items-center gap-2 cursor-pointer px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors shadow-sm cursor-pointer ml-auto sm:ml-0", theme.primaryBg)}><Plus className="w-4 h-4 cursor-pointer" /> <span className="hidden sm:inline">Add</span></button>
             </div>
-            <div className="flex items-center w-full sm:w-auto gap-2 sm:gap-4 justify-between sm:justify-end">
-              <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-1 text-xs sm:text-sm font-medium w-full sm:w-auto justify-between sm:justify-start">
+            <div className="flex items-center w-full lg:w-auto gap-2 sm:gap-4 justify-between lg:justify-end">
+              <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-1 text-xs sm:text-sm font-medium shrink-0 justify-start">
                 <button onClick={goToToday} className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-gray-900 dark:hover:text-white text-gray-500 transition-colors">Today</button>
                 <button onClick={() => setView("day")} className={cn("px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors", view === "day" ? theme.lightBg : "hover:text-gray-900 dark:hover:text-white text-gray-500")}>Day</button>
-                <button onClick={() => setView("week")} className={cn("px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors hidden sm:block", view === "week" ? theme.lightBg : "hover:text-gray-900 dark:hover:text-white text-gray-500")}>Week</button>
+                <button onClick={() => setView("week")} className={cn("px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors", view === "week" ? theme.lightBg : "hover:text-gray-900 dark:hover:text-white text-gray-500")}>Week</button>
                 <button onClick={() => setView("month")} className={cn("px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors", view === "month" ? theme.lightBg : "hover:text-gray-900 dark:hover:text-white text-gray-500")}>Month</button>
               </div>
-              <button onClick={handleExportCSV} className="hidden lg:flex items-center cursor-pointer gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700/50 rounded-md text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors">Export <Download className="w-4 h-4 cursor-pointer" /></button>
-              <button onClick={() => { setEditingEvent(null); setSelectedDateKey(""); setIsAddModalOpen(true); }} className={cn("hidden sm:flex items-center gap-2 cursor-pointer px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm", theme.primaryBg)}><Plus className="w-4 h-4 cursor-pointer" /> Add</button>
+              <button onClick={handleExportCSV} className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-gray-200 dark:border-gray-700/50 rounded-md text-xs sm:text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors">Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" /></button>
             </div>
           </header>
 
-          <div className={cn("flex-1 overflow-x-auto overflow-y-auto relative transition-colors duration-300", styles.gridOuter)}>
-            <div className="min-w-[600px] lg:min-w-0 w-full flex flex-col h-full min-h-[500px]">
+          <div className={cn("flex-1 overflow-hidden relative transition-colors duration-300", styles.gridOuter)}>
+            <div className="w-full min-w-0 flex flex-col h-full">
               {view !== "day" && (
                 <div className={cn("sticky top-0 z-20 grid grid-cols-7 transition-colors duration-300", styles.gridHeader)}>
                   {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((dayName, idx) => (
-                    <div key={dayName} className={cn("py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 text-center", variant !== "minimal" && idx !== 6 ? "border-r border-gray-200 dark:border-gray-800" : "")}>
+                    <div key={dayName} className={cn("py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-medium text-gray-500 dark:text-gray-400 text-center truncate", variant !== "minimal" && idx !== 6 ? "border-r border-gray-200 dark:border-gray-800" : "")}>
                       <span className="hidden sm:inline">{dayName}</span><span className="sm:hidden">{dayName.slice(0, 3)}</span>
                     </div>
                   ))}
                 </div>
               )}
-              <div className={cn(\`grid flex-1 \${view === "day" ? "grid-cols-1 auto-rows-[minmax(400px,1fr)]" : "grid-cols-7 auto-rows-[minmax(120px,1fr)]"}\`, styles.gridGap)}>
+              <div className={cn("grid flex-1 " + (view === "day" ? "grid-cols-1 auto-rows-[minmax(350px,1fr)]" : "grid-cols-7 auto-rows-[minmax(65px,1fr)] md:auto-rows-[minmax(95px,1fr)] lg:auto-rows-[minmax(120px,1fr)]"), styles.gridGap)}>
                 {calendarDays.map((dayObj, index) => {
                   const dayEvents = filteredEvents.filter((e) => e.date === dayObj.dateKey);
                   return <CalendarCell key={index} day={dayObj.day} events={dayEvents} isGray={!dayObj.isCurrentMonth} activePopupEventId={activePopupEventId} setActivePopupEventId={setActivePopupEventId} colIndex={view === "day" ? 0 : index % 7} rowIndex={Math.floor(index / 7)} dateStr={dayObj.dateKey.split("-").reverse().join(".")} onDeleteEvent={deleteEvent} onEditEvent={openEditModal} onClickCell={() => openAddModalForDate(dayObj.dateKey)} cellClass={styles.cellBg} theme={theme} />;

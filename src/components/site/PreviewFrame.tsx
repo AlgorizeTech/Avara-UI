@@ -79,6 +79,7 @@ export function PreviewFrame({
       const syncBody = () => {
         doc.body.className = document.body.className;
         doc.body.style.margin = "0";
+        doc.body.style.padding = "0";
         // Transparent so the preview surface behind the iframe shows through.
         doc.body.style.background = "transparent";
       };
@@ -99,53 +100,37 @@ export function PreviewFrame({
       // tear down and re-apply every stylesheet in the frame, which makes the
       // preview flash, jump and reflow.
       let firstSync = true;
-      const cloneMap = new Map<
-        HTMLLinkElement | HTMLStyleElement,
-        HTMLLinkElement | HTMLStyleElement
-      >();
       const syncStyles = () => {
-        // Remove any stray clones not tracked here (leftover from a re-init).
-        const tracked = new Set(cloneMap.values());
-        doc
-          .querySelectorAll<HTMLLinkElement | HTMLStyleElement>(`[${CLONE_MARK}]`)
-          .forEach((clone) => {
-            if (!tracked.has(clone)) clone.remove();
-          });
-
-        const sources = Array.from(
-          document.querySelectorAll<HTMLLinkElement | HTMLStyleElement>(
-            'head link[rel="stylesheet"], head style',
+        if (disposed) return;
+        const currentLinks = Array.from(
+          document.querySelectorAll<HTMLLinkElement>(
+            'link[rel*="stylesheet"], style',
           ),
         );
-        const sourceSet = new Set(sources);
+        const existingClones = new Map<
+          Element,
+          HTMLLinkElement | HTMLStyleElement
+        >();
+        doc.querySelectorAll<HTMLElement>(`[${CLONE_MARK}]`).forEach((node) => {
+          const key = (node as any).__sourceNode;
+          if (key) existingClones.set(key, node as any);
+        });
 
-        // Drop clones whose source element left the parent head.
-        for (const [source, clone] of Array.from(cloneMap.entries())) {
-          if (!sourceSet.has(source)) {
-            clone.remove();
-            cloneMap.delete(source);
+        currentLinks.forEach((sourceNode) => {
+          if (existingClones.has(sourceNode)) {
+            existingClones.delete(sourceNode);
+            return;
           }
-        }
+          const clone = sourceNode.cloneNode(true) as
+            | HTMLLinkElement
+            | HTMLStyleElement;
+          clone.setAttribute(CLONE_MARK, "true");
+          (clone as any).__sourceNode = sourceNode;
+          doc.head.appendChild(clone);
+        });
 
-        // Clone new sources; refresh <style> text in place so the frame keeps
-        // mirroring content without discarding the existing stylesheets.
-        for (const node of sources) {
-          let clone = cloneMap.get(node);
-          if (!clone || !clone.isConnected) {
-            clone = node.cloneNode(true) as HTMLLinkElement | HTMLStyleElement;
-            clone.setAttribute(CLONE_MARK, "");
-            if (node instanceof HTMLLinkElement) {
-              (clone as HTMLLinkElement).href = node.href;
-            }
-            doc.head.appendChild(clone);
-            cloneMap.set(node, clone);
-          } else if (
-            node instanceof HTMLStyleElement &&
-            clone.textContent !== node.textContent
-          ) {
-            clone.textContent = node.textContent;
-          }
-        }
+        existingClones.forEach((clone) => clone.remove());
+
         if (firstSync) {
           firstSync = false;
           let revealed = false;
@@ -195,6 +180,9 @@ export function PreviewFrame({
       mount.style.alignItems = "center";
       mount.style.justifyContent = "center";
       mount.style.width = "100%";
+      mount.style.boxSizing = "border-box";
+      mount.style.padding = "12px 0px 12px 0px";
+      mount.style.margin = "0px";
       mount.style.minHeight = `${minHeight}px`;
       doc.body.appendChild(mount);
       setMountNode(mount);
