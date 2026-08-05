@@ -568,9 +568,9 @@ function HeroSection() {
               <ArrowRight className="size-5" />
             </Link>
             <Link
-              href="https://github.com/docs/docs"
+              href="https://github.com/AlgorizeTech"
               target="_blank"
-              className="px-9 h-[58px] rounded-2xl border border-border bg-card text-foreground text-base sm:text-lg font-bold hover:bg-accent hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 flex-1 sm:flex-initial min-w-[220px]"
+              className="px-9 h-[58px] rounded-2xl border border-border bg-card text-foreground text-base sm:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 flex-1 sm:flex-initial min-w-[220px]"
             >
               <Github className="size-5" />
               Star on GitHub
@@ -2716,18 +2716,18 @@ function CTASection() {
         initial={{ opacity: 0, y: 40, scale: 0.98 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-border/80 bg-gradient-to-br from-card via-muted/30 to-card dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 p-8 sm:p-12 md:p-16 text-foreground dark:text-white shadow-xl dark:border-zinc-800"
+        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-primary/20 bg-gradient-to-b from-primary/5 via-background to-primary/10 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 p-8 sm:p-12 md:p-16 text-foreground dark:text-white shadow-[0_20px_60px_-15px_rgba(var(--primary-rgb),0.12)] dark:border-zinc-800"
       >
         {/* Glowing Radial Mesh Accents */}
-        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
 
-        {/* Subtle Background Mesh for Depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(var(--primary)_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.06] pointer-events-none" />
+        {/* Subtle Background Radial Grid for Depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(var(--primary)_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
 
         {/* Centered Content Container */}
         <div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-black text-primary">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-black text-primary backdrop-blur-md shadow-xs">
             <Sparkles className="size-3.5 text-primary" />
             <span>Developer-First Component Library</span>
           </div>
@@ -2739,7 +2739,7 @@ function CTASection() {
             </span>
           </h2>
 
-          <p className="text-muted-foreground dark:text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
+          <p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
             Copy-paste fully responsive, accessible, and animated UI components built for Next.js, React, and Tailwind CSS.
           </p>
 
@@ -2748,7 +2748,7 @@ function CTASection() {
             <div
               onClick={handleCopy}
               title="Click to copy command"
-              className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border border-border dark:border-zinc-800 bg-background/80 dark:bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-sm group font-mono text-xs sm:text-sm text-foreground dark:text-zinc-100"
+              className="flex items-center justify-between gap-3 px-4.5 py-3.5 rounded-2xl border border-primary/25 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-foreground dark:text-zinc-100 backdrop-blur-md"
             >
               <div className="flex items-center gap-2.5 overflow-hidden">
                 <span className="text-primary font-bold font-mono text-sm sm:text-base cursor-pointer">&gt;_</span>
@@ -2771,14 +2771,14 @@ function CTASection() {
           </div>
 
           {/* Feature Badges Strip */}
-          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-muted-foreground dark:text-zinc-400 pt-1">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-muted-foreground dark:text-zinc-300 pt-1">
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
               <CheckCircle2 className="size-4 text-primary" /> Free Forever
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
               <CheckCircle2 className="size-4 text-primary" /> Fully Customizable
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+            <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
               <CheckCircle2 className="size-4 text-primary" /> 100% Type-Safe
             </span>
           </div>
@@ -2787,19 +2787,19 @@ function CTASection() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <Link
               href="/docs"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-xl hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
               Browse All Components
               <ArrowRight className="size-4" />
             </Link>
             <Link
-              href="https://github.com/docs/docs"
+              href="https://github.com/AlgorizeTech"
               target="_blank"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-border dark:border-zinc-800 bg-background/80 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-xs"
+              className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm"
             >
               <Github className="size-4 text-foreground dark:text-zinc-300" />
               <span>Star on GitHub</span>
-              <span className="px-2 py-0.5 rounded-full bg-muted dark:bg-zinc-800 text-[10px] text-muted-foreground dark:text-zinc-400 border border-border dark:border-zinc-700 ml-1 font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 ml-1 font-mono text-[10px]">
                 2.1k
               </span>
             </Link>
@@ -2838,9 +2838,9 @@ function FooterSection() {
             Documentation
           </Link>
           <Link
-            href="https://github.com/docs/docs"
+            href="https://github.com/AlgorizeTech"
             target="_blank"
-            className="hover:text-foreground transition-colors"
+            className="hover:text-primary transition-colors"
           >
             GitHub
           </Link>
