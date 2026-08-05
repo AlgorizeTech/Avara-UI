@@ -55,10 +55,10 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 38) : baseSize;
-    const effectiveMagnification = isMobile ? Math.min(magnification, 52) : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 90) : distance;
-    const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 28) : baseSize;
+    const effectiveMagnification = isMobile ? Math.min(magnification, 38) : magnification;
+    const effectiveDistance = isMobile ? Math.min(distance, 70) : distance;
+    const effectiveGap = isMobile ? Math.min(gap, 3) : gap;
 
     return (
       <div
@@ -124,7 +124,7 @@ const DockIcon: React.FC<DockIconProps> = ({ item, mouseX, baseSize, magnificati
   return (
     <div className="relative flex flex-col items-center shrink-0">
       <AnimatePresence>
-        {isHovered && !isMobile && (
+        {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -416,7 +416,7 @@ export default function AppNavigation() {
         sandbox="dock"
         sandboxProps={{ activeTab }}
       >
-        <div className="w-full flex flex-col items-center justify-end bg-zinc-50 dark:bg-[#0a0a0a] py-16 px-2 sm:px-8 relative overflow-hidden min-h-[420px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+        <div className="w-full flex flex-col items-center justify-end bg-zinc-50 dark:bg-[#0a0a0a] pt-24 pb-12 px-2 sm:px-8 relative overflow-visible min-h-[420px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
           {/* Subtle Ambient Backglow */}
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-t from-zinc-400/20 via-zinc-400/5 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent blur-3xl rounded-full pointer-events-none" />
 
@@ -429,7 +429,7 @@ export default function AppNavigation() {
           </div>
 
           {/* Interactive Dock Container with Customized Dimensions */}
-          <div className="relative z-10 w-full flex justify-center pb-2 sm:pb-4">
+          <div className="relative z-10 w-full flex justify-center pb-2 sm:pb-4 overflow-visible">
             <Dock
               items={sampleItems}
               containerHeight={80}
