@@ -2716,14 +2716,14 @@ function CTASection() {
         initial={{ opacity: 0, y: 40, scale: 0.98 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950 p-8 sm:p-12 md:p-16 text-white shadow-2xl"
+        className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-border/80 bg-gradient-to-br from-card via-muted/30 to-card dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 p-8 sm:p-12 md:p-16 text-foreground dark:text-white shadow-xl dark:border-zinc-800"
       >
-        {/* Glowing Radial Mesh Accents on Black */}
-        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-emerald-500/15 blur-[120px] pointer-events-none" />
+        {/* Glowing Radial Mesh Accents */}
+        <div className="absolute top-0 right-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
 
         {/* Subtle Background Mesh for Depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(var(--primary)_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.06] pointer-events-none" />
 
         {/* Centered Content Container */}
         <div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
@@ -2732,36 +2732,36 @@ function CTASection() {
             <span>Developer-First Component Library</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.08]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-foreground dark:text-white leading-[1.08]">
             Build Next-Gen <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-primary via-emerald-400 to-primary bg-clip-text text-transparent">
+            <span className="text-primary">
               React Interfaces Today.
             </span>
           </h2>
 
-          <p className="text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
+          <p className="text-muted-foreground dark:text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-xl">
             Copy-paste fully responsive, accessible, and animated UI components built for Next.js, React, and Tailwind CSS.
           </p>
 
-          {/* Interactive CLI Quick Copy Pill Box - Dark Variant */}
+          {/* Interactive CLI Quick Copy Pill Box */}
           <div className="w-full max-w-md pt-1">
             <div
               onClick={handleCopy}
               title="Click to copy command"
-              className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-zinc-100"
+              className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl border border-border dark:border-zinc-800 bg-background/80 dark:bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-sm group font-mono text-xs sm:text-sm text-foreground dark:text-zinc-100"
             >
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <span className="text-emerald-400 font-bold font-mono text-sm sm:text-base cursor-pointer">&gt;_</span>
+                <span className="text-primary font-bold font-mono text-sm sm:text-base cursor-pointer">&gt;_</span>
                 <span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">npx docs-ui@latest init</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <div className="h-4 w-px bg-zinc-800" />
+                <div className="h-4 w-px bg-border dark:bg-zinc-800" />
                 <button
                   type="button"
-                  className="p-1.5 rounded-xl group-hover:bg-primary/20 text-zinc-400 group-hover:text-primary transition-all cursor-pointer"
+                  className="p-1.5 rounded-xl group-hover:bg-primary/20 text-muted-foreground dark:text-zinc-400 group-hover:text-primary transition-all cursor-pointer"
                 >
                   {copied ? (
-                    <Check className="size-4 text-emerald-400" />
+                    <Check className="size-4 text-emerald-500" />
                   ) : (
                     <Copy className="size-4" />
                   )}
@@ -2771,15 +2771,15 @@ function CTASection() {
           </div>
 
           {/* Feature Badges Strip */}
-          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-zinc-400 pt-1">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
-              <CheckCircle2 className="size-4 text-emerald-400" /> Free Forever
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-muted-foreground dark:text-zinc-400 pt-1">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+              <CheckCircle2 className="size-4 text-primary" /> Free Forever
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-border/40">
-              <CheckCircle2 className="size-4 text-emerald-400" /> Fully Customizable
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+              <CheckCircle2 className="size-4 text-primary" /> Fully Customizable
             </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800">
-              <CheckCircle2 className="size-4 text-emerald-400" /> 100% Type-Safe
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/80 dark:bg-zinc-900 border border-border dark:border-zinc-800">
+              <CheckCircle2 className="size-4 text-primary" /> 100% Type-Safe
             </span>
           </div>
 
@@ -2795,11 +2795,11 @@ function CTASection() {
             <Link
               href="https://github.com/docs/docs"
               target="_blank"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-zinc-800 bg-zinc-900/80 text-zinc-200 text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 shadow-xs"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-border dark:border-zinc-800 bg-background/80 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-xs"
             >
-              <Github className="size-4 text-zinc-300" />
+              <Github className="size-4 text-foreground dark:text-zinc-300" />
               <span>Star on GitHub</span>
-              <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-[10px] text-zinc-400 border border-zinc-700 ml-1 font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-muted dark:bg-zinc-800 text-[10px] text-muted-foreground dark:text-zinc-400 border border-border dark:border-zinc-700 ml-1 font-mono">
                 2.1k
               </span>
             </Link>
