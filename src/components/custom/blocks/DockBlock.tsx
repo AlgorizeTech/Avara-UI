@@ -55,12 +55,16 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     }, []);
 
     // Responsive physics sizing fallbacks for mobile viewports
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 38) : baseSize;
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 28) : baseSize;
     const effectiveMagnification = isMobile
-      ? Math.min(magnification, 52)
+      ? Math.min(magnification, 38)
       : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 90) : distance;
-    const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
+    const effectiveDistance = isMobile ? Math.min(distance, 70) : distance;
+    const effectiveGap = isMobile ? Math.min(gap, 3) : gap;
+
+    const dynamicHeight = typeof containerHeight === "number"
+      ? `${isMobile ? Math.min(containerHeight, 46) : containerHeight}px`
+      : containerHeight;
 
     return (
       <div
@@ -68,18 +72,15 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         style={{
-          height:
-            typeof containerHeight === "number"
-              ? `${containerHeight}px`
-              : containerHeight,
+          height: dynamicHeight,
           gap: `${effectiveGap}px`,
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end rounded-2xl px-3 sm:px-4 py-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 py-2 sm:py-2.5 shadow-2xl transition-all duration-300",
           "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10",
           "ring-1 ring-black/5 dark:ring-white/5",
-          "max-w-[94vw] sm:max-w-full overflow-x-auto sm:overflow-visible no-scrollbar",
+          "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
           className,
         )}
         {...props}
@@ -144,15 +145,15 @@ const DockIcon: React.FC<DockIconProps> = ({
 
   return (
     <div className="relative flex flex-col items-center shrink-0">
-      {/* Floating Tooltip (Only renders on desktop/tablet to prevent clipping on mobile touch) */}
+      {/* Floating Tooltip (Renders on all devices on hover/touch) */}
       <AnimatePresence>
-        {isHovered && !isMobile && (
+        {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
             transition={{ duration: 0.15 }}
-            className="absolute -top-10 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap pointer-events-none shadow-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border border-zinc-800 dark:border-zinc-200 z-50"
+            className="absolute -top-9 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium whitespace-nowrap pointer-events-none shadow-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border border-zinc-800 dark:border-zinc-200 z-50"
           >
             {item.label}
           </motion.div>
