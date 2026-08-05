@@ -165,7 +165,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 5: Center Right Screen Time White Card */}
+            {/* Card 5: Center Right Screen Time Emerald Green Card (#269159) */}
             <motion.div
               custom={{ initX: -180, initY: 240, rotate: 4, delay: 0.7, zIndex: 18 }}
               variants={fanOutVariants}
@@ -173,31 +173,31 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
-              className="absolute top-[22%] right-[17%] md:right-[20%] w-[215px] md:w-[245px] h-[250px] md:h-[280px] rounded-3xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-zinc-200 dark:border-zinc-800 cursor-pointer flex flex-col justify-between"
+              className="absolute top-[22%] right-[17%] md:right-[20%] w-[215px] md:w-[245px] h-[250px] md:h-[280px] rounded-3xl bg-[#269159] text-white p-4 md:p-5 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-100">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-white">
                     <ArrowLeft className="size-3.5" />
                     <span>Screen Time</span>
                   </div>
-                  <MoreHorizontal className="size-3.5 text-zinc-400" />
+                  <MoreHorizontal className="size-3.5 text-white/70" />
                 </div>
 
-                <div className="mt-2.5 flex items-center bg-zinc-100 dark:bg-zinc-800 p-0.5 rounded-full text-[10px] font-semibold text-center">
-                  <div className="flex-1 py-1 rounded-full bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-white">
+                <div className="mt-2.5 flex items-center bg-black/15 p-0.5 rounded-full text-[10px] font-semibold text-center border border-white/10">
+                  <div className="flex-1 py-1 rounded-full bg-white text-[#269159] shadow-sm font-bold">
                     Daily
                   </div>
-                  <div className="flex-1 py-1 text-zinc-500">
+                  <div className="flex-1 py-1 text-white/80">
                     Weekly
                   </div>
                 </div>
 
                 <div className="mt-2.5">
-                  <div className="text-[10px] text-zinc-500 font-medium">Daily Average</div>
+                  <div className="text-[10px] text-white/80 font-medium">Daily Average</div>
                   <div className="flex items-baseline gap-2 mt-0.5">
-                    <span className="text-2xl md:text-3xl font-extrabold tracking-tight">8h 28m</span>
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">8h 28m</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-white/20 text-white border border-white/30">
                       -12.54%
                     </span>
                   </div>
@@ -206,13 +206,13 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
 
               <div className="flex items-end gap-1.5 h-16 pt-2">
                 {[
-                  { h: "50%", colors: ["bg-pink-500", "bg-cyan-400"] },
-                  { h: "80%", colors: ["bg-cyan-400", "bg-purple-500", "bg-emerald-400"] },
-                  { h: "100%", colors: ["bg-purple-500", "bg-amber-400", "bg-cyan-400"] },
-                  { h: "65%", colors: ["bg-amber-400", "bg-pink-500"] },
-                  { h: "85%", colors: ["bg-emerald-400", "bg-purple-500", "bg-cyan-400"] },
-                  { h: "40%", colors: ["bg-cyan-400"] },
-                  { h: "70%", colors: ["bg-purple-500", "bg-pink-500"] },
+                  { h: "50%", colors: ["bg-pink-400", "bg-cyan-300"] },
+                  { h: "80%", colors: ["bg-cyan-300", "bg-purple-300", "bg-amber-300"] },
+                  { h: "100%", colors: ["bg-purple-300", "bg-amber-300", "bg-cyan-300"] },
+                  { h: "65%", colors: ["bg-amber-300", "bg-pink-400"] },
+                  { h: "85%", colors: ["bg-white", "bg-purple-300", "bg-cyan-300"] },
+                  { h: "40%", colors: ["bg-cyan-300"] },
+                  { h: "70%", colors: ["bg-purple-300", "bg-pink-400"] },
                 ].map((bar, i) => (
                   <div key={i} className="flex-1 flex flex-col justify-end gap-0.5 rounded-t overflow-hidden" style={{ height: bar.h }}>
                     {bar.colors.map((c, j) => (
@@ -251,21 +251,21 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 7: Far Right Green Light & Sprint Mode Card */}
+            {/* Card 7: Far Right Green Light Card */}
             <motion.div
-              custom={{ initX: -300, initY: 210, rotate: 10, delay: 0.94, zIndex: 10 }}
+              custom={{ initX: -300, initY: 210, rotate: 12, delay: 0.94, zIndex: 10 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              whileHover={{ scale: 1.05, rotate: 4, y: -10, zIndex: 40 }}
-              className="absolute top-[30%] right-[4%] md:right-[7%] w-[160px] md:w-[190px] h-[190px] md:h-[210px] rounded-2xl bg-zinc-800/90 text-white p-3.5 shadow-2xl border border-white/10 cursor-pointer flex flex-col justify-between"
+              whileHover={{ scale: 1.05, rotate: 6, y: -10, zIndex: 40 }}
+              className="absolute top-[28%] right-[4%] md:right-[7%] w-[160px] md:w-[190px] h-[210px] md:h-[240px] rounded-2xl bg-zinc-800/90 text-white p-4 shadow-2xl border border-white/10 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="text-xs font-bold text-zinc-100">Green Light</div>
                 <div className="text-[9px] text-zinc-400">Lucide</div>
               </div>
-              <div className="rounded-xl overflow-hidden h-24 relative bg-zinc-700">
+              <div className="rounded-xl overflow-hidden h-32 md:h-36 relative bg-zinc-700">
                 <img
                   src="https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=300&auto=format&fit=crop"
                   alt="Sprint Runner"
@@ -278,7 +278,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 8: Center Video Stabilization Off-White Card (EXPLICIT INLINE Z-INDEX: 28 SO IT STAYS ON TOP CONSTANTLY WITHOUT HOVERING) */}
+            {/* Card 8: Center Video Stabilization Card */}
             <motion.div
               custom={{ initX: 80, initY: 220, rotate: 1, delay: 0.58, zIndex: 28 }}
               variants={fanOutVariants}
@@ -286,7 +286,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] left-[36%] md:left-[39%] w-[190px] md:w-[215px] h-[160px] md:h-[185px] rounded-2xl bg-[#ECEFF2] dark:bg-zinc-800 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-white/50 cursor-pointer flex flex-col justify-between"
+              className="absolute top-[28%] left-[36%] md:left-[39%] w-[190px] md:w-[215px] h-[160px] md:h-[185px] rounded-2xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border-none cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <h4 className="text-xl md:text-2xl font-extrabold leading-tight text-zinc-900 dark:text-white">
