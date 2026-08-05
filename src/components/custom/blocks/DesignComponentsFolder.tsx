@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Play,
@@ -15,9 +15,36 @@ export interface DesignComponentsFolderProps {
 }
 
 export function DesignComponentsFolder({ className }: DesignComponentsFolderProps) {
-  // All cards start tucked 100% deep inside the solid bottom-center of the folder box
+  const [isInView, setIsInView] = useState(false);
+  const [retractedIndex, setRetractedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    // Start auto loop 2 seconds after initial entrance fan-out
+    const startTimer = setTimeout(() => {
+      let current = 0;
+
+      const interval = setInterval(() => {
+        // Retract card into folder
+        setRetractedIndex(current);
+
+        // Bring card back out to visible state after 900ms
+        setTimeout(() => {
+          setRetractedIndex(null);
+          current = (current + 1) % 8;
+        }, 900);
+      }, 2500);
+
+      return () => clearInterval(interval);
+    }, 2000);
+
+    return () => clearTimeout(startTimer);
+  }, [isInView]);
+
+  // Fan-out animation variants
   const fanOutVariants = {
-    hidden: (custom: { initX: number; initY: number }) => ({
+    hidden: (custom: { initX: number; initY: number; zIndex?: number }) => ({
       x: custom.initX,
       y: custom.initY,
       scale: 0.2,
@@ -33,35 +60,47 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
       rotate: custom.rotate,
       zIndex: custom.zIndex ?? 10,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 90,
         damping: 14,
         delay: custom.delay,
+      },
+    }),
+    retracted: (custom: { initX: number; initY: number; zIndex?: number }) => ({
+      x: custom.initX,
+      y: custom.initY,
+      scale: 0.2,
+      opacity: 0,
+      rotate: 0,
+      zIndex: custom.zIndex ?? 10,
+      transition: {
+        type: "spring" as const,
+        stiffness: 110,
+        damping: 15,
       },
     }),
   };
 
   return (
     <section className={cn("relative w-full py-8 md:py-16 overflow-hidden select-none flex justify-center items-center", className)}>
-      {/* 
-        Responsive Stage:
-        Uses relative container scaling so all cards and folder box are 100% visible on mobile, tablet, and desktop
-      */}
-      <div className="relative w-full max-w-[940px] h-[390px] sm:h-[480px] md:h-[580px] flex items-end justify-center">
+      {/* Responsive Stage */}
+      <motion.div 
+        onViewportEnter={() => setIsInView(true)}
+        className="relative w-full max-w-[940px] h-[390px] sm:h-[480px] md:h-[580px] flex items-end justify-center"
+      >
         
         {/* ═══════════════════════════════════════════════
-           CARDS FANNING OUT (RESPONSIVE CARDS)
+           CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP
            ═══════════════════════════════════════════════ */}
         <div className="absolute inset-0 z-10 pointer-events-none">
           <div className="relative w-full h-full pointer-events-auto">
 
-            {/* Card 1: Top Left Photo Card with Play Overlay */}
+            {/* Card 0: Top Left Photo Card with Play Overlay */}
             <motion.div
               custom={{ initX: 140, initY: 260, rotate: -8, delay: 0.1, zIndex: 11 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 0 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
               className="absolute top-[2%] left-[10%] sm:left-[14%] md:left-[19%] w-[130px] sm:w-[170px] md:w-[220px] h-[85px] sm:h-[110px] md:h-[140px] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-white/25 cursor-pointer group bg-zinc-800"
             >
@@ -77,13 +116,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 2: Top Center Neon Lime Yellow Exchange Card */}
+            {/* Card 1: Top Center Neon Lime Yellow Exchange Card */}
             <motion.div
               custom={{ initX: 30, initY: 270, rotate: 2, delay: 0.22, zIndex: 14 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 1 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
               className="absolute top-[0%] left-[34%] sm:left-[38%] md:left-[42%] w-[135px] sm:w-[175px] md:w-[225px] h-[90px] sm:h-[115px] md:h-[145px] rounded-xl sm:rounded-2xl bg-[#DFFF00] text-black p-2.5 sm:p-3.5 md:p-4 shadow-2xl border border-black/10 cursor-pointer font-sans flex flex-col justify-between"
             >
@@ -99,13 +137,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 3: Top Right Orange Calories Burned Card */}
+            {/* Card 2: Top Right Orange Calories Burned Card */}
             <motion.div
               custom={{ initX: -140, initY: 260, rotate: 12, delay: 0.34, zIndex: 11 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 2 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
               className="absolute top-[5%] right-[8%] sm:right-[11%] md:right-[14%] w-[120px] sm:w-[155px] md:w-[195px] h-[85px] sm:h-[110px] md:h-[140px] rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FF5500] to-[#E04400] text-white p-2.5 sm:p-3.5 md:p-4 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
@@ -121,13 +158,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 4: Mid Left Dark F1 Racing Card */}
+            {/* Card 3: Mid Left Dark F1 Racing Card */}
             <motion.div
               custom={{ initX: 110, initY: 210, rotate: -4, delay: 0.46, zIndex: 16 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 3 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
               className="absolute top-[18%] left-[16%] sm:left-[21%] md:left-[26%] w-[145px] sm:w-[190px] md:w-[245px] h-[115px] sm:h-[150px] md:h-[190px] rounded-xl sm:rounded-2xl bg-[#1C1D1F]/95 backdrop-blur-md border border-white/10 p-2.5 sm:p-3.5 md:p-4 shadow-2xl text-white cursor-pointer flex flex-col justify-between"
             >
@@ -160,13 +196,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 5: Center Right Screen Time Green Card (#269159) */}
+            {/* Card 4: Center Right Screen Time Green Card (#269159) */}
             <motion.div
               custom={{ initX: -110, initY: 190, rotate: 4, delay: 0.7, zIndex: 18 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 4 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
               className="absolute top-[22%] right-[11%] sm:right-[15%] md:right-[20%] w-[145px] sm:w-[190px] md:w-[245px] h-[165px] sm:h-[220px] md:h-[280px] rounded-2xl sm:rounded-3xl bg-[#269159] text-white p-2.5 sm:p-4 md:p-5 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
@@ -218,13 +253,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 6: Far Left Purple Monthly Revenue Card */}
+            {/* Card 5: Far Left Purple Monthly Revenue Card */}
             <motion.div
               custom={{ initX: 160, initY: 180, rotate: -12, delay: 0.82, zIndex: 10 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 5 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: -6, y: -10, zIndex: 40 }}
               className="absolute top-[28%] left-[5%] sm:left-[9%] md:left-[13%] w-[120px] sm:w-[155px] md:w-[190px] h-[145px] sm:h-[190px] md:h-[240px] rounded-xl sm:rounded-2xl bg-[#B485FF] text-white p-2.5 sm:p-3.5 md:p-4 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
@@ -246,13 +280,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 7: Far Right Green Light Card */}
+            {/* Card 6: Far Right Green Light Card */}
             <motion.div
               custom={{ initX: -160, initY: 180, rotate: 12, delay: 0.94, zIndex: 10 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 6 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: 6, y: -10, zIndex: 40 }}
               className="absolute top-[28%] right-[2%] sm:right-[4%] md:right-[7%] w-[120px] sm:w-[155px] md:w-[190px] h-[145px] sm:h-[190px] md:h-[240px] rounded-xl sm:rounded-2xl bg-zinc-800/90 text-white p-2.5 sm:p-3.5 md:p-4 shadow-2xl border border-white/10 cursor-pointer flex flex-col justify-between"
             >
@@ -273,13 +306,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 8: Center Video Stabilization Card */}
+            {/* Card 7: Center Video Stabilization Card */}
             <motion.div
               custom={{ initX: 40, initY: 180, rotate: 1, delay: 0.58, zIndex: 28 }}
               variants={fanOutVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              animate={!isInView ? "hidden" : retractedIndex === 7 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
               className="absolute top-[28%] left-[28%] sm:left-[33%] md:left-[39%] w-[135px] sm:w-[175px] md:w-[215px] h-[115px] sm:h-[150px] md:h-[185px] rounded-xl sm:rounded-2xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white p-2.5 sm:p-4 md:p-5 shadow-2xl border-none cursor-pointer flex flex-col justify-between"
             >
@@ -355,7 +387,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }
