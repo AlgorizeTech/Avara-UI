@@ -66,6 +66,17 @@ export function SandboxClient({ name }: { name: string }) {
     };
   }, []);
 
+  // Dev-only: the Next.js dev overlay (error badge, route indicator) mounts in
+  // every document — including this embedded stage, where it floats over the
+  // demo. Hide it here; normal pages keep theirs. Production has no overlay.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const style = document.createElement("style");
+    style.textContent = "nextjs-portal { display: none !important; }";
+    document.head.appendChild(style);
+    return () => style.remove();
+  }, []);
+
   // Live prop updates from the docs page (control panels, prop variants).
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
