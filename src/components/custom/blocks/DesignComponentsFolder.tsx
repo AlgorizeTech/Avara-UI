@@ -23,13 +23,15 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
       scale: 0.2,
       opacity: 0,
       rotate: 0,
+      zIndex: custom.zIndex ?? 10,
     }),
-    visible: (custom: { rotate: number; delay: number }) => ({
+    visible: (custom: { rotate: number; delay: number; zIndex?: number }) => ({
       x: 0,
       y: 0,
       scale: 1,
       opacity: 1,
       rotate: custom.rotate,
+      zIndex: custom.zIndex ?? 10,
       transition: {
         type: "spring",
         stiffness: 90,
@@ -53,13 +55,13 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
 
             {/* Card 1: Top Left Photo Card with Play Overlay */}
             <motion.div
-              custom={{ initX: 260, initY: 330, rotate: -8, delay: 0.1 }}
+              custom={{ initX: 260, initY: 330, rotate: -8, delay: 0.1, zIndex: 11 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
-              className="absolute top-[2%] left-[16%] md:left-[19%] w-[190px] md:w-[220px] h-[120px] md:h-[140px] rounded-2xl overflow-hidden shadow-2xl border border-white/25 cursor-pointer z-11 group bg-zinc-800"
+              className="absolute top-[2%] left-[16%] md:left-[19%] w-[190px] md:w-[220px] h-[120px] md:h-[140px] rounded-2xl overflow-hidden shadow-2xl border border-white/25 cursor-pointer group bg-zinc-800"
             >
               <img
                 src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=400&auto=format&fit=crop"
@@ -75,13 +77,13 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
 
             {/* Card 2: Top Center Neon Lime Yellow Exchange Card */}
             <motion.div
-              custom={{ initX: 60, initY: 340, rotate: 2, delay: 0.22 }}
+              custom={{ initX: 60, initY: 340, rotate: 2, delay: 0.22, zIndex: 14 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[0%] left-[39%] md:left-[42%] w-[195px] md:w-[225px] h-[130px] md:h-[145px] rounded-2xl bg-[#DFFF00] text-black p-4 shadow-2xl border border-black/10 cursor-pointer z-14 font-sans flex flex-col justify-between"
+              className="absolute top-[0%] left-[39%] md:left-[42%] w-[195px] md:w-[225px] h-[130px] md:h-[145px] rounded-2xl bg-[#DFFF00] text-black p-4 shadow-2xl border border-black/10 cursor-pointer font-sans flex flex-col justify-between"
             >
               <div className="flex items-center justify-between text-[11px] font-bold tracking-tight text-black/70">
                 <span>Exchange</span>
@@ -97,13 +99,13 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
 
             {/* Card 3: Top Right Orange Calories Burned Card */}
             <motion.div
-              custom={{ initX: -260, initY: 330, rotate: 12, delay: 0.34 }}
+              custom={{ initX: -260, initY: 330, rotate: 12, delay: 0.34, zIndex: 11 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
-              className="absolute top-[5%] right-[10%] md:right-[14%] w-[170px] md:w-[195px] h-[125px] md:h-[140px] rounded-2xl bg-gradient-to-br from-[#FF5500] to-[#E04400] text-white p-4 shadow-2xl border border-white/20 cursor-pointer z-11 flex flex-col justify-between"
+              className="absolute top-[5%] right-[10%] md:right-[14%] w-[170px] md:w-[195px] h-[125px] md:h-[140px] rounded-2xl bg-gradient-to-br from-[#FF5500] to-[#E04400] text-white p-4 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
               <div className="flex items-center gap-1.5 text-[11px] font-medium text-white/90">
                 <Flame className="size-4 fill-white text-white" />
@@ -119,13 +121,13 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
 
             {/* Card 4: Mid Left Dark F1 Racing Card */}
             <motion.div
-              custom={{ initX: 190, initY: 260, rotate: -4, delay: 0.46 }}
+              custom={{ initX: 190, initY: 260, rotate: -4, delay: 0.46, zIndex: 16 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
-              className="absolute top-[18%] left-[23%] md:left-[26%] w-[210px] md:w-[245px] h-[170px] md:h-[190px] rounded-2xl bg-[#1C1D1F]/95 backdrop-blur-md border border-white/10 p-4 shadow-2xl text-white cursor-pointer z-16 flex flex-col justify-between"
+              className="absolute top-[18%] left-[23%] md:left-[26%] w-[210px] md:w-[245px] h-[170px] md:h-[190px] rounded-2xl bg-[#1C1D1F]/95 backdrop-blur-md border border-white/10 p-4 shadow-2xl text-white cursor-pointer flex flex-col justify-between"
             >
               <div className="flex items-center justify-between pb-2 border-b border-white/10">
                 <div className="flex items-center gap-2">
@@ -163,35 +165,15 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 5: Center Video Stabilization Off-White Card */}
+            {/* Card 5: Center Right Screen Time White Card */}
             <motion.div
-              custom={{ initX: 80, initY: 220, rotate: 1, delay: 0.58 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] left-[36%] md:left-[39%] w-[190px] md:w-[215px] h-[160px] md:h-[185px] rounded-2xl bg-[#ECEFF2] dark:bg-zinc-800 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-white/50 cursor-pointer z-15 flex flex-col justify-between"
-            >
-              <div>
-                <h4 className="text-xl md:text-2xl font-extrabold leading-tight text-zinc-900 dark:text-white">
-                  Video<br />Stabilization
-                </h4>
-                <p className="text-[10px] md:text-[11px] text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                  Smooth out shaky footage for a professional look.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Card 6: Center Right Screen Time White Card */}
-            <motion.div
-              custom={{ initX: -180, initY: 240, rotate: 4, delay: 0.7 }}
+              custom={{ initX: -180, initY: 240, rotate: 4, delay: 0.7, zIndex: 18 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
-              className="absolute top-[22%] right-[17%] md:right-[20%] w-[215px] md:w-[245px] h-[250px] md:h-[280px] rounded-3xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-zinc-200 dark:border-zinc-800 cursor-pointer z-18 flex flex-col justify-between"
+              className="absolute top-[22%] right-[17%] md:right-[20%] w-[215px] md:w-[245px] h-[250px] md:h-[280px] rounded-3xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-zinc-200 dark:border-zinc-800 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -241,15 +223,15 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 7: Far Left Purple Monthly Revenue Card */}
+            {/* Card 6: Far Left Purple Monthly Revenue Card */}
             <motion.div
-              custom={{ initX: 300, initY: 220, rotate: -12, delay: 0.82 }}
+              custom={{ initX: 300, initY: 220, rotate: -12, delay: 0.82, zIndex: 10 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, rotate: -6, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] left-[10%] md:left-[13%] w-[160px] md:w-[190px] h-[210px] md:h-[240px] rounded-2xl bg-[#B485FF] text-white p-4 shadow-2xl border border-white/20 cursor-pointer z-10 flex flex-col justify-between"
+              className="absolute top-[28%] left-[10%] md:left-[13%] w-[160px] md:w-[190px] h-[210px] md:h-[240px] rounded-2xl bg-[#B485FF] text-white p-4 shadow-2xl border border-white/20 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="text-[11px] font-medium text-white/90">Monthly Revenue</div>
@@ -269,15 +251,15 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </div>
             </motion.div>
 
-            {/* Card 8: Far Right Green Light & Sprint Mode Card */}
+            {/* Card 7: Far Right Green Light & Sprint Mode Card */}
             <motion.div
-              custom={{ initX: -300, initY: 210, rotate: 10, delay: 0.94 }}
+              custom={{ initX: -300, initY: 210, rotate: 10, delay: 0.94, zIndex: 10 }}
               variants={fanOutVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, rotate: 4, y: -10, zIndex: 40 }}
-              className="absolute top-[30%] right-[4%] md:right-[7%] w-[160px] md:w-[190px] h-[190px] md:h-[210px] rounded-2xl bg-zinc-800/90 text-white p-3.5 shadow-2xl border border-white/10 cursor-pointer z-10 flex flex-col justify-between"
+              className="absolute top-[30%] right-[4%] md:right-[7%] w-[160px] md:w-[190px] h-[190px] md:h-[210px] rounded-2xl bg-zinc-800/90 text-white p-3.5 shadow-2xl border border-white/10 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="text-xs font-bold text-zinc-100">Green Light</div>
@@ -293,6 +275,26 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                 <div className="absolute top-2 left-2 text-[10px] font-bold text-white leading-tight drop-shadow">
                   Sprint Mode<br /><span className="text-[8px] font-normal opacity-80">Settings</span>
                 </div>
+              </div>
+            </motion.div>
+
+            {/* Card 8: Center Video Stabilization Off-White Card (EXPLICIT INLINE Z-INDEX: 28 SO IT STAYS ON TOP CONSTANTLY WITHOUT HOVERING) */}
+            <motion.div
+              custom={{ initX: 80, initY: 220, rotate: 1, delay: 0.58, zIndex: 28 }}
+              variants={fanOutVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
+              className="absolute top-[28%] left-[36%] md:left-[39%] w-[190px] md:w-[215px] h-[160px] md:h-[185px] rounded-2xl bg-[#ECEFF2] dark:bg-zinc-800 text-zinc-900 dark:text-white p-4 md:p-5 shadow-2xl border border-white/50 cursor-pointer flex flex-col justify-between"
+            >
+              <div>
+                <h4 className="text-xl md:text-2xl font-extrabold leading-tight text-zinc-900 dark:text-white">
+                  Video<br />Stabilization
+                </h4>
+                <p className="text-[10px] md:text-[11px] text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
+                  Smooth out shaky footage for a professional look.
+                </p>
               </div>
             </motion.div>
 
