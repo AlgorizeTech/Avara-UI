@@ -8,6 +8,7 @@ import { MemoriesCard, MemoryItem } from "@/components/custom/blocks/MemoriesCar
 import { ThreeDCarousel, CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
+import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { navigation } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import {
@@ -2834,6 +2835,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-sans">
       <HeroSection />
       <TechStackMarquee />
+      <DesignComponentsFolder />
       <ComponentShowcase />
       <WhyChooseUsSection />
       <ComponentPreviewGridSection />
