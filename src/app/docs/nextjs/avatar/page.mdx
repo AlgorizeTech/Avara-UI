@@ -1,16 +1,80 @@
-import { AvatarShowcase } from "@/components/site/AvatarShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Avatar
 
 A powerful, drop-in extension of the standard shadcn/ui avatar. This custom wrapper adds built-in support for avatar groups (stacks), predefined sizing, and dynamic online/offline status indicators.
 
-## Interactive Showcase
+## Examples
 
-Explore the different variations of the Avatar component. Toggle between single and grouped users, adjust the sizing, and test the activity status indicators.
+Explore the different variations of the Avatar component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
+export const usageBasic = `import { Avatar } from "@/components/custom/blocks/Avatar";
 
-<AvatarShowcase />
+const user = [{ src: "https://github.com/shadcn.png", fallback: "CN" }];
+
+export default function BasicAvatar() {
+  return <Avatar avatars={user} />;
+}`;
+
+export const usageActive = `import { Avatar } from "@/components/custom/blocks/Avatar";
+
+const user = [{ src: "https://github.com/shadcn.png", fallback: "CN" }];
+
+export default function AvatarWithActiveStatus() {
+  return <Avatar avatars={user} active status="active" />;
+}`;
+
+export const usageInactive = `import { Avatar } from "@/components/custom/blocks/Avatar";
+
+const user = [{ src: "https://github.com/shadcn.png", fallback: "CN" }];
+
+export default function AvatarWithInactiveStatus() {
+  return <Avatar avatars={user} active status="inactive" />;
+}`;
+
+export const usageGroup = `import { Avatar } from "@/components/custom/blocks/Avatar";
+
+const team = [
+  { src: "https://github.com/shadcn.png", fallback: "CN" },
+  { src: "https://github.com/vercel.png", fallback: "VC" },
+  { src: "https://github.com/nextjs.png", fallback: "NX" },
+];
+
+export default function AvatarGroup() {
+  return <Avatar avatars={team} />;
+}`;
+
+<ExampleShowcase
+  name="avatar"
+  examples={[
+    {
+      title: "Avatar",
+      subheading: "A single avatar with an image and an initials fallback.",
+      props: { type: "single" },
+      usage: usageBasic,
+      code: extractCode("src/components/custom/blocks/Avatar.tsx"),
+    },
+    {
+      title: "Avatar with active status",
+      subheading: "Presence indicator showing the user is online.",
+      props: { type: "single", status: "active" },
+      usage: usageActive,
+    },
+    {
+      title: "Avatar with inactive status",
+      subheading: "Presence indicator showing the user is offline.",
+      props: { type: "single", status: "inactive" },
+      usage: usageInactive,
+    },
+    {
+      title: "Avatar group",
+      subheading: "Stacked avatars with overlap, representing a team.",
+      props: { type: "group" },
+      usage: usageGroup,
+    },
+  ]}
+/>
 
 ## Installation
 
