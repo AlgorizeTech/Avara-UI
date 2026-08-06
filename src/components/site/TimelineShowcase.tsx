@@ -398,7 +398,7 @@ export default function OrderTracker() {
         sandboxProps={{ variant, layout, color, animate }}
       >
         <div
-          className={`w-full flex flex-col items-center justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center" : "bg-white dark:bg-[#050505]"} p-6 sm:p-12 relative z-10 overflow-hidden`}
+          className={`w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-6 sm:p-12" : ""} relative z-10 overflow-hidden`}
         >
           <div className="w-full max-w-2xl mx-auto">
             <TimelineBlock

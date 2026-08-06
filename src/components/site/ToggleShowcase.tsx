@@ -153,7 +153,7 @@ export default function App() {
         sandbox="toggle"
         sandboxProps={{ variant, size, format, muted }}
       >
-        <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-12 transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
+        <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-12 relative z-10">
           {/* Group 1: Editor Toolbar Example */}
           <div className="flex flex-col items-center gap-3">
             <p className="text-sm font-medium text-zinc-500">

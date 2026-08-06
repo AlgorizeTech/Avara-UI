@@ -466,7 +466,7 @@ export default function Page() {
         sandbox="counter"
         sandboxProps={{ type, variant, color }}
       >
-        <div className="w-full flex items-center justify-center min-h-[400px] bg-zinc-50/50 dark:bg-transparent py-12 transition-colors duration-300">
+        <div className="w-full flex items-center justify-center min-h-[400px]">
           <CounterBlock
             key={`${type}-${color}-${variant}`}
             type={type}

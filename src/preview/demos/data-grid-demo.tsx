@@ -94,7 +94,7 @@ export default function DataGridDemo({
   }, [data]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-2 sm:p-6 lg:p-12">
+    <div className="w-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
       <div className="w-full max-w-5xl flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex flex-col">

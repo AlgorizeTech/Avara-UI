@@ -74,7 +74,7 @@ export function FormWrapper({
       </div>
 
       {/* Inner Container */}
-      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full shadow-xl z-10">
+      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {/* Header */}
         {(title || description) && (
           <div className="mb-8 border-b border-zinc-100 dark:border-zinc-800/50 pb-6">

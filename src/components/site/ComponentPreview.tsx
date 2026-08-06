@@ -327,24 +327,19 @@ export function ComponentPreview({
       </div>
 
       {/* Main Content Area */}
-      <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
+      <div className="relative w-full bg-transparent rounded-b-xl min-h-[400px]">
         {/* The preview stays MOUNTED across tab switches (hidden, not removed)
             so the sandbox iframe never reloads when returning to Preview. */}
         <div
           ref={areaRef}
           className={cn(
-            "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
-            "bg-zinc-50/50 dark:bg-[#020202]",
+            "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl bg-transparent",
             activeTab !== "preview" && "hidden"
           )}
         >
             {/* Dashed Grid Background */}
             <div
-              className="absolute inset-y-0 left-0 pointer-events-none rounded-b-xl overflow-hidden"
-              style={{
-                width: previewWidth === "100%" || isScaled ? "100%" : `${(previewWidth as number) + 1}px`,
-                maxWidth: "100%",
-              }}
+              className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden"
             >
               <svg width="100%" height="100%">
                 <defs>
@@ -362,7 +357,7 @@ export function ComponentPreview({
                 maxWidth: "100%",
               }}
               className={cn(
-                "relative flex justify-center items-center transition-[width] ease-out bg-white dark:bg-[#09090b] w-full",
+                "relative flex justify-center items-center transition-[width] ease-out bg-white dark:bg-[#09090b] min-h-[400px] w-full",
                 isDragging ? "duration-0" : "duration-300",
                 previewWidth !== "100%" && !isScaled && "border-r border-zinc-200 dark:border-zinc-800",
                 previewWidth === "100%" || isScaled ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none"

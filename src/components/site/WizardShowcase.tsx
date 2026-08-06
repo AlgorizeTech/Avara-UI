@@ -1,6 +1,7 @@
 "use client";
 
 import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { VariantTabs } from "@/components/site/VariantTabs";
 
 import {
@@ -54,7 +55,7 @@ export const WizardProgress = forwardRef<HTMLDivElement, React.HTMLAttributes<HT
   useEffect(() => { if (progressRef.current) gsap.to(progressRef.current, { width: \`\${progress}%\`, duration: 0.6, ease: "power3.out" }); }, [progress]);
 
   const colorMap: Record<string, string> = { indigo: "bg-indigo-600 dark:bg-indigo-500", blue: "bg-blue-600 dark:bg-blue-500", rose: "bg-rose-600 dark:bg-rose-500", emerald: "bg-emerald-600 dark:bg-emerald-500", zinc: "bg-zinc-900 dark:bg-zinc-100" };
-  return (<div ref={ref} className={cn("w-full h-1.5 bg-zinc-200 dark:bg-zinc-800", className)} {...props}><div ref={progressRef} className={cn("h-full w-0", colorMap[color] || colorMap.indigo)} /></div>);
+  return (<div ref={ref} className={cn("w-full h-1.5 bg-transparent overflow-hidden", className)} {...props}><div ref={progressRef} className={cn("h-full w-0", colorMap[color] || colorMap.indigo)} /></div>);
 });
 WizardProgress.displayName = "WizardProgress";
 
@@ -151,7 +152,7 @@ export const WizardProgress = forwardRef(({ className, ...props }, ref) => {
   useEffect(() => { if (progressRef.current) gsap.to(progressRef.current, { width: \`\${progress}%\`, duration: 0.6, ease: "power3.out" }); }, [progress]);
 
   const colorMap = { indigo: "bg-indigo-600 dark:bg-indigo-500", blue: "bg-blue-600 dark:bg-blue-500", rose: "bg-rose-600 dark:bg-rose-500", emerald: "bg-emerald-600 dark:bg-emerald-500", zinc: "bg-zinc-900 dark:bg-zinc-100" };
-  return (<div ref={ref} className={cn("w-full h-1.5 bg-zinc-200 dark:bg-zinc-800", className)} {...props}><div ref={progressRef} className={cn("h-full w-0", colorMap[color] || colorMap.indigo)} /></div>);
+  return (<div ref={ref} className={cn("w-full h-1.5 bg-transparent overflow-hidden", className)} {...props}><div ref={progressRef} className={cn("h-full w-0", colorMap[color] || colorMap.indigo)} /></div>);
 });
 WizardProgress.displayName = "WizardProgress";
 
@@ -278,11 +279,10 @@ export default function OnboardingFlow() {
       {/* --- CONTROL PANEL --- */}
       <ShowcaseControlPanel className="flex flex-col gap-6 p-5 rounded-xl z-0 relative">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <VariantTabs
-            label="Active Theme Color"
-            variants={["indigo", "blue", "rose", "emerald", "zinc"]}
-            defaultValue="indigo"
-            onValueChange={(v) => setColor(v as "indigo" | "blue" | "rose" | "emerald" | "zinc")}
+          <ThemeColorPicker
+            color={color}
+            onChange={(newColor) => setColor(newColor)}
+            label="Theme Color"
           />
           <button
             onClick={() => setKey((prev) => prev + 1)}
@@ -313,7 +313,7 @@ export default function OnboardingFlow() {
         sandbox="wizard"
         sandboxProps={{ color, wizardKey: key }}
       >
-        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] overflow-hidden">
+        <div className="w-full flex items-center justify-center overflow-hidden">
           <Wizard key={key} color={color}>
             {/* The absolute top progress bar */}
             <WizardProgress />

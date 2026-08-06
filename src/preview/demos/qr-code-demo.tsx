@@ -150,13 +150,13 @@ export default function QrCodeDemo({
           <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">
             Correction Level:
           </label>
-          <div className="inline-flex rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-black overflow-hidden shadow-sm w-max">
+          <div className="grid grid-cols-4 sm:inline-flex rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-black overflow-hidden w-full sm:w-max">
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
               <button
                 key={lvl}
                 onClick={() => setLevel(lvl)}
                 style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
-                className={`cursor-pointer px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 ${
+                className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
                   level === lvl
                     ? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
                     : "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
@@ -186,13 +186,13 @@ export default function QrCodeDemo({
           <button
             onClick={handleDownloadPNG}
             style={{ backgroundColor: themeColor.startsWith("#") ? themeColor : undefined }}
-            className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors shadow-sm ${getButtonColorClass()}`}>
+            className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors ${getButtonColorClass()}`}>
             <ImageIcon className="w-4 h-4" />
             Save as PNG
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:bg-zinc-800 rounded-xl transition-colors shadow-sm">
+            className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:bg-zinc-800 rounded-xl transition-colors">
             <FileText className="w-4 h-4" />
             Save as PDF
           </button>

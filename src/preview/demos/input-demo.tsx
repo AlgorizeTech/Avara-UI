@@ -28,7 +28,7 @@ export default function InputDemo({
   color?: InputColor | string;
 }) {
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
+    <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
       <div className="w-full max-w-sm">
         <InputBlock
           key={`${inputType}-${variant}-${color}-${inputSize}-${showError}-${isDisabled}-${isMultiple}-${isImageOnly}`}

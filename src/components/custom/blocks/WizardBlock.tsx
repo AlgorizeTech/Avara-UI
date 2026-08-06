@@ -117,6 +117,7 @@ export const WizardProgress = forwardRef<
   }, [progress]);
 
   // Tailwind color mapping
+  const isHex = color && color.startsWith("#");
   const colorMap: Record<string, string> = {
     primary: "bg-primary",
     indigo: "bg-indigo-600 dark:bg-indigo-500",
@@ -129,12 +130,13 @@ export const WizardProgress = forwardRef<
   return (
     <div
       ref={ref}
-      className={cn("w-full h-1.5 bg-zinc-200 dark:bg-zinc-800", className)}
+      className={cn("w-full h-1.5 bg-transparent overflow-hidden", className)}
       {...props}
     >
       <div
         ref={progressRef}
-        className={cn("h-full w-0", colorMap[color] || colorMap.indigo)}
+        className={cn("h-full w-0", !isHex && (colorMap[color] || colorMap.primary || colorMap.indigo))}
+        style={isHex ? { backgroundColor: color } : undefined}
       />
     </div>
   );
@@ -266,6 +268,7 @@ export const WizardInput = forwardRef<
 >(({ className, ...props }, ref) => {
   const { color } = useWizard();
 
+  const isHex = color && color.startsWith("#");
   const focusColors: Record<string, string> = {
     primary: "focus:border-primary",
     indigo: "focus:border-indigo-500",
@@ -280,9 +283,10 @@ export const WizardInput = forwardRef<
       ref={ref}
       className={cn(
         "w-full bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 py-4 text-2xl sm:text-3xl text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition-colors",
-        focusColors[color] || focusColors.indigo,
+        !isHex && (focusColors[color] || focusColors.indigo),
         className,
       )}
+      style={isHex ? { borderColor: color } : undefined}
       {...props}
     />
   );
@@ -295,6 +299,7 @@ export const WizardNavigation = forwardRef<
 >(({ children, className, ...props }, ref) => {
   const { currentStep, nextStep, prevStep, color } = useWizard();
 
+  const isHex = color && color.startsWith("#");
   const btnColors: Record<string, string> = {
     primary: "bg-primary text-primary-foreground hover:opacity-90",
     indigo: "bg-indigo-600 hover:bg-indigo-700 text-white",
@@ -315,8 +320,9 @@ export const WizardNavigation = forwardRef<
         onClick={nextStep}
         className={cn(
           "px-6 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
-          btnColors[color] || btnColors.indigo,
+          !isHex && (btnColors[color] || btnColors.indigo),
         )}
+        style={isHex ? { backgroundColor: color, color: "#ffffff" } : undefined}
       >
         OK{" "}
         <span className="font-normal opacity-70 ml-2 hidden sm:inline">

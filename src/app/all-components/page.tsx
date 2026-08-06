@@ -353,7 +353,7 @@ export default function AllComponentsPage() {
         </div>
 
         {/* Search & Filter Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border bg-card/60 backdrop-blur-xl shadow-sm">
+        <div className="sticky top-[60px] z-30 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border bg-background/95 dark:bg-card/95 backdrop-blur-xl shadow-md transition-all">
           {/* Search Input */}
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />

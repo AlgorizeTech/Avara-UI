@@ -54,7 +54,7 @@ export function FormWrapper({ children, color = "indigo", title, description, cl
       <div className="absolute -inset-[1px] rounded-2xl overflow-hidden pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500">
         <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_70%,var(--theme-color)_100%)] animate-[spin_3s_linear_infinite]" />
       </div>
-      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full shadow-xl z-10">
+      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {(title || description) && (
           <div className="mb-8 border-b border-zinc-100 dark:border-zinc-800/50 pb-6">
             {title && <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white">{title}</h2>}
@@ -142,7 +142,7 @@ export function FormWrapper({ children, color = "indigo", title, description, cl
       <div className="absolute -inset-[1px] rounded-2xl overflow-hidden pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500">
         <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_70%,var(--theme-color)_100%)] animate-[spin_3s_linear_infinite]" />
       </div>
-      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full shadow-xl z-10">
+      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {(title || description) && (
           <div className="mb-8 border-b border-zinc-100 dark:border-zinc-800/50 pb-6">
             {title && <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white">{title}</h2>}
@@ -364,7 +364,7 @@ export default function EnterpriseForm() {
         sandbox="form"
         sandboxProps={{ demoType, errorStyle, color }}
       >
-        <div className="w-full flex flex-col items-center justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-4 sm:p-12 relative z-10 overflow-hidden">
+        <div className="w-full flex flex-col items-center justify-center min-h-[500px] relative z-10 overflow-hidden">
           <div className="w-full max-w-lg mx-auto">
             {demoType === "native" ? (
               <FormWrapper

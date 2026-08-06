@@ -119,7 +119,7 @@ export default function App() {
         sandbox="kbd"
         sandboxProps={{ size }}
       >
-        <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-8 transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
+        <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-8 relative z-10">
           
           {/* Combinations Example */}
           <div className="flex flex-col items-center gap-3">

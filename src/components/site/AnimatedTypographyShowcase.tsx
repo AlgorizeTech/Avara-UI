@@ -80,7 +80,7 @@ export const AnimatedTypographyBlock = forwardRef<HTMLElement, AnimatedTypograph
 
   let sizeClass = ""; let customSizeStyle: React.CSSProperties = {};
   if (size) { if (tailwindSizes.has(size)) sizeClass = \`text-\${size}\`; else customSizeStyle = { fontSize: size }; } 
-  else { const defaultSizeMap: Record<TypographyTag, string> = { h1: "text-4xl sm:text-5xl lg:text-6xl", h2: "text-3xl sm:text-4xl", h3: "text-2xl sm:text-3xl", h4: "text-xl sm:text-2xl", h5: "text-lg sm:text-xl", h6: "text-base sm:text-lg", p: "text-base", span: "text-inherit", blockquote: "text-lg" }; sizeClass = defaultSizeMap[Tag]; }
+  else { const defaultSizeMap: Record<TypographyTag, string> = { h1: "text-xl sm:text-3xl md:text-4xl lg:text-6xl", h2: "text-lg sm:text-2xl md:text-3xl lg:text-4xl", h3: "text-base sm:text-xl md:text-2xl lg:text-3xl", h4: "text-sm sm:text-lg md:text-xl lg:text-2xl", h5: "text-xs sm:text-base md:text-lg lg:text-xl", h6: "text-xs sm:text-sm md:text-base lg:text-lg", p: "text-xs sm:text-base", span: "text-inherit", blockquote: "text-sm sm:text-lg" }; sizeClass = defaultSizeMap[Tag]; }
 
   const words = text.split(" ");
   const renderContent = () => {
@@ -139,7 +139,7 @@ export const AnimatedTypographyBlock = forwardRef(({ as: Tag = "p", variant = "f
 
   let sizeClass = ""; let customSizeStyle = {};
   if (size) { if (tailwindSizes.has(size)) sizeClass = \`text-\${size}\`; else customSizeStyle = { fontSize: size }; } 
-  else { const defaultSizeMap = { h1: "text-4xl sm:text-5xl lg:text-6xl", h2: "text-3xl sm:text-4xl", h3: "text-2xl sm:text-3xl", h4: "text-xl sm:text-2xl", h5: "text-lg sm:text-xl", h6: "text-base sm:text-lg", p: "text-base", span: "text-inherit", blockquote: "text-lg" }; sizeClass = defaultSizeMap[Tag]; }
+  else { const defaultSizeMap = { h1: "text-xl sm:text-3xl md:text-4xl lg:text-6xl", h2: "text-lg sm:text-2xl md:text-3xl lg:text-4xl", h3: "text-base sm:text-xl md:text-2xl lg:text-3xl", h4: "text-sm sm:text-lg md:text-xl lg:text-2xl", h5: "text-xs sm:text-base md:text-lg lg:text-xl", h6: "text-xs sm:text-sm md:text-base lg:text-lg", p: "text-xs sm:text-base", span: "text-inherit", blockquote: "text-sm sm:text-lg" }; sizeClass = defaultSizeMap[Tag]; }
 
   const words = text.split(" ");
   const renderContent = () => {
@@ -301,7 +301,7 @@ export default function App() {
           color,
         }}
       >
-        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 lg:p-24 overflow-hidden min-h-[350px]">
+        <div className="w-full flex items-center justify-center min-h-[350px] relative z-10 overflow-hidden">
           <div className="w-full max-w-4xl flex flex-col justify-center">
             {/* The key prop forces React to remount the component, re-triggering the CSS/JS animations */}
             <AnimatedTypographyBlock

@@ -37,15 +37,34 @@ export interface FloatingContactButtonProps
   onSendMessage?: (message: string) => void;
 }
 
+function resolveColor(c: string): string {
+  if (!c || c === "primary" || c === "default") return "var(--primary)";
+  if (c.startsWith("#") || c.startsWith("rgb") || c.startsWith("hsl") || c.startsWith("var(")) return c;
+  const colorMap: Record<string, string> = {
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    zinc: "#18181b",
+    amber: "#f59e0b",
+    violet: "#8b5cf6",
+    cyan: "#06b6d4",
+    blue: "#3b82f6",
+  };
+  return colorMap[c] || "var(--primary)";
+}
+
 function hexToRgba(hex: string, alpha: number): string {
+  if (!hex) return \`rgba(99, 102, 241, \${alpha})\`;
+  const resolved = resolveColor(hex);
+  if (resolved.startsWith("var(")) return \`color-mix(in srgb, \${resolved} \${alpha * 100}%, transparent)\`;
   let c: any;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(resolved)) {
+    c = resolved.substring(1).split("");
     if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     c = "0x" + c.join("");
     return \`rgba(\${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",")},\${alpha})\`;
   }
-  return hex;
+  return resolved;
 }
 
 export const FloatingContactButtonBlock = React.forwardRef<
@@ -889,7 +908,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sandbox="floating-contact-button"
         sandboxProps={{ position, title, defaultOpen, color, renderKey }}
       >
-        <div className="w-full relative flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] overflow-hidden min-h-[640px] p-4 sm:p-6">
+        <div className="w-full relative flex items-center justify-center overflow-hidden min-h-[640px]">
           <div className="absolute top-8 left-8 right-8 text-center max-w-sm mx-auto pointer-events-none opacity-40">
             <p className="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
               Interactive Preview Container

@@ -288,7 +288,7 @@ export default function App() {
         sandbox="tooltip"
         sandboxProps={{ side, align, delay }}
       >
-        <div className="w-full flex items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
+        <div className="w-full flex items-center justify-center min-h-[400px] relative z-10">
           <TooltipProvider>
             {/* Main Demo Tooltip */}
             <Tooltip delayDuration={delay}>

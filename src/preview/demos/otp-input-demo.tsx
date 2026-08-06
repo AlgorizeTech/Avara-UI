@@ -32,7 +32,7 @@ export default function OtpInputDemo({
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
+    <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
       <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">

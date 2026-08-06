@@ -55,9 +55,9 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 28) : baseSize;
-    const effectiveMagnification = isMobile ? Math.min(magnification, 38) : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 70) : distance;
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 24) : baseSize;
+    const effectiveMagnification = isMobile ? Math.min(magnification, 44) : magnification;
+    const effectiveDistance = isMobile ? Math.min(distance, 80) : distance;
     const effectiveGap = isMobile ? Math.min(gap, 3) : gap;
 
     return (
@@ -71,7 +71,7 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end rounded-2xl px-3 sm:px-4 pb-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
           "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10",
           "ring-1 ring-black/5 dark:ring-white/5 max-w-[94vw] sm:max-w-full overflow-x-auto sm:overflow-visible no-scrollbar",
           className
@@ -194,9 +194,9 @@ export const Dock = React.forwardRef(
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 38) : baseSize;
-    const effectiveMagnification = isMobile ? Math.min(magnification, 52) : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 90) : distance;
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 24) : baseSize;
+    const effectiveMagnification = isMobile ? Math.min(magnification, 44) : magnification;
+    const effectiveDistance = isMobile ? Math.min(distance, 80) : distance;
     const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
 
     return (
@@ -210,7 +210,7 @@ export const Dock = React.forwardRef(
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end rounded-2xl px-3 sm:px-4 pb-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
           "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10",
           "ring-1 ring-black/5 dark:ring-white/5 max-w-[94vw] sm:max-w-full overflow-x-auto sm:overflow-visible no-scrollbar",
           className

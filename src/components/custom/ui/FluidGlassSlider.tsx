@@ -133,15 +133,7 @@ export default function FluidGlassSlider({ className }: Props) {
             Fluid Glass
           </h1>
         </div>
-        <div className="flex-1 flex justify-end">
-          <a
-            onMouseEnter={hideCursor}
-            onMouseLeave={showCursor}
-            className="group text-[10px] md:text-[11px] font-semibold tracking-[0.2em] uppercase drop-shadow-md flex items-center gap-2 pointer-events-auto cursor-pointer"
-          >
-            Sign up
-          </a>
-        </div>
+        <div className="flex-1 hidden sm:block"></div>
       </header>
       <main
         ref={sliderRef}

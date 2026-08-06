@@ -519,9 +519,9 @@ export default function RealFormWizard() {
         sandbox="stepper"
         sandboxProps={{ color }}
       >
-        <div className="w-full flex justify-center bg-zinc-50 dark:bg-[#020202] py-16 px-4 transition-colors duration-300 relative overflow-hidden min-h-[600px]">
+        <div className="w-full flex justify-center relative overflow-hidden min-h-[600px]">
           {/* Main Wizard Card Container */}
-          <div className="w-full max-w-3xl flex flex-col gap-8 bg-white dark:bg-zinc-950/80 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800/80 shadow-xl relative z-10">
+          <div className="w-full max-w-3xl flex flex-col gap-8 bg-white dark:bg-zinc-950/80 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800/80 relative z-10">
             {/* 1. The GSAP Stepper Navigation (Click circles to jump if valid) */}
             <Stepper
               steps={steps}
