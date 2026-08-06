@@ -33,15 +33,41 @@ export interface FloatingContactButtonProps
   onSendMessage?: (message: string) => void;
 }
 
+function resolveColor(c: string): string {
+  if (!c || c === "primary" || c === "default") return "var(--primary)";
+  if (
+    c.startsWith("#") ||
+    c.startsWith("rgb") ||
+    c.startsWith("hsl") ||
+    c.startsWith("var(")
+  )
+    return c;
+  const colorMap: Record<string, string> = {
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    zinc: "#18181b",
+    amber: "#f59e0b",
+    violet: "#8b5cf6",
+    cyan: "#06b6d4",
+    blue: "#3b82f6",
+  };
+  return colorMap[c] || "var(--primary)";
+}
+
 function hexToRgba(hex: string, alpha: number): string {
+  if (!hex) return `rgba(99, 102, 241, ${alpha})`;
+  const resolved = resolveColor(hex);
+  if (resolved.startsWith("var("))
+    return `color-mix(in srgb, ${resolved} ${alpha * 100}%, transparent)`;
   let c: any;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(resolved)) {
+    c = resolved.substring(1).split("");
     if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     c = "0x" + c.join("");
     return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",")},${alpha})`;
   }
-  return hex;
+  return resolved;
 }
 
 export const FloatingContactButtonBlock = React.forwardRef<
@@ -273,7 +299,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
               )}
             >
               <div
-                style={{ backgroundColor: accentColor }}
+                style={{ backgroundColor: resolveColor(accentColor) }}
                 className="p-4 sm:p-5 text-white flex items-center justify-between relative overflow-hidden shrink-0 transition-colors duration-300"
               >
                 <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
@@ -334,7 +360,9 @@ export const FloatingContactButtonBlock = React.forwardRef<
                     >
                       <div
                         style={{
-                          backgroundColor: isUser ? accentColor : undefined,
+                          backgroundColor: isUser
+                            ? resolveColor(accentColor)
+                            : undefined,
                           color: isUser ? "#ffffff" : undefined,
                         }}
                         className={cn(
@@ -390,7 +418,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   disabled={!inputValue.trim()}
                   style={{
                     backgroundColor: inputValue.trim()
-                      ? accentColor
+                      ? resolveColor(accentColor)
                       : undefined,
                   }}
                   className={cn(
@@ -412,7 +440,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: resolveColor(accentColor) }}
           className={cn(
             "pointer-events-auto absolute inset-0 flex items-center justify-center rounded-full text-white shadow-2xl transition-colors duration-300 cursor-pointer outline-none",
           )}
