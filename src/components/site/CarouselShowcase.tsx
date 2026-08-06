@@ -200,7 +200,7 @@ export default function FluidGlassSlider({ className }: { className?: string }) 
       <header className="absolute top-0 left-0 w-full z-20 flex justify-between items-center p-6 md:p-8 pointer-events-none">
         <div className="flex-1 hidden sm:block"></div>
         <div className="flex-1 text-left sm:text-center"><h1 className="text-xl md:text-2xl font-medium tracking-wide drop-shadow-md pointer-events-auto cursor-pointer hover:opacity-70 transition">Fluid Glass</h1></div>
-        <div className="flex-1 flex justify-end"><a href="#" onMouseEnter={hideCursor} onMouseLeave={showCursor} className="group text-[10px] md:text-[11px] font-semibold tracking-[0.2em] uppercase drop-shadow-md flex items-center gap-2 pointer-events-auto">GET A QUOTE</a></div>
+        <div className="flex-1 hidden sm:block"></div>
       </header>
       <main ref={sliderRef} className="flex h-full" style={{ width: \`\${slidesData.length * 100}%\` }}>
         {slidesData.map((slide) => (
