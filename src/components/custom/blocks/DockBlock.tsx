@@ -55,15 +55,15 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
     }, []);
 
     // Responsive physics sizing fallbacks for mobile viewports
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 28) : baseSize;
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 24) : baseSize;
     const effectiveMagnification = isMobile
-      ? Math.min(magnification, 38)
+      ? Math.min(magnification, 44)
       : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 70) : distance;
+    const effectiveDistance = isMobile ? Math.min(distance, 80) : distance;
     const effectiveGap = isMobile ? Math.min(gap, 3) : gap;
 
     const dynamicHeight = typeof containerHeight === "number"
-      ? `${isMobile ? Math.min(containerHeight, 46) : containerHeight}px`
+      ? `${isMobile ? Math.min(containerHeight, 45) : containerHeight}px`
       : containerHeight;
 
     return (
@@ -77,7 +77,7 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 py-2 sm:py-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
           "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10",
           "ring-1 ring-black/5 dark:ring-white/5",
           "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
@@ -153,7 +153,7 @@ const DockIcon: React.FC<DockIconProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
             transition={{ duration: 0.15 }}
-            className="absolute -top-9 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium whitespace-nowrap pointer-events-none shadow-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border border-zinc-800 dark:border-zinc-200 z-50"
+            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border border-zinc-800 dark:border-zinc-200 z-50"
           >
             {item.label}
           </motion.div>
