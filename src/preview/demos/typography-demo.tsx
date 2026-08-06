@@ -16,7 +16,7 @@ import {
 
 export default function TypographyDemo() {
   return (
-    <div className="w-full min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10 overflow-hidden">
+    <div className="w-full min-h-[400px] relative z-10 overflow-hidden">
       <div className="mx-auto max-w-2xl">
         <H1>The Elements of UI</H1>
         <Lead className="mt-4">

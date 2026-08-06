@@ -12,7 +12,7 @@ export default function SonnerDemo({
       {/* The Toaster is mounted inside the demo so toasts render in the sandbox page */}
       <Toaster position={position} />
 
-      <div className="w-full flex flex-wrap gap-4 items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10">
+      <div className="w-full flex flex-wrap gap-4 items-center justify-center min-h-[300px] relative z-10">
         <button
           onClick={() =>
             toast("Profile updated successfully", {

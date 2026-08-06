@@ -24,7 +24,7 @@ export default function DatePickerDemo({
   const [date, setDate] = useState<Date | null>(null);
 
   return (
-    <div className="w-full flex flex-col items-start justify-center min-h-[500px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
+    <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
       <div className="w-full max-w-sm mx-auto">
         <DatePickerBlock
           key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}`}

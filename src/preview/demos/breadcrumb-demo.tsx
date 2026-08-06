@@ -33,7 +33,7 @@ export default function BreadcrumbDemo({
   isLongPath?: boolean;
 }) {
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 py-[50px] px-4 sm:px-8">
+    <div className="w-full flex items-center justify-center">
       {/* Key forces re-render so the "expansion" state resets when user changes length */}
       <BreadcrumbBlock
         key={`${variant}-${color}-${isLongPath}`}

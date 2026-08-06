@@ -389,7 +389,7 @@ export default function Page() {
       >
         {/* CRITICAL: relative and overflow-hidden trap the absolute modal inside the preview box */}
         <div
-          className={`relative overflow-hidden w-full flex items-center justify-center min-h-[550px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50" : "bg-zinc-50/50 dark:bg-[#0a0a0a]"}`}
+          className={`relative overflow-hidden w-full flex items-center justify-center min-h-[550px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50" : ""}`}
         >
           <ModalBlock
             key={`${type}-${variant}-${color}`}

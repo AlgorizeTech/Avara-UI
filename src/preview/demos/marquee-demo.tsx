@@ -123,7 +123,7 @@ export default function MarqueeDemo({
   };
 
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10 overflow-hidden">
+    <div className="w-full flex items-center justify-center relative z-10 overflow-hidden">
       <MarqueeBlock
         key={`${contentType}-${direction}-${speed}-${pauseOnHover}-${fade}`} // Force re-render on drastic changes to ensure clean animation resets
         direction={direction}

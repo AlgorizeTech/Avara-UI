@@ -292,7 +292,7 @@ export default function LayoutHeader() {
         sandbox="theme-switcher"
         sandboxProps={{ variant }}
       >
-        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-24 overflow-hidden relative">
+        <div className="w-full flex items-center justify-center relative overflow-hidden">
           {/* Render the component based on active state */}
           <div className="flex flex-col items-center gap-8">
             <ThemeSwitcher variant={variant} />

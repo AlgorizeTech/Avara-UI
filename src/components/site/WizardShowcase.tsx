@@ -313,7 +313,7 @@ export default function OnboardingFlow() {
         sandbox="wizard"
         sandboxProps={{ color, wizardKey: key }}
       >
-        <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] overflow-hidden">
+        <div className="w-full flex items-center justify-center overflow-hidden">
           <Wizard key={key} color={color}>
             {/* The absolute top progress bar */}
             <WizardProgress />

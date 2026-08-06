@@ -36,7 +36,7 @@ export default function ToggleGroupDemo({
     useState<string[]>(initialMultipleValue);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[400px] gap-12 transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 sm:p-12 relative z-10">
+    <div className="w-full flex flex-col items-center justify-center min-h-[400px] gap-12 relative z-10">
       {/* Example 1: Single Selection (Alignment) */}
       <div className="flex flex-col items-center gap-4">
         <label className="text-sm font-bold text-zinc-500 uppercase tracking-widest">

@@ -223,8 +223,8 @@ export default function AppNavigation() {
         sandbox="menubar"
         sandboxProps={{ theme }}
       >
-        <div className="w-full flex flex-col items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] p-6 sm:p-12 relative z-10">
-          <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg overflow-hidden flex flex-col h-[280px]">
+        <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
+          <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden flex flex-col h-[280px]">
             {/* Native OS-style Application Header */}
             <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 px-2 py-1 flex items-center justify-between">
               <Menubar className="border-none bg-transparent shadow-none w-full justify-start h-8">

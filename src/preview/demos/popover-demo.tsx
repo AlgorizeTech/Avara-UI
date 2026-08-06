@@ -15,7 +15,7 @@ export default function PopoverDemo({
   align?: "start" | "center" | "end";
 }) {
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-6 relative z-10 overflow-hidden">
+    <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
       <Popover>
         <PopoverTrigger>
           <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold">

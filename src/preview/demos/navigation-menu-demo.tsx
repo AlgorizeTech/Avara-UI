@@ -23,11 +23,11 @@ export default function NavigationMenuDemo({
 }) {
   return (
     <div
-      className={`relative overflow-visible w-full flex items-start justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${
+      className={`relative overflow-visible w-full flex items-start justify-center min-h-[450px] ${
         variant === "glass"
-          ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"
-          : "bg-zinc-50 dark:bg-[#050505]"
-      } p-3 sm:p-6 md:p-12`}
+          ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-3 sm:p-6 md:p-12"
+          : ""
+      }`}
     >
       <NavigationMenu
         key={`${variant}-${color}`}

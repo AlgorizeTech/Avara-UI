@@ -259,7 +259,7 @@ export default function Demo() {
         sandboxProps={{ variant, orientation, hideTrack, autoHide, color }}
       >
         <div
-          className={`w-full flex items-center justify-center min-h-[450px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center" : "bg-zinc-50 dark:bg-[#050505] p-6 relative z-10"}`}
+          className={`w-full flex items-center justify-center min-h-[450px] ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-6" : "relative z-10"}`}
         >
           <ScrollAreaBlock
             key={`${variant}-${color}-${orientation}-${hideTrack}-${autoHide}`}

@@ -42,7 +42,7 @@ export default function ButtonDemo({
   layout?: LayoutType;
 }) {
   return (
-    <div className="w-full flex items-center justify-center min-h-[350px] bg-white dark:bg-black py-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+    <div className="w-full flex items-center justify-center min-h-[350px]">
       {layout === "basic" && (
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex flex-col gap-4">

@@ -20,7 +20,7 @@ export default function CardDemo({
   layout?: "standard" | "grid" | "stats";
 }) {
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#f8fafc] dark:bg-[#050505] p-6 relative z-10 overflow-hidden">
+    <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
       {layout === "standard" && (
         <Card variant={variant} interactive={interactive} className="w-full max-w-sm">
           <CardHeader>

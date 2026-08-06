@@ -15,7 +15,7 @@ export function SandboxFrame({
   viewportWidth,
   scale = 1,
   resetKey = 0,
-  minHeight = 0,
+  minHeight = 400,
   maxHeight = 820,
   className,
 }: {
