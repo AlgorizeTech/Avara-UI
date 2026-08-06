@@ -22,9 +22,9 @@ export type ChatVariant = "default" | "minimal" | "glass";
 export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
-  default: { wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl", sidebar: "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50", main: "bg-white dark:bg-[#09090b]", header: "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", footer: "bg-white/80 dark:bg-[#09090b]/80 border-t border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", inputBg: "bg-zinc-100 dark:bg-zinc-900 border border-transparent", msgThem: "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 rounded-2xl rounded-bl-sm border border-zinc-200 dark:border-zinc-800/80 shadow-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm border border-transparent" },
+  default: { wrapper: "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl", sidebar: "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50", main: "bg-white dark:bg-[#09090b]", header: "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", footer: "bg-white/80 dark:bg-[#09090b]/80 border-t border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl", inputBg: "bg-zinc-100 dark:bg-zinc-900 border border-transparent", msgThem: "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 rounded-2xl rounded-bl-sm border border-zinc-200 dark:border-zinc-800/80 shadow-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm border border-transparent" },
   minimal: { wrapper: "bg-transparent border-none shadow-none rounded-none", sidebar: "bg-zinc-50/50 dark:bg-zinc-900/30 rounded-2xl border border-zinc-100 dark:border-zinc-800/50 lg:mr-4", main: "bg-transparent", header: "bg-transparent border-b border-zinc-200 dark:border-zinc-800/50 mb-2 pb-4", footer: "bg-transparent border-t border-zinc-200 dark:border-zinc-800/50 mt-2 pt-4", inputBg: "bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800", msgThem: "bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-bl-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm" },
-  glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl", sidebar: "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10", main: "bg-transparent", header: "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md", footer: "bg-white/10 dark:bg-black/10 border-t border-white/20 dark:border-white/10 backdrop-blur-md", inputBg: "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md", msgThem: "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-lg" },
+  glass: { wrapper: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl", sidebar: "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10", main: "bg-transparent", header: "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md", footer: "bg-white/10 dark:bg-black/10 border-t border-white/20 dark:border-white/10 backdrop-blur-md", inputBg: "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md", msgThem: "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm", msgMe: "text-white rounded-2xl rounded-br-sm shadow-lg" },
 };
 
 const colorThemes: Record<string, Record<string, string>> = {
@@ -92,6 +92,16 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
     }
   }, [chatHistories, activeContact, isTyping]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const filteredContacts = contacts.filter((contact) => {
     const matchesSearch = contact.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = filterType === "all" || contact.status === "online";
@@ -140,8 +150,8 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
   };
 
   return (
-    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
-      <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}\`, styles.sidebar)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+      <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}\`, styles.sidebar)}>
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Messages</h1>
@@ -337,6 +347,16 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
     }
   }, [chatHistories, activeContact, isTyping]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const filteredContacts = contacts.filter((contact) => {
     const matchesSearch = contact.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = filterType === "all" || contact.status === "online";
@@ -385,8 +405,8 @@ export default function ChatApp({ currentUser, contactsData, variant = "default"
   };
 
   return (
-    <div style={customVars} className={cn("w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
-      <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}\`, styles.sidebar)}>
+    <div style={customVars} className={cn("w-full max-w-full h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300", styles.wrapper)}>
+      <aside className={cn(\`absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out \${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}\`, styles.sidebar)}>
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Messages</h1>
