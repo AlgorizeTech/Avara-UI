@@ -94,7 +94,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
       */}
       <motion.div 
         onViewportEnter={() => setIsInView(true)}
-        className="relative w-full max-w-[1320px] mx-auto h-[400px] sm:h-[540px] md:h-[680px] lg:h-[760px] flex items-end justify-center"
+        className="relative w-full max-w-[960px] mx-auto h-[360px] sm:h-[480px] md:h-[580px] lg:h-[620px] flex items-end justify-center"
       >
         {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
         <div className="absolute inset-0 z-10 pointer-events-none">
@@ -284,7 +284,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               </Link>
             </motion.div>
 
-            {/* Card 3: Loader (loader.tsx) -> Violet/Fuchsia Tint */}
+            {/* Card 3: Breadcrumb (breadcrumb.tsx) -> Violet/Fuchsia Tint */}
             <motion.div
               custom={{ initX: 180, initY: 280, rotate: -4, delay: 0.46, zIndex: 16 }}
               variants={fanOutVariants}
@@ -293,7 +293,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
               className="absolute top-[18%] left-[12%] sm:left-[16%] md:left-[20%] lg:left-[23%] w-[155px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[145px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 cursor-pointer group bg-gradient-to-br from-violet-500/10 via-card to-fuchsia-500/10 p-3 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/loader" className="w-full h-full flex flex-col justify-between">
+              <Link href="/docs/nextjs/breadcrumb" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-violet-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-violet-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -302,16 +302,17 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                       <span className="size-1.5 rounded-full bg-amber-500/80 inline-block" />
                       <span className="size-1.5 rounded-full bg-emerald-500/80 inline-block" />
                     </div>
-                    <span className="text-[9px] font-mono text-muted-foreground/70 truncate max-w-[120px] font-semibold">loader.tsx</span>
+                    <span className="text-[9px] font-mono text-muted-foreground/70 truncate max-w-[120px] font-semibold">breadcrumb.tsx</span>
                     <div className="size-2 rounded-full bg-violet-500/40" />
                   </div>
 
-                  <div className="my-auto flex items-center justify-center gap-3">
-                    <div className="size-6 sm:size-8 rounded-full border-2 border-violet-500 border-t-transparent animate-spin" />
-                    <div className="flex gap-1">
-                      <span className="size-1.5 sm:size-2 rounded-full bg-violet-500 animate-bounce" />
-                      <span className="size-1.5 sm:size-2 rounded-full bg-violet-500/60 animate-bounce [animation-delay:0.2s]" />
-                      <span className="size-1.5 sm:size-2 rounded-full bg-violet-500/30 animate-bounce [animation-delay:0.4s]" />
+                  <div className="w-full flex items-center justify-center my-auto">
+                    <div className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-card border border-violet-500/20 shadow-sm flex items-center gap-1 sm:gap-1.5 text-[6.5px] sm:text-[8px] font-bold">
+                      <span className="text-muted-foreground">Docs</span>
+                      <span className="text-muted-foreground/50">/</span>
+                      <span className="text-muted-foreground">Components</span>
+                      <span className="text-muted-foreground/50">/</span>
+                      <span className="text-violet-600 dark:text-violet-400 font-extrabold">Breadcrumb</span>
                     </div>
                   </div>
                 </div>
@@ -320,10 +321,10 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
                     <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-violet-500 truncate">
-                      Loader
+                      Breadcrumb
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
-                      Spinners &amp; Pulse
+                      Truncated Navigation
                     </p>
                   </div>
                   <div className="size-6 sm:size-7 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-500 transition-all group-hover:bg-violet-600 group-hover:text-white shrink-0">
@@ -544,17 +545,24 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
         </div>
 
         {/* ═══════════════════════════════════════════════
-           FOREGROUND SOLID THEME FOLDER BOX (SCALED FOR LARGE CANVAS)
+           FOREGROUND BLUE FROSTED GLASS FOLDER BOX (SLIGHTLY LARGER BALANCED STAGE WIDTH)
            ═══════════════════════════════════════════════ */}
-        <div className="absolute bottom-0 w-[94%] sm:w-[88%] md:w-[780px] lg:w-[920px] h-[220px] sm:h-[290px] md:h-[380px] lg:h-[430px] z-30 pointer-events-none">
+        <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[190px] sm:h-[250px] md:h-[310px] lg:h-[350px] z-30 pointer-events-none">
           <div className="relative w-full h-full">
             {/* Folder Box */}
-            <div className="absolute inset-0 overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl">
+            <div className="absolute inset-0">
               <svg
                 className="w-full h-full"
                 viewBox="0 0 640 310"
                 preserveAspectRatio="none"
               >
+                <defs>
+                  <linearGradient id="themeFolderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.75" />
+                    <stop offset="50%" stopColor="var(--primary)" stopOpacity="0.82" />
+                    <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.9" />
+                  </linearGradient>
+                </defs>
                 <path
                   d="
                     M 0 20
@@ -570,17 +578,17 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                     C 8 310, 0 302, 0 294
                     Z
                   "
-                  fill="var(--primary)"
-                  stroke="rgba(255, 255, 255, 0.4)"
+                  fill="url(#themeFolderGradient)"
+                  stroke="rgba(255, 255, 255, 0.45)"
                   strokeWidth="2"
                 />
               </svg>
             </div>
 
             {/* Folder Text Content Overlay */}
-            <div className="absolute inset-0 p-6 sm:p-10 md:p-14 lg:p-16 flex flex-col justify-end pointer-events-auto">
+            <div className="absolute inset-0 p-5 sm:p-9 md:p-12 lg:p-14 flex flex-col justify-end pointer-events-auto">
               <div className="relative z-10 pb-1">
-                <h3 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white dark:text-black tracking-tight leading-[1.05] drop-shadow-md">
+                <h3 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground tracking-tight leading-[1.05]">
                   Design<br />Components
                 </h3>
               </div>
