@@ -558,12 +558,12 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               />
               <svg
                 className="w-full h-full relative z-10"
-                viewBox="0 0 640 310"
+                viewBox="-10 0 660 310"
                 preserveAspectRatio="none"
               >
                 <defs>
                   <clipPath id="folderShapeClip" clipPathUnits="objectBoundingBox">
-                    <path d="M 0,0.0645 C 0,0.0322 0.0156,0 0.03125,0 L 0.3047,0 C 0.3312,0 0.35,0.0387 0.36875,0.0709 C 0.3812,0.0903 0.4,0.1096 0.425,0.1096 L 0.96875,0.1096 C 0.9859,0.1096 1,0.1387 1,0.1742 L 1,0.9548 C 1,0.9806 0.9875,1 0.96875,1 L 0.03125,1 C 0.0125,1 0,0.9742 0,0.9483 Z" />
+                    <path d="M -0.012,0.0645 C -0.012,0.0322 0.003,0 0.027,0 L 0.303,0 C 0.328,0 0.347,0.0387 0.365,0.0709 C 0.377,0.0903 0.395,0.1096 0.42,0.1096 L 0.951,0.1096 C 0.968,0.1096 0.982,0.1387 0.982,0.1742 L 0.939,0.9548 C 0.939,0.9806 0.927,1 0.909,1 L 0.060,1 C 0.042,1 0.030,0.9742 0.030,0.9483 Z" />
                   </clipPath>
                   <linearGradient id="themeFolderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.75" />
@@ -573,17 +573,17 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                 </defs>
                 <path
                   d="
-                    M 0 20
-                    C 0 10, 10 0, 20 0
-                    L 195 0
-                    C 212 0, 224 12, 236 22
-                    C 244 28, 256 34, 272 34
-                    L 620 34
-                    C 631 34, 640 43, 640 54
-                    L 640 296
-                    C 640 304, 632 310, 620 310
-                    L 20 310
-                    C 8 310, 0 302, 0 294
+                    M -8 20
+                    C -8 10, 2 0, 18 0
+                    L 200 0
+                    C 217 0, 229 12, 241 22
+                    C 249 28, 261 34, 277 34
+                    L 628 34
+                    C 639 34, 648 43, 648 54
+                    L 620 296
+                    C 620 304, 612 310, 600 310
+                    L 40 310
+                    C 28 310, 20 302, 20 294
                     Z
                   "
                   fill="url(#themeFolderGradient)"
