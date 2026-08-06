@@ -190,15 +190,15 @@ export const AnimatedTypographyBlock = forwardRef<
     } else {
       // Default fallbacks if no size is explicitly passed
       const defaultSizeMap: Record<TypographyTag, string> = {
-        h1: "text-4xl sm:text-5xl lg:text-6xl",
-        h2: "text-3xl sm:text-4xl",
-        h3: "text-2xl sm:text-3xl",
-        h4: "text-xl sm:text-2xl",
-        h5: "text-lg sm:text-xl",
-        h6: "text-base sm:text-lg",
-        p: "text-base",
+        h1: "text-xl sm:text-3xl md:text-4xl lg:text-6xl",
+        h2: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
+        h3: "text-base sm:text-xl md:text-2xl lg:text-3xl",
+        h4: "text-sm sm:text-lg md:text-xl lg:text-2xl",
+        h5: "text-xs sm:text-base md:text-lg lg:text-xl",
+        h6: "text-xs sm:text-sm md:text-base lg:text-lg",
+        p: "text-xs sm:text-base",
         span: "text-inherit",
-        blockquote: "text-lg",
+        blockquote: "text-sm sm:text-lg",
       };
       sizeClass = defaultSizeMap[Tag];
     }
