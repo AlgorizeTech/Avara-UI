@@ -57,11 +57,7 @@ export default function AnimatedListDemo({
   animKey?: number;
 }) {
   return (
-    <div className="w-full min-h-[400px] flex justify-center items-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 py-8 sm:py-16 px-4 sm:px-8 relative">
-      {/* Subtle Abstract Background Glows */}
-      <div className="absolute top-[-100px] right-[-100px] w-96 h-96 bg-indigo-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
-      <div className="absolute bottom-[-100px] left-[-100px] w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
-
+    <div className="w-full flex justify-center items-center bg-white dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 py-6 px-4 relative overflow-hidden">
       {/* Toast Notification Container */}
       <div className="w-full max-w-md relative z-10">
         <AnimatedList key={animKey} variant={variant} ease={ease} staggerDelay={0.15}>

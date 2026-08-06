@@ -333,7 +333,7 @@ export function ComponentPreview({
         <div
           ref={areaRef}
           className={cn(
-            "flex items-stretch min-h-[400px] relative justify-start overflow-visible rounded-b-xl",
+            "flex items-stretch min-h-[0px] relative justify-start overflow-visible rounded-b-xl",
             "bg-zinc-50/50 dark:bg-[#020202]",
             activeTab !== "preview" && "hidden"
           )}

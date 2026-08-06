@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { sandboxRegistry } from "./registry";
 
-const SANDBOX_MIN_HEIGHT = 400;
+const SANDBOX_MIN_HEIGHT = 0;
 
 /** Mounts together with the lazy demo (same Suspense boundary), so this
  * effect firing means the demo's markup is really in the DOM — the parent
