@@ -94,7 +94,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
       */}
       <motion.div 
         onViewportEnter={() => setIsInView(true)}
-        className="relative w-full max-w-[960px] mx-auto h-[360px] sm:h-[480px] md:h-[580px] lg:h-[620px] flex items-end justify-center"
+        className="relative w-full max-w-[960px] mx-auto h-[430px] sm:h-[550px] md:h-[660px] lg:h-[700px] flex items-end justify-center"
       >
         {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
         <div className="absolute inset-0 z-10 pointer-events-none">
@@ -545,9 +545,9 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
         </div>
 
         {/* ═══════════════════════════════════════════════
-           FOREGROUND BLUE FROSTED GLASS FOLDER BOX (SLIGHTLY LARGER BALANCED STAGE WIDTH)
+           FOREGROUND BLUE FROSTED GLASS FOLDER BOX (+50PX HEIGHT, TIGHTER CORNERS)
            ═══════════════════════════════════════════════ */}
-        <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[190px] sm:h-[250px] md:h-[310px] lg:h-[350px] z-30 pointer-events-none">
+        <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[260px] sm:h-[330px] md:h-[400px] lg:h-[440px] z-30 pointer-events-none">
           <div className="relative w-full h-full">
             {/* Folder Box */}
             <div className="absolute inset-0">
@@ -563,7 +563,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               >
                 <defs>
                   <clipPath id="folderShapeClip" clipPathUnits="objectBoundingBox">
-                    <path d="M -0.012,0.0645 C -0.012,0.0322 0.003,0 0.027,0 L 0.303,0 C 0.328,0 0.347,0.0387 0.365,0.0709 C 0.377,0.0903 0.395,0.1096 0.42,0.1096 L 0.951,0.1096 C 0.968,0.1096 0.982,0.1387 0.982,0.1742 L 0.939,0.9548 C 0.939,0.9806 0.927,1 0.909,1 L 0.060,1 C 0.042,1 0.030,0.9742 0.030,0.9483 Z" />
+                    <path d="M -0.012,0.0258 C -0.012,0.0097 -0.004,0 0.012,0 L 0.500,0 C 0.525,0 0.545,0.0806 0.564,0.145 C 0.576,0.187 0.594,0.2193 0.618,0.2193 L 0.966,0.2193 C 0.975,0.2193 0.982,0.2322 0.982,0.258 L 0.939,0.9742 C 0.939,0.9903 0.933,1 0.924,1 L 0.045,1 C 0.036,1 0.030,0.9903 0.030,0.9742 Z" />
                   </clipPath>
                   <linearGradient id="themeFolderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.75" />
@@ -573,17 +573,17 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
                 </defs>
                 <path
                   d="
-                    M -8 20
-                    C -8 10, 2 0, 18 0
-                    L 200 0
-                    C 217 0, 229 12, 241 22
-                    C 249 28, 261 34, 277 34
-                    L 628 34
-                    C 639 34, 648 43, 648 54
-                    L 620 296
-                    C 620 304, 612 310, 600 310
-                    L 40 310
-                    C 28 310, 20 302, 20 294
+                    M -8 8
+                    C -8 3, -3 0, 8 0
+                    L 330 0
+                    C 347 0, 360 25, 372 45
+                    C 380 58, 392 68, 408 68
+                    L 638 68
+                    C 644 68, 648 72, 648 80
+                    L 620 302
+                    C 620 307, 616 310, 610 310
+                    L 30 310
+                    C 24 310, 20 307, 20 302
                     Z
                   "
                   fill="url(#themeFolderGradient)"
@@ -594,8 +594,8 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
             </div>
 
             {/* Folder Text Content Overlay */}
-            <div className="absolute inset-0 p-5 sm:p-9 md:p-12 lg:p-14 flex flex-col justify-end pointer-events-auto">
-              <div className="relative z-10 pb-1">
+            <div className="absolute inset-0 p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-end pointer-events-auto">
+              <div className="relative z-10">
                 <h3 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground tracking-tight leading-[1.05]">
                   Design<br />Components
                 </h3>
