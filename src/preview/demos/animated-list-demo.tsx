@@ -57,38 +57,38 @@ export default function AnimatedListDemo({
   animKey?: number;
 }) {
   return (
-    <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative">
+    <div className="w-full min-h-[400px] flex justify-center items-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 py-8 sm:py-16 px-4 sm:px-8 relative">
       {/* Subtle Abstract Background Glows */}
       <div className="absolute top-[-100px] right-[-100px] w-96 h-96 bg-indigo-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
       <div className="absolute bottom-[-100px] left-[-100px] w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
 
       {/* Toast Notification Container */}
-      <div className="w-full max-w-sm relative z-10">
+      <div className="w-full max-w-md relative z-10">
         <AnimatedList key={animKey} variant={variant} ease={ease} staggerDelay={0.15}>
           {notifications.map((notif) => (
-            <AnimatedListItem key={notif.id}>
-              <div className="flex items-center gap-3">
+            <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+              <div className="flex items-center gap-3 min-w-0">
                 {/* Icon Container with Hover Bounce */}
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
+                    "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
                     notif.bg,
                     notif.color,
                   )}
                 >
-                  <notif.icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                  <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex items-center justify-between gap-2">
-                    <h4 className="text-[13.5px] font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                    <h4 className="text-[13px] sm:text-[13.5px] font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {notif.title}
                     </h4>
-                    <span className="text-[10.5px] font-semibold text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+                    <span className="text-[10px] sm:text-[10.5px] font-semibold text-zinc-400 dark:text-zinc-500 flex-shrink-0">
                       {notif.time}
                     </span>
                   </div>
-                  <p className="text-[12px] font-medium text-zinc-500 dark:text-zinc-400 truncate mt-[1px]">
+                  <p className="text-[11.5px] sm:text-[12px] font-medium text-zinc-500 dark:text-zinc-400 leading-snug break-words line-clamp-2 mt-[1px]">
                     {notif.desc}
                   </p>
                 </div>
