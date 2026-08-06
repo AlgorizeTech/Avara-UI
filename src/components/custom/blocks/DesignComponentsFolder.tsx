@@ -551,12 +551,20 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
           <div className="relative w-full h-full">
             {/* Folder Box */}
             <div className="absolute inset-0">
+              {/* Subtle backdrop blur clipped strictly within folder shape boundaries */}
+              <div 
+                className="absolute inset-0 backdrop-blur-[3px] pointer-events-none"
+                style={{ clipPath: "url(#folderShapeClip)" }}
+              />
               <svg
-                className="w-full h-full"
+                className="w-full h-full relative z-10"
                 viewBox="0 0 640 310"
                 preserveAspectRatio="none"
               >
                 <defs>
+                  <clipPath id="folderShapeClip" clipPathUnits="objectBoundingBox">
+                    <path d="M 0,0.0645 C 0,0.0322 0.0156,0 0.03125,0 L 0.3047,0 C 0.3312,0 0.35,0.0387 0.36875,0.0709 C 0.3812,0.0903 0.4,0.1096 0.425,0.1096 L 0.96875,0.1096 C 0.9859,0.1096 1,0.1387 1,0.1742 L 1,0.9548 C 1,0.9806 0.9875,1 0.96875,1 L 0.03125,1 C 0.0125,1 0,0.9742 0,0.9483 Z" />
+                  </clipPath>
                   <linearGradient id="themeFolderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.75" />
                     <stop offset="50%" stopColor="var(--primary)" stopOpacity="0.82" />
