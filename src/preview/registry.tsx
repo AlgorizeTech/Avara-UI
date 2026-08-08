@@ -44,6 +44,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "flowchart": lazy(() => import("./demos/flowchart-demo")),
   "form": lazy(() => import("./demos/form-demo")),
   "design-components-folder": lazy(() => import("./demos/design-components-folder-demo")),
+  "design-folder-box": lazy(() => import("./demos/design-folder-box-demo")),
   "half-stars": lazy(() => import("./demos/half-stars-demo")),
   "hero-data": lazy(() => import("./demos/hero-data-demo")),
   "hero": lazy(() => import("./demos/hero-demo")),

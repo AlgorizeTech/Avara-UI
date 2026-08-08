@@ -74,6 +74,34 @@ export default function AnalyticsDashboard() {
 
 </VariantSection>
 
+<VariantSection variant="zoom">
+
+```tsx
+import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+
+export default function AnalyticsDashboard() {
+  const mapData = [
+    { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
+    { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
+    { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
+  ];
+
+  return (
+    <div className="w-full h-[500px]">
+      <DataMaps 
+        dataPoints={mapData} 
+        zoom={2} 
+        variant="dots" 
+        zoomable={true} 
+        scrollWheelZoom={true} 
+      />
+    </div>
+  );
+}
+```
+
+</VariantSection>
+
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
 

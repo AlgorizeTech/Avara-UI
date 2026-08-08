@@ -39,6 +39,7 @@ export const sandboxNames = [
   "flowchart",
   "form",
   "design-components-folder",
+  "design-folder-box",
   "half-stars",
   "hero-data",
   "hero",
