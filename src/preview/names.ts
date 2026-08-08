@@ -11,7 +11,6 @@ export const sandboxNames = [
   "animated-typography",
   "api-playground",
   "auth",
-  "avatar",
   "breadcrumb",
   "button",
   "calendar",

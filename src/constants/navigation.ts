@@ -49,7 +49,6 @@ export const navigation: NavigationItem[] = [
   {
     label: "Ui Components",
     children: [
-      { label: "Avatar", href: "/docs/nextjs/avatar", },
       { label: "Accordion", href: "/docs/nextjs/accordion",  },
       { label: "Alert", href: "/docs/nextjs/alert",  },
       { label: "Ai-Chat", href: "/docs/nextjs/ai-chat",  },

@@ -37,7 +37,6 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     categorySubtitle: "Essential primitive building blocks for clean, high-performance web applications.",
     icon: Boxes,
     items: [
-      { title: "Avatar", countText: "User Profile Badge", href: "/docs/nextjs/avatar", illustrationType: "avatar" },
       { title: "Accordion", countText: "Expandable Panels", href: "/docs/nextjs/accordion", illustrationType: "accordion" },
       { title: "Alert", countText: "Notification Banners", href: "/docs/nextjs/alert", illustrationType: "modal" },
       { title: "Ai-Chat", countText: "Streaming Interface", href: "/docs/nextjs/ai-chat", illustrationType: "chat" },

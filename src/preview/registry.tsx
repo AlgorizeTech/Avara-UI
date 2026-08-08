@@ -16,7 +16,6 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "animated-typography": lazy(() => import("./demos/animated-typography-demo")),
   "api-playground": lazy(() => import("./demos/api-playground-demo")),
   "auth": lazy(() => import("./demos/auth-demo")),
-  "avatar": lazy(() => import("./demos/avatar-demo")),
   "breadcrumb": lazy(() => import("./demos/breadcrumb-demo")),
   "button": lazy(() => import("./demos/button-demo")),
   "calendar": lazy(() => import("./demos/calendar-demo")),
