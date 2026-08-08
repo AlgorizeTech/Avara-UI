@@ -2,6 +2,10 @@
 
 A collection of modern, highly composable Hero components for marketing websites. Built with Tailwind CSS and Framer Motion. This block separates layout structure from visual style through **Compound Components**, so you can write the exact same clean component structure every time.
 
+## Interactive Main Homepage Hero
+
+The flagship centered Hero section with dynamic typing animation, top sparkle pill badge, quick CLI copy button, and call-to-action buttons.
+
 ---
 
 ## React SaaS Hero

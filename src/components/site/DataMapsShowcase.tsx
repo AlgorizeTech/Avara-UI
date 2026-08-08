@@ -320,7 +320,7 @@ import { cn } from "@/lib/utils";
 
 export function DataMapsShowcase() {
 	const [color, setColor] = useState("primary");
-	const [variant, setVariant] = useState<"fill" | "dots">("fill");
+	const [variant, setVariant] = useState<"fill" | "dots" | "zoomable-dots">("fill");
 
 	const handleColorChange = (newColor: string) => {
 		setColor(newColor);
@@ -340,15 +340,18 @@ export function DataMapsShowcase() {
 		return colors[c] || "var(--primary)";
 	};
 
+	const actualVariant = (variant as string) === "zoom" ? "dots" : variant;
+	const isZoomable = (variant as string) === "zoom";
+
 	return (
 		<div className="w-full flex flex-col gap-0 not-prose">
 			{/* --- CONTROL PANEL --- */}
 			<ShowcaseControlPanel className="flex flex-row gap-6 p-5 rounded-xl border-blue-600">
 				<VariantTabs
 					label="Map Variant"
-					variants={["fill", "dots"]}
+					variants={["fill", "dots", "zoom"]}
 					defaultValue="fill"
-					onValueChange={(v) => setVariant(v as "fill" | "dots")}
+					onValueChange={(v) => setVariant(v as "fill" | "dots" | "zoomable-dots")}
 				/>
 				<ThemeColorPicker
 					color={color}
@@ -365,11 +368,13 @@ export function DataMapsShowcase() {
 				usageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
 				jsUsageCode={variant === "fill" ? FILL_USAGE_CODE : DOTS_USAGE_CODE}
 				sandbox="data-maps"
-				sandboxProps={{ variant, color }}
+				sandboxProps={{ variant: actualVariant, color, zoomable: isZoomable }}
 				>
-				<div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
+				<div className="w-full min-h-[280px] sm:min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
 					<DataMaps
-						variant={variant}
+						variant={actualVariant}
+						zoomable={isZoomable}
+						scrollWheelZoom={isZoomable}
 						dataPoints={SAMPLE_DATA}
 						zoom={2}
 						center={[30, 0]}

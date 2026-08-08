@@ -23,60 +23,46 @@ export type TimelineColor =
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    bg: "bg-[var(--theme-color,var(--primary))]",
-    text: "text-[var(--theme-color,var(--primary))]",
-    icon: "text-white",
-    dot: "bg-white",
-    border: "border-[var(--theme-color,var(--primary))]",
-    glow: "shadow-[0_0_15px_color-mix(in_srgb,var(--theme-color,var(--primary))_50%,transparent)]",
+    bg: "bg-primary",
+    text: "text-primary",
+    border: "border-primary",
+    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
   },
   indigo: {
     bg: "bg-indigo-600",
     text: "text-indigo-600 dark:text-indigo-400",
-    icon: "text-white",
-    dot: "bg-white",
     border: "border-indigo-500",
     glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]",
   },
   rose: {
     bg: "bg-rose-600",
     text: "text-rose-600 dark:text-rose-400",
-    icon: "text-white",
-    dot: "bg-white",
     border: "border-rose-500",
     glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]",
   },
   emerald: {
     bg: "bg-emerald-600",
     text: "text-emerald-600 dark:text-emerald-400",
-    icon: "text-white",
-    dot: "bg-white",
     border: "border-emerald-500",
     glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]",
   },
   blue: {
     bg: "bg-blue-600",
     text: "text-blue-600 dark:text-blue-400",
-    icon: "text-white",
-    dot: "bg-white",
     border: "border-blue-500",
     glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]",
+  },
+  violet: {
+    bg: "bg-violet-600",
+    text: "text-violet-600 dark:text-violet-400",
+    border: "border-violet-500",
+    glow: "shadow-[0_0_15px_rgba(139,92,246,0.5)]",
   },
   zinc: {
     bg: "bg-zinc-900 dark:bg-zinc-100",
     text: "text-zinc-900 dark:text-zinc-100",
-    icon: "text-white dark:text-zinc-900",
-    dot: "bg-white dark:bg-zinc-900",
     border: "border-zinc-900 dark:border-zinc-100",
     glow: "shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]",
-  },
-  white: {
-    bg: "bg-white dark:bg-zinc-100",
-    text: "text-zinc-900 dark:text-zinc-900",
-    icon: "text-zinc-900 dark:text-zinc-900",
-    dot: "bg-zinc-900 dark:bg-zinc-900",
-    border: "border-zinc-300 dark:border-zinc-400",
-    glow: "shadow-[0_0_15px_rgba(0,0,0,0.15)]",
   },
 };
 
@@ -96,16 +82,11 @@ const hexToRgb = (hex: string) => {
 export const getThemeStyles = (color: string) => {
   if (color && color.startsWith("#")) {
     const rgbStr = hexToRgb(color);
-    const [r, g, b] = rgbStr.split(",").map((x) => parseInt(x.trim(), 10));
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    const isLight = luminance > 0.6;
 
     return {
       theme: {
         bg: "bg-[var(--atl-color)]",
         text: "text-[var(--atl-color)]",
-        icon: isLight ? "text-zinc-900" : "text-white",
-        dot: isLight ? "bg-zinc-900" : "bg-white",
         border: "border-[var(--atl-color)]",
         glow: "shadow-[0_0_15px_var(--atl-glow)]",
       },
@@ -167,37 +148,51 @@ function AnimatedTimelineNode({
         if (entry.isIntersecting) setIsVisible(true);
         else setIsVisible(false);
       },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
     if (nodeRef.current) observer.observe(nodeRef.current);
     return () => observer.disconnect();
   }, []);
 
   let slideDir = "translate-y-8";
+  if (animation === "slide-in") {
+    if (layout === "left") slideDir = "-translate-x-12";
+    else if (layout === "right") slideDir = "translate-x-12 sm:translate-x-12";
+    else if (layout === "center") slideDir = isEven ? "-translate-x-12" : "translate-x-12";
+  }
 
   const getAnimationClasses = () => {
-    if (!isVisible) return "opacity-0 " + slideDir;
-    return "opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0 blur-0";
+    if (!isVisible) {
+      return cn(
+        "opacity-0 transition-all duration-700 ease-out",
+        animation === "fade-up" && "translate-y-8",
+        animation === "slide-in" && slideDir,
+        animation === "zoom-in" && "scale-90",
+        animation === "flip-up" && "[transform:rotateX(90deg)]",
+        animation === "blur-in" && "blur-md scale-95",
+      );
+    }
+    return cn(
+      "opacity-100 translate-y-0 translate-x-0 scale-100 [transform:rotateX(0deg)] blur-0",
+      "transition-all duration-700 ease-out",
+    );
   };
 
   return (
     <div
       ref={nodeRef}
-      className={cn(
-        "relative flex items-center w-full my-6 group",
-        layout === "left" && "justify-start",
-        layout === "right" && "justify-start sm:justify-end",
-        isCenter && "justify-start sm:justify-center",
-      )}
+      className="relative flex flex-col sm:flex-row w-full group [perspective:1000px]"
     >
       {/* Line connecting nodes */}
       {!isLast && (
         <div
           className={cn(
-            "absolute top-8 bottom-0 w-0.5 bg-zinc-200 dark:bg-zinc-800 left-4 sm:left-4",
-            layout === "left" && "sm:left-4",
-            layout === "right" && "sm:left-auto sm:right-4",
-            isCenter && "sm:left-1/2 sm:-translate-x-1/2",
+            "absolute w-[2px] bg-zinc-200 dark:bg-zinc-800 transition-all duration-1000 origin-top",
+            "left-[19px] sm:left-auto top-10 bottom-[-32px] sm:bottom-[-48px]",
+            layout === "left" && "sm:left-[19px]",
+            layout === "right" && "sm:right-[19px]",
+            layout === "center" && "sm:left-1/2 sm:-translate-x-1/2",
+            isVisible ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0",
           )}
         />
       )}
@@ -205,18 +200,30 @@ function AnimatedTimelineNode({
       {/* Node Dot / Icon Container */}
       <div
         className={cn(
-          "absolute z-10 flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-500 left-0 sm:left-0 bg-white dark:bg-[#09090b]",
+          "absolute z-10 flex items-center justify-center rounded-full border-2 bg-white dark:bg-[#09090b] transition-all duration-500 delay-200",
+          "w-10 h-10 left-0 sm:left-auto",
           layout === "left" && "sm:left-0",
-          layout === "right" && "sm:left-auto sm:right-0",
-          isCenter && "sm:left-1/2 sm:-translate-x-1/2",
-          theme.border,
-          theme.glow,
+          layout === "right" && "sm:right-0",
+          layout === "center" && "sm:left-1/2 sm:-translate-x-1/2",
+          isVisible
+            ? cn(theme.border, theme.glow, "scale-100 opacity-100")
+            : "border-zinc-200 dark:border-zinc-800 scale-50 opacity-0",
         )}
       >
         {Icon ? (
-          <Icon className={cn("w-4 h-4 transition-colors duration-300", theme.text)} />
+          <Icon
+            className={cn(
+              "w-4 h-4 transition-colors duration-500 delay-300",
+              isVisible ? theme.text : "text-zinc-400 dark:text-zinc-600",
+            )}
+          />
         ) : (
-          <div className={cn("w-2 h-2 rounded-full", theme.bg)} />
+          <div
+            className={cn(
+              "w-3 h-3 rounded-full transition-colors duration-500 delay-300",
+              isVisible ? theme.bg : "bg-zinc-300 dark:bg-zinc-700",
+            )}
+          />
         )}
       </div>
 
@@ -250,12 +257,17 @@ function AnimatedTimelineNode({
             <h3
               className={cn(
                 "text-base font-bold text-zinc-900 dark:text-zinc-100 transition-colors",
-                `group-hover:${theme.text}`,
+                "group-hover:text-[var(--atl-color)]",
               )}
             >
               {item.title}
             </h3>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 w-max shrink-0">
+            <span
+              className={cn(
+                "text-xs font-semibold px-2.5 py-1 rounded-md shrink-0 w-max bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors duration-500",
+                isVisible && theme.text,
+              )}
+            >
               {item.date}
             </span>
           </div>

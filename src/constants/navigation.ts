@@ -49,13 +49,12 @@ export const navigation: NavigationItem[] = [
   {
     label: "Ui Components",
     children: [
-      { label: "Avatar", href: "/docs/nextjs/avatar", },
       { label: "Accordion", href: "/docs/nextjs/accordion",  },
       { label: "Alert", href: "/docs/nextjs/alert",  },
       { label: "Ai-Chat", href: "/docs/nextjs/ai-chat",  },
       { label: "Api Playground", href: "/docs/nextjs/api-playground", badge: "New" },
       { label: "Breadcrumb", href: "/docs/nextjs/breadcrumb", },
-      { label: "Modern Buttons", href: "/docs/nextjs/button", },
+      { label: "Buttons", href: "/docs/nextjs/button", },
       { label: "Card", href: "/docs/nextjs/card", },
       { label: "Chart", href: "/docs/nextjs/chart", },
       { label: "Carousel", href: "/docs/nextjs/carousel", },
@@ -134,6 +133,7 @@ export const navigation: NavigationItem[] = [
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion" },
       { label: "Network Graph", href: "/docs/nextjs/network-graph", badge: "New" },
+      { label: "Design Components", href: "/docs/nextjs/design-components-folder", badge: "New" },
       { label: "Floating ContactButton", href: "/docs/nextjs/floating-contact-button", badge: "New" },
     ],
   },

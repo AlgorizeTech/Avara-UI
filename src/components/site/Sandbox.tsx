@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { CodeBlockClient } from "@/components/site/code-block-client";
 import {
   Code2,
   GripVertical,
   LayoutGrid,
+  Link as LinkIcon,
   Monitor,
   MonitorPlay,
   RotateCcw,
@@ -379,5 +381,205 @@ export function Sandbox({
         )}
       </div>
     </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  ExampleShowcase — shadcn-style stacked example gallery                    */
+/*                                                                            */
+/*  Purely additive: the Sandbox component above is unchanged, so pages that  */
+/*  don't use ExampleShowcase are unaffected.                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Renders any number of named examples of the SAME registered demo
+ * (src/preview/registry.tsx), each with its own title, optional subheading
+ * and prop combination. Every example embeds the original Sandbox, so
+ * example previews look identical to the classic showcase.
+ *
+ * Each Sandbox is gated behind an IntersectionObserver so below-fold
+ * examples don't boot their iframe until scrolled near.
+ *
+ * Tabs per example are driven by the content you provide:
+ *   - Preview: always
+ *   - Usage:   when `usage` code string is given
+ *   - Code:    when `code` code string is given
+ *
+ * `columns` controls the large-screen layout: 2 (default) lays examples out
+ * side by side on lg+ screens; 1 stacks them vertically.
+ */
+
+export interface ShowcaseExample {
+  title: string;
+  subheading?: string;
+  /** Anchor id override; defaults to a slug of the title. */
+  id?: string;
+  /** JSON-serializable props bridged into the sandbox demo for this preview. */
+  props?: Record<string, unknown>;
+  /** Authored usage snippet — adds a Usage tab (TSX; JS toggle built in). */
+  usage?: string;
+  /** Optional source snippet — adds a Code tab. */
+  code?: string;
+  /** Per-example overrides for the Sandbox. */
+  options?: SandboxOptions;
+  minHeight?: number;
+  maxHeight?: number;
+}
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+export function ExampleShowcase({
+  name,
+  examples,
+  columns = 1,
+  options,
+  minHeight = 400,
+  maxHeight = 820,
+  className,
+}: {
+  /** Registry name of the demo (src/preview/registry.tsx). */
+  name: string;
+  examples: ShowcaseExample[];
+  /** Previews per row on large screens. Default 2. */
+  columns?: 1 | 2;
+  /** Sandbox options applied to all examples (per-example wins). */
+  options?: SandboxOptions;
+  /** Defaults for all examples (per-example wins). */
+  minHeight?: number;
+  maxHeight?: number;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "not-prose my-8 grid grid-cols-1 gap-10",
+        columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
+        className,
+      )}
+    >
+      {examples.map((example) => (
+        <ExampleCard
+          key={example.id ?? slugify(example.title)}
+          name={name}
+          example={example}
+          options={example.options ?? options}
+          minHeight={example.minHeight ?? minHeight}
+          maxHeight={example.maxHeight ?? maxHeight}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ExampleCard({
+  name,
+  example,
+  options,
+  minHeight,
+  maxHeight,
+}: {
+  name: string;
+  example: ShowcaseExample;
+  options?: SandboxOptions;
+  minHeight: number;
+  maxHeight: number;
+}) {
+  const { title, subheading, props, usage, code } = example;
+  const anchor = example.id ?? slugify(title);
+
+  // The Sandbox (and its iframe) mounts only once the card nears the viewport.
+  const [mounted, setMounted] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || mounted) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setMounted(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMounted(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [mounted]);
+
+  const tabs: SandboxTab[] = [
+    { id: "preview", label: "Preview", resizable: true },
+  ];
+  if (usage) {
+    tabs.push({
+      id: "usage",
+      label: "Usage",
+      content: (
+        <div className="p-3">
+          <CodeBlockClient code={usage} lang="tsx" />
+        </div>
+      ),
+    });
+  }
+  if (code) {
+    tabs.push({
+      id: "component",
+      label: "Code",
+      content: (
+        <div className="p-3">
+          <CodeBlockClient code={code} lang="tsx" />
+        </div>
+      ),
+    });
+  }
+
+  return (
+    <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
+      {/* Title + optional subheading */}
+      <div>
+        <h3
+          id={anchor}
+          className="scroll-m-20 group text-lg font-semibold text-zinc-900 dark:text-zinc-50"
+        >
+          <a href={`#${anchor}`} className="inline-flex items-center gap-2">
+            {title}
+            <LinkIcon className="w-3.5 h-3.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </a>
+        </h3>
+        {subheading && (
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{subheading}</p>
+        )}
+      </div>
+
+      {/* Sandbox has its own my-8 — tighten it to the heading. */}
+      <div className="flex-1 [&>div]:!my-4">
+        {mounted ? (
+          <Sandbox
+            name={name}
+            sandboxProps={props}
+            tabs={tabs}
+            options={options}
+            minHeight={minHeight}
+            maxHeight={maxHeight}
+          />
+        ) : (
+          <div
+            className="my-4 w-full border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center bg-zinc-50/50 dark:bg-[#020202]"
+            style={{ minHeight: minHeight + 58 /* header bar height */ }}
+          >
+            <div className="h-5 w-5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 border-t-transparent animate-spin" />
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

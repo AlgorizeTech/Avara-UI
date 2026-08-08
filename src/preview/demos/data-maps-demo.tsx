@@ -79,14 +79,18 @@ const getHexForColor = (c: string) => {
 export default function DataMapsDemo({
   variant = "fill",
   color = "primary",
+  zoomable = false,
 }: {
   variant?: "fill" | "dots";
   color?: string;
+  zoomable?: boolean;
 }) {
   return (
     <div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
       <DataMaps
         variant={variant}
+        zoomable={zoomable}
+        scrollWheelZoom={zoomable}
         dataPoints={SAMPLE_DATA}
         zoom={2}
         center={[30, 0]}

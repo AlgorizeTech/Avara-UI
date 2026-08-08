@@ -10,29 +10,36 @@ const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.Map
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
 const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
 
-function ResizeHandler({ wrapperRef, initialZoom }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number }) {
+const ZoomControl = dynamic(() => import("react-leaflet").then((mod) => mod.ZoomControl), { ssr: false });
+
+function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number; zoomable?: boolean }) {
   const map = useMap();
-  const initialWidthRef = useRef<number>(0);
 
   useEffect(() => {
+    if (zoomable) return;
     if (!wrapperRef.current) return;
-    initialWidthRef.current = wrapperRef.current.clientWidth;
 
     const handleResize = () => {
       const el = wrapperRef.current;
       if (!el) return;
-      const currentWidth = el.clientWidth;
-      const ratio = Math.min(currentWidth / initialWidthRef.current, 1);
-      const curved = ratio * ratio * ratio;
-      const newZoom = Math.max(0, Math.round(initialZoom * curved));
+      const width = el.clientWidth;
+      let targetZoom = initialZoom;
+      if (width < 450) {
+        targetZoom = 0;
+      } else if (width < 640) {
+        targetZoom = 1;
+      } else {
+        targetZoom = initialZoom;
+      }
       map.invalidateSize();
-      map.setZoom(newZoom);
+      map.setZoom(targetZoom);
     };
 
+    handleResize();
     const observer = new ResizeObserver(handleResize);
     observer.observe(wrapperRef.current);
     return () => observer.disconnect();
-  }, [map, wrapperRef, initialZoom]);
+  }, [map, wrapperRef, initialZoom, zoomable]);
   return null;
 }
 
@@ -52,6 +59,10 @@ export interface DataMapsProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "fill" | "dots";
   center?: [number, number];
   zoom?: number;
+  minZoom?: number;
+  maxZoom?: number;
+  zoomable?: boolean;
+  scrollWheelZoom?: boolean;
   highlightColor?: string;
   defaultColor?: string;
   mapGeoJsonUrl?: string;
@@ -72,6 +83,10 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       variant = "fill",
       center = [20, 0],
       zoom = 2,
+      minZoom = 1,
+      maxZoom = 8,
+      zoomable = false,
+      scrollWheelZoom = false,
       highlightColor = "var(--primary, #2563eb)",
       defaultColor = "#cbd5e1",
       mapGeoJsonUrl = "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
@@ -99,6 +114,32 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     useEffect(() => {
       variantRef.current = variant;
     }, [variant]);
+
+    useEffect(() => {
+      const map = mapRef.current;
+      if (!map) return;
+      
+      // Always allow dragging/panning across screen on all variants
+      map.dragging?.enable();
+
+      if (zoomable) {
+        map.touchZoom?.enable();
+        map.doubleClickZoom?.enable();
+        if (scrollWheelZoom) map.scrollWheelZoom?.enable();
+        else map.scrollWheelZoom?.disable();
+        map.boxZoom?.enable();
+        map.keyboard?.enable();
+      } else {
+        map.touchZoom?.disable();
+        map.doubleClickZoom?.disable();
+        map.scrollWheelZoom?.disable();
+        map.boxZoom?.disable();
+        map.keyboard?.disable();
+      }
+
+      // Reset view position to default center & initial zoom level whenever variant changes or tab switches
+      map.setView(center, zoom, { animate: false });
+    }, [variant, zoomable, scrollWheelZoom, center, zoom, isMounted, geoData]);
 
     useEffect(() => {
       highlightColorRef.current = highlightColor;
@@ -180,14 +221,14 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
 
     if (!isMounted || !geoData) {
       return (
-        <div ref={ref} className={cn("w-full h-full min-h-[400px] bg-slate-50 dark:bg-slate-900/50 rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
+        <div ref={ref} className={cn("w-full h-full min-h-[250px] sm:min-h-[400px] bg-slate-50 dark:bg-slate-900/50 rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
           <p className="text-slate-400 text-sm">Loading Maps...</p>
         </div>
       );
     }
 
       return (
-        <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[400px] overflow-hidden rounded-lg bg-slate-50 dark:bg-slate-900/50 map-wrapper", className)} {...props}>
+        <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[250px] sm:min-h-[400px] overflow-hidden rounded-lg bg-slate-50 dark:bg-slate-900/50 map-wrapper", className)} {...props}>
         <style dangerouslySetInnerHTML={{__html: `
           .map-wrapper {
             --map-default-fill: #e2e8f0;
@@ -242,12 +283,18 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             ref={mapRef}
             center={center}
             zoom={zoom}
+            minZoom={minZoom}
+            maxZoom={maxZoom}
             style={{ height: "100%", width: "100%", background: "transparent" }}
-            scrollWheelZoom={false}
+            scrollWheelZoom={zoomable ? scrollWheelZoom : false}
+            doubleClickZoom={zoomable}
+            dragging={zoomable}
+            touchZoom={zoomable}
             zoomControl={false}
             attributionControl={false}
           >
-            <ResizeHandler wrapperRef={wrapperRef} initialZoom={zoom} />
+            <ResizeHandler wrapperRef={wrapperRef} initialZoom={zoom} zoomable={zoomable} />
+            {zoomable && <ZoomControl position="bottomright" />}
             <GeoJSON
               ref={geoJsonRef}
               data={geoData}

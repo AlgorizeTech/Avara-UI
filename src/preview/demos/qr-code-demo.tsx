@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function QrCodeDemo({
   activeTab = "generator",
   themeColor = "primary",
-  value: valueProp = "https://algorizetech.com",
+  value: valueProp = "https://algorizetech.com/qr-code",
   level: levelProp = "L",
 }: {
   activeTab?: "generator" | "reader";
@@ -21,11 +21,11 @@ export default function QrCodeDemo({
   const [level, setLevel] = useState<"L" | "M" | "Q" | "H">(levelProp);
 
   useEffect(() => {
-    setValue(valueProp);
+    if (valueProp !== undefined) setValue(valueProp);
   }, [valueProp]);
 
   useEffect(() => {
-    setLevel(levelProp);
+    if (levelProp !== undefined) setLevel(levelProp);
   }, [levelProp]);
 
   const getSvgDataUrl = (): Promise<string> => {
@@ -154,6 +154,7 @@ export default function QrCodeDemo({
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
               <button
                 key={lvl}
+                type="button"
                 onClick={() => setLevel(lvl)}
                 style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
                 className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
