@@ -17,12 +17,29 @@ import {
 import { cn } from "@/lib/utils";
 
 export interface DesignComponentsFolderProps {
+  color?: string;
   className?: string;
 }
 
-export function DesignComponentsFolder({ className }: DesignComponentsFolderProps) {
+export function DesignComponentsFolder({ color, className }: DesignComponentsFolderProps) {
   const [isInView, setIsInView] = useState(false);
   const [retractedIndex, setRetractedIndex] = useState<number | null>(null);
+
+  const getAccentColor = (col?: string) => {
+    if (!col || col === "primary" || col === "default") return undefined;
+    const presets: Record<string, string> = {
+      indigo: "#6366f1",
+      rose: "#f43f5e",
+      emerald: "#10b981",
+      zinc: "#18181b",
+    };
+    return presets[col] || col;
+  };
+
+  const resolvedColor = getAccentColor(color);
+  const customStyle: React.CSSProperties = resolvedColor
+    ? ({ "--primary": resolvedColor } as React.CSSProperties)
+    : {};
 
   useEffect(() => {
     if (!isInView) return;
@@ -88,14 +105,14 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
   };
 
   return (
-    <section className={cn("relative w-full py-4 md:py-8 overflow-hidden select-none flex justify-center items-center", className)}>
+    <section style={customStyle} className={cn("relative w-full py-4 md:py-8 overflow-hidden select-none flex justify-center items-center", className)}>
       {/* 
         Full Width Responsive Stage with Scale Wrapper to ensure cards shrink smoothly on mobile/small screens
       */}
-      <div className="w-full flex justify-center items-center overflow-hidden">
+      <div className="w-full flex justify-center items-center overflow-hidden px-1 sm:px-0">
         <motion.div 
           onViewportEnter={() => setIsInView(true)}
-          className="relative w-full max-w-[960px] mx-auto h-[340px] xs:h-[400px] sm:h-[550px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-300"
+          className="relative w-full max-w-[960px] mx-auto h-[440px] min-[420px]:h-[480px] min-[520px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
         >
           {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
           <div className="absolute inset-0 z-10 pointer-events-none">
@@ -108,7 +125,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 0 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
-              className="absolute top-[2%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[140px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[14%] sm:top-[2%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[140px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-3 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/calendar" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
@@ -179,7 +196,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 1 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[0%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[145px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[12%] sm:top-[0%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[145px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-3 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/data-table" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
@@ -239,7 +256,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 2 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
-              className="absolute top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[130px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[16%] sm:top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[130px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-3 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/fleet-tracker" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
@@ -548,7 +565,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
         {/* ═══════════════════════════════════════════════
            FOREGROUND BLUE FROSTED GLASS FOLDER BOX (+50PX HEIGHT, TIGHTER CORNERS)
            ═══════════════════════════════════════════════ */}
-        <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[260px] sm:h-[330px] md:h-[400px] lg:h-[440px] z-30 pointer-events-none">
+        <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[210px] min-[420px]:h-[250px] min-[520px]:h-[290px] sm:h-[330px] md:h-[400px] lg:h-[440px] z-30 pointer-events-none">
           <div className="relative w-full h-full">
             {/* Folder Box */}
             <div className="absolute inset-0">
