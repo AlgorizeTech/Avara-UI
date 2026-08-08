@@ -45,6 +45,7 @@ export const sandboxNames = [
   "hero-saas",
   "hero-video-player",
   "homepage-hero",
+  "homepage-hero-typing",
   "horizontal-scroll-stack",
   "input",
   "invoice",
