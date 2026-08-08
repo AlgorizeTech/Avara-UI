@@ -525,21 +525,6 @@ function HeroSection() {
 	);
 }
 
-				{/* ═══════════════════════════════════════════════
-           REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
-           ═══════════════════════════════════════════════ */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.5 }}
-					className="w-full mt-6 sm:mt-10 flex justify-center">
-					<DesignComponentsFolder />
-				</motion.div>
-			</div>
-		</section>
-	);
-}
-
 /* ═══════════════════════════════════════════════
    SECTION 2: TECH STACK MARQUEE
    ═══════════════════════════════════════════════ */
