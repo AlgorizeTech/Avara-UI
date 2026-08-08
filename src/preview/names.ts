@@ -38,6 +38,7 @@ export const sandboxNames = [
   "floating-contact-button",
   "flowchart",
   "form",
+  "design-components-folder",
   "half-stars",
   "hero-data",
   "hero",

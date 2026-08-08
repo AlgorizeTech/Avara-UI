@@ -134,6 +134,7 @@ export const navigation: NavigationItem[] = [
       { label: "Magic Bento", href: "/docs/nextjs/magic-bento" },
       { label: "Video Accordion", href: "/docs/nextjs/video-accordion" },
       { label: "Network Graph", href: "/docs/nextjs/network-graph", badge: "New" },
+      { label: "Design Components", href: "/docs/nextjs/design-components-folder", badge: "New" },
       { label: "Floating ContactButton", href: "/docs/nextjs/floating-contact-button", badge: "New" },
     ],
   },
