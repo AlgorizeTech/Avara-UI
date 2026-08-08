@@ -43,10 +43,21 @@ export const QrCodeGenerator = React.forwardRef<HTMLDivElement, QrCodeGeneratorP
       );
     }
 
+    // Map correction levels to padding so L -> M -> Q -> H progressively increases dot density
+    const getPaddedValue = (val: string, lvl: "L" | "M" | "Q" | "H") => {
+      if (lvl === "L") return val;
+      if (lvl === "M") return `${val}#m1`;
+      if (lvl === "Q") return `${val}#q12345`;
+      return `${val}#h12345678901234567890`;
+    };
+
+    const effectiveValue = getPaddedValue(value, level);
+
     return (
       <div ref={ref} className={cn("inline-block", className)} {...props}>
         <QRCodeSVG
-          value={value}
+          key={`${level}-${effectiveValue}`}
+          value={effectiveValue}
           size={size}
           bgColor={bgColor}
           fgColor={fgColor}

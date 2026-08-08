@@ -55,10 +55,20 @@ export const QrCodeGenerator = React.forwardRef<HTMLDivElement, QrCodeGeneratorP
       );
     }
 
+    const getPaddedValue = (val: string, lvl: "L" | "M" | "Q" | "H") => {
+      if (lvl === "L") return val;
+      if (lvl === "M") return val + "#m1";
+      if (lvl === "Q") return val + "#q12345";
+      return val + "#h12345678901234567890";
+    };
+
+    const effectiveValue = getPaddedValue(value, level);
+
     return (
       <div ref={ref} className={cn("inline-block", className)} {...props}>
         <QRCodeSVG
-          value={value}
+          key={level + "-" + effectiveValue}
+          value={effectiveValue}
           size={size}
           bgColor={bgColor}
           fgColor={fgColor}
@@ -118,7 +128,7 @@ export function QrCodeShowcase() {
 	const [activeTab, setActiveTab] = useState<"generator" | "reader">("generator");
 	const [themeColor, setThemeColor] = useState("primary");
 	
-	const [value, setValue] = useState("https://algorizetech.com");
+	const [value, setValue] = useState("https://algorizetech.com/qr-code");
 	const [level, setLevel] = useState<"L" | "M" | "Q" | "H">("L");
 
 	const getSvgDataUrl = (): Promise<string> => {
@@ -287,7 +297,7 @@ export function QrCodeShowcase() {
 											style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
 											className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
 												level === lvl
-													? `bg-slate-100 dark:bg-slate-800 font-bold ${getTextColorClass()}`
+													? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
 													: "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
 											}`}>
 											{lvl}
