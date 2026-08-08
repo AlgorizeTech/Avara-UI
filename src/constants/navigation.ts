@@ -55,7 +55,7 @@ export const navigation: NavigationItem[] = [
       { label: "Ai-Chat", href: "/docs/nextjs/ai-chat",  },
       { label: "Api Playground", href: "/docs/nextjs/api-playground", badge: "New" },
       { label: "Breadcrumb", href: "/docs/nextjs/breadcrumb", },
-      { label: "Modern Buttons", href: "/docs/nextjs/button", },
+      { label: "Buttons", href: "/docs/nextjs/button", },
       { label: "Card", href: "/docs/nextjs/card", },
       { label: "Chart", href: "/docs/nextjs/chart", },
       { label: "Carousel", href: "/docs/nextjs/carousel", },
