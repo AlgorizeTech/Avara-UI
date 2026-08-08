@@ -22,7 +22,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     bg: "bg-primary",
     text: "text-primary",
     border: "border-primary",
-    glow: "shadow-[0_0_15px_var(--primary)]",
+    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
   },
   indigo: {
     bg: "bg-indigo-600",
@@ -41,6 +41,18 @@ const colorThemes: Record<string, Record<string, string>> = {
     text: "text-emerald-600 dark:text-emerald-400",
     border: "border-emerald-500",
     glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]",
+  },
+  blue: {
+    bg: "bg-blue-600",
+    text: "text-blue-600 dark:text-blue-400",
+    border: "border-blue-500",
+    glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]",
+  },
+  violet: {
+    bg: "bg-violet-600",
+    text: "text-violet-600 dark:text-violet-400",
+    border: "border-violet-500",
+    glow: "shadow-[0_0_15px_rgba(139,92,246,0.5)]",
   },
   zinc: {
     bg: "bg-zinc-900 dark:bg-zinc-100",

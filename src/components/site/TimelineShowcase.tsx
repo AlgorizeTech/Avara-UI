@@ -28,9 +28,12 @@ export type TimelineLayout = "left" | "center" | "right";
 export type TimelineStatus = "completed" | "current" | "upcoming";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary", text: "text-primary", border: "border-primary", glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]" },
   indigo: { bg: "bg-indigo-600", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-500", glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]" },
   rose: { bg: "bg-rose-600", text: "text-rose-600 dark:text-rose-400", border: "border-rose-500", glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]" },
   emerald: { bg: "bg-emerald-600", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500", glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]" },
+  blue: { bg: "bg-blue-600", text: "text-blue-600 dark:text-blue-400", border: "border-blue-500", glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]" },
+  violet: { bg: "bg-violet-600", text: "text-violet-600 dark:text-violet-400", border: "border-violet-500", glow: "shadow-[0_0_15px_rgba(139,92,246,0.5)]" },
   zinc: { bg: "bg-zinc-900 dark:bg-zinc-100", text: "text-zinc-900 dark:text-zinc-100", border: "border-zinc-900 dark:border-zinc-100", glow: "shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]" },
 };
 
@@ -134,9 +137,12 @@ import gsap from "gsap";
 import { ChevronDown } from "lucide-react";
 
 const colorThemes = {
+  primary: { bg: "bg-primary", text: "text-primary", border: "border-primary", glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]" },
   indigo: { bg: "bg-indigo-600", text: "text-indigo-600 dark:text-indigo-400", border: "border-indigo-500", glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]" },
   rose: { bg: "bg-rose-600", text: "text-rose-600 dark:text-rose-400", border: "border-rose-500", glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]" },
   emerald: { bg: "bg-emerald-600", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500", glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]" },
+  blue: { bg: "bg-blue-600", text: "text-blue-600 dark:text-blue-400", border: "border-blue-500", glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]" },
+  violet: { bg: "bg-violet-600", text: "text-violet-600 dark:text-violet-400", border: "border-violet-500", glow: "shadow-[0_0_15px_rgba(139,92,246,0.5)]" },
   zinc: { bg: "bg-zinc-900 dark:bg-zinc-100", text: "text-zinc-900 dark:text-zinc-100", border: "border-zinc-900 dark:border-zinc-100", glow: "shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]" },
 };
 
@@ -233,38 +239,10 @@ export function TimelineShowcase() {
   const [layout, setLayout] = useState<TimelineLayout>("center");
   const [animate, setAnimate] = useState(true);
 
-  // Initialize with localStorage if available
-  const [color, setColor] = useState<TimelineColor | string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("primaryColor") || "primary";
-    }
-    return "primary";
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    }, 1000);
-
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "primaryColor" && e.newValue) {
-        setColor(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, [color]);
+  const [color, setColor] = useState<TimelineColor | string>("primary");
 
   const handleColorChange = (newColor: string) => {
     setColor(newColor);
-    localStorage.setItem("primaryColor", newColor);
   };
 
   const sampleData: TimelineItemType[] = [
