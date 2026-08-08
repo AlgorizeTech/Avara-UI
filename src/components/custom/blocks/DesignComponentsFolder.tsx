@@ -90,15 +90,16 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
   return (
     <section className={cn("relative w-full py-4 md:py-8 overflow-hidden select-none flex justify-center items-center", className)}>
       {/* 
-        Full Width Responsive Stage (Matching max-w-[1320px] Component Preview Catalog container)
+        Full Width Responsive Stage with Scale Wrapper to ensure cards shrink smoothly on mobile/small screens
       */}
-      <motion.div 
-        onViewportEnter={() => setIsInView(true)}
-        className="relative w-full max-w-[960px] mx-auto h-[430px] sm:h-[550px] md:h-[660px] lg:h-[700px] flex items-end justify-center"
-      >
-        {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <div className="relative w-full h-full pointer-events-auto">
+      <div className="w-full flex justify-center items-center overflow-hidden">
+        <motion.div 
+          onViewportEnter={() => setIsInView(true)}
+          className="relative w-full max-w-[960px] mx-auto h-[340px] xs:h-[400px] sm:h-[550px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-300"
+        >
+          {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            <div className="relative w-full h-full pointer-events-auto">
 
             {/* Card 0: Calendar (calendar.tsx) -> Indigo/Purple Tint */}
             <motion.div
@@ -606,6 +607,7 @@ export function DesignComponentsFolder({ className }: DesignComponentsFolderProp
         </div>
 
       </motion.div>
+      </div>
     </section>
   );
 }
