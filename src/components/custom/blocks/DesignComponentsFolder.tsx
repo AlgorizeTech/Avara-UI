@@ -112,7 +112,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
       <div className="w-full flex justify-center items-center overflow-hidden px-1 sm:px-0">
         <motion.div 
           onViewportEnter={() => setIsInView(true)}
-          className="relative w-full max-w-[960px] mx-auto h-[440px] min-[420px]:h-[480px] min-[520px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
+          className="relative w-full min-[494px]:w-[70%] sm:w-full max-w-[960px] mx-auto h-[380px] min-[450px]:h-[440px] min-[550px]:h-[500px] min-[620px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
         >
           {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
           <div className="absolute inset-0 z-10 pointer-events-none">
@@ -125,11 +125,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 0 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
-              className="absolute top-[14%] sm:top-[2%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[140px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[22%] sm:top-[2%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/calendar" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-indigo-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-indigo-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-indigo-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-indigo-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -196,11 +196,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 1 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[12%] sm:top-[0%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[145px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[20%] sm:top-[0%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[110px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/data-table" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-emerald-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-emerald-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-emerald-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-emerald-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -256,11 +256,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 2 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
-              className="absolute top-[16%] sm:top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[130px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[120px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[24%] sm:top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/fleet-tracker" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-sky-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-sky-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-sky-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-sky-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -309,11 +309,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 3 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
-              className="absolute top-[18%] left-[12%] sm:left-[16%] md:left-[20%] lg:left-[23%] w-[155px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[145px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 cursor-pointer group bg-gradient-to-br from-violet-500/10 via-card to-fuchsia-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[28%] sm:top-[18%] left-[12%] sm:left-[16%] md:left-[20%] lg:left-[23%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 cursor-pointer group bg-gradient-to-br from-violet-500/10 via-card to-fuchsia-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/breadcrumb" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-violet-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-violet-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-violet-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-violet-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -359,11 +359,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 4 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
-              className="absolute top-[20%] right-[7%] sm:right-[11%] md:right-[15%] lg:right-[18%] w-[155px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[195px] sm:h-[285px] md:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 cursor-pointer group bg-gradient-to-br from-amber-500/10 via-card to-orange-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[30%] sm:top-[20%] right-[7%] sm:right-[11%] md:right-[15%] lg:right-[18%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[155px] sm:h-[285px] md:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 cursor-pointer group bg-gradient-to-br from-amber-500/10 via-card to-orange-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/dock" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-amber-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-amber-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-amber-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-amber-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -412,11 +412,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 5 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: -6, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] left-[2%] sm:left-[4%] md:left-[7%] lg:left-[9%] w-[130px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[175px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-rose-500/30 cursor-pointer group bg-gradient-to-br from-rose-500/10 via-card to-pink-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[38%] sm:top-[28%] left-[2%] sm:left-[4%] md:left-[7%] lg:left-[9%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-rose-500/30 cursor-pointer group bg-gradient-to-br from-rose-500/10 via-card to-pink-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/file-upload" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-rose-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-rose-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-rose-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-rose-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -457,11 +457,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 6 ? "retracted" : "visible"}
               whileHover={{ scale: 1.05, rotate: 6, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] right-[1%] sm:right-[2%] md:right-[4%] lg:right-[5%] w-[130px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[175px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30 cursor-pointer group bg-gradient-to-br from-cyan-500/10 via-card to-blue-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[38%] sm:top-[28%] right-[1%] sm:right-[2%] md:right-[4%] lg:right-[5%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30 cursor-pointer group bg-gradient-to-br from-cyan-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/network-graph" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
-                <div className="w-full flex-1 rounded-xl border border-cyan-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-cyan-500/60 transition-colors">
+                <div className="w-full flex-1 rounded-xl border border-cyan-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-cyan-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
                     <div className="flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
@@ -509,7 +509,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 7 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[28%] left-[24%] sm:left-[28%] md:left-[33%] lg:left-[36%] w-[145px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[145px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 cursor-pointer group bg-gradient-to-br from-purple-500/10 via-card to-indigo-500/10 p-3 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[36%] sm:top-[28%] left-[24%] sm:left-[28%] md:left-[33%] lg:left-[36%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 cursor-pointer group bg-gradient-to-br from-purple-500/10 via-card to-indigo-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/navbar" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
