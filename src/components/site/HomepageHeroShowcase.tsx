@@ -125,14 +125,12 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
             {badgeText && (
               <div>
-                <Link
-                  href={badgeHref}
-                  className="group inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[11px] sm:text-base font-bold text-primary hover:border-primary transition-all duration-300 shadow-sm"
+                <div
+                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-primary transition-all duration-300"
                 >
-                  <Sparkles className="size-3.5 sm:size-4 text-primary animate-spin shrink-0" />
-                  <span className="truncate max-w-[180px] sm:max-w-none">{badgeText}</span>
-                  <ArrowRight className="size-3.5 sm:size-4 group-hover:translate-x-0.5 transition-transform shrink-0" />
-                </Link>
+                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
+                  <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">{badgeText}</span>
+                </div>
               </div>
             )}
 
