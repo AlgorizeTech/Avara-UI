@@ -11,6 +11,7 @@ import {
   Terminal,
 } from "lucide-react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "motion/react";
 
 /* ═══════════════════════════════════════════════
    TYPES & INTERFACES
@@ -24,7 +25,7 @@ export interface HomepageHeroBlockProps
   badgeHref?: string;
   /** Main static title text prefix before typing words */
   titlePrefix?: string;
-  /** Words to animate in the typing effect */
+  /** Words to animate in the bounce effect */
   typingWords?: string[];
   /** Main static title text suffix after typing words */
   titleSuffix?: string;
@@ -53,15 +54,15 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     {
       badgeText = "Next-Gen React Components",
       badgeHref = "/docs",
-      titlePrefix = "Build ",
+      titlePrefix = "Build Interactive ",
       typingWords = [
-        "Exceptional",
-        "Interactive",
-        "Animated",
-        "Responsive",
-        "Modern",
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+        "Dashboards",
       ],
-      titleSuffix = " Interfaces.",
+      titleSuffix = "",
       subtitle = "A meticulous library of copy-paste React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
       cliCommand = "npx docs-ui@latest init",
       primaryActionLabel = "Browse Components",
@@ -76,31 +77,15 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
   ) => {
     const [copied, setCopied] = useState(false);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [currentText, setCurrentText] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
       if (!typingWords || typingWords.length === 0) return;
-      const targetWord = typingWords[currentWordIndex];
-      const typingSpeed = isDeleting ? 60 : 100;
+      const interval = setInterval(() => {
+        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
+      }, 2400);
 
-      const timer = setTimeout(() => {
-        if (!isDeleting) {
-          setCurrentText(targetWord.slice(0, currentText.length + 1));
-          if (currentText.length + 1 === targetWord.length) {
-            setTimeout(() => setIsDeleting(true), 1800);
-          }
-        } else {
-          setCurrentText(targetWord.slice(0, currentText.length - 1));
-          if (currentText.length - 1 === 0) {
-            setIsDeleting(false);
-            setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-          }
-        }
-      }, typingSpeed);
-
-      return () => clearTimeout(timer);
-    }, [currentText, isDeleting, currentWordIndex, typingWords]);
+      return () => clearInterval(interval);
+    }, [typingWords]);
 
     const handleCopy = () => {
       if (typeof window !== "undefined" && navigator.clipboard) {
@@ -125,6 +110,8 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     const customStyle: React.CSSProperties = resolvedColor
       ? ({ "--primary": resolvedColor } as React.CSSProperties)
       : {};
+
+    const currentWord = typingWords?.[currentWordIndex] || "";
 
     return (
       <section
@@ -164,15 +151,34 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               </div>
             )}
 
-            {/* Dynamic Typing Title */}
-            <h1 className="text-lg xs:text-xl sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.25rem] font-black tracking-tight leading-tight sm:leading-[1.02] text-foreground text-center w-full max-w-[1320px] mx-auto">
-              {titlePrefix}
-              <span className="text-primary inline-block">{currentText}</span>
-              <span className="text-primary animate-pulse inline-block font-mono font-light ml-0.5 mr-1">
-                |
-              </span>
-              {titleSuffix}
-            </h1>
+            {/* Dynamic Bouncing Title Word with Locked Left Position */}
+            <div className="w-full flex justify-center items-center">
+              <h1 className="text-lg xs:text-xl sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.25rem] font-black tracking-tight leading-tight sm:leading-[1.02] text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-2.5 sm:gap-x-3">
+                <span className="shrink-0">
+                  Build <span className="text-primary">Interactive</span>
+                </span>
+                <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] w-[170px] xs:w-[210px] sm:w-[350px] md:w-[440px] lg:w-[580px]">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentWord}
+                      initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
+                      animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                      exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 24,
+                        mass: 0.8,
+                      }}
+                      className="text-foreground inline-block text-left whitespace-nowrap"
+                    >
+                      {currentWord}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+                {titleSuffix && <span>{titleSuffix}</span>}
+              </h1>
+            </div>
 
             {/* Subtitle Paragraph */}
             {subtitle && (
