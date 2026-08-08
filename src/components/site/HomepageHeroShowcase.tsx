@@ -164,8 +164,9 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               </h1>
             </div>
 
+            {/* Subtitle Paragraph */}
             {subtitle && (
-              <p className="text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}

@@ -154,17 +154,21 @@ export const HomepageHeroTypingBlock = forwardRef<
               </div>
             )}
 
-            <h1 className="text-lg xs:text-xl sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.25rem] font-black tracking-tight leading-tight sm:leading-[1.02] text-foreground text-center w-full max-w-[1320px] mx-auto">
-              {titlePrefix}
-              <span className="text-primary inline-block">{currentText}</span>
-              <span className="text-primary animate-pulse inline-block font-mono font-light ml-0.5 mr-1">
-                |
-              </span>
-              {titleSuffix}
-            </h1>
+            <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
+              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
+                <span>{titlePrefix}</span>
+                <span className="inline-flex items-center">
+                  <span className="text-primary">{currentText}</span>
+                  <span className="text-primary animate-pulse font-mono font-light ml-[1px] mr-0">
+                    |
+                  </span>
+                </span>
+                {titleSuffix && <span>{titleSuffix}</span>}
+              </h1>
+            </div>
 
             {subtitle && (
-              <p className="text-xs sm:text-xl md:text-2xl text-muted-foreground w-full max-w-4xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}
