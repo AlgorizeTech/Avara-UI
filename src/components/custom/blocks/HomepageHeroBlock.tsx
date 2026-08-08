@@ -131,7 +131,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         ref={ref}
         style={customStyle}
         className={cn(
-          "relative w-full min-h-[95vh] flex flex-col justify-center items-center overflow-hidden py-8 sm:py-12 md:py-16",
+          "relative w-full flex flex-col justify-center items-center overflow-hidden py-8 sm:py-12 md:py-16",
           className
         )}
         {...props}

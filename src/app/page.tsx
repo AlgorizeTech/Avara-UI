@@ -507,9 +507,9 @@ function HeroInteractiveHub() {
 
 function HeroSection() {
 	return (
-		<section className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden pt-6 sm:pt-8 md:pt-10 pb-6">
+		<section className="relative w-full overflow-hidden">
 			<HomepageHeroBlock />
-			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8">
+			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-10">
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
            ═══════════════════════════════════════════════ */}
