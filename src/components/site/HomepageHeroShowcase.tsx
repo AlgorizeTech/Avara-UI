@@ -136,12 +136,12 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               </div>
             )}
 
-            <div className="w-full flex justify-center items-center">
-              <h1 className="text-lg xs:text-xl sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.25rem] font-black tracking-tight leading-tight sm:leading-[1.02] text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-2.5 sm:gap-x-3">
+            <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
+              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
                 <span className="shrink-0">
                   Build <span className="text-primary">Interactive</span>
                 </span>
-                <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] w-[170px] xs:w-[210px] sm:w-[350px] md:w-[440px] lg:w-[580px]">
+                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[95px] xs:w-[115px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={currentWord}
@@ -160,12 +160,12 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                     </motion.span>
                   </AnimatePresence>
                 </span>
-                {titleSuffix && <span>{titleSuffix}</span>}
+                {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
               </h1>
             </div>
 
             {subtitle && (
-              <p className="text-xs sm:text-xl md:text-2xl text-muted-foreground w-full max-w-4xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}
