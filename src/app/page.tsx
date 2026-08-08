@@ -18,6 +18,7 @@ import {
 import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
+import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
 import { navigation } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import {
@@ -505,143 +506,24 @@ function HeroInteractiveHub() {
    ═══════════════════════════════════════════════ */
 
 function HeroSection() {
-	const [copied, setCopied] = useState(false);
-	const words = [
-		"Exceptional",
-		"Interactive",
-		"Animated",
-		"Responsive",
-		"Modern",
-	];
-	const [currentWordIndex, setCurrentWordIndex] = useState(0);
-	const [currentText, setCurrentText] = useState("");
-	const [isDeleting, setIsDeleting] = useState(false);
-
-	useEffect(() => {
-		const targetWord = words[currentWordIndex];
-		const typingSpeed = isDeleting ? 60 : 100;
-
-		const timer = setTimeout(() => {
-			if (!isDeleting) {
-				setCurrentText(targetWord.slice(0, currentText.length + 1));
-				if (currentText.length + 1 === targetWord.length) {
-					setTimeout(() => setIsDeleting(true), 1800);
-				}
-			} else {
-				setCurrentText(targetWord.slice(0, currentText.length - 1));
-				if (currentText.length - 1 === 0) {
-					setIsDeleting(false);
-					setCurrentWordIndex((prev) => (prev + 1) % words.length);
-				}
-			}
-		}, typingSpeed);
-
-		return () => clearTimeout(timer);
-	}, [currentText, isDeleting, currentWordIndex]);
-
-	const handleCopy = () => {
-		navigator.clipboard.writeText("npx docs-ui@latest init");
-		setCopied(true);
-		setTimeout(() => setCopied(false), 2000);
-	};
-
 	return (
 		<section className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden pt-6 sm:pt-8 md:pt-10 pb-6">
-			<div
-				className="absolute inset-0 pointer-events-none"
-				style={{
-					background:
-						"radial-gradient(ellipse 80% 60% at 50% -10%, var(--primary) 0%, transparent 65%)",
-					opacity: 0.12,
-				}}
-			/>
-			<div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
-
+			<HomepageHeroBlock />
 			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8">
-				{/* Centered Hero Content Column (Full Width & Expanded Alignment) */}
-				<div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-7">
-					<motion.div
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}>
-						<Link
-							href="/docs"
-							className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/30 text-xs sm:text-base font-bold text-primary hover:border-primary transition-all duration-300 shadow-sm">
-							<Sparkles className="size-4 text-primary animate-spin" />
-							<span>Next-Gen React Components</span>
-							<ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
-						</Link>
-					</motion.div>
-
-					{/* Dynamic Typing Title - Single Line */}
-					<motion.h1
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, delay: 0.1 }}
-						className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.5rem] xl:text-[5.25rem] font-black tracking-[-0.04em] leading-[1.02] text-foreground text-center w-full max-w-[1320px] mx-auto sm:whitespace-nowrap">
-						Build{" "}
-						<span className="text-primary inline-block">{currentText}</span>
-						<span className="text-primary animate-pulse inline-block font-mono font-light ml-0.5 mr-1.5">
-							|
-						</span>
-						Interfaces.
-					</motion.h1>
-
-					{/* Subtitle */}
-					<motion.p
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: 0.2 }}
-						className="text-lg sm:text-2xl md:text-3xl text-muted-foreground w-full max-w-4xl mx-auto leading-relaxed text-center font-medium">
-						A meticulous library of copy-paste React components & interactive
-						blocks, engineered for seamless performance with Tailwind CSS,
-						TypeScript, GSAP, and Framer Motion.
-					</motion.p>
-
-					{/* Exact Original CLI Quick Copy Box with Matching Button Height */}
-					<motion.div
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: 0.3 }}
-						className="pt-1 w-full flex justify-center">
-						<button
-							onClick={handleCopy}
-							className="group flex items-center gap-3.5 px-5 h-[58px] rounded-2xl border border-border bg-card cursor-pointer w-full max-w-md hover:border-primary/50 transition-all">
-							<Terminal className="size-5 text-primary shrink-0" />
-							<code className="text-xs sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold">
-								npx docs-ui@latest init
-							</code>
-							<div className="pl-3.5 border-l border-border h-5 flex items-center">
-								{copied ? (
-									<Check className="size-4.5 text-emerald-500" />
-								) : (
-									<Copy className="size-4.5 text-muted-foreground group-hover:text-foreground transition-colors" />
-								)}
-							</div>
-						</button>
-					</motion.div>
-
-					{/* Action Buttons with Shadow Removed & Bottom Margin Added */}
-					<motion.div
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: 0.4 }}
-						className="flex flex-wrap items-center justify-center gap-4 pt-2 mb-10 sm:mb-14 w-full max-w-3xl mx-auto">
-						<Link
-							href="/docs"
-							className="px-9 h-[58px] rounded-2xl bg-primary text-primary-foreground text-base sm:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 flex-1 sm:flex-initial min-w-[220px]">
-							Browse Components
-							<ArrowRight className="size-5" />
-						</Link>
-						<Link
-							href="https://github.com/AlgorizeTech"
-							target="_blank"
-							className="px-9 h-[58px] rounded-2xl border border-border bg-card text-foreground text-base sm:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 flex-1 sm:flex-initial min-w-[220px]">
-							<Github className="size-5" />
-							Star on GitHub
-						</Link>
-					</motion.div>
-				</div>
+				{/* ═══════════════════════════════════════════════
+           REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
+           ═══════════════════════════════════════════════ */}
+				<motion.div
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.7, delay: 0.5 }}
+					className="w-full mt-6 sm:mt-10 flex justify-center">
+					<DesignComponentsFolder />
+				</motion.div>
+			</div>
+		</section>
+	);
+}
 
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER

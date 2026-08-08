@@ -49,6 +49,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "hero-minimal": lazy(() => import("./demos/hero-minimal-demo")),
   "hero-saas": lazy(() => import("./demos/hero-saas-demo")),
   "hero-video-player": lazy(() => import("./demos/hero-video-player-demo")),
+  "homepage-hero": lazy(() => import("./demos/homepage-hero-demo")),
   "horizontal-scroll-stack": lazy(() => import("./demos/horizontal-scroll-stack-demo")),
   "input": lazy(() => import("./demos/input-demo")),
   "invoice": lazy(() => import("./demos/invoice-demo")),
