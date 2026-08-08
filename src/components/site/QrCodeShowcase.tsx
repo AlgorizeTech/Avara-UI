@@ -282,11 +282,12 @@ export function QrCodeShowcase() {
 									{(["L", "M", "Q", "H"] as const).map((lvl) => (
 										<button
 											key={lvl}
+											type="button"
 											onClick={() => setLevel(lvl)}
 											style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
 											className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
 												level === lvl
-													? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
+													? `bg-slate-100 dark:bg-slate-800 font-bold ${getTextColorClass()}`
 													: "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
 											}`}>
 											{lvl}
