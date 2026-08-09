@@ -14,62 +14,60 @@ export function useTableOfContents() {
 
   useEffect(() => {
     const extractHeadings = () => {
-      setTimeout(() => {
-        const mainContent = document.querySelector("main");
-        if (!mainContent) return;
+      const mainContent = document.querySelector("main");
+      if (!mainContent) return;
 
-        const headings = mainContent.querySelectorAll("h1, h2, h3");
-        const tocItems: TOCItem[] = [];
-        const usedIds = new Set<string>();
+      const headings = mainContent.querySelectorAll("h1, h2, h3");
+      const tocItems: TOCItem[] = [];
+      const usedIds = new Set<string>();
 
-        headings.forEach((heading, index) => {
-          // ── EXCLUSION FILTER ──────────────────────────────────────────────────
-          if (
-            heading.closest(
-              ".props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
-            )
-          ) {
-            return;
-          }
-          // ──────────────────────────────────────────────────────────────────────
+      headings.forEach((heading, index) => {
+        // ── EXCLUSION FILTER ──────────────────────────────────────────────────
+        if (
+          heading.closest(
+            ".props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
+          )
+        ) {
+          return;
+        }
+        // ──────────────────────────────────────────────────────────────────────
 
-          const text = heading.textContent?.trim();
-          if (!text) return;
+        const text = heading.textContent?.trim();
+        if (!text) return;
 
-          let id = heading.id;
+        let id = heading.id;
 
-          // ── THE BUG FIX: Enforce global ID uniqueness in the DOM ──
-          // If the Markdown parser generated duplicate IDs across components, rewrite them!
-          if (!id || usedIds.has(id)) {
-            const baseId =
-              id ||
-              text
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, "-")
-                .replace(/(^-|-$)/g, "") || `heading-${index}`;
+        // ── THE BUG FIX: Enforce global ID uniqueness in the DOM ──
+        if (!id || usedIds.has(id)) {
+          const baseId =
+            id ||
+            text
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "") || `heading-${index}`;
 
-            id = baseId;
-            let counter = 1;
-            while (usedIds.has(id)) {
-              id = `${baseId}-${counter}`;
-              counter++;
-            }
-
-            // Force-update the browser DOM tag so intersection observers match uniquely
-            heading.id = id;
+          id = baseId;
+          let counter = 1;
+          while (usedIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter++;
           }
 
-          usedIds.add(id);
+          // Force-update the browser DOM tag so intersection observers match uniquely
+          heading.id = id;
+        }
 
-          const level = parseInt(heading.tagName.charAt(1));
-          tocItems.push({ id, text, level });
-        });
+        usedIds.add(id);
 
-        setToc(tocItems);
-      }, 100);
+        const level = parseInt(heading.tagName.charAt(1));
+        tocItems.push({ id, text, level });
+      });
+
+      setToc(tocItems);
     };
 
     extractHeadings();
+    requestAnimationFrame(extractHeadings);
 
     const observer = new MutationObserver(() => {
       extractHeadings();

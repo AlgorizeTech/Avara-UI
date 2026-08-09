@@ -57,9 +57,6 @@ export const TableOfContents: React.FC = () => {
     return result;
   }, [toc]);
 
-  // Early Return
-  if (!toc.length || toc.every((i) => !i.text.trim())) return null;
-
   // --- SMART ACTIVE ID OVERRIDE ---
   let displayActiveId = activeId;
   if (toc.length > 0) {
