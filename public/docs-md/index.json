@@ -69,12 +69,6 @@
       "originalMdx": "nextjs\\authentication\\page.mdx"
     },
     {
-      "name": "nextjs/avatar",
-      "path": "/docs/nextjs-avatar.md",
-      "url": "/docs/nextjs/avatar",
-      "originalMdx": "nextjs\\avatar\\page.mdx"
-    },
-    {
       "name": "nextjs/breadcrumb",
       "path": "/docs/nextjs-breadcrumb.md",
       "url": "/docs/nextjs/breadcrumb",

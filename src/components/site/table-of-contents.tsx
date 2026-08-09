@@ -1,15 +1,13 @@
 "use client";
 
-import { useTOC } from "@/contexts/toc-context";
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUp, PanelRightClose } from "lucide-react";
+import { ArrowDown, ArrowUp, ExternalLink, Sparkles } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
-  const { setShowTOC } = useTOC();
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -59,9 +57,6 @@ export const TableOfContents: React.FC = () => {
     return result;
   }, [toc]);
 
-  // Early Return
-  if (!toc.length || toc.every((i) => !i.text.trim())) return null;
-
   // --- SMART ACTIVE ID OVERRIDE ---
   let displayActiveId = activeId;
   if (toc.length > 0) {
@@ -88,17 +83,7 @@ export const TableOfContents: React.FC = () => {
       : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
 
   return (
-    <aside className="hidden xl:flex flex-col w-[340px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
-      {/* Floating Close Button */}
-      <button
-        onClick={() => setShowTOC(false)}
-        className="absolute top-[30px] -left-3.5 z-20 flex items-center justify-center p-1 rounded-md bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 transition-all duration-200 cursor-pointer"
-        title="Hide Sidebar"
-        aria-label="Hide Sidebar"
-      >
-        <PanelRightClose className="w-4 h-4" />
-      </button>
-
+    <aside className="hidden lg:flex flex-col w-[210px] 2xl:w-[260px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
       <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
         {/* Header: Title + Progress Bar */}
         <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
@@ -240,6 +225,28 @@ export const TableOfContents: React.FC = () => {
               );
             })}
           </nav>
+        </div>
+
+        {/* Algorize Tech Promo Banner Image Segment */}
+        <div className="px-2.5 py-2.5 border-t border-zinc-200 dark:border-zinc-800/80 shrink-0">
+          <a
+            href="https://algorizetech.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-primary dark:hover:border-primary transition-colors duration-200 shadow-none cursor-pointer"
+          >
+            <img
+              src="/assets/algorizetech-banner.png"
+              alt="AlgorizeTech - Engineering scalable SaaS & AI products"
+              className="w-full h-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-[1.03]"
+            />
+            {/* Hover Dark Overlay with Centered URL Icon */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl">
+              <div className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <ExternalLink className="w-4 h-4" />
+              </div>
+            </div>
+          </a>
         </div>
 
         <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />

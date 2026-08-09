@@ -9,7 +9,6 @@ import {
   ArrowRight,
   LayoutGrid,
 } from "lucide-react";
-import { useTOC } from "@/contexts/toc-context";
 import { cn } from "@/lib/utils";
 
 /* ═══════════════════════════════════════════════
@@ -64,6 +63,8 @@ const componentPreviewData: PreviewCategoryGroup[] = [
       { title: "Invoice", countText: "Billing Paper", href: "/docs/nextjs/invoice", illustrationType: "invoice" },
       { title: "Kbd", countText: "Key Badges", href: "/docs/nextjs/kbd", illustrationType: "kbd" },
       { title: "Mails", countText: "Inbox Feed", href: "/docs/nextjs/email", illustrationType: "mails" },
+      { title: "User Graph", countText: "User Hierarchy Tree", href: "/docs/nextjs/user-graph", badge: "New", illustrationType: "user-graph" },
+      { title: "Network Graph", countText: "Concentric User Rings", href: "/docs/nextjs/network-graph", illustrationType: "network-graph" },
       { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
       { title: "Menubar", countText: "Top App Navigation", href: "/docs/nextjs/menubar", illustrationType: "menubar" },
       { title: "Modal", countText: "Overlays & Popups", href: "/docs/nextjs/modal", illustrationType: "modal" },
@@ -714,18 +715,6 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
           </div>
         )}
 
-        {type === "avatar" && (
-          <div className="w-full flex items-center justify-center gap-2 my-auto">
-            <div className="size-8 rounded-full bg-primary text-primary-foreground font-black text-xs flex items-center justify-center shadow-md ring-2 ring-primary/20 relative">
-              JD
-              <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-background" />
-            </div>
-            <div className="size-6 rounded-full bg-muted border border-border font-bold text-[9px] text-muted-foreground flex items-center justify-center">
-              AB
-            </div>
-          </div>
-        )}
-
         {type === "accordion" && (
           <div className="w-full space-y-1 my-auto px-0.5 text-[7px]">
             <div className="p-1.5 rounded-lg bg-background border border-primary/50 shadow-2xs space-y-1">
@@ -1031,19 +1020,158 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "date-picker" && (
-          <div className="w-full h-full p-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
-            <div className="flex justify-between items-center px-1 py-0.5 rounded bg-muted/60 border border-primary/40 text-primary font-bold">
-              <span>Aug 14, 2026</span>
-              <span className="text-[6.5px]">📅</span>
-            </div>
-            <div className="p-1 rounded bg-card border border-border shadow-xs text-center space-y-0.5">
-              <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
-                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          <div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
+            <div className="w-[96%] space-y-1 my-auto">
+              {/* Realistic Input Field with Active Selection Trigger */}
+              <div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
+                    <svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                  </div>
+                  <div className="flex flex-col text-left leading-none truncate">
+                    <span className="text-[5px] text-primary font-bold uppercase tracking-wider">Picking Date...</span>
+                    <span className="text-[6.5px] font-extrabold text-foreground truncate">Aug 18, 2026</span>
+                  </div>
+                </div>
+                <span className="text-[5.5px] text-primary font-bold">▲</span>
               </div>
-              <div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
-                <span className="opacity-40">12</span><span className="opacity-40">13</span>
-                <span className="bg-primary text-primary-foreground rounded-full font-bold">14</span>
-                <span>15</span><span>16</span><span>17</span><span>18</span>
+
+              {/* Realistic Floating Popover Dropdown Card with Live Selection */}
+              <div className="w-full p-1.5 rounded-lg bg-card/95 backdrop-blur-xs border border-border shadow-xl space-y-1 relative">
+                {/* Preset Quick Chips */}
+                <div className="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none text-[4.5px]">
+                  <span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Today</span>
+                  <span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Tomorrow</span>
+                  <span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">Pick Date Range</span>
+                </div>
+
+                {/* Month Header Navigation */}
+                <div className="flex items-center justify-between px-1 py-0.5 rounded bg-muted/40 text-[6px]">
+                  <span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">‹</span>
+                  <span className="font-bold text-foreground">August 2026</span>
+                  <span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">›</span>
+                </div>
+
+                {/* Weekday Grid Labels */}
+                <div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground/70 text-center text-[4.5px] uppercase">
+                  <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                </div>
+
+                {/* Days Matrix with Cursor Picking Date 18 */}
+                <div className="grid grid-cols-7 gap-0.5 text-center font-medium text-[5px] relative">
+                  <span className="text-muted-foreground/30 py-0.5">26</span>
+                  <span className="text-muted-foreground/30 py-0.5">27</span>
+                  <span className="text-muted-foreground/30 py-0.5">28</span>
+                  <span className="text-muted-foreground/30 py-0.5">29</span>
+                  <span className="text-muted-foreground/30 py-0.5">30</span>
+                  <span className="text-muted-foreground/30 py-0.5">31</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">1</span>
+
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">2</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">3</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">4</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">5</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">6</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">7</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">8</span>
+
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">9</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">10</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">11</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">12</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">13</span>
+
+                  {/* Start Date Selected */}
+                  <span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">14</span>
+                  <span className="py-0.5 bg-primary/20 text-primary font-semibold">15</span>
+
+                  <span className="py-0.5 bg-primary/20 text-primary font-semibold">16</span>
+                  <span className="py-0.5 bg-primary/20 text-primary font-semibold">17</span>
+
+                  {/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
+                  <div className="relative flex items-center justify-center">
+                    <span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary ring-offset-1 scale-105 z-10">
+                      18
+                    </span>
+                    {/* Cursor Pointer Graphic */}
+                    <svg className="size-3 text-foreground drop-shadow-md absolute -bottom-1 -right-1 z-20 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M4.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L4.5 3.5Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">19</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">20</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">21</span>
+                  <span className="py-0.5 rounded hover:bg-muted text-foreground">22</span>
+                </div>
+
+                {/* Active Picking Status Bar */}
+                <div className="flex items-center justify-between pt-1 border-t border-border/50 text-[5px]">
+                  <div className="flex items-center gap-1">
+                    <span className="size-1.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                    <span className="font-semibold text-foreground truncate">Selected: Aug 14 - Aug 18</span>
+                  </div>
+                  <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-extrabold shadow-2xs shrink-0">Confirm</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "user-graph" && (
+          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
+            <div className="flex flex-col items-center gap-1 my-auto scale-90">
+              {/* You Node */}
+              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
+                You
+              </div>
+              <div className="w-0.5 h-3 bg-primary/40" />
+              {/* Alice Node */}
+              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
+                  alt="Alice"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+              <span className="text-[7px] font-bold text-foreground">Alice</span>
+              {/* 3 Sub-Agent Dots */}
+              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
+                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
+                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
+                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "network-graph" && (
+          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
+            <div className="flex flex-col items-center gap-1 my-auto scale-90">
+              {/* You Node */}
+              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
+                You
+              </div>
+              <div className="w-0.5 h-3 bg-primary/40" />
+              {/* Alice Node */}
+              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
+                  alt="Alice"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+              <span className="text-[7px] font-bold text-foreground">Alice</span>
+              {/* 3 Sub-Agent Dots */}
+              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
+                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
+                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
+                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
               </div>
             </div>
           </div>
@@ -1411,8 +1539,6 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
 }
 
 export default function AllComponentsDocsPage() {
-  const { showTOC } = useTOC();
-
   return (
     <div className="not-prose w-full py-4 text-foreground">
       <div className="w-full space-y-12">
@@ -1431,7 +1557,7 @@ export default function AllComponentsDocsPage() {
           </p>
         </div>
 
-        {/* Categorized Component Preview Cards - Dynamic Grid Cols based on TOC Visibility */}
+        {/* Categorized Component Preview Cards */}
         <div className="space-y-14">
           {componentPreviewData.map((group) => (
             <div key={group.categoryTitle} className="space-y-6">
@@ -1455,13 +1581,8 @@ export default function AllComponentsDocsPage() {
                 </span>
               </div>
 
-              {/* Dynamic Cards Grid: 4 cols on 2XL+ devices when TOC sidebar is hidden (OFF), 3 cols when TOC sidebar is visible (ON) */}
-              <div
-                className={cn(
-                  "grid grid-cols-1 sm:grid-cols-2 gap-5",
-                  showTOC ? "lg:grid-cols-3" : "lg:grid-cols-3 2xl:grid-cols-4"
-                )}
-              >
+              {/* Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {group.items.map((item) => (
                   <Link key={item.title} href={item.href} className="group block rounded-2xl">
                     <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
