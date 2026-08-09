@@ -3,7 +3,7 @@
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ExternalLink, Sparkles } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
@@ -228,6 +228,43 @@ export const TableOfContents: React.FC = () => {
               );
             })}
           </nav>
+        </div>
+
+        {/* Algorize Tech Promo Card Segment */}
+        <div className="px-2.5 py-2.5 border-t border-zinc-200 dark:border-zinc-800/80 shrink-0">
+          <a
+            href="https://algorizetech.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block p-3 rounded-xl bg-gradient-to-br from-primary/10 via-purple-500/5 to-blue-500/10 dark:from-primary/15 dark:via-purple-500/10 dark:to-blue-500/15 border border-primary/20 hover:border-primary/40 shadow-2xs transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
+          >
+            <div className="flex items-center justify-between gap-1.5 mb-1.5">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="flex size-5.5 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-[10px] shadow-2xs shrink-0">
+                  A
+                </span>
+                <span className="text-[11px] font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight truncate">
+                  Algorize Tech
+                </span>
+              </div>
+              <span className="flex items-center gap-0.5 text-[9.5px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                <span>Visit</span>
+                <ExternalLink className="w-2.5 h-2.5" />
+              </span>
+            </div>
+
+            <p className="text-[10.5px] font-semibold text-zinc-700 dark:text-zinc-300 leading-snug mb-1">
+              React Components & Custom Web Solutions
+            </p>
+
+            <div className="flex items-center justify-between pt-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60 text-[9.5px] font-bold text-primary group-hover:text-primary/90">
+              <span className="flex items-center gap-1 truncate">
+                <Sparkles className="w-2.5 h-2.5 text-amber-500 shrink-0" />
+                <span className="truncate">algorizetech.com</span>
+              </span>
+              <span className="text-zinc-400 group-hover:translate-x-0.5 transition-transform shrink-0">→</span>
+            </div>
+          </a>
         </div>
 
         <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
