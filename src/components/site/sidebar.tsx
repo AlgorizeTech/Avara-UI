@@ -269,7 +269,7 @@ const Sidebar = () => {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:flex flex-col w-[280px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
+    <aside className="hidden md:flex flex-col w-[260px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
       {/* --- STICKY SEARCH INPUT --- */}
       <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0">
         <div className="relative flex items-center w-full">

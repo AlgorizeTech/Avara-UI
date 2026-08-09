@@ -1,15 +1,13 @@
 "use client";
 
-import { useTOC } from "@/contexts/toc-context";
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUp, PanelRightClose } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
-  const { setShowTOC } = useTOC();
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -88,17 +86,7 @@ export const TableOfContents: React.FC = () => {
       : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
 
   return (
-    <aside className="hidden xl:flex flex-col w-[340px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
-      {/* Floating Close Button */}
-      <button
-        onClick={() => setShowTOC(false)}
-        className="absolute top-[30px] -left-3.5 z-20 flex items-center justify-center p-1 rounded-md bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 transition-all duration-200 cursor-pointer"
-        title="Hide Sidebar"
-        aria-label="Hide Sidebar"
-      >
-        <PanelRightClose className="w-4 h-4" />
-      </button>
-
+    <aside className="hidden lg:flex flex-col w-[210px] 2xl:w-[260px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
       <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
         {/* Header: Title + Progress Bar */}
         <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">

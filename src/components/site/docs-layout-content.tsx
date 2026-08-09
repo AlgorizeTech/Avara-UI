@@ -2,15 +2,11 @@
 
 import Sidebar from "@/components/site/sidebar";
 import { TableOfContents } from "@/components/site/table-of-contents";
-import { useTOC } from "@/contexts/toc-context";
 import { cn } from "@/lib/utils";
-import { PanelRightOpen } from "lucide-react";
 import { ReactNode } from "react";
 import { DocsPagination } from "@/components/site/DocsPagination";
 
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
-  const { showTOC, setShowTOC } = useTOC();
-
   return (
     <div className="w-full min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 relative">
       <div className="mx-auto max-w-[1800px] flex px-4 md:px-5">
@@ -20,9 +16,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
         {/* Center Main Content */}
         <main
           className={cn(
-            "flex-1 min-w-0 py-10 pb-24 lg:px-12 xl:px-16 transition-all duration-300 ease-in-out",
-            // Expands the prose container when TOC is closed
-            showTOC ? "max-w-7xl" : "mx-auto",
+            "flex-1 min-w-0 py-10 pb-24 lg:px-12 xl:px-16 transition-all duration-300 ease-in-out max-w-7xl",
           )}
         >
           {/* Premium Typography Prose overrides */}
@@ -47,19 +41,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
         </main>
 
         {/* Right Table of Contents */}
-        {showTOC && <TableOfContents />}
-
-        {/* Floating Toggle Button when TOC is hidden */}
-        {!showTOC && (
-          <button
-            onClick={() => setShowTOC(true)}
-            className="hidden xl:flex fixed right-0 top-[120px] z-40 p-2.5 bg-white dark:bg-zinc-900 border border-r-0 border-zinc-200 dark:border-zinc-800 rounded-l-lg shadow-sm text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:pr-4 group cursor-pointer"
-            title="Show Table of Contents"
-            aria-label="Show Table of Contents"
-          >
-            <PanelRightOpen className="w-7 h-5 group-hover:-translate-x-0.5 transition-transform" />
-          </button>
-        )}
+        <TableOfContents />
       </div>
     </div>
   );

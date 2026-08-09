@@ -9,7 +9,6 @@ import {
   ArrowRight,
   LayoutGrid,
 } from "lucide-react";
-import { useTOC } from "@/contexts/toc-context";
 import { cn } from "@/lib/utils";
 
 /* ═══════════════════════════════════════════════
@@ -1484,8 +1483,6 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
 }
 
 export default function AllComponentsDocsPage() {
-  const { showTOC } = useTOC();
-
   return (
     <div className="not-prose w-full py-4 text-foreground">
       <div className="w-full space-y-12">
@@ -1504,7 +1501,7 @@ export default function AllComponentsDocsPage() {
           </p>
         </div>
 
-        {/* Categorized Component Preview Cards - Dynamic Grid Cols based on TOC Visibility */}
+        {/* Categorized Component Preview Cards */}
         <div className="space-y-14">
           {componentPreviewData.map((group) => (
             <div key={group.categoryTitle} className="space-y-6">
@@ -1528,13 +1525,8 @@ export default function AllComponentsDocsPage() {
                 </span>
               </div>
 
-              {/* Dynamic Cards Grid: 4 cols on 2XL+ devices when TOC sidebar is hidden (OFF), 3 cols when TOC sidebar is visible (ON) */}
-              <div
-                className={cn(
-                  "grid grid-cols-1 sm:grid-cols-2 gap-5",
-                  showTOC ? "lg:grid-cols-3" : "lg:grid-cols-3 2xl:grid-cols-4"
-                )}
-              >
+              {/* Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {group.items.map((item) => (
                   <Link key={item.title} href={item.href} className="group block rounded-2xl">
                     <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
