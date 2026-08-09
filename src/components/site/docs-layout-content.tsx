@@ -16,7 +16,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
         {/* Center Main Content */}
         <main
           className={cn(
-            "flex-1 min-w-0 py-10 pb-24 lg:px-12 xl:px-16 transition-all duration-300 ease-in-out max-w-7xl",
+            "flex-1 min-w-0 px-4 py-6 lg:px-6 lg:py-8 xl:px-8 xl:py-12 transition-all duration-300 ease-in-out max-w-7xl",
           )}
         >
           {/* Premium Typography Prose overrides */}
