@@ -78,6 +78,7 @@ export const navigation: NavigationItem[] = [
       { label: "Mails", href: "/docs/nextjs/email",  },
       { label: "Map", href: "/docs/nextjs/fleet-tracker",  },
       { label: "Menubar", href: "/docs/nextjs/menubar",  },
+      { label: "User Graph", href: "/docs/nextjs/user-graph", badge: "New" },
       { label: "Modal", href: "/docs/nextjs/modal",  },
       { label: "Navigation", href: "/docs/nextjs/navigation",  },
       { label: "OTP Input", href: "/docs/nextjs/otp-input",  },

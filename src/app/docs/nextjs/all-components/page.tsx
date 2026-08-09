@@ -63,6 +63,8 @@ const componentPreviewData: PreviewCategoryGroup[] = [
       { title: "Invoice", countText: "Billing Paper", href: "/docs/nextjs/invoice", illustrationType: "invoice" },
       { title: "Kbd", countText: "Key Badges", href: "/docs/nextjs/kbd", illustrationType: "kbd" },
       { title: "Mails", countText: "Inbox Feed", href: "/docs/nextjs/email", illustrationType: "mails" },
+      { title: "User Graph", countText: "User Hierarchy Tree", href: "/docs/nextjs/user-graph", badge: "New", illustrationType: "user-graph" },
+      { title: "Network Graph", countText: "Concentric User Rings", href: "/docs/nextjs/network-graph", illustrationType: "network-graph" },
       { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
       { title: "Menubar", countText: "Top App Navigation", href: "/docs/nextjs/menubar", illustrationType: "menubar" },
       { title: "Modal", countText: "Overlays & Popups", href: "/docs/nextjs/modal", illustrationType: "modal" },
@@ -1116,6 +1118,60 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
                   </div>
                   <span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-extrabold shadow-2xs shrink-0">Confirm</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "user-graph" && (
+          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
+            <div className="flex flex-col items-center gap-1 my-auto scale-90">
+              {/* You Node */}
+              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
+                You
+              </div>
+              <div className="w-0.5 h-3 bg-primary/40" />
+              {/* Alice Node */}
+              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
+                  alt="Alice"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+              <span className="text-[7px] font-bold text-foreground">Alice</span>
+              {/* 3 Sub-Agent Dots */}
+              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
+                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
+                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
+                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {type === "network-graph" && (
+          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
+            <div className="flex flex-col items-center gap-1 my-auto scale-90">
+              {/* You Node */}
+              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
+                You
+              </div>
+              <div className="w-0.5 h-3 bg-primary/40" />
+              {/* Alice Node */}
+              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
+                  alt="Alice"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+              <span className="text-[7px] font-bold text-foreground">Alice</span>
+              {/* 3 Sub-Agent Dots */}
+              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
+                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
+                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
+                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
               </div>
             </div>
           </div>

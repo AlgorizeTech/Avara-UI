@@ -1,0 +1,120 @@
+import { UserGraphShowcase } from "@/components/site/UserGraphShowcase";
+
+# User Graph
+
+An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
+
+## Interactive Showcase
+
+Explore the interactive user graph below. Click on any tool node or team agent to highlight the active connection path across the hierarchy.
+
+_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
+
+<UserGraphShowcase />
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies on `framer-motion` for smooth path animations and `lucide-react` for system icons. Run the following command:
+
+```bash
+npm install framer-motion lucide-react
+```
+
+### 2. Copy Source Code
+
+Create a new file `src/components/ui/user-graph.tsx` and paste the component code:
+
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { User, Mic, Phone, MessageSquare, Send, Mail, Code2, Plug, Sparkles } from "lucide-react";
+
+export function UserGraph() {
+  const [selectedAgent, setSelectedAgent] = useState<string | null>("analyst");
+
+  return (
+    <div className="relative w-full p-8 bg-slate-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+      {/* Top User Orbit Node */}
+      <div className="flex flex-col items-center">
+        <div className="size-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
+          <User className="size-7" />
+        </div>
+        <span className="text-xs font-bold mt-1 text-zinc-800 dark:text-zinc-200">You</span>
+      </div>
+
+      {/* Main Orchestrator Node */}
+      <div className="flex flex-col items-center my-8">
+        <div className="size-20 rounded-full ring-4 ring-primary/40 p-1 bg-white dark:bg-zinc-900 shadow-xl">
+          <img src="/avatars/alice.jpg" alt="Alice" className="size-full rounded-full object-cover" />
+        </div>
+        <h4 className="font-bold text-sm mt-1">Alice</h4>
+        <span className="text-xs text-zinc-500">Personal Assistant Orchestrator</span>
+      </div>
+    </div>
+  );
+}
+```
+
+## Features
+
+Discover the key capabilities of the User Graph hierarchy tree:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Orbit Tool Cluster</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dynamic SVG Curves</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Specialized Sub-Agents</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light Mode First</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Hierarchy Organization</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table className="w-full text-left text-sm">
+    <thead>
+      <tr className="border-b border-zinc-200 dark:border-zinc-800 font-semibold">
+        <th className="py-3 px-4">Prop</th>
+        <th className="py-3 px-4">Type</th>
+        <th className="py-3 px-4">Default</th>
+        <th className="py-3 px-4">Description</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">initialSelectedAgent</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"analyst"</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The initial active sub-agent ID highlighted in the graph.</td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">className</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">""</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Additional CSS classes applied to the outer container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
