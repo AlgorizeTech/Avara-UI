@@ -1165,10 +1165,10 @@ type PreviewCardItem = {
 
 const featuredHomepageComponents: PreviewCardItem[] = [
 	{
-		title: "Avatar",
-		countText: "User Profile Badge",
-		href: "/docs/nextjs/avatar",
-		illustrationType: "avatar",
+		title: "Accordion",
+		countText: "Collapsible Content",
+		href: "/docs/nextjs/accordion",
+		illustrationType: "accordion",
 	},
 	{
 		title: "Breadcrumb",
@@ -1979,18 +1979,6 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "avatar" && (
-					<div className="w-full flex items-center justify-center gap-2 my-auto">
-						<div className="size-8 rounded-full bg-primary text-primary-foreground font-black text-xs flex items-center justify-center shadow-md ring-2 ring-primary/20 relative">
-							JD
-							<span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 border-2 border-background" />
-						</div>
-						<div className="size-6 rounded-full bg-muted border border-border font-bold text-[9px] text-muted-foreground flex items-center justify-center">
-							AB
-						</div>
-					</div>
-				)}
-
 				{type === "accordion" && (
 					<div className="w-full space-y-1 my-auto px-0.5 text-[7px]">
 						<div className="p-1.5 rounded-lg bg-background border border-primary/50 shadow-2xs space-y-1">
@@ -2426,33 +2414,104 @@ function MiniatureIllustration({
 				)}
 
 				{type === "date-picker" && (
-					<div className="w-full h-full p-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
-						{/* Input Trigger Bar */}
-						<div className="flex justify-between items-center px-1 py-0.5 rounded bg-muted/60 border border-primary/40 text-primary font-bold">
-							<span>Aug 14, 2026</span>
-							<span className="text-[6.5px]">📅</span>
-						</div>
-						{/* Dropdown Popover Mini Calendar Grid */}
-						<div className="p-1 rounded bg-card border border-border shadow-xs text-center space-y-0.5">
-							<div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground">
-								<span>S</span>
-								<span>M</span>
-								<span>T</span>
-								<span>W</span>
-								<span>T</span>
-								<span>F</span>
-								<span>S</span>
+					<div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
+						<div className="w-[96%] space-y-1 my-auto">
+							{/* Realistic Input Field with Active Selection Trigger */}
+							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
+								<div className="flex items-center gap-1.5 min-w-0">
+									<div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
+										<svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+											<rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+											<line x1="16" y1="2" x2="16" y2="6" />
+											<line x1="8" y1="2" x2="8" y2="6" />
+											<line x1="3" y1="10" x2="21" y2="10" />
+										</svg>
+									</div>
+									<div className="flex flex-col text-left leading-none truncate">
+										<span className="text-[5px] text-primary font-bold uppercase tracking-wider">Picking Date...</span>
+										<span className="text-[6.5px] font-extrabold text-foreground truncate">Aug 18, 2026</span>
+									</div>
+								</div>
+								<span className="text-[5.5px] text-primary font-bold">▲</span>
 							</div>
-							<div className="grid grid-cols-7 gap-0.5 text-foreground font-medium">
-								<span className="opacity-40">12</span>
-								<span className="opacity-40">13</span>
-								<span className="bg-primary text-primary-foreground rounded-full font-bold">
-									14
-								</span>
-								<span>15</span>
-								<span>16</span>
-								<span>17</span>
-								<span>18</span>
+
+							{/* Realistic Floating Popover Dropdown Card with Live Selection */}
+							<div className="w-full p-1.5 rounded-lg bg-card/95 backdrop-blur-xs border border-border shadow-xl space-y-1 relative">
+								{/* Preset Quick Chips */}
+								<div className="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none text-[4.5px]">
+									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Today</span>
+									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Tomorrow</span>
+									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">Pick Date Range</span>
+								</div>
+
+								{/* Month Header Navigation */}
+								<div className="flex items-center justify-between px-1 py-0.5 rounded bg-muted/40 text-[6px]">
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">‹</span>
+									<span className="font-bold text-foreground">August 2026</span>
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">›</span>
+								</div>
+
+								{/* Weekday Grid Labels */}
+								<div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground/70 text-center text-[4.5px] uppercase">
+									<span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+								</div>
+
+								{/* Days Matrix with Cursor Picking Date 18 */}
+								<div className="grid grid-cols-7 gap-0.5 text-center font-medium text-[5px] relative">
+									<span className="text-muted-foreground/30 py-0.5">26</span>
+									<span className="text-muted-foreground/30 py-0.5">27</span>
+									<span className="text-muted-foreground/30 py-0.5">28</span>
+									<span className="text-muted-foreground/30 py-0.5">29</span>
+									<span className="text-muted-foreground/30 py-0.5">30</span>
+									<span className="text-muted-foreground/30 py-0.5">31</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">1</span>
+
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">2</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">3</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">4</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">5</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">6</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">7</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">8</span>
+
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">9</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">10</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">11</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">12</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">13</span>
+
+									{/* Start Date Selected */}
+									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">14</span>
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">15</span>
+
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">16</span>
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">17</span>
+
+									{/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
+									<div className="relative flex items-center justify-center">
+										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary ring-offset-1 scale-105 z-10">
+											18
+										</span>
+										{/* Cursor Pointer Graphic */}
+										<svg className="size-3 text-foreground drop-shadow-md absolute -bottom-1 -right-1 z-20 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+											<path d="M4.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L4.5 3.5Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+										</svg>
+									</div>
+
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">19</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">20</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">21</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">22</span>
+								</div>
+
+								{/* Active Picking Status Bar */}
+								<div className="flex items-center justify-between pt-1 border-t border-border/50 text-[5px]">
+									<div className="flex items-center gap-1">
+										<span className="size-1.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
+										<span className="font-semibold text-foreground truncate">Selected: Aug 14 - Aug 18</span>
+									</div>
+									<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-extrabold shadow-2xs shrink-0">Confirm</span>
+								</div>
 							</div>
 						</div>
 					</div>

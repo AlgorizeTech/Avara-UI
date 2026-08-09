@@ -234,7 +234,7 @@ const Header = () => {
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "hover:text-foreground hover:bg-muted/60"
               )}
-              href="/docs/nextjs/avatar"
+              href="/docs/nextjs/all-components"
               prefetch={false}
             >
               <LayoutGrid className="h-3.5 w-3.5" />

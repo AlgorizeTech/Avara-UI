@@ -18,7 +18,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/api-routes](/docs/nextjs-api-routes.md) - Source: `nextjs\api-routes\page.mdx`
 - [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `nextjs\architecture\page.mdx`
 - [nextjs/authentication](/docs/nextjs-authentication.md) - Source: `nextjs\authentication\page.mdx`
-- [nextjs/avatar](/docs/nextjs-avatar.md) - Source: `nextjs\avatar\page.mdx`
 - [nextjs/breadcrumb](/docs/nextjs-breadcrumb.md) - Source: `nextjs\breadcrumb\page.mdx`
 - [nextjs/button](/docs/nextjs-button.md) - Source: `nextjs\button\page.mdx`
 - [nextjs/calendar](/docs/nextjs-calendar.md) - Source: `nextjs\calendar\page.mdx`
