@@ -30,7 +30,6 @@ export interface OrbitTool {
   id: string;
   name: string;
   icon: React.ElementType;
-  angle: number;
 }
 
 export interface SubApp {
@@ -111,19 +110,19 @@ function getColorDetails(colorKey: string) {
   }
 }
 
-// --- Data Configuration ---
+// --- Data Configuration (11 Tools evenly spaced at 360° / 11 = 32.72° intervals) ---
 const ORBIT_TOOLS: OrbitTool[] = [
-  { id: "slack", name: "Slack", icon: Share2, angle: 270 },
-  { id: "whatsapp", name: "WhatsApp", icon: MessageCircle, angle: 305 },
-  { id: "telegram", name: "Telegram", icon: Send, angle: 340 },
-  { id: "email", name: "Email", icon: Mail, angle: 20 },
-  { id: "code", name: "Code", icon: Code2, angle: 55 },
-  { id: "workflow", name: "Workflow", icon: Network, angle: 90 },
-  { id: "mcp", name: "MCP", icon: Plug, angle: 125 },
-  { id: "tree", name: "Tree", icon: Share2, angle: 160 },
-  { id: "chat", name: "Chat", icon: MessageSquare, angle: 195 },
-  { id: "voice", name: "Voice", icon: Mic, angle: 220 },
-  { id: "phone", name: "Phone", icon: Phone, angle: 245 },
+  { id: "slack", name: "Slack", icon: Share2 },
+  { id: "whatsapp", name: "WhatsApp", icon: MessageCircle },
+  { id: "telegram", name: "Telegram", icon: Send },
+  { id: "email", name: "Email", icon: Mail },
+  { id: "code", name: "Code", icon: Code2 },
+  { id: "workflow", name: "Workflow", icon: Network },
+  { id: "mcp", name: "MCP", icon: Plug },
+  { id: "tree", name: "Tree", icon: Share2 },
+  { id: "chat", name: "Chat", icon: MessageSquare },
+  { id: "voice", name: "Voice", icon: Mic },
+  { id: "phone", name: "Phone", icon: Phone },
 ];
 
 const SUB_AGENTS: SubAgent[] = [
@@ -205,7 +204,7 @@ const SUB_AGENTS: SubAgent[] = [
 ];
 
 export function UserGraphShowcase() {
-  const [selectedTool, setSelectedTool] = useState<string>("voice");
+  const [selectedTool, setSelectedTool] = useState<string>("phone");
   const [color, setColor] = useState<string>("default");
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -264,7 +263,7 @@ export function UserGraphShowcase() {
 
             <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center z-10">
               {/* TOP TIER: Concentric Circles & Dashed Orbit Ring */}
-              <div className="relative size-[230px] sm:size-[300px] flex items-center justify-center my-1 z-10 scale-95 sm:scale-100">
+              <div className="relative size-[240px] sm:size-[310px] flex items-center justify-center my-1 z-10 scale-95 sm:scale-100">
                 {/* Outer Dashed Orbit Circle */}
                 <div className="absolute size-[200px] sm:size-[260px] rounded-full border border-dashed border-slate-300 dark:border-zinc-700/60" />
 
@@ -291,9 +290,11 @@ export function UserGraphShowcase() {
                   <User className="size-6 sm:size-9 stroke-[2.5]" />
                 </div>
 
-                {/* 11 Orbiting Tool Nodes around Dashed Circle */}
-                {ORBIT_TOOLS.map((tool) => {
-                  const rad = (tool.angle * Math.PI) / 180;
+                {/* 11 Orbiting Tool Nodes mathematically spaced evenly around Dashed Circle */}
+                {ORBIT_TOOLS.map((tool, index) => {
+                  // Calculate exact equal angular spacing: 360 / 11 = 32.727° per tool
+                  const angleDegree = (index / ORBIT_TOOLS.length) * 360 - 90; // Start at top (270° / -90°)
+                  const rad = (angleDegree * Math.PI) / 180;
                   const radius = isSmallScreen ? 100 : 130;
                   const x = radius * Math.cos(rad);
                   const y = radius * Math.sin(rad);
@@ -317,10 +318,16 @@ export function UserGraphShowcase() {
                         <tool.icon className="size-3 sm:size-4" />
                       </button>
 
-                      {/* Active Selected Tool Label Badge */}
+                      {/* Active Selected Tool Label Tooltip with Arrow Pointer */}
                       {isSelected && (
-                        <div className="absolute top-8 sm:top-10 px-1.5 sm:px-2 py-0.5 rounded-md bg-white text-slate-900 dark:bg-zinc-900 dark:text-white border border-slate-200 dark:border-zinc-700/80 text-[9px] sm:text-[10px] font-bold shadow-md whitespace-nowrap">
-                          {tool.name}
+                        <div className="absolute top-8 sm:top-11 z-40 flex flex-col items-center pointer-events-none drop-shadow-md">
+                          {/* Visible Solid Arrow Pointer Triangle */}
+                          <div className="w-0 h-0 border-x-[6px] border-x-transparent border-b-[6px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
+                          
+                          {/* Tooltip Content Badge */}
+                          <div className="px-2 py-0.5 rounded-md bg-slate-800 text-white dark:bg-zinc-200 dark:text-slate-900 text-[9px] sm:text-[10px] font-bold whitespace-nowrap shadow-md">
+                            {tool.name}
+                          </div>
                         </div>
                       )}
                     </div>
