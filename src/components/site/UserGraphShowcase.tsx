@@ -208,24 +208,30 @@ export function UserGraphShowcase() {
   const [selectedTool, setSelectedTool] = useState<string>("voice");
   const [color, setColor] = useState<string>("default");
 
-  // Dynamic Container Width Observer (Works for both window resize AND preview frame handle dragging)
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState<number>(800);
+  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width > 0) {
-          setContainerWidth(entry.contentRect.width);
-        }
-      }
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
+    const handleResize = () => {
+      const width = containerRef.current?.clientWidth || window.innerWidth;
+      setIsSmallScreen(width < 640 || window.innerWidth < 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    let observer: ResizeObserver | null = null;
+    if (containerRef.current) {
+      observer = new ResizeObserver(() => handleResize());
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
-  const isSmallContainer = containerWidth < 620;
   const accentColor = getColorDetails(color);
 
   return (
@@ -288,7 +294,7 @@ export function UserGraphShowcase() {
                 {/* 11 Orbiting Tool Nodes around Dashed Circle */}
                 {ORBIT_TOOLS.map((tool) => {
                   const rad = (tool.angle * Math.PI) / 180;
-                  const radius = isSmallContainer ? 100 : 130;
+                  const radius = isSmallScreen ? 100 : 130;
                   const x = radius * Math.cos(rad);
                   const y = radius * Math.sin(rad);
                   const isSelected = selectedTool === tool.id;
@@ -322,8 +328,8 @@ export function UserGraphShowcase() {
                 })}
               </div>
 
-              {/* DYNAMIC RENDERING: If Container Width >= 620px -> Render SVG Graph Diagram; Else -> Render Vertical Timeline */}
-              {!isSmallContainer ? (
+              {/* DYNAMIC VIEW SWITCH BASED ON EXACT CONTAINER OR SCREEN SIZE */}
+              {!isSmallScreen ? (
                 /* DESKTOP & TABLET INTEGRATED SVG GRAPH DIAGRAM */
                 <div className="relative w-full h-[430px]">
                   {/* SVG Precision Connector Lines Layer */}
@@ -457,59 +463,91 @@ export function UserGraphShowcase() {
                   </div>
                 </div>
               ) : (
-                /* SMALL CONTAINER (< 620px) VERTICAL TIMELINE LAYOUT */
-                <div className="w-full flex flex-col gap-5 mt-4 px-2 z-20">
-                  {/* Main Shuvo Sarkar Node Header */}
-                  <div className="flex flex-col items-center mb-2">
-                    <div
-                      className={cn(
-                        "relative size-16 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
-                        accentColor.ringClass
-                      )}
-                    >
-                      <img
-                        src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80"
-                        alt="Shuvo Sarkar"
-                        className="size-full rounded-full object-cover"
-                      />
-                      <span className="absolute bottom-0 right-1 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
-                    </div>
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white mt-1">Shuvo Sarkar</h4>
-                    <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">Expert Software Engineer</p>
-                  </div>
+                /* SMALL SCREEN CONTINUOUS VERTICAL TIMELINE LAYOUT */
+                <div className="w-full flex flex-col items-center mt-2 px-2 z-20">
+                  {/* Timeline Main Container with Vertical Central Guide Line */}
+                  <div className="relative w-full max-w-sm flex flex-col items-center">
+                    
+                    {/* Central Vertical Connector Line */}
+                    <div className="absolute top-8 bottom-8 left-6 w-0.5 bg-gradient-to-b from-slate-300 via-slate-300 to-slate-200 dark:from-zinc-700 dark:via-zinc-700 dark:to-zinc-800" />
 
-                  {/* Vertical Timeline Card List */}
-                  <div className="relative border-l-2 border-slate-300 dark:border-zinc-700/80 ml-5 pl-5 flex flex-col gap-3.5">
-                    {SUB_AGENTS.map((agent) => (
+                    {/* 1. TOP TIMELINE NODE: Shuvo Sarkar Orchestrator */}
+                    <div className="relative w-full flex items-center gap-4 mb-6 z-10">
                       <div
-                        key={agent.id}
-                        className="relative flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-white dark:bg-[#181c2b] border border-slate-200 dark:border-zinc-800 shadow-xs"
+                        className={cn(
+                          "relative size-12 shrink-0 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md ml-0 transition-colors",
+                          accentColor.ringClass
+                        )}
                       >
-                        {/* Timeline Node Avatar */}
-                        <div className="absolute -left-[41px] top-1/2 -translate-y-1/2 size-9 rounded-full p-0.5 bg-white dark:bg-[#0c0e1a] ring-2 ring-slate-300 dark:ring-zinc-700 shadow-xs">
-                          <img
-                            src={agent.avatarUrl}
-                            alt={agent.title}
-                            className="size-full rounded-full object-cover"
-                          />
-                        </div>
-
-                        {/* Agent Info */}
-                        <div className="flex flex-col">
-                          <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                            {agent.title}
-                          </span>
-                          <span className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">
-                            {agent.role}
-                          </span>
-                        </div>
-
-                        {/* 3 Sub-App Badges */}
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          {appList(agent.apps)}
-                        </div>
+                        <img
+                          src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80"
+                          alt="Shuvo Sarkar"
+                          className="size-full rounded-full object-cover"
+                        />
+                        <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                       </div>
-                    ))}
+                      <div className="flex flex-col bg-white dark:bg-[#181c2b] p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs grow">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-bold text-slate-900 dark:text-white">Shuvo Sarkar</h4>
+                          <span className="px-1.5 py-0.5 text-[9px] font-semibold rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                            Active Lead
+                          </span>
+                        </div>
+                        <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">Expert Software Engineer</p>
+                      </div>
+                    </div>
+
+                    {/* 2. SUB-AGENTS CONTINUOUS TIMELINE STEP NODES */}
+                    <div className="w-full flex flex-col gap-4">
+                      {SUB_AGENTS.map((agent, index) => (
+                        <div key={agent.id} className="relative w-full flex flex-col z-10">
+                          {/* Agent Step Header Row */}
+                          <div className="flex items-center gap-3">
+                            {/* Timeline Node Point (Avatar) */}
+                            <div className="relative size-12 shrink-0 rounded-full p-0.5 bg-white dark:bg-[#0c0e1a] ring-2 ring-slate-300 dark:ring-zinc-700 shadow-xs">
+                              <img
+                                src={agent.avatarUrl}
+                                alt={agent.title}
+                                className="size-full rounded-full object-cover"
+                              />
+                              <span
+                                className={cn(
+                                  "absolute bottom-0 right-0 size-2.5 rounded-full ring-1 ring-white dark:ring-[#0c0e1a]",
+                                  agent.status === "online"
+                                    ? "bg-emerald-500"
+                                    : agent.status === "idle"
+                                    ? "bg-amber-500"
+                                    : "bg-slate-400"
+                                )}
+                              />
+                              {/* Step Index Badge */}
+                              <span className="absolute -top-1 -left-1 size-4 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[8px] font-black flex items-center justify-center shadow-xs">
+                                {index + 1}
+                              </span>
+                            </div>
+
+                            {/* Agent Content Box */}
+                            <div className="flex flex-col bg-white dark:bg-[#181c2b] p-3 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs grow">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <span className="text-xs font-bold text-slate-900 dark:text-white">
+                                  {agent.title}
+                                </span>
+                                <span className="text-[9px] font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
+                                  Agent 0{index + 1}
+                                </span>
+                              </div>
+
+                              {/* Connected Apps Badges */}
+                              <div className="flex items-center gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800/80">
+                                <span className="text-[9px] font-medium text-slate-400 dark:text-zinc-500 mr-1">Apps:</span>
+                                {appList(agent.apps)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
                   </div>
                 </div>
               )}
