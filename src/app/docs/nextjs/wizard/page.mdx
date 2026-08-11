@@ -94,29 +94,6 @@ export default function BareWizard() {
   );
 }`;
 
-export const usageOnComplete = `"use client";
-
-import { useState } from "react";
-import {
-  Wizard,
-  WizardContainer,
-  WizardProgress,
-  WizardStep,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function CompletableWizard() {
-  const [completed, setCompleted] = useState(false);
-
-  // onComplete fires when the user advances past the LAST step —
-  // this is where you submit the collected answers.
-  return (
-    <Wizard onComplete={() => setCompleted(true)}>
-      <WizardProgress />
-      <WizardContainer>{/* ...steps... */}</WizardContainer>
-    </Wizard>
-  );
-}`;
-
 <ExampleShowcase
   name="wizard"
   colorControl
@@ -140,12 +117,6 @@ export default function CompletableWizard() {
       subheading: "`WizardProgress` is an independent child — leave it out and navigation is unchanged.",
       props: { showProgress: false },
       usage: usageNoProgress,
-    },
-    {
-      title: "Completion callback",
-      subheading: "`onComplete` fires when the user advances past the last step. Press **OK** on step 2 to see it.",
-      props: { example: "on-complete" },
-      usage: usageOnComplete,
     },
   ]}
 />

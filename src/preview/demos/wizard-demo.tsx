@@ -29,7 +29,6 @@ export default function WizardDemo({
   wizardKey = 0,
   initialStep = 0,
   showProgress = true,
-  example,
 }: {
   color?: string;
   /** Incremented by the showcase's "Restart Demo" button to remount the wizard. */
@@ -38,55 +37,9 @@ export default function WizardDemo({
   initialStep?: number;
   /** Set false to leave <WizardProgress /> out of the tree. */
   showProgress?: boolean;
-  /** Alternate flows for the docs gallery. Omitted = previous behavior. */
-  example?: "on-complete";
 }) {
   // Local restart counter for the in-demo "Finish & Restart" button
   const [localKey, setLocalKey] = useState(0);
-  const [completed, setCompleted] = useState(false);
-
-  if (example === "on-complete") {
-    return (
-      <div className="w-full flex items-center justify-center overflow-hidden">
-        <Wizard
-          key={`complete-${wizardKey}-${localKey}`}
-          color={color}
-          onComplete={() => setCompleted(true)}
-        >
-          {showProgress && <WizardProgress />}
-
-          <WizardContainer>
-            <WizardStep index={0}>
-              <WizardTitle>1. What should we call your workspace?</WizardTitle>
-              <form onSubmit={submitToNext}>
-                <WizardInput placeholder="e.g. Acme Corp" autoFocus />
-                <WizardNavigation />
-              </form>
-            </WizardStep>
-
-            <WizardStep index={1}>
-              <WizardTitle>2. Invite your team</WizardTitle>
-              <WizardDescription>
-                {completed
-                  ? "onComplete fired — this is where you would submit."
-                  : "Press OK on this last step to fire onComplete."}
-              </WizardDescription>
-              <form onSubmit={submitToNext}>
-                <WizardInput placeholder="name@company.com" />
-                <WizardNavigation />
-              </form>
-              {completed && (
-                <div className="mt-8 flex items-center gap-3 text-emerald-600">
-                  <CheckCircle2 className="w-6 h-6 shrink-0" />
-                  <span className="font-bold">onComplete() called</span>
-                </div>
-              )}
-            </WizardStep>
-          </WizardContainer>
-        </Wizard>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full flex items-center justify-center overflow-hidden">
