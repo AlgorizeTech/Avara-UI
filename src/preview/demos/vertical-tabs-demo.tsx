@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  TabsOrientation,
   TabsVariant,
   VerticalTabs,
 } from "@/components/custom/blocks/VerticalTabs";
@@ -59,10 +60,13 @@ const sampleTabs = [
 
 export default function VerticalTabsDemo({
   variant = "default",
+  orientation = "vertical",
   color = "primary",
   defaultActiveId,
 }: {
   variant?: TabsVariant;
+  /** "horizontal" moves the rail above the content pane. */
+  orientation?: TabsOrientation;
   color?: string;
   /** Which tab id opens first (defaults to the first tab). */
   defaultActiveId?: string;
@@ -73,9 +77,10 @@ export default function VerticalTabsDemo({
     >
       <div className="w-full max-w-4xl mx-auto px-4">
         <VerticalTabs
-          key={`${variant}-${color}-${defaultActiveId ?? ""}`}
+          key={`${variant}-${orientation}-${color}-${defaultActiveId ?? ""}`}
           tabs={sampleTabs}
           variant={variant}
+          orientation={orientation}
           color={color}
           defaultActiveId={defaultActiveId}
         />

@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Vertical Tabs
 
-A sleek, responsive vertical navigation component. It utilizes a sidebar menu on the left (which stacks automatically on smaller screens) and an active content pane on the right.
+A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
 
 ## Examples
 
@@ -45,6 +45,21 @@ export default function MediaTabs() {
   // Each tab carries its own content — the block handles the crossfade.
   return <VerticalTabs tabs={tabs} />;
 }`;
+
+export const usageHorizontal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function HorizontalTabs() {
+  // Same rail, running across the top. Tabs keep their natural width and
+  // scroll sideways rather than squashing, so a long set stays readable.
+  return <VerticalTabs tabs={tabs} orientation="horizontal" />;
+}`;
+
+export const usageHorizontalBordered = `// Every variant works in both orientations — \`bordered\` just moves its
+// divider from the right edge of the rail to the bottom.
+<VerticalTabs tabs={tabs} orientation="horizontal" variant="bordered" />`;
 
 export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 import { Camera, Clapperboard, Music, Settings } from "lucide-react";
@@ -96,10 +111,22 @@ export default function SettingsFirst() {
   examples={[
     {
       title: "Vertical tabs",
-      subheading: "Pass a `tabs` array of `{ id, label, icon, content }` — that's the whole API.",
-      props: { variant: "default" },
+      subheading: "Pass a `tabs` array of `{ id, label, icon, content }` — that's the whole API. The rail sits beside the pane, and stacks above it on narrow screens.",
+      props: { variant: "default", orientation: "vertical" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
+    },
+    {
+      title: "Horizontal tabs",
+      subheading: "`orientation=\"horizontal\"` runs the same rail across the top as a pill bar. Tabs keep their natural width and scroll sideways instead of squashing.",
+      props: { variant: "default", orientation: "horizontal" },
+      usage: usageHorizontal,
+    },
+    {
+      title: "Horizontal + bordered",
+      subheading: "Orientation and `variant` compose — `bordered` simply moves its divider from the side of the rail to the bottom.",
+      props: { variant: "bordered", orientation: "horizontal" },
+      usage: usageHorizontalBordered,
     },
     {
       title: "Minimal",
@@ -185,6 +212,23 @@ Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the en
           Applies overarching structural layouts. <code>bordered</code> connects
           the menu directly to the content, while <code>minimal</code> removes
           background containers.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>orientation</code>
+        </td>
+        <td>
+          <code>"vertical" | "horizontal"</code>
+        </td>
+        <td>
+          <code>"vertical"</code>
+        </td>
+        <td>
+          Which way the tab rail runs. <code>vertical</code> puts it beside the
+          content pane (stacking above it below <code>md</code>);{" "}
+          <code>horizontal</code> puts it across the top as a pill bar that
+          scrolls sideways when the tabs outgrow the width.
         </td>
       </tr>
       <tr>
