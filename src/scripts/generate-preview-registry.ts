@@ -28,10 +28,11 @@ const registry = `"use client";
 
 ${header}
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { lazy, type ComponentType, type LazyExoticComponent } from "react";
+import { type ComponentType, type LazyExoticComponent } from "react";
+import { lazyRetry } from "./lazyRetry";
 
 export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
-${names.map((n) => `  "${n}": lazy(() => import("./demos/${n}-demo")),`).join("\n")}
+${names.map((n) => `  "${n}": lazyRetry(() => import("./demos/${n}-demo")),`).join("\n")}
 };
 `;
 

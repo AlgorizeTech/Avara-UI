@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
+import { SandboxErrorBoundary } from "./SandboxErrorBoundary";
 import { sandboxRegistry } from "./registry";
 
 const SANDBOX_MIN_HEIGHT = 0;
@@ -125,10 +126,12 @@ export function SandboxClient({ name }: { name: string }) {
       className="w-full flex items-center justify-center p-4"
       style={{ minHeight: SANDBOX_MIN_HEIGHT }}
     >
-      <Suspense fallback={null}>
-        <Demo {...demoProps} />
-        <ReadySignal />
-      </Suspense>
+      <SandboxErrorBoundary name={name}>
+        <Suspense fallback={null}>
+          <Demo {...demoProps} />
+          <ReadySignal />
+        </Suspense>
+      </SandboxErrorBoundary>
     </div>
   );
 }

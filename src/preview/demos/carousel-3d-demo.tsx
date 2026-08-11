@@ -4,6 +4,7 @@ import {
   CarouselItem,
   ThreeDCarousel,
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
+import { accentStyle } from "@/lib/accent";
 
 const sampleItems: CarouselItem[] = [
   {
@@ -57,16 +58,24 @@ export default function Carousel3DDemo({
   autoPlay = true,
   autoPlayInterval = 4000,
   itemCount,
+  color = "primary",
 }: {
   autoPlay?: boolean;
   autoPlayInterval?: number;
   /** Trims the deck so you can see how the fan tightens with fewer cards. */
   itemCount?: number;
+  /** Accent from the gallery's colour picker. */
+  color?: string;
 }) {
   const items = itemCount ? sampleItems.slice(0, itemCount) : sampleItems;
 
   return (
-    <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+    // ThreeDCarousel is already written against --primary (active ring, tag
+    // pill, arrows, dots), so repointing the token here recolours all of it.
+    <div
+      style={accentStyle(color)}
+      className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+    >
       {/* Subtle Ambient Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/5 dark:bg-primary/10 blur-[140px] rounded-full pointer-events-none" />
 

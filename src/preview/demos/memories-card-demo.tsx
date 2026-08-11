@@ -4,6 +4,7 @@ import {
   MemoriesCard,
   MemoryItem,
 } from "@/components/custom/blocks/MemoriesCardBlock";
+import { accentStyle } from "@/lib/accent";
 import { useState } from "react";
 
 const sampleMemories: MemoryItem[] = [
@@ -56,11 +57,14 @@ const sampleMemories: MemoryItem[] = [
 export default function MemoriesCardDemo({
   itemSet = "full",
   showIndex = false,
+  color = "primary",
 }: {
   /** "minimal" strips the optional tag/location/date/description fields. */
   itemSet?: "full" | "minimal";
   /** Renders an onCardChange readout under the deck. */
   showIndex?: boolean;
+  /** Accent from the gallery's colour picker. */
+  color?: string;
 }) {
   const items =
     itemSet === "minimal"
@@ -70,7 +74,12 @@ export default function MemoriesCardDemo({
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+    // MemoriesCard is already written against --primary (active ring, tag pill,
+    // date/location icons, reset button), so repointing the token recolours it.
+    <div
+      style={accentStyle(color)}
+      className="w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+    >
       {/* Ambient Radial Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/5 dark:bg-primary/10 blur-[130px] rounded-full pointer-events-none" />
 

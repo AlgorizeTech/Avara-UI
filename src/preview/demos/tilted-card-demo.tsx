@@ -1,6 +1,7 @@
 "use client";
 
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { accentForeground, accentStyle, resolveAccent } from "@/lib/accent";
 import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 export default function TiltedCardDemo({
@@ -12,10 +13,22 @@ export default function TiltedCardDemo({
   tiltIntensity?: number;
   glareOpacity?: number;
   scaleOnHover?: number;
+  /** Accent from the gallery's colour picker. Hex, preset name or "primary". */
   color?: string;
 }) {
+  // The picker can hand over a preset name ("indigo") or "primary", neither of
+  // which is a valid CSS colour on its own — resolve before using inline.
+  const resolved = resolveAccent(color);
+  const accent = resolved ?? "var(--primary)";
+  const onAccent = resolved
+    ? accentForeground(resolved)
+    : "var(--primary-foreground)";
+
   return (
-    <div className="w-full flex items-center justify-center bg-zinc-100/70 dark:bg-[#050505] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]">
+    <div
+      style={accentStyle(color)}
+      className="w-full flex items-center justify-center bg-zinc-100/70 dark:bg-[#050505] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.06)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="w-full max-w-[340px] aspect-[3/4] relative z-10">
@@ -30,17 +43,17 @@ export default function TiltedCardDemo({
 
             <div
               className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: accent }}
             />
             <div
               className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[60px] opacity-15 dark:opacity-20 pointer-events-none"
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: accent }}
             />
 
             <div className="relative z-10 flex justify-between items-start">
               <div
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-zinc-200/60 dark:border-white/10"
-                style={{ backgroundColor: color, color: "#fff" }}
+                style={{ backgroundColor: accent, color: onAccent }}
               >
                 <Nfc className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
