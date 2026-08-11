@@ -42,16 +42,64 @@ export default function LandingHeader() {
   );
 }`;
 
-export const usageVariants = `// Nine effects, all driven by the same \`variant\` prop.
-<AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="reveal" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="flip-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="pop-in" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="blur-in" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="typewriter" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="glitch" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="glow" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="none" text="The quick brown fox." />`;
+export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function MaskReveals() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* Words slide up out of a clipping mask, fading as they go. */}
+      <AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+
+      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
+      <AnimatedTypographyBlock as="h3" variant="reveal" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function TransformEntrances() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* 3D rotateX around each word's bottom edge. */}
+      <AnimatedTypographyBlock as="h3" variant="flip-up" text="The quick brown fox." />
+
+      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
+      <AnimatedTypographyBlock as="h3" variant="pop-in" text="The quick brown fox." />
+
+      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
+      <AnimatedTypographyBlock as="h3" variant="blur-in" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ContinuousEffects() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* Red/blue clipped copies drift behind the text, forever. */}
+      <AnimatedTypographyBlock as="h3" variant="glitch" text="The quick brown fox." />
+
+      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
+      <AnimatedTypographyBlock as="h3" variant="glow" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WholeStringVariants() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* The one character-by-character effect — types out, then blinks. */}
+      <AnimatedTypographyBlock as="h3" variant="typewriter" speed={1} text="The quick brown fox." />
+
+      {/* No motion at all: the block's sizing and semantics, nothing else. */}
+      <AnimatedTypographyBlock as="h3" variant="none" text="The quick brown fox." />
+    </div>
+  );
+}`;
 
 export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
 // intact no matter which effect you use.
@@ -86,10 +134,28 @@ export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
     {
-      title: "Animation variants",
-      subheading: "Use the `variant` prop to change the effect.",
-      props: { showAll: "variants" },
-      usage: usageVariants,
+      title: "Masked reveals",
+      subheading: "Both slide each word up out of a clipping mask — `fade-up` fades as it rises, `reveal` stays solid on a sharper curve.",
+      props: { variants: ["fade-up", "reveal"] },
+      usage: usageMaskReveals,
+    },
+    {
+      title: "Transform entrances",
+      subheading: "Word-by-word entrances that transform rather than slide: a 3D `flip-up`, a springy `pop-in`, and a `blur-in` that resolves from 12px of blur.",
+      props: { variants: ["flip-up", "pop-in", "blur-in"] },
+      usage: usageTransformEntrances,
+    },
+    {
+      title: "Continuous effects",
+      subheading: "These two never settle — `glitch` drifts red/blue copies behind the text and `glow` pulses a halo. Reserve them for short display text.",
+      props: { variants: ["glitch", "glow"] },
+      usage: usageContinuous,
+    },
+    {
+      title: "Typewriter & no animation",
+      subheading: "The two that leave the string whole instead of splitting it into words: `typewriter` types it out character by character, `none` renders it plainly.",
+      props: { variants: ["typewriter", "none"] },
+      usage: usageWholeString,
     },
     {
       title: "Semantic tags",

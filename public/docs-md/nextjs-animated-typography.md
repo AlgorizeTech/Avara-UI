@@ -22,9 +22,55 @@ export default function LandingHeader() {
   );
 }`;
 
-export const usageVariants = `// Nine effects, all driven by the same \`variant\` prop.
+export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-`;
+export default function MaskReveals() {
+  return (
+    
+      {/* Words slide up out of a clipping mask, fading as they go. */}
+
+      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
+
+  );
+}`;
+
+export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function TransformEntrances() {
+  return (
+    
+      {/* 3D rotateX around each word's bottom edge. */}
+
+      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
+
+      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
+
+  );
+}`;
+
+export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ContinuousEffects() {
+  return (
+    
+      {/* Red/blue clipped copies drift behind the text, forever. */}
+
+      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
+
+  );
+}`;
+
+export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WholeStringVariants() {
+  return (
+    
+      {/* The one character-by-character effect — types out, then blinks. */}
+
+      {/* No motion at all: the block's sizing and semantics, nothing else. */}
+
+  );
+}`;
 
 export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
 // intact no matter which effect you use.
