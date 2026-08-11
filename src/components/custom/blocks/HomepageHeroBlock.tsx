@@ -46,6 +46,72 @@ export interface HomepageHeroBlockProps
 }
 
 /* ═══════════════════════════════════════════════
+   ACCENT CONTRAST
+   ═══════════════════════════════════════════════
+
+   The picked accent is injected as --primary on the section, so it also
+   becomes the colour of accent *text* (`text-primary`). A pick that sits
+   close to the page surface — white on the light theme, near-black on the
+   dark theme — renders that text invisible.
+
+   So we publish two extra variables: the accent nudged just far enough to
+   stay legible on a light surface, and the same for a dark surface. Accent
+   text reads them through the `dark:` variant, while --primary itself keeps
+   the exact picked colour for glows, borders and tints. */
+
+type Rgb = [number, number, number];
+
+/** Surface luminances of --background in each theme (white / oklch(0.145)). */
+const LIGHT_SURFACE_LUM = 1;
+const DARK_SURFACE_LUM = 0.003;
+/** WCAG AA for large text. Accent text here is display-sized. */
+const MIN_CONTRAST = 3;
+
+const parseColor = (input: string): Rgb | null => {
+  const hex = input.trim().replace(/^#/, "");
+  if (/^[a-f\d]{3}$/i.test(hex)) {
+    const [r, g, b] = hex.split("");
+    return [
+      parseInt(r + r, 16),
+      parseInt(g + g, 16),
+      parseInt(b + b, 16),
+    ];
+  }
+  if (/^[a-f\d]{6}$/i.test(hex)) {
+    return [
+      parseInt(hex.slice(0, 2), 16),
+      parseInt(hex.slice(2, 4), 16),
+      parseInt(hex.slice(4, 6), 16),
+    ];
+  }
+  const m = input.match(/^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i);
+  return m ? [+m[1], +m[2], +m[3]] : null;
+};
+
+const relLuminance = ([r, g, b]: Rgb) => {
+  const f = (v: number) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+};
+
+const contrast = (a: number, b: number) =>
+  (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+/** Steps `rgb` toward `target` (0 = black, 255 = white) until it is legible. */
+const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
+  let out = rgb;
+  for (let i = 0; i < 16; i++) {
+    if (contrast(relLuminance(out), surfaceLum) >= MIN_CONTRAST) break;
+    out = out.map((v) => Math.round(v + (target - v) * 0.12)) as Rgb;
+  }
+  return out;
+};
+
+const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
+
+/* ═══════════════════════════════════════════════
    MAIN BLOCK COMPONENT
    ═══════════════════════════════════════════════ */
 
@@ -107,9 +173,29 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     };
 
     const resolvedColor = getAccentColor(color);
-    const customStyle: React.CSSProperties = resolvedColor
-      ? ({ "--primary": resolvedColor } as React.CSSProperties)
-      : {};
+    const accentRgb = resolvedColor ? parseColor(resolvedColor) : null;
+
+    const customStyle = {
+      // light-dark() keys off `color-scheme`, not the `.dark` class. That
+      // matters: the docs preview iframe syncs the theme by writing token
+      // styles + `color-scheme` inline on <html> without ever adding `.dark`,
+      // so a `dark:` variant would pick the wrong branch in there.
+      // Falls back to --primary so an unthemed hero behaves exactly as before.
+      "--hero-accent-text": accentRgb
+        ? `light-dark(${toCss(
+            ensureContrast(accentRgb, LIGHT_SURFACE_LUM, 0),
+          )}, ${toCss(ensureContrast(accentRgb, DARK_SURFACE_LUM, 255))})`
+        : "var(--primary)",
+      ...(resolvedColor ? { "--primary": resolvedColor } : {}),
+      ...(accentRgb
+        ? {
+            // Text on a `bg-primary` fill needs the opposite of the accent —
+            // otherwise it keeps the theme's own value and can vanish.
+            "--primary-foreground":
+              relLuminance(accentRgb) > 0.45 ? "#09090b" : "#ffffff",
+          }
+        : {}),
+    } as React.CSSProperties;
 
     const currentWord = typingWords?.[currentWordIndex] || "";
 
@@ -141,9 +227,9 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             {badgeText && (
               <div>
                 <div
-                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-primary transition-all duration-300"
+                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] transition-all duration-300"
                 >
-                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
+                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-[var(--hero-accent-text)] animate-spin shrink-0" />
                   <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">{badgeText}</span>
                 </div>
               </div>
@@ -153,7 +239,10 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
               <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
                 <span className="shrink-0">
-                  Build <span className="text-primary">Interactive</span>
+                  Build{" "}
+                  <span className="text-[var(--hero-accent-text)]">
+                    Interactive
+                  </span>
                 </span>
                 <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[95px] xs:w-[115px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
                   <AnimatePresence mode="wait">
@@ -193,7 +282,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                   onClick={handleCopy}
                   className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-primary shrink-0" />
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
                   <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate">
                     {cliCommand}
                   </code>
@@ -228,7 +317,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       ? "_blank"
                       : undefined
                   }
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <Github className="size-3 sm:size-5 shrink-0" />
                   <span>{secondaryActionLabel}</span>

@@ -25,10 +25,8 @@ export function PaymentBlock() {
     setTimeout(() => setIsSubmitting(false), 1500); // Simulate network request
   };
 
-  // overflow must stay visible so the Month/Year dropdowns, which sit near the
-  // card's bottom edge, are not clipped by ComponentCard's own overflow-hidden.
   return (
-    <ComponentCard className="!overflow-visible">
+    <ComponentCard>
       <div className="flex flex-col space-y-1.5 p-6 pb-4">
         <h3 className="font-semibold leading-none tracking-tight">Payment Method</h3>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">All transactions are secure and encrypted.</p>

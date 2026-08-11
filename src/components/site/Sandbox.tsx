@@ -17,7 +17,11 @@ import {
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
-import React, { useEffect, useRef, useState } from "react";
+import {
+  DEFAULT_SHOWCASE_COLOR,
+  useShowcaseColorContext,
+} from "@/components/site/showcase-color";
+import React, { useEffect, useId, useRef, useState } from "react";
 
 const MIN_PREVIEW_WIDTH = 320;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
@@ -490,7 +494,7 @@ export function ExampleShowcase({
   maxHeight = 820,
   className,
   colorControl = false,
-  defaultColor = "primary",
+  defaultColor = DEFAULT_SHOWCASE_COLOR,
   colorProp = "color",
   colorLabel = "Theme Color",
 }: {
@@ -506,9 +510,10 @@ export function ExampleShowcase({
   maxHeight?: number;
   className?: string;
   /**
-   * Shows the shared theme-color control above the gallery, exactly as the
-   * old showcases did. Its value is bridged into every example's props, so
-   * color stays a page-level control and never becomes an example section.
+   * Opts this gallery into the page's theme color: every example gets the
+   * color bridged into its props. The control itself is drawn once per page,
+   * by whichever opted-in gallery sits highest, so a page reads as one accent
+   * switch at the top rather than a picker above every section.
    */
   colorControl?: boolean;
   /** Initial value of the color control. */
@@ -517,11 +522,29 @@ export function ExampleShowcase({
   colorProp?: string;
   colorLabel?: string;
 }) {
-  const [color, setColor] = useState(defaultColor);
+  const shared = useShowcaseColorContext();
+  const instanceId = useId();
+  // Outside the docs layout there is no page-level provider, so a showcase
+  // keeps its own color and draws its own picker.
+  const [localColor, setLocalColor] = useState(defaultColor);
+  const color = shared ? shared.color : localColor;
+  const setColor = shared ? shared.setColor : setLocalColor;
+  const ownsPicker = colorControl
+    ? shared
+      ? shared.claimPicker(instanceId)
+      : true
+    : false;
+
+  const seededRef = useRef(false);
+  useEffect(() => {
+    if (!shared || !ownsPicker || seededRef.current) return;
+    seededRef.current = true;
+    if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
+  }, [shared, ownsPicker, defaultColor]);
 
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {colorControl && (
+      {ownsPicker && (
         <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
           <ThemeColorPicker
             color={color}
