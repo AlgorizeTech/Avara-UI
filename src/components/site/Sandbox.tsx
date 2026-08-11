@@ -13,9 +13,10 @@ import {
   Smartphone,
   Tablet,
   Terminal,
-  ZoomIn,
+  Maximize2,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import React, { useEffect, useRef, useState } from "react";
 
 const MIN_PREVIEW_WIDTH = 320;
@@ -23,12 +24,21 @@ const MIN_PREVIEW_WIDTH = 320;
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;
 const SNAP_TO_FULL_THRESHOLD = 10;
-const ZOOM_LEVELS = [1, 0.75, 0.5];
 
 type Device = "desktop" | "tablet" | "mobile";
 
-const DEVICE_PRESETS: Record<Device, number | "100%"> = {
-  desktop: "100%",
+/**
+ * Every device button pins a REAL viewport width and lets the scale-to-fit
+ * math shrink it into the available area. Desktop used to be "100%" (i.e.
+ * whatever the docs column happened to be), so a desktop layout could never
+ * be seen from a narrow screen — the one case tablet and mobile handled fine.
+ * The fluid "100%" state is still the default, and the Fit button returns to
+ * it, so a visitor first sees the preview at their own viewport.
+ */
+const DESKTOP_PRESET_WIDTH = 1280;
+
+const DEVICE_PRESETS: Record<Device, number> = {
+  desktop: DESKTOP_PRESET_WIDTH,
   tablet: 768,
   mobile: 375,
 };
@@ -51,6 +61,9 @@ export interface SandboxTab {
 }
 
 export interface SandboxOptions {
+  /** "Fit" button — snaps the preview back to a 100% fit-to-screen view. */
+  fit?: boolean;
+  /** @deprecated Renamed to `fit` when the zoom cycle became a single action. */
   zoom?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
@@ -83,7 +96,11 @@ export function Sandbox({
   minHeight?: number;
   maxHeight?: number;
 }) {
-  const { zoom: zoomOption = true, deviceSwitcher = true, reset = true } = options;
+  const {
+    fit: fitOption = options.zoom ?? true,
+    deviceSwitcher = true,
+    reset = true,
+  } = options;
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
@@ -92,7 +109,6 @@ export function Sandbox({
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [zoom, setZoom] = useState(1);
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
 
@@ -119,14 +135,18 @@ export function Sandbox({
     viewportWidth !== null && availableWidth !== null && viewportWidth > availableWidth
       ? availableWidth / viewportWidth
       : 1;
-  const visualScale = fitScale * zoom;
+  const visualScale = fitScale;
+  /** Fluid AND unscaled — the only state that fills the card edge to edge. */
+  const isFitted = previewWidth === "100%" && fitScale === 1;
 
+  // Derived from the MEASURED width, including the fluid "100%" state — so on
+  // first load the highlighted button is the visitor's own device class.
   const activeDevice: Device =
-    previewWidth === "100%"
+    viewportWidth === null
       ? "desktop"
-      : (viewportWidth as number) < TABLET_MIN_WIDTH
+      : viewportWidth < TABLET_MIN_WIDTH
         ? "mobile"
-        : (viewportWidth as number) < DESKTOP_MIN_WIDTH
+        : viewportWidth < DESKTOP_MIN_WIDTH
           ? "tablet"
           : "desktop";
 
@@ -180,9 +200,21 @@ export function Sandbox({
   };
 
   const deviceButtons: Array<{ device: Device; icon: React.ReactNode; label: string }> = [
-    { device: "desktop", icon: <Monitor className="w-4 h-4" />, label: "Desktop View" },
-    { device: "tablet", icon: <Tablet className="w-4 h-4" />, label: "Tablet View" },
-    { device: "mobile", icon: <Smartphone className="w-4 h-4" />, label: "Mobile View" },
+    {
+      device: "desktop",
+      icon: <Monitor className="w-4 h-4" />,
+      label: `Desktop view (${DEVICE_PRESETS.desktop}px)`,
+    },
+    {
+      device: "tablet",
+      icon: <Tablet className="w-4 h-4" />,
+      label: `Tablet view (${DEVICE_PRESETS.tablet}px)`,
+    },
+    {
+      device: "mobile",
+      icon: <Smartphone className="w-4 h-4" />,
+      label: `Mobile view (${DEVICE_PRESETS.mobile}px)`,
+    },
   ];
 
   // Visual box of the (possibly scaled) frame
@@ -216,10 +248,29 @@ export function Sandbox({
         {/* Right: preview controls */}
         {isPreviewActive && (
           <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-            <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] text-right tabular-nums">
-              {previewWidth === "100%"
-                ? "100%"
-                : `${Math.round(viewportWidth as number)}px`}
+            {/* True viewport width, plus how far it was shrunk to fit the
+                column, which the Fit button snaps back to 100%. */}
+            <span className="flex items-baseline gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
+              <span>
+                {viewportWidth === null
+                  ? "—"
+                  : `${Math.round(viewportWidth)}px`}
+              </span>
+              <span
+                className={cn(
+                  "text-[11px] hidden sm:inline-block",
+                  fitScale < 1
+                    ? "text-zinc-400 dark:text-zinc-500"
+                    : "text-zinc-300 dark:text-zinc-600",
+                )}
+                title={
+                  fitScale < 1
+                    ? `Scaled to ${Math.round(fitScale * 100)}% to fit`
+                    : "Shown at full size"
+                }
+              >
+                {Math.round(fitScale * 100)}%
+              </span>
             </span>
 
             {deviceSwitcher && (
@@ -244,19 +295,16 @@ export function Sandbox({
               </div>
             )}
 
-            {zoomOption && (
+            {/* One action, no toggled state: always snaps back to the 100%
+                fit-to-screen view, whatever device or drag width is active. */}
+            {fitOption && (
               <button
-                onClick={() =>
-                  setZoom(
-                    ZOOM_LEVELS[(ZOOM_LEVELS.indexOf(zoom) + 1) % ZOOM_LEVELS.length],
-                  )
-                }
-                className="h-8 px-2 flex items-center justify-center gap-1 rounded-lg transition-all cursor-pointer shadow-sm border text-xs font-semibold tabular-nums bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
-                title="Zoom preview"
-                aria-label={`Zoom: ${Math.round(zoom * 100)}%`}
+                onClick={() => setPreviewWidth("100%")}
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                title="Fit to screen (100%)"
+                aria-label="Fit preview to screen"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
-                {Math.round(zoom * 100)}%
+                <Maximize2 className="w-4 h-4" />
               </button>
             )}
 
@@ -319,7 +367,7 @@ export function Sandbox({
               /* +1px compensates the right border so the inner viewport is exact */
               style={{
                 width:
-                  previewWidth === "100%" && zoom === 1
+                  isFitted
                     ? "100%"
                     : visualWidth === null
                       ? "100%"
@@ -330,7 +378,7 @@ export function Sandbox({
                 "relative flex justify-center items-start transition-[width] ease-out",
                 isDragging ? "duration-0" : "duration-300",
                 "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
-                previewWidth === "100%" && zoom === 1
+                isFitted
                   ? "rounded-b-xl"
                   : "rounded-bl-xl rounded-r-none",
               )}
@@ -338,7 +386,7 @@ export function Sandbox({
               <div
                 className={cn(
                   "w-full overflow-hidden",
-                  previewWidth === "100%" && zoom === 1 ? "rounded-b-xl" : "rounded-bl-xl",
+                  isFitted ? "rounded-b-xl" : "rounded-bl-xl",
                   isDragging && "pointer-events-none select-none",
                 )}
               >
@@ -441,6 +489,10 @@ export function ExampleShowcase({
   minHeight = 400,
   maxHeight = 820,
   className,
+  colorControl = false,
+  defaultColor = "primary",
+  colorProp = "color",
+  colorLabel = "Theme Color",
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -453,25 +505,58 @@ export function ExampleShowcase({
   minHeight?: number;
   maxHeight?: number;
   className?: string;
+  /**
+   * Shows the shared theme-color control above the gallery, exactly as the
+   * old showcases did. Its value is bridged into every example's props, so
+   * color stays a page-level control and never becomes an example section.
+   */
+  colorControl?: boolean;
+  /** Initial value of the color control. */
+  defaultColor?: string;
+  /** Demo prop the color is bridged into. */
+  colorProp?: string;
+  colorLabel?: string;
 }) {
+  const [color, setColor] = useState(defaultColor);
+
   return (
-    <div
-      className={cn(
-        "not-prose my-8 grid grid-cols-1 gap-10",
-        columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
-        className,
+    <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
+      {colorControl && (
+        <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          <ThemeColorPicker
+            color={color}
+            onChange={setColor}
+            label={colorLabel}
+            className="sm:max-w-sm"
+          />
+        </div>
       )}
-    >
-      {examples.map((example) => (
-        <ExampleCard
-          key={example.id ?? slugify(example.title)}
-          name={name}
-          example={example}
-          options={example.options ?? options}
-          minHeight={example.minHeight ?? minHeight}
-          maxHeight={example.maxHeight ?? maxHeight}
-        />
-      ))}
+
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-10",
+          columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
+        )}
+      >
+        {examples.map((example) => (
+          <ExampleCard
+            key={example.id ?? slugify(example.title)}
+            name={name}
+            example={
+              colorControl
+                ? {
+                    ...example,
+                    // Explicit per-example props still win.
+                    props: { [colorProp]: color, ...example.props },
+                  }
+                : example
+            }
+            options={example.options ?? options}
+            minHeight={example.minHeight ?? minHeight}
+            maxHeight={example.maxHeight ?? maxHeight}
+          />
+        ))}
+      </div>
     </div>
   );
 }

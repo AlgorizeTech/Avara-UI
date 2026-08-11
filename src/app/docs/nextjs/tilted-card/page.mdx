@@ -1,4 +1,5 @@
-import { TiltedCardShowcase } from "@/components/site/TiltedCardShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Tilted Card
 
@@ -7,11 +8,83 @@ A deeply interactive, parallax-driven 3D tilt component. It calculates the relat
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
 
-## Interactive Showcase
+## Examples
 
-Use the control panel to dial in the physics. A higher tilt intensity increases the maximum rotation degrees, while the glare opacity controls the reflection intensity.
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
 
-<TiltedCardShowcase />
+export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function AccessKeyCard() {
+  return (
+    <div className="w-[340px] aspect-[3/4]">
+      <TiltedCard>
+        <div className="w-full h-full rounded-2xl border p-8">
+          <h3 className="text-2xl font-black uppercase">Access Key</h3>
+        </div>
+      </TiltedCard>
+    </div>
+  );
+}`;
+
+export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+// card is small — past that the perspective starts to shear.
+<TiltedCard tiltIntensity={35}>{card}</TiltedCard>`;
+
+export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
+<TiltedCard tiltIntensity={6} scaleOnHover={1.01}>{card}</TiltedCard>`;
+
+export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+// pointer. Set it to 0 to drop the reflection entirely.
+<TiltedCard glareOpacity={0.55}>{card}</TiltedCard>`;
+
+export const usageNoGlare = `<TiltedCard glareOpacity={0}>{card}</TiltedCard>`;
+
+export const usageScale = `// How far the card lifts toward the viewer on hover.
+<TiltedCard scaleOnHover={1.12}>{card}</TiltedCard>`;
+
+<ExampleShowcase
+  name="tilted-card"
+  columns={1
+  examples={[
+    {
+      title: "Tilted card",
+      subheading: "Wrap any content — the block adds the 3D transform, the spring physics and the glare layer without touching your markup.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
+    },
+    {
+      title: "Stronger tilt",
+      subheading: "`tiltIntensity` is the maximum rotation in degrees on each axis.",
+      props: { tiltIntensity: 35 },
+      usage: usageIntensity,
+    },
+    {
+      title: "Subtle tilt",
+      subheading: "Dial it right down when several cards share a viewport.",
+      props: { tiltIntensity: 6, scaleOnHover: 1.01 },
+      usage: usageSubtle,
+    },
+    {
+      title: "Stronger glare",
+      subheading: "`glareOpacity` sets the peak alpha of the pointer-tracked highlight.",
+      props: { glareOpacity: 0.55 },
+      usage: usageGlare,
+    },
+    {
+      title: "Without glare",
+      subheading: "Set `glareOpacity={0}` when the card already carries its own lighting.",
+      props: { glareOpacity: 0 },
+      usage: usageNoGlare,
+    },
+    {
+      title: "Lift on hover",
+      subheading: "`scaleOnHover` controls how far the card comes toward the viewer.",
+      props: { scaleOnHover: 1.12 },
+      usage: usageScale,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -25,32 +98,7 @@ npm install framer-motion
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/TiltedCardBlock.tsx.
-
-## Implementation
-
-```tsx
-import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-export default function PricingTier() {
-  return (
-    <div className="w-[350px] h-[450px]">
-      <TiltedCard
-        glareOpacity="{0.3}"
-        scaleOnHover="{1.05}"
-        tiltIntensity="{25}"
-      >
-        {/* Your visual card design goes here */}
-        <div className="w-full h-full bg-zinc-900 rounded-3xl p-8 border border-white/10">
-          <h3 className="text-white text-2xl font-bold">Pro Plan</h3>
-          <p className="text-zinc-400 mt-2">$29 / month</p>
-        </div>
-      </TiltedCard>
-    </div>
-  );
-}
-```
-
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

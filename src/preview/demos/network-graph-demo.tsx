@@ -50,26 +50,49 @@ const demoNodes: NetworkNode[] = [
 
 export default function NetworkGraphDemo({
   triggerKey = 0,
+  ringCount = 3,
+  baseRadius = 18,
+  ringGap = 16,
+  animateOrbit = true,
+  orbitSpeed = 1,
+  showCenter = true,
+  nodeSet = "full",
 }: {
   triggerKey?: number;
+  ringCount?: number;
+  baseRadius?: number;
+  ringGap?: number;
+  animateOrbit?: boolean;
+  orbitSpeed?: number;
+  /** Hides the center avatar so the rings orbit an empty hub. */
+  showCenter?: boolean;
+  /** "compact" drops the outer ring's nodes for two-ring layouts. */
+  nodeSet?: "full" | "compact";
 }) {
+  const nodes =
+    nodeSet === "compact" ? demoNodes.filter((n) => n.ring < 3) : demoNodes;
+
   return (
     <div className="w-full relative rounded-2xl overflow-hidden bg-white dark:bg-[#0a0a0a] border border-zinc-200 dark:border-zinc-800">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="p-8 md:p-16 flex items-center justify-center">
         <NetworkGraph
-          key={triggerKey}
-          nodes={demoNodes}
-          ringCount={3}
-          baseRadius={18}
-          ringGap={16}
-          animateOrbit={true}
-          orbitSpeed={1}
-          centerNode={{
-            image: "https://i.pravatar.cc/150?u=99",
-            label: "You",
-          }}
+          key={`${triggerKey}-${ringCount}-${nodeSet}-${animateOrbit}-${orbitSpeed}-${showCenter}`}
+          nodes={nodes}
+          ringCount={ringCount}
+          baseRadius={baseRadius}
+          ringGap={ringGap}
+          animateOrbit={animateOrbit}
+          orbitSpeed={orbitSpeed}
+          centerNode={
+            showCenter
+              ? {
+                  image: "https://i.pravatar.cc/150?u=99",
+                  label: "You",
+                }
+              : undefined
+          }
         />
       </div>
     </div>

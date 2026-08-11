@@ -1,4 +1,5 @@
-import { QrCodeShowcase } from "@/components/site/QrCodeShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 export const metadata = {
   title: "QR Code - AlgorizeTech UI",
@@ -22,13 +23,72 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Interactive Showcase
-Adjust the settings in the interactive QR Code demo to see the code regenerate in real-time.
+## Examples
 
+Everything below runs client-side — type a new value and the SVG regenerates instantly. The first example's **Code** tab holds the generator source; the reader example's holds the reader source.
 
-<div className="mt-8">
-  <QrCodeShowcase />
-</div>
+export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+
+export default function GeneratorExample() {
+  return (
+    <QrCodeGenerator
+      value="https://algorizetech.com"
+      size={220}
+      level="L"
+      bgColor="transparent"
+      fgColor="currentColor"
+    />
+  );
+}`;
+
+export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+
+export default function QrGallery() {
+  return (
+    <div className="flex items-end gap-10">
+      <QrCodeGenerator value="https://algorizetech.com" size={96} level="L" />
+      <QrCodeGenerator value="https://algorizetech.com" size={140} level="M" fgColor="#3b82f6" />
+      <QrCodeGenerator value="https://algorizetech.com" size={200} level="H" fgColor="#10b981" />
+    </div>
+  );
+}`;
+
+export const usageReader = `import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+
+export default function ReaderExample() {
+  // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.
+  return <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />;
+}`;
+
+<ExampleShowcase
+  name="qr-code"
+  colorControl
+  colorProp="themeColor"
+  colorLabel="Color Variant"
+  columns={1}
+  examples={[
+    {
+      title: "QR generator",
+      subheading: "Type a value, pick an error-correction level, and export the result as PNG or PDF.",
+      props: { activeTab: "generator" },
+      usage: usageGenerator,
+      code: extractCode("src/components/custom/blocks/QrCodeGeneratorBlock.tsx"),
+    },
+    {
+      title: "Sizes & levels",
+      subheading: "The bare `QrCodeGenerator` renders scalable SVG — `size` sets the box, `fgColor` the pattern, and `level` the redundancy.",
+      props: { example: "gallery" },
+      usage: usageGallery,
+    },
+    {
+      title: "QR reader",
+      subheading: "`QrCodeReader` decodes an uploaded or dropped image in the browser and hands the payload to `onRead`.",
+      props: { activeTab: "reader" },
+      usage: usageReader,
+      code: extractCode("src/components/custom/blocks/QrCodeReaderBlock.tsx"),
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -54,42 +114,9 @@ npm install jsqr lucide-react
 
 </div>
 
-## Implementation
+### 2. Copy the Components
 
-<div id="generator-docs-usage" >
-
-```tsx
-import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
-
-export default function GeneratorExample() {
-  return (
-    <div className="flex gap-4 items-center p-8">
-      <QrCodeGenerator value="https://algorizetech.com" size={200} />
-      <QrCodeGenerator value="Scan Me!" size={150} fgColor="#3b82f6" />
-    </div>
-  );
-}
-```
-
-</div>
-
-<div id="reader-docs-usage">
-
-Allow users to click or drag-and-drop a QR code image to read its contents.
-
-```tsx
-import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
-
-export default function ReaderExample() {
-  return (
-    <div className="p-8">
-      <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />
-    </div>
-  );
-}
-```
-
-</div>
+Create `components/custom/blocks/QrCodeGeneratorBlock.tsx` and copy the source from the **Code** tab of the first example above. For the scanner, create `components/custom/blocks/QrCodeReaderBlock.tsx` and copy the source from the **Code** tab of the **QR reader** example.
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

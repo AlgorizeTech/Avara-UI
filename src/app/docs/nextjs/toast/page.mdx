@@ -1,4 +1,5 @@
-import { ToastShowcase } from "@/components/site/ToastShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Toast / Notification
 
@@ -6,15 +7,209 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different visual variants and placement locations on the screen.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually. The first example's **Code** tab contains the full component source.
 
-- The **Glass** variant uses a high-intensity backdrop blur, making it perfect for apps with complex or photographic backgrounds.
-- The **Glow** variant and **Minimal** variant automatically inherit the custom hex color you select in the control panel.
-- Toasts auto-dismiss after 5 seconds, but you can hover them to keep them open, or click the `X` to dismiss manually.
+export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
 
-<ToastShowcase />
+// 1. Wrap your app (usually layout.tsx) once.
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <ToastProvider>{children}</ToastProvider>;
+}
+
+// 2. Fire toasts from any child component.
+export default function SendMessage() {
+  const { toast } = useToast();
+
+  return (
+    <button
+      onClick={() =>
+        toast({
+          title: "Message sent",
+          description: "We'll let you know as soon as they reply.",
+        })
+      }
+    >
+      Show toast
+    </button>
+  );
+}`;
+
+export const usageTypes = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ToastTypes() {
+  const { toast } = useToast();
+
+  return (
+    <div className="flex flex-wrap gap-3">
+      <button onClick={() => toast({ type: "success", title: "Action completed", description: "Your file has been uploaded successfully." })}>
+        Success
+      </button>
+      <button onClick={() => toast({ type: "error", title: "Connection failed", description: "Could not connect to the database." })}>
+        Error
+      </button>
+      <button onClick={() => toast({ type: "warning", title: "Storage almost full", description: "You've used 92% of your quota." })}>
+        Warning
+      </button>
+      <button onClick={() => toast({ type: "info", title: "Update available", description: "A new version is ready to install." })}>
+        Info
+      </button>
+      <button onClick={() => toast({ type: "default", title: "Message sent" })}>
+        Default
+      </button>
+    </div>
+  );
+}`;
+
+export const usageAction = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ActionToast() {
+  const { toast } = useToast();
+
+  return (
+    <button
+      onClick={() =>
+        toast({
+          type: "info",
+          title: "Update available",
+          description: "A new version of the app is ready to install.",
+          action: {
+            label: "Install Now",
+            onClick: () => console.log("Installing..."),
+          },
+        })
+      }
+    >
+      Toast with action
+    </button>
+  );
+}`;
+
+export const usageDuration = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ToastDuration() {
+  const { toast } = useToast();
+
+  return (
+    <div className="flex flex-wrap gap-4">
+      {/* duration: 0 disables auto-dismiss — the user must close it */}
+      <button
+        onClick={() =>
+          toast({
+            type: "info",
+            title: "Upload in progress",
+            description: "This toast stays until you dismiss it.",
+            duration: 0,
+          })
+        }
+      >
+        Persistent toast
+      </button>
+
+      <button
+        onClick={() =>
+          toast({
+            type: "success",
+            title: "Saved",
+            description: "This one disappears after 1.5 seconds.",
+            duration: 1500,
+          })
+        }
+      >
+        Quick toast
+      </button>
+    </div>
+  );
+}`;
+
+export const usageGlow = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ToastProvider variant="glow" color="indigo">
+      {children}
+    </ToastProvider>
+  );
+}`;
+
+export const usageGlass = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // Glass leans on a backdrop blur — best over photos or rich backgrounds.
+  return <ToastProvider variant="glass">{children}</ToastProvider>;
+}`;
+
+export const usageMinimal = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <ToastProvider variant="minimal">{children}</ToastProvider>;
+}`;
+
+export const usagePosition = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // "top-right" | "top-left" | "top-center"
+  // "bottom-right" | "bottom-left" | "bottom-center"
+  return <ToastProvider position="top-center">{children}</ToastProvider>;
+}`;
+
+<ExampleShowcase
+  name="toast"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Toast",
+      subheading: "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ToastBlock.tsx"),
+    },
+    {
+      title: "Types",
+      subheading: "`type` picks the icon and accent: success, error, warning, info or default.",
+      props: { example: "types" },
+      usage: usageTypes,
+    },
+    {
+      title: "With action",
+      subheading: "Pass `action` to add a button — clicking it also dismisses the toast.",
+      props: { example: "action" },
+      usage: usageAction,
+    },
+    {
+      title: "Duration",
+      subheading: "`duration` sets the auto-dismiss delay in ms; `0` keeps the toast until dismissed.",
+      props: { example: "persistent" },
+      usage: usageDuration,
+    },
+    {
+      title: "Glow",
+      subheading: "`variant=\"glow\"` surrounds the card with a colored halo on a dark surface.",
+      props: { variant: "glow", example: "types" },
+      usage: usageGlow,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` uses a heavy backdrop blur — made for photographic backgrounds.",
+      props: { variant: "glass", example: "types" },
+      usage: usageGlass,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` strips the card down to a thin accent bar and text.",
+      props: { variant: "minimal", example: "types" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Position",
+      subheading: "`position` on the provider decides where the stack docks on screen.",
+      props: { position: "top-center", example: "basic" },
+      usage: usagePosition,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -26,72 +221,15 @@ This component relies on `gsap` for the entrance/exit animations and `lucide-rea
 npm install gsap lucide-react
 ```
 
-2. Copy the Component
-   This component includes the ToastProvider, the useToast hook, and the individual ToastItem renderer all inside a single file.
+### 2. Copy the Component
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ToastBlock.tsx.
+This component includes the `ToastProvider`, the `useToast` hook, and the individual `ToastItem` renderer all inside a single file.
 
-## Usage
+Create a new file at `components/custom/blocks/ToastBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
-1. Wrap Your App
-   You must wrap the highest level of your application (usually layout.tsx or App.tsx) with the `<ToastProvider>`. You can set the global variant and positioning here.
+### 3. Wrap your app
 
-```jsx
-import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        <ToastProvider variant="glow" color="#00FFAA" position="bottom-right">
-          {children}
-        </ToastProvider>
-      </body>
-    </html>
-  );
-}
-```
-
-2. Trigger Toasts via Hook
-   Inside any child component, simply call the `useToast` hook.
-
-```jsx
-import { useToast } from "@/components/custom/blocks/ToastBlock";
-
-export default function ProfileForm() {
-  const { toast } = useToast();
-
-  const handleSave = () => {
-    // API call logic here...
-
-    toast({
-      title: "Profile Updated",
-      description: "Your changes have been saved successfully.",
-      type: "success", // success | error | warning | info | default
-      duration: 3000, // Optional: Auto-dismisses after 3 seconds
-    });
-  };
-
-  const handleActionToast = () => {
-    toast({
-      title: "Update Available",
-      description: "A new version of the app is ready to install.",
-      type: "info",
-      action: {
-        label: "Install Now",
-        onClick: () => console.log("Installing..."),
-      },
-    });
-  };
-
-  return (
-    <div className="flex gap-4">
-      <button onClick={handleSave}>Save Profile</button>
-      <button onClick={handleActionToast}>Show Action Toast</button>
-    </div>
-  );
-}
-```
+You must wrap the highest level of your application (usually `layout.tsx` or `App.tsx`) with `<ToastProvider>`. The global `variant`, `color` and `position` are set there.
 
 ## Features
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.

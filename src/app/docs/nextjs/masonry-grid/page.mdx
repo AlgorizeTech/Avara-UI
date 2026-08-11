@@ -1,4 +1,5 @@
-import { MasonryGridShowcase } from "@/components/site/MasonryGridShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Masonry Grid
 
@@ -8,13 +9,86 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
-## Interactive Showcase
-Resize your browser window to see how the Masonry Grid intelligently recalculates its columns.
+## Examples
 
+The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <MasonryGridShowcase />
-</div>
+export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+const items = [
+  { id: "1", height: "h-56", title: "Design Engineering" },
+  { id: "2", height: "h-[28rem]", image: "/photos/studio.jpg" },
+  { id: "3", height: "h-40", title: "Fluid Animations" },
+];
+
+export default function Gallery() {
+  return (
+    <MasonryGrid
+      items={items}
+      columnsClassName="columns-1 sm:columns-2 lg:columns-3"
+      gapClassName="gap-6"
+      renderItem={(item) => <Tile {...item} />}
+    />
+  );
+}`;
+
+export const usageColumns = `// Column counts are Tailwind classes, so every breakpoint is yours to set.
+<MasonryGrid
+  items={items}
+  columnsClassName="columns-1 sm:columns-2 md:columns-3 lg:columns-4"
+  renderItem={(item) => <Tile {...item} />}
+/>`;
+
+export const usageGap = `<MasonryGrid
+  items={items}
+  gapClassName="gap-2"
+  renderItem={(item) => <Tile {...item} />}
+/>`;
+
+export const usageStagger = `// \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
+<MasonryGrid items={items} staggerDelay={0.25} renderItem={(item) => <Tile {...item} />} />`;
+
+export const usageNoAnimation = `// Renders immediately — right for content that is already above the fold,
+// or when you want to respect reduced-motion yourself.
+<MasonryGrid items={items} animateIn={false} renderItem={(item) => <Tile {...item} />} />`;
+
+<ExampleShowcase
+  name="masonry-grid"
+  columns={1}
+  examples={[
+    {
+      title: "Masonry grid",
+      subheading: "Pass `items` and a `renderItem` function — the grid never measures anything, it just flows your tiles through CSS columns.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
+    },
+    {
+      title: "Column counts",
+      subheading: "`columnsClassName` takes the raw Tailwind `columns-*` utilities, one per breakpoint.",
+      props: { columnsClassName: "columns-1 sm:columns-2 md:columns-3 lg:columns-4" },
+      usage: usageColumns,
+    },
+    {
+      title: "Tighter gap",
+      subheading: "`gapClassName` sets the spacing between tiles — the same class flows to both axes.",
+      props: { gapClassName: "gap-2" },
+      usage: usageGap,
+    },
+    {
+      title: "Slower stagger",
+      subheading: "`staggerDelay` spaces out the scroll-triggered blur-fade entrance.",
+      props: { staggerDelay: 0.25 },
+      usage: usageStagger,
+    },
+    {
+      title: "Without the entrance",
+      subheading: "Set `animateIn={false}` to render tiles in place with no motion.",
+      props: { animateIn: false },
+      usage: usageNoAnimation,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -28,33 +102,11 @@ npm install framer-motion
 
 ### Copy the Component
 
-Copy the full engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/MasonryGridBlock.tsx.
-
-## Implementation
-
-```tsx
-import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
-
-const posts = [
-  { id: 1, title: "Feature One", text: "A short status update." },
-  { id: 2, title: "Deep Dive", text: "A much longer piece of text that will require more vertical space in the masonry layout to demonstrate the fluid packing behavior." },
-];
-
-export default function BentoFeatures() {
-  return (
-    <MasonryGrid columnsClassName="columns-1 md:columns-2 lg:columns-3" gapClassName="gap-6" items="{posts}" renderItem="{(post)"> (
-        <div className="p-8 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-          <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
-          <p className="text-zinc-500 dark:text-zinc-400">{post.text}</p>
-        </div>
-      )}
-    />
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MasonryGridBlock.tsx`.
 
 ## Features
-Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+
+Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">

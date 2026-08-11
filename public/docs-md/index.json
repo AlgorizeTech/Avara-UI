@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-03T17:25:21.675Z",
-  "totalFiles": 109,
+  "generatedAt": "2026-08-10T19:47:52.731Z",
+  "totalFiles": 110,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -187,6 +187,12 @@
       "path": "/docs/nextjs-deployment.md",
       "url": "/docs/nextjs/deployment",
       "originalMdx": "nextjs\\deployment\\page.mdx"
+    },
+    {
+      "name": "nextjs/design-components-folder",
+      "path": "/docs/nextjs-design-components-folder.md",
+      "url": "/docs/nextjs/design-components-folder",
+      "originalMdx": "nextjs\\design-components-folder\\page.mdx"
     },
     {
       "name": "nextjs/dialog",
@@ -619,6 +625,12 @@
       "path": "/docs/nextjs-typography.md",
       "url": "/docs/nextjs/typography",
       "originalMdx": "nextjs\\typography\\page.mdx"
+    },
+    {
+      "name": "nextjs/user-graph",
+      "path": "/docs/nextjs-user-graph.md",
+      "url": "/docs/nextjs/user-graph",
+      "originalMdx": "nextjs\\user-graph\\page.mdx"
     },
     {
       "name": "nextjs/verify-badge",

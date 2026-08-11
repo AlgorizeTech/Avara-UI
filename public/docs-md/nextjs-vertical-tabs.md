@@ -2,11 +2,82 @@
 
 A sleek, responsive vertical navigation component. It utilizes a sidebar menu on the left (which stacks automatically on smaller screens) and an active content pane on the right.
 
-## Interactive Showcase
+## Examples
 
-Interact with the menu below to see the GSAP crossfade animations. Use the control panel to switch layouts (`default`, `minimal`, `bordered`, `glass`) and apply custom hex colors to the active tab states!
+Switch tabs in any preview to see the GSAP crossfade. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export const usageTabsData = `const tabs = [
+  {
+    id: "photos",
+    label: "Photos",
+    icon: Camera, // the Lucide component itself, not a string
+    content: Your photo gallery, albums or image grids go here.,
+  },
+  {
+    id: "music",
+    label: "Music",
+    icon: Music,
+    content: A playlist, audio controls or your favourite albums.,
+  },
+  {
+    id: "videos",
+    label: "Videos",
+    icon: Clapperboard,
+    content: Video players, stream links or watch-later lists.,
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    content: Preferences, notifications and privacy controls.,
+  },
+];`;
+
+export const usageDefault = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function MediaTabs() {
+  // Each tab carries its own content — the block handles the crossfade.
+  return ;
+}`;
+
+export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function MinimalTabs() {
+  // No card chrome — just the rail and the pane.
+  return ;
+}`;
+
+export const usageBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function BorderedTabs() {
+  return ;
+}`;
+
+export const usageGlass = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function GlassTabs() {
+  return (
+    // Glass needs a rich surface behind it to blur.
+
+  );
+}`;
+
+export const usageDefaultActive = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function SettingsFirst() {
+  // defaultActiveId opens a specific tab instead of the first one.
+  return ;
+}`;
 
 ## Installation
 
@@ -17,6 +88,10 @@ This component uses `gsap` for the smooth opacity and sliding transitions betwee
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

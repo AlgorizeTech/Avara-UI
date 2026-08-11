@@ -4,8 +4,32 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Interactive Showcase
-Adjust the settings in the interactive QR Code demo to see the code regenerate in real-time.
+## Examples
+
+Everything below runs client-side — type a new value and the SVG regenerates instantly. The first example's **Code** tab holds the generator source; the reader example's holds the reader source.
+
+export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+
+export default function GeneratorExample() {
+  return (
+    
+  );
+}`;
+
+export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+
+export default function QrGallery() {
+  return (
+
+  );
+}`;
+
+export const usageReader = `import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+
+export default function ReaderExample() {
+  // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.
+  return  console.log("Scanned QR:", data)} />;
+}`;
 
 ## Installation
 
@@ -23,29 +47,9 @@ The QR Code Reader relies on the `jsqr` package for reading and extracting data 
 npm install jsqr lucide-react
 ```
 
-## Implementation
+### 2. Copy the Components
 
-```tsx
-
-export default function GeneratorExample() {
-  return (
-
-  );
-}
-```
-
-Allow users to click or drag-and-drop a QR code image to read its contents.
-
-```tsx
-
-export default function ReaderExample() {
-  return (
-    
-       console.log("Scanned QR:", data)} />
-    
-  );
-}
-```
+Create `components/custom/blocks/QrCodeGeneratorBlock.tsx` and copy the source from the **Code** tab of the first example above. For the scanner, create `components/custom/blocks/QrCodeReaderBlock.tsx` and copy the source from the **Code** tab of the **QR reader** example.
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

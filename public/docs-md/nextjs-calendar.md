@@ -2,11 +2,52 @@
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
 
-## Interactive Showcase
+## Examples
 
-A fully encapsulated, page-builder-ready calendar dashboard. All state (modals, event editing, filters, exporting) is handled internally. Use the controls below to test the different architectural variants and color themes.
+`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+// Keys are "YYYY-M-D" (no zero padding); values are event types.
+const events = {
+  "2025-8-31": ["pentest", "kickoff", "pentest"],
+  "2025-9-2": ["pentest", "kickoff"],
+  "2025-9-10": ["pentest", "kickoff"],
+  "2025-9-15": ["pentest", "kickoff"],
+  "2025-9-24": ["kickoff", "pentest"],
+};
+
+export default function TeamCalendar() {
+  return ;
+}`;
+
+export const usageMinimal = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const events = { "2025-9-10": ["pentest", "kickoff"] };
+
+export default function EmbeddedCalendar() {
+  // "minimal" drops the card chrome so the dashboard sits flush inside your page.
+  return ;
+}`;
+
+export const usageGlass = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const events = { "2025-9-10": ["pentest", "kickoff"] };
+
+export default function GlassCalendar() {
+  // "glass" is translucent — give it a colored surface to sit on.
+  return (
+
+  );
+}`;
+
+export const usageEmpty = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+export default function EmptyCalendar() {
+  // mockEvents defaults to {} — the dashboard starts clean and you add
+  // events through its own UI.
+  return ;
+}`;
 
 ## Installation
 
@@ -18,6 +59,10 @@ This component relies heavily on `react-day-picker` and the standard `shadcn/ui`
 npm install lucide-react date-fns react-day-picker
 npx shadcn-ui@latest add button
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Calendar.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
@@ -50,7 +95,7 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
 
           Record&lt;string, string[]&gt;
 
-          {}
+          {"{}"}
 
           A dictionary mapping string dates ("YYYY-M-D") to an
           array of event types ("pentest" or "kickoff"
@@ -67,12 +112,12 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
 
           color
 
-          "indigo" | "rose" | "emerald" | "blue" | "zinc"
+          "primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to active states, primary buttons, and
-          focus rings.
+          focus rings. Accepts valid hex codes.
 
 ---
 

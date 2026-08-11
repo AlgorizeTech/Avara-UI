@@ -13,38 +13,96 @@ import {
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 
+/** Lets the native Enter key advance the wizard from inside a step's form. */
+const submitToNext = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // The navigation button handles the step change,
+  // but this allows the native "Enter" key to trigger it via an invisible submit button
+  const nextBtn = e.currentTarget.querySelector(
+    'button[type="button"]',
+  ) as HTMLButtonElement;
+  if (nextBtn) nextBtn.click();
+};
+
 export default function WizardDemo({
   color = "primary",
   wizardKey = 0,
+  initialStep = 0,
+  showProgress = true,
+  example,
 }: {
   color?: string;
   /** Incremented by the showcase's "Restart Demo" button to remount the wizard. */
   wizardKey?: number;
+  /** Step the wizard opens on. */
+  initialStep?: number;
+  /** Set false to leave <WizardProgress /> out of the tree. */
+  showProgress?: boolean;
+  /** Alternate flows for the docs gallery. Omitted = previous behavior. */
+  example?: "on-complete";
 }) {
   // Local restart counter for the in-demo "Finish & Restart" button
   const [localKey, setLocalKey] = useState(0);
+  const [completed, setCompleted] = useState(false);
+
+  if (example === "on-complete") {
+    return (
+      <div className="w-full flex items-center justify-center overflow-hidden">
+        <Wizard
+          key={`complete-${wizardKey}-${localKey}`}
+          color={color}
+          onComplete={() => setCompleted(true)}
+        >
+          {showProgress && <WizardProgress />}
+
+          <WizardContainer>
+            <WizardStep index={0}>
+              <WizardTitle>1. What should we call your workspace?</WizardTitle>
+              <form onSubmit={submitToNext}>
+                <WizardInput placeholder="e.g. Acme Corp" autoFocus />
+                <WizardNavigation />
+              </form>
+            </WizardStep>
+
+            <WizardStep index={1}>
+              <WizardTitle>2. Invite your team</WizardTitle>
+              <WizardDescription>
+                {completed
+                  ? "onComplete fired — this is where you would submit."
+                  : "Press OK on this last step to fire onComplete."}
+              </WizardDescription>
+              <form onSubmit={submitToNext}>
+                <WizardInput placeholder="name@company.com" />
+                <WizardNavigation />
+              </form>
+              {completed && (
+                <div className="mt-8 flex items-center gap-3 text-emerald-600">
+                  <CheckCircle2 className="w-6 h-6 shrink-0" />
+                  <span className="font-bold">onComplete() called</span>
+                </div>
+              )}
+            </WizardStep>
+          </WizardContainer>
+        </Wizard>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex items-center justify-center overflow-hidden">
-      <Wizard key={`${wizardKey}-${localKey}`} color={color}>
+      <Wizard
+        key={`${wizardKey}-${localKey}`}
+        color={color}
+        initialStep={initialStep}
+      >
         {/* The absolute top progress bar */}
-        <WizardProgress />
+        {showProgress && <WizardProgress />}
 
         <WizardContainer>
           {/* STEP 1 */}
           <WizardStep index={0}>
             <WizardTitle>1. What's your first name?</WizardTitle>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                // The navigation button handles the step change,
-                // but this allows the native "Enter" key to trigger it via an invisible submit button
-                const nextBtn = e.currentTarget.querySelector(
-                  'button[type="button"]',
-                ) as HTMLButtonElement;
-                if (nextBtn) nextBtn.click();
-              }}
-            >
+            <form onSubmit={submitToNext}>
               <WizardInput placeholder="Type your answer here..." autoFocus />
               <WizardNavigation />
             </form>
@@ -56,15 +114,7 @@ export default function WizardDemo({
             <WizardDescription>
               We will customize your dashboard based on this.
             </WizardDescription>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const nextBtn = e.currentTarget.querySelector(
-                  'button[type="button"]',
-                ) as HTMLButtonElement;
-                if (nextBtn) nextBtn.click();
-              }}
-            >
+            <form onSubmit={submitToNext}>
               <WizardInput placeholder="e.g. Frontend Developer" />
               <WizardNavigation />
             </form>

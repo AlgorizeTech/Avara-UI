@@ -1,4 +1,5 @@
-import { WizardShowcase } from "@/components/site/WizardShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Progress Wizard
 
@@ -6,13 +7,148 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Interactive Showcase
-Navigate through the interactive Wizard steps to test the transition animations and form state.
+## Examples
 
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <WizardShowcase />
-</div>
+export const usageDefault = `import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function OnboardingFlow() {
+  // Enter submits the step's form; forwarding it to the OK button
+  // is what makes keyboard progression work.
+  const submitToNext = (e) => {
+    e.preventDefault();
+    const btn = e.currentTarget.querySelector('button[type="button"]');
+    if (btn) btn.click();
+  };
+
+  return (
+    <Wizard>
+      {/* Top progress bar — reads totalSteps from context */}
+      <WizardProgress />
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      <WizardContainer>
+        <WizardStep index={0}>
+          <WizardTitle>1. What's your first name?</WizardTitle>
+          <form onSubmit={submitToNext}>
+            <WizardInput placeholder="Type your answer here..." autoFocus />
+            <WizardNavigation />
+          </form>
+        </WizardStep>
+
+        <WizardStep index={1}>
+          <WizardTitle>2. What is your role?</WizardTitle>
+          <WizardDescription>
+            We will customize your dashboard based on this.
+          </WizardDescription>
+          <form onSubmit={submitToNext}>
+            <WizardInput placeholder="e.g. Frontend Developer" />
+            <WizardNavigation />
+          </form>
+        </WizardStep>
+      </WizardContainer>
+    </Wizard>
+  );
+}`;
+
+export const usageInitialStep = `import {
+  Wizard,
+  WizardContainer,
+  WizardProgress,
+  WizardStep,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function ResumedOnboarding() {
+  // Open on step 2 — useful when you persist progress between sessions.
+  return (
+    <Wizard initialStep={1}>
+      <WizardProgress />
+      <WizardContainer>{/* ...steps... */}</WizardContainer>
+    </Wizard>
+  );
+}`;
+
+export const usageNoProgress = `import {
+  Wizard,
+  WizardContainer,
+  WizardStep,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function BareWizard() {
+  // WizardProgress is an independent child — omit it entirely and the
+  // steps still animate and navigate exactly the same.
+  return (
+    <Wizard>
+      <WizardContainer>{/* ...steps... */}</WizardContainer>
+    </Wizard>
+  );
+}`;
+
+export const usageOnComplete = `"use client";
+
+import { useState } from "react";
+import {
+  Wizard,
+  WizardContainer,
+  WizardProgress,
+  WizardStep,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function CompletableWizard() {
+  const [completed, setCompleted] = useState(false);
+
+  // onComplete fires when the user advances past the LAST step —
+  // this is where you submit the collected answers.
+  return (
+    <Wizard onComplete={() => setCompleted(true)}>
+      <WizardProgress />
+      <WizardContainer>{/* ...steps... */}</WizardContainer>
+    </Wizard>
+  );
+}`;
+
+<ExampleShowcase
+  name="wizard"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Wizard",
+      subheading: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
+    },
+    {
+      title: "Starting step",
+      subheading: "Use `initialStep` to resume a flow partway through instead of restarting it.",
+      props: { initialStep: 1 },
+      usage: usageInitialStep,
+    },
+    {
+      title: "Without the progress bar",
+      subheading: "`WizardProgress` is an independent child — leave it out and navigation is unchanged.",
+      props: { showProgress: false },
+      usage: usageNoProgress,
+    },
+    {
+      title: "Completion callback",
+      subheading: "`onComplete` fires when the user advances past the last step. Press **OK** on step 2 to see it.",
+      props: { example: "on-complete" },
+      usage: usageOnComplete,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -24,69 +160,12 @@ This component leverages **GSAP** for the high-performance vertical slide and pr
 npm install gsap
 ```
 
-## Copy the Component
+### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/WizardBlock.tsx.
-
-## Implementation
-
-```tsx
-import {
-  Wizard,
-  WizardProgress,
-  WizardContainer,
-  WizardStep,
-  WizardTitle,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function OnboardingFlow() {
-  return (
-    <Wizard color="indigo" onComplete={() => console.log("Done!")}>
-      {/* Top sticky progress bar */}
-      <WizardProgress />
-
-      {/* Scroll-hidden container for GSAP animations */}
-      <WizardContainer>
-        {/* Step 1 */}
-        <WizardStep index={0}>
-          <WizardTitle>1. What's your project name?</WizardTitle>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              // Trigger the internal nextStep function manually, or via button click simulation
-              const btn = e.currentTarget.querySelector(
-                'button[type="button"]',
-              );
-              if (btn) (btn as HTMLButtonElement).click();
-            }}
-          >
-            <WizardInput placeholder="e.g. Acme Corp..." autoFocus />
-            <WizardNavigation />
-          </form>
-        </WizardStep>
-
-        {/* Step 2 */}
-        <WizardStep index={1}>
-          <WizardTitle>2. What framework do you use?</WizardTitle>
-          <WizardDescription>
-            We will tailor the documentation to match.
-          </WizardDescription>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <WizardInput placeholder="e.g. Next.js, Vite..." />
-            <WizardNavigation />
-          </form>
-        </WizardStep>
-      </WizardContainer>
-    </Wizard>
-  );
-}
-```
+Create a new file at `components/custom/blocks/WizardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
-Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
@@ -154,14 +233,14 @@ export default function OnboardingFlow() {
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "blue" | "rose" | "emerald" | "zinc"</code>
+          <code>"primary" | "indigo" | "blue" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Controls the theme color for the progress bar, active input borders,
-          and primary navigation buttons.
+          and primary navigation buttons. Accepts valid hex codes.
         </td>
       </tr>
       <tr>
@@ -172,7 +251,7 @@ export default function OnboardingFlow() {
           <code>onComplete</code>
         </td>
         <td>
-          <code>() => void</code>
+          <code>() =&gt; void</code>
         </td>
         <td>
           <code>undefined</code>

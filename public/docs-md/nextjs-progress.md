@@ -4,9 +4,63 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into two composable pieces: the core `` bar for the visual fill, and the optional `` wrapper which automatically handles the layout for labels and percentage text.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different styles, colors, and layout wrappers.
+Each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressDemo() {
+  return ;
+}`;
+
+export const usageField = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function LabelledProgress() {
+  return (
+
+  );
+}`;
+
+export const usageVariants = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressVariants() {
+  return (
+
+  );
+}`;
+
+export const usageSizes = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressSizes() {
+  return (
+
+  );
+}`;
+
+export const usageFormatted = `import { useState } from "react";
+
+export default function StorageWidget() {
+  const [usedSpace] = useState(72); // 72 GB of 100 GB
+
+  return (
+     \`\${value} GB / \${max} GB\`}
+    >
+
+  );
+}`;
+
+export const usageSteps = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function WizardProgress() {
+  const step = 2;
+  const totalSteps = 4;
+
+  return (
+    // showValue={false} hides the percentage when the label already says it.
+
+  );
+}`;
 
 ## Installation
 
@@ -14,27 +68,29 @@ Use the control panel below to test the different styles, colors, and layout wra
 
 This component handles its own internal transition math and relies purely on standard Tailwind utilities.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ProgressBlock.tsx`.
+Create a new file at `components/custom/blocks/ProgressBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
----
+## Features
+Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
 
-## Usage
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-Use the `` component on its own for a simple visual bar, or wrap it in `` to automatically align labels and values.
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-```tsx
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
 
-export default function StorageWidget() {
-  const [usedSpace, setUsedSpace] = useState(45); // e.g. 45GB out of 100GB
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
-  return (
-    
-       `${val} GB / ${max} GB`}
-      >
+## Best Practices & Guidelines
 
-  );
-}
-```
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+
+## Props Reference
 
         Component
         Prop
@@ -151,26 +207,6 @@ export default function StorageWidget() {
           undefined
         
         A custom formatter function. If not provided, it defaults to calculating and displaying [percentage]%.
-
-## Features
-Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ---
 

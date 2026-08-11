@@ -6,8 +6,38 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
-## Interactive Showcase
-Resize your browser window to see how the Masonry Grid intelligently recalculates its columns.
+## Examples
+
+The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+const items = [
+  { id: "1", height: "h-56", title: "Design Engineering" },
+  { id: "2", height: "h-[28rem]", image: "/photos/studio.jpg" },
+  { id: "3", height: "h-40", title: "Fluid Animations" },
+];
+
+export default function Gallery() {
+  return (
+     }
+    />
+  );
+}`;
+
+export const usageColumns = `// Column counts are Tailwind classes, so every breakpoint is yours to set.
+ }
+/>`;
+
+export const usageGap = ` }
+/>`;
+
+export const usageStagger = `// \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
+ } />`;
+
+export const usageNoAnimation = `// Renders immediately — right for content that is already above the fold,
+// or when you want to respect reduced-motion yourself.
+ } />`;
 
 ## Installation
 
@@ -21,32 +51,11 @@ npm install framer-motion
 
 ### Copy the Component
 
-Copy the full engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/MasonryGridBlock.tsx.
-
-## Implementation
-
-```tsx
-
-const posts = [
-  { id: 1, title: "Feature One", text: "A short status update." },
-  { id: 2, title: "Deep Dive", text: "A much longer piece of text that will require more vertical space in the masonry layout to demonstrate the fluid packing behavior." },
-];
-
-export default function BentoFeatures() {
-  return (
-     (
-        
-          {post.title}
-          {post.text}
-        
-      )}
-    />
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MasonryGridBlock.tsx`.
 
 ## Features
-Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+
+Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
 
     Pure CSS Layout
     Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.

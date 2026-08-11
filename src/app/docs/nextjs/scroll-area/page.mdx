@@ -1,4 +1,5 @@
-import { ScrollAreaShowcase } from "@/components/site/ScrollAreaShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Scroll Area
 
@@ -6,39 +7,17 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different styles, orientations, and features.
+Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox. The first example's **Code** tab contains the full component source.
 
-<ScrollAreaShowcase />
-
-## Installation
-
-### Copy the Component
-
-This component dynamically injects standard CSS scrollbar properties via a `style` tag, scoping them securely to unique class names to prevent overriding global scrollbars unless desired.
-
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ScrollAreaBlock.tsx`.
-
----
-
-## Usage
-
-Simply wrap your overflowing content inside the `<ScrollAreaBlock>`. Remember to give the block a specific height or width constraint so it knows when to scroll.
-
-```tsx
-import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+export const usageDefault = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
 export default function LongList() {
   const tags = Array.from({ length: 50 }).map((_, i) => \`Item \${i + 1}\`);
 
   return (
-    <ScrollAreaBlock
-      className="h-[300px] w-full max-w-sm rounded-md border p-4"
-      color="#10b981"
-      variant="minimal"
-      autoHide
-    >
+    <ScrollAreaBlock className="h-[300px] w-full max-w-sm rounded-md border p-4">
       <div className="flex flex-col gap-2">
         {tags.map((tag) => (
           <div key={tag} className="text-sm">
@@ -48,8 +27,137 @@ export default function LongList() {
       </div>
     </ScrollAreaBlock>
   );
-}
-```
+}`;
+
+export const usageHorizontal = `// Horizontal areas need content wider than the box — \`w-max\` on the inner
+// row is the usual way to get it.
+<ScrollAreaBlock
+  orientation="horizontal"
+  className="w-full max-w-2xl whitespace-nowrap rounded-md border p-6"
+>
+  <div className="flex w-max space-x-4 pb-4">
+    {artwork.map((item) => <Card key={item.id} {...item} />)}
+  </div>
+</ScrollAreaBlock>`;
+
+export const usageBoth = `<ScrollAreaBlock
+  orientation="both"
+  className="h-[300px] w-full max-w-sm whitespace-nowrap rounded-md border p-6"
+>
+  <Grid />
+</ScrollAreaBlock>`;
+
+export const usageMinimal = `// Thinner thumb, no track chrome.
+<ScrollAreaBlock variant="minimal" className="h-[350px] max-w-sm rounded-md border p-6">
+  <LongList />
+</ScrollAreaBlock>`;
+
+export const usageGlass = `<div className="p-6 bg-[url('/backdrop.jpg')] bg-cover bg-center">
+  <ScrollAreaBlock
+    variant="glass"
+    className="h-[350px] max-w-sm rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl"
+  >
+    <LongList />
+  </ScrollAreaBlock>
+</div>`;
+
+export const usageAutoHide = `// \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`
+// removes the groove behind the thumb entirely.
+<ScrollAreaBlock
+  autoHide
+  hideTrack
+  className="h-[350px] max-w-sm rounded-md border p-6"
+>
+  <LongList />
+</ScrollAreaBlock>`;
+
+<ExampleShowcase
+  name="scroll-area"
+  colorControl
+  colorLabel="Thumb Color"
+  columns={1}
+  examples={[
+    {
+      title: "Scroll area",
+      subheading: "Wrap overflowing content and constrain the box — the styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
+      props: { variant: "default", orientation: "vertical" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ScrollAreaBlock.tsx"),
+    },
+    {
+      title: "Horizontal",
+      subheading: "`orientation=\"horizontal\"` applies the matching overflow utilities and moves the bar to the bottom edge.",
+      props: { variant: "default", orientation: "horizontal" },
+      usage: usageHorizontal,
+    },
+    {
+      title: "Both axes",
+      subheading: "`orientation=\"both\"` renders and styles a scrollbar on each axis.",
+      props: { variant: "default", orientation: "both" },
+      usage: usageBoth,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` slims the thumb down for dense UI.",
+      props: { variant: "minimal", orientation: "vertical" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` tints the bar for use over frosted surfaces.",
+      props: { variant: "glass", orientation: "vertical" },
+      usage: usageGlass,
+    },
+    {
+      title: "Auto-hide",
+      subheading: "Set `autoHide` to reveal the bar only while scrolling, and `hideTrack` to drop the groove behind it.",
+      props: { variant: "default", orientation: "vertical", autoHide: true, hideTrack: true },
+      usage: usageAutoHide,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component dynamically injects standard CSS scrollbar properties via a `style` tag, scoping them securely to unique class names to prevent overriding global scrollbars unless desired.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ScrollAreaBlock.tsx`.
+
+## Features
+Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -156,36 +264,3 @@ export default function LongList() {
     </tbody>
   </table>
 </div>
-
-## Features
-Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
-
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
-## Best Practices & Guidelines
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </div>
-</div>
-

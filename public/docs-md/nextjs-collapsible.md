@@ -6,27 +6,15 @@ Traditional collapsible components rely on Javascript (like `Element.scrollHeigh
 
 The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
 
-## Interactive Showcase
+## Examples
 
-Use the controls below to see how incredibly versatile this component is. It can be used for simple FAQs, rich settings panels, or even deeply nested File Trees.
+From a bare disclosure to a nested file tree — the same three parts every time. The first example's **Code** tab contains the full component source.
 
-## Installation
-
-### Copy the Component
-
-This component is completely dependency-free.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CollapsibleBlock.tsx`.
-
----
-
-## Usage
-
-### Simple Usage
-
-Wrap your trigger button in `` and the content in ``.
-
-```tsx
+export const usageDefault = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/custom/blocks/CollapsibleBlock";
 
 export default function BasicUsage() {
   return (
@@ -36,28 +24,103 @@ export default function BasicUsage() {
         This content was hidden!
 
   );
-}
-```
+}`;
 
-## Animating Icons
+export const usageFaq = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/custom/blocks/CollapsibleBlock";
 
-Because the Collapsible component automatically applies a data-state="open" or data-state="closed" attribute to its trigger, you can easily use standard Tailwind group logic to animate arrows or chevrons.
-
-```tsx
-
-export default function AnimatedChevron() {
+export default function Faq() {
   return (
     
-      {/* 1. Add "group" to the trigger */}
+      {/* defaultOpen renders this one expanded on first paint */}
       
-        Toggle Me
-        {/* 2. Target the group-data-[state=open] class to rotate */}
+        {/* "group" + group-data-[state=open] rotates the chevron for free */}
+        
+          Can I use this UI kit in open source?
 
-      Content here.
-    
+            Absolutely! This code is completely dependency-free and yours to own.
+
+          How does the animation work?
+
+            It transitions grid-template-rows from 0fr to 1fr — smooth height
+            animation with no JavaScript measuring.
+
   );
-}
-```
+}`;
+
+export const usageSettings = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/custom/blocks/CollapsibleBlock";
+
+export default function SettingsPanel() {
+  return (
+
+            Push Notifications
+            Manage your alert preferences
+
+        {/* Swap the affordance label using the same data-state hook */}
+        
+          Configure
+
+          Close
+
+            Email Alerts
+
+            SMS Alerts
+
+  );
+}`;
+
+export const usageFileTree = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/custom/blocks/CollapsibleBlock";
+
+export default function FileTree() {
+  return (
+    // Collapsibles nest freely — each level owns its own state.
+
+          src
+
+                app
+
+                     layout.tsx
+
+                     page.tsx
+
+  );
+}`;
+
+export const usageDisabled = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/custom/blocks/CollapsibleBlock";
+
+export default function LockedSection() {
+  return (
+    // disabled makes the trigger ignore clicks and sets data-disabled.
+
+        Billing history (locked on the free plan)
+
+          You will never see this — the trigger ignores clicks.
+
+  );
+}`;
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free.
+
+Create a new file at `components/custom/blocks/CollapsibleBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.

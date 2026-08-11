@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ComponentPreview } from "@/components/site/ComponentPreview";
-import { ShowcaseControlPanel } from "@/components/site/ShowcaseControlPanel";
-import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
   Mic,
   Phone,
@@ -111,7 +108,7 @@ function getColorDetails(colorKey: string) {
 }
 
 // --- Data Configuration (11 Tools evenly spaced at 360° / 11 = 32.72° intervals) ---
-const ORBIT_TOOLS: OrbitTool[] = [
+const DEFAULT_ORBIT_TOOLS: OrbitTool[] = [
   { id: "slack", name: "Slack", icon: Share2 },
   { id: "whatsapp", name: "WhatsApp", icon: MessageCircle },
   { id: "telegram", name: "Telegram", icon: Send },
@@ -125,7 +122,7 @@ const ORBIT_TOOLS: OrbitTool[] = [
   { id: "phone", name: "Phone", icon: Phone },
 ];
 
-const SUB_AGENTS: SubAgent[] = [
+const DEFAULT_SUB_AGENTS: SubAgent[] = [
   {
     id: "sales",
     title: "Sales Lead",
@@ -203,9 +200,36 @@ const SUB_AGENTS: SubAgent[] = [
   },
 ];
 
-export function UserGraphShowcase() {
-  const [selectedTool, setSelectedTool] = useState<string>("phone");
-  const [color, setColor] = useState<string>("default");
+export interface UserGraphProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Accent color: a preset name ("indigo" | "rose" | "emerald" | "zinc"), a hex string, or "primary" to follow your theme. */
+  color?: string;
+  /** The orbiting channel nodes around the user avatar. */
+  orbitTools?: OrbitTool[];
+  /** The specialist agents in the bottom tier. */
+  subAgents?: SubAgent[];
+  /** The orchestrator shown between the orbit and the sub-agents. */
+  orchestrator?: { name: string; role: string; avatarUrl: string };
+  /** Orbit node highlighted on first render. */
+  defaultSelectedTool?: string;
+}
+
+const DEFAULT_ORCHESTRATOR = {
+  name: "Shuvo Sarkar",
+  role: "Expert Software Engineer",
+  avatarUrl:
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
+};
+
+export function UserGraph({
+  color = "primary",
+  orbitTools = DEFAULT_ORBIT_TOOLS,
+  subAgents = DEFAULT_SUB_AGENTS,
+  orchestrator = DEFAULT_ORCHESTRATOR,
+  defaultSelectedTool = "phone",
+  className,
+  ...props
+}: UserGraphProps) {
+  const [selectedTool, setSelectedTool] = useState<string>(defaultSelectedTool);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
@@ -234,22 +258,14 @@ export function UserGraphShowcase() {
   const accentColor = getColorDetails(color);
 
   return (
-    <div className="w-full flex flex-col gap-6 not-prose my-8">
-      {/* --- CONTROL PANEL WITH THEME COLOR PICKER ABOVE PREVIEW --- */}
-      <ShowcaseControlPanel className="flex flex-col md:flex-row gap-6 p-5 rounded-xl">
-        <ThemeColorPicker color={color} onChange={setColor} label="Theme Color" />
-      </ShowcaseControlPanel>
-
-      <ComponentPreview
-        name="UserGraph"
-        disableFrame={true}
-        tsCode={CODE_SNIPPET}
-        jsCode={CODE_SNIPPET}
-        usageCode={USAGE_CODE}
-        jsUsageCode={USAGE_CODE}
-      >
-        {/* Transparent Parent Background Wrapper */}
-        <div ref={containerRef} className="w-full p-2 sm:p-3 bg-transparent flex flex-col items-center">
+    <div
+      ref={containerRef}
+      className={cn(
+        "w-full p-2 sm:p-3 bg-transparent flex flex-col items-center",
+        className,
+      )}
+      {...props}
+    >
           {/* Theme Dynamic Canvas */}
           <div className="relative w-full rounded-none bg-slate-50 dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-slate-200 dark:border-zinc-800/80 min-h-[640px] sm:min-h-[760px] flex flex-col items-center justify-center transition-colors">
             {/* Ambient Dynamic Theme Glow */}
@@ -291,9 +307,9 @@ export function UserGraphShowcase() {
                 </div>
 
                 {/* 11 Orbiting Tool Nodes mathematically spaced evenly around Dashed Circle */}
-                {ORBIT_TOOLS.map((tool, index) => {
+                {orbitTools.map((tool, index) => {
                   // Calculate exact equal angular spacing: 360 / 11 = 32.727° per tool
-                  const angleDegree = (index / ORBIT_TOOLS.length) * 360 - 90; // Start at top (270° / -90°)
+                  const angleDegree = (index / orbitTools.length) * 360 - 90; // Start at top (270° / -90°)
                   const rad = (angleDegree * Math.PI) / 180;
                   const radius = isSmallScreen ? 100 : 130;
                   const x = radius * Math.cos(rad);
@@ -358,7 +374,7 @@ export function UserGraphShowcase() {
                     />
 
                     {/* 2. 5 Branch Curves emanating directly from Shuvo Avatar BOTTOM (500, 110) */}
-                    {SUB_AGENTS.map((agent) => {
+                    {subAgents.map((agent) => {
                       const curvePath = `M 500 110 C 500 175, ${agent.svgX} 150, ${agent.svgX} 225`;
                       return (
                         <g key={agent.id}>
@@ -413,8 +429,8 @@ export function UserGraphShowcase() {
                       )}
                     >
                       <img
-                        src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80"
-                        alt="Shuvo Sarkar"
+                        src={orchestrator.avatarUrl}
+                        alt={orchestrator.name}
                         className="size-full rounded-full object-cover"
                       />
                       {/* Status Dot */}
@@ -422,14 +438,14 @@ export function UserGraphShowcase() {
                     </div>
                     {/* Shuvo Sarkar Info Text */}
                     <div className="mt-1 text-center">
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wide whitespace-nowrap">Shuvo Sarkar</h4>
-                      <p className="text-[11px] font-medium text-slate-500 dark:text-zinc-400 whitespace-nowrap">Expert Software Engineer</p>
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
+                      <p className="text-[11px] font-medium text-slate-500 dark:text-zinc-400 whitespace-nowrap">{orchestrator.role}</p>
                     </div>
                   </div>
 
                   {/* BOTTOM TIER: 5 Sub-Agents Grid */}
                   <div className="absolute inset-0 z-10">
-                    {SUB_AGENTS.map((agent) => {
+                    {subAgents.map((agent) => {
                       return (
                         <div
                           key={agent.id}
@@ -487,26 +503,26 @@ export function UserGraphShowcase() {
                         )}
                       >
                         <img
-                          src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80"
-                          alt="Shuvo Sarkar"
+                          src={orchestrator.avatarUrl}
+                          alt={orchestrator.name}
                           className="size-full rounded-full object-cover"
                         />
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                       </div>
                       <div className="flex flex-col bg-white dark:bg-[#181c2b] p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs grow">
                         <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold text-slate-900 dark:text-white">Shuvo Sarkar</h4>
+                          <h4 className="text-xs font-bold text-slate-900 dark:text-white">{orchestrator.name}</h4>
                           <span className="px-1.5 py-0.5 text-[9px] font-semibold rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                             Active Lead
                           </span>
                         </div>
-                        <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">Expert Software Engineer</p>
+                        <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">{orchestrator.role}</p>
                       </div>
                     </div>
 
                     {/* 2. SUB-AGENTS CONTINUOUS TIMELINE STEP NODES */}
                     <div className="w-full flex flex-col gap-4">
-                      {SUB_AGENTS.map((agent, index) => (
+                      {subAgents.map((agent, index) => (
                         <div key={agent.id} className="relative w-full flex flex-col z-10">
                           {/* Agent Step Header Row */}
                           <div className="flex items-center gap-3">
@@ -560,11 +576,10 @@ export function UserGraphShowcase() {
               )}
             </div>
           </div>
-        </div>
-      </ComponentPreview>
     </div>
   );
 }
+
 
 function appList(apps: SubApp[]) {
   return apps.map((app) => (
@@ -586,48 +601,3 @@ function appList(apps: SubApp[]) {
     </div>
   ));
 }
-
-const USAGE_CODE = `import { UserGraph } from "@/components/ui/user-graph";
-
-export default function UserGraphPage() {
-  return (
-    <div className="w-full p-8 bg-slate-50 dark:bg-zinc-950">
-      <UserGraph />
-    </div>
-  );
-}
-`;
-
-const CODE_SNIPPET = `"use client";
-
-import React, { useState } from "react";
-import { User, Mic, Phone, MessageSquare, Send, Mail, Code2, Globe, BarChart3, CreditCard } from "lucide-react";
-
-export function UserGraph() {
-  const [selectedTool, setSelectedTool] = useState("voice");
-
-  return (
-    <div className="relative w-full min-h-[750px] p-8 bg-slate-50 dark:bg-zinc-950 rounded-none border border-slate-200 dark:border-zinc-800 flex flex-col items-center justify-center">
-      {/* Top User Node */}
-      <div className="relative flex flex-col items-center">
-        <div className="size-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg">
-          <User className="size-9 stroke-[2.5]" />
-        </div>
-      </div>
-
-      {/* Main Assistant Node */}
-      <div className="flex flex-col items-center my-8">
-        <div className="size-20 rounded-full ring-2 ring-primary p-0.5">
-          <img src="/avatars/shuvo.jpg" alt="Shuvo Sarkar" className="size-full rounded-full object-cover" />
-        </div>
-        <h4 className="font-bold text-slate-900 dark:text-white text-sm mt-2">Shuvo Sarkar</h4>
-        <span className="text-xs text-slate-500 dark:text-zinc-400">Expert Software Engineer</span>
-      </div>
-
-      {/* 5 Sub-Agents Hierarchy Grid */}
-      <div className="flex justify-between w-full">
-        {/* Render Sales, Marketing, Support, Accountant, Analyst nodes */}
-      </div>
-    </div>
-  );
-}`;

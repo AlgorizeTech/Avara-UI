@@ -4,9 +4,35 @@ A deeply interactive, parallax-driven 3D tilt component. It calculates the relat
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel to dial in the physics. A higher tilt intensity increases the maximum rotation degrees, while the glare opacity controls the reflection intensity.
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function AccessKeyCard() {
+  return (
+
+          Access Key
+
+  );
+}`;
+
+export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+// card is small — past that the perspective starts to shear.
+{card}`;
+
+export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
+{card}`;
+
+export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+// pointer. Set it to 0 to drop the reflection entirely.
+{card}`;
+
+export const usageNoGlare = `{card}`;
+
+export const usageScale = `// How far the card lifts toward the viewer on hover.
+{card}`;
 
 ## Installation
 
@@ -20,23 +46,7 @@ npm install framer-motion
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/TiltedCardBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function PricingTier() {
-  return (
-
-        {/* Your visual card design goes here */}
-        
-          Pro Plan
-          $29 / month
-
-  );
-}
-```
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

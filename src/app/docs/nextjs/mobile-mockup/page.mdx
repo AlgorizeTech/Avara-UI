@@ -1,4 +1,5 @@
-import { MobileMockupShowcase } from "@/components/site/MobileMockupShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 export const metadata = {
   title: "Mobile Mockups - AlgorizeTech UI",
@@ -22,46 +23,114 @@ A stunning, fully responsive collection of mobile device mockups engineered for 
 
 The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhone 12 Pro Max, the ultra-modern iPhone 14 Pro Max, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10. Whether you want to evoke nostalgia with a classic home button or highlight the future with a dynamic island and edge-to-edge glass, these mockups seamlessly wrap your React content to create the perfect showcase.
 
-## Interactive Showcase
-Scroll through the Mobile Mockup demo to see how internal content behaves within the device frame.
+## Examples
 
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <MobileMockupShowcase />
-</div>
+export const usageIphone5 = `import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
-## Implementation
-
-import { MobileMockupDocsUpdater } from "@/components/custom/blocks/MobileMockupDocsUpdater";
-
-<MobileMockupDocsUpdater />
-
-<div id="mobile-mockup-docs" >
-
-```tsx
-import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
-
-export default function AppShowcasePage() {
+export default function AppShowcase() {
   return (
-    <div className="flex justify-center p-8">
-        <Iphone5Mockup>
-            <img 
-              src="/assets/mockups/dashboard_light.png" 
-              alt="Light Dashboard" 
-              className="dark:hidden w-full h-full object-cover" 
-            />
-            <img 
-              src="/assets/mockups/dashboard_dark.png" 
-              alt="Dark Dashboard" 
-              className="hidden dark:block w-full h-full object-cover" 
-            />
-        </Iphone5Mockup>
-    </div>
+    <Iphone5Mockup>
+      <img
+        src="/assets/mockups/dashboard_light.png"
+        alt="Light Dashboard"
+        className="dark:hidden w-full h-full object-cover"
+      />
+      <img
+        src="/assets/mockups/dashboard_dark.png"
+        alt="Dark Dashboard"
+        className="hidden dark:block w-full h-full object-cover"
+      />
+    </Iphone5Mockup>
   );
-}
-```
+}`;
 
-</div>
+export const usageIphone12 = `import { Iphone12ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+<Iphone12ProMaxMockup>
+  <img src="/screenshot.png" className="w-full h-full object-cover" />
+</Iphone12ProMaxMockup>`;
+
+export const usageIphone14 = `import { Iphone14ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+// Autoplaying video works just as well as a still.
+<Iphone14ProMaxMockup>
+  <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+    <source src="/demo.mp4" type="video/mp4" />
+  </video>
+</Iphone14ProMaxMockup>`;
+
+export const usageSamsung = `import { SamsungS24UltraMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+<SamsungS24UltraMockup>
+  <img src="/screenshot.png" className="w-full h-full object-cover" />
+</SamsungS24UltraMockup>`;
+
+export const usagePixel8 = `import { GooglePixel8Mockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+<GooglePixel8Mockup>
+  <img src="/screenshot.png" className="w-full h-full object-cover" />
+</GooglePixel8Mockup>`;
+
+export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+// Interactive children scroll if you give the wrapper overflow-y-auto.
+<GooglePixel10Mockup>
+  <div className="w-full h-full overflow-y-auto">
+    <YourApp />
+  </div>
+</GooglePixel10Mockup>`;
+
+<ExampleShowcase
+  name="mobile-mockup"
+  columns={1
+  examples={[
+    {
+      title: "iPhone 5",
+      subheading: "The retro frame — thick bezels, a home button and a 16:9 screen.",
+      props: { activeDevice: "iphone5" },
+      usage: usageIphone5,
+      code: extractCode("src/components/custom/blocks/MobileMockupBlock.tsx"),
+    },
+    {
+      title: "iPhone 12 Pro Max",
+      subheading: "Flat edges and a notch, at a 19.5:9 aspect ratio.",
+      props: { activeDevice: "iphone12" },
+      usage: usageIphone12,
+    },
+    {
+      title: "iPhone 14 Pro Max",
+      subheading: "Dynamic island and edge-to-edge glass — also the best frame for video.",
+      props: { activeDevice: "iphone14" },
+      usage: usageIphone14,
+    },
+    {
+      title: "Samsung S24 Ultra",
+      subheading: "Squared-off corners and a centered punch-hole camera.",
+      props: { activeDevice: "samsung" },
+      usage: usageSamsung,
+    },
+    {
+      title: "Google Pixel 8",
+      subheading: "Heavily rounded corners and a 20:9 screen.",
+      props: { activeDevice: "pixel8" },
+      usage: usagePixel8,
+    },
+    {
+      title: "Google Pixel 10",
+      subheading: "The newest frame — pass a scrollable wrapper to embed a live app instead of a screenshot.",
+      props: { activeDevice: "pixel10" },
+      usage: usagePixel10,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+Every frame is pure CSS and SVG, so there are no dependencies to install. Create a new file at `components/custom/blocks/MobileMockupBlock.tsx` and copy the source from the **Code** tab of the first example above — it exports all six devices.
 
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
@@ -91,7 +160,7 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
     <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Content Aspect Ratios</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a <code id="mockup-aspect-ratio">16:9</code> vertical aspect ratio to prevent unnatural stretching or cropping inside the frame.</p>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
   </div>
   <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
     <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Handling Overflow</h4>

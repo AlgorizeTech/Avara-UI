@@ -5,12 +5,16 @@ import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingC
 export default function FloatingContactButtonDemo({
   position = "bottom-right",
   title = "Chat with us",
+  subtitle,
+  avatarUrl,
   defaultOpen = true,
   color = "primary",
   renderKey = 0,
 }: {
   position?: "bottom-right" | "bottom-left";
   title?: string;
+  subtitle?: string;
+  avatarUrl?: string;
   defaultOpen?: boolean;
   color?: string;
   renderKey?: number;
@@ -24,10 +28,12 @@ export default function FloatingContactButtonDemo({
       </div>
 
       <FloatingContactButtonBlock
-        key={`${renderKey}-${position}-${defaultOpen}`}
+        key={`${renderKey}-${position}-${defaultOpen}-${subtitle}-${avatarUrl}`}
         position={position}
         containerMode="absolute"
         title={title}
+        subtitle={subtitle}
+        avatarUrl={avatarUrl}
         defaultOpen={defaultOpen}
         defaultAccentColor={color}
         localStorageKey="primaryColor"

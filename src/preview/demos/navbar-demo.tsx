@@ -9,9 +9,12 @@ import {
 export default function NavbarDemo({
   variant = "floating",
   color = "primary",
+  logoText,
 }: {
   variant?: NavbarVariant;
   color?: NavbarColor;
+  /** Wordmark shown on the left (or centre, in the "centered" variant). */
+  logoText?: string;
 }) {
   return (
     <div className="relative overflow-hidden w-full flex flex-col items-center min-h-[400px] transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] z-0">
@@ -21,7 +24,12 @@ export default function NavbarDemo({
         <div className="absolute top-0 right-1/4 w-48 h-48 bg-rose-500/20 dark:bg-rose-500/30 blur-3xl rounded-full" />
       </div>
 
-      <NavbarBlock key={`${variant}-${color}`} variant={variant} color={color} />
+      <NavbarBlock
+        key={`${variant}-${color}-${logoText ?? "Nexus"}`}
+        variant={variant}
+        color={color}
+        logoText={logoText}
+      />
 
       {/* Dummy content pushed down so it sits below the navbar, not hidden underneath it */}
       <div className="w-full max-w-5xl mx-auto mt-28 px-8 flex flex-col gap-6 opacity-40 pointer-events-none relative z-0">

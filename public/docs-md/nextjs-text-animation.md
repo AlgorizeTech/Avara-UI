@@ -4,9 +4,29 @@ A powerful typography component that breathes life into your text using Framer M
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different animation variants and change the text content dynamically.
+Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeroSection() {
+  return (
+    
+  );
+}`;
+
+export const usageVariants = `// Seven effects behind one prop.
+
+`;
+
+export const usageTiming = `// \`duration\` stretches each character's transition, \`delay\` holds the whole
+// sequence back — useful for staging a headline against a subheadline.
+`;
+
+export const usageAs = `// \`as\` swaps the rendered element so the headline keeps its document
+// meaning; \`style\` and \`className\` pass straight through.
+`;
 
 ## Installation
 
@@ -20,22 +40,7 @@ npm install framer-motion clsx tailwind-merge
 
 ### 2. Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in `components/custom/blocks/TextAnimationBlock.tsx`.
-
-## Usage
-
-Simply drop the component into your page. You can customize the animation style by passing the `variant` prop, and change the text color seamlessly using standard `className` or `style` props.
-
-```tsx
-
-export default function HeroSection() {
-  return (
-    
-      {/* A stunning typewriter effect with custom color */}
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TextAnimationBlock.tsx`.
 
 ## Props Reference
 

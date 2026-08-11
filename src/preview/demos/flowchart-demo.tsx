@@ -17,15 +17,64 @@ import {
 export default function FlowchartDemo({
   color = "indigo",
   replayKey = 0,
+  initialActivePath = "success-path",
+  example,
 }: {
   color?: "blue" | "indigo" | "rose" | "emerald" | "zinc";
   replayKey?: number;
+  /** null leaves every route idle until a node is clicked. */
+  initialActivePath?: string | null;
+  /** "linear" renders the minimal three-node pipeline. */
+  example?: "branching" | "linear";
 }) {
+  if (example === "linear") {
+    return (
+      <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">
+        <Flowchart
+          key={`${replayKey}-${color}-linear`}
+          initialActivePath={initialActivePath === null ? null : "main-route"}
+          color={color}
+          className="border-0 shadow-none m-0 rounded-none bg-transparent dark:bg-transparent p-0"
+        >
+          <FlowCanvas>
+            <FlowConnection id="main-route" path="M 280 200 L 340 200" />
+            <FlowConnection id="main-route" path="M 580 200 L 640 200" />
+          </FlowCanvas>
+
+          <FlowNode
+            id="trigger"
+            title="Webhook Trigger"
+            description="Inbound secure POST"
+            icon={Webhook}
+            connectedPaths={["main-route"]}
+            className="left-[40px] top-[166px]"
+          />
+          <FlowNode
+            id="compute"
+            title="Compute Cluster"
+            description="Normalizing JSON data"
+            icon={Cpu}
+            connectedPaths={["main-route"]}
+            className="left-[340px] top-[166px]"
+          />
+          <FlowNode
+            id="commit"
+            title="Sync Database"
+            description="Committed to cluster"
+            icon={CheckCircle2}
+            connectedPaths={["main-route"]}
+            className="left-[640px] top-[166px]"
+          />
+        </Flowchart>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">
       <Flowchart
-        key={replayKey}
-        initialActivePath="success-path"
+        key={`${replayKey}-${color}-${initialActivePath}`}
+        initialActivePath={initialActivePath}
         color={color}
         className="border-0 shadow-none m-0 rounded-none bg-transparent dark:bg-transparent p-0"
       >

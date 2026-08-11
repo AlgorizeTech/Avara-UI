@@ -1,15 +1,130 @@
-import { DockShowcase } from "@/components/site/DockShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Dock
 
 A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
 
+## Examples
 
-## Interactive Showcase
+Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator. The first example's **Code** tab contains the full component source.
 
-Hover across the dock icons on desktop to experience unclipped Framer Motion magnification physics. Click any icon to switch the active indicator dot.
+export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Compass, Home, Mail, Settings, Terminal } from "lucide-react";
+import { useState } from "react";
 
-<DockShowcase />
+export default function BottomNav() {
+  const [active, setActive] = useState("home");
+
+  const items = [
+    // icon is a node — give it w-full h-full so it scales with the dock
+    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: active === "home", onClick: () => setActive("home") },
+    { id: "compass", label: "Explore", icon: <Compass className="w-full h-full" />, isActive: active === "compass", onClick: () => setActive("compass") },
+    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
+  ];
+
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      <Dock items={items} />
+    </div>
+  );
+}`;
+
+export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Home, Mail, Settings, Terminal } from "lucide-react";
+
+export default function CompactNav() {
+  const items = [
+    // isActive draws the indicator dot; badge prints a counter pill
+    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: true },
+    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3 },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" /> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" /> },
+  ];
+
+  return <Dock items={items} />;
+}`;
+
+export const usageCompact = `import { Dock } from "@/components/custom/blocks/DockBlock";
+
+export default function SmallDock({ items }) {
+  // Smaller resting icons and a gentler peak — good for dense toolbars.
+  return (
+    <Dock
+      items={items}
+      baseSize={36}
+      magnification={56}
+      distance={100}
+      containerHeight={60}
+      gap={8}
+    />
+  );
+}`;
+
+export const usagePhysics = `import { Dock } from "@/components/custom/blocks/DockBlock";
+
+export default function DramaticDock({ items }) {
+  // A tall peak with a wide reach: neighbours lift long before the cursor
+  // arrives, which is what makes it feel like macOS.
+  return (
+    <Dock
+      items={items}
+      baseSize={46}
+      magnification={120}
+      distance={200}
+      containerHeight={100}
+      gap={16}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="dock"
+  columns={1}
+  examples={[
+    {
+      title: "Dock",
+      subheading: "Pass an `items` array of `{ id, label, icon }` — hover magnification is built in.",
+      props: { itemSet: "full" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/DockBlock.tsx"),
+    },
+    {
+      title: "Badges & active app",
+      subheading: "`badge` prints a counter pill and `isActive` draws the running-app dot.",
+      props: { itemSet: "compact", activeTab: "home" },
+      usage: usageBadges,
+    },
+    {
+      title: "Compact",
+      subheading: "Drop `baseSize`, `magnification` and `gap` for a dense toolbar-sized dock.",
+      props: {
+        itemSet: "compact",
+        baseSize: 36,
+        magnification: 56,
+        distance: 100,
+        containerHeight: 60,
+        gap: 8,
+      },
+      usage: usageCompact,
+    },
+    {
+      title: "Magnification physics",
+      subheading: "`magnification` sets the peak size; `distance` how far ahead neighbours react.",
+      props: {
+        itemSet: "full",
+        baseSize: 46,
+        magnification: 120,
+        distance: 200,
+        containerHeight: 100,
+        gap: 16,
+      },
+      usage: usagePhysics,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -23,30 +138,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/DockBlock.tsx.
-
-## Implementation
-
-```tsx
-import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Home, Mail, Terminal, Settings } from "lucide-react";
-
-export default function BottomNav() {
-  const dockItems = [
-    { id: "home", label: "Home", icon: <Home className="w-full h-full"/>, isActive: true },
-    { id: "mail", label: "Mail", icon: <Mail className="w-full h-full"/>, badge: "3" },
-    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full"/> },
-    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full"/> },
-  ];
-
-  return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <Dock baseSize="{48}" containerHeight="{68}" distance="{140}" gap="{14}" items="{dockItems}" magnification="{82}"/>
-    </div>
-  );
-}
-```
-
+Create a new file at `components/custom/blocks/DockBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

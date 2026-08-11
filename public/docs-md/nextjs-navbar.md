@@ -2,15 +2,50 @@
 
 A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses GSAP to smoothly animate a beautiful slide-out drawer on mobile devices.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to switch between layouts.
+Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer. The first example's **Code** tab contains the full component source.
 
-- **Floating:** A modern, pill-shaped glassmorphism navbar (excellent for landing pages).
-- **Centered:** Perfectly balances the logo in the center of the screen.
-- **Minimal:** Clean, borderless, transparent navigation.
+export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
-_(Resize your browser window or use mobile view to see the GSAP animated hamburger drawer in action!)_
+export default function SiteHeader() {
+  return ;
+}`;
+
+export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function LandingHeader() {
+  // A pill that floats over the hero — pair it with a colorful background.
+  return ;
+}`;
+
+export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function CenteredHeader() {
+  // Logo in the middle, links split either side.
+  return ;
+}`;
+
+export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function MinimalHeader() {
+  // Borderless and transparent — lets the page behind it show through.
+  return ;
+}`;
+
+export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function GlassHeader() {
+  // Full-width bar with a backdrop blur, so content scrolls under it.
+  return ;
+}`;
+
+export const usageLogo = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function BrandedHeader() {
+  // logoText replaces the wordmark without touching the component.
+  return ;
+}`;
 
 ## Installation
 
@@ -22,6 +57,10 @@ This component uses `gsap` for the buttery-smooth mobile menu slide animations, 
 npm install gsap lucide-react
 ```
 
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/NavbarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+
 ## Props Reference
 
         Prop
@@ -31,7 +70,7 @@ npm install gsap lucide-react
 
           variant
 
-          "default" | "floating" | "centered" | "minimal"
+          "default" | "floating" | "centered" | "minimal" | "glass"
 
           "default"
         

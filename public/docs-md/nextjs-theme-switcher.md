@@ -4,8 +4,27 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Interactive Showcase
-Interact with the Theme Switcher to see the smooth sliding animation and immediate color scheme change.
+## Examples
+
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The first example's **Code** tab contains the full component source.
+
+export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    
+      My App
+      {/* Compact enough for a navbar */}
+
+  );
+}`;
+
+export const usagePill = `// A segmented control that shows the current mode explicitly — better on a
+// settings page than in a dense navbar.
+`;
+
+export const usageDropdown = `// Includes the "system" option, so users can defer to their OS setting.
+`;
 
 ## Installation
 
@@ -39,28 +58,11 @@ export default function RootLayout({
 
 ### 3. Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ThemeSwitcherBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function DashboardHeader() {
-  return (
-    
-      My App
-
-        {/* A simple icon toggle for the main navbar */}
-
-        {/* Or, a full segmented pill for a settings page */}
-        {/*  */}
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ThemeSwitcherBlock.tsx`.
 
 ## Features
-Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+
+Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
 
     Hydration Safe
     Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.

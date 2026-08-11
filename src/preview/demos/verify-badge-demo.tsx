@@ -20,12 +20,39 @@ export default function VerifyBadgeDemo({
   color = "primary",
   size = "md",
   animate = true,
+  showAll,
 }: {
   color?: string;
   size?: "sm" | "md" | "lg" | "xl";
   animate?: boolean;
+  /** Render-all mode: the badge on its own, or every size in one frame. */
+  showAll?: "badge" | "sizes";
 }) {
   const activeHex = getThemeColorHex(color);
+
+  if (showAll === "badge") {
+    return (
+      <div className="w-full min-h-[380px] flex items-center justify-center">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+            AlgorizeSystem
+          </span>
+          <VerifyBadge color={activeHex} size={size} animate={animate} />
+        </div>
+      </div>
+    );
+  }
+
+  // Scalar prop — every size shares a single frame.
+  if (showAll === "sizes") {
+    return (
+      <div className="w-full min-h-[380px] flex flex-wrap items-center justify-center gap-8">
+        {(["sm", "md", "lg", "xl"] as const).map((s) => (
+          <VerifyBadge key={s} color={activeHex} size={s} animate={animate} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-[380px] flex flex-col items-center justify-center overflow-hidden">

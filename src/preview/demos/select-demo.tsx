@@ -47,6 +47,7 @@ export default function SelectDemo({
   isSearchable = false,
   isGrouped = true,
   color = "primary",
+  showAll,
 }: {
   variant?: SelectVariant;
   inputSize?: SelectSize;
@@ -56,9 +57,62 @@ export default function SelectDemo({
   isSearchable?: boolean;
   isGrouped?: boolean;
   color?: string;
+  /** Render-all modes: every size, or the error/disabled states, in one frame. */
+  showAll?: "sizes" | "states";
 }) {
   const [singleValue, setSingleValue] = useState<string>("");
   const [multiValue, setMultiValue] = useState<string[]>([]);
+
+  if (showAll) {
+    const sizes: SelectSize[] = ["sm", "md", "lg"];
+    return (
+      <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
+        <div className="w-full max-w-sm mx-auto flex flex-col gap-6">
+          {showAll === "sizes"
+            ? sizes.map((size) => (
+                <SelectBlock
+                  key={size}
+                  options={standardOptions}
+                  value=""
+                  onChange={() => {}}
+                  variant={variant}
+                  color={color}
+                  inputSize={size}
+                  label={`Department (${size})`}
+                  placeholder="Select an option..."
+                />
+              ))
+            : (
+              <>
+                <SelectBlock
+                  options={standardOptions}
+                  value=""
+                  onChange={() => {}}
+                  variant={variant}
+                  color={color}
+                  inputSize={inputSize}
+                  label="Department"
+                  placeholder="Select an option..."
+                  error="Please select a valid option to proceed."
+                />
+                <SelectBlock
+                  options={standardOptions}
+                  value=""
+                  onChange={() => {}}
+                  variant={variant}
+                  color={color}
+                  inputSize={inputSize}
+                  disabled
+                  label="Department (disabled)"
+                  placeholder="Select an option..."
+                  helperText="Choose the options you wish to add."
+                />
+              </>
+            )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">

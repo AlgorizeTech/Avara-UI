@@ -8,10 +8,47 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 
+/** Static queue used by the `showAll: "states"` preview — one row per status. */
+const STATIC_STATES: FileUploadState[] = [
+  {
+    id: "static-uploading",
+    file: new File([], "quarterly-report.pdf", { type: "application/pdf" }),
+    progress: 42,
+    status: "uploading",
+    timeLeft: 12,
+  },
+  {
+    id: "static-paused",
+    file: new File([], "product-shot.png", { type: "image/png" }),
+    progress: 66,
+    status: "paused",
+  },
+  {
+    id: "static-error",
+    file: new File([], "launch-teaser.mp4", { type: "video/mp4" }),
+    progress: 89,
+    status: "error",
+    errorMessage: "Connection lost",
+  },
+  {
+    id: "static-success",
+    file: new File([], "brand-guidelines.pdf", { type: "application/pdf" }),
+    progress: 100,
+    status: "success",
+    timeLeft: 0,
+  },
+];
+
 export default function UploadDemo({
   variant = "slide-up",
+  layout,
+  showAll,
 }: {
   variant?: "slide-right" | "slide-up" | "pop" | "flip";
+  /** "dropzone" renders the Dropzone on its own. Omitted = previous behavior. */
+  layout?: "dropzone";
+  /** Render-all mode for the docs gallery. Omitted = previous behavior. */
+  showAll?: "states";
 }) {
   const [files, setFiles] = useState<FileUploadState[]>([]);
 
@@ -163,6 +200,39 @@ export default function UploadDemo({
 
   const doneCount = files.filter((f) => f.status === "success").length;
   const totalCount = files.length;
+
+  if (layout === "dropzone") {
+    return (
+      <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[400px]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+        <div className="w-full max-w-md relative z-10 px-4">
+          <Dropzone
+            onFilesDrop={() => {}}
+            accept="image/png,image/jpeg"
+            maxSize={5}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (showAll === "states") {
+    return (
+      <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[500px]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+        <div className="w-full max-w-md flex flex-col gap-3 relative z-10 px-4">
+          {STATIC_STATES.map((item) => (
+            <UploadItem
+              key={item.id}
+              item={item}
+              onRetry={() => {}}
+              onRemove={() => {}}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[600px]">

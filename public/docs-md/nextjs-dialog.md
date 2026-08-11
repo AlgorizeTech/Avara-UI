@@ -6,9 +6,146 @@ Popovers and Dropdowns are great for quick, non-blocking actions. But when you n
 
 The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
 
-## Interactive Showcase
+## Examples
 
-Use the templates below to explore different variations of a Dialog. Notice how the background scrollbar vanishes when the dialog opens, and returns exactly as it was when it closes.
+Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function ShareDialog() {
+  return (
+
+           Share Profile
+
+          Share Profile
+          
+            Anyone who has this link will be able to view this.
+
+            Copy Link
+
+          Your profile is currently public.
+
+  );
+}`;
+
+export const usageForm = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function EditProfileDialog() {
+  return (
+
+           Edit Profile
+
+      {/* className adjusts the max width of the modal */}
+
+          Edit Profile
+          
+            Make changes to your profile here. Click save when you're done.
+
+            Name
+
+            Username
+
+            Save changes
+
+  );
+}`;
+
+export const usageDestructive = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function DeleteAccountDialog() {
+  return (
+
+           Delete Account
+
+             Are you absolutely sure?
+
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+
+            Cancel
+            
+              Yes, delete account
+
+  );
+}`;
+
+export const usageNoClose = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function TermsDialog() {
+  return (
+
+          Accept terms
+
+      {/* hideCloseButton removes the built-in "X" so the user must choose */}
+
+          Terms of Service
+          
+            There is no “X” here — the user has to pick one of the buttons below
+            (or press Escape).
+
+            Decline
+            Accept
+
+  );
+}`;
+
+export const usageControlled = `import { useState } from "react";
+
+export default function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    await saveToServer();
+    setSaving(false);
+    setOpen(false); // close programmatically once the work is done
+  };
+
+  return (
+
+          Save settings
+
+          Save settings
+          
+            The dialog closes itself once the save finishes.
+
+            {saving ? "Saving…" : "Save changes"}
+
+  );
+}`;
 
 ## Installation
 
@@ -16,66 +153,7 @@ Use the templates below to explore different variations of a Dialog. Notice how 
 
 This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DialogBlock.tsx`.
-
----
-
-## Usage
-
-A standard dialog requires wrapping your trigger (the button that opens it) and your content within the `` root context.
-
-```tsx
-
-export default function CheckoutModal() {
-  return (
-    
-      {/* 1. The button that opens the modal */}
-      
-        Proceed to Checkout
-
-      {/* 2. The modal window itself */}
-
-          Confirm Payment
-          
-            Your card ending in 4242 will be charged $99.00.
-
-        {/* Custom Body Content */}
-        
-          Subscription: Annual Pro Plan
-
-        {/* Actions aligned to the right */}
-        
-          Cancel
-          
-            Pay Now
-
-  );
-}
-```
-
-## Controlled State
-
-If you need to close the dialog programmatically (for instance, after a fetch request succeeds), you can control the open state directly.
-
-```tsx
-
-export function ControlledDialog() {
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = async () => {
-    await saveToServer();
-    setOpen(false); // Close programmatically after success
-  };
-
-  return (
-    
-      Open
-      
-        Save & Close
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/DialogBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.

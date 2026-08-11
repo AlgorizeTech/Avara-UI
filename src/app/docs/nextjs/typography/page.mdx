@@ -1,4 +1,5 @@
-import { TypographyShowcase } from "@/components/site/TypographyShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Typography
 
@@ -6,11 +7,161 @@ Styles for headings, paragraphs, lists, and inline text elements.
 
 While Tailwind provides fantastic utility classes for text, manually copying strings like `scroll-m-20 text-4xl font-extrabold tracking-tight` onto every single `<h1>` tag in your application is tedious and error-prone. The `TypographyBlock` provides a collection of semantic React components that standardize your vertical rhythm, sizing, and dark-mode colors across your entire project.
 
-## Interactive Showcase
+## Examples
 
-Review the preview below to see how the various typography components flow together to create a beautifully structured document.
+Every component is a thin semantic wrapper around a native HTML tag, so you compose them exactly like the tags themselves. The first example's **Code** tab contains the full component source.
 
-<TypographyShowcase />
+export const usageArticle = `import {
+  Blockquote,
+  H1,
+  H2,
+  H3,
+  InlineCode,
+  Large,
+  Lead,
+  List,
+  Muted,
+  P,
+  Small,
+} from "@/components/custom/blocks/TypographyBlock";
+
+export default function BlogPost() {
+  return (
+    <article className="mx-auto max-w-2xl">
+      <H1>The Elements of UI</H1>
+      <Lead className="mt-4">
+        A comprehensive guide to composing beautiful web applications.
+      </Lead>
+
+      <P>
+        Rather than scattering raw classes like{" "}
+        <InlineCode>text-4xl font-extrabold</InlineCode> across hundreds of
+        files, standardized components keep the rhythm predictable.
+      </P>
+
+      <H2>Why semantic tags matter</H2>
+      <Blockquote>
+        "Good typography guides the reader without calling attention to itself."
+      </Blockquote>
+
+      <H3>Key Benefits</H3>
+      <List>
+        <li>Consistent margins applied automatically.</li>
+        <li>Perfect dark mode contrast ratios.</li>
+      </List>
+
+      <div className="mt-12 flex items-center justify-between border-t pt-6">
+        <Large>Written by Nexus</Large>
+        <div className="flex flex-col items-end">
+          <Small>Author Status: Verified</Small>
+          <Muted>Published April 2026</Muted>
+        </div>
+      </div>
+    </article>
+  );
+}`;
+
+export const usageHeadings = `import { H1, H2, H3, H4 } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Headings() {
+  return (
+    <>
+      <H1>The Elements of UI</H1>
+      <H2>Why semantic tags matter</H2>
+      <H3>Key benefits</H3>
+      <H4>A minor aside</H4>
+    </>
+  );
+}`;
+
+export const usageParagraph = `import { InlineCode, Lead, P } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Body() {
+  return (
+    <>
+      <Lead>A comprehensive guide to composing beautiful web apps.</Lead>
+      <P>
+        Standardized components keep the rhythm predictable — no more pasting{" "}
+        <InlineCode>text-4xl font-extrabold tracking-tight</InlineCode> by hand.
+      </P>
+      <P>A following paragraph picks up its own top margin automatically.</P>
+    </>
+  );
+}`;
+
+export const usageBlockquote = `import { Blockquote } from "@/components/custom/blocks/TypographyBlock";
+
+<Blockquote>
+  "Good typography is like a good map. It guides the reader gracefully from
+  start to finish without calling attention to itself."
+</Blockquote>`;
+
+export const usageList = `import { List } from "@/components/custom/blocks/TypographyBlock";
+
+// \`List\` styles the marker and spacing; the \`li\` children stay yours.
+<List>
+  <li>Consistent top and bottom margins automatically applied.</li>
+  <li>Perfect dark mode contrast ratios.</li>
+  <li>Semantic HTML attributes preserved.</li>
+</List>`;
+
+export const usageSupporting = `import { Large, Muted, Small } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Byline() {
+  return (
+    <div className="flex items-center justify-between border-t pt-6">
+      <Large>Written by Nexus</Large>
+      <div className="flex flex-col items-end">
+        <Small>Author Status: Verified</Small>
+        <Muted>Published April 2026</Muted>
+      </div>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="typography"
+  columns={1}
+  examples={[
+    {
+      title: "Typography",
+      subheading: "The whole set composed as an article — margins and rhythm come from the components, not from your markup.",
+      props: { example: "article" },
+      usage: usageArticle,
+      code: extractCode("src/components/custom/blocks/TypographyBlock.tsx"),
+    },
+    {
+      title: "Headings",
+      subheading: "`H1` through `H4` render the matching semantic tag with the right size, weight and tracking.",
+      props: { example: "headings" },
+      usage: usageHeadings,
+    },
+    {
+      title: "Paragraph & lead",
+      subheading: "`Lead` opens a section, `P` carries the body, and `InlineCode` marks up identifiers inline.",
+      props: { example: "paragraph" },
+      usage: usageParagraph,
+    },
+    {
+      title: "Blockquote",
+      subheading: "`Blockquote` indents and italicizes the quote behind a left rule.",
+      props: { example: "blockquote" },
+      usage: usageBlockquote,
+    },
+    {
+      title: "List",
+      subheading: "`List` handles markers and item spacing for a plain `ul`.",
+      props: { example: "list" },
+      usage: usageList,
+    },
+    {
+      title: "Supporting text",
+      subheading: "`Large`, `Small` and `Muted` cover bylines, captions and metadata.",
+      props: { example: "supporting" },
+      usage: usageSupporting,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,51 +169,7 @@ Review the preview below to see how the various typography components flow toget
 
 This suite of components simply wraps native HTML tags with carefully crafted Tailwind CSS strings. It is completely dependency-free.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TypographyBlock.tsx`.
-
----
-
-## Usage
-
-Simply import the semantic wrappers you need and use them exactly like standard HTML tags.
-
-```tsx
-import {
-  H1,
-  H2,
-  P,
-  Blockquote,
-  List,
-  InlineCode,
-  Lead,
-} from "@/components/custom/blocks/TypographyBlock";
-
-export default function BlogPost() {
-  return (
-    <article>
-      <H1>Building Next-Gen UIs</H1>
-      <Lead>A deep dive into modular component architecture.</Lead>
-
-      <P>
-        When building large-scale applications, you want to avoid repeating
-        yourself. This is where <InlineCode>Typography</InlineCode> components
-        shine.
-      </P>
-
-      <H2>The Core Principles</H2>
-      <List>
-        <li>Maintain semantic HTML structure</li>
-        <li>Automate vertical spacing (margins)</li>
-        <li>Ensure accessible color contrast</li>
-      </List>
-
-      <Blockquote>
-        Consistency is the easiest way to make your app look professional.
-      </Blockquote>
-    </article>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TypographyBlock.tsx`.
 
 ## Props Reference
 

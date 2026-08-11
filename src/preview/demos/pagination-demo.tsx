@@ -22,11 +22,16 @@ export default function PaginationDemo({
   currentPage: initialPage = 1,
   totalPages = 10,
   showEdges = true,
+  siblingCount = 2,
+  example = "table",
 }: {
   color?: string;
   currentPage?: number;
   totalPages?: number;
   showEdges?: boolean;
+  siblingCount?: number;
+  /** "table" is the classic data-table frame; "bare" is the control on its own. */
+  example?: "table" | "bare";
 }) {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
@@ -38,6 +43,23 @@ export default function PaginationDemo({
   const currentEnd = Math.min(safePage * itemsPerPage, mockTotalItems);
 
   const activeHex = getThemeColorHex(color);
+
+  if (example === "bare") {
+    return (
+      <div
+        className="w-full flex items-center justify-center min-h-[300px] relative z-10 overflow-hidden"
+        style={{ "--theme-color": activeHex } as React.CSSProperties}
+      >
+        <Pagination
+          currentPage={safePage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          siblingCount={siblingCount}
+          showEdges={showEdges}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -73,6 +95,7 @@ export default function PaginationDemo({
           currentPage={safePage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+          siblingCount={siblingCount}
           showEdges={showEdges}
         />
       </div>

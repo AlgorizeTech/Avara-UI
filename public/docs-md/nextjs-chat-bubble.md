@@ -6,9 +6,55 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 ---
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the sender colors and simulate an incoming message. Notice how the border-radius logic handles consecutive messages gracefully, and how GSAP handles the bouncy entrance physics.
+These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice. The first example's **Code** tab contains the full component source.
+
+export const usageConversation = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTimestamp,
+  ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
+
+export default function ChatInterface() {
+  return (
+
+        Hey! Did you check out the new Docs UI kit?
+
+          It has a really clean compound component pattern.
+
+          Yeah, I'm playing with it right now.
+
+  );
+}`;
+
+export const usageGrouping = `// \`layout\` is the only thing that connects stacked messages — set it per
+// bubble and the radii, spacing and avatar visibility follow.
+
+  Three messages, one sender.
+
+  The inner corners tighten to 4px…
+
+  …and only the last one keeps the avatar.
+`;
+
+export const usageReceipts = `// \`status\` is read from the bubble's \`variant\` — it only renders ticks on
+// sent messages, so received bubbles show the time alone.
+
+    Sent — a single tick.
+
+    Delivered — double tick.
+
+    Read — double tick, accented.
+
+`;
+
+export const usageTyping = `// Drop the bubble's padding and background so the three dots float on their
+// own while you wait for the reply.
+
+`;
 
 ## Installation
 
@@ -22,30 +68,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ChatBubbleBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function ChatInterface() {
-  return (
-    
-      {/* Grouped Received Messages */}
-
-        Hello! How can I help you today?
-
-          I can answer questions, process data, or generate code.
-
-      {/* Single Sent Message with Read Receipt */}
-
-          Can you show me how to use the ChatBubble component?
-
-      {/* Animated Typing Indicator */}
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChatBubbleBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -124,12 +147,15 @@ Discover the key capabilities that make this component an excellent choice for m
 
           color
 
-          "default" | "blue" | "indigo" | "rose" | "emerald"
+          "primary" | "default" | "blue" | "indigo" | "rose" | "emerald"
 
-          "default"
+          "primary"
 
           Sets the background color of the bubble. Only applies when the parent{" "}
-          variant is set to "sent".
+          variant is set to "sent".{" "}
+          "primary" and "default" both follow your
+          theme tokens, and any unlisted value falls back to them — this is a
+          fixed set, not an arbitrary hex.
 
           ChatTimestamp
 

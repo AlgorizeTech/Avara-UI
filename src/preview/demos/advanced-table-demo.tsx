@@ -172,10 +172,13 @@ export default function AdvancedTableDemo({
   color,
   searchable = true,
   selectable = true,
+  example,
 }: {
   color?: TableColor | string;
   searchable?: boolean;
   selectable?: boolean;
+  /** Swaps the floating toolbar for a custom `batchActions` renderer. */
+  example?: "default" | "custom-batch-actions";
 }) {
   const [data, setData] = useState<Employee[]>(INITIAL_DATA);
 
@@ -317,7 +320,7 @@ export default function AdvancedTableDemo({
   return (
     <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-border/70 bg-card p-2 sm:p-6 lg:p-8 overflow-hidden relative">
       <AdvancedTableBlock
-        key={`${searchable}-${selectable}`}
+        key={`${searchable}-${selectable}-${example}`}
         data={data}
         columns={columns}
         primaryKey="id"
@@ -327,6 +330,28 @@ export default function AdvancedTableDemo({
         itemsPerPageOptions={[5, 10, 25, 50]}
         onBatchDelete={handleBatchDelete}
         onBatchEdit={handleOpenEditModal}
+        batchActions={
+          example === "custom-batch-actions"
+            ? (selectedIds, clearSelection) => (
+                <>
+                  <button
+                    onClick={() =>
+                      console.log("Exporting", selectedIds.length, "rows")
+                    }
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                  >
+                    Export CSV
+                  </button>
+                  <button
+                    onClick={clearSelection}
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                  >
+                    Clear
+                  </button>
+                </>
+              )
+            : undefined
+        }
       />
 
       {/* CUSTOM EDIT MODAL */}

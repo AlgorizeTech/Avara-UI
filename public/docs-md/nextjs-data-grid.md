@@ -6,26 +6,37 @@ Building an interactive spreadsheet is notoriously difficult. Most developers gi
 
 This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel to customize the data grid. Try clicking a cell and using your arrow keys to navigate around. **Press `Enter` or double-click to edit the value, and press `Enter` again to save it and move down!**
+Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row. The first example's **Code** tab contains the full component source.
 
-## Installation
+export const usageDefault = `import { useState } from "react";
 
-### Copy the Component
+const COLUMNS = [
+  { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
+  { field: "customer", headerName: "Customer Name", width: 200 },
+  { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
+  { field: "status", headerName: "Status", width: 120 },
+  { field: "date", headerName: "Date", width: 140 },
+];
 
-This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
+const INITIAL_DATA = [
+  { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
+  { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
+];
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DataGridBlock.tsx`.
+export default function Ledger() {
+  const [data, setData] = useState(INITIAL_DATA);
 
----
+  return (
+    
+  );
+}`;
 
-## Usage
+export const usageSchema = `import { useState } from "react";
 
-Define your `columns` array to declare the schema, and pass in your `data` array. The grid automatically manages the editing state internally and fires the `onChange` callback with the mutated data array whenever a user saves a cell edit.
-
-```tsx
-
+// The grid is entirely column-driven: \`type\` picks the editor, \`width\`
+// pins the column, and \`readOnly\` locks it against edits.
 const COLUMNS = [
   { field: "id", headerName: "User ID", width: 100, readOnly: true },
   { field: "name", headerName: "Full Name", width: 250 },
@@ -40,16 +51,21 @@ const INITIAL_DATA = [
 export default function Gradebook() {
   const [data, setData] = useState(INITIAL_DATA);
 
-  return (
-    
-       setData(newData)}
-        color="#3b82f6"
-        showRowNumbers
-      />
-    
-  );
-}
-```
+  return ;
+}`;
+
+export const usageNoRowNumbers = ``;
+
+export const usageReadOnly = `// Keyboard navigation still works — only editing is disabled.
+`;
+
+## Installation
+
+### Copy the Component
+
+This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/DataGridBlock.tsx`.
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.

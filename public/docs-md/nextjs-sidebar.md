@@ -4,12 +4,104 @@ A powerful, composable sidebar component that automatically manages mobile flyou
 
 Building a good sidebar is one of the hardest parts of dashboard development. It requires managing state across completely different structural elements, handling viewport resizing, and animating complex CSS properties smoothly. This `SidebarBlock` utilizes React Context to handle all of this internally.
 
-## Interactive Showcase
+## Examples
 
-Use the interactive preview below. It functions as a complete mini-application shell.
+Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead. The first example's **Code** tab contains the full component source.
 
-1. Try clicking the desktop collapse trigger (the menu icon in the top header) to see how the text hides and icons seamlessly center. Note how native tooltips appear on hover when collapsed!
-2. If you view this page on a mobile device (or shrink your browser window), the sidebar automatically becomes a dismissible flyout drawer.
+export const usageDefault = `import {
+  MobileSidebarTrigger,
+  Sidebar,
+  SidebarBrand,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    // The provider owns expanded/mobile state for every part below it.
+
+          }>
+            Nexus UI
+
+          {/* SidebarGroup labels fade out when the rail collapses */}
+          
+            }
+              active={activeRoute === "Dashboard"}
+              onClick={() => setActiveRoute("Dashboard")}
+            >
+              Dashboard
+            
+            }
+              active={activeRoute === "Customers"}
+              onClick={() => setActiveRoute("Customers")}
+            >
+              Customers
+            
+            }>Billing
+
+            }>Settings
+
+          }>Log out
+
+          {/* Opens the flyout under md; collapses the rail above it */}
+
+          {activeRoute}
+
+        {children}
+
+  );
+}`;
+
+export const usageFloating = `import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarItem,
+  SidebarProvider,
+} from "@/components/custom/blocks/SidebarBlock";
+
+export default function FloatingLayout({ children }: { children: React.ReactNode }) {
+  return (
+    
+      {/* "floating" detaches the panel from the edge and rounds it */}
+
+            } active>
+              Dashboard
+
+      {children}
+    
+  );
+}`;
+
+export const usageCollapsed = `import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+
+export default function RailLayout({ children }: { children: React.ReactNode }) {
+  return (
+    // Start as an icon rail — labels appear as tooltips on hover.
+
+            } active>
+              Dashboard
+            
+            }>Customers
+
+        {children}
+
+  );
+}`;
 
 ## Installation
 
@@ -17,31 +109,7 @@ Use the interactive preview below. It functions as a complete mini-application s
 
 This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SidebarBlock.tsx`.
-
----
-
-## Usage
-
-The Sidebar uses a Provider architecture. Wrap your entire application shell in ``, place the `` adjacent to your main content ``, and drop the triggers wherever you want them to live.
-
-```tsx
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return (
-
-          My App
-
-            } active>Dashboard
-            }>Team
-
-          }>Preferences
-
-          {children}
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

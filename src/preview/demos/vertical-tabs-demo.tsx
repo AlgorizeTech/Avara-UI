@@ -60,9 +60,12 @@ const sampleTabs = [
 export default function VerticalTabsDemo({
   variant = "default",
   color = "primary",
+  defaultActiveId,
 }: {
   variant?: TabsVariant;
   color?: string;
+  /** Which tab id opens first (defaults to the first tab). */
+  defaultActiveId?: string;
 }) {
   return (
     <div
@@ -70,10 +73,11 @@ export default function VerticalTabsDemo({
     >
       <div className="w-full max-w-4xl mx-auto px-4">
         <VerticalTabs
-          key={`${variant}-${color}`}
+          key={`${variant}-${color}-${defaultActiveId ?? ""}`}
           tabs={sampleTabs}
           variant={variant}
           color={color}
+          defaultActiveId={defaultActiveId}
         />
       </div>
     </div>

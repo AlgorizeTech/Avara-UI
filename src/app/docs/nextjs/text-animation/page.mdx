@@ -1,4 +1,5 @@
-import { TextAnimationShowcase } from "@/components/site/TextAnimationShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 export const metadata = {
   title: "Text Animation - AlgorizeTech UI",
@@ -11,11 +12,81 @@ A powerful typography component that breathes life into your text using Framer M
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different animation variants and change the text content dynamically.
+Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay. The first example's **Code** tab contains the full component source.
 
-<TextAnimationShowcase />
+export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeroSection() {
+  return (
+    <TextAnimation
+      text="Better Experiences"
+      variant="typewriter"
+      className="text-4xl font-extrabold tracking-tight"
+    />
+  );
+}`;
+
+export const usageVariants = `// Seven effects behind one prop.
+<TextAnimation text="Better Experiences" variant="typewriter" />
+<TextAnimation text="Better Experiences" variant="blur-reveal" />
+<TextAnimation text="Better Experiences" variant="wave" />
+<TextAnimation text="Better Experiences" variant="pop-in" />
+<TextAnimation text="Better Experiences" variant="flip" />
+<TextAnimation text="Better Experiences" variant="spin-in" />
+<TextAnimation text="Better Experiences" variant="blur-in-up" />`;
+
+export const usageTiming = `// \`duration\` stretches each character's transition, \`delay\` holds the whole
+// sequence back — useful for staging a headline against a subheadline.
+<TextAnimation
+  text="Better Experiences"
+  variant="wave"
+  duration={1.2}
+  delay={0.4}
+/>`;
+
+export const usageAs = `// \`as\` swaps the rendered element so the headline keeps its document
+// meaning; \`style\` and \`className\` pass straight through.
+<TextAnimation
+  as="h1"
+  text="Better Experiences"
+  variant="blur-in-up"
+  className="text-5xl font-extrabold tracking-tight"
+  style={{ color: "#4f46e5" }}
+/>`;
+
+<ExampleShowcase
+  name="text-animation"
+  columns={1}
+  examples={[
+    {
+      title: "Text animation",
+      subheading: "Pass `text` and pick a `variant` — the component splits the string and staggers each character with Framer Motion.",
+      props: { variant: "typewriter" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TextAnimationBlock.tsx"),
+    },
+    {
+      title: "Variants",
+      subheading: "Use the `variant` prop to change the effect.",
+      props: { showAll: "variants" },
+      usage: usageVariants,
+    },
+    {
+      title: "Timing",
+      subheading: "`duration` and `delay` control how long each character takes and when the sequence starts.",
+      props: { variant: "wave", duration: 1.2, delay: 0.4 },
+      usage: usageTiming,
+    },
+    {
+      title: "Custom element & color",
+      subheading: "`as` picks the underlying tag; `className` and `style` are forwarded, so color is yours to set.",
+      props: { as: "h1", variant: "blur-in-up", textColor: "#4f46e5" },
+      usage: usageAs,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -29,29 +100,7 @@ npm install framer-motion clsx tailwind-merge
 
 ### 2. Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in `components/custom/blocks/TextAnimationBlock.tsx`.
-
-## Usage
-
-Simply drop the component into your page. You can customize the animation style by passing the `variant` prop, and change the text color seamlessly using standard `className` or `style` props.
-
-```tsx
-import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
-
-export default function HeroSection() {
-  return (
-    <div className="flex flex-col items-center p-12">
-      {/* A stunning typewriter effect with custom color */}
-      <TextAnimation 
-        text="Build Faster With AlgorizeTech" 
-        variant="typewriter" 
-        className="text-4xl font-extrabold tracking-tight"
-        style={{ color: "#4f46e5" }}
-      />
-    </div>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TextAnimationBlock.tsx`.
 
 ## Props Reference
 

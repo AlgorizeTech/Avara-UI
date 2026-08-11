@@ -4,11 +4,82 @@ A navigational aid that helps users understand their current location within a w
 
 This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different visual styles. Toggle the **Path Length** to see how the component intelligently handles deep page hierarchies without breaking the UI.
+You describe the trail as an `items` array; the component handles dividers, the active item and truncation. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const items = [
+  { label: "Docs", href: "/docs" },
+  { label: "Components", href: "/docs/components" },
+  { label: "Breadcrumb", href: "/docs/components/breadcrumb" },
+];
+
+export default function BreadcrumbDemo() {
+  // The last item is rendered as the current page, not a link.
+  return ;
+}`;
+
+export const usageIcons = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const items = [
+  // icon takes the Lucide component itself, not a string
+  { label: "Home", href: "/", icon: Home },
+  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Profile", href: "/settings/profile" },
+];
+
+export default function BreadcrumbWithIcons() {
+  return ;
+}`;
+
+export const usageVariants = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const items = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Profile", href: "/settings/profile" },
+];
+
+export default function BreadcrumbVariants() {
+  return (
+
+  );
+}`;
+
+export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const deepPath = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Nexus UI Kit", href: "/projects/nexus" },
+  { label: "Components", href: "/projects/nexus/components" },
+  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
+];
+
+export default function DeepBreadcrumb() {
+  // More items than maxItems? The middle collapses behind a "..." button
+  // that expands the full trail when clicked.
+  return ;
+}`;
+
+export const usageMaxItems = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const deepPath = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Nexus UI Kit", href: "/projects/nexus" },
+  { label: "Components", href: "/projects/nexus/components" },
+  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
+];
+
+export default function WideBreadcrumb() {
+  // Raise maxItems past the item count and nothing collapses.
+  return ;
+}`;
 
 ## Installation
 
@@ -19,6 +90,10 @@ This component utilizes `lucide-react` for standard UI icons like the Home butto
 ```bash
 npm install lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/BreadcrumbBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.

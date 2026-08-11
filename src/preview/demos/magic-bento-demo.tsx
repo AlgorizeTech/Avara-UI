@@ -30,10 +30,91 @@ const getThemeColorHex = (c: string) => {
 
 export default function MagicBentoDemo({
   color = "primary",
+  example,
 }: {
   color?: string;
+  /** Isolates one behaviour instead of rendering the full six-card grid. */
+  example?: "grid" | "highlight" | "spans";
 }) {
   const activeHex = getThemeColorHex(color);
+
+  if (example === "highlight" || example === "spans") {
+    return (
+      <div
+        className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80"
+        style={
+          {
+            "--theme-color": activeHex,
+            backgroundColor:
+              "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
+          } as React.CSSProperties
+        }
+      >
+        <div
+          className="w-full relative z-10"
+          style={
+            {
+              "--magic-color": "var(--theme-color, var(--primary))",
+              "--magic-glow":
+                "color-mix(in srgb, var(--theme-color, var(--primary)) 15%, transparent)",
+            } as React.CSSProperties
+          }
+        >
+          {example === "highlight" ? (
+            <MagicBento className="lg:grid-cols-2 auto-rows-[240px] max-w-3xl">
+              <MagicBentoCard className="flex flex-col justify-between">
+                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+                  <Activity className="w-4 h-4" />
+                  Default card
+                </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  The border track and inner glow follow the cursor.
+                </p>
+              </MagicBentoCard>
+              <MagicBentoCard highlight className="flex flex-col justify-between">
+                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+                  <Sparkles className="w-4 h-4" />
+                  highlight
+                </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  Adds a conic gradient that keeps spinning behind the mask,
+                  cursor or not.
+                </p>
+              </MagicBentoCard>
+            </MagicBento>
+          ) : (
+            <MagicBento className="auto-rows-[160px] max-w-4xl">
+              <MagicBentoCard className="md:col-span-2 flex items-end">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  md:col-span-2
+                </span>
+              </MagicBentoCard>
+              <MagicBentoCard className="row-span-2 flex items-end">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  row-span-2
+                </span>
+              </MagicBentoCard>
+              <MagicBentoCard className="flex items-end">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  1 × 1
+                </span>
+              </MagicBentoCard>
+              <MagicBentoCard className="md:col-span-2 flex items-end">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  md:col-span-2
+                </span>
+              </MagicBentoCard>
+              <MagicBentoCard className="flex items-end">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  1 × 1
+                </span>
+              </MagicBentoCard>
+            </MagicBento>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

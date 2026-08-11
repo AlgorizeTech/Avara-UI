@@ -11,11 +11,14 @@ export default function QrCodeDemo({
   themeColor = "primary",
   value: valueProp = "https://algorizetech.com/qr-code",
   level: levelProp = "L",
+  example,
 }: {
   activeTab?: "generator" | "reader";
   themeColor?: string;
   value?: string;
   level?: "L" | "M" | "Q" | "H";
+  /** "gallery" renders the bare generator at several sizes/levels. */
+  example?: "default" | "gallery";
 }) {
   const [value, setValue] = useState(valueProp);
   const [level, setLevel] = useState<"L" | "M" | "Q" | "H">(levelProp);
@@ -121,6 +124,33 @@ export default function QrCodeDemo({
       default: return "text-primary";
     }
   };
+
+  if (example === "gallery") {
+    const swatches = [
+      { size: 96, level: "L" as const, fgColor: "currentColor" },
+      { size: 140, level: "M" as const, fgColor: "#3b82f6" },
+      { size: 200, level: "H" as const, fgColor: "#10b981" },
+    ];
+    return (
+      <div className="w-full flex flex-wrap items-end justify-center gap-10 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+        {swatches.map((s) => (
+          <div key={s.size} className="flex flex-col items-center gap-3">
+            <QrCodeGenerator
+              value={value}
+              size={s.size}
+              level={s.level}
+              bgColor="transparent"
+              fgColor={s.fgColor}
+              className="text-zinc-900 dark:text-white"
+            />
+            <span className="text-xs font-semibold text-zinc-500">
+              size={s.size} · level=&quot;{s.level}&quot;
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return activeTab === "generator" ? (
     <div className="w-full flex flex-col lg:flex-row gap-8 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">

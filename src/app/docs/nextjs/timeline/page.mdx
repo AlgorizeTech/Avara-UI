@@ -1,4 +1,5 @@
-import { TimelineShowcase } from "@/components/site/TimelineShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Advanced Timeline
 
@@ -6,29 +7,12 @@ A robust, multi-layout vertical timeline component for tracking complex events, 
 
 This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different themes and layouts. Notice how the `center` layout perfectly zig-zags the content on desktop, but elegantly collapses back to a standard left-aligned view on mobile devices!
+Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades. The first example's **Code** tab contains the full component source.
 
-<TimelineShowcase />
-
-## Installation
-
-### Copy the Component
-
-This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TimelineBlock.tsx`.
-
----
-
-## Usage
-
-Pass an array of items to the component. Use the `status` prop on individual items to automatically format them as `completed` (solid line and filled icon), `current` (pulsing glow), or `upcoming` (faded out).
-
-```tsx
-import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { CheckCircle2, Truck, Package } from "lucide-react";
+export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { CheckCircle2, Package, Truck } from "lucide-react";
 
 export default function OrderTracker() {
   const events = [
@@ -46,6 +30,7 @@ export default function OrderTracker() {
       date: "10:25 AM",
       icon: Truck,
       status: "current",
+      // \`content\` expands behind a grid transition when the row is opened.
       content: <p>Driver is 4 stops away.</p>,
     },
     {
@@ -57,18 +42,77 @@ export default function OrderTracker() {
     },
   ];
 
-  return (
-    <div className="w-full max-w-4xl mx-auto py-12">
-      <TimelineBlock
-        items={events}
-        variant="default"
-        layout="center"
-        color="#8B5CF6"
-      />
-    </div>
-  );
-}
-```
+  return <TimelineBlock items={events} layout="left" />;
+}`;
+
+export const usageCenter = `// Zig-zags the cards on desktop and collapses to a left rail on mobile.
+<TimelineBlock items={events} layout="center" />`;
+
+export const usageRight = `<TimelineBlock items={events} layout="right" />`;
+
+export const usageMinimal = `// Drops the card surface; the rail and type carry the structure.
+<TimelineBlock items={events} layout="left" variant="minimal" />`;
+
+export const usageGlass = `<div className="p-12 bg-[url('/backdrop.jpg')] bg-cover bg-center">
+  <TimelineBlock items={events} layout="left" variant="glass" />
+</div>`;
+
+export const usageNoAnimation = `// Renders in place — no staggered GSAP entrance.
+<TimelineBlock items={events} layout="left" animate={false} />`;
+
+<ExampleShowcase
+  name="timeline"
+  colorControl
+  colorLabel="Status Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Timeline",
+      subheading: "Pass `items`; each one can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+      props: { layout: "left", variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TimelineBlock.tsx"),
+    },
+    {
+      title: "Center layout",
+      subheading: "`layout=\"center\"` alternates cards either side of the rail on desktop and folds back to a single column on mobile.",
+      props: { layout: "center", variant: "default" },
+      usage: usageCenter,
+    },
+    {
+      title: "Right layout",
+      subheading: "`layout=\"right\"` mirrors the left rail.",
+      props: { layout: "right", variant: "default" },
+      usage: usageRight,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` removes the card chrome for a lighter feed.",
+      props: { layout: "left", variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` frosts the cards — put something behind it.",
+      props: { layout: "left", variant: "glass" },
+      usage: usageGlass,
+    },
+    {
+      title: "Without the entrance",
+      subheading: "Set `animate={false}` to skip the staggered entrance — right for content that is already on screen.",
+      props: { layout: "left", variant: "default", animate: false },
+      usage: usageNoAnimation,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
 
 ## Props Reference
 

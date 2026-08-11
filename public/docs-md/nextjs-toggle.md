@@ -4,9 +4,70 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Interactive Showcase
+## Examples
 
-Use the controls below to test different visual variants and sizing. Notice how you can use a Toggle as an icon-only button, or pair it with text for complex actions.
+Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function BasicToggle() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+
+  );
+}`;
+
+export const usageOutline = `
+  
+`;
+
+export const usageGhost = `
+  
+`;
+
+export const usageSizes = `
+
+`;
+
+export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function MuteToggle() {
+  const [muted, setMuted] = useState(false);
+
+  return (
+    
+      {muted ?  : }
+      {muted ? "Unmute" : "Mute"}
+    
+  );
+}`;
+
+export const usageToolbar = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function FormattingToolbar() {
+  const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
+
+  return (
+    
+       setFormat({ ...format, bold: v })}
+        aria-label="Toggle bold"
+      >
+
+       setFormat({ ...format, italic: v })}
+        aria-label="Toggle italic"
+      >
+
+       setFormat({ ...format, underline: v })}
+        aria-label="Toggle underline"
+      >
+
+  );
+}`;
+
+export const usageDisabled = `
+  
+`;
 
 ## Installation
 
@@ -14,7 +75,7 @@ Use the controls below to test different visual variants and sizing. Notice how 
 
 This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
 
 ---
 

@@ -4,28 +4,16 @@ A high-performance record management table featuring global search, multi-column
 
 This component is the engine for SaaS dashboards and administrative panels. Unlike our spreadsheet-focused `DataGrid`, this `AdvancedTableBlock` is optimized for displaying, filtering, and manipulating large datasets with a beautiful, modern aesthetic. It perfectly replicates the UI of top-tier platforms with a floating dark-mode batch actions pill and staggered CSS entry animations.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel to customize the features. Try searching for "Admin", sorting by "Last Active", and selecting a few rows to see the **floating batch actions toolbar** smoothly slide into view.
+Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in. The first example's **Code** tab contains the full component source.
 
-_Hint: Click the "Edit" button in the batch toolbar to see a fully functional custom Edit Modal in action!_
+_Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
-## Installation
+export const usageDefault = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
 
-### Copy the Component
-
-This component handles all complex filtering, sorting, and pagination logic purely through React's `useMemo` hooks, ensuring blazing-fast performance without any third-party dependencies like `react-table` or `ag-grid`.
-
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/AdvancedTableBlock.tsx`.
-
----
-
-## Usage
-
-Define your `columns` array to declare the schema. You can use the `render` prop to override text and inject rich React nodes like styled badges or icons directly into the cells.
-
-```tsx
-
+// The \`render\` prop overrides the default text output, so a column can
+// return badges, avatars or any other React node.
 const COLUMNS = [
   { key: "name", header: "Full Name", sortable: true },
   { key: "role", header: "Role", sortable: true },
@@ -33,37 +21,54 @@ const COLUMNS = [
     key: "lastActiveTs",
     header: "Last Active",
     sortable: true,
-    sortType: "number", // Use number sorting for timestamps
+    sortType: "number", // number sorting for timestamps
     render: (row) => {row.lastActive},
   },
 ];
 
 const DATA = [
-  {
-    id: 1,
-    name: "Alice",
-    role: "Admin",
-    lastActive: "2 min ago",
-    lastActiveTs: 1690000000,
-  },
-  {
-    id: 2,
-    name: "Bob",
-    role: "Editor",
-    lastActive: "1 hr ago",
-    lastActiveTs: 1680000000,
-  },
+  { id: 1, name: "Alice", role: "Admin", lastActive: "2 min ago", lastActiveTs: 1690000000 },
+  { id: 2, name: "Bob", role: "Editor", lastActive: "1 hr ago", lastActiveTs: 1680000000 },
 ];
 
 export default function UserManagement() {
   return (
     
        console.log("Deleting:", ids)}
+        onBatchEdit={(ids) => console.log("Editing:", ids)}
       />
     
   );
-}
-```
+}`;
+
+export const usageNoSearch = `// Drop the global search bar when the dataset is small enough to scan.
+`;
+
+export const usageNoSelection = `// Without selection there is no checkbox column and no batch toolbar —
+// a purely read-only report table.
+`;
+
+export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+
+export default function ExportableTable() {
+  return (
+     (
+        <>
+           exportCsv(selectedIds)}>Export CSV
+          Clear
+        
+      )}
+    />
+  );
+}`;
+
+## Installation
+
+### Copy the Component
+
+This component handles all complex filtering, sorting, and pagination logic purely through React's `useMemo` hooks, ensuring blazing-fast performance without any third-party dependencies like `react-table` or `ag-grid`.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AdvancedTableBlock.tsx`.
 
 ## Features
 Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.

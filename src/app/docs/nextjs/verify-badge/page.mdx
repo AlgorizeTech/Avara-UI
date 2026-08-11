@@ -1,4 +1,5 @@
-import { VerifyBadgeShowcase } from "@/components/site/VerifyBadgeShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 export const metadata = {
   title: "Verify Badge - AlgorizeTech UI",
@@ -22,13 +23,74 @@ A versatile verified badge component that can be customized with various styles 
 
 It includes distinct customization options to match different areas of your application.
 
-## Interactive Showcase
-Hover over the Verify Badge to see its interactive shine effect and tooltip context.
+## Examples
 
+Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <VerifyBadgeShowcase />
-</div>
+export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function ProfileName() {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="font-semibold text-lg">AlgorizeSystem</span>
+      <VerifyBadge color="#1d9bf0" size="md" animate />
+    </div>
+  );
+}`;
+
+export const usageSizes = `<div className="flex items-center gap-8">
+  <VerifyBadge size="sm" />
+  <VerifyBadge size="md" />
+  <VerifyBadge size="lg" />
+  <VerifyBadge size="xl" />
+</div>`;
+
+export const usageStatic = `<VerifyBadge size="md" animate={false} />`;
+
+export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function NotificationCard() {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="font-bold text-sm">AlgorizeSystem</span>
+      <VerifyBadge size="sm" />
+      <span className="text-xs text-zinc-500">Today at 2:34 PM</span>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="verify-badge"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Verify Badge",
+      subheading: "A verified marker sitting beside a display name.",
+      props: { showAll: "badge" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/VerifyBadgeBlock.tsx"),
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `size` prop to change the size.",
+      props: { showAll: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "Static",
+      subheading: "Set `animate={false}` to drop the pulse for dense lists.",
+      props: { showAll: "badge", animate: false },
+      usage: usageStatic,
+    },
+    {
+      title: "In context",
+      subheading: "The badge inside a full notification card.",
+      props: {},
+      usage: usageInline,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -37,29 +99,6 @@ This component uses `lucide-react` for the checkmark icon and standard Tailwind 
 ```bash
 npm install lucide-react clsx tailwind-merge
 ```
-
-## Implementation
-
-import { VerifyBadgeDocsUpdater } from "@/components/custom/blocks/VerifyBadgeDocsUpdater";
-
-<VerifyBadgeDocsUpdater />
-
-<div id="verify-badge-docs" >
-
-```tsx
-import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
-
-export default function ProfilePage() {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="font-semibold text-lg">Elon Musk</span>
-      <VerifyBadge color="#1d9bf0" size="md" animate={true} />
-    </div>
-  );
-}
-```
-
-</div>
 
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.

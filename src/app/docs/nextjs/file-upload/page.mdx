@@ -1,4 +1,5 @@
-import { UploadShowcase } from "@/components/site/UploadShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # UX Engineered Upload Flow
 
@@ -10,14 +11,174 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
+## Examples
 
-## Interactive Showcase
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume. The first example's **Code** tab contains the full component source.
 
-Drag and drop some real files (images, PDFs) from your desktop into the zone below, or click to browse. The showcase includes a built-in network simulator.
+export const usageFlow = `"use client";
 
-_Note: The simulation will randomly force some files to "fail" at 89% to demonstrate the Inline Retry feature. Click Retry to see it resume seamlessly!_
+import { useState } from "react";
+import {
+  Dropzone,
+  UploadItem,
+} from "@/components/custom/blocks/UploadBlock";
 
-<UploadShowcase />
+export default function DocumentUploader() {
+  const [queue, setQueue] = useState([]);
+
+  const handleFilesAdded = (nativeFiles) => {
+    // 1. Turn raw files into your own state objects
+    const newItems = nativeFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      progress: 0,
+      status: "idle",
+      // Instant client-side thumbnail for images
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+
+    setQueue((prev) => [...newItems, ...prev]);
+
+    // 2. Kick off your real POST per file and update each item's
+    //    progress/status from the XHR upload-progress listener.
+  };
+
+  return (
+    <div className="max-w-md mx-auto flex flex-col gap-6">
+      <Dropzone
+        onFilesDrop={handleFilesAdded}
+        accept="image/*,application/pdf,video/mp4"
+      />
+
+      {queue.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {queue.map((item) => (
+            <UploadItem
+              key={item.id}
+              item={item}
+              onRetry={(id) => console.log("Retry upload for", id)}
+              onRemove={(id) =>
+                setQueue((prev) => prev.filter((q) => q.id !== id))
+              }
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}`;
+
+export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
+
+export default function AvatarDropzone() {
+  // accept is the native input string; maxSize is in MB and is echoed
+  // in the helper text under the icon.
+  return (
+    <Dropzone
+      onFilesDrop={(files) => console.log(files)}
+      accept="image/png,image/jpeg"
+      maxSize={5}
+    />
+  );
+}`;
+
+export const usageStates = `import { UploadItem } from "@/components/custom/blocks/UploadBlock";
+
+// status is the state machine that drives every colour, icon and action
+// on the row. progress/timeLeft/errorMessage come along for the ride.
+const queue = [
+  {
+    id: "1",
+    file: new File([], "quarterly-report.pdf"),
+    progress: 42,
+    status: "uploading",
+    timeLeft: 12,
+  },
+  { id: "2", file: new File([], "product-shot.png"), progress: 66, status: "paused" },
+  {
+    id: "3",
+    file: new File([], "launch-teaser.mp4"),
+    progress: 89,
+    status: "error",
+    errorMessage: "Connection lost",
+  },
+  {
+    id: "4",
+    file: new File([], "brand-guidelines.pdf"),
+    progress: 100,
+    status: "success",
+    timeLeft: 0,
+  },
+];
+
+export default function UploadStates() {
+  return (
+    <div className="flex flex-col gap-3">
+      {queue.map((item) => (
+        <UploadItem key={item.id} item={item} onRetry={() => {}} onRemove={() => {}} />
+      ))}
+    </div>
+  );
+}`;
+
+export const usageAnimated = `"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { UploadItem } from "@/components/custom/blocks/UploadBlock";
+
+// UploadItem is layout-agnostic, so wrap each row to animate the queue.
+export default function AnimatedQueue({ queue, onRetry, onRemove }) {
+  return (
+    <AnimatePresence mode="popLayout">
+      {queue.map((item) => (
+        <motion.div
+          key={item.id}
+          layout
+          initial={{ opacity: 0, scale: 0.8, height: 0, marginTop: 0 }}
+          animate={{ opacity: 1, scale: 1, height: "auto", marginTop: 12 }}
+          exit={{ opacity: 0, scale: 0.8, height: 0, marginTop: 0 }}
+          transition={{ duration: 0.4, type: "spring", bounce: 0.25 }}
+        >
+          <UploadItem item={item} onRetry={onRetry} onRemove={onRemove} />
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  );
+}`;
+
+<ExampleShowcase
+  name="upload"
+  columns={1}
+  examples={[
+    {
+      title: "Upload flow",
+      subheading: "`Dropzone` hands you `File[]`; you own the queue and feed each row back to `UploadItem`.",
+      props: { variant: "slide-up" },
+      usage: usageFlow,
+      code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
+    },
+    {
+      title: "Dropzone",
+      subheading: "Use `accept` and `maxSize` (MB) on its own — the limit is echoed in the helper text.",
+      props: { layout: "dropzone" },
+      usage: usageDropzone,
+    },
+    {
+      title: "Upload states",
+      subheading: "`status` drives the whole row: `uploading`, `paused`, `error` (with inline retry) and `success`.",
+      props: { showAll: "states" },
+      usage: usageStates,
+    },
+    {
+      title: "Animated queue",
+      subheading: "`UploadItem` is layout-agnostic, so wrap each row in `motion.div` to animate entries and exits.",
+      props: { variant: "pop" },
+      usage: usageAnimated,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -29,65 +190,11 @@ This component relies heavily on **GSAP** to manage the smooth progress bar fill
 npm install gsap lucide-react
 ```
 
+The animated-queue example additionally uses `framer-motion`, which is optional — `UploadItem` renders fine without it.
+
 ### Copy the Component
 
-You can copy the full layout code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/UploadBlock.tsx.
-
-## Implementation
-
-```tsx
-import {
-  Dropzone,
-  UploadItem,
-  FileUploadState,
-} from "@/components/custom/blocks/UploadBlock";
-import { useState } from "react";
-
-export default function DocumentUploader() {
-  const [queue, setQueue] = useState<FileUploadState[]>([]);
-
-  const handleFilesAdded = (nativeFiles: File[]) => {
-    // 1. Transform raw files into your state objects
-    const newItems = nativeFiles.map((file) => ({
-      id: Math.random().toString(),
-      file,
-      progress: 0,
-      status: "uploading" as const,
-      // Create local preview if image
-      previewUrl: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : undefined,
-    }));
-
-    setQueue((prev) => [...prev, ...newItems]);
-
-    // 2. Map over files and trigger your actual Axios/Fetch POST requests here
-    // update queue state inside your XHR upload progress listeners
-  };
-
-  return (
-    <div className="max-w-md mx-auto flex flex-col gap-6">
-      <Dropzone onFilesDrop={handleFilesAdded} />
-
-      {queue.length > 0 && (
-        <div className="flex flex-col gap-3">
-          {queue.map((item) => (
-            <UploadItem
-              key={item.id}
-              item={item}
-              onRetry={(id) => console.log("Retry API call for", id)}
-              onRemove={(id) =>
-                setQueue((prev) => prev.filter((q) => q.id !== id))
-              }
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-```
-
+Create a new file at `components/custom/blocks/UploadBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -254,7 +361,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>status</code>
         </td>
         <td>
-          <code>"idle" | "uploading" | "error" | "success"</code>
+          <code>"idle" | "uploading" | "paused" | "error" | "success"</code>
         </td>
         <td>
           <strong>Required</strong>

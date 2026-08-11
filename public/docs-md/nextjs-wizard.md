@@ -4,8 +4,91 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Interactive Showcase
-Navigate through the interactive Wizard steps to test the transition animations and form state.
+## Examples
+
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function OnboardingFlow() {
+  // Enter submits the step's form; forwarding it to the OK button
+  // is what makes keyboard progression work.
+  const submitToNext = (e) => {
+    e.preventDefault();
+    const btn = e.currentTarget.querySelector('button[type="button"]');
+    if (btn) btn.click();
+  };
+
+  return (
+    
+      {/* Top progress bar — reads totalSteps from context */}
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+
+          1. What's your first name?
+
+          2. What is your role?
+          
+            We will customize your dashboard based on this.
+
+  );
+}`;
+
+export const usageInitialStep = `import {
+  Wizard,
+  WizardContainer,
+  WizardProgress,
+  WizardStep,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function ResumedOnboarding() {
+  // Open on step 2 — useful when you persist progress between sessions.
+  return (
+
+      {/* ...steps... */}
+    
+  );
+}`;
+
+export const usageNoProgress = `import {
+  Wizard,
+  WizardContainer,
+  WizardStep,
+} from "@/components/custom/blocks/WizardBlock";
+
+export default function BareWizard() {
+  // WizardProgress is an independent child — omit it entirely and the
+  // steps still animate and navigate exactly the same.
+  return (
+    
+      {/* ...steps... */}
+    
+  );
+}`;
+
+export const usageOnComplete = `"use client";
+
+export default function CompletableWizard() {
+  const [completed, setCompleted] = useState(false);
+
+  // onComplete fires when the user advances past the LAST step —
+  // this is where you submit the collected answers.
+  return (
+     setCompleted(true)}>
+      
+      {/* ...steps... */}
+    
+  );
+}`;
 
 ## Installation
 
@@ -17,48 +100,12 @@ This component leverages **GSAP** for the high-performance vertical slide and pr
 npm install gsap
 ```
 
-## Copy the Component
+### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/WizardBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function OnboardingFlow() {
-  return (
-     console.log("Done!")}>
-      {/* Top sticky progress bar */}
-
-      {/* Scroll-hidden container for GSAP animations */}
-      
-        {/* Step 1 */}
-        
-          1. What's your project name?
-           {
-              e.preventDefault();
-              // Trigger the internal nextStep function manually, or via button click simulation
-              const btn = e.currentTarget.querySelector(
-                'button[type="button"]',
-              );
-              if (btn) (btn as HTMLButtonElement).click();
-            }}
-          >
-
-        {/* Step 2 */}
-        
-          2. What framework do you use?
-          
-            We will tailor the documentation to match.
-          
-           e.preventDefault()}>
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/WizardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
-Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
 
     Compound Components
     Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
@@ -99,18 +146,18 @@ export default function OnboardingFlow() {
 
           color
 
-          "indigo" | "blue" | "rose" | "emerald" | "zinc"
+          "primary" | "indigo" | "blue" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Controls the theme color for the progress bar, active input borders,
-          and primary navigation buttons.
+          and primary navigation buttons. Accepts valid hex codes.
 
           Wizard
 
           onComplete
 
-          () => void
+          () =&gt; void
 
           undefined
 

@@ -4,13 +4,73 @@ A highly functional, fully customizable data table component engineered for mode
 
 We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different sizing options, structural variants, and toggle interactive features.
+Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions. The first example's **Code** tab contains the full component source.
 
-- Toggle **Expandable Rows** on, then click any row in the table to see the smooth CSS Grid expansion effect.
-- Try clicking the column headers (like _Customer_ or _Amount_) to see the built-in sorting logic trigger the GSAP row-reordering animation.
-- Hover over the right edge of any row to see the Edit/Delete action buttons smoothly slide into view.
+export const usageDefault = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+const columns = [
+  { key: "id", label: "Invoice", sortable: true },
+  { key: "user", label: "Customer", sortable: true },
+  { key: "amount", label: "Amount", sortable: true, align: "right" },
+  { key: "date", label: "Date", sortable: true, align: "right" },
+  { key: "actions", label: "", align: "right" },
+];
+
+const data = [
+  { id: "INV-3021", user: "Alice Freeman", amount: "$3,200.00", date: "Oct 24, 2023" },
+  { id: "INV-3022", user: "Bob Smith", amount: "$850.50", date: "Oct 24, 2023" },
+];
+
+export default function TransactionsTable() {
+  return (
+     console.log("Edit", row)}
+      onDelete={(row) => console.log("Delete", row)}
+    />
+  );
+}`;
+
+export const usageMinimal = ``;
+
+export const usageGlass = `// Pair the glass variant with a photographic backdrop so the blur has
+// something to refract.
+
+`;
+
+export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+export default function TableSizes() {
+  return (
+
+  );
+}`;
+
+export const usageSelectable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+export default function SelectableTable() {
+  return (
+     console.log(rows.length, "selected")}
+    />
+  );
+}`;
+
+export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+export default function ExpandableTable() {
+  return (
+     (
+        
+          Transaction Summary
+          
+            {row.details ?? "No additional transaction history provided."}
+
+      )}
+    />
+  );
+}`;
+
+export const usagePagination = ``;
 
 ## Installation
 
@@ -21,6 +81,10 @@ This component relies on `gsap` for the entrance animations and `lucide-react` f
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/TableBlock.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
@@ -68,6 +132,31 @@ Main Component Props
           Required
 
           Defines the headers and data mapping (see Column Definition below).
+
+          variant
+
+          "default" | "minimal" | "glass"
+
+          "default"
+        
+        The surface treatment: a bordered card, a bare table, or a frosted glass panel.
+
+          color
+
+            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
+
+          "primary"
+
+          Theme color for checkboxes, selected rows and the active page button.
+          Any #rrggbb value is accepted.
+
+          tableSize
+
+          "sm" | "md" | "lg"
+
+          "md"
+        
+        Row density — controls cell padding and text size.
 
           expandable
 

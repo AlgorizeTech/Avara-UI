@@ -20,7 +20,7 @@ export function ThemeColorPicker({
       <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
         {label}
       </label>
-			<div className="flex items-center justify-between gap-1.5 p-1 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
+			<div className="w-fit flex items-center justify-between gap-1.5 p-1 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">
 				<button
 					onClick={() => onChange("primary")}
 					className={`px-4 py-1.5 text-sm font-medium rounded-lg capitalize transition-all cursor-pointer ${

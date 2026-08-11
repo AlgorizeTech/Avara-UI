@@ -1,4 +1,5 @@
-import { TerminalShowcase } from "@/components/site/TerminalShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Terminal Snippet
 
@@ -6,11 +7,80 @@ A beautiful, dependency-free code display block inspired by Mac OS windows.
 
 If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different themes, variants, and copy functionalities. Notice how the `glass` variant uses backdrop-blur to blend elegantly over complex backgrounds!
+Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button. The first example's **Code** tab contains the full component source.
 
-<TerminalShowcase />
+export const usageDefault = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const installCommand = \`npx create-next-app@latest my-app --typescript --tailwind
+cd my-app
+npm run dev\`;
+
+export default function Docs() {
+  return (
+    <TerminalBlock
+      code={installCommand}
+      language="bash"
+      filename="terminal"
+    />
+  );
+}`;
+
+export const usageLanguages = `// \`language\` drives the badge; the block never ships a heavyweight
+// highlighter, so any language string is safe to pass.
+<TerminalBlock code={source} language="python" filename="main.py" />`;
+
+export const usageGlass = `// Backdrop-blurred chrome — put it over a photo or gradient.
+<div className="p-12 bg-[url('/backdrop.jpg')] bg-cover bg-center">
+  <TerminalBlock code={source} language="tsx" filename="Button.tsx" variant="glass" />
+</div>`;
+
+export const usageMinimal = `// Drops the window controls and the border for inline snippets.
+<TerminalBlock code={source} language="tsx" variant="minimal" />`;
+
+export const usageBare = `// No filename header, no copy button — just the code.
+<TerminalBlock code={source} language="tsx" copyable={false} />`;
+
+<ExampleShowcase
+  name="terminal"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Terminal",
+      subheading: "Mac-style window controls, a language badge and a copy button, all from one `code` string.",
+      props: { activeTab: "Bash" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TerminalBlock.tsx"),
+    },
+    {
+      title: "Any language",
+      subheading: "Set `language` and `filename` to label the snippet — here a Python file instead of a shell session.",
+      props: { activeTab: "Python" },
+      usage: usageLanguages,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` blurs whatever sits behind the window — ideal over imagery.",
+      props: { variant: "glass", activeTab: "React" },
+      usage: usageGlass,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` strips the chrome down to the code itself.",
+      props: { variant: "minimal", activeTab: "React" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Without header controls",
+      subheading: "Omit `filename` and set `copyable={false}` for a bare, read-only block.",
+      props: { activeTab: "React", showFilename: false, isCopyable: false },
+      usage: usageBare,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,37 +88,7 @@ Use the control panel below to test the different themes, variants, and copy fun
 
 This component leverages pure React state for the copy transitions and Tailwind CSS for the dark-mode compatible styling. It is **100% dependency-free**.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TerminalBlock.tsx`.
-
----
-
-## Usage
-
-Simply pass your raw code string to the `code` prop. The component automatically handles the scroll overflow for long lines.
-
-```tsx
-import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-const installCommand = `npx create-next-app@latest my-app --typescript --tailwind --eslint
-cd my-app
-npm install lucide-react clsx tailwind-merge
-npm run dev`;
-
-export default function Docs() {
-  return (
-    <div className="w-full max-w-2xl mx-auto py-12">
-      <h3 className="font-bold text-lg mb-4">1. Initialize the Project</h3>
-      <TerminalBlock
-        code={installCommand}
-        language="bash"
-        filename="Terminal"
-        variant="glass"
-        color="#8B5CF6"
-      />
-    </div>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TerminalBlock.tsx`.
 
 ## Props Reference
 

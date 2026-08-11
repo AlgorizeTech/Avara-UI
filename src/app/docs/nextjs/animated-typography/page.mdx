@@ -1,4 +1,5 @@
-import { AnimatedTypographyShowcase } from "@/components/site/AnimatedTypographyShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Animated Typography
 
@@ -9,35 +10,16 @@ Building animated text that scales responsively and doesn't break screen readers
 It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
 
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different semantic tags, alignment options, and the newly added 3D animation variants (`flip-up`, `reveal`, `pop-in`).
+Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it. The first example's **Code** tab contains the full component source.
 
-<AnimatedTypographyShowcase />
-
-## Installation
-
-### Copy the Component
-
-This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
-
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/AnimatedTypographyBlock.tsx`.
-
----
-
-## Usage
-
-Use the `as` prop to define the underlying semantic HTML tag. By default, it applies standard Tailwind typography sizing, but you can override this safely using the `size` prop.
-
-## Implementation
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
 export default function LandingHeader() {
   return (
     <div className="flex flex-col max-w-3xl">
-      {/* 3D Flip Reveal */}
+      {/* 3D flip reveal */}
       <AnimatedTypographyBlock
         as="h1"
         variant="flip-up"
@@ -46,7 +28,7 @@ export default function LandingHeader() {
         text="The Future of User Interfaces."
       />
 
-      {/* Staggered Subheadline with Custom Rem Sizing */}
+      {/* Staggered subheadline, started after the headline */}
       <AnimatedTypographyBlock
         as="p"
         variant="reveal"
@@ -58,9 +40,85 @@ export default function LandingHeader() {
       />
     </div>
   );
-}
-```
+}`;
 
+export const usageVariants = `// Nine effects, all driven by the same \`variant\` prop.
+<AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="reveal" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="flip-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="pop-in" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="blur-in" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="typewriter" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="glitch" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="glow" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="none" text="The quick brown fox." />`;
+
+export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
+// intact no matter which effect you use.
+<AnimatedTypographyBlock as="h1" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="p" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="blockquote" variant="fade-up" text="The quick brown fox." />`;
+
+export const usageAlign = `<AnimatedTypographyBlock as="p" align="left" text={copy} />
+<AnimatedTypographyBlock as="p" align="center" text={copy} />
+<AnimatedTypographyBlock as="p" align="right" text={copy} />
+<AnimatedTypographyBlock as="p" align="justify" text={copy} />`;
+
+export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
+// unaffected either way.
+<AnimatedTypographyBlock as="h2" size="5xl" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" size="24px" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" size="2rem" text="The quick brown fox." />`;
+
+<ExampleShowcase
+  name="animated-typography"
+  colorControl
+  colorLabel="Text Color"
+  columns={1}
+  examples={[
+    {
+      title: "Animated typography",
+      subheading: "Pass `text` rather than children — the component mirrors it into an `sr-only` node so screen readers never spell it out character by character.",
+      props: { tag: "h1", variant: "flip-up", align: "center" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
+    },
+    {
+      title: "Animation variants",
+      subheading: "Use the `variant` prop to change the effect.",
+      props: { showAll: "variants" },
+      usage: usageVariants,
+    },
+    {
+      title: "Semantic tags",
+      subheading: "Use the `as` prop to choose the rendered element — heading levels keep their document meaning.",
+      props: { showAll: "tags" },
+      usage: usageTags,
+    },
+    {
+      title: "Alignment",
+      subheading: "Use the `align` prop to set the text alignment.",
+      props: { showAll: "align" },
+      usage: usageAlign,
+    },
+    {
+      title: "Size override",
+      subheading: "Use the `size` prop to override the visual size without changing the tag — Tailwind steps and raw CSS lengths both work.",
+      props: { showAll: "sizes" },
+      usage: usageSizes,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTypographyBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

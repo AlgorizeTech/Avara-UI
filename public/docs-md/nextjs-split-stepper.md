@@ -4,9 +4,64 @@ A high-impact, interactive split-screen layout engineered exclusively with **GSA
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to swap the sticky showcase between the **Left** or **Right** side of the layout. Click any step in the scrolling sequence to see the GSAP card deck animate and stack in real-time.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+const steps = [
+  {
+    id: "landing",
+    stepNumber: "01",
+    title: "Landing Page Design",
+    description:
+      "We engineer high-converting layouts with engaging Framer & GSAP animations.",
+    tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
+    color: "bg-[#0c0c10] border-amber-500/20",
+    cardContent: ,
+  },
+  {
+    id: "saas",
+    stepNumber: "02",
+    title: "SaaS Product Development",
+    description:
+      "Modular, multi-tenant web applications designed to scale to millions of requests.",
+    tags: ["Multi-Tenant Architecture", "Stripe Integration"],
+    color: "bg-[#090a14] border-indigo-500/20",
+    cardContent: ,
+  },
+];
+
+export default function ServicesSection() {
+  return (
+
+  );
+}`;
+
+export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+export default function ServicesSectionMirrored() {
+  // stickySide moves the sticky card deck to the other column.
+  return ;
+}`;
+
+export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+export default function DeepDeck() {
+  // cardOffset is the vertical gap (px) between stacked cards;
+  // cardDepthScale is how much each one shrinks behind the active card.
+  return (
+    
+  );
+}`;
+
+export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+export default function BrandedSplitStepper() {
+  // color drives the active step's rail, number badge, arrow and tint.
+  return ;
+}`;
 
 ## Installation
 
@@ -20,39 +75,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/SplitStepperBlock.tsx.
-
-## Usage Architecture
-
-The `` component automatically orchestrates the responsive grid layout. You simply provide an array of objects containing your text sequence and custom visual JSX payloads for the stacked cards.
-
-```tsx
-
-export default function ServicesSection() {
-  const steps = [
-    {
-      id: "landing",
-      stepNumber: "01",
-      title: "Landing Page Design",
-      description: "We engineer high-converting layouts with engaging GSAP animations.",
-      tags: ["Conversion Focused", "Figma To Code"],
-      cardContent: Custom Visual 1,
-    },
-    {
-      id: "saas",
-      stepNumber: "02",
-      title: "SaaS Development",
-      description: "Modular, multi-tenant web applications designed to scale to millions of requests.",
-      tags: ["Multi-Tenant Architecture", "Real-Time Sync"],
-      cardContent: Custom Visual 2,
-    },
-  ];
-
-  return (
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

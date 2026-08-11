@@ -4,9 +4,35 @@ A beautiful, dependency-free code display block inspired by Mac OS windows.
 
 If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different themes, variants, and copy functionalities. Notice how the `glass` variant uses backdrop-blur to blend elegantly over complex backgrounds!
+Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const installCommand = \`npx create-next-app@latest my-app --typescript --tailwind
+cd my-app
+npm run dev\`;
+
+export default function Docs() {
+  return (
+    
+  );
+}`;
+
+export const usageLanguages = `// \`language\` drives the badge; the block never ships a heavyweight
+// highlighter, so any language string is safe to pass.
+`;
+
+export const usageGlass = `// Backdrop-blurred chrome — put it over a photo or gradient.
+
+`;
+
+export const usageMinimal = `// Drops the window controls and the border for inline snippets.
+`;
+
+export const usageBare = `// No filename header, no copy button — just the code.
+`;
 
 ## Installation
 
@@ -14,29 +40,7 @@ Use the control panel below to test the different themes, variants, and copy fun
 
 This component leverages pure React state for the copy transitions and Tailwind CSS for the dark-mode compatible styling. It is **100% dependency-free**.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TerminalBlock.tsx`.
-
----
-
-## Usage
-
-Simply pass your raw code string to the `code` prop. The component automatically handles the scroll overflow for long lines.
-
-```tsx
-
-const installCommand = `npx create-next-app@latest my-app --typescript --tailwind --eslint
-cd my-app
-npm install lucide-react clsx tailwind-merge
-npm run dev`;
-
-export default function Docs() {
-  return (
-    
-      1. Initialize the Project
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TerminalBlock.tsx`.
 
 ## Props Reference
 

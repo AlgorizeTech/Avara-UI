@@ -1,4 +1,5 @@
-import { DialogShowcase } from "@/components/site/DialogShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Dialog (Modal)
 
@@ -8,11 +9,272 @@ Popovers and Dropdowns are great for quick, non-blocking actions. But when you n
 
 The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
 
-## Interactive Showcase
+## Examples
 
-Use the templates below to explore different variations of a Dialog. Notice how the background scrollbar vanishes when the dialog opens, and returns exactly as it was when it closes.
+Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close. The first example's **Code** tab contains the full component source.
 
-<DialogShowcase />
+export const usageDefault = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+import { UserPlus } from "lucide-react";
+
+export default function ShareDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+          <UserPlus className="w-4 h-4" /> Share Profile
+        </button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Share Profile</DialogTitle>
+          <DialogDescription>
+            Anyone who has this link will be able to view this.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex items-center gap-2 my-4">
+          <input className="h-10 w-full rounded-md border bg-transparent px-3 text-sm" value="https://nexus.dev/u/johndoe" readOnly />
+          <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md shrink-0">
+            Copy Link
+          </button>
+        </div>
+
+        <DialogFooter>
+          <p className="text-xs text-zinc-500">Your profile is currently public.</p>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
+export const usageForm = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+import { Settings } from "lucide-react";
+
+export default function EditProfileDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <button className="flex items-center gap-2 px-4 py-2 border text-sm font-semibold rounded-md">
+          <Settings className="w-4 h-4" /> Edit Profile
+        </button>
+      </DialogTrigger>
+
+      {/* className adjusts the max width of the modal */}
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="name" className="text-right text-sm font-medium">Name</label>
+            <input id="name" defaultValue="John Doe" className="col-span-3 h-10 rounded-md border bg-transparent px-3 text-sm" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="username" className="text-right text-sm font-medium">Username</label>
+            <input id="username" defaultValue="@johndoe" className="col-span-3 h-10 rounded-md border bg-transparent px-3 text-sm" />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
+            Save changes
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
+export const usageDestructive = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
+
+export default function DeleteAccountDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <button className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-200 text-sm font-semibold rounded-md">
+          <Trash2 className="w-4 h-4" /> Delete Account
+        </button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="text-red-600 flex items-center gap-2">
+            <Trash2 className="w-5 h-5" /> Are you absolutely sure?
+          </DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <div className="flex gap-2">
+            <button className="px-4 py-2 border text-sm font-medium rounded-md">Cancel</button>
+            <button className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md">
+              Yes, delete account
+            </button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
+export const usageNoClose = `import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function TermsDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+          Accept terms
+        </button>
+      </DialogTrigger>
+
+      {/* hideCloseButton removes the built-in "X" so the user must choose */}
+      <DialogContent hideCloseButton>
+        <DialogHeader>
+          <DialogTitle>Terms of Service</DialogTitle>
+          <DialogDescription>
+            There is no “X” here — the user has to pick one of the buttons below
+            (or press Escape).
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <div className="flex gap-2">
+            <button className="px-4 py-2 border text-sm font-medium rounded-md">Decline</button>
+            <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">Accept</button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
+export const usageControlled = `import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+export default function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    await saveToServer();
+    setSaving(false);
+    setOpen(false); // close programmatically once the work is done
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+          Save settings
+        </button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Save settings</DialogTitle>
+          <DialogDescription>
+            The dialog closes itself once the save finishes.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md disabled:opacity-60">
+            {saving ? "Saving…" : "Save changes"}
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
+<ExampleShowcase
+  name="dialog"
+  columns={1}
+  examples={[
+    {
+      title: "Dialog",
+      subheading: "Compose `DialogTrigger` and `DialogContent` inside a `Dialog` root.",
+      props: { layout: "standard" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/DialogBlock.tsx"),
+    },
+    {
+      title: "Form dialog",
+      subheading: "Drop any form markup into the body and size the modal with `className`.",
+      props: { layout: "form" },
+      usage: usageForm,
+    },
+    {
+      title: "Destructive confirm",
+      subheading: "A confirmation shape: colored title, clear consequence, two footer actions.",
+      props: { layout: "destructive" },
+      usage: usageDestructive,
+    },
+    {
+      title: "Without close button",
+      subheading: "Set `hideCloseButton` when the user must pick one of your own actions.",
+      props: { layout: "no-close" },
+      usage: usageNoClose,
+    },
+    {
+      title: "Controlled",
+      subheading: "Pass `open` and `onOpenChange` to close the dialog yourself after async work.",
+      props: { layout: "controlled" },
+      usage: usageControlled,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -20,90 +282,7 @@ Use the templates below to explore different variations of a Dialog. Notice how 
 
 This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/DialogBlock.tsx`.
-
----
-
-## Usage
-
-A standard dialog requires wrapping your trigger (the button that opens it) and your content within the `<Dialog>` root context.
-
-```tsx
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/custom/blocks/DialogBlock";
-
-export default function CheckoutModal() {
-  return (
-    <Dialog>
-      {/* 1. The button that opens the modal */}
-      <DialogTrigger className="px-4 py-2 bg-blue-600 text-white rounded">
-        Proceed to Checkout
-      </DialogTrigger>
-
-      {/* 2. The modal window itself */}
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Confirm Payment</DialogTitle>
-          <DialogDescription>
-            Your card ending in 4242 will be charged $99.00.
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Custom Body Content */}
-        <div className="py-4">
-          <p>Subscription: Annual Pro Plan</p>
-        </div>
-
-        {/* Actions aligned to the right */}
-        <DialogFooter>
-          <button className="border px-4 py-2 rounded">Cancel</button>
-          <button className="bg-black text-white px-4 py-2 rounded">
-            Pay Now
-          </button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}
-```
-
-## Controlled State
-
-If you need to close the dialog programmatically (for instance, after a fetch request succeeds), you can control the open state directly.
-
-```tsx
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/custom/blocks/DialogBlock";
-
-export function ControlledDialog() {
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = async () => {
-    await saveToServer();
-    setOpen(false); // Close programmatically after success
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>Open</DialogTrigger>
-      <DialogContent>
-        <button onClick={handleSubmit}>Save & Close</button>
-      </DialogContent>
-    </Dialog>
-  );
-}
-```
+Create a new file at `components/custom/blocks/DialogBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.
