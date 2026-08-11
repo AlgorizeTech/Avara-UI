@@ -41,7 +41,9 @@ export default function OrderTracker() {
   return ;
 }`;
 
-export const usageCenter = `// Zig-zags the cards on desktop and collapses to a left rail on mobile.
+export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
+// collapses to a single left rail below that. The breakpoint is a container
+// query, so it tracks the column the timeline sits in — not the window.
 `;
 
 export const usageRight = ``;
@@ -61,6 +63,8 @@ export const usageNoAnimation = `// Renders in place — no staggered GSAP entra
 ### Copy the Component
 
 This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
 
 Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
 

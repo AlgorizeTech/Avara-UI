@@ -1,6 +1,6 @@
 # Vertical Tabs
 
-A sleek, responsive vertical navigation component. It utilizes a sidebar menu on the left (which stacks automatically on smaller screens) and an active content pane on the right.
+A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
 
 ## Examples
 
@@ -41,6 +41,20 @@ export default function MediaTabs() {
   // Each tab carries its own content — the block handles the crossfade.
   return ;
 }`;
+
+export const usageHorizontal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+${usageTabsData}
+
+export default function HorizontalTabs() {
+  // Same rail, running across the top. Tabs keep their natural width and
+  // scroll sideways rather than squashing, so a long set stays readable.
+  return ;
+}`;
+
+export const usageHorizontalBordered = `// Every variant works in both orientations — \`bordered\` just moves its
+// divider from the right edge of the rail to the bottom.
+`;
 
 export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 
@@ -119,6 +133,17 @@ Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the en
           Applies overarching structural layouts. bordered connects
           the menu directly to the content, while minimal removes
           background containers.
+
+          orientation
+
+          "vertical" | "horizontal"
+
+          "vertical"
+
+          Which way the tab rail runs. vertical puts it beside the
+          content pane (stacking above it below md);{" "}
+          horizontal puts it across the top as a pill bar that
+          scrolls sideways when the tabs outgrow the width.
 
           color
 

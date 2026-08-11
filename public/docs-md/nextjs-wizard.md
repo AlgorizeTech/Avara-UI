@@ -75,21 +75,6 @@ export default function BareWizard() {
   );
 }`;
 
-export const usageOnComplete = `"use client";
-
-export default function CompletableWizard() {
-  const [completed, setCompleted] = useState(false);
-
-  // onComplete fires when the user advances past the LAST step —
-  // this is where you submit the collected answers.
-  return (
-     setCompleted(true)}>
-      
-      {/* ...steps... */}
-    
-  );
-}`;
-
 ## Installation
 
 ### Dependencies
