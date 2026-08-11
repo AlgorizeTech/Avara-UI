@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import {
   AlertCircle,
   ArrowLeft,
@@ -115,6 +116,11 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
       "bg-white/5 dark:bg-white/5 border-b border-white/20 dark:border-white/10 text-zinc-700 dark:text-zinc-300",
   },
 };
+
+const PRIORITY_OPTIONS = ["Low", "Medium", "High", "Urgent"].map((p) => ({
+  label: p,
+  value: p,
+}));
 
 const colorThemes: Record<SupportColor, Record<string, string>> = {
   primary: {
@@ -244,6 +250,11 @@ export default function SupportDashboard({
   // === STATE MANAGEMENT ===
   const [tickets, setTickets] = useState<Ticket[]>(data?.tickets || []);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+  // Property dropdown edits, keyed by `${ticketId}-${propertyKey}` so values
+  // don't leak between tickets. Falls back to the ticket's own property value.
+  const [ticketProperties, setTicketProperties] = useState<
+    Record<string, string>
+  >({});
   const [activeReplyTab, setActiveReplyTab] = useState("Reply");
   const [activeDetailsTab, setActiveDetailsTab] = useState("Details");
 
@@ -441,25 +452,18 @@ export default function SupportDashboard({
                   <label className="text-xs font-bold uppercase text-zinc-500">
                     Priority
                   </label>
-                  <select
+                  <SelectBlock
+                    options={PRIORITY_OPTIONS}
                     value={newTicketForm.priority}
-                    onChange={(e) =>
+                    onChange={(v) =>
                       setNewTicketForm({
                         ...newTicketForm,
-                        priority: e.target.value,
+                        priority: v,
                       })
                     }
-                    className={cn(
-                      "p-2.5 text-sm rounded-lg outline-none cursor-pointer appearance-none",
-                      styles.input,
-                      theme.focusRing,
-                    )}
-                  >
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                    <option>Urgent</option>
-                  </select>
+                    color={color}
+                    placeholder="Select priority"
+                  />
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -1130,20 +1134,25 @@ export default function SupportDashboard({
                             <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1 m-0 p-0">
                               {key.replace(/([A-Z])/g, " $1")}
                             </label>
-                            <select
-                              defaultValue={selectedTicket.properties[key]}
-                              className={cn(
-                                "w-full p-2 rounded-lg text-xs font-semibold outline-none text-zinc-900 dark:text-zinc-100 transition-all cursor-pointer m-0",
-                                styles.input,
-                                theme.focusRing,
-                              )}
-                            >
-                              {options.map((opt) => (
-                                <option key={opt} value={opt}>
-                                  {opt}
-                                </option>
-                              ))}
-                            </select>
+                            <SelectBlock
+                              options={options.map((opt) => ({
+                                label: opt,
+                                value: opt,
+                              }))}
+                              value={
+                                ticketProperties[
+                                  `${selectedTicket.id}-${key}`
+                                ] ?? selectedTicket.properties[key]
+                              }
+                              onChange={(v) =>
+                                setTicketProperties((prev) => ({
+                                  ...prev,
+                                  [`${selectedTicket.id}-${key}`]: v,
+                                }))
+                              }
+                              color={color}
+                              inputSize="sm"
+                            />
                           </div>
                         ))}
                       </div>

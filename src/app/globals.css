@@ -670,3 +670,7 @@ pre.shiki::-webkit-scrollbar,
   width: 0 !important;
   height: 0 !important;
 }
+
+button {
+  cursor: pointer;
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import gsap from "gsap";
 import { AlertCircle, Info, X } from "lucide-react";
 import React, {
@@ -233,6 +234,7 @@ export function ModalBlock({
   color?: ModalColor;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [inviteRole, setInviteRole] = useState("Viewer");
   const { theme, style } = getThemeStyles(color);
 
   const variantStyles = {
@@ -344,16 +346,17 @@ export function ModalBlock({
                   <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
                     Role & Permissions
                   </label>
-                  <select
-                    className={cn(
-                      "w-full h-11 px-3 rounded-lg border bg-transparent focus:outline-none focus:ring-2 border-zinc-200 dark:border-zinc-800 transition-shadow text-zinc-900 dark:text-zinc-100 appearance-none",
-                      theme.ring,
-                    )}
-                  >
-                    <option>Viewer</option>
-                    <option>Editor</option>
-                    <option>Administrator</option>
-                  </select>
+                  <SelectBlock
+                    options={[
+                      { label: "Viewer", value: "Viewer" },
+                      { label: "Editor", value: "Editor" },
+                      { label: "Administrator", value: "Administrator" },
+                    ]}
+                    value={inviteRole}
+                    onChange={setInviteRole}
+                    color={color}
+                    placeholder="Select a role"
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">

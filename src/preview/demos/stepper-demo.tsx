@@ -5,6 +5,7 @@ import {
   Stepper,
   StepperContent,
 } from "@/components/custom/blocks/StepperBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { cn } from "@/lib/utils";
 import {
   AlertCircle,
@@ -22,6 +23,13 @@ import {
   XCircle,
 } from "lucide-react";
 import { useState } from "react";
+
+const PRIMARY_ROLE_OPTIONS = [
+  "Developer",
+  "Designer",
+  "Product Manager",
+  "Founder",
+].map((r) => ({ label: r, value: r }));
 
 // Stable Input Component
 const InputField = ({ label, icon: Icon, error, ...props }: any) => (
@@ -268,16 +276,13 @@ export default function StepperDemo({
               <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
                 Primary Role
               </label>
-              <select
+              <SelectBlock
+                options={PRIMARY_ROLE_OPTIONS}
                 value={formData.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="w-full h-11 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
-              >
-                <option value="Developer">Developer</option>
-                <option value="Designer">Designer</option>
-                <option value="Product Manager">Product Manager</option>
-                <option value="Founder">Founder</option>
-              </select>
+                onChange={(v) => handleChange("role", v)}
+                variant="filled"
+                placeholder="Select your role"
+              />
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { SelectBlock } from "./SelectBlock";
 
 
 // ==========================================
@@ -158,6 +159,11 @@ export default function SupportPage() {
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const [activeReplyTab, setActiveReplyTab] = useState("Reply");
   const [activeDetailsTab, setActiveDetailsTab] = useState("User");
+  // Property dropdown edits, keyed by `${ticketId}-${propertyKey}` so values
+  // don't leak between tickets. Falls back to the ticket's own property value.
+  const [ticketProperties, setTicketProperties] = useState<
+    Record<string, string>
+  >({});
 
   const selectedTicket = DASHBOARD_DATA.tickets.find(
     (t) => t.id === selectedTicketId,
@@ -470,20 +476,28 @@ export default function SupportPage() {
                               <label className="text-xs text-[#68708c] dark:text-zinc-400 capitalize mb-1">
                                 {key.replace(/([A-Z])/g, " $1")}
                               </label>
-                              <select
-                                defaultValue={
+                              <SelectBlock
+                                options={options.map((opt) => ({
+                                  label: opt,
+                                  value: opt,
+                                }))}
+                                value={
+                                  ticketProperties[
+                                    `${selectedTicket.id}-${key}`
+                                  ] ??
                                   selectedTicket.properties[
                                     key as keyof typeof selectedTicket.properties
                                   ]
                                 }
-                                className="w-full p-2 border border-[#ccc] dark:border-zinc-700 bg-transparent dark:bg-[#121217] rounded text-xs outline-none focus:border-[#0070e0] dark:focus:border-[#3b82f6] text-[#001635] dark:text-zinc-100 transition-colors"
-                              >
-                                {options.map((opt) => (
-                                  <option key={opt} value={opt}>
-                                    {opt}
-                                  </option>
-                                ))}
-                              </select>
+                                onChange={(v) =>
+                                  setTicketProperties((prev) => ({
+                                    ...prev,
+                                    [`${selectedTicket.id}-${key}`]: v,
+                                  }))
+                                }
+                                color="#0070e0"
+                                inputSize="sm"
+                              />
                             </div>
                           ))}
                         </div>
