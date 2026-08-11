@@ -36,10 +36,18 @@ type Device = "desktop" | "tablet" | "mobile";
  * math shrink it into the available area. Desktop used to be "100%" (i.e.
  * whatever the docs column happened to be), so a desktop layout could never
  * be seen from a narrow screen — the one case tablet and mobile handled fine.
- * The fluid "100%" state is still the default, and the Fit button returns to
- * it, so a visitor first sees the preview at their own viewport.
+ * The Fit button returns to the fluid "100%" state at any time.
  */
 const DESKTOP_PRESET_WIDTH = 1280;
+
+/**
+ * Screens at least this wide are treated as PCs, and open every preview on
+ * the desktop preset. The fluid "100%" default measured the docs COLUMN, not
+ * the visitor's screen, and that column is narrower than DESKTOP_MIN_WIDTH —
+ * so a PC visitor was shown (and had "Tablet" highlighted for) the tablet
+ * layout of every component, which is not what they came to see.
+ */
+const PC_SCREEN_MIN_WIDTH = 1080;
 
 const DEVICE_PRESETS: Record<Device, number> = {
   desktop: DESKTOP_PRESET_WIDTH,
@@ -115,6 +123,15 @@ export function Sandbox({
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
+
+  // The first paint stays fluid so server and client markup agree; the desktop
+  // preset is pinned on mount instead. Runs once, before any interaction, so a
+  // device button or a drag is never overridden.
+  useEffect(() => {
+    if (window.innerWidth >= PC_SCREEN_MIN_WIDTH) {
+      setPreviewWidth(DESKTOP_PRESET_WIDTH);
+    }
+  }, []);
 
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
