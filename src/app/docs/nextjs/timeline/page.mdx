@@ -45,7 +45,9 @@ export default function OrderTracker() {
   return <TimelineBlock items={events} layout="left" />;
 }`;
 
-export const usageCenter = `// Zig-zags the cards on desktop and collapses to a left rail on mobile.
+export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
+// collapses to a single left rail below that. The breakpoint is a container
+// query, so it tracks the column the timeline sits in — not the window.
 <TimelineBlock items={events} layout="center" />`;
 
 export const usageRight = `<TimelineBlock items={events} layout="right" />`;
@@ -75,7 +77,7 @@ export const usageNoAnimation = `// Renders in place — no staggered GSAP entra
     },
     {
       title: "Center layout",
-      subheading: "`layout=\"center\"` alternates cards either side of the rail on desktop and folds back to a single column on mobile.",
+      subheading: "`layout=\"center\"` alternates cards either side of the rail once the timeline is wide enough, and folds back to a single column below that. Each card's date drops onto its own line while the card is narrow, so the copy keeps the full width.",
       props: { layout: "center", variant: "default" },
       usage: usageCenter,
     },
@@ -111,6 +113,8 @@ export const usageNoAnimation = `// Renders in place — no staggered GSAP entra
 ### Copy the Component
 
 This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
 
 Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
 
