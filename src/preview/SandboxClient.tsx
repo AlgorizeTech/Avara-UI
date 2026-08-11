@@ -29,16 +29,34 @@ function ReadySignal() {
 export function SandboxClient({ name }: { name: string }) {
   const Demo = sandboxRegistry[name];
 
-  // Initial props travel in the URL so the very first paint is correct.
-  const [demoProps, setDemoProps] = useState<Record<string, unknown>>(() => {
-    if (typeof window === "undefined") return {};
-    try {
-      const raw = new URLSearchParams(window.location.search).get("props");
-      return raw ? JSON.parse(raw) : {};
-    } catch {
-      return {};
-    }
-  });
+  // Initial props travel in the URL. `null` means "not read yet" and holds the
+  // demo back from rendering at all.
+  //
+  // This route is statically exported, so the prerendered HTML cannot know
+  // `?props=` — rendering the demo during that pass paints it with its own
+  // defaults, and the requested props only arrive on hydration. That is a
+  // visible wrong first paint whenever an example's props differ from the
+  // demo's defaults: every mobile mockup showed an iPhone 5 before flipping to
+  // the device the example actually asked for. (It was a hydration mismatch
+  // too — server `{}` vs client props.) Waiting one pass costs nothing here:
+  // the embedding frame holds its loading state until `sandbox:ready`, which
+  // is mounted alongside the demo below, so it now lifts on correct markup.
+  const [demoProps, setDemoProps] = useState<Record<string, unknown> | null>(
+    null,
+  );
+
+  useEffect(() => {
+    setDemoProps((current) => {
+      // A postMessage that beat this effect already has the fresher value.
+      if (current !== null) return current;
+      try {
+        const raw = new URLSearchParams(window.location.search).get("props");
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    });
+  }, []);
 
   // This page only exists to be embedded by the docs preview. Anyone landing
   // on it directly (typed URL, crawler following a link) goes to the site.
@@ -128,8 +146,12 @@ export function SandboxClient({ name }: { name: string }) {
     >
       <SandboxErrorBoundary name={name}>
         <Suspense fallback={null}>
-          <Demo {...demoProps} />
-          <ReadySignal />
+          {demoProps !== null && (
+            <>
+              <Demo {...demoProps} />
+              <ReadySignal />
+            </>
+          )}
         </Suspense>
       </SandboxErrorBoundary>
     </div>
