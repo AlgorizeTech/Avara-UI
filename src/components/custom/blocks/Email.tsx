@@ -533,14 +533,14 @@ export default function EmailApp({
             {/* Action Bar */}
             <div
               className={cn(
-                "flex items-center justify-between px-4 sm:px-6 py-2 shrink-0 transition-colors duration-300",
+                "flex items-center justify-between px-4 sm:px-6 py-2.5 shrink-0 transition-colors duration-300 border-l-[3px] border-transparent",
                 variant === "glass"
                   ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
                   : "border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20",
               )}
             >
               <div className="flex items-center gap-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors">
+                <div className="flex items-center shrink-0">
                   <input
                     type="checkbox"
                     className="w-4 h-4 rounded border-zinc-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
@@ -591,7 +591,7 @@ export default function EmailApp({
                       key={email.id}
                       onClick={() => setActiveEmailId(email.id)}
                       className={cn(
-                        `group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 relative transition-all cursor-pointer border-l-[3px]`,
+                        `group flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-4 sm:px-6 py-3.5 sm:py-4 relative transition-all cursor-pointer border-l-[3px]`,
                         styles.emailItem,
                         selectedEmails.includes(email.id)
                           ? cn(theme.lightBg, theme.border)
@@ -608,17 +608,18 @@ export default function EmailApp({
                           type="checkbox"
                           checked={selectedEmails.includes(email.id)}
                           onChange={() => toggleSelect(email.id)}
-                          className="w-4 h-4 rounded border-zinc-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                          className="w-4 h-4 rounded border-zinc-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer shrink-0"
                         />
+                        {/* Desktop Star Button */}
                         <button
                           onClick={() => toggleStar(email.id)}
-                          className="cursor-pointer text-zinc-300 dark:text-zinc-600 hover:text-amber-400 transition-colors"
+                          className="hidden sm:block cursor-pointer text-zinc-300 dark:text-zinc-600 hover:text-amber-400 transition-colors"
                         >
                           <Star
                             className={`w-[18px] h-[18px] ${email.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
                           />
                         </button>
-                        <div className="hidden sm:block">
+                        <div className="flex shrink-0">
                           <BulletproofAvatar
                             src={email.avatar}
                             initials={email.initials}
@@ -628,12 +629,17 @@ export default function EmailApp({
                         </div>
                       </div>
 
-                      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 ml-8 sm:ml-0">
-                        <span
-                          className={`text-[15px] truncate w-full sm:w-48 shrink-0 ${!email.isRead ? "font-bold text-zinc-900 dark:text-white" : "font-medium text-zinc-700 dark:text-zinc-300"}`}
-                        >
-                          {email.sender}
-                        </span>
+                      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 pr-8 sm:pr-0">
+                        <div className="flex items-center justify-between sm:w-48 shrink-0">
+                          <span
+                            className={`text-[15px] truncate ${!email.isRead ? "font-bold text-zinc-900 dark:text-white" : "font-medium text-zinc-700 dark:text-zinc-300"}`}
+                          >
+                            {email.sender}
+                          </span>
+                          <span className="sm:hidden text-xs font-medium text-zinc-400 shrink-0 ml-2">
+                            {email.time}
+                          </span>
+                        </div>
                         <div className="flex-1 min-w-0 flex items-center gap-2">
                           {!email.isRead && (
                             <span
@@ -654,8 +660,9 @@ export default function EmailApp({
                         </div>
                       </div>
 
-                      <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-end sm:w-24">
-                        <span className="text-xs font-medium text-zinc-400 group-hover:hidden whitespace-nowrap bg-white/0 dark:bg-black/0">
+                      {/* Desktop Right Time & Hover Actions */}
+                      <div className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 items-center justify-end w-24">
+                        <span className="text-xs font-medium text-zinc-400 group-hover:hidden whitespace-nowrap">
                           {email.time}
                         </span>
                         <div className="hidden group-hover:flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
@@ -686,6 +693,20 @@ export default function EmailApp({
                           </button>
                         </div>
                       </div>
+
+                      {/* Mobile Star Button anchored at bottom-right (Gmail Reference) */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleStar(email.id);
+                        }}
+                        className="sm:hidden absolute bottom-3 right-4 cursor-pointer text-zinc-300 dark:text-zinc-600 hover:text-amber-400 transition-colors p-1"
+                        title="Star email"
+                      >
+                        <Star
+                          className={`w-5 h-5 ${email.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
+                        />
+                      </button>
                     </div>
                   ))}
                 </div>
