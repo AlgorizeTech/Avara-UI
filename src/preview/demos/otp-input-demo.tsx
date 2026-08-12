@@ -38,9 +38,9 @@ export default function OtpInputDemo({
   if (showAll === "lengths") {
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex w-full max-w-sm flex-col items-center gap-8">
           {[4, 6, 8].map((len) => (
-            <div key={len} className="flex flex-col items-center gap-2">
+            <div key={len} className="flex w-full flex-col items-center gap-2">
               <span className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                 {len} digits
               </span>

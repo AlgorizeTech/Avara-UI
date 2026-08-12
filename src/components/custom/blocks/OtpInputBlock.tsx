@@ -207,14 +207,21 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
     };
 
     const getVariantStyles = () => {
+      // Fluid sizing: each box is an equal share of the row (never wider than
+      // 3rem) so any length fits its container instead of overflowing it.
+      // `min-w-0` is required — an input's intrinsic width (size=20) would
+      // otherwise block flex shrinking. Font and corner radius scale with the
+      // container width divided by the digit count, so 8 digits stay legible on
+      // a phone and small boxes don't read as pills. Both cap at the values the
+      // 48px box used, leaving 4/6 digits looking exactly as before.
       const base =
-        "w-10 h-12 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold transition-all duration-200 outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700";
+        "min-w-0 flex-1 basis-0 max-w-12 aspect-[5/6] px-0 text-center text-[clamp(0.8125rem,calc(38cqw/var(--otp-len,6)),1.25rem)] rounded-[clamp(0.375rem,calc(20cqw/var(--otp-len,6)),0.75rem)] font-bold transition-all duration-200 outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700";
 
       switch (variant) {
         case "filled":
           return cn(
             base,
-            "rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800",
+            "border border-transparent bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800",
             "focus:bg-white dark:focus:bg-zinc-950 focus:ring-2",
             theme.focusRing,
           );
@@ -229,7 +236,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
         default:
           return cn(
             base,
-            "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-sm",
+            "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-sm",
             "focus:ring-2",
             theme.focusRing,
           );
@@ -241,8 +248,12 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex items-center gap-2 sm:gap-3", className)}
-        style={style}
+        className={cn(
+          "@container/otp flex w-full max-w-full items-center justify-center",
+          length > 6 ? "gap-1.5 sm:gap-2 md:gap-3" : "gap-2 sm:gap-3",
+          className,
+        )}
+        style={{ ...style, "--otp-len": length } as React.CSSProperties}
         {...props}
       >
         {otp.map((digit, index) => (
