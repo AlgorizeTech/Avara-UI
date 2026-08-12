@@ -206,6 +206,7 @@ export const Alert: React.FC<AlertProps> = ({
         className={cn(
           `flex-1 min-w-0 relative z-10`,
           !title ? "flex items-center" : "",
+          dismissible && "pr-6",
         )}
       >
         {title && (
@@ -225,7 +226,7 @@ export const Alert: React.FC<AlertProps> = ({
         <button
           onClick={handleDismiss}
           className={cn(
-            `flex-shrink-0 ml-4 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all relative z-10 active:scale-90`,
+            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all z-10 active:scale-90`,
             dismissIconClassName,
           )}
           aria-label="Dismiss alert"
