@@ -713,7 +713,7 @@ export default function EmailApp({
                 styles.header,
               )}
             >
-              <div className="flex items-center gap-3 overflow-hidden min-w-0">
+              <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0">
                 <button
                   className="lg:hidden p-2 -ml-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 shrink-0 cursor-pointer"
                   onClick={() => setIsSidebarOpen(true)}
@@ -722,15 +722,16 @@ export default function EmailApp({
                 </button>
                 <button
                   onClick={() => setActiveEmailId(null)}
-                  className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+                  className="flex items-center gap-1 p-1.5 sm:p-2 -ml-1 sm:-ml-2 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer text-xs sm:text-sm font-semibold"
                 >
                   <ChevronLeft className="w-5 h-5" />
+                  <span>Back</span>
                 </button>
-                <div className="hidden sm:flex items-center gap-2 shrink-0">
+                <div className="flex flex-wrap items-center gap-1.5 shrink-0">
                   {activeEmail?.labels?.map((lbl, i) => (
                     <span
                       key={i}
-                      className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold tracking-wide uppercase ${lbl.pill}`}
+                      className={`px-2 py-0.5 sm:px-2.5 rounded-md text-[10px] sm:text-[11px] font-bold tracking-wide uppercase ${lbl.pill}`}
                     >
                       {lbl.name}
                     </span>
@@ -738,18 +739,18 @@ export default function EmailApp({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 text-zinc-400 shrink-0 ml-4">
+              <div className="flex items-center gap-1 text-zinc-400 shrink-0 ml-2 sm:ml-4">
                 <button
                   onClick={handlePrevEmail}
                   disabled={activeEmailIndex === 0}
-                  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleNextEmail}
                   disabled={activeEmailIndex === filteredEmails.length - 1}
-                  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-800 dark:hover:text-zinc-200 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -758,7 +759,7 @@ export default function EmailApp({
 
             <div
               className={cn(
-                "flex items-center justify-between px-4 sm:px-6 py-3 shrink-0 text-zinc-400 transition-colors duration-300",
+                "flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3 shrink-0 text-zinc-400 transition-colors duration-300",
                 variant === "glass"
                   ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
                   : "border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20",
@@ -767,10 +768,10 @@ export default function EmailApp({
               <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => activeEmail && deleteEmail(activeEmail.id)}
-                  className="p-2 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
                   title="Delete"
                 >
-                  <Trash2 className="w-[18px] h-[18px]" />
+                  <Trash2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
                 <button
                   onClick={() => {
@@ -780,73 +781,73 @@ export default function EmailApp({
                     }
                   }}
                   className={cn(
-                    "p-2 rounded-md transition-colors cursor-pointer",
+                    "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer",
                     theme.focusRing,
                   )}
                   title="Mark Unread"
                 >
-                  <Mail className="w-[18px] h-[18px]" />
+                  <Mail className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
                 <button
                   onClick={() => {
                     setActiveEmailId(null);
                     moveSelectedToFolder("archive");
                   }}
-                  className="p-2 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
                   title="Archive"
                 >
-                  <Archive className="w-[18px] h-[18px]" />
+                  <Archive className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => activeEmail && toggleStar(activeEmail.id)}
-                  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors cursor-pointer"
                 >
                   <Star
-                    className={`w-[18px] h-[18px] ${activeEmail?.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
+                    className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${activeEmail?.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
                   />
                 </button>
-                <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer">
-                  <MoreVertical className="w-[18px] h-[18px]" />
+                <button className="p-1.5 sm:p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer">
+                  <MoreVertical className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div className="max-w-3xl mx-auto">
-                <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8">
+                <h1 className="text-lg sm:text-2xl font-bold text-zinc-900 dark:text-white mb-4 sm:mb-8 break-words leading-snug">
                   {activeEmail?.subject}
                 </h1>
-                <div className="flex items-start justify-between mb-8">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 pb-4 sm:pb-0 border-b sm:border-b-0 border-zinc-100 dark:border-zinc-800/80">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <BulletproofAvatar
                       src={activeEmail?.avatar}
                       initials={activeEmail?.initials}
                       color={activeEmail?.color}
-                      size={48}
+                      size={40}
                     />
-                    <div>
-                      <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 truncate">
                         {activeEmail?.sender}
                       </h3>
-                      <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+                      <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium truncate">
                         to me{" "}
                         <span className="text-zinc-300 dark:text-zinc-700 mx-1">
                           •
                         </span>{" "}
-                        <span className="font-normal">
+                        <span className="font-normal text-zinc-400 dark:text-zinc-500">
                           {activeEmail?.email}
                         </span>
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-sm font-medium text-zinc-400">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-400 dark:text-zinc-500 shrink-0">
                     <span>{activeEmail?.fullDate}</span>
                   </div>
                 </div>
 
-                <div className="text-[15px] text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap mb-10 font-medium">
+                <div className="text-sm sm:text-[15px] text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap mb-8 sm:mb-10 font-medium break-words">
                   {activeEmail?.body}
                 </div>
 
@@ -863,31 +864,31 @@ export default function EmailApp({
                       <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">
                         Attachments ({activeEmail.attachments.length})
                       </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         {activeEmail.attachments.map((file, idx) => (
                           <div
                             key={idx}
                             className={cn(
-                              "flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all group",
+                              "flex items-center gap-3 sm:gap-4 p-3 rounded-xl cursor-pointer transition-all group min-w-0",
                               variant === "glass"
                                 ? "bg-white/5 border border-white/10 hover:bg-white/10"
                                 : "border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 hover:shadow-sm",
                               theme.focusRing,
                             )}
                           >
-                            <div className="w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center shrink-0">
-                              <FileText className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center shrink-0">
+                              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-rose-400" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <p
                                 className={cn(
-                                  "text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate transition-colors",
+                                  "text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate transition-colors",
                                   `group-hover:${theme.text}`,
                                 )}
                               >
                                 {file.name}
                               </p>
-                              <p className="text-xs font-medium text-zinc-400">
+                              <p className="text-[11px] sm:text-xs font-medium text-zinc-400">
                                 {file.size}
                               </p>
                             </div>
@@ -897,11 +898,11 @@ export default function EmailApp({
                     </div>
                   )}
 
-                <div className="mt-10 flex gap-3">
+                <div className="mt-8 sm:mt-10 flex flex-row gap-3">
                   <button
                     onClick={() => setIsComposeOpen(true)}
                     className={cn(
-                      "cursor-pointer px-6 py-2.5 font-semibold rounded-lg transition-colors shadow-sm",
+                      "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
                       variant === "glass"
                         ? "bg-white/10 hover:bg-white/20 text-white"
                         : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white",
@@ -912,7 +913,7 @@ export default function EmailApp({
                   <button
                     onClick={() => setIsComposeOpen(true)}
                     className={cn(
-                      "cursor-pointer px-6 py-2.5 font-semibold rounded-lg transition-colors shadow-sm",
+                      "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
                       variant === "glass"
                         ? "bg-white/10 hover:bg-white/20 text-white"
                         : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white",
