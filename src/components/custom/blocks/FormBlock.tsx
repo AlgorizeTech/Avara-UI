@@ -35,11 +35,16 @@ export const getThemeStyles = (color: string) => {
   };
 
   const finalColor = isHex ? color : colorMap[color] || colorMap.primary;
+  // "primary" tracks the site theme (can be light or dark), so its
+  // button text must track --primary-foreground instead of a fixed white.
+  const finalForeground =
+    !isHex && color === "primary" ? "var(--primary-foreground)" : "#ffffff";
 
   return {
     style: {
       "--theme-color": finalColor,
       "--theme-color-rgb": isHex ? rgb : hexToRgb(finalColor),
+      "--theme-color-foreground": finalForeground,
     } as React.CSSProperties,
   };
 };
@@ -231,12 +236,12 @@ export function FormSubmit({
     <button
       type="submit"
       disabled={isSubmitting}
-      className="relative w-full overflow-hidden rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
+      className="relative w-full overflow-hidden rounded-xl font-bold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
     >
       <div className="absolute inset-0 bg-[var(--theme-color)] transition-opacity group-hover:opacity-90" />
       <div className="relative px-6 py-3.5 flex items-center justify-center gap-2 w-full h-full">
         {isSubmitting ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[var(--theme-color-foreground)]/30 border-t-[var(--theme-color-foreground)] rounded-full animate-spin" />
         ) : (
           children
         )}
