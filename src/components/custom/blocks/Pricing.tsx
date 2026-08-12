@@ -164,6 +164,41 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
+// WCAG relative luminance, so a custom hex gets a foreground that is legible
+// on it rather than an unconditional white.
+const relLuminance = (rgb: string) => {
+  const [r, g, b] = rgb.split(",").map((n) => {
+    const v = Number(n.trim()) / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+// Accent + its foreground, published as CSS variables by every theme.
+//
+// Tailwind only emits classes it can SEE in the source, and a variant prefix
+// only binds to the token it is glued to. So `\`selection:${theme.bg}\`` did
+// not produce "selection:<each class>" — it produced ONE prefixed class plus
+// the rest leaking in unprefixed, which is how `text-primary-foreground`
+// escaped onto the typographic section and repainted all of its body copy.
+// Routing the dynamic parts through variables keeps every class literal
+// (`bg-[var(--pricing-accent)]`, `group-hover:text-[var(--pricing-on)]`) so
+// prefixes bind correctly and the value still varies per theme.
+const accentVars = (accent: string, on: string) =>
+  ({ "--pricing-accent": accent, "--pricing-on": on }) as React.CSSProperties;
+
+const PRESET_VARS: Record<string, React.CSSProperties> = {
+  indigo: accentVars("var(--color-indigo-600, #4f46e5)", "#ffffff"),
+  rose: accentVars("var(--color-rose-600, #e11d48)", "#ffffff"),
+  emerald: accentVars("var(--color-emerald-600, #059669)", "#ffffff"),
+  // zinc inverts with the theme; light-dark() keys off `color-scheme`, which
+  // both the docs preview and next-themes set alongside the `dark` class.
+  zinc: accentVars(
+    "light-dark(#18181b, #f4f4f5)",
+    "light-dark(#ffffff, #18181b)",
+  ),
+};
+
 export const getThemeStyles = (color: string) => {
   if (color === "primary" || color === "default" || !colorThemes[color]) {
     if (color && color.startsWith("#")) {
@@ -171,7 +206,7 @@ export const getThemeStyles = (color: string) => {
       return {
         theme: {
           text: "text-[var(--theme-color)]",
-          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
+          bg: "bg-[var(--theme-color)] text-[var(--pricing-on)] hover:opacity-90",
           bgSoft:
             "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
           border: "border-[var(--theme-color)]",
@@ -187,6 +222,10 @@ export const getThemeStyles = (color: string) => {
         style: {
           "--theme-color": color,
           "--theme-color-rgb": rgb,
+          ...accentVars(
+            color,
+            relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff",
+          ),
         } as React.CSSProperties,
       };
     }
@@ -203,10 +242,10 @@ export const getThemeStyles = (color: string) => {
         slider: "accent-primary [&::-webkit-slider-thumb]:bg-primary",
         fill: "fill-primary",
       },
-      style: {} as React.CSSProperties,
+      style: accentVars("var(--primary)", "var(--primary-foreground)"),
     };
   }
-  return { theme: colorThemes[color], style: {} };
+  return { theme: colorThemes[color], style: PRESET_VARS[color] ?? {} };
 };
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -384,8 +423,11 @@ export function PricingCards({
 
   return (
     <div className="w-full flex flex-col items-center" style={style}>
+      {/* max-w-md, not max-w-sm: at 384px a two-tab track left each label only
+          ~126px of content box, and "Annually (Save 20%)" needs ~150px, so the
+          second tab wrapped onto a second line and stretched the pill. */}
       {data.tabs.length > 1 && (
-        <div className="relative flex rounded-full bg-zinc-100 dark:bg-zinc-900 p-1 mb-12 border border-zinc-200 dark:border-zinc-800 max-w-sm mx-auto w-full">
+        <div className="relative flex rounded-full bg-zinc-100 dark:bg-zinc-900 p-1 mb-12 border border-zinc-200 dark:border-zinc-800 max-w-md mx-auto w-full">
           <div
             className={cn(
               "absolute top-1 bottom-1 rounded-full transition-transform duration-300 ease-out shadow-sm",
@@ -402,12 +444,17 @@ export function PricingCards({
               key={tab.id}
               onClick={() => handleTabChange(tab.id)}
               className={cn(
-                "flex-1 relative z-10 flex items-center justify-center rounded-full px-2 sm:px-8 py-2.5 text-sm font-bold transition-all duration-300",
+                // Scales down instead of wrapping, and `truncate` guarantees an
+                // arbitrary `tab.label` ellipsizes rather than breaking the
+                // pill's height or spilling out of the track.
+                "flex-1 min-w-0 relative z-10 flex items-center justify-center rounded-full px-3 sm:px-6 py-2.5 text-xs sm:text-sm font-bold transition-all duration-300 truncate",
                 activeTab === tab.id
-                  ? color === "zinc"
-                    ? "text-zinc-900 dark:text-zinc-100"
-                    : "text-white"
-                  : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100",
+                  ? // Sits on the accent pill that slides behind it, so it
+                    // needs the accent's foreground rather than a flat white.
+                    "text-[var(--pricing-on)]"
+                  : // zinc-500 is only 3.67:1 on the zinc-900 track — one step
+                    // lighter clears AA for this 14px bold label.
+                    "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100",
               )}
             >
               {tab.label}
@@ -459,16 +506,13 @@ export function PricingCards({
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
                     )}
                   >
-                    <PlanIcon
-                      className={cn(
-                        "w-6 h-6",
-                        plan.popular
-                          ? color === "zinc"
-                            ? "text-white dark:text-zinc-900"
-                            : "text-white"
-                          : "",
-                      )}
-                    />
+                    {/* No colour of its own: the tile above already sets one
+                        for both states (accent foreground when popular, muted
+                        zinc otherwise), so inheriting is correct in every
+                        theme. Forcing white broke the near-white default
+                        accent, and would have been invisible on the light
+                        zinc-100 tile too. */}
+                    <PlanIcon className="w-6 h-6" />
                   </div>
                   <h3
                     className={cn(
@@ -515,15 +559,10 @@ export function PricingCards({
                           plan.popular && getVariantStyles().featureIconPopular,
                         )}
                       >
-                        <Check
-                          className={cn(
-                            "w-3 h-3",
-                            color === "zinc" && plan.popular
-                              ? "text-white dark:text-zinc-900"
-                              : "text-white",
-                          )}
-                          strokeWidth={3}
-                        />
+                        {/* Inherits from the tile: white here was invisible on
+                            the light zinc-100 tile of non-popular plans, and
+                            on the near-white default accent of popular ones. */}
+                        <Check className="w-3 h-3" strokeWidth={3} />
                       </div>
                       <span className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
                         {feature}
@@ -854,11 +893,9 @@ export function PricingBuilder({ color = "indigo" }: { color?: PricingColor }) {
                     <Check
                       className={cn(
                         "w-3 h-3",
-                        activePlans.length > 0
-                          ? color === "zinc"
-                            ? "text-white dark:text-zinc-900"
-                            : "text-white"
-                          : "text-zinc-400",
+                        // Only the inactive state needs its own colour; the
+                        // active tile carries the accent's own foreground.
+                        activePlans.length === 0 && "text-zinc-400",
                       )}
                       strokeWidth={3}
                     />
@@ -874,14 +911,10 @@ export function PricingBuilder({ color = "indigo" }: { color?: PricingColor }) {
               className={cn(
                 "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all",
                 activePlans.length > 0
-                  ? cn(
-                      "shadow-lg hover:scale-[1.02]",
-                      theme.bg,
-                      color === "zinc"
-                        ? "text-white dark:text-zinc-900"
-                        : "text-white",
-                    )
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed",
+                  ? cn("shadow-lg hover:scale-[1.02]", theme.bg)
+                  : // zinc-400 on the light zinc-100 track was only 2.39:1;
+                    // a disabled control should still be readable.
+                    "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 cursor-not-allowed",
               )}
             >
               Initiate Project{" "}
@@ -938,102 +971,185 @@ export function PricingTable({
       </span>
     );
   };
+
+  // Shared by both layouts so the tooltip markup can't drift between them.
+  const FeatureLabel = ({ feature }: { feature: TableFeature }) => (
+    <>
+      {feature.name}
+      {feature.helpText && (
+        <span className="group relative cursor-help">
+          <HelpCircle className="w-3.5 h-3.5 text-zinc-400" />
+          <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-zinc-900 text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-center block">
+            {feature.helpText}
+          </span>
+        </span>
+      )}
+    </>
+  );
+
+  const ctaClass = (featured?: boolean) =>
+    cn(
+      "w-full py-2.5 rounded-xl font-bold transition-all text-sm cursor-pointer",
+      featured
+        ? // No text colour here: every `theme.bg` already carries its own
+          // matching foreground. Re-stating `text-white` let tailwind-merge
+          // drop the theme's own choice, so the default accent rendered white
+          // on `--primary` — which is near-white in dark mode (1.26:1).
+          cn(theme.bg, theme.shadow)
+        : "border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 text-zinc-900 dark:text-white",
+    );
+
   return (
-    <div
-      className="w-full max-w-6xl mx-auto overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950 shadow-sm"
-      style={style}
-    >
-      <div className="overflow-x-auto min-w-[800px]">
-        <div className="grid grid-cols-4 bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="p-6 flex items-end">
-            <h3 className="font-bold text-xl text-zinc-900 dark:text-white">
-              Compare Plans
-            </h3>
-          </div>
-          {data.plans.map((plan) => (
+    // Container query, not a media query: this table is nearly always inside a
+    // constrained column, so the viewport says nothing about the room it has.
+    <div className="@container/pricing w-full max-w-6xl mx-auto" style={style}>
+      {/* NARROW — one card per plan.
+          A comparison grid cannot survive a phone width. Scrolled sideways the
+          feature-name column leaves the screen and every value loses its label
+          ("25", "Unlimited", "100GB" with nothing to say what of), so instead
+          of scrolling the grid we transpose it: each plan carries its own
+          feature list, and nothing ever leaves the viewport. */}
+      <div className="flex flex-col gap-6 @min-[52rem]/pricing:hidden">
+        {data.plans.map((plan, pIdx) => (
+          <div
+            key={plan.id}
+            className={cn(
+              "overflow-hidden rounded-2xl border bg-white dark:bg-zinc-950 shadow-sm",
+              plan.featured
+                ? theme.border
+                : "border-zinc-200 dark:border-zinc-800",
+            )}
+          >
             <div
-              key={plan.id}
               className={cn(
-                "p-6 text-center border-l border-zinc-200 dark:border-zinc-800 relative",
-                plan.featured ? theme.bgSoft : "",
+                "p-6 border-b border-zinc-200 dark:border-zinc-800",
+                plan.featured
+                  ? theme.bgSoft
+                  : "bg-zinc-50 dark:bg-zinc-900/50",
               )}
             >
-              {plan.featured && (
-                <div
-                  className={cn("absolute top-0 left-0 w-full h-1", theme.bg)}
-                />
-              )}
               <h4
                 className={cn(
-                  "text-lg font-bold mb-2",
+                  "text-lg font-bold",
                   plan.featured ? theme.text : "text-zinc-900 dark:text-white",
                 )}
               >
                 {plan.title}
               </h4>
-              <div className="text-3xl font-black text-zinc-900 dark:text-white mb-6">
+              <div className="text-3xl font-black text-zinc-900 dark:text-white mb-5">
                 {plan.price}
               </div>
-              <button
-                className={cn(
-                  "w-full py-2.5 rounded-xl font-bold transition-all text-sm cursor-pointer",
-                  plan.featured
-                    ? cn(
-                        theme.bg,
-                        color === "zinc"
-                          ? "text-white dark:text-zinc-900"
-                          : "text-white",
-                        theme.shadow,
-                      )
-                    : "border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 text-zinc-900 dark:text-white",
-                )}
-              >
+              <button className={ctaClass(plan.featured)}>
                 {plan.buttonText}
               </button>
             </div>
-          ))}
-        </div>
-        {data.sections.map((section, sIdx) => (
-          <div key={sIdx}>
-            <div className="grid grid-cols-4 bg-zinc-50/80 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800">
-              <div className="p-4 font-bold text-sm text-zinc-900 dark:text-white uppercase tracking-wider">
-                {section.title}
-              </div>
-              <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
-              <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
-              <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
-            </div>
-            {section.features.map((feature, fIdx) => (
-              <div
-                key={fIdx}
-                className="grid grid-cols-4 border-b border-zinc-100 dark:border-zinc-800/50  transition-colors"
-              >
-                <div className="p-4 flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  {feature.name}
-                  {feature.helpText && (
-                    <div className="group relative cursor-help">
-                      <HelpCircle className="w-3.5 h-3.5 text-zinc-400" />
-                      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-zinc-900 text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-center">
-                        {feature.helpText}
-                      </div>
-                    </div>
-                  )}
+            {data.sections.map((section, sIdx) => (
+              <div key={sIdx}>
+                <div className="px-6 py-2.5 bg-zinc-50/80 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800 font-bold text-xs text-zinc-900 dark:text-white uppercase tracking-wider">
+                  {section.title}
                 </div>
-                {feature.values.map((val, vIdx) => (
+                {section.features.map((feature, fIdx) => (
                   <div
-                    key={vIdx}
-                    className={cn(
-                      "p-4 flex items-center justify-center border-l border-zinc-100 dark:border-zinc-800/50",
-                      data.plans[vIdx].featured ? theme.bgSoft : "",
-                    )}
+                    key={fIdx}
+                    className="px-6 py-3 flex items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0"
                   >
-                    {renderFeatureValue(val)}
+                    <span className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 min-w-0">
+                      <FeatureLabel feature={feature} />
+                    </span>
+                    <span className="shrink-0">
+                      {renderFeatureValue(feature.values[pIdx])}
+                    </span>
                   </div>
                 ))}
               </div>
             ))}
           </div>
         ))}
+      </div>
+
+      {/* WIDE — the side-by-side comparison grid. */}
+      <div className="hidden @min-[52rem]/pricing:block overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950 shadow-sm">
+        {/* The min-width belongs to the CONTENT, not to the scroll container.
+            With `overflow-x-auto min-w-[800px]` on the same element the box can
+            never shrink below 800px, so its content never exceeds it and no
+            scrollbar is ever produced — instead the box overflowed the card,
+            whose `overflow-hidden` silently cut the last plan column off with
+            no way to reach it. */}
+        <div className="overflow-x-auto">
+          <div className="min-w-[800px]">
+            <div className="grid grid-cols-4 bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="p-6 flex items-end">
+                <h3 className="font-bold text-xl text-zinc-900 dark:text-white">
+                  Compare Plans
+                </h3>
+              </div>
+              {data.plans.map((plan) => (
+                <div
+                  key={plan.id}
+                  className={cn(
+                    "p-6 text-center border-l border-zinc-200 dark:border-zinc-800 relative",
+                    plan.featured ? theme.bgSoft : "",
+                  )}
+                >
+                  {plan.featured && (
+                    <div
+                      className={cn("absolute top-0 left-0 w-full h-1", theme.bg)}
+                    />
+                  )}
+                  <h4
+                    className={cn(
+                      "text-lg font-bold mb-2",
+                      plan.featured
+                        ? theme.text
+                        : "text-zinc-900 dark:text-white",
+                    )}
+                  >
+                    {plan.title}
+                  </h4>
+                  <div className="text-3xl font-black text-zinc-900 dark:text-white mb-6">
+                    {plan.price}
+                  </div>
+                  <button className={ctaClass(plan.featured)}>
+                    {plan.buttonText}
+                  </button>
+                </div>
+              ))}
+            </div>
+            {data.sections.map((section, sIdx) => (
+              <div key={sIdx}>
+                <div className="grid grid-cols-4 bg-zinc-50/80 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800">
+                  <div className="p-4 font-bold text-sm text-zinc-900 dark:text-white uppercase tracking-wider">
+                    {section.title}
+                  </div>
+                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
+                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
+                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
+                </div>
+                {section.features.map((feature, fIdx) => (
+                  <div
+                    key={fIdx}
+                    className="grid grid-cols-4 border-b border-zinc-100 dark:border-zinc-800/50  transition-colors"
+                  >
+                    <div className="p-4 flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                      <FeatureLabel feature={feature} />
+                    </div>
+                    {feature.values.map((val, vIdx) => (
+                      <div
+                        key={vIdx}
+                        className={cn(
+                          "p-4 flex items-center justify-center border-l border-zinc-100 dark:border-zinc-800/50",
+                          data.plans[vIdx].featured ? theme.bgSoft : "",
+                        )}
+                      >
+                        {renderFeatureValue(val)}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1091,7 +1207,6 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
         className={cn(
           "w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
           theme.bg,
-          color === "zinc" ? "text-white dark:text-zinc-900" : "text-white",
         )}
       >
         Start 14-Day Free Trial
@@ -1205,7 +1320,7 @@ export function PricingTypographic({
       style={style}
       className={cn(
         "py-16 md:py-24 bg-white dark:bg-black text-zinc-900 dark:text-white font-sans antialiased overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 w-full transition-colors duration-300 relative",
-        `selection:${theme.bg} selection:text-white`,
+        "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
       {/* CUSTOM CSS FOR HOLLOW TYPOGRAPHY */}
@@ -1369,7 +1484,7 @@ export function PricingTypographic({
                       <div
                         className={cn(
                           "w-1.5 h-1.5 bg-zinc-300 dark:bg-white/20 rounded-full transition-colors shrink-0",
-                          `group-hover/feat:${theme.bg}`,
+                          "group-hover/feat:bg-[var(--pricing-accent)]",
                         )}
                       />
                       <span className="text-sm lg:text-base text-zinc-600 dark:text-zinc-300 group-hover/feat:text-zinc-900 dark:group-hover/feat:text-white transition-colors">
@@ -1384,12 +1499,10 @@ export function PricingTypographic({
                   className={cn(
                     "group mt-auto w-max py-4 px-8 rounded-full text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                     activePlan.isFeatured
-                      ? cn(
-                          theme.bg,
-                          color === "zinc"
-                            ? "text-white dark:text-zinc-900"
-                            : "text-white",
-                        )
+                      ? // theme.bg already carries its own foreground; restating
+                        // text-white here let tailwind-merge drop it, painting
+                        // white on the near-white default accent.
+                        theme.bg
                       : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black",
                   )}
                 >
@@ -1402,7 +1515,11 @@ export function PricingTypographic({
                   <span
                     className={cn(
                       "relative z-10 transition-colors duration-500",
-                      !activePlan.isFeatured && "group-hover:text-white",
+                      // The fill that slides up is the accent, so the label has
+                      // to take the accent's foreground — not white, which
+                      // disappears on a light accent.
+                      !activePlan.isFeatured &&
+                        "group-hover:text-[var(--pricing-on)]",
                     )}
                   >
                     Initiate Project
@@ -1411,13 +1528,15 @@ export function PricingTypographic({
                     <ArrowRight
                       className={cn(
                         "absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                        !activePlan.isFeatured && "group-hover:text-white",
+                        !activePlan.isFeatured &&
+                          "group-hover:text-[var(--pricing-on)]",
                       )}
                     />
                     <ArrowRight
                       className={cn(
                         "absolute w-4 h-4 translate-x-0 group-hover:translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                        !activePlan.isFeatured && "group-hover:text-white",
+                        !activePlan.isFeatured &&
+                          "group-hover:text-[var(--pricing-on)]",
                       )}
                     />
                   </div>
@@ -1527,12 +1646,7 @@ export function PricingTypographic({
                         className={cn(
                           "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                           plan.isFeatured
-                            ? cn(
-                                theme.bg,
-                                color === "zinc"
-                                  ? "text-white dark:text-zinc-900"
-                                  : "text-white",
-                              )
+                            ? theme.bg
                             : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black",
                         )}
                       >
@@ -1545,7 +1659,8 @@ export function PricingTypographic({
                         <span
                           className={cn(
                             "relative z-10 transition-colors duration-500",
-                            !plan.isFeatured && "group-hover:text-white",
+                            !plan.isFeatured &&
+                              "group-hover:text-[var(--pricing-on)]",
                           )}
                         >
                           Initiate Project
