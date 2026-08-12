@@ -1,4 +1,5 @@
-import { CustomCodeBlockShowcase } from "@/components/site/CustomCodeBlockShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Custom Code Block
 
@@ -6,316 +7,98 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
-## Interactive Showcase
-Interact with the Custom Code Block to test the copy button and view its scrolling behavior.
+## Examples
 
+Every block ships with macOS window controls, a language badge derived from `language`, and a copy button. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <CustomCodeBlockShowcase />
-</div>
+export const usageDefault = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
-import { CustomCodeBlockDocsUpdater } from "@/components/custom/blocks/CustomCodeBlockDocsUpdater";
-
-<CustomCodeBlockDocsUpdater />
-
-## Implementation
-
-<div id="usage-block-HTML" className="block">
-```tsx
-"use client";
-
-import React from "react";
-import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-export default function AppShowcasePage() {
-  const codeString = `<!DOCTYPE html>
+const html = \`<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Landing Page</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-slate-50 text-slate-900">
-  <header class="flex justify-between items-center p-6 bg-white shadow-sm">
-    <h1 class="text-2xl font-bold tracking-tight text-indigo-600">SaaSFlow</h1>
-    <nav>
-      <ul class="flex gap-4 font-medium">
-        <li><a href="#features" class="hover:text-indigo-500">Features</a></li>
-        <li><a href="#pricing" class="hover:text-indigo-500">Pricing</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main class="max-w-4xl mx-auto py-20 text-center">
-    <h2 class="text-5xl font-black mb-6">Build Faster. Scale Better.</h2>
-    <p class="text-xl text-slate-500 mb-8">The ultimate UI toolkit for modern startups.</p>
-    <button class="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold hover:bg-indigo-700 transition">
-      Get Started
-    </button>
-  </main>
-</body>
-</html>`;
+  <body>
+    <h1>Build Faster. Scale Better.</h1>
+  </body>
+</html>\`;
 
-  return (
-    <div className="w-full h-full p-4 md:p-12">
-      <CustomCodeBlock 
-        code={codeString}
-        language="html"
-        fileName="index.html"
-      />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="usage-block-CSS" className="hidden">
-```tsx
-"use client";
-
-import React from "react";
-import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-export default function AppShowcasePage() {
-  const codeString = `@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-  }
-}
-
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-feature-settings: "rlig" 1, "calt" 1;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
-  100% { transform: scale(0.95); opacity: 1; }
+export default function Snippet() {
+  return <CustomCodeBlock code={html} language="html" fileName="index.html" />;
 }`;
 
+export const usageTypescript = `// \`language\` drives both the highlighter and the icon in the header;
+// \`fileName\` is the label beside it.
+<CustomCodeBlock
+  code={source}
+  language="tsx"
+  fileName="SystemStatus.tsx"
+/>`;
+
+export const usageBash = `// Shell snippets get a terminal icon and comment-aware highlighting.
+<CustomCodeBlock
+  code={"npm install clsx tailwind-merge\nnpm run dev"}
+  language="bash"
+  fileName="terminal"
+/>`;
+
+export const usageTabs = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+// Pass \`tabs\` instead of \`code\` to switch between related files in one block.
+export default function MultiFileSnippet() {
   return (
-    <div className="w-full h-full p-4 md:p-12">
-      <CustomCodeBlock 
-        code={codeString}
-        language="css"
-        fileName="globals.css"
-      />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="usage-block-JavaScript" className="hidden">
-```tsx
-"use client";
-
-import React from "react";
-import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-export default function AppShowcasePage() {
-  const codeString = `import React, { useState, useEffect } from "react";
-import { Activity, Server, Zap } from "lucide-react";
-
-export function SystemStatus({ serverName, defaultStatus }) {
-  const [status, setStatus] = useState(defaultStatus);
-  const [metrics, setMetrics] = useState({ ping: 45, load: 2.1 });
-
-  useEffect(() => {
-    // Simulate real-time monitoring
-    const interval = setInterval(() => {
-      setMetrics({
-        ping: Math.floor(Math.random() * 20) + 30,
-        load: Number((Math.random() * 3 + 1).toFixed(2))
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="p-6 rounded-2xl bg-white border border-slate-200">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
-          <Server className="w-5 h-5 text-indigo-500" />
-          {serverName}
-        </h3>
-        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
-          {status}
-        </span>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
-            <Activity className="w-4 h-4"/> Ping
-          </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
-        </div>
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
-            <Zap className="w-4 h-4"/> Load
-          </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
-        </div>
-      </div>
-    </div>
+    <CustomCodeBlock
+      tabs={[
+        { code: html, language: "html", fileName: "index.html" },
+        { code: css, language: "css", fileName: "style.css" },
+        { code: tsx, language: "tsx", fileName: "SystemStatus.tsx" },
+      ]}
+    />
   );
 }`;
 
-  return (
-    <div className="w-full h-full p-4 md:p-12">
-      <CustomCodeBlock 
-        code={codeString}
-        language="jsx"
-        fileName="SystemStatus.jsx"
-      />
-    </div>
-  );
-}
+<ExampleShowcase
+  name="custom-code-block"
+  columns={1}
+  examples={[
+    {
+      title: "Code block",
+      subheading: "Pass `code`, `language` and `fileName` — the header, icon and highlighting follow.",
+      props: { activeTab: "HTML" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/CustomCodeBlock.tsx"),
+    },
+    {
+      title: "TypeScript",
+      subheading: "Set `language` to `tsx`/`ts` for TypeScript highlighting and the matching badge.",
+      props: { activeTab: "TypeScript" },
+      usage: usageTypescript,
+    },
+    {
+      title: "Shell commands",
+      subheading: "`language=\"bash\"` swaps the badge for a terminal icon and dims comment lines.",
+      props: { activeTab: "Terminal" },
+      usage: usageBash,
+    },
+    {
+      title: "Multiple files",
+      subheading: "Pass `tabs` instead of `code` to group related files behind a switcher in a single block.",
+      props: { example: "tabs" },
+      usage: usageTabs,
+    },
+  ]}
+/>
+
+## Installation
+
+### Dependencies
+
+The language badges come from `react-icons`, and the copy affordance from `lucide-react`.
+
+```bash
+npm install react-icons lucide-react
 ```
-</div>
 
-<div id="usage-block-TypeScript" className="hidden">
-```tsx
-"use client";
+### Copy the Component
 
-import React from "react";
-import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-export default function AppShowcasePage() {
-  const codeString = `import React, { useState, useEffect } from "react";
-import { Activity, Server, Zap } from "lucide-react";
-
-interface SystemMetrics {
-  ping: number;
-  load: number;
-}
-
-interface SystemStatusProps {
-  serverName: string;
-  defaultStatus: "Operational" | "Degraded" | "Outage";
-}
-
-export function SystemStatus({ serverName, defaultStatus }: SystemStatusProps) {
-  const [status, setStatus] = useState(defaultStatus);
-  const [metrics, setMetrics] = useState<SystemMetrics>({ ping: 45, load: 2.1 });
-
-  useEffect(() => {
-    // Simulate real-time monitoring data
-    const interval = setInterval(() => {
-      setMetrics({
-        ping: Math.floor(Math.random() * 20) + 30,
-        load: Number((Math.random() * 3 + 1).toFixed(2))
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="p-6 rounded-2xl bg-white border border-slate-200">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
-          <Server className="w-5 h-5 text-indigo-500" />
-          {serverName}
-        </h3>
-        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
-          {status}
-        </span>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
-            <Activity className="w-4 h-4"/> Ping
-          </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
-        </div>
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
-            <Zap className="w-4 h-4"/> Load
-          </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
-        </div>
-      </div>
-    </div>
-  );
-}`;
-
-  return (
-    <div className="w-full h-full p-4 md:p-12">
-      <CustomCodeBlock 
-        code={codeString}
-        language="tsx"
-        fileName="SystemStatus.tsx"
-      />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="usage-block-Terminal" className="hidden">
-```tsx
-"use client";
-
-import React from "react";
-import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-export default function AppShowcasePage() {
-  const codeString = `# Initialize a new Next.js project with Tailwind CSS
-npx create-next-app@latest my-app --typescript --tailwind --eslint
-
-# Navigate into the project directory
-cd my-app
-
-# Install additional UI dependencies and icons
-npm install clsx tailwind-merge framer-motion lucide-react
-
-# Add Shadcn UI components for faster development
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card dialog
-
-# Start the development server on port 3000
-npm run dev
-
-# The server is now running at http://localhost:3000
-# Press Ctrl+C to stop the server`;
-
-  return (
-    <div className="w-full h-full p-4 md:p-12">
-      <CustomCodeBlock 
-        code={codeString}
-        language="bash"
-        fileName="terminal"
-      />
-    </div>
-  );
-}
-```
-</div>
+Create a new file at `components/custom/blocks/CustomCodeBlock.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.

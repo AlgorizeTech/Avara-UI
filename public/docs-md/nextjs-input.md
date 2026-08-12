@@ -4,13 +4,74 @@ A powerful, multi-purpose Input component that natively supports advanced File U
 
 By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different structural variants, colors, and input types.
+Explore the different variations of the Input component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-- Select **Input Type: File** to reveal the Dropzone.
-- Toggle **Multiple Files** to see the array management logic and preview stacks.
-- Toggle **Images Only** to test the `accept="image/*"` prop limitation.
+export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function BasicInput() {
+  return (
+    
+  );
+}`;
+
+export const usageFilled = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FilledInput() {
+  return (
+    
+  );
+}`;
+
+export const usageUnderlined = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function UnderlinedInput() {
+  return (
+    
+  );
+}`;
+
+export const usageGlow = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function GlowInput() {
+  return (
+    
+  );
+}`;
+
+export const usageSizes = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function InputSizes() {
+  return (
+
+  );
+}`;
+
+export const usagePassword = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function PasswordInput() {
+  return (
+    
+  );
+}`;
+
+export const usageFile = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FileUploadInput() {
+  return (
+     console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
+export const usageStates = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function InputStates() {
+  return (
+
+  );
+}`;
 
 ## Installation
 

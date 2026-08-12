@@ -92,12 +92,34 @@ export interface PopoverContentProps
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
   sideOffset?: number;
+  /**
+   * Flip to the opposite side and shift the panel back into view when the
+   * preferred placement would overflow the viewport. Set to false to pin the
+   * panel to `side`/`align` even when it gets cropped.
+   */
+  avoidCollisions?: boolean;
+  /** Minimum gap (px) kept between the panel and the viewport edges. */
+  collisionPadding?: number;
 }
+
+const OPPOSITE_SIDE = {
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left",
+} as const;
+
+// `max` drops below `min` when the panel is larger than the viewport; pin to
+// `min` there so the panel starts at the top/left edge instead of jumping past it.
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(value, Math.max(min, max)));
 
 export function PopoverContent({
   side = "bottom",
   align = "center",
   sideOffset = 8,
+  avoidCollisions = true,
+  collisionPadding = 8,
   className,
   children,
   ...props
@@ -125,42 +147,120 @@ export function PopoverContent({
     const win = doc.defaultView ?? window;
 
     const updatePosition = () => {
-      const trigger = triggerRef.current!.getBoundingClientRect();
-      const content = contentRef.current!.getBoundingClientRect();
+      const triggerEl = triggerRef.current;
+      const contentEl = contentRef.current;
+      if (!triggerEl || !contentEl) return;
+
+      const viewportWidth = doc.documentElement.clientWidth || win.innerWidth;
+      const viewportHeight = doc.documentElement.clientHeight || win.innerHeight;
+      const padding = avoidCollisions ? collisionPadding : 0;
+
+      // Cap the panel to the viewport *before* measuring it, so a fixed-width
+      // panel (the default is w-72 / 288px) can never be wider or taller than a
+      // phone screen. Scroll the overflow rather than letting it get cropped.
+      if (avoidCollisions) {
+        contentEl.style.maxWidth = `${Math.max(0, viewportWidth - padding * 2)}px`;
+        contentEl.style.maxHeight = `${Math.max(0, viewportHeight - padding * 2)}px`;
+        contentEl.style.overflowY =
+          contentEl.scrollHeight > contentEl.clientHeight ? "auto" : "";
+      }
+
+      const trigger = triggerEl.getBoundingClientRect();
+      // offsetWidth/Height are the untransformed layout box. getBoundingClientRect
+      // would report the shrunken size while the zoom-in entrance animation runs,
+      // which throws the alignment and the clamping below off by a few pixels.
+      const width = contentEl.offsetWidth;
+      const height = contentEl.offsetHeight;
+
+      // 1. Resolve the side, flipping to the opposite edge when the preferred
+      //    one has no room — the common mobile case for side="left"/"right",
+      //    where a 288px panel doesn't fit beside the trigger at all.
+      let resolvedSide = side;
+      if (avoidCollisions) {
+        const space = {
+          top: trigger.top - padding,
+          bottom: viewportHeight - trigger.bottom - padding,
+          left: trigger.left - padding,
+          right: viewportWidth - trigger.right - padding,
+        };
+        const needed =
+          (side === "top" || side === "bottom" ? height : width) + sideOffset;
+        const flipped = OPPOSITE_SIDE[side];
+        if (space[side] < needed && space[flipped] > space[side])
+          resolvedSide = flipped;
+      }
+
       let top = 0;
       let left = 0;
 
-      // 1. Calculate Side
-      if (side === "top") top = trigger.top - content.height - sideOffset;
-      if (side === "bottom") top = trigger.bottom + sideOffset;
-      if (side === "left") left = trigger.left - content.width - sideOffset;
-      if (side === "right") left = trigger.right + sideOffset;
+      // 2. Calculate Side
+      if (resolvedSide === "top") top = trigger.top - height - sideOffset;
+      if (resolvedSide === "bottom") top = trigger.bottom + sideOffset;
+      if (resolvedSide === "left") left = trigger.left - width - sideOffset;
+      if (resolvedSide === "right") left = trigger.right + sideOffset;
 
-      // 2. Calculate Align
-      if (side === "top" || side === "bottom") {
+      // 3. Calculate Align
+      if (resolvedSide === "top" || resolvedSide === "bottom") {
         if (align === "center")
-          left = trigger.left + trigger.width / 2 - content.width / 2;
+          left = trigger.left + trigger.width / 2 - width / 2;
         if (align === "start") left = trigger.left;
-        if (align === "end") left = trigger.right - content.width;
+        if (align === "end") left = trigger.right - width;
       } else {
         if (align === "center")
-          top = trigger.top + trigger.height / 2 - content.height / 2;
+          top = trigger.top + trigger.height / 2 - height / 2;
         if (align === "start") top = trigger.top;
-        if (align === "end") top = trigger.bottom - content.height;
+        if (align === "end") top = trigger.bottom - height;
       }
 
-      setCoords({ top: top + win.scrollY, left: left + win.scrollX });
+      // 4. Shift whatever still hangs off an edge back into view. Alignment is a
+      //    preference, not a guarantee: on a narrow screen an align="start"/"end"
+      //    panel anchored near the edge would otherwise be cropped.
+      if (avoidCollisions) {
+        left = clamp(left, padding, viewportWidth - width - padding);
+        top = clamp(top, padding, viewportHeight - height - padding);
+      }
+
+      const nextTop = top + win.scrollY;
+      const nextLeft = left + win.scrollX;
+      setCoords((prev) =>
+        prev.top === nextTop && prev.left === nextLeft
+          ? prev
+          : { top: nextTop, left: nextLeft },
+      );
     };
 
     updatePosition();
     win.addEventListener("scroll", updatePosition, true);
     win.addEventListener("resize", updatePosition);
+    // The visual viewport shrinks when the mobile keyboard opens over an input
+    // inside the panel, and changes on pinch-zoom — neither fires window resize.
+    win.visualViewport?.addEventListener("resize", updatePosition);
+    win.visualViewport?.addEventListener("scroll", updatePosition);
+
+    // Reposition when the panel or trigger changes size (content loading, the
+    // max-height cap applied above, a responsive breakpoint crossing).
+    const sizeObserver = new (win.ResizeObserver ?? ResizeObserver)(
+      updatePosition,
+    );
+    sizeObserver.observe(contentRef.current);
+    sizeObserver.observe(triggerRef.current);
 
     return () => {
+      sizeObserver.disconnect();
       win.removeEventListener("scroll", updatePosition, true);
       win.removeEventListener("resize", updatePosition);
+      win.visualViewport?.removeEventListener("resize", updatePosition);
+      win.visualViewport?.removeEventListener("scroll", updatePosition);
     };
-  }, [open, side, align, sideOffset]);
+  }, [
+    open,
+    side,
+    align,
+    sideOffset,
+    avoidCollisions,
+    collisionPadding,
+    triggerRef,
+  ]);
 
   // Handle Click Outside & Escape Key
   useEffect(() => {

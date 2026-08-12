@@ -2,9 +2,42 @@
 
 A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
 
-## Interactive Showcase
+## Examples
 
-Interact with the active center card by dragging it left or right, or use the navigation controls below the carousel.
+Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+const items = [
+  {
+    id: "c1",
+    category: "Architecture",
+    title: "Futuristic Urban Sanctuary",
+    description: "Next-generation living spaces woven into organic flora.",
+    image: "/photos/architecture.jpg",
+  },
+  {
+    id: "c2",
+    category: "Automotive",
+    title: "Cybernetic Grand Tourer",
+    description: "Pure electric performance meeting aerodynamic excellence.",
+    image: "/photos/car.jpg",
+  },
+];
+
+export default function ProductShowcase() {
+  return ;
+}`;
+
+export const usageNoAutoplay = `// Manual only — drag, arrow keys and the nav controls still work.
+`;
+
+export const usageInterval = `// Time between advances, in milliseconds.
+`;
+
+export const usageShortDeck = `// The fan tightens automatically as the deck shrinks — the circular
+// offset is computed from \`items.length\`.
+`;
 
 ## Installation
 
@@ -18,40 +51,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ThreeDCarouselBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function ShowcaseSection() {
-  const items = [
-    {
-      id: "1",
-      category: "Architecture",
-      title: "Futuristic Sanctuary",
-      description:
-        "Next-generation living spaces integrated with natural flora.",
-      image:
-        "[https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop)",
-    },
-    {
-      id: "2",
-      category: "Automotive",
-      title: "Cybernetic Grand Tourer",
-      description: "Pure electric performance meeting aerodynamic excellence.",
-      image:
-        "[https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop)",
-    },
-  ];
-
-  return (
-    
-      {/* Auto-play is enabled by default with a 4000ms interval */}
-
-  );
-}
-```
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/ThreeDCarouselBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

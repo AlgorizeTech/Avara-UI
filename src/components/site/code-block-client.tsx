@@ -1,4 +1,5 @@
 "use client";
+import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import { CodeRenderer } from "./code-renderer";
 import type { BuiltinLanguage } from "shiki";
 
@@ -69,40 +70,5 @@ export const CodeBlockClient = ({
     transformCode();
   }, [code, selectedLanguage, lang]);
 
-  return (
-    <div className="relative w-full">
-      {/* Language header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-muted/50 border border-b-0 border-border rounded-t-lg">
-        <div className="flex items-center">
-          {getLanguageIcon(displayLang)}
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wide">
-            {displayLang}
-          </span>
-          {fileName && (
-            <span className="ml-2 text-xs text-muted-foreground/70">
-              {fileName}
-            </span>
-          )}
-        </div>
-        <CodeCopy 
-          code={code} 
-          selectedLanguage={selectedLanguage}
-          onLanguageChange={setSelectedLanguage}
-        />
-      </div>
-
-      <div
-        className={cn(
-          "not-prose relative max-h-[400px] overflow-auto w-full rounded-b-lg border border-border",
-          "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
-          // Remove background colors to let Shiki handle them
-          "[&_.shiki]:!bg-transparent [&_.shiki]:!m-0",
-          "[&_pre]:!bg-transparent [&_pre]:!m-0",
-          "[&_code]:!bg-transparent [&_code]:!p-0"
-        )}
-      >
-        <CodeRenderer code={transformedCode} lang={displayLang} />
-      </div>
-    </div>
-  );
+  return <CodeBlocks code={transformedCode} language={displayLang} />;
 };

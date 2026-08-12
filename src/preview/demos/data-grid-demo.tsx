@@ -75,23 +75,55 @@ const COLUMNS: GridColumn[] = [
   { field: "date", headerName: "Date", width: 140 },
 ];
 
+const GRADEBOOK_COLUMNS: GridColumn[] = [
+  { field: "id", headerName: "User ID", width: 100, readOnly: true },
+  { field: "name", headerName: "Full Name", width: 250 },
+  { field: "score", headerName: "Test Score", type: "number", width: 150 },
+];
+
+const GRADEBOOK_DATA = [
+  { id: "U-01", name: "Alice Smith", score: 95 },
+  { id: "U-02", name: "Bob Jones", score: 82 },
+  { id: "U-03", name: "Carol Williams", score: 78 },
+  { id: "U-04", name: "David Lee", score: 91 },
+];
+
+const DATASETS = {
+  ledger: {
+    title: "Financial Ledger",
+    columns: COLUMNS,
+    data: INITIAL_DATA as Record<string, unknown>[],
+  },
+  gradebook: {
+    title: "Gradebook",
+    columns: GRADEBOOK_COLUMNS,
+    data: GRADEBOOK_DATA as Record<string, unknown>[],
+  },
+} as const;
+
 export default function DataGridDemo({
   color = "primary",
   showRowNumbers = true,
   readOnly = false,
-  data = INITIAL_DATA,
+  dataset = "ledger",
+  data,
 }: {
   color?: GridColor | string;
   showRowNumbers?: boolean;
   readOnly?: boolean;
+  /** Swaps the whole schema to show the grid is column-driven. */
+  dataset?: "ledger" | "gradebook";
   data?: Record<string, unknown>[];
 }) {
+  const preset = DATASETS[dataset] ?? DATASETS.ledger;
+  const initial = data ?? preset.data;
+
   const [currentData, setCurrentData] =
-    useState<Record<string, unknown>[]>(data);
+    useState<Record<string, unknown>[]>(initial);
 
   useEffect(() => {
-    setCurrentData(data);
-  }, [data]);
+    setCurrentData(initial);
+  }, [initial]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
@@ -99,7 +131,7 @@ export default function DataGridDemo({
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex flex-col">
             <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
-              Financial Ledger
+              {preset.title}
             </h3>
             <p className="text-sm text-zinc-500">
               {readOnly
@@ -114,8 +146,8 @@ export default function DataGridDemo({
         </div>
 
         <DataGridBlock
-          key={`${showRowNumbers}`}
-          columns={COLUMNS}
+          key={`${dataset}-${showRowNumbers}`}
+          columns={preset.columns as GridColumn[]}
           data={currentData as Record<string, any>[]}
           onChange={setCurrentData}
           color={color}

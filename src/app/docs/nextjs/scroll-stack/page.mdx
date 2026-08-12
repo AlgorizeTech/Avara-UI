@@ -1,27 +1,212 @@
-import { ScrollStackMasterShowcase } from "@/components/site/ScrollStackMasterShowcase";
-import { StickyScrollStackShowcase } from "@/components/site/StickyScrollStackShowcase";
-import { SplitScrollStackShowcase } from "@/components/site/SplitScrollStackShowcase";
-import { HorizontalScrollStackShowcase } from "@/components/site/HorizontalScrollStackShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Scroll Stack
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
 
-## Interactive Showcase
+## Examples
 
-Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
+Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline. Each layout's first example carries its component source in the **Code** tab.
 
-<ScrollStackMasterShowcase />
+### Simple stack
 
-## Sticky Scroll Stack
-<StickyScrollStackShowcase />
+export const usageSimple = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { Layers, Zap } from "lucide-react";
 
-## Split Scroll Stack
-<SplitScrollStackShowcase />
+const items = [
+  {
+    id: "1",
+    title: "Real-time Synchronization",
+    description: "Instantly sync state across clients.",
+    icon: Zap,
+  },
+  {
+    id: "2",
+    title: "Layered Architecture",
+    description: "Swap databases or auth providers without a rewrite.",
+    icon: Layers,
+    content: <Diagram />,
+  },
+];
 
-## Horizontal Scroll Stack
-<HorizontalScrollStackShowcase />
+export default function FeaturesSection() {
+  return <ScrollStack items={items} />;
+}`;
+
+export const usageSimpleDepth = `// Each card behind the active one shrinks by this fraction — 0.12 gives a
+// pronounced deck, 0.02 keeps the stack nearly flat.
+<ScrollStack items={items} depthScale={0.12} />`;
+
+export const usageSimpleGap = `// Pixel distance between the stacked sticky cards.
+<ScrollStack items={items} cardGap={64} />`;
+
+<ExampleShowcase
+  name="scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Scroll stack",
+      subheading: "Cards pin to the viewport and the next one slides up to cover them. Each item takes a `title`, `description`, optional `icon` and arbitrary `content`.",
+      props: {},
+      usage: usageSimple,
+      code: extractCode("src/components/custom/blocks/ScrollStackBlock.tsx"),
+    },
+    {
+      title: "Depth scale",
+      subheading: "`depthScale` controls how much each covered card shrinks — raise it for a deeper deck.",
+      props: { depthScale: 0.12 },
+      usage: usageSimpleDepth,
+    },
+    {
+      title: "Card gap",
+      subheading: "`cardGap` is the pixel offset between stacked cards, so the titles underneath stay readable.",
+      props: { cardGap: 64 },
+      usage: usageSimpleGap,
+    },
+  ]}
+/>
+
+### Sticky stack
+
+export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+const items = [
+  {
+    id: "ui-design",
+    title: "UI Design",
+    badge: "Visual Identity",
+    contentType: "list",
+    description: "Interfaces that look deliberate at every breakpoint.",
+    listItems: ["Design tokens", "Component specs", "Motion guidelines"],
+  },
+];
+
+export default function ServicesSection() {
+  return (
+    <StickyScrollStack
+      items={items}
+      headerTitle="What we do"
+      headerContentType="text-button"
+      headerButtonText="Book a call"
+    />
+  );
+}`;
+
+export const usageStickyNoGlow = `// Turns off the ambient glow behind the active card.
+<StickyScrollStack items={items} enableGlow={false} />`;
+
+export const usageStickyGeometry = `// \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
+// offset that keeps the earlier headers peeking out.
+<StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />`;
+
+<ExampleShowcase
+  name="sticky-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Sticky stack",
+      subheading: "A headed section where each card sticks and the next overlaps it. Items pick a `contentType` — `list`, `image`, `split` or `custom`.",
+      props: { headerMode: "text-button" },
+      usage: usageSticky,
+      code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
+    },
+    {
+      title: "Without the glow",
+      subheading: "Set `enableGlow={false}` for a flatter, quieter section.",
+      props: { headerMode: "text-only", enableGlow: false },
+      usage: usageStickyNoGlow,
+    },
+    {
+      title: "Stack geometry",
+      subheading: "`scaleStep` and `stackOffsetStep` tune how far each card recedes and how much of it stays visible.",
+      props: { headerMode: "image-button", scaleStep: 0.08, stackOffsetStep: 28 },
+      usage: usageStickyGeometry,
+    },
+  ]}
+/>
+
+### Split stack
+
+export const usageSplit = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+// One column pins while the other scrolls its stack past it.
+export default function ProcessSection() {
+  return <SplitScrollStack items={items} stickySide="right" />;
+}`;
+
+export const usageSplitLeft = `<SplitScrollStack
+  items={items}
+  stickySide="left"
+  cardDepthScale={0.1}
+  cardOffset={32}
+/>`;
+
+<ExampleShowcase
+  name="split-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Split stack",
+      subheading: "A two-column layout: one side pins while the other scrolls its deck past it. `stickySide` picks which.",
+      props: { stickySide: "right" },
+      usage: usageSplit,
+      code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
+    },
+    {
+      title: "Pinned left",
+      subheading: "Flip `stickySide` and tune `cardDepthScale` / `cardOffset` for the deck on the other side.",
+      props: { stickySide: "left", cardDepthScale: 0.1, cardOffset: 32 },
+      usage: usageSplitLeft,
+    },
+  ]}
+/>
+
+### Horizontal stack
+
+export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+const steps = [
+  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
+  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
+];
+
+export default function ProcessRail() {
+  return (
+    <HorizontalScrollStack
+      items={steps}
+      title="How we work"
+      subtitle="Four steps, start to ship."
+    />
+  );
+}`;
+
+export const usageHorizontalShort = `// Fewer steps means a shorter pinned scroll distance.
+<HorizontalScrollStack items={steps.slice(0, 3)} />`;
+
+<ExampleShowcase
+  name="horizontal-scroll-stack"
+  columns={1}
+  examples={[
+    {
+      title: "Horizontal stack",
+      subheading: "The section pins and vertical scroll is translated into horizontal travel across the card rail.",
+      props: { title: "How we work", subtitle: "Four steps, start to ship." },
+      usage: usageHorizontal,
+      code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
+    },
+    {
+      title: "Shorter rail",
+      subheading: "The pinned scroll distance is derived from the item count, so trimming `items` shortens the section.",
+      props: { itemCount: 3 },
+      usage: usageHorizontalShort,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -35,114 +220,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Select your desired variant (Simple, Split, Sticky, or Horizontal) from the showcase tabs above. Then, open the **Code** tab inside the preview window to copy both the component source code and the implementation example.
-
-
-## Implementation
-
-<div id="stack-docs-Simple">
-```tsx
-import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-import { Zap, Layers } from "lucide-react";
-
-export default function FeaturesSection() {
-  const items = [
-    {
-      id: "1",
-      title: "Real-time Synchronization",
-      description: "Instantly sync state across clients.",
-      icon: Zap,
-      content: <div className="p-8">Custom Interactive UI 1</div>,
-    },
-    {
-      id: "2",
-      title: "Layered Architecture",
-      description: "Build robust systems with separated concerns.",
-      icon: Layers,
-      content: <div className="p-8">Custom Interactive UI 2</div>,
-    },
-  ];
-
-  return (
-    <div className="max-w-7xl mx-auto py-20 px-6">
-      <ScrollStack cardGap={24} depthScale={0.05} items={items} />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="stack-docs-Split">
-```tsx
-import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
-
-export default function LandingSection() {
-  const items = [
-    {
-      id: "landing",
-      stepNumber: "01",
-      title: "Landing Page Design",
-      description: "We engineer high-converting layouts.",
-      tags: ["Conversion Focused", "Figma To Code"],
-      cardContent: <div className="p-6 bg-amber-500/10">Custom Visual 1</div>,
-    },
-  ];
-
-  return (
-    <div className="max-w-7xl mx-auto py-20 px-6">
-      <SplitScrollStack stickySide="right" cardDepthScale={0.05} items={items} />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="stack-docs-Sticky">
-```tsx
-import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
-
-export default function MobileShowcase() {
-  const items = [
-    {
-      id: "step1",
-      title: "Seamless Integration",
-      description: "Connect your existing tools with one click.",
-      color: "bg-blue-600",
-      content: <div>Mobile Screen 1</div>,
-    },
-  ];
-
-  return (
-    <div className="max-w-5xl mx-auto py-20">
-      <StickyScrollStack items={items} />
-    </div>
-  );
-}
-```
-</div>
-
-<div id="stack-docs-Horizontal">
-```tsx
-import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
-
-export default function RoadmapSection() {
-  const items = [
-    {
-      id: "q1",
-      title: "Q1 Launch",
-      description: "Initial rollout of core features.",
-      content: <div>Roadmap Details</div>,
-    },
-  ];
-
-  return (
-    <div className="max-w-full overflow-hidden py-20">
-      <HorizontalScrollStack items={items} />
-    </div>
-  );
-}
-```
-</div>
+Each layout above carries its own source in the **Code** tab of its first example — `ScrollStackBlock.tsx`, `StickyScrollStackBlock.tsx`, `SplitScrollStackBlock.tsx` and `HorizontalScrollStackBlock.tsx`. Copy the ones you need into `components/custom/blocks/`.
 
 
 ## Features

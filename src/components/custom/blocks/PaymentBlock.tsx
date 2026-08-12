@@ -1,9 +1,24 @@
 "use client";
 import React, { useState } from "react";
 import { ComponentCard } from "../ui/base";
+import { SelectBlock } from "./SelectBlock";
+
+const MONTH_OPTIONS = [
+  { label: "January", value: "January" },
+  { label: "February", value: "February" },
+  { label: "March", value: "March" },
+];
+
+const YEAR_OPTIONS = [
+  { label: "2026", value: "2026" },
+  { label: "2027", value: "2027" },
+  { label: "2028", value: "2028" },
+];
 
 export function PaymentBlock() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [month, setMonth] = useState("January");
+  const [year, setYear] = useState("2026");
 
   const handleSubmit = () => {
     setIsSubmitting(true);
@@ -34,19 +49,23 @@ export function PaymentBlock() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Month</label>
-            <select className="flex h-9 w-full rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-1 text-sm shadow-sm outline-none cursor-pointer text-zinc-900 dark:text-zinc-50">
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">January</option>
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">February</option>
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">March</option>
-            </select>
+            <SelectBlock
+              options={MONTH_OPTIONS}
+              value={month}
+              onChange={setMonth}
+              inputSize="sm"
+              placeholder="Select month"
+            />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">Year</label>
-            <select className="flex h-9 w-full rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-1 text-sm shadow-sm outline-none cursor-pointer text-zinc-900 dark:text-zinc-50">
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">2026</option>
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">2027</option>
-              <option className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">2028</option>
-            </select>
+            <SelectBlock
+              options={YEAR_OPTIONS}
+              value={year}
+              onChange={setYear}
+              inputSize="sm"
+              placeholder="Select year"
+            />
           </div>
         </div>
         <button onClick={handleSubmit} disabled={isSubmitting} className="mt-2 w-full inline-flex h-9 items-center justify-center rounded-md bg-zinc-900 dark:bg-zinc-50 text-sm font-medium text-white dark:text-zinc-900 shadow transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">

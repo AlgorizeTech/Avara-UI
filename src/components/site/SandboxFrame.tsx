@@ -34,7 +34,7 @@ export function SandboxFrame({
   className?: string;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [height, setHeight] = useState(minHeight);
+  const [contentHeight, setContentHeight] = useState(minHeight);
   const [ready, setReady] = useState(false);
   const propsRef = useRef(sandboxProps);
   propsRef.current = sandboxProps;
@@ -76,7 +76,7 @@ export function SandboxFrame({
       if (event.source !== iframeRef.current?.contentWindow) return;
       const data = event.data;
       if (data?.type === "sandbox:height" && typeof data.height === "number") {
-        setHeight(Math.min(maxHeight, Math.max(minHeight, Math.ceil(data.height))));
+        setContentHeight(Math.ceil(data.height));
       }
       if (data?.type === "sandbox:ready") {
         setReady(true);
@@ -84,7 +84,19 @@ export function SandboxFrame({
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [minHeight, maxHeight]);
+  }, []);
+
+  // The frame is shrunk visually (scale), but `minHeight` describes the CARD.
+  // Sizing the iframe to minHeight would leave it covering only minHeight*scale
+  // of the card, so the document's bottom edge — where fixed overlays like the
+  // toast stack anchor — floats above the card floor. Growing the iframe's own
+  // viewport by 1/scale makes the scaled frame fill the card exactly.
+  const safeScale = scale > 0 ? scale : 1;
+  const floorHeight = Math.round(minHeight / safeScale);
+  const frameHeight = Math.min(
+    Math.max(floorHeight, maxHeight),
+    Math.max(floorHeight, contentHeight),
+  );
 
   return (
     <div
@@ -92,7 +104,7 @@ export function SandboxFrame({
         "relative w-full overflow-hidden transition-[height] duration-300 ease-out",
         className,
       )}
-      style={{ height: Math.round(height * scale) }}
+      style={{ height: Math.round(frameHeight * safeScale) }}
     >
       <iframe
         key={resetKey}
@@ -106,7 +118,7 @@ export function SandboxFrame({
         )}
         style={{
           width: viewportWidth == null ? "100%" : `${viewportWidth}px`,
-          height,
+          height: frameHeight,
           transform: scale !== 1 ? `scale(${scale})` : undefined,
           transformOrigin: "top left",
         }}

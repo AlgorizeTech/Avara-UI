@@ -1,4 +1,5 @@
-import { HalfStarsShowcase } from "@/components/site/HalfStarsShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Half Stars Rating
 
@@ -6,119 +7,122 @@ A sleek, customizable star rating component for Next.js applications that suppor
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
-## Interactive Showcase
-Hover and click the Half Stars rating system to test its interactive fraction selection.
+## Examples
 
+Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <HalfStarsShowcase />
-</div>
+export const usageFull = `"use client";
 
-import { HalfStarsDocsUpdater } from "@/components/custom/blocks/HalfStarsDocsUpdater";
-
-<HalfStarsDocsUpdater />
-
-## Implementation
-
-<div id="usage-block-full" className="block">
-```tsx
-"use client";
-
-import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
-export default function AppShowcasePage() {
+export default function FullStarRating() {
   const [rating, setRating] = useState(3);
 
   return (
-    <div className="flex justify-center p-8">
-      <HalfStars 
-        rating={rating} 
-        interactive={true} 
-        allowHalf={false} 
-        onRatingChange={setRating}
-        showText={false}
-      />
-    </div>
+    <HalfStars
+      rating={rating}
+      size={40}
+      interactive
+      allowHalf={false}
+      onRatingChange={setRating}
+      showText={false}
+    />
   );
-}
-```
-</div>
+}`;
 
-<div id="usage-block-half" className="hidden">
-```tsx
-"use client";
+export const usageHalf = `"use client";
 
-import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
-export default function AppShowcasePage() {
+export default function HalfStarRating() {
   const [rating, setRating] = useState(3.5);
 
   return (
-    <div className="flex justify-center p-8">
-      <HalfStars 
-        rating={rating} 
-        interactive={true} 
-        allowHalf={true} 
-        onRatingChange={setRating} 
-      />
-    </div>
+    <HalfStars
+      rating={rating}
+      size={40}
+      interactive
+      allowHalf
+      onRatingChange={setRating}
+    />
   );
-}
-```
-</div>
+}`;
 
-<div id="usage-block-continuous" className="hidden">
-```tsx
-"use client";
+export const usageContinuous = `"use client";
 
-import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
-export default function AppShowcasePage() {
+export default function PreciseRating() {
   const [rating, setRating] = useState(4.2);
 
   return (
-    <div className="flex justify-center p-8">
-      <HalfStars 
-        rating={rating} 
-        interactive={true} 
-        step={0.1}
-        onRatingChange={setRating} 
-      />
-    </div>
+    <HalfStars
+      rating={rating}
+      size={40}
+      interactive
+      step={0.1}
+      onRatingChange={setRating}
+    />
   );
-}
-```
-</div>
+}`;
 
-<div id="usage-block-custom" className="hidden">
-```tsx
-"use client";
+export const usageCustom = `"use client";
 
-import React, { useState } from "react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
-export default function AppShowcasePage() {
+export default function TenStarRating() {
   const [rating, setRating] = useState(7.5);
 
   return (
-    <div className="flex justify-center p-8">
-      <HalfStars 
-        rating={rating} 
-        maxStars={10}
-        activeColor="text-red-500" 
-        inactiveColor="text-red-200 dark:text-red-900"
-        interactive={true} 
-        allowHalf={true} 
-        onRatingChange={setRating} 
-      />
-    </div>
+    <HalfStars
+      rating={rating}
+      maxStars={10}
+      size={40}
+      activeColor="text-red-500"
+      inactiveColor="text-red-200 dark:text-red-900"
+      interactive
+      allowHalf
+      onRatingChange={setRating}
+    />
   );
-}
-```
-</div>
+}`;
+
+<ExampleShowcase
+  name="half-stars"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Full stars",
+      subheading: "Whole numbers only — set `allowHalf={false}`.",
+      props: { activeVariant: "full", hideLabel: true },
+      usage: usageFull,
+      code: extractCode("src/components/custom/blocks/HalfStarsBlock.tsx"),
+    },
+    {
+      title: "Half stars",
+      subheading: "Set `allowHalf` for 0.5 precision increments.",
+      props: { activeVariant: "half", hideLabel: true },
+      usage: usageHalf,
+    },
+    {
+      title: "Continuous fractions",
+      subheading: "Pass `step={0.1}` for fine-grained ratings like 2.3 or 4.6.",
+      props: { activeVariant: "continuous", hideLabel: true },
+      usage: usageContinuous,
+    },
+    {
+      title: "Custom scale and colors",
+      subheading: "`maxStars`, `activeColor` and `inactiveColor` reshape the scale.",
+      props: { activeVariant: "custom", hideLabel: true },
+      usage: usageCustom,
+    },
+  ]}
+/>
 
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.

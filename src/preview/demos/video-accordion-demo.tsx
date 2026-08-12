@@ -48,7 +48,17 @@ const samplePanels: AccordionPanel[] = [
   },
 ];
 
-export default function VideoAccordionDemo() {
+export default function VideoAccordionDemo({
+  defaultActiveId,
+  panelCount,
+}: {
+  /** Starts with one panel already expanded instead of the resting state. */
+  defaultActiveId?: string;
+  /** Trims the rail so you can see how few panels still read well. */
+  panelCount?: number;
+}) {
+  const panels = panelCount ? samplePanels.slice(0, panelCount) : samplePanels;
+
   return (
     <div className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-16 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
       {/* Subtle Adaptive Backglow */}
@@ -56,7 +66,11 @@ export default function VideoAccordionDemo() {
 
       <div className="w-full max-w-5xl mx-auto relative z-10 shadow-2xl">
         {/* By omitting defaultActiveId, it starts in the clean resting state */}
-        <VideoAccordion panels={samplePanels} />
+        <VideoAccordion
+          key={`${defaultActiveId}-${panels.length}`}
+          panels={panels}
+          defaultActiveId={defaultActiveId}
+        />
       </div>
     </div>
   );

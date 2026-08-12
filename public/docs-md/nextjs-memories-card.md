@@ -2,9 +2,58 @@
 
 A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
 
-## Interactive Showcase
+## Examples
 
-Hover over the front card to see the 3D perspective tilt follow your cursor. Click and drag (or touch swipe) left or right to send the current card to the back of the deck.
+Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
+
+const memories = [
+  {
+    id: "m1",
+    tag: "Highlight",
+    title: "Kyoto Lantern Festival",
+    location: "Kyoto, Japan",
+    date: "Oct 2025",
+    description: "Thousands of paper lanterns lighting the Gion district.",
+    image: "/photos/kyoto.jpg",
+  },
+  {
+    id: "m2",
+    tag: "Expedition",
+    title: "Dolomites Alpine Ridge",
+    location: "South Tyrol, Italy",
+    date: "Aug 2025",
+    image: "/photos/dolomites.jpg",
+  },
+];
+
+export default function TravelDeck() {
+  return ;
+}`;
+
+export const usageMinimal = `// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
+// metadata and the overlay collapses to just the title.
+const memories = [
+  { id: "m1", title: "Kyoto Lantern Festival", image: "/photos/kyoto.jpg" },
+  { id: "m2", title: "Dolomites Alpine Ridge", image: "/photos/dolomites.jpg" },
+];
+
+`;
+
+export const usageOnChange = `import { useState } from "react";
+
+export default function TravelDeck() {
+  const [active, setActive] = useState(0);
+
+  // Fires every time a card is sent to the back of the deck.
+  return (
+    <>
+      
+      Showing {memories[active].title}
+    
+  );
+}`;
 
 ## Installation
 
@@ -18,42 +67,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and save it to components/custom/blocks/MemoriesCardBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function GallerySection() {
-  const memories = [
-    {
-      id: "1",
-      tag: "Highlight",
-      title: "Kyoto Lantern Festival",
-      location: "Kyoto, Japan",
-      date: "Oct 2025",
-      description: "Walking through glowing paper lanterns in historic Gion.",
-      image:
-        "[https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop)",
-    },
-    {
-      id: "2",
-      tag: "Expedition",
-      title: "Dolomites Alpine Ridge",
-      location: "South Tyrol, Italy",
-      date: "Aug 2025",
-      description:
-        "Reaching the summit just as morning sun cast jagged shadows.",
-      image:
-        "[https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop)",
-    },
-  ];
-
-  return (
-
-  );
-}
-```
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/MemoriesCardBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

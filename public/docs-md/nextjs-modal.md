@@ -2,11 +2,61 @@
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different modal layouts (`standard`, `form`, `fullscreen`, `confirmation`).
+Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container. The first example's **Code** tab contains the full component source.
 
-_Note: For the documentation preview, the modal uses absolute positioning to stay contained within the box. In your actual application, you can swap it to `fixed` positioning to cover the entire viewport!_
+_Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
+
+export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function ModalDemo() {
+  return ;
+}`;
+
+export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function FormModal() {
+  // "form" swaps the body for a labelled input layout with a submit action.
+  return ;
+}`;
+
+export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function ConfirmModal() {
+  // "confirmation" is the compact are-you-sure shape with two actions.
+  return ;
+}`;
+
+export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function FullscreenModal() {
+  // "fullscreen" fills the viewport — good for editors and media views.
+  return ;
+}`;
+
+export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function GlassModal() {
+  // Glass leans on a heavy backdrop blur — best over a colorful page.
+  return (
+
+  );
+}`;
+
+export const usageMinimal = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function MinimalModal() {
+  // No border, softer shadow, tighter radius.
+  return ;
+}`;
+
+export const usageBordered = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function BorderedModal() {
+  // Square corners, 2px border and a hard offset shadow.
+  return ;
+}`;
 
 ## Installation
 
@@ -17,6 +67,10 @@ This component relies heavily on `gsap` to handle the mounting/unmounting lifecy
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/ModalBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

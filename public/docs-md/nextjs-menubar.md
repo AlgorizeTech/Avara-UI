@@ -4,9 +4,167 @@ A visually persistent, OS-style menu component that provides quick access to a c
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Interactive Showcase
+## Examples
 
-Interact with the simulated application header below. Try clicking a menu to open it, and then simply hover over the adjacent triggers to see the seamless switching behavior. Clicking outside the menu or hitting `Escape` will close it.
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function TopNav() {
+  return (
+    
+      {/* Every MenubarMenu needs a unique \`value\` — the context tracks it */}
+      
+        File
+        
+           console.log("New Tab")}>New Tab
+          New Window
+          Open File…
+
+        Edit
+        
+          Undo
+          Redo
+          Cut
+
+  );
+}`;
+
+export const usageShortcuts = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function EditMenu() {
+  return (
+
+        Edit
+        
+          {/* MenubarShortcut right-aligns itself inside the item */}
+          
+            Undo ⌘Z
+
+            Redo ⇧⌘Z
+
+            Cut ⌘X
+
+            Copy ⌘C
+
+            Paste ⌘V
+
+  );
+}`;
+
+export const usageIcons = `import { useState } from "react";
+
+export default function ViewMenu() {
+  const [theme, setTheme] = useState("System");
+
+  return (
+
+        View
+        
+          {/* inset lines the label up with the icon-bearing items below */}
+          Theme Options
+
+           setTheme("Light")}>
+             Light Mode
+            {theme === "Light" && (
+              Active
+            )}
+          
+           setTheme("Dark")}>
+             Dark Mode
+            {theme === "Dark" && (
+              Active
+            )}
+          
+           setTheme("System")}>
+             System Default
+            {theme === "System" && (
+              Active
+            )}
+
+  );
+}`;
+
+export const usageDisabled = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function FileMenu() {
+  return (
+
+        File
+        
+          Save
+
+          {/* disabled dims the row and kills pointer events + onClick */}
+          Save All
+
+          {/* className styles a single destructive row */}
+          
+            Quit Nexus ⌘Q
+
+  );
+}`;
+
+export const usageApp = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function AppWindow() {
+  return (
+    
+      {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
+
+            Nexus UI
+            
+              About Nexus
+
+                Preferences… ⌘,
+
+            Edit
+
+                Undo ⌘Z
+
+            Profiles
+            {/* align anchors the dropdown to the trigger: start | center | end */}
+            
+              Active Account
+              
+                 Andy Bernard
+
+              Add Account…
+
+      {/* your app canvas */}
+    
+  );
+}`;
 
 ## Installation
 
@@ -14,36 +172,7 @@ Interact with the simulated application header below. Try clicking a menu to ope
 
 This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/MenubarBlock.tsx`.
-
----
-
-## Usage
-
-The Menubar uses a highly composable structure. Wrap everything in ``, create columns with ``, set your button with ``, and list your actions inside ``.
-
-```tsx
-
-export default function TopNav() {
-  return (
-
-        File
-        
-           console.log('New')}>
-            New Tab ⌘T
-
-            Share
-
-            Print... ⌘P
-
-        Edit
-        
-          Copy
-          Paste
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/MenubarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.

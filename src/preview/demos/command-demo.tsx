@@ -26,9 +26,12 @@ import { useEffect, useState } from "react";
 export default function CommandDemo({
   layout = "inline",
   open = false,
+  shouldFilter = true,
 }: {
-  layout?: "inline" | "dialog";
+  layout?: "inline" | "dialog" | "simple";
   open?: boolean;
+  /** false turns off the built-in filtering (you filter the items yourself). */
+  shouldFilter?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(open);
 
@@ -106,13 +109,42 @@ export default function CommandDemo({
     </>
   );
 
+  const SimpleCommandContent = () => (
+    <>
+      <CommandInput placeholder="Search actions..." />
+      <CommandList>
+        <CommandEmpty>No matching records found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem onSelect={handleAction}>
+            <Calendar className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem onSelect={handleAction}>
+            <Smile className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem onSelect={handleAction}>
+            <Calculator className="mr-2 h-4 w-4" />
+            <span>Calculator</span>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </>
+  );
+
   return (
     <>
       <Toaster position="bottom-right" />
       <div className="w-full flex items-center justify-center min-h-[450px] relative z-10 overflow-hidden">
-        {layout === "inline" ? (
+        {layout === "simple" ? (
           <div className="w-full max-w-[450px]">
-            <Command>
+            <Command shouldFilter={shouldFilter}>
+              <SimpleCommandContent />
+            </Command>
+          </div>
+        ) : layout === "inline" ? (
+          <div className="w-full max-w-[450px]">
+            <Command shouldFilter={shouldFilter}>
               <SharedCommandContent />
             </Command>
           </div>

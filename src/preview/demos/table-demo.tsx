@@ -122,6 +122,8 @@ const columns: TableColumn<Transaction>[] = [
   { key: "actions", label: "", align: "right" },
 ];
 
+const TABLE_SIZES: TableSize[] = ["sm", "md", "lg"];
+
 export default function TableDemo({
   variant = "default",
   tableSize = "md",
@@ -129,6 +131,7 @@ export default function TableDemo({
   isSelectable = true,
   isPaginated = true,
   isExpandable = true,
+  showAll,
 }: {
   variant?: TableVariant;
   tableSize?: TableSize;
@@ -136,10 +139,35 @@ export default function TableDemo({
   isSelectable?: boolean;
   isPaginated?: boolean;
   isExpandable?: boolean;
+  /** Renders every step of a scalar prop in one frame. */
+  showAll?: "sizes";
 }) {
+  if (showAll === "sizes") {
+    // Trimmed data + no interactive extras so the three densities stay comparable.
+    const compactColumns = columns.slice(0, 4);
+    return (
+      <div className="w-full flex flex-col gap-8 p-4 sm:p-6">
+        {TABLE_SIZES.map((size) => (
+          <div key={size} className="flex flex-col gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+              tableSize=&quot;{size}&quot;
+            </span>
+            <TableBlock
+              data={sampleData.slice(0, 3)}
+              columns={compactColumns}
+              variant={variant}
+              color={color}
+              tableSize={size}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`w-full flex flex-col items-start justify-center min-h-[500px] ${variant === "glass" ? "p-4 sm:p-8 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center" : ""} relative z-10`}
+      className={`w-full flex flex-col items-start justify-center min-h-[500px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""} relative z-10`}
     >
       <div className="w-full max-w-5xl mx-auto">
         <TableBlock

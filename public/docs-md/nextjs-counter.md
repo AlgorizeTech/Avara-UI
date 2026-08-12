@@ -2,13 +2,45 @@
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to flip between the four counter layouts. **When using the `stepper` type, you unlock four unique structural variants** (`default`, `outline`, `soft`, `vertical`) to fit perfectly into horizontal product bars or tight vertical sidebars.
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-You can also apply global color themes (or custom hex codes) that cascade instantly across buttons, strokes, and text elements.
+export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export default function QuantityStepper() {
+  return (
+    
+  );
+}`;
+
+export const usageOutline = ``;
+
+export const usageSoft = ``;
+
+export const usageVertical = ``;
+
+export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SubscriberTicker() {
+  return (
+    
+  );
+}`;
+
+export const usageCircular = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function StorageMeter() {
+  return (
+    
+  );
+}`;
+
+export const usageCountdown = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function LaunchCountdown() {
+  return ;
+}`;
 
 ## Installation
 

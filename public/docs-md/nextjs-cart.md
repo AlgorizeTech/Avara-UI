@@ -2,15 +2,29 @@
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and four distinct structural layouts.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to switch between layouts.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all four. Click the bag trigger in the first three previews to play the GSAP entrance. The first example's **Code** tab contains the full component source.
 
-- **Drawer & Modal:** Perfect for global navigation states. Click the trigger button to see the GSAP entrance animations.
-- **Popover:** Excellent for quick previews on hover or click.
-- **Page:** A full-width layout designed specifically for a dedicated `/cart` or `/checkout` route.
+export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export default function Layout() {
+  return (
+
+  );
+}`;
+
+export const usageModal = `// Centred dialog with a blurred backdrop — same trigger, same state.
+`;
+
+export const usagePopover = `// Anchored under the trigger, scrolls internally past ~300px of items.
+`;
+
+export const usagePage = `// Full-width two-column layout for a dedicated /cart route.
+// No trigger button — the cart is the page.
+export default function CartPage() {
+  return ;
+}`;
 
 ## Installation
 
@@ -21,6 +35,10 @@ This component uses `gsap` for the buttery-smooth slide and scale animations, an
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create `components/custom/blocks/CartBlock.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
@@ -61,11 +79,12 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary buttons, focus rings,
           badges, and icons. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          "#00FF00"). Any unrecognised name — including the{" "}
+          "primary" default — falls back to the indigo theme.
 
 ---
 

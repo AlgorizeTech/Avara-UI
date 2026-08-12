@@ -1,16 +1,118 @@
-import { ModalShowcase } from "@/components/site/ModalShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Modal Dialog
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different modal layouts (`standard`, `form`, `fullscreen`, `confirmation`).
+Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container. The first example's **Code** tab contains the full component source.
 
-_Note: For the documentation preview, the modal uses absolute positioning to stay contained within the box. In your actual application, you can swap it to `fixed` positioning to cover the entire viewport!_
+_Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
-<ModalShowcase />
+export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function ModalDemo() {
+  return <ModalBlock type="standard" variant="default" />;
+}`;
+
+export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function FormModal() {
+  // "form" swaps the body for a labelled input layout with a submit action.
+  return <ModalBlock type="form" variant="default" />;
+}`;
+
+export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function ConfirmModal() {
+  // "confirmation" is the compact are-you-sure shape with two actions.
+  return <ModalBlock type="confirmation" variant="default" />;
+}`;
+
+export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function FullscreenModal() {
+  // "fullscreen" fills the viewport — good for editors and media views.
+  return <ModalBlock type="fullscreen" variant="default" />;
+}`;
+
+export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function GlassModal() {
+  // Glass leans on a heavy backdrop blur — best over a colorful page.
+  return (
+    <div className="p-8 bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50">
+      <ModalBlock type="standard" variant="glass" />
+    </div>
+  );
+}`;
+
+export const usageMinimal = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function MinimalModal() {
+  // No border, softer shadow, tighter radius.
+  return <ModalBlock type="standard" variant="minimal" />;
+}`;
+
+export const usageBordered = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
+
+export default function BorderedModal() {
+  // Square corners, 2px border and a hard offset shadow.
+  return <ModalBlock type="standard" variant="bordered" />;
+}`;
+
+<ExampleShowcase
+  name="modal"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Modal",
+      subheading: "The default layout: icon, title, body copy and a pair of actions.",
+      props: { type: "standard", variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
+    },
+    {
+      title: "Form",
+      subheading: "`type=\"form\"` swaps the body for labelled fields and a submit action.",
+      props: { type: "form", variant: "default" },
+      usage: usageForm,
+    },
+    {
+      title: "Confirmation",
+      subheading: "`type=\"confirmation\"` is the compact are-you-sure shape.",
+      props: { type: "confirmation", variant: "default" },
+      usage: usageConfirmation,
+    },
+    {
+      title: "Fullscreen",
+      subheading: "`type=\"fullscreen\"` fills the viewport for editors and media views.",
+      props: { type: "fullscreen", variant: "default" },
+      usage: usageFullscreen,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` blurs whatever sits behind the modal.",
+      props: { type: "standard", variant: "glass" },
+      usage: usageGlass,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` drops the border for a softer, flatter card.",
+      props: { type: "standard", variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Bordered",
+      subheading: "`variant=\"bordered\"` gives square corners and a hard offset shadow.",
+      props: { type: "standard", variant: "bordered" },
+      usage: usageBordered,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -21,6 +123,10 @@ This component relies heavily on `gsap` to handle the mounting/unmounting lifecy
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/ModalBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

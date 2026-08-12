@@ -1,15 +1,80 @@
-import { Carousel3DShowcase } from "@/components/site/Carousel3DShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # 3D Carousel
 
 A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
 
 
-## Interactive Showcase
+## Examples
 
-Interact with the active center card by dragging it left or right, or use the navigation controls below the carousel.
+Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck. The first example's **Code** tab contains the full component source.
 
-<Carousel3DShowcase />
+export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+const items = [
+  {
+    id: "c1",
+    category: "Architecture",
+    title: "Futuristic Urban Sanctuary",
+    description: "Next-generation living spaces woven into organic flora.",
+    image: "/photos/architecture.jpg",
+  },
+  {
+    id: "c2",
+    category: "Automotive",
+    title: "Cybernetic Grand Tourer",
+    description: "Pure electric performance meeting aerodynamic excellence.",
+    image: "/photos/car.jpg",
+  },
+];
+
+export default function ProductShowcase() {
+  return <ThreeDCarousel items={items} autoPlay autoPlayInterval={4000} />;
+}`;
+
+export const usageNoAutoplay = `// Manual only — drag, arrow keys and the nav controls still work.
+<ThreeDCarousel items={items} autoPlay={false} />`;
+
+export const usageInterval = `// Time between advances, in milliseconds.
+<ThreeDCarousel items={items} autoPlay autoPlayInterval={1500} />`;
+
+export const usageShortDeck = `// The fan tightens automatically as the deck shrinks — the circular
+// offset is computed from \`items.length\`.
+<ThreeDCarousel items={items.slice(0, 3)} autoPlay />`;
+
+<ExampleShowcase
+  name="carousel-3d"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "3D carousel",
+      subheading: "Pass `items` with an `id`, `category`, `title`, `image` and optional `description` — the fanned 3D layout and drag physics come from Framer Motion.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ThreeDCarouselBlock.tsx"),
+    },
+    {
+      title: "Without autoplay",
+      subheading: "Set `autoPlay={false}` when the deck should only move on interaction.",
+      props: { autoPlay: false },
+      usage: usageNoAutoplay,
+    },
+    {
+      title: "Autoplay interval",
+      subheading: "`autoPlayInterval` sets the dwell time per card in milliseconds.",
+      props: { autoPlay: true, autoPlayInterval: 1500 },
+      usage: usageInterval,
+    },
+    {
+      title: "Shorter deck",
+      subheading: "Fewer items means a tighter fan — the circular offsets are derived from the array length.",
+      props: { itemCount: 3 },
+      usage: usageShortDeck,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -23,47 +88,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ThreeDCarouselBlock.tsx.
-
-## Implementation
-
-```tsx
-import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-
-export default function ShowcaseSection() {
-  const items = [
-    {
-      id: "1",
-      category: "Architecture",
-      title: "Futuristic Sanctuary",
-      description:
-        "Next-generation living spaces integrated with natural flora.",
-      image:
-        "[https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop)",
-    },
-    {
-      id: "2",
-      category: "Automotive",
-      title: "Cybernetic Grand Tourer",
-      description: "Pure electric performance meeting aerodynamic excellence.",
-      image:
-        "[https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop)",
-    },
-  ];
-
-  return (
-    <div className="w-full max-w-6xl mx-auto py-12 px-4">
-      {/* Auto-play is enabled by default with a 4000ms interval */}
-      <ThreeDCarousel
-        autoPlay="{true}"
-        autoPlayInterval="{4500}"
-        items="{items}"
-      />
-    </div>
-  );
-}
-```
-
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/ThreeDCarouselBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

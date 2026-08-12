@@ -51,16 +51,29 @@ export default function AnimatedListDemo({
   variant = "slide-right",
   ease = "back.out(1.5)",
   animKey = 0,
+  staggerDelay = 0.15,
+  duration,
+  animationDelay,
 }: {
   variant?: AnimationVariant;
   ease?: string;
   animKey?: number;
+  staggerDelay?: number;
+  duration?: number;
+  animationDelay?: number;
 }) {
   return (
     <div className="w-full flex justify-center items-center bg-white dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 py-6 px-4 relative overflow-hidden">
       {/* Toast Notification Container */}
       <div className="w-full max-w-md relative z-10">
-        <AnimatedList key={animKey} variant={variant} ease={ease} staggerDelay={0.15}>
+        <AnimatedList
+          key={`${animKey}-${variant}-${ease}-${staggerDelay}-${duration}-${animationDelay}`}
+          variant={variant}
+          ease={ease}
+          staggerDelay={staggerDelay}
+          duration={duration}
+          animationDelay={animationDelay}
+        >
           {notifications.map((notif) => (
             <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
               <div className="flex items-center gap-3 min-w-0">

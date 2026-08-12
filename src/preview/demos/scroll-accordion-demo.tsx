@@ -3,6 +3,7 @@
 import {
   AccordionShowcaseItem,
   ScrollAccordionShowcase,
+  ShowcaseDisplayMode,
 } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 const showcaseItems: AccordionShowcaseItem[] = [
@@ -68,12 +69,20 @@ const showcaseItems: AccordionShowcaseItem[] = [
   },
 ];
 
-export default function ScrollAccordionDemo() {
+export default function ScrollAccordionDemo({
+  displayMode = "both",
+  defaultIndex = 0,
+}: {
+  displayMode?: ShowcaseDisplayMode;
+  /** Row expanded on first render. */
+  defaultIndex?: number;
+}) {
   return (
     <div className="w-full bg-zinc-50 dark:bg-[#0a0a0a] py-8 px-2 sm:px-8 relative rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
       <ScrollAccordionShowcase
         items={showcaseItems}
-        displayMode="both"
+        displayMode={displayMode}
+        defaultIndex={defaultIndex}
         defaultAccentColor="#FFAB1D"
         localStorageKey="primaryColor"
       />

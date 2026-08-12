@@ -75,7 +75,7 @@ export default function TimelineDemo({
 }) {
   return (
     <div
-      className={`w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-6 sm:p-12" : ""} relative z-10 overflow-hidden`}
+      className={`w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-6 sm:p-12" : ""} relative z-10 overflow-hidden`}
     >
       <div className="w-full max-w-2xl mx-auto">
         <TimelineBlock

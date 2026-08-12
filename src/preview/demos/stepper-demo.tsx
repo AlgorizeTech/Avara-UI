@@ -5,6 +5,7 @@ import {
   Stepper,
   StepperContent,
 } from "@/components/custom/blocks/StepperBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { cn } from "@/lib/utils";
 import {
   AlertCircle,
@@ -22,6 +23,29 @@ import {
   XCircle,
 } from "lucide-react";
 import { useState } from "react";
+
+// The Stepper paints the indicator label `text-white`, so the accent has to
+// stay dark enough in both themes — hence the component's own amber default
+// for "primary" rather than the theme-flipping `var(--primary)`.
+const getThemeColorHex = (c: string) => {
+  if (c.startsWith("#")) return c;
+  const map: Record<string, string> = {
+    primary: "#FFAB1D",
+    default: "#FFAB1D",
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    zinc: "#18181b",
+  };
+  return map[c] || "#FFAB1D";
+};
+
+const PRIMARY_ROLE_OPTIONS = [
+  "Developer",
+  "Designer",
+  "Product Manager",
+  "Founder",
+].map((r) => ({ label: r, value: r }));
 
 // Stable Input Component
 const InputField = ({ label, icon: Icon, error, ...props }: any) => (
@@ -56,11 +80,16 @@ const InputField = ({ label, icon: Icon, error, ...props }: any) => (
 );
 
 export default function StepperDemo({
-  color = "#FFAB1D",
+  color: colorToken = "primary",
+  initialStep = 0,
 }: {
+  /** Accent token from the docs color picker, or a raw hex. */
   color?: string;
+  /** Step the flow opens on. */
+  initialStep?: number;
 }) {
-  const [currentStep, setCurrentStep] = useState(0);
+  const color = getThemeColorHex(colorToken);
+  const [currentStep, setCurrentStep] = useState(initialStep);
 
   // Unified Form State
   const [formData, setFormData] = useState({
@@ -189,7 +218,7 @@ export default function StepperDemo({
     setErrors({});
     setSubmitStatus("idle");
     setErrorMessage("");
-    setCurrentStep(0);
+    setCurrentStep(initialStep);
   };
 
   // Define Step Content Views
@@ -259,16 +288,13 @@ export default function StepperDemo({
               <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
                 Primary Role
               </label>
-              <select
+              <SelectBlock
+                options={PRIMARY_ROLE_OPTIONS}
                 value={formData.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="w-full h-11 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600"
-              >
-                <option value="Developer">Developer</option>
-                <option value="Designer">Designer</option>
-                <option value="Product Manager">Product Manager</option>
-                <option value="Founder">Founder</option>
-              </select>
+                onChange={(v) => handleChange("role", v)}
+                variant="filled"
+                placeholder="Select your role"
+              />
             </div>
           </div>
         </div>

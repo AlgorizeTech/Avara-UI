@@ -26,6 +26,18 @@ import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
+import { SelectBlock } from "./SelectBlock";
+
+const EVENT_TYPE_OPTIONS = [
+  { label: "Pentest", value: "pentest" },
+  { label: "Kick-Off", value: "kickoff" },
+];
+
+const EVENT_PLATFORM_OPTIONS = [
+  { label: "Google Meet", value: "meet" },
+  { label: "Slack", value: "slack" },
+  { label: "Discord", value: "discord" },
+];
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -393,6 +405,8 @@ function CalendarDashboard({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
   const [editingEvent, setEditingEvent] = useState<any | null>(null);
+  const [eventType, setEventType] = useState("pentest");
+  const [eventPlatform, setEventPlatform] = useState("meet");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Filter State
@@ -535,11 +549,15 @@ function CalendarDashboard({
   const openAddModalForDate = (dateKey: string) => {
     setEditingEvent(null);
     setSelectedDateKey(dateKey);
+    setEventType("pentest");
+    setEventPlatform("meet");
     setIsAddModalOpen(true);
   };
 
   const openEditModal = (event: any) => {
     setEditingEvent(event);
+    setEventType(event.type ?? "pentest");
+    setEventPlatform(event.platform ?? "meet");
     setIsAddModalOpen(true);
   };
 
@@ -1131,34 +1149,29 @@ function CalendarDashboard({
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Event Type
                   </label>
-                  <select
-                    name="type"
-                    defaultValue={editingEvent ? editingEvent.type : "pentest"}
-                    className={cn(
-                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:outline-none dark:text-white transition-shadow",
-                      theme.focusRing,
-                    )}
-                  >
-                    <option value="pentest">Pentest</option>
-                    <option value="kickoff">Kick-Off</option>
-                  </select>
+                  {/* Hidden input keeps this field in the form's FormData,
+                      since SelectBlock renders a button rather than an input. */}
+                  <input type="hidden" name="type" value={eventType} />
+                  <SelectBlock
+                    options={EVENT_TYPE_OPTIONS}
+                    value={eventType}
+                    onChange={setEventType}
+                    color={color}
+                    inputSize="sm"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Platform
                   </label>
-                  <select
-                    name="platform"
-                    defaultValue={editingEvent ? editingEvent.platform : "meet"}
-                    className={cn(
-                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-900 focus:ring-2 focus:outline-none dark:text-white transition-shadow",
-                      theme.focusRing,
-                    )}
-                  >
-                    <option value="meet">Google Meet</option>
-                    <option value="slack">Slack</option>
-                    <option value="discord">Discord</option>
-                  </select>
+                  <input type="hidden" name="platform" value={eventPlatform} />
+                  <SelectBlock
+                    options={EVENT_PLATFORM_OPTIONS}
+                    value={eventPlatform}
+                    onChange={setEventPlatform}
+                    color={color}
+                    inputSize="sm"
+                  />
                 </div>
               </div>
               <div className="pt-4 flex items-center justify-end gap-3">

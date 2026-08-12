@@ -1,4 +1,5 @@
-import { SonnerShowcase } from "@/components/site/SonnerShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Sonner (Toast Stack)
 
@@ -6,11 +7,220 @@ An opinionated, dependency-free toast component that mimics the famous "Sonner" 
 
 Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
 
-## Interactive Showcase
+## Examples
 
-Click the buttons below to spawn toasts. Notice how they stack beautifully in the corner. If you hover your mouse over the floating toast stack, it will gracefully expand.
+Click the trigger buttons to spawn toasts, then hover the floating stack to expand it. The first example's **Code** tab contains the full component source.
 
-<SonnerShowcase />
+export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+
+// 1. Mount <Toaster /> exactly once, at the root of your app.
+export function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {children}
+      <Toaster position="bottom-right" />
+    </>
+  );
+}
+
+// 2. Fire a toast from anywhere — no provider or hook needed.
+export default function SaveButton() {
+  return (
+    <button
+      onClick={() =>
+        toast("Profile updated successfully", {
+          description: "Your changes have been saved to the database.",
+        })
+      }
+    >
+      Show toast
+    </button>
+  );
+}`;
+
+export const usageTypes = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+export default function ToastTypes() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <button onClick={() => toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
+        Default
+      </button>
+      <button onClick={() => toast.success("Deployment Complete", { description: "Your site is now live on the production server." })}>
+        Success
+      </button>
+      <button onClick={() => toast.error("Connection Failed", { description: "Could not reach the database. Please try again later." })}>
+        Error
+      </button>
+      <button onClick={() => toast.info("New login detected", { description: "A new device just signed in to your account." })}>
+        Info
+      </button>
+    </div>
+  );
+}`;
+
+export const usageAction = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+export default function UndoToast() {
+  return (
+    <button
+      onClick={() =>
+        toast("Message deleted", {
+          action: {
+            label: "Undo",
+            onClick: () => alert("Undo clicked!"),
+          },
+        })
+      }
+    >
+      With Action
+    </button>
+  );
+}`;
+
+export const usageStack = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+export default function StackDemo() {
+  // New toasts stack on top; older ones scale down and slide back in 3D.
+  // Hover the stack to expand it into a readable list.
+  const uploadAll = () => {
+    toast.success("File uploaded", { description: "report-q3.pdf" });
+    setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
+    setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
+  };
+
+  return <button onClick={uploadAll}>Spawn three toasts</button>;
+}`;
+
+export const usageExpand = `import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // expand keeps the stack permanently open instead of collapsing it in 3D.
+  return (
+    <>
+      {children}
+      <Toaster expand />
+    </>
+  );
+}`;
+
+export const usageDuration = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+export default function ToastDuration() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      {/* Infinity disables auto-dismiss — the user closes it */}
+      <button
+        onClick={() =>
+          toast("Syncing your workspace", {
+            description: "This toast stays until you dismiss it.",
+            duration: Infinity,
+          })
+        }
+      >
+        Persistent
+      </button>
+
+      <button
+        onClick={() =>
+          toast.success("Saved", {
+            description: "Gone in 1.5 seconds.",
+            duration: 1500,
+          })
+        }
+      >
+        Quick
+      </button>
+    </div>
+  );
+}`;
+
+export const usagePosition = `import { useState } from "react";
+import { toast, Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+
+const POSITIONS: NonNullable<ToasterProps["position"]>[] = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right",
+];
+
+export default function PositionDemo() {
+  const [position, setPosition] = useState<NonNullable<ToasterProps["position"]>>("bottom-right");
+
+  return (
+    <>
+      {/* In a real app you mount <Toaster /> once, at the root, with a fixed position */}
+      <Toaster position={position} />
+
+      <div className="grid grid-cols-3 gap-2">
+        {POSITIONS.map((p) => (
+          <button
+            key={p}
+            onClick={() => {
+              setPosition(p);
+              toast(p, { description: \`Stack anchored to "\${p}".\` });
+            }}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}`;
+
+<ExampleShowcase
+  name="sonner"
+  columns={1}
+  examples={[
+    {
+      title: "Sonner",
+      subheading: "Mount `<Toaster />` once, then call `toast()` from anywhere — no provider needed.",
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
+    },
+    {
+      title: "Types",
+      subheading: "Use `toast.success`, `toast.error` and `toast.info` for the semantic styles.",
+      props: { example: "types" },
+      usage: usageTypes,
+    },
+    {
+      title: "With action",
+      subheading: "Pass `action` to add an inline button — perfect for undo.",
+      props: { example: "action" },
+      usage: usageAction,
+    },
+    {
+      title: "Stacking",
+      subheading: "Fire several toasts: newer ones stack on top, older ones recede. Hover to expand.",
+      props: { example: "stack" },
+      usage: usageStack,
+    },
+    {
+      title: "Always expanded",
+      subheading: "Set `expand` on the Toaster to keep the stack open instead of collapsing it.",
+      props: { example: "stack", expand: true },
+      usage: usageExpand,
+    },
+    {
+      title: "Duration",
+      subheading: "`duration` sets the auto-dismiss delay; `Infinity` keeps the toast up.",
+      props: { example: "duration" },
+      usage: usageDuration,
+    },
+    {
+      title: "Position",
+      subheading: "`position` anchors the stack to any of the six edges — pick one to move the live stack.",
+      props: { example: "position" },
+      usage: usagePosition,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,55 +228,7 @@ Click the buttons below to spawn toasts. Notice how they stack beautifully in th
 
 This component is **100% dependency-free**. It doesn't use standard React context; instead, it uses a high-performance custom Observer class. This means you don't have to wrap your app in a bulky context provider just to fire a toast from a random utility file.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SonnerBlock.tsx`.
-
----
-
-## Usage
-
-### 1. Mount the Toaster
-
-Add the `<Toaster />` component exactly **once** at the very root of your application (e.g., in your `layout.tsx` or `App.tsx`).
-
-```tsx
-import { Toaster } from "@/components/custom/blocks/SonnerBlock";
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        <Toaster position="bottom-right" />
-      </body>
-    </html>
-  );
-}
-```
-
-## 2. Trigger Toasts anywhere
-
-Because the toast function communicates with an external store, you can import it and trigger notifications from anywhere—inside components, inside useEffect blocks, or even inside standard non-React fetch functions.
-
-```tsx
-import { toast } from "@/components/custom/blocks/SonnerBlock";
-
-export default function SettingsPage() {
-  const handleSave = async () => {
-    try {
-      await saveUserData();
-      toast.success("Settings Saved", {
-        description: "Your profile has been updated.",
-      });
-    } catch (error) {
-      toast.error("Uh oh!", {
-        description: "Something went wrong. Please try again.",
-      });
-    }
-  };
-
-  return <button onClick={handleSave}>Save</button>;
-}
-```
+Create a new file at `components/custom/blocks/SonnerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.

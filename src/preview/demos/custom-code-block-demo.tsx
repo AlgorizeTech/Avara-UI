@@ -226,19 +226,34 @@ npm run dev
 
 export default function CustomCodeBlockDemo({
   activeTab = "HTML",
+  example,
 }: {
   activeTab?: keyof typeof SNIPPETS;
+  /** "tabs" renders one block with a file switcher instead of a single file. */
+  example?: "default" | "tabs";
 }) {
   const snippet = SNIPPETS[activeTab] || SNIPPETS.HTML;
 
   return (
     <div className="w-full h-full p-0 sm:p-4">
       <div className="w-full h-full">
-        <CustomCodeBlock
-          code={snippet.code}
-          language={snippet.language}
-          fileName={snippet.fileName}
-        />
+        {example === "tabs" ? (
+          <CustomCodeBlock
+            tabs={[SNIPPETS.HTML, SNIPPETS.CSS, SNIPPETS.TypeScript].map(
+              (s) => ({
+                code: s.code,
+                language: s.language,
+                fileName: s.fileName,
+              }),
+            )}
+          />
+        ) : (
+          <CustomCodeBlock
+            code={snippet.code}
+            language={snippet.language}
+            fileName={snippet.fileName}
+          />
+        )}
       </div>
     </div>
   );

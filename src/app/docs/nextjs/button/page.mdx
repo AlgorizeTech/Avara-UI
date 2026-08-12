@@ -1,16 +1,139 @@
-import { ButtonShowcase } from "@/components/site/ButtonShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Button
 
 A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to cycle through the different button permutations, ranging from basic sizing and variants to specific e-commerce and social login implementations.
+Explore the different variations of the Button component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export const usageDefault = `import Button from "@/components/custom/blocks/Button";
 
-<ButtonShowcase />
+export default function ButtonDemo() {
+  return <Button>Button</Button>;
+}`;
+
+export const usageVariants = `import Button from "@/components/custom/blocks/Button";
+
+export default function ButtonVariants() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button variant="default">Default</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
+    </div>
+  );
+}`;
+
+export const usageSizes = `import Button from "@/components/custom/blocks/Button";
+
+export default function ButtonSizes() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button size="sm">Small</Button>
+      <Button size="default">Default</Button>
+      <Button size="lg">Large</Button>
+    </div>
+  );
+}`;
+
+export const usageLoading = `import Button from "@/components/custom/blocks/Button";
+
+export default function ButtonLoading() {
+  return <Button loading>Please wait</Button>;
+}`;
+
+export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, MailIcon } from "@/components/custom/blocks/Icons";
+
+export default function ButtonWithIcon() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button iconLeft={<MailIcon />}>Email</Button>
+      <Button variant="secondary" iconRight={<ArrowRightIcon />}>
+        Continue
+      </Button>
+    </div>
+  );
+}`;
+
+export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
+import { SearchIcon } from "@/components/custom/blocks/Icons";
+
+export default function ButtonIconOnly() {
+  return <Button variant="outline" size="sm" iconLeft={<SearchIcon />} />;
+}`;
+
+export const usageSocial = `import Button from "@/components/custom/blocks/Button";
+import { GitHubIcon, GoogleIcon } from "@/components/custom/blocks/Icons";
+
+export default function SocialLoginButtons() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button variant="outline" iconLeft={<GoogleIcon />}>
+        Continue with Google
+      </Button>
+      <Button variant="outline" iconLeft={<GitHubIcon />}>
+        Continue with GitHub
+      </Button>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="button"
+  columns={1}
+  examples={[
+    {
+      title: "Button",
+      subheading: "The default button, with its built-in click ripple.",
+      props: { layout: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Variants",
+      subheading: "Use the `variant` prop to change the visual style.",
+      props: { layout: "variants" },
+      usage: usageVariants,
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `size` prop to change the size.",
+      props: { layout: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "Loading",
+      subheading: "Set `loading` to show a spinner and block interaction.",
+      props: { layout: "loading" },
+      usage: usageLoading,
+    },
+    {
+      title: "With icon",
+      subheading: "Pass `iconLeft` or `iconRight` to pair the label with an icon.",
+      props: { layout: "with-icon" },
+      usage: usageWithIcon,
+    },
+    {
+      title: "Icon only",
+      subheading: "Omit the children and the button collapses to a square icon target.",
+      props: { layout: "icon-only" },
+      usage: usageIconOnly,
+    },
+    {
+      title: "Social login",
+      subheading: "Brand SVGs from the bundled icon set as leading icons.",
+      props: { layout: "social" },
+      usage: usageSocial,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,7 +141,7 @@ _Click the **Code** tab in the preview below to copy the full component engine._
 
 The main button component manages its own `ripple` state and injects the necessary CSS keyframes dynamically on mount.
 
-Create a new file at `components/custom/button.tsx` and copy the engine code from the Interactive Showcase above.
+Create a new file at `components/custom/button.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ### 2. Copy the SVG Icons (Optional)
 

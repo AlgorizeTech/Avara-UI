@@ -7,6 +7,7 @@ import {
   ArrowRightIcon,
   BellIcon,
   CheckIcon,
+  DownloadIcon,
   EmailIcon,
   FacebookIcon,
   GitHubIcon,
@@ -30,6 +31,11 @@ import {
 
 type LayoutType =
   | "basic"
+  | "default"
+  | "variants"
+  | "sizes"
+  | "loading"
+  | "with-icon"
   | "commerce"
   | "social"
   | "icon-only"
@@ -43,6 +49,56 @@ export default function ButtonDemo({
 }) {
   return (
     <div className="w-full flex items-center justify-center min-h-[350px]">
+      {layout === "default" && <Button>Button</Button>}
+
+      {/* Every variant in one frame — the visual styles side by side. */}
+      {layout === "variants" && (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button variant="default">Default</Button>
+          <Button variant="destructive">Destructive</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="link">Link</Button>
+        </div>
+      )}
+
+      {/* Scalar prop — all steps share a single preview. */}
+      {layout === "sizes" && (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button size="sm">Small</Button>
+          <Button size="default">Default</Button>
+          <Button size="lg">Large</Button>
+        </div>
+      )}
+
+      {layout === "loading" && (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button loading>Please wait</Button>
+          <Button variant="outline" loading>
+            Please wait
+          </Button>
+          <Button variant="secondary" loading>
+            Please wait
+          </Button>
+        </div>
+      )}
+
+      {layout === "with-icon" && (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button iconLeft={<MailIcon />}>Email</Button>
+          <Button variant="outline" iconLeft={<DownloadIcon />}>
+            Download
+          </Button>
+          <Button variant="secondary" iconRight={<ArrowRightIcon />}>
+            Continue
+          </Button>
+          <Button variant="ghost" iconRight={<CheckIcon />}>
+            Confirm
+          </Button>
+        </div>
+      )}
+
       {layout === "basic" && (
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex flex-col gap-4">

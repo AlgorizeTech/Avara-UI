@@ -2,11 +2,89 @@
 
 A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
 
-## Interactive Showcase
+## Examples
 
-Explore the different structural variants of the accordion component. Toggle between interaction modes (like forcing one panel to always remain open), and switch styling variants.
+You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
+export const usageData = `const faqItems = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];`;
+
+export const usageDefault = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function Faq() {
+  return (
+    
+  );
+}`;
+
+export const usageVariants = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+export default function AccordionVariants() {
+  return (
+
+  );
+}`;
+
+export const usageMultiple = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function MultiOpenFaq() {
+  // type="multiple" lets any number of panels stay open at once.
+  // defaultValue becomes an array in this mode.
+  return (
+    
+  );
+}`;
+
+export const usageMandatory = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function AlwaysOpenFaq() {
+  // collapsible={false} stops the user closing the last open panel,
+  // so exactly one is always showing.
+  return (
+    
+  );
+}`;
+
+export const usageIcon = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function PlusFaq() {
+  // expandIcon swaps the chevron — pass a lucide name from ICON_MAP.
+  return (
+    
+  );
+}`;
 
 ## Installation
 
@@ -18,6 +96,10 @@ This component relies on the standard `shadcn/ui` accordion primitives and `luci
 npx shadcn-ui@latest add accordion
 npm install lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Accordion.tsx` and copy the wrapper code from the **Code** tab of the first example above.
 
 ## Features
 Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.

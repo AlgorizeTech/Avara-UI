@@ -25,7 +25,7 @@ export default function ScrollAreaDemo({
 }) {
   return (
     <div
-      className={`w-full flex items-center justify-center min-h-[450px] ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-6" : "relative z-10"}`}
+      className={`w-full flex items-center justify-center min-h-[450px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-6" : "relative z-10"}`}
     >
       <ScrollAreaBlock
         key={`${variant}-${color}-${orientation}-${hideTrack}-${autoHide}`}

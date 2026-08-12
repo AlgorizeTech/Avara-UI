@@ -4,9 +4,72 @@ A specialized typography component used to display keyboard buttons, shortcuts, 
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Interactive Showcase
+## Examples
 
-Use the controls below to change the size of the keys. `sm` is ideal for placing inside dense dropdown menus, while `md` and `lg` work well for documentation or large onboarding modals.
+Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function BasicKbd() {
+  return ⌘;
+}`;
+
+export const usageSizes = `
+  ⌘
+  ⌘
+  ⌘
+`;
+
+export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function ShortcutList() {
+  return (
+    
+      Force Reload:
+      
+        ⇧
+        ⌘
+        R
+
+  );
+}`;
+
+export const usageInline = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function InlineShortcut() {
+  return (
+    
+      Press ⌘ K to open the command palette, or{" "}
+      Esc to dismiss it.
+    
+  );
+}`;
+
+` element.",
+      props: { example: "single" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `size` prop to change the size.",
+      props: { example: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "Combinations",
+      subheading: "Sequence several keys to spell out a shortcut.",
+      props: {},
+      usage: usageCombinations,
+    },
+    {
+      title: "Inline in text",
+      subheading: "Keys sit on the text baseline, so they read naturally in prose.",
+      props: { example: "inline" },
+      usage: usageInline,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -14,7 +77,7 @@ Use the controls below to change the size of the keys. `sm` is ideal for placing
 
 This component is **100% dependency-free** and forwards all standard HTML attributes.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/KbdBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/KbdBlock.tsx`.
 
 ---
 

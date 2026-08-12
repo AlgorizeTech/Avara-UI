@@ -1,4 +1,5 @@
-import { ChatBubbleShowcase } from "@/components/site/ChatBubbleShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Animated Chat Bubble
 
@@ -9,11 +10,136 @@ Building a polished chat interface requires handling complex edge cases: **messa
 ---
 
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the sender colors and simulate an incoming message. Notice how the border-radius logic handles consecutive messages gracefully, and how GSAP handles the bouncy entrance physics.
+These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice. The first example's **Code** tab contains the full component source.
 
-<ChatBubbleShowcase />
+export const usageConversation = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTimestamp,
+  ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
+
+export default function ChatInterface() {
+  return (
+    <div className="flex flex-col gap-1.5 p-4 max-w-md mx-auto">
+      <ChatBubble variant="received" layout="group-top">
+        <ChatAvatar fallback="SJ" src="/sarah.png" />
+        <ChatMessage>Hey! Did you check out the new Docs UI kit?</ChatMessage>
+      </ChatBubble>
+
+      <ChatBubble variant="received" layout="group-bottom">
+        <ChatAvatar fallback="SJ" />
+        <ChatMessage>
+          It has a really clean compound component pattern.
+          <ChatTimestamp time="10:24 AM" />
+        </ChatMessage>
+      </ChatBubble>
+
+      <ChatBubble variant="sent">
+        <ChatAvatar fallback="ME" />
+        <ChatMessage color="blue">
+          Yeah, I'm playing with it right now.
+          <ChatTimestamp time="10:25 AM" status="read" />
+        </ChatMessage>
+      </ChatBubble>
+
+      <ChatBubble variant="received">
+        <ChatAvatar fallback="SJ" />
+        <ChatTypingIndicator />
+      </ChatBubble>
+    </div>
+  );
+}`;
+
+export const usageGrouping = `// \`layout\` is the only thing that connects stacked messages — set it per
+// bubble and the radii, spacing and avatar visibility follow.
+<ChatBubble variant="received" layout="group-top">
+  <ChatAvatar fallback="SJ" />
+  <ChatMessage>Three messages, one sender.</ChatMessage>
+</ChatBubble>
+
+<ChatBubble variant="received" layout="group-middle">
+  <ChatAvatar fallback="SJ" />
+  <ChatMessage>The inner corners tighten to 4px…</ChatMessage>
+</ChatBubble>
+
+<ChatBubble variant="received" layout="group-bottom">
+  <ChatAvatar fallback="SJ" />
+  <ChatMessage>…and only the last one keeps the avatar.</ChatMessage>
+</ChatBubble>`;
+
+export const usageReceipts = `// \`status\` is read from the bubble's \`variant\` — it only renders ticks on
+// sent messages, so received bubbles show the time alone.
+<ChatBubble variant="sent">
+  <ChatAvatar fallback="ME" />
+  <ChatMessage color="blue">
+    Sent — a single tick.
+    <ChatTimestamp time="10:25 AM" status="sent" />
+  </ChatMessage>
+</ChatBubble>
+
+<ChatBubble variant="sent">
+  <ChatAvatar fallback="ME" />
+  <ChatMessage color="blue">
+    Delivered — double tick.
+    <ChatTimestamp time="10:25 AM" status="delivered" />
+  </ChatMessage>
+</ChatBubble>
+
+<ChatBubble variant="sent">
+  <ChatAvatar fallback="ME" />
+  <ChatMessage color="blue">
+    Read — double tick, accented.
+    <ChatTimestamp time="10:26 AM" status="read" />
+  </ChatMessage>
+</ChatBubble>`;
+
+export const usageTyping = `// Drop the bubble's padding and background so the three dots float on their
+// own while you wait for the reply.
+<ChatBubble variant="received">
+  <ChatAvatar fallback="SJ" />
+  <ChatMessage className="px-0 py-0 bg-transparent border-0 shadow-none dark:bg-transparent">
+    <ChatTypingIndicator />
+  </ChatMessage>
+</ChatBubble>`;
+
+<ExampleShowcase
+  name="chat-bubble"
+  colorControl
+  colorLabel="Sender Brand Color"
+  columns={1}
+  examples={[
+    {
+      title: "Conversation",
+      subheading: "The pieces assembled into a messenger thread — grouped bubbles, a read receipt and a live typing indicator.",
+      props: { example: "conversation" },
+      usage: usageConversation,
+      code: extractCode("src/components/custom/blocks/ChatBubbleBlock.tsx"),
+    },
+    {
+      title: "Message grouping",
+      subheading: "`layout` drives the border-radius maths: `group-top`, `group-middle` and `group-bottom` tighten the inner corners and hide the avatar on all but the last bubble.",
+      props: { example: "grouping" },
+      usage: usageGrouping,
+    },
+    {
+      title: "Timestamps & read receipts",
+      subheading: "`ChatTimestamp` reads the bubble's `variant` from context — `status` renders sent, delivered and read ticks on outgoing messages only.",
+      props: { example: "receipts" },
+      usage: usageReceipts,
+    },
+    {
+      title: "Typing indicator",
+      subheading: "`ChatTypingIndicator` animates three dots on a GSAP loop. Strip the message padding to let it float on its own.",
+      props: { example: "typing" },
+      usage: usageTyping,
+      minHeight: 220,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -27,59 +153,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ChatBubbleBlock.tsx.
-
-## Implementation
-
-```tsx
-import {
-  ChatBubble,
-  ChatAvatar,
-  ChatMessage,
-  ChatTimestamp,
-  ChatTypingIndicator,
-} from "@/components/custom/blocks/ChatBubbleBlock";
-
-export default function ChatInterface() {
-  return (
-    <div className="flex flex-col gap-1.5 p-4 max-w-md mx-auto">
-      {/* Grouped Received Messages */}
-      <ChatBubble layout="group-top" variant="received">
-        <ChatAvatar fallback="AI" src="/bot-avatar.png" />
-        <ChatMessage>Hello! How can I help you today?</ChatMessage>
-      </ChatBubble>
-
-      <ChatBubble layout="group-bottom" variant="received">
-        <ChatAvatar fallback="AI" />
-        <ChatMessage>
-          I can answer questions, process data, or generate code.
-          <ChatTimestamp time="10:24 AM" />
-        </ChatMessage>
-      </ChatBubble>
-
-      <div className="h-2" />
-
-      {/* Single Sent Message with Read Receipt */}
-      <ChatBubble layout="default" variant="sent">
-        <ChatAvatar fallback="ME" />
-        <ChatMessage color="blue">
-          Can you show me how to use the ChatBubble component?
-          <ChatTimestamp status="read" time="10:25 AM" />
-        </ChatMessage>
-      </ChatBubble>
-
-      <div className="h-2" />
-
-      {/* Animated Typing Indicator */}
-      <ChatBubble variant="received">
-        <ChatAvatar fallback="AI" />
-        <ChatTypingIndicator />
-      </ChatBubble>
-    </div>
-  );
-}
-```
-
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChatBubbleBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -206,14 +280,17 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>color</code>
         </td>
         <td>
-          <code>"default" | "blue" | "indigo" | "rose" | "emerald"</code>
+          <code>"primary" | "default" | "blue" | "indigo" | "rose" | "emerald"</code>
         </td>
         <td>
-          <code>"default"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Sets the background color of the bubble. Only applies when the parent{" "}
-          <code>variant</code> is set to <code>"sent"</code>.
+          <code>variant</code> is set to <code>"sent"</code>.{" "}
+          <code>"primary"</code> and <code>"default"</code> both follow your
+          theme tokens, and any unlisted value falls back to them — this is a
+          fixed set, not an arbitrary hex.
         </td>
       </tr>
       <tr>

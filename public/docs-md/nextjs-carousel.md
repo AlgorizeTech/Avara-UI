@@ -2,11 +2,58 @@
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-## Interactive Showcase
+## Examples
 
-Explore the different variants of the carousel component. Switch between standard image sliders, full-width hero banners, positionable thumbnails, and GSAP-powered fluid glass sliders.
+Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`. Each example's **Code** tab holds the source for the file it comes from.
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
+
+const images = [
+  "/photos/beach.jpg",
+  "/photos/trail.jpg",
+  "/photos/retreat.jpg",
+];
+
+export default function Gallery() {
+  return (
+    
+  );
+}`;
+
+export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
+
+const slides = [
+  {
+    img: "/photos/beach.jpg",
+    title: "Tropical Paradise",
+    des: "Discover pristine beaches and crystal-clear waters.",
+  },
+  {
+    img: "/photos/trail.jpg",
+    title: "Peak Adventures",
+    des: "Challenge yourself with epic mountain trails.",
+  },
+];
+
+export default function Hero() {
+  return ;
+}`;
+
+export const usageThumbnails = `import { CustomCarousel } from "@/components/custom/carousel";
+
+// \`imageButtonPosition\` moves the thumbnail rail: "bottom" | "left" | "right".
+export default function Showcase() {
+  return ;
+}`;
+
+export const usageThumbnailsSide = ``;
+
+export const usageFluid = `import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
+
+// Requires GSAP — the liquid distortion tracks the pointer.
+export default function FluidShowcase() {
+  return ;
+}`;
 
 ## Installation: Standard Carousels
 
@@ -14,22 +61,9 @@ This installation covers the `Standard Image`, `Hero Slider`, and `Thumbnails` v
 
 ### 1. Copy the Component
 
-Create a new file at `components/custom/carousel.tsx`. Navigate to the Interactive Showcase above, select any of the first three variants, click the **Component** tab, and paste the code into your file.
+Create a new file at `components/custom/carousel.tsx` and copy the source from the **Code** tab of the first example above — it exports all three standard carousels.
 
-### 2. Usage
-
-Import the specific named export you need from the file.
-
-```tsx
-
-export default function MyPage() {
-  const images = ["/image1.jpg", "/image2.jpg"];
-
-  return (
-
-  );
-}
-```
+Then import the named export you need — `ImageCarousel`, `HeroCarousel` or `CustomCarousel`. Each example's **Usage** tab above shows the exact call.
 
 ## Installation: Fluid Glass Slider
 
@@ -38,6 +72,8 @@ This installation covers the Fluid Glass variation, which requires the GSAP anim
 ```bash
 npm install gsap
 ```
+
+Then create `components/custom/ui/FluidGlassSlider.tsx` and copy the source from the **Code** tab of the **Fluid glass slider** example above.
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

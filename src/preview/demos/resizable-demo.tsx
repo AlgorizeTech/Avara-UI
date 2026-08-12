@@ -6,7 +6,59 @@ import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
-export default function ResizableDemo() {
+function Pane({ label, muted }: { label: string; muted?: boolean }) {
+  return (
+    <div
+      className={`h-full w-full flex items-center justify-center text-xs font-bold uppercase tracking-wider ${
+        muted ? "bg-muted/40 text-muted-foreground" : "text-foreground"
+      }`}
+    >
+      {label}
+    </div>
+  );
+}
+
+export default function ResizableDemo({
+  example,
+}: {
+  /** Isolates one composition instead of the full IDE layout. */
+  example?: "ide" | "horizontal" | "vertical" | "no-grip" | "constraints";
+}) {
+  if (example && example !== "ide") {
+    const withHandle = example !== "no-grip";
+    const direction = example === "vertical" ? "vertical" : "horizontal";
+
+    return (
+      <div className="w-full flex items-center justify-center min-h-[380px] p-6 sm:p-10 relative z-10">
+        <div className="w-full h-[320px] border border-border rounded-xl overflow-hidden bg-background">
+          <ResizablePanelGroup direction={direction}>
+            {example === "constraints" ? (
+              <>
+                <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+                  <Pane label="min 15% · max 40%" muted />
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={75}>
+                  <Pane label="fills the rest" />
+                </ResizablePanel>
+              </>
+            ) : (
+              <>
+                <ResizablePanel defaultSize={40}>
+                  <Pane label="Panel one" muted />
+                </ResizablePanel>
+                <ResizableHandle withHandle={withHandle} />
+                <ResizablePanel defaultSize={60}>
+                  <Pane label="Panel two" />
+                </ResizablePanel>
+              </>
+            )}
+          </ResizablePanelGroup>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex items-center justify-center min-h-[380px] sm:min-h-[500px] transition-colors duration-300 rounded-2xl relative z-10">
       {/* Simulated Application UI */}

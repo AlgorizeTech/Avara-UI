@@ -1,4 +1,5 @@
-import { ToggleShowcase } from "@/components/site/ToggleShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Toggle
 
@@ -6,11 +7,140 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Interactive Showcase
+## Examples
 
-Use the controls below to test different visual variants and sizing. Notice how you can use a Toggle as an icon-only button, or pair it with text for complex actions.
+Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-<ToggleShowcase />
+export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
+import { useState } from "react";
+
+export default function BasicToggle() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Toggle pressed={pressed} onPressedChange={setPressed} aria-label="Toggle bold">
+      <Bold className="w-4 h-4" />
+    </Toggle>
+  );
+}`;
+
+export const usageOutline = `<Toggle variant="outline" pressed={pressed} onPressedChange={setPressed} aria-label="Toggle bold">
+  <Bold className="w-4 h-4" />
+</Toggle>`;
+
+export const usageGhost = `<Toggle variant="ghost" pressed={pressed} onPressedChange={setPressed} aria-label="Toggle bold">
+  <Bold className="w-4 h-4" />
+</Toggle>`;
+
+export const usageSizes = `<div className="flex items-center gap-4">
+  <Toggle size="sm" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
+  <Toggle size="md" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
+  <Toggle size="lg" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
+</div>`;
+
+export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Mic, MicOff } from "lucide-react";
+import { useState } from "react";
+
+export default function MuteToggle() {
+  const [muted, setMuted] = useState(false);
+
+  return (
+    <Toggle pressed={muted} onPressedChange={setMuted}>
+      {muted ? <MicOff className="w-4 h-4 mr-2" /> : <Mic className="w-4 h-4 mr-2" />}
+      {muted ? "Unmute" : "Mute"}
+    </Toggle>
+  );
+}`;
+
+export const usageToolbar = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold, Italic, Underline } from "lucide-react";
+import { useState } from "react";
+
+export default function FormattingToolbar() {
+  const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
+
+  return (
+    <div className="flex items-center p-1 rounded-lg border border-zinc-200 dark:border-zinc-800">
+      <Toggle
+        pressed={format.bold}
+        onPressedChange={(v) => setFormat({ ...format, bold: v })}
+        aria-label="Toggle bold"
+      >
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle
+        pressed={format.italic}
+        onPressedChange={(v) => setFormat({ ...format, italic: v })}
+        aria-label="Toggle italic"
+      >
+        <Italic className="w-4 h-4" />
+      </Toggle>
+      <Toggle
+        pressed={format.underline}
+        onPressedChange={(v) => setFormat({ ...format, underline: v })}
+        aria-label="Toggle underline"
+      >
+        <Underline className="w-4 h-4" />
+      </Toggle>
+    </div>
+  );
+}`;
+
+export const usageDisabled = `<Toggle disabled pressed aria-label="Toggle bold">
+  <Bold className="w-4 h-4" />
+</Toggle>`;
+
+<ExampleShowcase
+  name="toggle"
+  columns={1}
+  examples={[
+    {
+      title: "Toggle",
+      subheading: "An icon-only two-state button — `aria-pressed` stays in sync for you.",
+      props: { example: "single" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ToggleBlock.tsx"),
+    },
+    {
+      title: "Outline",
+      subheading: "Use `variant=\"outline\"` to give the toggle a persistent border.",
+      props: { example: "single", variant: "outline" },
+      usage: usageOutline,
+    },
+    {
+      title: "Ghost",
+      subheading: "Use `variant=\"ghost\"` for a toggle that only paints when pressed.",
+      props: { example: "single", variant: "ghost" },
+      usage: usageGhost,
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `size` prop to change the size.",
+      props: { example: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "With text",
+      subheading: "Pair an icon with a label when the toggle drives a named action.",
+      props: { example: "text" },
+      usage: usageText,
+    },
+    {
+      title: "Toolbar",
+      subheading: "Independent toggles grouped into a formatting toolbar.",
+      props: { example: "toolbar" },
+      usage: usageToolbar,
+    },
+    {
+      title: "Disabled",
+      subheading: "Set `disabled` to lock the toggle in its current state.",
+      props: { example: "disabled" },
+      usage: usageDisabled,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,7 +148,7 @@ Use the controls below to test different visual variants and sizing. Notice how 
 
 This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
 
 ---
 

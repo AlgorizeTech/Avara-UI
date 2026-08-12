@@ -4,8 +4,37 @@ A versatile verified badge component that can be customized with various styles 
 
 It includes distinct customization options to match different areas of your application.
 
-## Interactive Showcase
-Hover over the Verify Badge to see its interactive shine effect and tooltip context.
+## Examples
+
+Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function ProfileName() {
+  return (
+    
+      AlgorizeSystem
+
+  );
+}`;
+
+export const usageSizes = `
+
+`;
+
+export const usageStatic = ``;
+
+export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function NotificationCard() {
+  return (
+    
+      AlgorizeSystem
+      
+      Today at 2:34 PM
+    
+  );
+}`;
 
 ## Installation
 
@@ -13,19 +42,6 @@ This component uses `lucide-react` for the checkmark icon and standard Tailwind 
 
 ```bash
 npm install lucide-react clsx tailwind-merge
-```
-
-## Implementation
-
-```tsx
-
-export default function ProfilePage() {
-  return (
-    
-      Elon Musk
-
-  );
-}
 ```
 
 ## Features

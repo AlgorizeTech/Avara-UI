@@ -4,9 +4,41 @@ A cinematic, expanding gallery component built with **GSAP**. It keeps one panel
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-## Interactive Showcase
+## Examples
 
-Hover over any of the background panels to smoothly expand them and trigger video playback.
+Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+
+const panels = [
+  {
+    id: "ocean",
+    title: "Ocean Life",
+    description: "Dive deep into the abyss and discover the world beneath.",
+    videoSrc: "/videos/sea-turtle.mp4",
+    posterUrl: "/photos/ocean.jpg",
+  },
+  {
+    id: "wildlife",
+    title: "Majestic Wildlife",
+    description: "The power and scale of untamed nature.",
+    videoSrc: "/videos/elephants.mp4",
+    posterUrl: "/photos/wildlife.jpg",
+  },
+];
+
+export default function FeatureReel() {
+  // Omitting defaultActiveId starts in the resting state: no panel dominant.
+  return ;
+}`;
+
+export const usageDefaultActive = `// Land with one panel already open — good for hero sections where the
+// first frame should not look inert.
+`;
+
+export const usageShortRail = `// Fewer, wider panels. Each one keeps a legible title strip even when
+// compressed, so two or three read as well as five.
+`;
 
 ## Installation
 
@@ -20,37 +52,7 @@ npm install gsap
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/VideoAccordionBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function PortfolioSection() {
-  const videoPanels = [
-    {
-      id: "wildlife",
-      title: "Nature & Wildlife",
-      description:
-        "Transform your audio tracks into compelling visual stories automatically.",
-      videoSrc: "/videos/elephants.mp4",
-      posterUrl: "/images/elephants-poster.jpg",
-    },
-    {
-      id: "urban",
-      title: "Urban Sprawl",
-      description:
-        "Capture the relentless energy of cityscapes in 4k resolution.",
-      videoSrc: "/videos/city.mp4",
-      posterUrl: "/images/city-poster.jpg",
-    },
-  ];
-
-  return (
-
-  );
-}
-```
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/VideoAccordionBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -1,4 +1,5 @@
-import { MenubarShowcase } from "@/components/site/MenubarShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Menubar
 
@@ -6,11 +7,259 @@ A visually persistent, OS-style menu component that provides quick access to a c
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Interactive Showcase
+## Examples
 
-Interact with the simulated application header below. Try clicking a menu to open it, and then simply hover over the adjacent triggers to see the seamless switching behavior. Clicking outside the menu or hitting `Escape` will close it.
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app. The first example's **Code** tab contains the full component source.
 
-<MenubarShowcase />
+export const usageDefault = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function TopNav() {
+  return (
+    <Menubar>
+      {/* Every MenubarMenu needs a unique \`value\` — the context tracks it */}
+      <MenubarMenu value="file">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem onClick={() => console.log("New Tab")}>New Tab</MenubarItem>
+          <MenubarItem>New Window</MenubarItem>
+          <MenubarItem>Open File…</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+
+      <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Undo</MenubarItem>
+          <MenubarItem>Redo</MenubarItem>
+          <MenubarItem>Cut</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}`;
+
+export const usageShortcuts = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function EditMenu() {
+  return (
+    <Menubar>
+      <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          {/* MenubarShortcut right-aligns itself inside the item */}
+          <MenubarItem>
+            Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+          </MenubarItem>
+
+          <MenubarSeparator />
+
+          <MenubarItem>
+            Cut <MenubarShortcut>⌘X</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            Copy <MenubarShortcut>⌘C</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            Paste <MenubarShortcut>⌘V</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}`;
+
+export const usageIcons = `import { useState } from "react";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import { Laptop, Moon, Sun } from "lucide-react";
+
+export default function ViewMenu() {
+  const [theme, setTheme] = useState("System");
+
+  return (
+    <Menubar>
+      <MenubarMenu value="view">
+        <MenubarTrigger>View</MenubarTrigger>
+        <MenubarContent>
+          {/* inset lines the label up with the icon-bearing items below */}
+          <MenubarLabel inset>Theme Options</MenubarLabel>
+
+          <MenubarItem inset onClick={() => setTheme("Light")}>
+            <Sun className="w-4 h-4 mr-2" /> Light Mode
+            {theme === "Light" && (
+              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
+            )}
+          </MenubarItem>
+          <MenubarItem inset onClick={() => setTheme("Dark")}>
+            <Moon className="w-4 h-4 mr-2" /> Dark Mode
+            {theme === "Dark" && (
+              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
+            )}
+          </MenubarItem>
+          <MenubarItem inset onClick={() => setTheme("System")}>
+            <Laptop className="w-4 h-4 mr-2" /> System Default
+            {theme === "System" && (
+              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
+            )}
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}`;
+
+export const usageDisabled = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+
+export default function FileMenu() {
+  return (
+    <Menubar>
+      <MenubarMenu value="file">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Save</MenubarItem>
+
+          {/* disabled dims the row and kills pointer events + onClick */}
+          <MenubarItem disabled>Save All</MenubarItem>
+
+          <MenubarSeparator />
+
+          {/* className styles a single destructive row */}
+          <MenubarItem className="text-red-600 focus:bg-red-50 focus:text-red-600">
+            Quit Nexus <MenubarShortcut>⌘Q</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}`;
+
+export const usageApp = `import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import { User } from "lucide-react";
+
+export default function AppWindow() {
+  return (
+    <div className="border rounded-xl overflow-hidden">
+      {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
+      <div className="border-b bg-zinc-50/50 px-2 py-1">
+        <Menubar className="border-none bg-transparent shadow-none w-full justify-start h-8">
+          <MenubarMenu value="file">
+            <MenubarTrigger className="font-semibold">Nexus UI</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>About Nexus</MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                Preferences… <MenubarShortcut>⌘,</MenubarShortcut>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+
+          <MenubarMenu value="edit">
+            <MenubarTrigger>Edit</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>
+                Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+
+          <MenubarMenu value="profiles">
+            <MenubarTrigger>Profiles</MenubarTrigger>
+            {/* align anchors the dropdown to the trigger: start | center | end */}
+            <MenubarContent align="start">
+              <MenubarLabel>Active Account</MenubarLabel>
+              <MenubarItem>
+                <User className="w-4 h-4 mr-2" /> Andy Bernard
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>Add Account…</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      </div>
+
+      <div className="h-[200px]">{/* your app canvas */}</div>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="menubar"
+  columns={1}
+  examples={[
+    {
+      title: "Menubar",
+      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`; each menu needs a `value`.",
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/MenubarBlock.tsx"),
+    },
+    {
+      title: "Shortcuts & separators",
+      subheading: "`MenubarShortcut` right-aligns a hint; `MenubarSeparator` groups the rows.",
+      props: { example: "shortcuts" },
+      usage: usageShortcuts,
+    },
+    {
+      title: "Icons & labels",
+      subheading: "`MenubarLabel` titles a group; `inset` keeps text aligned next to icons.",
+      props: { example: "icons" },
+      usage: usageIcons,
+    },
+    {
+      title: "Disabled & destructive",
+      subheading: "`disabled` blocks the row entirely; `className` restyles a single item.",
+      props: { example: "disabled" },
+      usage: usageDisabled,
+    },
+    {
+      title: "Application menubar",
+      subheading: "Strip the bar's chrome with `className` to fuse it into a window title bar.",
+      props: { example: "app" },
+      usage: usageApp,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,57 +267,7 @@ Interact with the simulated application header below. Try clicking a menu to ope
 
 This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/MenubarBlock.tsx`.
-
----
-
-## Usage
-
-The Menubar uses a highly composable structure. Wrap everything in `<Menubar>`, create columns with `<MenubarMenu>`, set your button with `<MenubarTrigger>`, and list your actions inside `<MenubarContent>`.
-
-```tsx
-import {
-  Menubar,
-  MenubarMenu,
-  MenubarTrigger,
-  MenubarContent,
-  MenubarItem,
-  MenubarSeparator,
-  MenubarShortcut,
-} from "@/components/custom/blocks/MenubarBlock";
-
-export default function TopNav() {
-  return (
-    <Menubar>
-
-      <MenubarMenu value="file">
-        <MenubarTrigger>File</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem onClick="{()"> console.log('New')}>
-            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem disabled>
-            Share
-          </MenubarItem>
-          <MenubarSeparator/>
-          <MenubarItem>
-            Print... <MenubarShortcut>⌘P</MenubarShortcut>
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-
-
-      <MenubarMenu value="edit">
-        <MenubarTrigger>Edit</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>Copy</MenubarItem>
-          <MenubarItem>Paste</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-    </Menubar>
-  );
-}
-```
+Create a new file at `components/custom/blocks/MenubarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.

@@ -17,10 +17,56 @@ import {
 export default function CollapsibleDemo({
   layout = "basic",
 }: {
-  layout?: "basic" | "settings" | "filetree";
+  layout?: "basic" | "settings" | "filetree" | "minimal" | "disabled";
 }) {
   return (
     <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
+      {layout === "minimal" && (
+        <div className="w-full max-w-md">
+          <Collapsible>
+            <CollapsibleTrigger className="p-2 border border-zinc-200 dark:border-zinc-800 rounded font-medium">
+              Click to Expand
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="p-4 border border-zinc-200 dark:border-zinc-800 mt-2 rounded text-sm text-zinc-600 dark:text-zinc-400">
+                This content was hidden!
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      )}
+
+      {layout === "disabled" && (
+        <div className="w-full max-w-md space-y-4">
+          <Collapsible
+            disabled
+            className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm opacity-60"
+          >
+            <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold text-zinc-900 dark:text-zinc-100 group cursor-not-allowed">
+              Billing history (locked on the free plan)
+              <ChevronDown className="w-4 h-4 text-zinc-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 pt-3">
+                You will never see this — the trigger ignores clicks.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+
+          <Collapsible className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold text-zinc-900 dark:text-zinc-100 group">
+              Invoices (enabled)
+              <ChevronDown className="w-4 h-4 text-zinc-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 pt-3">
+                This one still opens, so you can compare the two.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      )}
+
       {layout === "basic" && (
         <div className="w-full max-w-md space-y-4">
           <Collapsible

@@ -4,58 +4,94 @@ A powerful, composable command menu palette for searching data and triggering qu
 
 Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
 
-## Interactive Showcase
+## Examples
 
-Use the layout controls below to test the static and modal variants.
+Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it. The first example's **Code** tab contains the full component source.
 
-1. **Try typing in the search box:** The list will instantly filter, and any groups that become empty will automatically vanish.
-2. **Keyboard Navigation:** Use your `ArrowUp` and `ArrowDown` keys to navigate the filtered list, and hit `Enter` to trigger an action!
+export const usageDefault = `import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
 
-## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CommandBlock.tsx`.
-
----
-
-## Usage
-
-### Inline Layout
-
-To render the command menu flat on the page (like a sidebar search or settings panel):
-
-```tsx
-
-export default function StaticMenu() {
+export default function ActionSearch() {
   return (
 
-        No results found.
+        {/* Shown automatically when every item is filtered out */}
+        No matching records found.
 
-           alert("Profile!")}>
-            Profile
+           console.log(value)}>
+            
+            Calendar
+          
+           console.log(value)}>
+            
+            Search Emoji
+          
+           console.log(value)}>
+            
+            Calculator
 
   );
-}
-```
+}`;
 
-## Dialog Layout (Modal)
+export const usageGroups = `import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
 
-To trigger the command menu as an overlay (the classic Cmd+K experience), simply swap `` for `` and manage its open state:
+export default function CommandPalette() {
+  const run = (value: string) => console.log("Selected:", value);
 
-```tsx
+  return (
+
+        No matching records found.
+
+            Calendar
+
+            Search Emoji
+
+            Calculator
+
+          {/* CommandShortcut right-aligns the hotkey hint */}
+
+            Profile
+            ⌘P
+
+            Billing
+            ⌘B
+
+            Settings
+            ⌘S
+
+          {/* data-[selected=true] styles the row while it is highlighted */}
+
+            Log out
+            ⇧⌘Q
+
+  );
+}`;
+
+export const usageDialog = `import { useEffect, useState } from "react";
 
 export default function QuickActions() {
   const [open, setOpen] = useState(false);
 
-  // Hook to capture Cmd+K
+  // The classic ⌘K / Ctrl+K binding
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen((prev) => !prev);
       }
     };
     document.addEventListener("keydown", down);
@@ -63,13 +99,48 @@ export default function QuickActions() {
   }, []);
 
   return (
+    <>
+       setOpen(true)}>Open Command Dialog
 
-         setOpen(false)}>
-          Close Menu
+      {/* Same children as the inline , rendered in a portal */}
+
+             setOpen(false)}>Calendar
+             setOpen(false)}>Calculator
 
   );
-}
-```
+}`;
+
+export const usageNoFilter = `import { useState } from "react";
+
+export default function RemoteSearch() {
+  const [results, setResults] = useState([]);
+
+  // shouldFilter={false} hands filtering back to you — required when the
+  // results come from an API instead of the DOM.
+  return (
+    
+       fetchResults(e.target.value).then(setResults)}
+      />
+      
+        No matching records found.
+        
+          {results.map((result) => (
+             console.log(result)}>
+              {result}
+            
+          ))}
+
+  );
+}`;
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
+
+Create a new file at `components/custom/blocks/CommandBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+
 ## Features
 Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
 

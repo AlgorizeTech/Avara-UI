@@ -1,4 +1,5 @@
-import { SidebarShowcase } from "@/components/site/SidebarShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Sidebar
 
@@ -6,14 +7,172 @@ A powerful, composable sidebar component that automatically manages mobile flyou
 
 Building a good sidebar is one of the hardest parts of dashboard development. It requires managing state across completely different structural elements, handling viewport resizing, and animating complex CSS properties smoothly. This `SidebarBlock` utilizes React Context to handle all of this internally.
 
-## Interactive Showcase
+## Examples
 
-Use the interactive preview below. It functions as a complete mini-application shell.
+Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead. The first example's **Code** tab contains the full component source.
 
-1. Try clicking the desktop collapse trigger (the menu icon in the top header) to see how the text hides and icons seamlessly center. Note how native tooltips appear on hover when collapsed!
-2. If you view this page on a mobile device (or shrink your browser window), the sidebar automatically becomes a dismissible flyout drawer.
+export const usageDefault = `import {
+  MobileSidebarTrigger,
+  Sidebar,
+  SidebarBrand,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import { CreditCard, Hexagon, LayoutDashboard, LogOut, Settings, Users } from "lucide-react";
+import { useState } from "react";
 
-<SidebarShowcase />
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    // The provider owns expanded/mobile state for every part below it.
+    <SidebarProvider defaultExpanded>
+      <Sidebar variant="attached">
+        <SidebarHeader>
+          <SidebarBrand icon={<Hexagon className="w-6 h-6 text-primary" fill="currentColor" />}>
+            Nexus UI
+          </SidebarBrand>
+        </SidebarHeader>
+
+        <SidebarContent>
+          {/* SidebarGroup labels fade out when the rail collapses */}
+          <SidebarGroup label="Platform">
+            <SidebarItem
+              icon={<LayoutDashboard className="w-5 h-5" />}
+              active={activeRoute === "Dashboard"}
+              onClick={() => setActiveRoute("Dashboard")}
+            >
+              Dashboard
+            </SidebarItem>
+            <SidebarItem
+              icon={<Users className="w-5 h-5" />}
+              active={activeRoute === "Customers"}
+              onClick={() => setActiveRoute("Customers")}
+            >
+              Customers
+            </SidebarItem>
+            <SidebarItem icon={<CreditCard className="w-5 h-5" />}>Billing</SidebarItem>
+          </SidebarGroup>
+
+          <SidebarGroup label="Support">
+            <SidebarItem icon={<Settings className="w-5 h-5" />}>Settings</SidebarItem>
+          </SidebarGroup>
+        </SidebarContent>
+
+        <SidebarFooter>
+          <SidebarItem icon={<LogOut className="w-5 h-5" />}>Log out</SidebarItem>
+        </SidebarFooter>
+      </Sidebar>
+
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 flex items-center gap-4 px-6 border-b">
+          {/* Opens the flyout under md; collapses the rail above it */}
+          <MobileSidebarTrigger className="md:hidden" />
+          <SidebarTrigger />
+          <h1 className="text-lg font-bold">{activeRoute}</h1>
+        </header>
+
+        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      </div>
+    </SidebarProvider>
+  );
+}`;
+
+export const usageFloating = `import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarItem,
+  SidebarProvider,
+} from "@/components/custom/blocks/SidebarBlock";
+import { LayoutDashboard } from "lucide-react";
+
+export default function FloatingLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SidebarProvider defaultExpanded>
+      {/* "floating" detaches the panel from the edge and rounds it */}
+      <Sidebar variant="floating">
+        <SidebarContent>
+          <SidebarGroup label="Platform">
+            <SidebarItem icon={<LayoutDashboard className="w-5 h-5" />} active>
+              Dashboard
+            </SidebarItem>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+
+      <div className="flex-1">{children}</div>
+    </SidebarProvider>
+  );
+}`;
+
+export const usageCollapsed = `import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import { LayoutDashboard, Users } from "lucide-react";
+
+export default function RailLayout({ children }: { children: React.ReactNode }) {
+  return (
+    // Start as an icon rail — labels appear as tooltips on hover.
+    <SidebarProvider defaultExpanded={false}>
+      <Sidebar variant="attached">
+        <SidebarContent>
+          <SidebarGroup label="Platform">
+            <SidebarItem icon={<LayoutDashboard className="w-5 h-5" />} active>
+              Dashboard
+            </SidebarItem>
+            <SidebarItem icon={<Users className="w-5 h-5" />}>Customers</SidebarItem>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 flex items-center px-6 border-b">
+          <SidebarTrigger />
+        </header>
+        <main className="flex-1 p-6">{children}</main>
+      </div>
+    </SidebarProvider>
+  );
+}`;
+
+<ExampleShowcase
+  name="sidebar"
+  colorControl
+  colorProp="themeColor"
+  columns={1}
+  examples={[
+    {
+      title: "Sidebar",
+      subheading: "Wrap the shell in `SidebarProvider`, then compose header, groups and footer.",
+      props: { variant: "attached", defaultExpanded: true },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
+    },
+    {
+      title: "Floating",
+      subheading: "`variant=\"floating\"` lifts the panel off the edge and rounds its corners.",
+      props: { variant: "floating", defaultExpanded: true },
+      usage: usageFloating,
+    },
+    {
+      title: "Collapsed rail",
+      subheading: "`defaultExpanded={false}` boots straight into the icon rail with hover tooltips.",
+      props: { variant: "attached", defaultExpanded: false },
+      usage: usageCollapsed,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -21,61 +180,8 @@ Use the interactive preview below. It functions as a complete mini-application s
 
 This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SidebarBlock.tsx`.
+Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
----
-
-## Usage
-
-The Sidebar uses a Provider architecture. Wrap your entire application shell in `<SidebarProvider>`, place the `<Sidebar>` adjacent to your main content `<main>`, and drop the triggers wherever you want them to live.
-
-```tsx
-import {
-  SidebarProvider, Sidebar, SidebarHeader, SidebarContent,
-  SidebarGroup, SidebarItem, SidebarFooter,
-  MobileSidebarTrigger, SidebarTrigger
-} from "@/components/custom/blocks/SidebarBlock";
-import { Home, Users, Settings } from "lucide-react";
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <SidebarProvider color="indigo" defaultExpanded="{true}">
-
-
-      <Sidebar variant="attached">
-        <SidebarHeader>
-          <div className="font-black text-lg">My App</div>
-        </SidebarHeader>
-
-        <SidebarContent>
-          <SidebarGroup label="Menu">
-            <SidebarItem icon="{<Home"/>} active>Dashboard</SidebarItem>
-            <SidebarItem icon="{<Users"/>}>Team</SidebarItem>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter>
-          <SidebarItem icon="{<Settings"/>}>Preferences</SidebarItem>
-        </SidebarFooter>
-      </Sidebar>
-
-
-      <div className="flex-1 flex flex-col min-w-0 bg-white">
-        <header className="h-16 flex items-center px-6 border-b border-gray-200">
-
-          <MobileSidebarTrigger className="md:hidden mr-4"/>
-
-          <SidebarTrigger className="hidden md:flex mr-4"/>
-        </header>
-        <main className="p-6">
-          {children}
-        </main>
-      </div>
-
-    </SidebarProvider>
-  );
-}
-```
 
 ## Props Reference
 

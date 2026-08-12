@@ -12,14 +12,57 @@ import {
 } from "@/components/custom/blocks/Drawer";
 import { useState } from "react";
 
+type Side = "top" | "bottom" | "left" | "right";
+
+/** One trigger + one drawer, so several can live side by side in a frame. */
+function DrawerTile({ side }: { side: Side }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="outline" onClick={() => setIsOpen(true)}>
+        {side}
+      </Button>
+      <Drawer open={isOpen} onOpenChange={setIsOpen} side={side}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>side=&quot;{side}&quot;</DrawerTitle>
+            <DrawerDescription>
+              The drawer slides in from the {side} edge and sizes itself to
+              match.
+            </DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button onClick={() => setIsOpen(false)}>Close</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}
+
 export default function DrawerDemo({
   side = "right",
   open = false,
+  showAll,
 }: {
-  side?: "top" | "bottom" | "left" | "right";
+  side?: Side;
   open?: boolean;
+  /** Render-all mode: one trigger per edge in a single frame. */
+  showAll?: "sides";
 }) {
   const [isOpen, setIsOpen] = useState(open);
+
+  if (showAll === "sides") {
+    return (
+      <div className="w-full flex flex-wrap items-center justify-center gap-4 min-h-[400px] bg-white dark:bg-transparent transition-colors duration-300">
+        {(["top", "right", "bottom", "left"] as Side[]).map((s) => (
+          <DrawerTile key={s} side={s} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex items-center justify-center min-h-[400px] bg-white dark:bg-transparent transition-colors duration-300">

@@ -1,4 +1,5 @@
-import { InputShowcase } from "@/components/site/InputShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Input
 
@@ -6,15 +7,167 @@ A powerful, multi-purpose Input component that natively supports advanced File U
 
 By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different structural variants, colors, and input types.
+Explore the different variations of the Input component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-- Select **Input Type: File** to reveal the Dropzone.
-- Toggle **Multiple Files** to see the array management logic and preview stacks.
-- Toggle **Images Only** to test the `accept="image/*"` prop limitation.
+export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
-<InputShowcase />
+export default function BasicInput() {
+  return (
+    <InputBlock
+      type="email"
+      label="Email Address"
+      placeholder="Enter your email..."
+      helperText="We'll never share your data."
+    />
+  );
+}`;
+
+export const usageFilled = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FilledInput() {
+  return (
+    <InputBlock
+      variant="filled"
+      label="Email Address"
+      placeholder="Enter your email..."
+    />
+  );
+}`;
+
+export const usageUnderlined = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function UnderlinedInput() {
+  return (
+    <InputBlock
+      variant="underlined"
+      label="Email Address"
+      placeholder="Enter your email..."
+    />
+  );
+}`;
+
+export const usageGlow = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function GlowInput() {
+  return (
+    <InputBlock
+      variant="glow"
+      label="Email Address"
+      placeholder="Enter your email..."
+    />
+  );
+}`;
+
+export const usageSizes = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function InputSizes() {
+  return (
+    <div className="flex flex-col gap-6">
+      <InputBlock inputSize="sm" label="Small" placeholder="Enter your email..." />
+      <InputBlock inputSize="md" label="Medium" placeholder="Enter your email..." />
+      <InputBlock inputSize="lg" label="Large" placeholder="Enter your email..." />
+    </div>
+  );
+}`;
+
+export const usagePassword = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function PasswordInput() {
+  return (
+    <InputBlock
+      type="password"
+      label="Password"
+      placeholder="Enter your password..."
+    />
+  );
+}`;
+
+export const usageFile = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FileUploadInput() {
+  return (
+    <InputBlock
+      type="file"
+      multiple
+      accept="image/*"
+      label="Upload Portfolio"
+      helperText="Attach your files here."
+      onFilesChange={(files) => console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
+export const usageStates = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function InputStates() {
+  return (
+    <div className="flex flex-col gap-6">
+      <InputBlock label="Email Address" error="Please enter a valid input." />
+      <InputBlock label="Email Address" disabled helperText="We'll never share your data." />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="input"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Input",
+      subheading: "A labelled text field with helper text and a leading icon.",
+      props: { inputType: "email" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+    },
+    {
+      title: "Filled",
+      subheading: "Use `variant=\"filled\"` for a solid, low-contrast field.",
+      props: { variant: "filled" },
+      usage: usageFilled,
+    },
+    {
+      title: "Underlined",
+      subheading: "Use `variant=\"underlined\"` for a single baseline rule.",
+      props: { variant: "underlined" },
+      usage: usageUnderlined,
+    },
+    {
+      title: "Glow",
+      subheading: "Use `variant=\"glow\"` to light the field up on focus.",
+      props: { variant: "glow" },
+      usage: usageGlow,
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `inputSize` prop to change the size.",
+      props: { showAll: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "Password",
+      subheading: "`type=\"password\"` adds the show/hide toggle automatically.",
+      props: { inputType: "password" },
+      usage: usagePassword,
+    },
+    {
+      title: "File upload",
+      subheading: "`type=\"file\"` turns the field into a drag & drop zone with previews.",
+      props: { inputType: "file", isMultiple: true, isImageOnly: true },
+      usage: usageFile,
+      minHeight: 460,
+    },
+    {
+      title: "Error and disabled",
+      subheading: "Pass `error` for the invalid state, `disabled` to lock the field.",
+      props: { showAll: "states" },
+      usage: usageStates,
+    },
+  ]}
+/>
 
 ## Installation
 

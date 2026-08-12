@@ -4,13 +4,39 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the completely rewritten architectures.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. The first example's **Code** tab contains the full component source.
 
-- **Bars** are now built with pure HTML/CSS, meaning they will inherently stack and position perfectly flat on the bottom axis. Tooltips trigger via CSS `group-hover`.
-- **Lines & Areas** use a custom spline function to generate smooth, premium bezier curves instead of harsh angles. The `showArea` toggle seamlessly adds a gradient fill below the stroke.
-- **Pie & Donut** use a dedicated 1:1 aspect ratio container and calculate polar coordinates automatically. They generate a beautiful monochromatic scale by reducing slice opacity based on your chosen theme color.
+export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const revenue = [
+  { label: "Jan", value: 1200 },
+  { label: "Feb", value: 1900 },
+  { label: "Mar", value: 1500 },
+  { label: "Apr", value: 2400 },
+];
+
+export default function RevenueChart() {
+  return (
+    
+  );
+}`;
+
+export const usageLine = `// Bezier-smoothed stroke, no fill.
+`;
+
+export const usageArea = `// Same line, plus a gradient fill dropped beneath the stroke.
+`;
+
+export const usagePie = `// Pie and donut render in a 1:1 container, so they never stretch into
+// ovals, and shade each slice from a single theme color.
+`;
+
+export const usageDonut = ``;
+
+export const usageNoGrid = `// Grid lines only apply to bar/line charts.
+`;
 
 ## Installation
 
@@ -20,31 +46,7 @@ Because this rewrite drops all external animation libraries, it is **100% depend
 
 The engine uses standard Tailwind utility classes and injects its own lightweight `@keyframes` for the bar growth, line drawing, and pie-burst animations.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ChartBlock.tsx`.
-
----
-
-## Usage
-
-Define your `data` array by passing in a `label` and a numerical `value`. The engine handles all the scaling, height distribution, and polar math automatically.
-
-```tsx
-
-const monthlySignups = [
-  { label: "Jan", value: 120 },
-  { label: "Feb", value: 340 },
-  { label: "Mar", value: 290 },
-  { label: "Apr", value: 500 },
-];
-
-export default function AnalyticsWidget() {
-  return (
-    
-      User Signups
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChartBlock.tsx`.
 
 ## Features
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.

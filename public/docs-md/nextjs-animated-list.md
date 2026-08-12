@@ -4,9 +4,60 @@ A hyper-polished list component that staggers its children into view using GSAP 
 
 Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
-## Interactive Showcase
+## Examples
 
-Hit the replay button below to watch the 3D flip-in sequence. Hover over the rendered cards to see the spotlight gradient and the icon bounce micro-interactions.
+Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+
+export default function NotificationFeed() {
+  return (
+    // The wrapper establishes the 3D perspective the children animate inside.
+
+            $
+
+            Payment Received
+            $129.00 via Stripe
+
+            @
+
+            New User Signup
+            alice@example.com
+
+  );
+}`;
+
+export const usageFlip = `// The 3D flip is the signature entrance — children rotate in on the X axis.
+
+  {items.map((item) => (
+    {/* … */}
+  ))}
+`;
+
+export const usageSlideUp = `// Slide variants come in from a direction instead of rotating.
+
+  {items.map((item) => (
+    {/* … */}
+  ))}
+`;
+
+export const usagePop = `
+  {items.map((item) => (
+    {/* … */}
+  ))}
+`;
+
+export const usageTiming = `// \`staggerDelay\` is the gap between children, \`duration\` how long each one
+// takes, \`animationDelay\` how long the whole sequence waits before starting,
+// and \`ease\` is any GSAP easing string.
+
+  {items.map((item) => (
+    {/* … */}
+  ))}
+`;
 
 ## Installation
 
@@ -20,33 +71,7 @@ npm install gsap
 
 ### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/AnimatedListBlock.tsx.
-
-## Usage
-
-Structure your feed using the AnimatedList as the parent wrapper. You can adjust the staggerDelay prop to speed up or slow down the cascade effect. Use the provided AnimatedListItem for your individual rows to instantly inherit the mouse-tracking spotlight and deep shadow styling.
-
-## Implementation
-
-```tsx
-
-export default function NotificationFeed() {
-  return (
-    // The wrapper forces a 3D perspective to enable the flip-in physics
-
-            $
-
-            Payment Received
-            $129.00 via Stripe
-
-            @
-
-            New User Signup
-            alice@example.com
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedListBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

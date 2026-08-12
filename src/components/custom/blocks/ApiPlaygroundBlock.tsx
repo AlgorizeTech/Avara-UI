@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import {
   Activity,
   CheckCircle2,
@@ -52,14 +53,19 @@ const colorThemes: Record<string, Record<string, string>> = {
   },
 };
 
-const methodColors: Record<HttpMethod, string> = {
-  GET: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10",
-  POST: "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-500/10",
-  PUT: "text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-500/10",
-  PATCH:
-    "text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-500/10",
-  DELETE: "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10",
+// Theme colour fed to SelectBlock so the dropdown highlight, ring and chevron
+// keep the per-method colour coding of the old native <select>.
+const methodThemeColors: Record<HttpMethod, string> = {
+  GET: "#3b82f6",
+  POST: "#22c55e",
+  PUT: "#f97316",
+  PATCH: "#eab308",
+  DELETE: "#ef4444",
 };
+
+const METHOD_OPTIONS = (
+  ["GET", "POST", "PUT", "PATCH", "DELETE"] as HttpMethod[]
+).map((m) => ({ label: m, value: m }));
 
 const hexToRgb = (hex: string) => {
   let cleanHex = hex.replace(/^#/, "");
@@ -317,22 +323,15 @@ export const ApiPlaygroundBlock = forwardRef<
           {/* ── RESPONSIVE URL BAR ─────────────────────────────────────── */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <select
+              <SelectBlock
+                options={METHOD_OPTIONS}
                 value={method}
-                onChange={(e) => setMethod(e.target.value as HttpMethod)}
-                className={cn(
-                  "h-9 px-2 sm:px-3 text-xs font-bold rounded-lg outline-none appearance-none cursor-pointer border-none shrink-0",
-                  methodColors[method],
-                )}
-              >
-                {(
-                  ["GET", "POST", "PUT", "PATCH", "DELETE"] as HttpMethod[]
-                ).map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
+                onChange={(v) => setMethod(v as HttpMethod)}
+                color={methodThemeColors[method]}
+                variant="filled"
+                inputSize="sm"
+                className="w-[104px] shrink-0"
+              />
 
               <input
                 type="text"

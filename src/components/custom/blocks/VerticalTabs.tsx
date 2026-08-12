@@ -15,6 +15,8 @@ export type TabsColor =
   | "purple"
   | string;
 export type TabsVariant = "default" | "glass" | "minimal" | "bordered";
+/** Which way the tab rail runs — beside the content, or above it. */
+export type TabsOrientation = "vertical" | "horizontal";
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
@@ -68,18 +70,30 @@ const hexToRgb = (hex: string) => {
     : "139, 92, 246";
 };
 
+// WCAG relative luminance. The active tab paints its label directly on the
+// accent, so a light custom hex needs dark text — hardcoding white made the
+// label vanish on anything pale.
+const relLuminance = (rgb: string) => {
+  const [r, g, b] = rgb.split(",").map((n) => {
+    const v = Number(n.trim()) / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
 export const getThemeStyles = (color: string) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
       theme: {
-        bg: "bg-[var(--theme-color)] text-white",
+        bg: "bg-[var(--theme-color)] text-[var(--theme-on-color)]",
         text: "text-[var(--theme-color)]",
         border: "border-[var(--theme-color)]",
-        dot: "bg-white",
+        dot: "bg-[var(--theme-on-color)]",
       },
       style: {
         "--theme-color": color,
+        "--theme-on-color": relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff",
         "--theme-color-rgb": rgb,
       } as React.CSSProperties,
     };
@@ -101,6 +115,7 @@ export interface VerticalTabsProps {
   tabs: TabItem[];
   color?: TabsColor;
   variant?: TabsVariant;
+  orientation?: TabsOrientation;
   defaultActiveId?: string;
   className?: string;
 }
@@ -109,6 +124,7 @@ export function VerticalTabs({
   tabs,
   color = "primary",
   variant = "default",
+  orientation = "vertical",
   defaultActiveId,
   className,
 }: VerticalTabsProps) {
@@ -117,6 +133,7 @@ export function VerticalTabs({
   );
   const contentRef = useRef<HTMLDivElement>(null);
   const { theme, style } = getThemeStyles(color);
+  const isHorizontal = orientation === "horizontal";
 
   const activeTab = tabs.find((t) => t.id === activeId) || tabs[0];
 
@@ -166,8 +183,12 @@ export function VerticalTabs({
       bordered: {
         container:
           "gap-0 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b] shadow-sm",
-        menuBox:
-          "bg-zinc-50 dark:bg-[#121212] p-4 border-r border-zinc-200 dark:border-zinc-800 rounded-none",
+        // The divider follows the rail: it separates rail from pane, so it sits
+        // on the bottom edge when the rail runs across the top.
+        menuBox: cn(
+          "bg-zinc-50 dark:bg-[#121212] p-4 border-zinc-200 dark:border-zinc-800 rounded-none",
+          isHorizontal ? "border-b" : "border-r",
+        ),
         contentBox: "p-8 md:p-10 bg-transparent rounded-none border-none",
         activeTab: cn("rounded-xl shadow-sm", theme.bg),
         inactiveTab:
@@ -180,16 +201,25 @@ export function VerticalTabs({
   return (
     <div
       className={cn(
-        "w-full flex flex-col md:flex-row",
+        "w-full flex",
+        // Vertical only splits into two columns once there is room for both;
+        // horizontal is always stacked, rail over pane.
+        isHorizontal ? "flex-col" : "flex-col md:flex-row",
         styles.container,
         className,
       )}
       style={style}
     >
-      {/* Sidebar Menu */}
+      {/* Tab Rail */}
       <div
         className={cn(
-          "w-full md:w-64 lg:w-72 shrink-0 flex flex-col gap-1.5",
+          "w-full shrink-0 flex gap-1.5",
+          isHorizontal
+            ? // Tabs keep their natural width and scroll sideways rather than
+              // squashing, so a long set stays readable. Scrollbar hidden
+              // inline so the block stays copy-paste standalone.
+              "flex-row overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            : "md:w-64 lg:w-72 flex-col",
           styles.menuBox,
         )}
       >
@@ -202,7 +232,11 @@ export function VerticalTabs({
               key={tab.id}
               onClick={() => setActiveId(tab.id)}
               className={cn(
-                "w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-[0.98]",
+                "flex items-center px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-[0.98]",
+                isHorizontal
+                  ? "shrink-0 justify-center gap-3"
+                  : // Full width so the dot can sit against the far edge.
+                    "w-full justify-between",
                 isActive ? styles.activeTab : styles.inactiveTab,
               )}
             >
@@ -219,13 +253,18 @@ export function VerticalTabs({
                 <span className="text-base tracking-tight">{tab.label}</span>
               </div>
 
-              {/* The Dot Indicator */}
-              <div
-                className={cn(
-                  "w-1.5 h-1.5 rounded-full transition-all duration-300",
-                  isActive ? theme.dot : "bg-zinc-300 dark:bg-zinc-700",
-                )}
-              />
+              {/* The Dot Indicator. Vertical only — it earns its place pinned
+                  to the far edge of a full-width row, but trailing a pill in
+                  the horizontal bar it just reads as a stray bullet, and the
+                  filled pill already says which tab is active. */}
+              {!isHorizontal && (
+                <div
+                  className={cn(
+                    "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                    isActive ? theme.dot : "bg-zinc-300 dark:bg-zinc-700",
+                  )}
+                />
+              )}
             </button>
           );
         })}

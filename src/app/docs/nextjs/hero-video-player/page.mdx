@@ -1,97 +1,95 @@
-import { HeroVideoPlayerShowcase } from "@/components/site/HeroVideoPlayerShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Hero Video Player
 
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-## Interactive Showcase
-Interact with the Hero Video Player to test its custom play buttons and full-screen capabilities.
+## Examples
 
+Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <HeroVideoPlayerShowcase />
-</div>
-
-import { HeroVideoPlayerDocsUpdater } from "@/components/custom/blocks/HeroVideoPlayerDocsUpdater";
-
-<HeroVideoPlayerDocsUpdater />
-
-## Implementation
-
-<div id="usage-block-16-9" className="block">
-```tsx
-import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function HeroSection() {
   return (
-    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
-      <HeroVideoPlayer
-        enableGlow={true}
-        aspectRatio="16/9"
-        modalSize="lg"
-        badge="Platform v2.4"
-        title="Experience the Architecture in Action"
-        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
-        playButtonLabel="Watch 4K Demo"
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
-      />
-    </div>
+    <HeroVideoPlayer
+      badge="Platform v2.4"
+      title="Experience the Architecture in Action"
+      subtitle="Watch how our engine transforms your workflow in under 3 minutes."
+      playButtonLabel="Watch 4K Demo"
+      videoUrl="https://www.youtube.com/embed/VIDEO_ID?autoplay=1"
+      thumbnailUrl="/photos/hero-still.jpg"
+    />
   );
-}
-```
-</div>
+}`;
 
-<div id="usage-block-21-9" className="hidden">
-```tsx
-import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageAspect = `// "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
+// modal, so a cinematic still can still open a 16:9 player.
+<HeroVideoPlayer aspectRatio="21/9" thumbnailUrl="/photos/hero-still.jpg" />`;
 
-export default function HeroSection() {
-  return (
-    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
-      <HeroVideoPlayer
-        enableGlow={true}
-        aspectRatio="21/9"
-        modalSize="lg"
-        badge="Platform v2.4"
-        title="Experience the Architecture in Action"
-        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
-        playButtonLabel="Watch 4K Demo"
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
-      />
-    </div>
-  );
-}
-```
-</div>
+export const usageAspect43 = `<HeroVideoPlayer aspectRatio="4/3" thumbnailUrl="/photos/hero-still.jpg" />`;
 
-<div id="usage-block-4-3" className="hidden">
-```tsx
-import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNoGlow = `// Drops the ambient bloom behind the frame — better on busy backgrounds.
+<HeroVideoPlayer enableGlow={false} />`;
 
-export default function HeroSection() {
-  return (
-    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6">
-      <HeroVideoPlayer
-        enableGlow={true}
-        aspectRatio="4/3"
-        modalSize="lg"
-        badge="Platform v2.4"
-        title="Experience the Architecture in Action"
-        subtitle="Watch how our lightning-fast engine transforms your development workflow in under 3 minutes."
-        playButtonLabel="Watch 4K Demo"
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-        thumbnailUrl="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
-      />
-    </div>
-  );
-}
-```
-</div>
+export const usageModal = `// "md" | "lg" | "xl" | "full" — how wide the player modal opens.
+<HeroVideoPlayer
+  modalSize="full"
+  videoUrl="https://www.youtube.com/embed/VIDEO_ID?autoplay=1"
+  onPlay={() => track("hero_video_opened")}
+  onClose={() => track("hero_video_closed")}
+/>`;
+
+<ExampleShowcase
+  name="hero-video-player"
+  columns={1}
+  examples={[
+    {
+      title: "Hero video player",
+      subheading: "A thumbnail, a glass CTA and a modal player. Every string — `badge`, `title`, `subtitle`, `playButtonLabel` — is a prop.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/HeroVideoPlayerBlock.tsx"),
+    },
+    {
+      title: "Cinematic frame",
+      subheading: "`aspectRatio=\"21/9\"` crops the preview to an ultrawide letterbox.",
+      props: { aspectRatio: "21/9" },
+      usage: usageAspect,
+    },
+    {
+      title: "Classic frame",
+      subheading: "`aspectRatio=\"4/3\"` suits product screenshots more than film stills.",
+      props: { aspectRatio: "4/3" },
+      usage: usageAspect43,
+    },
+    {
+      title: "Without the glow",
+      subheading: "Set `enableGlow={false}` to remove the ambient bloom behind the frame.",
+      props: { enableGlow: false },
+      usage: usageNoGlow,
+    },
+    {
+      title: "Full-width modal",
+      subheading: "`modalSize` controls how large the player opens; `onPlay` and `onClose` hook it up to analytics.",
+      props: { modalSize: "full" },
+      usage: usageModal,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component is dependency-free beyond `lucide-react` for the play and close icons — the modal, focus trap and glow are plain React and Tailwind.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/HeroVideoPlayerBlock.tsx`.
 
 ## Features
-Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
+
+Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">

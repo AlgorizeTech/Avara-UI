@@ -4,11 +4,42 @@ A high-performance system for building resizable panel layouts, complete with ke
 
 Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
 
-## Interactive Showcase
+## Examples
 
-Grab the vertical or horizontal handle bars below to resize the panels.
+Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired. The first example's **Code** tab contains the full component source.
 
-**Accessibility built-in:** Try clicking on one of the grab handles to focus it, and then use the `ArrowLeft`, `ArrowRight`, `ArrowUp`, or `ArrowDown` keys on your keyboard to resize the panels precisely!
+export const usageDefault = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+export default function StudioLayout() {
+  return (
+    // The outermost container must have a defined height.
+
+          {/* Groups nest freely — this one splits the main area vertically. */}
+
+  );
+}`;
+
+export const usageHorizontal = `
+
+`;
+
+export const usageVertical = `// \`direction\` sets the flex axis of the group and the drag axis of every
+// handle inside it.
+
+`;
+
+export const usageNoGrip = `// Omit \`withHandle\` for a bare 1px divider — still draggable, still
+// keyboard accessible, just without the visible grip.
+`;
+
+export const usageConstraints = `// Percentages of the group. The engine clamps the drag so a panel can
+// never escape its bounds.
+
+`;
 
 ## Installation
 
@@ -16,29 +47,7 @@ Grab the vertical or horizontal handle bars below to resize the panels.
 
 This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ResizableBlock.tsx`.
-
----
-
-## Usage
-
-This component utilizes highly composable parts. A `` establishes the flex direction, and contains `` elements separated by `` elements.
-
-You can nest groups infinitely to build complex grids (like VS Code or complex dashboards).
-
-```tsx
-
-export default function DashboardLayout() {
-  return (
-    // The outermost container must have a defined height
-
-          Navigation Links
-
-          Main Application Data
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ResizableBlock.tsx`.
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

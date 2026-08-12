@@ -8,12 +8,17 @@ import {
 
 export default function ApiPlaygroundDemo({
   defaultMethod = "POST",
+  defaultUrl = "https://api.acme.com/v1/customers",
   color = "primary",
   simulateError = false,
+  useMockHandler = true,
 }: {
   defaultMethod?: HttpMethod;
+  defaultUrl?: string;
   color?: ApiColor | string;
   simulateError?: boolean;
+  /** false falls back to the block's built-in default mock response. */
+  useMockHandler?: boolean;
 }) {
   // Advanced Mock Handler to simulate real API interactions for documentation
   const handleCustomMock = async (req: {
@@ -68,11 +73,11 @@ export default function ApiPlaygroundDemo({
   return (
     <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#050505] py-[12px] px-0 min-w-0 overflow-hidden">
       <ApiPlaygroundBlock
-        key={`${defaultMethod}-${color}-${simulateError}`} // Force remount on config changes
-        defaultUrl="https://api.acme.com/v1/customers"
+        key={`${defaultMethod}-${color}-${simulateError}-${useMockHandler}`} // Force remount on config changes
+        defaultUrl={defaultUrl}
         defaultMethod={defaultMethod}
         color={color}
-        mockHandler={handleCustomMock}
+        mockHandler={useMockHandler ? handleCustomMock : undefined}
       />
     </div>
   );

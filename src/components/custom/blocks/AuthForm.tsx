@@ -11,6 +11,10 @@ export type AuthColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type AuthVariant = "default" | "split" | "glass" | "minimal";
 export type AuthType = "login" | "signup";
 
+// `panelFg` is the text colour for the split variant's gradient panel. It has
+// to be declared per theme rather than hardcoded to white: the zinc and primary
+// gradients both invert in dark mode, which would otherwise leave the whole
+// marketing panel white-on-white.
 const colorThemes: Record<string, Record<string, string>> = {
   indigo: {
     bg: "bg-indigo-600 hover:bg-indigo-700",
@@ -18,6 +22,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-indigo-600",
     ring: "focus:ring-indigo-600",
     gradient: "from-indigo-600 to-violet-600",
+    panelFg: "text-white",
   },
   rose: {
     bg: "bg-rose-600 hover:bg-rose-700",
@@ -25,6 +30,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-rose-600",
     ring: "focus:ring-rose-600",
     gradient: "from-rose-600 to-orange-500",
+    panelFg: "text-white",
   },
   emerald: {
     bg: "bg-emerald-600 hover:bg-emerald-700",
@@ -32,6 +38,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-emerald-600",
     ring: "focus:ring-emerald-600",
     gradient: "from-emerald-600 to-teal-500",
+    panelFg: "text-white",
   },
   zinc: {
     bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900",
@@ -39,7 +46,20 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-zinc-900 dark:border-zinc-100",
     ring: "focus:ring-zinc-900 dark:focus:ring-zinc-100",
     gradient: "from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400",
+    panelFg: "text-white dark:text-zinc-900",
   },
+};
+
+/** Legible text colour to sit on a filled swatch of `rgb`. */
+const contrastingForeground = (rgb: string) => {
+  const [r, g, b] = rgb.split(",").map((v) => parseInt(v.trim(), 10));
+  const channel = (v: number) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  const luminance =
+    0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+  return luminance > 0.45 ? "#09090b" : "#ffffff";
 };
 
 const hexToRgb = (hex: string) => {
@@ -67,10 +87,12 @@ export const getThemeStyles = (color: string) => {
           ring: "focus:ring-[var(--theme-color)]",
           gradient:
             "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
+          panelFg: "text-[var(--panel-fg)]",
         },
         style: {
           "--theme-color": color,
           "--theme-color-rgb": rgb,
+          "--panel-fg": contrastingForeground(rgb),
         } as React.CSSProperties,
       };
     }
@@ -81,6 +103,8 @@ export const getThemeStyles = (color: string) => {
         border: "border-primary",
         ring: "focus:ring-primary/40",
         gradient: "from-primary to-primary/70",
+        // The token designed to be legible on --primary, which inverts by theme.
+        panelFg: "text-primary-foreground",
       },
       style: {} as React.CSSProperties,
     };
@@ -452,24 +476,213 @@ export default function AuthForm({
       >
         <div
           className={cn(
-            "hidden lg:flex w-1/2 relative p-12 flex-col justify-between overflow-hidden bg-gradient-to-br",
+            "hidden lg:flex w-1/2 relative p-12 flex-col justify-between gap-10 overflow-hidden bg-gradient-to-br",
             theme.gradient,
+            // Everything inside inherits this, so the panel stays legible even
+            // on gradients that invert with the theme.
+            theme.panelFg,
           )}
         >
           <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none" />
+
+          {/* Decoration. All CSS — the block stays copy-paste portable with no
+              image assets to ship, and it recolours with the gradient. */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.18] bg-[radial-gradient(circle,currentColor_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_top_right,black_10%,transparent_70%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute -top-24 -right-20 w-72 h-72 rounded-full bg-current/15 blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute -bottom-28 -left-16 w-80 h-80 rounded-full bg-black/20 blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
+
           <div className="relative z-10">
-            <div className="flex items-center gap-2 text-white font-black text-2xl tracking-tighter">
-              <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-md">
+            <div className="flex items-center gap-2 font-black text-2xl tracking-tighter">
+              <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
                 ⚡
               </div>
               Acme Inc.
             </div>
           </div>
-          <div className="relative z-10 text-white mt-auto max-w-sm">
+
+          {/* Sign-in illustration. Drawn inline rather than loaded as a file so
+              the block stays copy-paste portable with no assets to ship, and it
+              paints in currentColor so it inherits the panel's own foreground —
+              legible on both the light and dark gradients. */}
+          <div className="relative z-10 flex-1 flex items-center justify-center py-4">
+            <svg
+              viewBox="0 0 320 250"
+              fill="none"
+              className="w-full max-w-[320px]"
+              aria-hidden="true"
+            >
+              <ellipse
+                cx="150"
+                cy="228"
+                rx="116"
+                ry="14"
+                fill="currentColor"
+                opacity="0.12"
+              />
+
+              {/* Offset card behind, for depth */}
+              <rect
+                x="52"
+                y="26"
+                width="222"
+                height="148"
+                rx="16"
+                fill="currentColor"
+                opacity="0.1"
+              />
+
+              {/* Sign-in card */}
+              <rect
+                x="30"
+                y="44"
+                width="222"
+                height="162"
+                rx="16"
+                fill="currentColor"
+                opacity="0.16"
+              />
+              <rect
+                x="30.75"
+                y="44.75"
+                width="220.5"
+                height="160.5"
+                rx="15.25"
+                stroke="currentColor"
+                strokeOpacity="0.35"
+                strokeWidth="1.5"
+              />
+              <circle cx="48" cy="62" r="3.5" fill="currentColor" opacity="0.5" />
+              <circle cx="60" cy="62" r="3.5" fill="currentColor" opacity="0.3" />
+              <circle cx="72" cy="62" r="3.5" fill="currentColor" opacity="0.3" />
+              <line
+                x1="30"
+                y1="78"
+                x2="252"
+                y2="78"
+                stroke="currentColor"
+                strokeOpacity="0.25"
+                strokeWidth="1.5"
+              />
+
+              {/* Avatar */}
+              <circle
+                cx="141"
+                cy="104"
+                r="18"
+                fill="currentColor"
+                opacity="0.26"
+              />
+              <circle
+                cx="141"
+                cy="99"
+                r="6.5"
+                fill="currentColor"
+                opacity="0.8"
+              />
+              <path
+                d="M130 116a11 11 0 0 1 22 0"
+                fill="currentColor"
+                opacity="0.8"
+              />
+
+              {/* Email + password fields */}
+              <rect
+                x="58"
+                y="136"
+                width="166"
+                height="14"
+                rx="7"
+                fill="currentColor"
+                opacity="0.22"
+              />
+              <rect
+                x="58"
+                y="158"
+                width="166"
+                height="14"
+                rx="7"
+                fill="currentColor"
+                opacity="0.22"
+              />
+              <circle cx="70" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="78" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="86" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="94" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
+
+              {/* Submit */}
+              <rect
+                x="58"
+                y="180"
+                width="166"
+                height="16"
+                rx="8"
+                fill="currentColor"
+                opacity="0.55"
+              />
+
+              {/* Padlock badge */}
+              <circle
+                cx="256"
+                cy="166"
+                r="36"
+                fill="currentColor"
+                opacity="0.18"
+              />
+              <circle
+                cx="256"
+                cy="166"
+                r="36"
+                stroke="currentColor"
+                strokeOpacity="0.4"
+                strokeWidth="1.5"
+              />
+              <rect
+                x="242"
+                y="163"
+                width="28"
+                height="22"
+                rx="6"
+                stroke="currentColor"
+                strokeOpacity="0.9"
+                strokeWidth="2.5"
+              />
+              <path
+                d="M248 163v-6a8 8 0 0 1 16 0v6"
+                stroke="currentColor"
+                strokeOpacity="0.9"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+              <circle cx="256" cy="171" r="2.8" fill="currentColor" opacity="0.9" />
+              <path
+                d="M256 173v4"
+                stroke="currentColor"
+                strokeOpacity="0.9"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+
+              {/* Sparkles */}
+              <circle cx="34" cy="24" r="3" fill="currentColor" opacity="0.5" />
+              <circle cx="290" cy="58" r="4" fill="currentColor" opacity="0.32" />
+              <circle cx="272" cy="28" r="2.5" fill="currentColor" opacity="0.5" />
+            </svg>
+          </div>
+
+          <div className="relative z-10 max-w-sm">
             <h1 className="text-4xl font-bold mb-4 leading-tight">
               Start building your next big idea.
             </h1>
-            <p className="text-white/80 font-medium">
+            <p className="font-medium opacity-80">
               Join thousands of developers who are already using our platform to
               build the future of software.
             </p>
