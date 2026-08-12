@@ -92,11 +92,7 @@ export function SandboxFrame({
   // toast stack anchor — floats above the card floor. Growing the iframe's own
   // viewport by 1/scale makes the scaled frame fill the card exactly.
   const safeScale = scale > 0 ? scale : 1;
-  const floorHeight = Math.round(minHeight / safeScale);
-  const frameHeight = Math.min(
-    Math.max(floorHeight, maxHeight),
-    Math.max(floorHeight, contentHeight),
-  );
+  const frameHeight = contentHeight > 0 ? contentHeight : minHeight;
 
   return (
     <div
