@@ -113,7 +113,12 @@ export function SandboxClient({ name }: { name: string }) {
   useEffect(() => {
     if (window.parent === window) return;
     const report = () => {
-      const height = Math.ceil(document.documentElement.scrollHeight);
+      // body, not documentElement: the latter is never shorter than the iframe
+      // viewport, so a frame that got sized up once could never report its way
+      // back down — it ratchets and the card stays tall. body carries the real
+      // content height (its margin/min-height are neutralized above), and the
+      // embedding frame applies its own min/max clamp.
+      const height = Math.ceil(document.body.scrollHeight);
       window.parent.postMessage(
         { type: "sandbox:height", name, height },
         window.location.origin,
