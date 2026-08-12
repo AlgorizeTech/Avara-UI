@@ -154,41 +154,65 @@ export function PopoverContent({
       const viewportWidth = doc.documentElement.clientWidth || win.innerWidth;
       const viewportHeight = doc.documentElement.clientHeight || win.innerHeight;
       const padding = avoidCollisions ? collisionPadding : 0;
-
-      // Cap the panel to the viewport *before* measuring it, so a fixed-width
-      // panel (the default is w-72 / 288px) can never be wider or taller than a
-      // phone screen. Scroll the overflow rather than letting it get cropped.
-      if (avoidCollisions) {
-        contentEl.style.maxWidth = `${Math.max(0, viewportWidth - padding * 2)}px`;
-        contentEl.style.maxHeight = `${Math.max(0, viewportHeight - padding * 2)}px`;
-        contentEl.style.overflowY =
-          contentEl.scrollHeight > contentEl.clientHeight ? "auto" : "";
-      }
-
       const trigger = triggerEl.getBoundingClientRect();
-      // offsetWidth/Height are the untransformed layout box. getBoundingClientRect
-      // would report the shrunken size while the zoom-in entrance animation runs,
-      // which throws the alignment and the clamping below off by a few pixels.
-      const width = contentEl.offsetWidth;
-      const height = contentEl.offsetHeight;
 
-      // 1. Resolve the side, flipping to the opposite edge when the preferred
-      //    one has no room — the common mobile case for side="left"/"right",
-      //    where a 288px panel doesn't fit beside the trigger at all.
+      // The panel's uncapped size, read from the scroll box. Clearing the caps
+      // and re-measuring would resize the element on every scroll frame and
+      // re-trigger the ResizeObserver below.
+      const chromeY = contentEl.offsetHeight - contentEl.clientHeight;
+      const chromeX = contentEl.offsetWidth - contentEl.clientWidth;
+      const naturalHeight = contentEl.scrollHeight + chromeY;
+      const naturalWidth = contentEl.scrollWidth + chromeX;
+
+      // Room between each trigger edge and the viewport edge, already minus the
+      // gap the panel keeps off the trigger — so this is the space the panel can
+      // occupy WITHOUT covering the control that opened it.
+      const space = {
+        top: trigger.top - padding - sideOffset,
+        bottom: viewportHeight - trigger.bottom - padding - sideOffset,
+        left: trigger.left - padding - sideOffset,
+        right: viewportWidth - trigger.right - padding - sideOffset,
+      };
+
       let resolvedSide = side;
       if (avoidCollisions) {
-        const space = {
-          top: trigger.top - padding,
-          bottom: viewportHeight - trigger.bottom - padding,
-          left: trigger.left - padding,
-          right: viewportWidth - trigger.right - padding,
-        };
-        const needed =
-          (side === "top" || side === "bottom" ? height : width) + sideOffset;
+        const wantsVertical = side === "top" || side === "bottom";
+        const needed = wantsVertical ? naturalHeight : naturalWidth;
         const flipped = OPPOSITE_SIDE[side];
+
+        // 1. Flip to the opposite edge when the preferred one is too tight and
+        //    the other is roomier.
         if (space[side] < needed && space[flipped] > space[side])
           resolvedSide = flipped;
+
+        // 2. A 288px panel rarely fits beside a trigger on a phone. When neither
+        //    horizontal side can hold it, drop to the vertical axis, where the
+        //    panel gets the full width instead of a useless slice of it.
+        if (!wantsVertical && space[resolvedSide] < naturalWidth)
+          resolvedSide = space.bottom >= space.top ? "bottom" : "top";
+
+        // 3. Cap the panel to the room on the side it ended up on, and scroll
+        //    the remainder. This is what keeps the trigger visible: without it a
+        //    panel taller than the space below has to be pushed back up over the
+        //    trigger to fit on screen, hiding the button that was just pressed.
+        const onVertical = resolvedSide === "top" || resolvedSide === "bottom";
+        const across = onVertical
+          ? viewportWidth - padding * 2
+          : viewportHeight - padding * 2;
+        const along = Math.max(0, space[resolvedSide]);
+        contentEl.style.maxWidth = `${Math.max(0, onVertical ? across : along)}px`;
+        contentEl.style.maxHeight = `${Math.max(0, onVertical ? along : across)}px`;
+        contentEl.style.overflowY =
+          contentEl.scrollHeight > contentEl.clientHeight ? "auto" : "";
+        contentEl.style.overflowX =
+          contentEl.scrollWidth > contentEl.clientWidth ? "auto" : "";
       }
+
+      // Measured after the cap. offsetWidth/Height are the untransformed layout
+      // box; getBoundingClientRect would report the shrunken size while the
+      // zoom-in entrance animation runs, throwing the alignment off a few pixels.
+      const width = contentEl.offsetWidth;
+      const height = contentEl.offsetHeight;
 
       let top = 0;
       let left = 0;
@@ -212,12 +236,17 @@ export function PopoverContent({
         if (align === "end") top = trigger.bottom - height;
       }
 
-      // 4. Shift whatever still hangs off an edge back into view. Alignment is a
-      //    preference, not a guarantee: on a narrow screen an align="start"/"end"
-      //    panel anchored near the edge would otherwise be cropped.
+      // 4. Shift whatever still hangs off an edge back into view — but only
+      //    ACROSS the side axis. Alignment is a preference, not a guarantee, so
+      //    an align="start"/"end" panel near an edge slides back. Shifting along
+      //    the side axis is what used to drag the panel over its own trigger;
+      //    the cap in step 3 owns that axis now.
       if (avoidCollisions) {
-        left = clamp(left, padding, viewportWidth - width - padding);
-        top = clamp(top, padding, viewportHeight - height - padding);
+        if (resolvedSide === "top" || resolvedSide === "bottom") {
+          left = clamp(left, padding, viewportWidth - width - padding);
+        } else {
+          top = clamp(top, padding, viewportHeight - height - padding);
+        }
       }
 
       const nextTop = top + win.scrollY;
@@ -305,7 +334,11 @@ export function PopoverContent({
       ref={contentRef}
       role="dialog"
       className={cn(
-        "absolute z-[9999] w-72 p-4 outline-none text-zinc-950 dark:text-zinc-50 bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
+        // Below lg the panel competes with the screen for room: smaller type and
+        // padding buy back the height that would otherwise have to be scrolled.
+        // Width stays a single class so an overriding `className="w-48"` wins at
+        // every breakpoint instead of only below lg.
+        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-zinc-950 dark:text-zinc-50 bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
         className,
       )}
       style={{ top: coords.top, left: coords.left }}
