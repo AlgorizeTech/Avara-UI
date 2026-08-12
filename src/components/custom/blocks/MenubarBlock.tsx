@@ -5,9 +5,15 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
+
+// Positioning has to be measured before paint, but layout effects don't run on
+// the server — fall back to useEffect there so SSR stays warning-free.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // CONTEXT & STATE MANAGEMENT
@@ -61,7 +67,9 @@ export function Menubar({ className, children, ...props }: MenubarProps) {
       <div
         ref={menubarRef}
         className={cn(
-          "flex h-10 items-center space-x-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-sm",
+          // min-h rather than a fixed height: a bar with more menus than the
+          // container can hold wraps to a second row instead of being cropped.
+          "flex min-h-10 flex-wrap items-center gap-y-1 space-x-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-sm",
           className,
         )}
         {...props}
@@ -123,7 +131,9 @@ export function MenubarTrigger({
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       className={cn(
-        "flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none transition-colors",
+        // Tighter horizontal padding on phones — same type scale, so every
+        // trigger in the bar still reads as one set.
+        "flex cursor-default select-none items-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-sm font-medium outline-none transition-colors",
         isOpen
           ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
           : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-50",
@@ -152,16 +162,65 @@ export function MenubarContent({
 }: MenubarContentProps) {
   const rootContext = useContext(MenubarContext);
   const menuContext = useContext(MenuContext);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const isOpen =
+    !!rootContext && !!menuContext && rootContext.activeMenu === menuContext.value;
+
+  // A trigger near the right edge would otherwise open its menu off screen, and
+  // a long menu near the bottom would run past the fold. Both are measured from
+  // the real geometry after mount, so the menu adapts to the actual viewport
+  // instead of guessing from a breakpoint. marginLeft (not transform) does the
+  // nudging, so it composes with the `align` classes.
+  useIsomorphicLayoutEffect(() => {
+    const el = contentRef.current;
+    if (!isOpen || !el) return;
+
+    const fit = () => {
+      el.style.marginLeft = "0px";
+      el.style.maxHeight = "";
+
+      // offsetLeft/offsetWidth are layout values, so the open animation's
+      // scale + slide can't skew them the way a client rect would.
+      const anchor = el.offsetParent as HTMLElement | null;
+      const anchorRect = anchor?.getBoundingClientRect();
+      const fallback = anchorRect ? null : el.getBoundingClientRect();
+      const left = anchorRect
+        ? anchorRect.left + anchor!.clientLeft + el.offsetLeft
+        : fallback!.left;
+      const top = anchorRect
+        ? anchorRect.top + anchor!.clientTop + el.offsetTop
+        : fallback!.top;
+      const width = el.offsetWidth;
+      const height = el.offsetHeight;
+      const margin = 8;
+
+      let shift = 0;
+      if (left + width > window.innerWidth - margin) {
+        shift = window.innerWidth - margin - (left + width);
+      }
+      if (left + shift < margin) shift = margin - left;
+      if (shift) el.style.marginLeft = `${shift}px`;
+
+      const room = window.innerHeight - top - margin;
+      if (height > room) el.style.maxHeight = `${Math.max(room, 96)}px`;
+    };
+
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [isOpen]);
 
   if (!rootContext || !menuContext)
     throw new Error("MenubarContent must be used within MenubarMenu");
 
-  if (rootContext.activeMenu !== menuContext.value) return null;
+  if (!isOpen) return null;
 
   return (
     <div
+      ref={contentRef}
       className={cn(
-        "absolute z-50 mt-1 min-w-[12rem] overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150",
+        "absolute z-50 mt-1 min-w-[12rem] max-w-[calc(100vw-1rem)] overflow-y-auto overflow-x-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150",
         align === "start" && "left-0",
         align === "end" && "right-0",
         align === "center" && "left-1/2 -translate-x-1/2",

@@ -10,8 +10,38 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
-import { Laptop, Moon, Sun, User } from "lucide-react";
+import {
+  AppWindow,
+  Check,
+  ClipboardPaste,
+  Copy,
+  Eye,
+  EyeOff,
+  FolderOpen,
+  Info,
+  Laptop,
+  Maximize,
+  Moon,
+  Plus,
+  Power,
+  Redo2,
+  Save,
+  SaveAll,
+  Scissors,
+  Settings,
+  Settings2,
+  Sun,
+  Undo2,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import React, { useState } from "react";
+
+/** Every row carries one, so no row needs `inset` to fake the gutter. */
+const icon = "w-4 h-4 mr-2 shrink-0";
+/** Replaces the old "Active" text — a badge that can't wrap the row. */
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
 
 /** A bare bar on a plain surface — used by the focused examples. */
 function BareBar({ children }: { children: React.ReactNode }) {
@@ -39,19 +69,29 @@ export default function MenubarDemo({
           <MenubarTrigger>File</MenubarTrigger>
           <MenubarContent>
             <MenubarItem onClick={() => console.log("New Tab")}>
-              New Tab
+              <Plus className={icon} /> New Tab
             </MenubarItem>
-            <MenubarItem>New Window</MenubarItem>
-            <MenubarItem>Open File…</MenubarItem>
+            <MenubarItem>
+              <AppWindow className={icon} /> New Window
+            </MenubarItem>
+            <MenubarItem>
+              <FolderOpen className={icon} /> Open File…
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
 
         <MenubarMenu value="edit">
           <MenubarTrigger>Edit</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Undo</MenubarItem>
-            <MenubarItem>Redo</MenubarItem>
-            <MenubarItem>Cut</MenubarItem>
+            <MenubarItem>
+              <Undo2 className={icon} /> Undo
+            </MenubarItem>
+            <MenubarItem>
+              <Redo2 className={icon} /> Redo
+            </MenubarItem>
+            <MenubarItem>
+              <Scissors className={icon} /> Cut
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
       </BareBar>
@@ -65,20 +105,23 @@ export default function MenubarDemo({
           <MenubarTrigger>Edit</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
-              Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+              <Undo2 className={icon} /> Undo <MenubarShortcut>⌘Z</MenubarShortcut>
             </MenubarItem>
             <MenubarItem>
-              Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+              <Redo2 className={icon} /> Redo{" "}
+              <MenubarShortcut>⇧⌘Z</MenubarShortcut>
             </MenubarItem>
             <MenubarSeparator />
             <MenubarItem>
-              Cut <MenubarShortcut>⌘X</MenubarShortcut>
+              <Scissors className={icon} /> Cut{" "}
+              <MenubarShortcut>⌘X</MenubarShortcut>
             </MenubarItem>
             <MenubarItem>
-              Copy <MenubarShortcut>⌘C</MenubarShortcut>
+              <Copy className={icon} /> Copy <MenubarShortcut>⌘C</MenubarShortcut>
             </MenubarItem>
             <MenubarItem>
-              Paste <MenubarShortcut>⌘V</MenubarShortcut>
+              <ClipboardPaste className={icon} /> Paste{" "}
+              <MenubarShortcut>⌘V</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -92,30 +135,18 @@ export default function MenubarDemo({
         <MenubarMenu value="view">
           <MenubarTrigger>View</MenubarTrigger>
           <MenubarContent>
-            <MenubarLabel inset>Theme Options</MenubarLabel>
-            <MenubarItem inset onClick={() => setTheme("Light")}>
-              <Sun className="w-4 h-4 mr-2" /> Light Mode
-              {theme === "Light" && (
-                <MenubarShortcut className="text-indigo-500">
-                  Active
-                </MenubarShortcut>
-              )}
+            <MenubarLabel>Theme Options</MenubarLabel>
+            <MenubarItem onClick={() => setTheme("Light")}>
+              <Sun className={icon} /> Light Mode
+              {theme === "Light" && <Check className={activeMark} />}
             </MenubarItem>
-            <MenubarItem inset onClick={() => setTheme("Dark")}>
-              <Moon className="w-4 h-4 mr-2" /> Dark Mode
-              {theme === "Dark" && (
-                <MenubarShortcut className="text-indigo-500">
-                  Active
-                </MenubarShortcut>
-              )}
+            <MenubarItem onClick={() => setTheme("Dark")}>
+              <Moon className={icon} /> Dark Mode
+              {theme === "Dark" && <Check className={activeMark} />}
             </MenubarItem>
-            <MenubarItem inset onClick={() => setTheme("System")}>
-              <Laptop className="w-4 h-4 mr-2" /> System Default
-              {theme === "System" && (
-                <MenubarShortcut className="text-indigo-500">
-                  Active
-                </MenubarShortcut>
-              )}
+            <MenubarItem onClick={() => setTheme("System")}>
+              <Laptop className={icon} /> System Default
+              {theme === "System" && <Check className={activeMark} />}
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -129,11 +160,16 @@ export default function MenubarDemo({
         <MenubarMenu value="file">
           <MenubarTrigger>File</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Save</MenubarItem>
-            <MenubarItem disabled>Save All</MenubarItem>
+            <MenubarItem>
+              <Save className={icon} /> Save
+            </MenubarItem>
+            <MenubarItem disabled>
+              <SaveAll className={icon} /> Save All
+            </MenubarItem>
             <MenubarSeparator />
             <MenubarItem className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400">
-              Quit Nexus <MenubarShortcut>⌘Q</MenubarShortcut>
+              <Power className={icon} /> Quit Nexus{" "}
+              <MenubarShortcut>⌘Q</MenubarShortcut>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -143,32 +179,40 @@ export default function MenubarDemo({
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
-      <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden flex flex-col h-[280px]">
+      {/* No overflow-hidden on the frame: it would crop any menu taller or
+          wider than the window. The header rounds its own top corners instead. */}
+      <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col h-[280px]">
         {/* Native OS-style Application Header */}
-        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 px-2 py-1 flex items-center justify-between">
-          <Menubar className="border-none bg-transparent shadow-none w-full justify-start h-8">
+        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 rounded-t-xl px-2 py-1 flex items-center justify-between">
+          <Menubar className="border-none bg-transparent shadow-none w-full justify-start min-h-8 p-0">
             {/* 1. FILE MENU */}
             <MenubarMenu value="file">
-              <MenubarTrigger className="font-semibold text-zinc-900 dark:text-white hover:bg-zinc-200/50 dark:hover:bg-zinc-800">
-                Nexus UI
-              </MenubarTrigger>
+              <MenubarTrigger>Nexus UI</MenubarTrigger>
               <MenubarContent>
-                <MenubarItem>About Nexus</MenubarItem>
-                <MenubarSeparator />
                 <MenubarItem>
-                  Preferences... <MenubarShortcut>⌘,</MenubarShortcut>
+                  <Info className={icon} /> About Nexus
                 </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>
-                  Hide Nexus <MenubarShortcut>⌘H</MenubarShortcut>
+                  <Settings className={icon} /> Preferences...{" "}
+                  <MenubarShortcut>⌘,</MenubarShortcut>
+                </MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>
+                  <EyeOff className={icon} /> Hide Nexus{" "}
+                  <MenubarShortcut>⌘H</MenubarShortcut>
                 </MenubarItem>
                 <MenubarItem>
-                  Hide Others <MenubarShortcut>⇧⌘H</MenubarShortcut>
+                  <Users className={icon} /> Hide Others{" "}
+                  <MenubarShortcut>⇧⌘H</MenubarShortcut>
                 </MenubarItem>
-                <MenubarItem disabled>Show All</MenubarItem>
+                <MenubarItem disabled>
+                  <Eye className={icon} /> Show All
+                </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400">
-                  Quit Nexus <MenubarShortcut>⌘Q</MenubarShortcut>
+                  <Power className={icon} /> Quit Nexus{" "}
+                  <MenubarShortcut>⌘Q</MenubarShortcut>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
@@ -178,20 +222,25 @@ export default function MenubarDemo({
               <MenubarTrigger>Edit</MenubarTrigger>
               <MenubarContent>
                 <MenubarItem>
-                  Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                  <Undo2 className={icon} /> Undo{" "}
+                  <MenubarShortcut>⌘Z</MenubarShortcut>
                 </MenubarItem>
                 <MenubarItem>
-                  Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+                  <Redo2 className={icon} /> Redo{" "}
+                  <MenubarShortcut>⇧⌘Z</MenubarShortcut>
                 </MenubarItem>
                 <MenubarSeparator />
                 <MenubarItem>
-                  Cut <MenubarShortcut>⌘X</MenubarShortcut>
+                  <Scissors className={icon} /> Cut{" "}
+                  <MenubarShortcut>⌘X</MenubarShortcut>
                 </MenubarItem>
                 <MenubarItem>
-                  Copy <MenubarShortcut>⌘C</MenubarShortcut>
+                  <Copy className={icon} /> Copy{" "}
+                  <MenubarShortcut>⌘C</MenubarShortcut>
                 </MenubarItem>
                 <MenubarItem>
-                  Paste <MenubarShortcut>⌘V</MenubarShortcut>
+                  <ClipboardPaste className={icon} /> Paste{" "}
+                  <MenubarShortcut>⌘V</MenubarShortcut>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
@@ -200,34 +249,24 @@ export default function MenubarDemo({
             <MenubarMenu value="view">
               <MenubarTrigger>View</MenubarTrigger>
               <MenubarContent>
-                <MenubarLabel inset>Theme Options</MenubarLabel>
-                <MenubarItem inset onClick={() => setTheme("Light")}>
-                  <Sun className="w-4 h-4 mr-2" /> Light Mode
-                  {theme === "Light" && (
-                    <MenubarShortcut className="text-indigo-500">
-                      Active
-                    </MenubarShortcut>
-                  )}
+                {/* Labels sit flush left; the rows carry the icon gutter. */}
+                <MenubarLabel>Theme Options</MenubarLabel>
+                <MenubarItem onClick={() => setTheme("Light")}>
+                  <Sun className={icon} /> Light Mode
+                  {theme === "Light" && <Check className={activeMark} />}
                 </MenubarItem>
-                <MenubarItem inset onClick={() => setTheme("Dark")}>
-                  <Moon className="w-4 h-4 mr-2" /> Dark Mode
-                  {theme === "Dark" && (
-                    <MenubarShortcut className="text-indigo-500">
-                      Active
-                    </MenubarShortcut>
-                  )}
+                <MenubarItem onClick={() => setTheme("Dark")}>
+                  <Moon className={icon} /> Dark Mode
+                  {theme === "Dark" && <Check className={activeMark} />}
                 </MenubarItem>
-                <MenubarItem inset onClick={() => setTheme("System")}>
-                  <Laptop className="w-4 h-4 mr-2" /> System Default
-                  {theme === "System" && (
-                    <MenubarShortcut className="text-indigo-500">
-                      Active
-                    </MenubarShortcut>
-                  )}
+                <MenubarItem onClick={() => setTheme("System")}>
+                  <Laptop className={icon} /> System Default
+                  {theme === "System" && <Check className={activeMark} />}
                 </MenubarItem>
                 <MenubarSeparator />
-                <MenubarItem inset>
-                  Toggle Fullscreen <MenubarShortcut>F11</MenubarShortcut>
+                <MenubarItem>
+                  <Maximize className={icon} /> Toggle Fullscreen{" "}
+                  <MenubarShortcut>F11</MenubarShortcut>
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
@@ -238,11 +277,15 @@ export default function MenubarDemo({
               <MenubarContent align="start">
                 <MenubarLabel>Active Account</MenubarLabel>
                 <MenubarItem>
-                  <User className="w-4 h-4 mr-2" /> Andy Bernard
+                  <User className={icon} /> Andy Bernard
                 </MenubarItem>
                 <MenubarSeparator />
-                <MenubarItem>Add Account...</MenubarItem>
-                <MenubarItem>Manage Profiles</MenubarItem>
+                <MenubarItem>
+                  <UserPlus className={icon} /> Add Account...
+                </MenubarItem>
+                <MenubarItem>
+                  <Settings2 className={icon} /> Manage Profiles
+                </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
           </Menubar>

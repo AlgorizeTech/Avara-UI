@@ -18,6 +18,7 @@ export const usageDefault = `import {
   MenubarMenu,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
+import { AppWindow, FolderOpen, Plus, Redo2, Scissors, Undo2 } from "lucide-react";
 
 export default function TopNav() {
   return (
@@ -26,18 +27,31 @@ export default function TopNav() {
       <MenubarMenu value="file">
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem onClick={() => console.log("New Tab")}>New Tab</MenubarItem>
-          <MenubarItem>New Window</MenubarItem>
-          <MenubarItem>Open File…</MenubarItem>
+          {/* shrink-0 keeps the icon square when a narrow menu squeezes the row */}
+          <MenubarItem onClick={() => console.log("New Tab")}>
+            <Plus className="w-4 h-4 mr-2 shrink-0" /> New Tab
+          </MenubarItem>
+          <MenubarItem>
+            <AppWindow className="w-4 h-4 mr-2 shrink-0" /> New Window
+          </MenubarItem>
+          <MenubarItem>
+            <FolderOpen className="w-4 h-4 mr-2 shrink-0" /> Open File…
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
 
       <MenubarMenu value="edit">
         <MenubarTrigger>Edit</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Undo</MenubarItem>
-          <MenubarItem>Redo</MenubarItem>
-          <MenubarItem>Cut</MenubarItem>
+          <MenubarItem>
+            <Undo2 className="w-4 h-4 mr-2 shrink-0" /> Undo
+          </MenubarItem>
+          <MenubarItem>
+            <Redo2 className="w-4 h-4 mr-2 shrink-0" /> Redo
+          </MenubarItem>
+          <MenubarItem>
+            <Scissors className="w-4 h-4 mr-2 shrink-0" /> Cut
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
@@ -53,6 +67,9 @@ export const usageShortcuts = `import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
+import { ClipboardPaste, Copy, Redo2, Scissors, Undo2 } from "lucide-react";
+
+const icon = "w-4 h-4 mr-2 shrink-0";
 
 export default function EditMenu() {
   return (
@@ -62,22 +79,23 @@ export default function EditMenu() {
         <MenubarContent>
           {/* MenubarShortcut right-aligns itself inside the item */}
           <MenubarItem>
-            Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+            <Undo2 className={icon} /> Undo <MenubarShortcut>⌘Z</MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
-            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+            <Redo2 className={icon} /> Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
           </MenubarItem>
 
           <MenubarSeparator />
 
           <MenubarItem>
-            Cut <MenubarShortcut>⌘X</MenubarShortcut>
+            <Scissors className={icon} /> Cut <MenubarShortcut>⌘X</MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
-            Copy <MenubarShortcut>⌘C</MenubarShortcut>
+            <Copy className={icon} /> Copy <MenubarShortcut>⌘C</MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
-            Paste <MenubarShortcut>⌘V</MenubarShortcut>
+            <ClipboardPaste className={icon} /> Paste{" "}
+            <MenubarShortcut>⌘V</MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -92,10 +110,13 @@ import {
   MenubarItem,
   MenubarLabel,
   MenubarMenu,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
-import { Laptop, Moon, Sun } from "lucide-react";
+import { Check, Laptop, Moon, Sun } from "lucide-react";
+
+const icon = "w-4 h-4 mr-2 shrink-0";
+/* A check reads as "active" in the width a word would overflow */
+const mark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
 
 export default function ViewMenu() {
   const [theme, setTheme] = useState("System");
@@ -105,26 +126,21 @@ export default function ViewMenu() {
       <MenubarMenu value="view">
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          {/* inset lines the label up with the icon-bearing items below */}
-          <MenubarLabel inset>Theme Options</MenubarLabel>
+          {/* Give every row an icon and the label can sit flush left — no inset
+              gutter to reserve, nothing indented past its neighbours */}
+          <MenubarLabel>Theme Options</MenubarLabel>
 
-          <MenubarItem inset onClick={() => setTheme("Light")}>
-            <Sun className="w-4 h-4 mr-2" /> Light Mode
-            {theme === "Light" && (
-              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
-            )}
+          <MenubarItem onClick={() => setTheme("Light")}>
+            <Sun className={icon} /> Light Mode
+            {theme === "Light" && <Check className={mark} />}
           </MenubarItem>
-          <MenubarItem inset onClick={() => setTheme("Dark")}>
-            <Moon className="w-4 h-4 mr-2" /> Dark Mode
-            {theme === "Dark" && (
-              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
-            )}
+          <MenubarItem onClick={() => setTheme("Dark")}>
+            <Moon className={icon} /> Dark Mode
+            {theme === "Dark" && <Check className={mark} />}
           </MenubarItem>
-          <MenubarItem inset onClick={() => setTheme("System")}>
-            <Laptop className="w-4 h-4 mr-2" /> System Default
-            {theme === "System" && (
-              <MenubarShortcut className="text-indigo-500">Active</MenubarShortcut>
-            )}
+          <MenubarItem onClick={() => setTheme("System")}>
+            <Laptop className={icon} /> System Default
+            {theme === "System" && <Check className={mark} />}
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -141,6 +157,9 @@ export const usageDisabled = `import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
+import { Power, Save, SaveAll } from "lucide-react";
+
+const icon = "w-4 h-4 mr-2 shrink-0";
 
 export default function FileMenu() {
   return (
@@ -148,16 +167,20 @@ export default function FileMenu() {
       <MenubarMenu value="file">
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Save</MenubarItem>
+          <MenubarItem>
+            <Save className={icon} /> Save
+          </MenubarItem>
 
           {/* disabled dims the row and kills pointer events + onClick */}
-          <MenubarItem disabled>Save All</MenubarItem>
+          <MenubarItem disabled>
+            <SaveAll className={icon} /> Save All
+          </MenubarItem>
 
           <MenubarSeparator />
 
           {/* className styles a single destructive row */}
           <MenubarItem className="text-red-600 focus:bg-red-50 focus:text-red-600">
-            Quit Nexus <MenubarShortcut>⌘Q</MenubarShortcut>
+            <Power className={icon} /> Quit Nexus <MenubarShortcut>⌘Q</MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -175,21 +198,28 @@ export const usageApp = `import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
-import { User } from "lucide-react";
+import { Info, Settings, Settings2, Undo2, User, UserPlus } from "lucide-react";
+
+const icon = "w-4 h-4 mr-2 shrink-0";
 
 export default function AppWindow() {
   return (
-    <div className="border rounded-xl overflow-hidden">
+    {/* No overflow-hidden here: it would crop any menu that opens past the
+        window. The header rounds its own top corners instead. */}
+    <div className="border rounded-xl">
       {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
-      <div className="border-b bg-zinc-50/50 px-2 py-1">
-        <Menubar className="border-none bg-transparent shadow-none w-full justify-start h-8">
+      <div className="border-b bg-zinc-50/50 rounded-t-xl px-2 py-1">
+        <Menubar className="border-none bg-transparent shadow-none w-full justify-start min-h-8 p-0">
           <MenubarMenu value="file">
-            <MenubarTrigger className="font-semibold">Nexus UI</MenubarTrigger>
+            <MenubarTrigger>Nexus UI</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>About Nexus</MenubarItem>
+              <MenubarItem>
+                <Info className={icon} /> About Nexus
+              </MenubarItem>
               <MenubarSeparator />
               <MenubarItem>
-                Preferences… <MenubarShortcut>⌘,</MenubarShortcut>
+                <Settings className={icon} /> Preferences…{" "}
+                <MenubarShortcut>⌘,</MenubarShortcut>
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
@@ -198,7 +228,7 @@ export default function AppWindow() {
             <MenubarTrigger>Edit</MenubarTrigger>
             <MenubarContent>
               <MenubarItem>
-                Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                <Undo2 className={icon} /> Undo <MenubarShortcut>⌘Z</MenubarShortcut>
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
@@ -209,10 +239,15 @@ export default function AppWindow() {
             <MenubarContent align="start">
               <MenubarLabel>Active Account</MenubarLabel>
               <MenubarItem>
-                <User className="w-4 h-4 mr-2" /> Andy Bernard
+                <User className={icon} /> Andy Bernard
               </MenubarItem>
               <MenubarSeparator />
-              <MenubarItem>Add Account…</MenubarItem>
+              <MenubarItem>
+                <UserPlus className={icon} /> Add Account…
+              </MenubarItem>
+              <MenubarItem>
+                <Settings2 className={icon} /> Manage Profiles
+              </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
@@ -242,7 +277,7 @@ export default function AppWindow() {
     },
     {
       title: "Icons & labels",
-      subheading: "`MenubarLabel` titles a group; `inset` keeps text aligned next to icons.",
+      subheading: "`MenubarLabel` titles a group. Give every row an icon and the label sits flush left — nothing reserves an empty gutter.",
       props: { example: "icons" },
       usage: usageIcons,
     },
