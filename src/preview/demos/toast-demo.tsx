@@ -185,7 +185,7 @@ export default function ToastDemo({
 }) {
   return (
     <div
-      className={`relative overflow-hidden w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center p-2 sm:p-8" : ""}`}
+      className={`relative overflow-hidden w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-2 sm:p-8" : ""}`}
     >
       {/* We must wrap the preview area in the provider so the hooks work */}
       <ToastProvider

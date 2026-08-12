@@ -39,9 +39,9 @@ export default function TransactionsTable() {
 
 export const usageMinimal = `<TableBlock variant="minimal" data={data} columns={columns} />`;
 
-export const usageGlass = `// Pair the glass variant with a photographic backdrop so the blur has
+export const usageGlass = `// Pair the glass variant with a colored backdrop so the blur has
 // something to refract.
-<div className="p-8 bg-[url('/backdrop.jpg')] bg-cover bg-center">
+<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
   <TableBlock variant="glass" data={data} columns={columns} />
 </div>`;
 

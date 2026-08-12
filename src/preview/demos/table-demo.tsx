@@ -167,7 +167,7 @@ export default function TableDemo({
 
   return (
     <div
-      className={`w-full flex flex-col items-start justify-center min-h-[500px] ${variant === "glass" ? "p-4 sm:p-8 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center" : ""} relative z-10`}
+      className={`w-full flex flex-col items-start justify-center min-h-[500px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""} relative z-10`}
     >
       <div className="w-full max-w-5xl mx-auto">
         <TableBlock
