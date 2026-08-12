@@ -122,14 +122,33 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usagePosition = `import { useState } from "react";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // "bottom-right" | "bottom-center" | "bottom-left"
-  // "top-right"    | "top-center"    | "top-left"
+const POSITIONS: NonNullable[] = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right",
+];
+
+export default function PositionDemo() {
+  const [position, setPosition] = useState>("bottom-right");
+
   return (
     <>
-      {children}
+      {/* In a real app you mount  once, at the root, with a fixed position */}
+
+        {POSITIONS.map((p) => (
+           {
+              setPosition(p);
+              toast(p, { description: \`Stack anchored to "\${p}".\` });
+            }}
+          >
+            {p}
+          
+        ))}
 
   );
 }`;
@@ -171,8 +190,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     },
     {
       title: "Position",
-      subheading: "`position` anchors the stack to any corner or edge of the screen.",
-      props: { example: "basic", position: "top-center" },
+      subheading: "`position` anchors the stack to any of the six edges — pick one to move the live stack.",
+      props: { example: "position" },
       usage: usagePosition,
     },
   ]}

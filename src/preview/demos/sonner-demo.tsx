@@ -5,9 +5,27 @@ import {
   Toaster,
   type ToasterProps,
 } from "@/components/custom/blocks/SonnerBlock";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+
+/** Laid out as a 3-column grid so the buttons mirror where the stack lands. */
+const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] =
+  [
+    { value: "top-left", label: "Top left" },
+    { value: "top-center", label: "Top center" },
+    { value: "top-right", label: "Top right" },
+    { value: "bottom-left", label: "Bottom left" },
+    { value: "bottom-center", label: "Bottom center" },
+    { value: "bottom-right", label: "Bottom right" },
+  ];
+
+// flex-wrap + a tall min-height makes the browser spread wrapped rows apart
+// (align-content defaults to stretch), so content-center keeps them together on mobile.
+const TRIGGER_ROW =
+  "w-full flex flex-wrap content-center items-center justify-center gap-x-3 gap-y-2 sm:gap-4 min-h-[300px] relative z-10";
 
 export default function SonnerDemo({
   position = "bottom-right",
@@ -17,14 +35,28 @@ export default function SonnerDemo({
   position?: ToasterProps["position"];
   expand?: boolean;
   /** Picks which trigger buttons the preview renders. "all" is the classic set. */
-  example?: "all" | "basic" | "types" | "action" | "stack" | "duration";
+  example?:
+    | "all"
+    | "basic"
+    | "types"
+    | "action"
+    | "stack"
+    | "duration"
+    | "position";
 }) {
+  const [activePosition, setActivePosition] = useState<
+    NonNullable<ToasterProps["position"]>
+  >(position ?? "bottom-right");
+
   if (example !== "all") {
     return (
       <>
-        <Toaster position={position} expand={expand} />
+        <Toaster
+          position={example === "position" ? activePosition : position}
+          expand={expand}
+        />
 
-        <div className="w-full flex flex-wrap gap-4 items-center justify-center min-h-[300px] relative z-10">
+        <div className={TRIGGER_ROW}>
           {example === "basic" && (
             <button
               onClick={() =>
@@ -102,6 +134,30 @@ export default function SonnerDemo({
             </button>
           )}
 
+          {example === "position" && (
+            <div className="w-full max-w-md grid grid-cols-3 gap-2 sm:gap-3">
+              {POSITIONS.map((p) => (
+                <button
+                  key={p.value}
+                  onClick={() => {
+                    setActivePosition(p.value);
+                    toast(p.label, {
+                      description: `Stack anchored to "${p.value}".`,
+                    });
+                  }}
+                  className={cn(
+                    "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
+                    activePosition === p.value
+                      ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
+                  )}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          )}
+
           {example === "duration" && (
             <>
               <button
@@ -138,7 +194,7 @@ export default function SonnerDemo({
       {/* The Toaster is mounted inside the demo so toasts render in the sandbox page */}
       <Toaster position={position} expand={expand} />
 
-      <div className="w-full flex flex-wrap gap-4 items-center justify-center min-h-[300px] relative z-10">
+      <div className={TRIGGER_ROW}>
         <button
           onClick={() =>
             toast("Profile updated successfully", {

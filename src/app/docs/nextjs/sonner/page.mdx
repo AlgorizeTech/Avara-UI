@@ -135,15 +135,39 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usagePosition = `import { useState } from "react";
+import { toast, Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // "bottom-right" | "bottom-center" | "bottom-left"
-  // "top-right"    | "top-center"    | "top-left"
+const POSITIONS: NonNullable<ToasterProps["position"]>[] = [
+  "top-left",
+  "top-center",
+  "top-right",
+  "bottom-left",
+  "bottom-center",
+  "bottom-right",
+];
+
+export default function PositionDemo() {
+  const [position, setPosition] = useState<NonNullable<ToasterProps["position"]>>("bottom-right");
+
   return (
     <>
-      {children}
-      <Toaster position="top-center" />
+      {/* In a real app you mount <Toaster /> once, at the root, with a fixed position */}
+      <Toaster position={position} />
+
+      <div className="grid grid-cols-3 gap-2">
+        {POSITIONS.map((p) => (
+          <button
+            key={p}
+            onClick={() => {
+              setPosition(p);
+              toast(p, { description: \`Stack anchored to "\${p}".\` });
+            }}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
     </>
   );
 }`;
@@ -191,8 +215,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     },
     {
       title: "Position",
-      subheading: "`position` anchors the stack to any corner or edge of the screen.",
-      props: { example: "basic", position: "top-center" },
+      subheading: "`position` anchors the stack to any of the six edges — pick one to move the live stack.",
+      props: { example: "position" },
       usage: usagePosition,
     },
   ]}
