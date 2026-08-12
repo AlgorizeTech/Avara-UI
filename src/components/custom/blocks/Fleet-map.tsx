@@ -3,7 +3,14 @@
 import { cn } from "@/lib/utils";
 import type * as LeafletTypes from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Menu, Navigation2, Search, Truck, X } from "lucide-react";
+import {
+  Map as MapIcon,
+  MapPin,
+  Menu,
+  Navigation2,
+  Search,
+  Truck,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
@@ -44,9 +51,11 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   },
   minimal: {
     wrapper:
-      "flex relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800",
+      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800",
+    // Mobile: a plain full-width panel in normal flow (same as `default`).
+    // md+: the floating glass panel this variant is known for.
     sidebar:
-      "absolute top-4 left-4 bottom-4 w-[300px] lg:w-[340px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 z-20 shrink-0 hidden md:flex flex-col overflow-hidden",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-zinc-200 dark:border-zinc-800 z-20 shrink-0 flex flex-col overflow-hidden",
     mapContainer: "flex-1 w-full h-full relative z-0 min-w-0",
     itemActive: "bg-zinc-100 dark:bg-zinc-900 rounded-lg mx-3 my-1",
     itemInactive:
@@ -54,7 +63,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   },
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative",
+      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden",
     sidebar:
       "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
     mapContainer:
@@ -147,12 +156,26 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
   const map = useMap();
   useEffect(() => {
     if (
-      activeVehicle &&
-      typeof activeVehicle.lat === "number" &&
-      typeof activeVehicle.lng === "number"
-    ) {
-      map.flyTo([activeVehicle.lat, activeVehicle.lng], 15, { duration: 1.5 });
+      !activeVehicle ||
+      typeof activeVehicle.lat !== "number" ||
+      typeof activeVehicle.lng !== "number"
+    )
+      return;
+
+    const target: [number, number] = [activeVehicle.lat, activeVehicle.lng];
+
+    // On mobile the map pane is revealed in the same render that selects a
+    // vehicle, so Leaflet still holds the zero size it measured while hidden.
+    // flyTo divides by that size and ends up with NaN coordinates, so
+    // re-measure first and skip the animation until the pane has a real box.
+    map.invalidateSize({ animate: false, pan: false });
+    const size = map.getSize();
+    if (!size.x || !size.y) {
+      map.setView(target, 15, { animate: false });
+      return;
     }
+
+    map.flyTo(target, 15, { duration: 1.5 });
   }, [activeVehicle, map]);
   return null;
 }
@@ -211,7 +234,9 @@ export default function FleetTracker({
   const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
   );
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  // Below md the list and the map share the same box, so only one is shown at a
+  // time. The list is the landing view; the header/floating buttons swap them.
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -249,20 +274,18 @@ export default function FleetTracker({
         styles.wrapper,
       )}
     >
-      {/* Mobile Toggle Button for Non-Default Variants */}
-      {variant !== "default" && (
+      {/* Mobile: jump back to the vehicle list while the map is showing */}
+      {!isMobileSidebarOpen && (
         <button
-          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          type="button"
+          aria-label="Show vehicle list"
+          onClick={() => setIsMobileSidebarOpen(true)}
           className={cn(
             "md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800",
             theme.bg,
           )}
         >
-          {isMobileSidebarOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Menu className="w-5 h-5" />
-          )}
+          <Menu className="w-5 h-5" />
         </button>
       )}
 
@@ -270,12 +293,7 @@ export default function FleetTracker({
       <aside
         className={cn(
           styles.sidebar,
-          variant !== "default" && !isMobileSidebarOpen
-            ? "hidden md:flex"
-            : "flex",
-          variant !== "default" && isMobileSidebarOpen
-            ? "absolute inset-4 z-[30] shadow-2xl"
-            : "",
+          isMobileSidebarOpen ? "flex" : "hidden md:flex",
         )}
       >
         <div className="p-5 shrink-0 border-b border-zinc-100 dark:border-zinc-800/50">
@@ -298,15 +316,15 @@ export default function FleetTracker({
                 </p>
               </div>
             </div>
-            {/* Mobile close button specifically for the default variant which flows normally */}
-            {variant === "default" && (
-              <button
-                className="md:hidden text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-            )}
+            {/* Mobile: swap the list out for the map */}
+            <button
+              type="button"
+              aria-label="Show map"
+              className="md:hidden text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              onClick={() => setIsMobileSidebarOpen(false)}
+            >
+              <MapIcon className="w-5 h-5" />
+            </button>
           </div>
 
           <div
@@ -334,8 +352,8 @@ export default function FleetTracker({
                 key={vehicle.id}
                 onClick={() => {
                   setActiveVehicle(vehicle);
-                  if (window.innerWidth < 768 && variant !== "default")
-                    setIsMobileSidebarOpen(false);
+                  // On mobile, reveal the map so the fly-to is actually visible.
+                  if (window.innerWidth < 768) setIsMobileSidebarOpen(false);
                 }}
                 className={cn(
                   "px-5 py-4 cursor-pointer transition-all flex items-start gap-4",
@@ -408,9 +426,7 @@ export default function FleetTracker({
       <main
         className={cn(
           styles.mapContainer,
-          variant === "default" && isMobileSidebarOpen
-            ? "hidden md:block"
-            : "block",
+          isMobileSidebarOpen ? "hidden md:block" : "block",
         )}
       >
         {L && (
