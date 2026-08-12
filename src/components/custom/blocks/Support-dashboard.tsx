@@ -462,7 +462,7 @@ export default function SupportDashboard({
             className={cn(
               "w-full max-w-2xl max-h-full rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200",
               variant === "glass"
-                ? "bg-zinc-900/90 border border-white/10 backdrop-blur-xl"
+                ? "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 backdrop-blur-xl"
                 : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
             )}
           >
@@ -470,7 +470,7 @@ export default function SupportDashboard({
               className={cn(
                 "flex items-start justify-between gap-3 px-5 py-4 border-b shrink-0",
                 variant === "glass"
-                  ? "border-white/10"
+                  ? "border-zinc-200 dark:border-white/10"
                   : "border-zinc-200 dark:border-zinc-800",
               )}
             >
@@ -636,7 +636,7 @@ export default function SupportDashboard({
             className={cn(
               "w-full max-w-md p-6 rounded-2xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200",
               variant === "glass"
-                ? "bg-zinc-900/90 border border-white/10 backdrop-blur-xl"
+                ? "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 backdrop-blur-xl"
                 : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
             )}
           >
@@ -1028,7 +1028,7 @@ export default function SupportDashboard({
                         className={cn(
                           "absolute left-1 right-1 top-full z-30 mt-1 p-1 rounded-lg border shadow-xl flex flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-150",
                           variant === "glass"
-                            ? "bg-zinc-900/95 border-white/10 backdrop-blur-xl"
+                            ? "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-white/10 backdrop-blur-xl"
                             : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800",
                         )}
                       >
