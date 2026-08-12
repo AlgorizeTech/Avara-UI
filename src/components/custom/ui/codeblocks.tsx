@@ -71,7 +71,7 @@ export const CodeBlocks = ({
           </span>
           <button
             onClick={handleCopy}
-            className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-zinc-700/80 rounded-lg transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-zinc-200/60 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-white dark:border-zinc-700/80 rounded-lg transition-all cursor-pointer shadow-2xs active:scale-95"
             aria-label="Copy code"
             title={copied ? "Copied" : "Copy code"}
           >
@@ -87,7 +87,7 @@ export const CodeBlocks = ({
       {!showHeader && (
         <button
           onClick={handleCopy}
-          className="absolute right-4 top-4 z-10 p-2 min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-white/90 dark:bg-zinc-800/90 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-zinc-700/80 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-2xs cursor-pointer backdrop-blur-xs active:scale-95"
+          className="absolute right-4 top-4 z-10 p-2 min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-zinc-200/80 dark:bg-zinc-800/90 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-white dark:border-zinc-700/80 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-2xs cursor-pointer backdrop-blur-xs active:scale-95"
           aria-label="Copy code"
           title={copied ? "Copied" : "Copy code"}
         >
