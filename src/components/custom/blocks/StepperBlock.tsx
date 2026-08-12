@@ -20,8 +20,18 @@ export interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   steps: Step[];
   currentStep: number;
   onStepChange?: (step: number) => void;
-  color?: string; // Accepts tailwind class or hex code
+  /** Any CSS color (hex, rgb/hsl/oklch, var(--token)) or a Tailwind bg class. */
+  color?: string;
 }
+
+/**
+ * A raw CSS color is applied inline; anything else is assumed to be a Tailwind
+ * class the consumer already has in their build. Inline is the richer path —
+ * the pulse ring needs a border color, and a `border-*` class derived at
+ * runtime would never be seen by Tailwind's scanner.
+ */
+const isCssColorValue = (color: string) =>
+  /^(#|rgb|hsl|oklch|lab|lch|color\(|var\()/.test(color.trim());
 
 // ==========================================
 // STEPPER NAVIGATION HEADER (GSAP)
@@ -40,7 +50,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   ) => {
     const progressRef = useRef<HTMLDivElement>(null);
     const progress = currentStep / (steps.length - 1);
-    const isHex = color.startsWith("#");
+    const isCssColor = isCssColorValue(color);
 
     // GSAP Progress Line Animation
     useEffect(() => {
@@ -55,16 +65,16 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 
     return (
       <div ref={ref} className={cn("relative w-full", className)} {...props}>
-        {/* Background Track Line */}
-        <div className="absolute top-5 left-0 w-full h-[2px] bg-zinc-200 dark:bg-zinc-800 -translate-y-1/2 z-0 rounded-full overflow-hidden">
+        {/* Background Track Line — sits on the circle centre (16px on mobile, 20px from sm up) */}
+        <div className="absolute top-4 sm:top-5 left-0 w-full h-[2px] bg-zinc-200 dark:bg-zinc-800 -translate-y-1/2 z-0 rounded-full overflow-hidden">
           {/* Animated Foreground Progress Line */}
           <div
             ref={progressRef}
             className={cn(
               "absolute top-0 left-0 w-full h-full origin-left scale-x-0",
-              !isHex && color,
+              !isCssColor && color,
             )}
-            style={{ backgroundColor: isHex ? color : undefined }}
+            style={{ backgroundColor: isCssColor ? color : undefined }}
           />
         </div>
 
@@ -77,7 +87,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
             return (
               <div
                 key={step.id}
-                className="flex flex-col items-center group relative"
+                className="flex flex-col items-center group relative min-w-0 px-1 sm:px-1.5"
                 style={{ width: `${100 / steps.length}%` }}
               >
                 {/* Clickable Area (Now unlocked for ALL steps) */}
@@ -86,9 +96,9 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   onClick={() => onStepChange?.(index)}
                   disabled={!onStepChange}
                   className={cn(
-                    "relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950",
+                    "relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full border-2 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950",
                     isCompleted || isActive
-                      ? "border-transparent text-white"
+                      ? cn("border-transparent text-white", !isCssColor && color)
                       : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600",
                     onStepChange
                       ? "cursor-pointer hover:scale-110 active:scale-95"
@@ -96,10 +106,8 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   )}
                   style={{
                     backgroundColor:
-                      isCompleted || isActive
-                        ? isHex
-                          ? color
-                          : undefined
+                      (isCompleted || isActive) && isCssColor
+                        ? color
                         : undefined,
                   }}
                 >
@@ -112,14 +120,14 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   />
 
                   {/* Active Ring Pulse Effect (GSAP Timeline) */}
-                  {isActive && <PulseRing color={color} isHex={isHex} />}
+                  {isActive && isCssColor && <PulseRing color={color} />}
                 </button>
 
                 {/* Step Text */}
-                <div className="mt-3 text-center flex flex-col items-center">
+                <div className="mt-1.5 sm:mt-3 text-center flex flex-col items-center w-full min-w-0">
                   <span
                     className={cn(
-                      "text-sm font-bold transition-colors duration-300",
+                      "text-[11px] sm:text-sm font-bold leading-tight break-words hyphens-auto transition-colors duration-300",
                       isActive
                         ? "text-zinc-900 dark:text-white"
                         : isCompleted
@@ -174,7 +182,7 @@ const StepIndicatorContent = ({
   if (isCompleted) {
     return (
       <div ref={contentRef} className="flex items-center justify-center">
-        <Check className="w-5 h-5 stroke-[3]" />
+        <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
       </div>
     );
   }
@@ -182,9 +190,9 @@ const StepIndicatorContent = ({
   return (
     <div
       ref={contentRef}
-      className="font-bold text-sm flex items-center justify-center"
+      className="font-bold text-xs sm:text-sm flex items-center justify-center"
     >
-      {Icon ? <Icon className="w-5 h-5" /> : index + 1}
+      {Icon ? <Icon className="w-4 h-4 sm:w-5 sm:h-5" /> : index + 1}
     </div>
   );
 };
@@ -192,7 +200,7 @@ const StepIndicatorContent = ({
 // ==========================================
 // GSAP HELPER: CONTINUOUS RING PULSE
 // ==========================================
-const PulseRing = ({ color, isHex }: { color: string; isHex: boolean }) => {
+const PulseRing = ({ color }: { color: string }) => {
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -217,11 +225,8 @@ const PulseRing = ({ color, isHex }: { color: string; isHex: boolean }) => {
   return (
     <div
       ref={ringRef}
-      className={cn(
-        "absolute inset-0 rounded-full border-2 pointer-events-none",
-        !isHex && color,
-      )}
-      style={{ borderColor: isHex ? color : undefined }}
+      className="absolute inset-0 rounded-full border-2 pointer-events-none"
+      style={{ borderColor: color }}
     />
   );
 };

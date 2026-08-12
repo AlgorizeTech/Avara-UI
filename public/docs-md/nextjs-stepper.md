@@ -6,7 +6,7 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 
 ## Examples
 
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own. Validation, submission and error handling stay in your component. The first example's **Code** tab contains the full component source.
+`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component. The **Code** tab contains the full component source.
 
 export const usageFlow = `"use client";
 
@@ -57,43 +57,6 @@ export default function OnboardingWizard() {
   );
 }`;
 
-export const usageHeaderOnly = `"use client";
-
-export default function CheckoutProgress() {
-  const [step, setStep] = useState(0);
-
-  // Stepper works on its own — use it as a progress tracker above
-  // content you lay out yourself.
-  return ;
-}`;
-
-export const usageMinimalSteps = `import { Stepper, StepperContent } from "@/components/custom/blocks/StepperBlock";
-
-// Only id and title are required on a Step. Drop icon and description
-// and the circles fall back to their 1-based index.
-const steps = [
-  { id: "profile", title: "Profile", content:  },
-  { id: "workspace", title: "Workspace", content:  },
-  { id: "security", title: "Security", content:  },
-  { id: "review", title: "Review", content:  },
-];
-
-export default function MinimalStepper({ step, setStep }) {
-  return (
-    <>
-
-  );
-}`;
-
-export const usageColor = `import { Stepper } from "@/components/custom/blocks/StepperBlock";
-
-export default function BrandedStepper({ step, setStep }) {
-  // color takes a hex (applied inline) or a Tailwind background class.
-  return (
-    
-  );
-}`;
-
 ## Installation
 
 ### Dependencies
@@ -106,7 +69,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the example above.
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
@@ -179,9 +142,14 @@ Learn about the Stepper component's linear progression features, providing clear
 
           "#FFAB1D"
 
-          The active theme color. Accepts valid hex codes (e.g.,{" "}
-          "#FFAB1D") which are applied dynamically via inline
-          styles, or standard Tailwind utility classes.
+          The active theme color for the progress line, completed/active
+          circles and the pulse ring. Any CSS color value — hex,{" "}
+          rgb(), hsl(), oklch() or{" "}
+          var(--token) — is applied inline. A Tailwind background
+          class (e.g. "bg-indigo-500") also works for the line and
+          circles, but the pulse ring is skipped: its border color would need a{" "}
+          border-* class built at runtime, which Tailwind's scanner
+          never sees.
 
           Stepper
 

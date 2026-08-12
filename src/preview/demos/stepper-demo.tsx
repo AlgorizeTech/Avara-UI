@@ -24,6 +24,22 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+// The Stepper paints the indicator label `text-white`, so the accent has to
+// stay dark enough in both themes — hence the component's own amber default
+// for "primary" rather than the theme-flipping `var(--primary)`.
+const getThemeColorHex = (c: string) => {
+  if (c.startsWith("#")) return c;
+  const map: Record<string, string> = {
+    primary: "#FFAB1D",
+    default: "#FFAB1D",
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    zinc: "#18181b",
+  };
+  return map[c] || "#FFAB1D";
+};
+
 const PRIMARY_ROLE_OPTIONS = [
   "Developer",
   "Designer",
@@ -64,19 +80,15 @@ const InputField = ({ label, icon: Icon, error, ...props }: any) => (
 );
 
 export default function StepperDemo({
-  color = "#FFAB1D",
+  color: colorToken = "primary",
   initialStep = 0,
-  layout,
-  stepSet,
 }: {
+  /** Accent token from the docs color picker, or a raw hex. */
   color?: string;
   /** Step the flow opens on. */
   initialStep?: number;
-  /** "header-only" renders <Stepper> without the content/footer. */
-  layout?: "header-only";
-  /** "minimal" drops each step's icon and description. */
-  stepSet?: "minimal";
 }) {
+  const color = getThemeColorHex(colorToken);
   const [currentStep, setCurrentStep] = useState(initialStep);
 
   // Unified Form State
@@ -446,35 +458,13 @@ export default function StepperDemo({
     },
   ];
 
-  // `description` and `icon` are optional on Step — dropping them leaves
-  // numbered circles with a title underneath.
-  const visibleSteps: Step[] =
-    stepSet === "minimal"
-      ? steps.map(({ id, title, content }) => ({ id, title, content }))
-      : steps;
-
-  if (layout === "header-only") {
-    return (
-      <div className="w-full flex justify-center relative overflow-hidden min-h-[300px] items-center">
-        <div className="w-full max-w-3xl bg-white dark:bg-zinc-950/80 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800/80 relative z-10">
-          <Stepper
-            steps={visibleSteps}
-            currentStep={currentStep}
-            onStepChange={setCurrentStep}
-            color={color}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full flex justify-center relative overflow-hidden min-h-[600px]">
       {/* Main Wizard Card Container */}
       <div className="w-full max-w-3xl flex flex-col gap-8 bg-white dark:bg-zinc-950/80 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800/80 relative z-10">
         {/* 1. The GSAP Stepper Navigation (Click circles to jump if valid) */}
         <Stepper
-          steps={visibleSteps}
+          steps={steps}
           currentStep={currentStep}
           onStepChange={handleStepJump}
           color={color}
@@ -482,7 +472,7 @@ export default function StepperDemo({
 
         {/* 2. The GSAP Animated Content Payload */}
         <div className="min-h-[260px] flex items-center">
-          <StepperContent steps={visibleSteps} currentStep={currentStep} />
+          <StepperContent steps={steps} currentStep={currentStep} />
         </div>
 
         {/* 3. Integrated Navigation Footer */}
