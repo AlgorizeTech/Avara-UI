@@ -214,8 +214,8 @@ export interface UserGraphProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const DEFAULT_ORCHESTRATOR = {
-  name: "Shuvo Sarkar",
-  role: "Expert Software Engineer",
+  name: "John Doe",
+  role: "Senior Product Designer",
   avatarUrl:
     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
 };

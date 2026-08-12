@@ -125,7 +125,7 @@ export default function ResizableDemo({
                       <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
                       <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-xl font-bold&quot;</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                      <span className="text-foreground font-bold">Shuvo Sarkar</span>
+                      <span className="text-foreground font-bold">John Doe</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                     </div>
                     <div className="pl-6 text-[#6a737d] dark:text-[#6a737d] italic text-[10px]">
@@ -192,7 +192,7 @@ export default function ResizableDemo({
                           <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
                           <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-bold&quot;</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                          <span className="text-foreground font-bold">Shuvo Sarkar</span>
+                          <span className="text-foreground font-bold">John Doe</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                         </div>
                         <div className="pl-12 text-[#6a737d] dark:text-[#6a737d] italic">
