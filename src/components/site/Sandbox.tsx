@@ -562,7 +562,7 @@ export function ExampleShowcase({
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
       {ownsPicker && (
-        <div className="flex flex-col gap-6 p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+        <div className="flex flex-col gap-6 p-3.5 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
           <ThemeColorPicker
             color={color}
             onChange={setColor}
