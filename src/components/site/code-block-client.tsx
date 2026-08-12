@@ -70,5 +70,5 @@ export const CodeBlockClient = ({
     transformCode();
   }, [code, selectedLanguage, lang]);
 
-  return <CodeBlocks code={transformedCode} language={displayLang} />;
+  return <CodeBlocks code={transformedCode} language={displayLang} showHeader={false} />;
 };
