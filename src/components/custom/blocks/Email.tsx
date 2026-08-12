@@ -539,8 +539,8 @@ export default function EmailApp({
                   : "border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/20",
               )}
             >
-              <div className="flex items-center gap-4">
-                <div className="flex items-center shrink-0">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-2 shrink-0">
                   <input
                     type="checkbox"
                     className="w-4 h-4 rounded border-zinc-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
@@ -550,19 +550,29 @@ export default function EmailApp({
                     }
                     onChange={toggleSelectAll}
                   />
+                  <span
+                    onClick={toggleSelectAll}
+                    className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 cursor-pointer select-none"
+                  >
+                    {selectedEmails.length > 0
+                      ? `${selectedEmails.length} Selected`
+                      : "Select All"}
+                  </span>
                 </div>
 
                 {selectedEmails.length > 0 && (
                   <div className="flex items-center gap-1 border-l border-zinc-200 dark:border-zinc-700 pl-3 animate-in fade-in zoom-in-95 duration-200">
                     <button
                       onClick={() => moveSelectedToFolder("trash")}
-                      className="p-2 text-zinc-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
+                      className="p-1.5 sm:p-2 text-zinc-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
+                      title="Delete Selected"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => moveSelectedToFolder("archive")}
-                      className="p-2 text-zinc-500 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
+                      className="p-1.5 sm:p-2 text-zinc-500 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
+                      title="Archive Selected"
                     >
                       <Archive className="w-4 h-4" />
                     </button>
