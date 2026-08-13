@@ -115,20 +115,21 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
     };
 
     const variantStyles = {
-      default: "bg-[#0d1117] border border-zinc-800 shadow-xl",
+      default:
+        "bg-white dark:bg-[#0d1117] border border-zinc-200 dark:border-zinc-800 shadow-xl",
       glass:
-        "bg-[#0d1117]/80 backdrop-blur-xl border border-white/10 shadow-2xl",
+        "bg-white/80 dark:bg-[#0d1117]/80 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10 shadow-2xl",
       minimal: "bg-transparent border border-zinc-200 dark:border-zinc-800",
     };
 
     const headerStyles = {
-      default: "bg-white/5 border-b border-white/5",
-      glass: "bg-white/5 border-b border-white/10",
+      default:
+        "bg-zinc-100/80 dark:bg-white/5 border-b border-zinc-200 dark:border-white/5",
+      glass:
+        "bg-zinc-100/60 dark:bg-white/5 border-b border-zinc-200/80 dark:border-white/10",
       minimal:
         "bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800",
     };
-
-    const isLightMode = variant === "minimal";
 
     return (
       <div
@@ -162,14 +163,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
           <div className="flex items-center justify-center w-1/3">
             {filename && (
-              <span
-                className={cn(
-                  "text-xs font-medium font-mono",
-                  isLightMode
-                    ? "text-zinc-600 dark:text-zinc-400"
-                    : "text-zinc-400",
-                )}
-              >
+              <span className="text-xs font-medium font-mono text-zinc-600 dark:text-zinc-400">
                 {filename}
               </span>
             )}
@@ -191,12 +185,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {copyable && (
               <button
                 onClick={handleCopy}
-                className={cn(
-                  "flex items-center justify-center w-8 h-8 rounded-lg transition-all",
-                  isLightMode
-                    ? "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
-                    : "hover:bg-white/10 text-zinc-400",
-                )}
+                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400"
                 title="Copy code"
               >
                 {copied ? (
@@ -212,14 +201,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
         {/* Code Area */}
         <div className="p-4 md:p-6 overflow-x-auto">
           <pre className="m-0 bg-transparent p-0 w-max min-w-full">
-            <code
-              className={cn(
-                "font-mono text-sm leading-relaxed",
-                isLightMode
-                  ? "text-zinc-800 dark:text-zinc-200"
-                  : "text-zinc-300",
-              )}
-            >
+            <code className="font-mono text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
               {code}
             </code>
           </pre>
