@@ -1,10 +1,10 @@
 # Shopping Cart
 
-A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and four distinct structural layouts.
+A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
 ## Examples
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all four. Click the bag trigger in the first three previews to play the GSAP entrance. The first example's **Code** tab contains the full component source.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance. The first example's **Code** tab contains the full component source.
 
 export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
@@ -15,9 +15,6 @@ export default function Layout() {
 }`;
 
 export const usageModal = `// Centred dialog with a blurred backdrop — same trigger, same state.
-`;
-
-export const usagePopover = `// Anchored under the trigger, scrolls internally past ~300px of items.
 `;
 
 export const usagePage = `// Full-width two-column layout for a dedicated /cart route.
@@ -69,7 +66,7 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
 
           type
 
-          "drawer" | "modal" | "popover" | "page"
+          "drawer" | "modal" | "page"
 
           "drawer"
 
