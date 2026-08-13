@@ -117,28 +117,10 @@ export default function SettingsFirst() {
       code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
     },
     {
-      title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the card chrome down to rail and pane.",
-      props: { variant: "minimal", orientation: "vertical" },
-      usage: usageMinimal,
-    },
-    {
-      title: "Bordered",
-      subheading: "`variant=\"bordered\"` outlines both the rail and the content pane.",
-      props: { variant: "bordered", orientation: "vertical" },
-      usage: usageBordered,
-    },
-    {
       title: "Glass",
       subheading: "`variant=\"glass\"` frosts the panel — give it a rich background to blur.",
       props: { variant: "glass", orientation: "vertical" },
       usage: usageGlass,
-    },
-    {
-      title: "Default active tab",
-      subheading: "`defaultActiveId` opens a specific tab on first render.",
-      props: { variant: "default", orientation: "vertical", defaultActiveId: "settings" },
-      usage: usageDefaultActive,
     },
   ]}
 />
