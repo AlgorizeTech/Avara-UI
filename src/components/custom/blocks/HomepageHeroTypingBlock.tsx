@@ -221,7 +221,7 @@ export const HomepageHeroTypingBlock = forwardRef<
         {/* Grid Mask Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
-        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-2 sm:px-6 md:px-8 flex flex-col justify-center items-center">
+        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
             {/* Top Pill Badge */}
             {badgeText && (
@@ -239,7 +239,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 
             {/* Dynamic Typing Title */}
             <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
+              <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
                 <span>{titlePrefix}</span>
                 <span className="inline-flex items-center">
                   <span className="text-[var(--hero-accent-text)]">
