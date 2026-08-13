@@ -160,16 +160,15 @@ export function Sandbox({
   /** Fluid AND unscaled — the only state that fills the card edge to edge. */
   const isFitted = previewWidth === "100%" && fitScale === 1;
 
-  // Derived from the MEASURED width, including the fluid "100%" state — so on
-  // first load the highlighted button is the visitor's own device class.
+  // Derived from the current preview state
   const activeDevice: Device =
-    viewportWidth === null
+    previewWidth === "100%"
       ? "desktop"
-      : viewportWidth < TABLET_MIN_WIDTH
-        ? "mobile"
-        : viewportWidth < DESKTOP_MIN_WIDTH
-          ? "tablet"
-          : "desktop";
+      : typeof previewWidth === "number" && previewWidth >= DESKTOP_PRESET_WIDTH
+        ? "desktop"
+        : typeof previewWidth === "number" && previewWidth < TABLET_MIN_WIDTH
+          ? "mobile"
+          : "tablet";
 
   const applyWidth = (width: number, max: number) => {
     if (width >= max - SNAP_TO_FULL_THRESHOLD) {
@@ -299,7 +298,11 @@ export function Sandbox({
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
-                    onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
+                    onClick={() =>
+                      setPreviewWidth(
+                        device === "desktop" ? "100%" : DEVICE_PRESETS[device]
+                      )
+                    }
                     className={cn(
                       "p-1.5 rounded-md transition-all cursor-pointer",
                       activeDevice === device
@@ -397,10 +400,10 @@ export function Sandbox({
               className={cn(
                 "relative flex justify-center items-start transition-[width] ease-out",
                 isDragging ? "duration-0" : "duration-300",
-                "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
+                "bg-white dark:bg-[#09090b]",
                 isFitted
-                  ? "rounded-b-xl"
-                  : "rounded-bl-xl rounded-r-none",
+                  ? "rounded-b-xl border-r-0"
+                  : "rounded-bl-xl rounded-r-none border-r border-zinc-200 dark:border-zinc-800",
               )}
             >
               <div
