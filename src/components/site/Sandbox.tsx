@@ -354,7 +354,6 @@ export function Sandbox({
             "bg-zinc-50/50 dark:bg-[#020202]",
             !isPreviewActive && "hidden",
           )}
-          style={{ minHeight }}
         >
             {/* Dashed Grid Background */}
             <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
