@@ -298,14 +298,14 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             )}
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 pt-1 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-1 sm:pt-2 w-full max-w-xs sm:max-w-3xl mx-auto px-4 sm:px-0">
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-4 sm:px-9 h-11 sm:h-[58px] rounded-xl sm:rounded-2xl bg-primary text-primary-foreground text-sm sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 sm:gap-2.5 w-full sm:w-auto min-w-0 sm:min-w-[220px]"
                 >
                   <span>{primaryActionLabel}</span>
-                  <ArrowRight className="size-3 sm:size-5 shrink-0" />
+                  <ArrowRight className="size-4 sm:size-5 shrink-0" />
                 </Link>
               )}
 
@@ -317,10 +317,10 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       ? "_blank"
                       : undefined
                   }
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-4 sm:px-9 h-11 sm:h-[58px] rounded-xl sm:rounded-2xl border border-border bg-card text-foreground text-sm sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 sm:gap-2.5 w-full sm:w-auto min-w-0 sm:min-w-[220px]"
                 >
-                  <Github className="size-3 sm:size-5 shrink-0" />
                   <span>{secondaryActionLabel}</span>
+                  <Github className="size-4 sm:size-5 shrink-0" />
                 </Link>
               )}
             </div>
