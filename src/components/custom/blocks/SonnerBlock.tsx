@@ -79,6 +79,7 @@ toast.error = (title: string, options?: ToastOptions) =>
 toast.info = (title: string, options?: ToastOptions) =>
   toastState.add(title, { ...options, type: "info" });
 toast.dismiss = (id: string) => toastState.dismiss(id);
+toast.clear = () => toastState.clear();
 
 // ==========================================
 // 3. TOASTER COMPONENT (Mounts at App Root)

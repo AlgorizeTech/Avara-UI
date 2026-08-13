@@ -140,11 +140,13 @@ export default function SonnerDemo({
                 <button
                   key={p.value}
                   onClick={() => {
-                    toastState.clear?.();
+                    toast.clear();
                     setActivePosition(p.value);
-                    toast(p.label, {
-                      description: `Stack anchored to "${p.value}".`,
-                    });
+                    setTimeout(() => {
+                      toast(p.label, {
+                        description: `Stack anchored to "${p.value}".`,
+                      });
+                    }, 50);
                   }}
                   className={cn(
                     "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
