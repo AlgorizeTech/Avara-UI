@@ -58,18 +58,18 @@ export const CodeBlocks = ({
     <div
       ref={blockRef}
       className={cn(
-        "relative group w-full bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden transition-all duration-300 ease-in-out",
-        showHeader ? "my-4" : "",
+        "relative group w-full bg-zinc-50 dark:bg-black rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-none",
+        showHeader ? "my-4 border border-zinc-300 dark:border-zinc-800" : "border-0 p-0",
       )}
     >
       {showHeader && (
         <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/70 dark:bg-zinc-900/70 border-b border-zinc-200 dark:border-zinc-800">
-          <span className="text-[11px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase select-none">
+          <span className="text-[11px] font-bold tracking-wider text-zinc-600 dark:text-zinc-400 uppercase select-none px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700 bg-white/60 dark:bg-zinc-800/60 shadow-none">
             {displayLanguageLabel}
           </span>
           <button
             onClick={handleCopy}
-            className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-lg transition-all cursor-pointer active:scale-95"
+            className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-white/60 dark:bg-zinc-800/60 hover:bg-zinc-200/60 dark:hover:bg-zinc-700/60 border border-zinc-300 dark:border-zinc-700 rounded-lg transition-all cursor-pointer active:scale-95 shadow-none"
             aria-label="Copy code"
             title={copied ? "Copied" : "Copy code"}
           >
@@ -85,7 +85,7 @@ export const CodeBlocks = ({
       {!showHeader && (
         <button
           onClick={handleCopy}
-          className="absolute right-4 top-4 z-10 p-2 min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer backdrop-blur-xs active:scale-95"
+          className="absolute right-4 top-4 z-10 p-2 min-w-[32px] min-h-[32px] flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100/80 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer backdrop-blur-xs active:scale-95 shadow-none"
           aria-label="Copy code"
           title={copied ? "Copied" : "Copy code"}
         >
@@ -97,7 +97,7 @@ export const CodeBlocks = ({
         </button>
       )}
 
-      <div className="py-3 px-4 sm:px-6 text-sm md:text-[14px] leading-relaxed overflow-x-auto">
+      <div className="text-sm md:text-[14px] leading-relaxed overflow-x-auto p-3 sm:p-4">
         <CodeRenderer code={displayedCode} lang={language as any} />
       </div>
 

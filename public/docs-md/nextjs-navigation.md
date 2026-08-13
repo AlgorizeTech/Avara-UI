@@ -39,8 +39,8 @@ export const usageMinimal = `// Pill chrome removed; the indicator becomes a thi
   {/* … */}
 `;
 
-export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over imagery, so give it
-// something to blur.
+export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over a colored surface, so
+// give it something to blur.
 
     {/* … */}
   

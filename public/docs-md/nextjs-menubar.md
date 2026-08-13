@@ -23,15 +23,21 @@ export default function TopNav() {
       
         File
         
-           console.log("New Tab")}>New Tab
-          New Window
-          Open File…
+          {/* shrink-0 keeps the icon square when a narrow menu squeezes the row */}
+           console.log("New Tab")}>
+             New Tab
+
+             New Window
+
+             Open File…
 
         Edit
-        
-          Undo
-          Redo
-          Cut
+
+             Undo
+
+             Redo
+
+             Cut
 
   );
 }`;
@@ -46,6 +52,8 @@ export const usageShortcuts = `import {
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
 
+const icon = "w-4 h-4 mr-2 shrink-0";
+
 export default function EditMenu() {
   return (
 
@@ -53,20 +61,25 @@ export default function EditMenu() {
         
           {/* MenubarShortcut right-aligns itself inside the item */}
           
-            Undo ⌘Z
+             Undo ⌘Z
 
-            Redo ⇧⌘Z
+             Redo ⇧⌘Z
 
-            Cut ⌘X
+             Cut ⌘X
 
-            Copy ⌘C
+             Copy ⌘C
 
-            Paste ⌘V
+             Paste{" "}
+            ⌘V
 
   );
 }`;
 
 export const usageIcons = `import { useState } from "react";
+
+const icon = "w-4 h-4 mr-2 shrink-0";
+/* A check reads as "active" in the width a word would overflow */
+const mark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
 
 export default function ViewMenu() {
   const [theme, setTheme] = useState("System");
@@ -75,26 +88,21 @@ export default function ViewMenu() {
 
         View
         
-          {/* inset lines the label up with the icon-bearing items below */}
+          {/* Give every row an icon and the label can sit flush left — no inset
+              gutter to reserve, nothing indented past its neighbours */}
           Theme Options
 
            setTheme("Light")}>
              Light Mode
-            {theme === "Light" && (
-              Active
-            )}
+            {theme === "Light" && }
           
            setTheme("Dark")}>
              Dark Mode
-            {theme === "Dark" && (
-              Active
-            )}
+            {theme === "Dark" && }
           
            setTheme("System")}>
              System Default
-            {theme === "System" && (
-              Active
-            )}
+            {theme === "System" && }
 
   );
 }`;
@@ -109,19 +117,22 @@ export const usageDisabled = `import {
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
 
+const icon = "w-4 h-4 mr-2 shrink-0";
+
 export default function FileMenu() {
   return (
 
         File
-        
-          Save
+
+             Save
 
           {/* disabled dims the row and kills pointer events + onClick */}
-          Save All
+          
+             Save All
 
           {/* className styles a single destructive row */}
           
-            Quit Nexus ⌘Q
+             Quit Nexus ⌘Q
 
   );
 }`;
@@ -137,20 +148,25 @@ export const usageApp = `import {
   MenubarTrigger,
 } from "@/components/custom/blocks/MenubarBlock";
 
+const icon = "w-4 h-4 mr-2 shrink-0";
+
 export default function AppWindow() {
   return (
+    {/* No overflow-hidden here: it would crop any menu that opens past the
+        window. The header rounds its own top corners instead. */}
     
       {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
 
             Nexus UI
-            
-              About Nexus
 
-                Preferences… ⌘,
+                 About Nexus
+
+                 Preferences…{" "}
+                ⌘,
 
             Edit
 
-                Undo ⌘Z
+                 Undo ⌘Z
 
             Profiles
             {/* align anchors the dropdown to the trigger: start | center | end */}
@@ -159,7 +175,9 @@ export default function AppWindow() {
               
                  Andy Bernard
 
-              Add Account…
+                 Add Account…
+
+                 Manage Profiles
 
       {/* your app canvas */}
     

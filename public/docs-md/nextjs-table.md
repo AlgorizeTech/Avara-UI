@@ -33,7 +33,7 @@ export default function TransactionsTable() {
 
 export const usageMinimal = ``;
 
-export const usageGlass = `// Pair the glass variant with a photographic backdrop so the blur has
+export const usageGlass = `// Pair the glass variant with a colored backdrop so the blur has
 // something to refract.
 
 `;

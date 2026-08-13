@@ -227,7 +227,7 @@ export function CustomCodeBlock({
             </div>
             
             {/* File Name / Language Badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-md shrink-0">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-200/50 dark:bg-slate-800/50 border border-slate-300/60 dark:border-slate-700/60 rounded-md shrink-0 shadow-none">
               <LanguageIcon language={activeLanguage} />
               <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
                 {activeFileName || formatLanguageName(activeLanguage)}
@@ -238,14 +238,14 @@ export function CustomCodeBlock({
           {/* Copy Button */}
           <button
             onClick={copyToClipboard}
-            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors ml-2"
+            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300/60 dark:border-slate-700/60 transition-colors ml-2 shadow-none"
           >
             {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
 
         {/* Code View */}
-        <div className="relative overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300/50 hover:[&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700/50 dark:hover:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full">
+        <div className="relative overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300/50 hover:[&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700/50 dark:hover:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full shadow-none">
           <pre className="p-4 text-[13.5px] leading-relaxed font-mono whitespace-pre min-w-fit pb-6">
             <code className="block text-slate-800 dark:text-slate-200">
               {lines.map((line, i) => (

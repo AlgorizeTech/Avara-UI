@@ -344,7 +344,7 @@ export function Sandbox({
       </div>
 
       {/* Main Content Area */}
-      <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
+      <div className="relative w-full bg-zinc-50 dark:bg-black rounded-b-xl">
         {/* The preview stays MOUNTED across tab switches (hidden, not removed)
             so the sandbox iframe never reloads when returning to Preview. */}
         <div
@@ -648,22 +648,14 @@ function ExampleCard({
     tabs.push({
       id: "usage",
       label: "Usage",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={usage} lang="tsx" />
-        </div>
-      ),
+      content: <CodeBlockClient code={usage} lang="tsx" />,
     });
   }
   if (code) {
     tabs.push({
       id: "component",
       label: "Code",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={code} lang="tsx" />
-        </div>
-      ),
+      content: <CodeBlockClient code={code} lang="tsx" />,
     });
   }
 
