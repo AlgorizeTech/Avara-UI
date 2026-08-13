@@ -45,13 +45,30 @@ const EVENT_PLATFORM_OPTIONS = [
 export type CalendarVariant = "default" | "minimal" | "glass";
 
 const TIME_SLOTS = [
+  { label: "12:00 AM", startHour: 0, timeStr: "00:00" },
+  { label: "1:00 AM", startHour: 1, timeStr: "01:00" },
+  { label: "2:00 AM", startHour: 2, timeStr: "02:00" },
+  { label: "3:00 AM", startHour: 3, timeStr: "03:00" },
+  { label: "4:00 AM", startHour: 4, timeStr: "04:00" },
+  { label: "5:00 AM", startHour: 5, timeStr: "05:00" },
+  { label: "6:00 AM", startHour: 6, timeStr: "06:00" },
+  { label: "7:00 AM", startHour: 7, timeStr: "07:00" },
   { label: "8:00 AM", startHour: 8, timeStr: "08:00" },
+  { label: "9:00 AM", startHour: 9, timeStr: "09:00" },
   { label: "10:00 AM", startHour: 10, timeStr: "10:00" },
+  { label: "11:00 AM", startHour: 11, timeStr: "11:00" },
   { label: "12:00 PM", startHour: 12, timeStr: "12:00" },
+  { label: "1:00 PM", startHour: 13, timeStr: "13:00" },
   { label: "2:00 PM", startHour: 14, timeStr: "14:00" },
+  { label: "3:00 PM", startHour: 15, timeStr: "15:00" },
   { label: "4:00 PM", startHour: 16, timeStr: "16:00" },
+  { label: "5:00 PM", startHour: 17, timeStr: "17:00" },
   { label: "6:00 PM", startHour: 18, timeStr: "18:00" },
+  { label: "7:00 PM", startHour: 19, timeStr: "19:00" },
   { label: "8:00 PM", startHour: 20, timeStr: "20:00" },
+  { label: "9:00 PM", startHour: 21, timeStr: "21:00" },
+  { label: "10:00 PM", startHour: 22, timeStr: "22:00" },
+  { label: "11:00 PM", startHour: 23, timeStr: "23:00" },
 ];
 
 const getSlotIndexForTime = (timeStr?: string) => {
@@ -616,7 +633,7 @@ function CalendarDashboard({
     <div className={`${isDark ? "dark" : ""} w-full h-full max-w-full overflow-hidden`} style={customVars}>
       <div
         className={cn(
-          "w-full max-w-full h-auto lg:h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 overflow-hidden",
+          "w-full max-w-full h-auto flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300",
           styles.wrapper,
           variant !== "minimal" ? "rounded-xl" : "",
         )}
@@ -1091,7 +1108,7 @@ function CalendarDashboard({
                 </div>
               </div>
             ) : (
-              <div className="w-full min-w-0 flex flex-col h-full overflow-hidden bg-card/60">
+              <div className="w-full min-w-0 flex flex-col bg-card/60">
                 {/* Time Grid Sticky Header Bar */}
                 <div
                   className={cn(
@@ -1149,12 +1166,12 @@ function CalendarDashboard({
                   </div>
                 </div>
 
-                {/* Time Grid Body without vertical scrollbars */}
-                <div className="flex-1 flex flex-col h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {/* Time Grid Body */}
+                <div className="flex-1 flex flex-col">
                   {TIME_SLOTS.map((slot, slotIdx) => (
                     <div
                       key={slot.label}
-                      className="flex flex-1 min-h-[42px] sm:min-h-[48px] border-b border-border/70"
+                      className="flex min-h-[38px] sm:min-h-[44px] border-b border-border/70"
                     >
                       {/* Time Label Column */}
                       <div className="w-16 sm:w-20 shrink-0 px-1 py-1 flex items-center justify-center text-[10px] sm:text-xs font-semibold text-muted-foreground border-r border-border/70 bg-muted/20 select-none">

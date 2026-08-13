@@ -16,7 +16,7 @@ export function SandboxFrame({
   scale = 1,
   resetKey = 0,
   minHeight = 0,
-  maxHeight = 950,
+  maxHeight = 2000,
   className,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */

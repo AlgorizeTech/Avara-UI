@@ -97,7 +97,7 @@ export function Sandbox({
   tabs,
   options = {},
   minHeight = 400,
-  maxHeight = 820,
+  maxHeight = 2000,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
