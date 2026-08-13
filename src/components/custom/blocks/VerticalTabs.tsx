@@ -165,12 +165,12 @@ export function VerticalTabs({
       glass: {
         container: "gap-6",
         menuBox:
-          "bg-white/40 dark:bg-black/40 backdrop-blur-xl rounded-2xl p-3 border border-white/20 dark:border-white/10 shadow-xl",
+          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-3 border border-white/40 dark:border-white/10 shadow-xl",
         contentBox:
-          "bg-white/40 dark:bg-black/40 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-white/20 dark:border-white/10 shadow-xl",
+          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
         activeTab: cn("shadow-lg backdrop-blur-md", theme.bg),
         inactiveTab:
-          "hover:bg-white/20 dark:hover:bg-white/5 text-zinc-700 dark:text-zinc-300",
+          "hover:bg-white/40 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-300",
       },
       minimal: {
         container: "gap-8",
