@@ -204,7 +204,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         ref={ref}
         style={customStyle}
         className={cn(
-          "relative w-full flex flex-col justify-center items-center overflow-hidden py-8 sm:py-12 md:py-16",
+          "relative w-full flex flex-col justify-center items-center overflow-hidden pt-4 pb-0 sm:py-12 md:py-16",
           className
         )}
         {...props}
@@ -237,14 +237,14 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
 
             {/* Dynamic Bouncing Title Word with Locked Left Position (Single Line Guaranteed) */}
             <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
+              <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
                 <span className="shrink-0">
                   Build{" "}
                   <span className="text-[var(--hero-accent-text)]">
                     Interactive
                   </span>
                 </span>
-                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[95px] xs:w-[115px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
+                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[125px] xs:w-[145px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={currentWord}
@@ -269,7 +269,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
 
             {/* Subtitle Paragraph */}
             {subtitle && (
-              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-[11px] xs:text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-[260px] xs:max-w-[300px] sm:max-w-3xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}
@@ -298,7 +298,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             )}
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-1 sm:pt-2 w-full max-w-xs sm:max-w-3xl mx-auto px-4 sm:px-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-4 pt-0 sm:pt-2 w-full max-w-xs sm:max-w-3xl mx-auto px-4 sm:px-0">
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}

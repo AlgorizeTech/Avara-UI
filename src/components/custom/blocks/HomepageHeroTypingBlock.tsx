@@ -239,7 +239,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 
             {/* Dynamic Typing Title */}
             <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
+              <h1 className="text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
                 <span>{titlePrefix}</span>
                 <span className="inline-flex items-center">
                   <span className="text-[var(--hero-accent-text)]">
@@ -255,7 +255,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 
             {/* Subtitle Paragraph */}
             {subtitle && (
-              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-xs xs:text-sm sm:text-base md:text-lg text-muted-foreground w-full max-w-xs sm:max-w-3xl mx-auto leading-normal sm:leading-relaxed text-center font-medium px-2 sm:px-0">
                 {subtitle}
               </p>
             )}
