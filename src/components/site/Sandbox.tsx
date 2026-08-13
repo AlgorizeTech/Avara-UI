@@ -444,7 +444,7 @@ export function Sandbox({
           </div>
 
         {!isPreviewActive && (
-          <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="relative w-full overflow-visible rounded-b-xl">
             {currentTab?.content}
           </div>
         )}
