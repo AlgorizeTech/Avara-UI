@@ -140,6 +140,7 @@ export default function SonnerDemo({
                 <button
                   key={p.value}
                   onClick={() => {
+                    toastState.clear?.();
                     setActivePosition(p.value);
                     toast(p.label, {
                       description: `Stack anchored to "${p.value}".`,

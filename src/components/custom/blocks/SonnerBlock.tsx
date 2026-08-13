@@ -58,6 +58,11 @@ class ToastObserver {
     this.toasts = this.toasts.filter((t) => t.id !== id);
     this.notify();
   }
+
+  clear() {
+    this.toasts = [];
+    this.notify();
+  }
 }
 
 export const toastState = new ToastObserver();
@@ -104,13 +109,12 @@ export function Toaster({
   if (toasts.length === 0) return null;
 
   const positionClasses = {
-    "bottom-right": "bottom-0 right-0 sm:bottom-4 sm:right-4 flex-col-reverse",
-    "bottom-center":
-      "bottom-0 left-1/2 -translate-x-1/2 sm:bottom-4 flex-col-reverse",
-    "bottom-left": "bottom-0 left-0 sm:bottom-4 sm:left-4 flex-col-reverse",
-    "top-right": "top-0 right-0 sm:top-4 sm:right-4 flex-col",
-    "top-center": "top-0 left-1/2 -translate-x-1/2 sm:top-4 flex-col",
-    "top-left": "top-0 left-0 sm:top-4 sm:left-4 flex-col",
+    "bottom-right": "bottom-3 right-3 sm:bottom-4 sm:right-4 flex-col-reverse items-end",
+    "bottom-center": "bottom-3 left-1/2 -translate-x-1/2 sm:bottom-4 flex-col-reverse items-center",
+    "bottom-left": "bottom-3 left-3 sm:bottom-4 sm:left-4 flex-col-reverse items-start",
+    "top-right": "top-3 right-3 sm:top-4 sm:right-4 flex-col items-end",
+    "top-center": "top-3 left-1/2 -translate-x-1/2 sm:top-4 flex-col items-center",
+    "top-left": "top-3 left-3 sm:top-4 sm:left-4 flex-col items-start",
   };
 
   const isTop = position.startsWith("top");
@@ -118,7 +122,7 @@ export function Toaster({
   return (
     <div
       className={cn(
-        "fixed z-[9999] p-4 flex outline-none pointer-events-none w-full sm:w-[356px]",
+        "fixed z-[9999] p-2.5 sm:p-4 flex outline-none pointer-events-none w-[calc(100vw-20px)] max-w-[260px] xs:max-w-[280px] sm:max-w-none sm:w-[356px]",
         positionClasses[position],
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -131,7 +135,7 @@ export function Toaster({
           const isExpanded = expand || isHovered;
 
           // Calculate transforms based on position in stack
-          const offset = isExpanded ? index * 12 + index * 64 : index * 14;
+          const offset = isExpanded ? index * 10 + index * 56 : index * 12;
           const scale = isExpanded ? 1 : 1 - index * 0.05;
           const translateY = isTop ? offset : -offset;
 
@@ -140,9 +144,7 @@ export function Toaster({
               key={t.id}
               className={cn(
                 "absolute w-full transition-all duration-300 ease-out pointer-events-auto",
-                // FIX: Anchor to bottom if position is bottom, so it grows UPWARDS into the screen
                 isTop ? "top-0" : "bottom-0",
-                // Only interactable if expanded or front
                 isFront || isExpanded
                   ? "opacity-100"
                   : "opacity-0 pointer-events-none",
@@ -150,7 +152,6 @@ export function Toaster({
               style={{
                 zIndex: 100 - index,
                 transform: `translateY(${translateY}px) scale(${scale})`,
-                // FIX: Set transform origin so scaling doesn't detach from the stack base
                 transformOrigin: isTop ? "top center" : "bottom center",
                 opacity: index > 2 && !isExpanded ? 0 : undefined,
               }}
@@ -169,9 +170,11 @@ export function Toaster({
 // ==========================================
 function ToastCard({
   toast,
+  isTop,
   onDismiss,
 }: {
   toast: ToastProps;
+  isTop?: boolean;
   onDismiss: () => void;
 }) {
   const { title, description, type = "default", action } = toast;
@@ -189,29 +192,29 @@ function ToastCard({
   const IconMap = {
     default: null,
     success: (
-      <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-500 mt-0.5 shrink-0" />
+      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-500 mt-0.5 shrink-0" />
     ),
     error: (
-      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
+      <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
     ),
     info: (
-      <Info className="w-5 h-5 text-blue-600 dark:text-blue-500 mt-0.5 shrink-0" />
+      <Info className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-500 mt-0.5 shrink-0" />
     ),
   };
 
   return (
     <div
       className={cn(
-        "group flex items-start gap-3 w-full p-4 rounded-xl border shadow-lg backdrop-blur-md",
+        "group flex items-start gap-2 sm:gap-3 w-full p-2.5 sm:p-4 rounded-xl border shadow-lg backdrop-blur-md",
         typeStyles[type],
       )}
     >
       {IconMap[type]}
 
-      <div className="flex flex-col gap-1 w-full min-w-0">
-        <div className="font-semibold text-sm">{title}</div>
+      <div className="flex flex-col gap-0.5 sm:gap-1 w-full min-w-0 pr-3 sm:pr-0">
+        <div className="font-semibold text-[11px] xs:text-xs sm:text-sm leading-tight">{title}</div>
         {description && (
-          <div className="text-sm opacity-80 line-clamp-2">{description}</div>
+          <div className="text-[10px] xs:text-xs sm:text-sm opacity-80 line-clamp-2">{description}</div>
         )}
 
         {action && (
@@ -220,7 +223,7 @@ function ToastCard({
               action.onClick();
               onDismiss();
             }}
-            className="mt-2 w-max px-3 py-1.5 text-xs font-bold rounded-md bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 transition-opacity"
+            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 transition-opacity"
           >
             {action.label}
           </button>
