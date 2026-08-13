@@ -298,11 +298,7 @@ export function Sandbox({
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
-                    onClick={() =>
-                      setPreviewWidth(
-                        device === "desktop" ? "100%" : DEVICE_PRESETS[device]
-                      )
-                    }
+                    onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
                     className={cn(
                       "p-1.5 rounded-md transition-all cursor-pointer",
                       activeDevice === device
