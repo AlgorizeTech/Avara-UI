@@ -272,14 +272,17 @@ export function HorizontalScrollStack({
     };
   }, [scrollYProgress]);
 
+  const isInsideIframe = typeof window !== "undefined" && window.parent !== window;
   const SCROLL_END_THRESHOLD = 0.7;
-  const dynamicHeight = Math.max(400, items.length * 70);
+  // Inside docs iframe preview, use pixel height so iframe height is bounded and scrollable
+  const dynamicHeightPx = items.length * 160 + 200;
+  const dynamicHeightVh = Math.max(300, items.length * 60);
 
   return (
     <div
       ref={containerRef}
       style={{
-        height: isMobile ? "auto" : `${dynamicHeight}vh`,
+        height: isMobile ? "auto" : isInsideIframe ? `${dynamicHeightPx}px` : `${dynamicHeightVh}vh`,
         backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
         ...style,
       }}
