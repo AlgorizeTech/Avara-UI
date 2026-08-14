@@ -204,7 +204,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         ref={ref}
         style={customStyle}
         className={cn(
-          "relative w-full flex flex-col justify-center items-center overflow-hidden pt-4 pb-0 sm:py-12 md:py-16",
+          "relative w-full flex flex-col justify-center items-center py-4 sm:py-8 md:py-12",
           className
         )}
         {...props}
