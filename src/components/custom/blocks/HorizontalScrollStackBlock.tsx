@@ -260,10 +260,16 @@ export function HorizontalScrollStack({
 
     const update = () => {
       const rect = el.getBoundingClientRect();
-      const total = rect.height - win.innerHeight;
-      scrollYProgress.set(
-        total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0,
-      );
+      const viewportHeight = win.innerHeight;
+      const total = rect.height - viewportHeight;
+      if (total <= 0) {
+        // If container height is fixed to iframe height (e.g., 800px),
+        // compute progress using viewport top entry to bottom exit
+        const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+        scrollYProgress.set(Math.min(1, Math.max(0, progress)));
+      } else {
+        scrollYProgress.set(Math.min(1, Math.max(0, -rect.top / total)));
+      }
     };
     update();
     win.addEventListener("scroll", update, { passive: true });
