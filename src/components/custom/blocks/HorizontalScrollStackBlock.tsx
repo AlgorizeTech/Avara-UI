@@ -46,23 +46,29 @@ function StackCard({
   scrollEndThreshold: number;
   isMobile?: boolean;
 }) {
-  // Each card slides left step-by-step by the same distance (one card width + gap - stackOffset)
-  const stepDistance = cardWidth + gap - stackOffset;
+  // For Shorter Rail (or general rail mode), move entire track from right to left linearly
+  const totalRailWidth = total * (cardWidth + gap);
+  const fullRailSlide = -(totalRailWidth - (cardWidth + stackOffset * 2));
 
-  // Compute progressive steps so each card N starts sliding when card N-1 finishes stacking
+  // If items <= 3 (Shorter rail), sweep smoothly as a whole rail from right to left
+  const isRailMode = total <= 3;
+  const xRail = useTransform(progress, [0, 1], [0, fullRailSlide]);
+
+  // Step-by-step stacking mode for long lists
+  const stepDistance = cardWidth + gap - stackOffset;
   const stepSize = total > 1 ? 1 / (total - 1) : 1;
   const cardStart = index > 0 ? (index - 1) * stepSize : 0;
   const cardEnd = index * stepSize;
-
-  // Prior steps translation accumulated so far
   const priorTranslation = -(index - 1) * stepDistance;
   const finalTranslation = -index * stepDistance;
 
-  const x = useTransform(
+  const xStack = useTransform(
     progress,
     [0, cardStart, cardEnd, 1],
     [0, index === 0 ? 0 : priorTranslation, index === 0 ? 0 : finalTranslation, index === 0 ? 0 : finalTranslation],
   );
+
+  const x = isRailMode ? xRail : xStack;
 
   const displayNum = item.number || `0${index + 1}`;
 
@@ -70,7 +76,7 @@ function StackCard({
     <motion.div
       style={{
         width: isMobile ? "100%" : `${cardWidth}px`,
-        x: isMobile || index === 0 ? 0 : x,
+        x: isMobile ? 0 : (isRailMode ? x : (index === 0 ? 0 : x)),
         zIndex: index + 1,
       }}
       className={cn(
