@@ -292,13 +292,13 @@ export function HorizontalScrollStack({
   const SCROLL_END_THRESHOLD = 0.7;
   const dynamicHeightVh = Math.max(300, items.length * 60);
 
-  // Wheel scroll handler so scrolling directly inside the 800px iframe card advances the stack
+  // Wheel scroll handler so scrolling directly inside the 800px iframe card advances the stack smoothly
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (!isInsideIframe || isMobile) return;
     const delta = e.deltaY;
     const current = scrollYProgress.get();
-    // Shorter items count means each step takes larger fraction of total scroll
-    const speedMultiplier = items.length <= 3 ? 0.0035 : 0.0018;
+    // Dynamic scroll step tuned to item count so cards sweep smoothly right-to-left
+    const speedMultiplier = items.length <= 3 ? 0.0045 : 0.0022;
     const next = Math.min(1, Math.max(0, current + delta * speedMultiplier));
     scrollYProgress.set(next);
   };
