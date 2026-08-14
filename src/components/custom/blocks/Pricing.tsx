@@ -1167,25 +1167,25 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
 
   return (
     <div
-      className="w-full max-w-2xl mx-auto p-8 md:p-12 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-xl text-center"
+      className="w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-xl text-center"
       style={style}
     >
-      <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
+      <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white mb-2">
         Usage Based Pricing
       </h3>
-      <p className="text-zinc-500 dark:text-zinc-400 mb-10">
+      <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mb-6 sm:mb-10">
         Scale your pricing as your traffic grows.
       </p>
-      <div className="mb-12">
-        <div className="text-[80px] font-black tracking-tighter leading-none text-zinc-900 dark:text-white mb-2">
+      <div className="mb-6 sm:mb-12">
+        <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-zinc-900 dark:text-white mb-2">
           ${calculatedPrice}
         </div>
-        <p className="text-zinc-500 font-medium tracking-wide uppercase text-sm">
+        <p className="text-zinc-500 font-medium tracking-wide uppercase text-xs sm:text-sm">
           Per Month
         </p>
       </div>
-      <div className="relative mb-12">
-        <div className="flex justify-between text-sm font-bold text-zinc-400 mb-4 px-1 uppercase tracking-widest">
+      <div className="relative mb-6 sm:mb-12">
+        <div className="flex justify-between text-xs sm:text-sm font-bold text-zinc-400 mb-3 px-1 uppercase tracking-widest">
           <span>10k Views</span>
           <span className={theme.text}>{pageviews} Views</span>
           <span>1M+ Views</span>
@@ -1205,13 +1205,13 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
       </div>
       <button
         className={cn(
-          "w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
+          "w-full py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
           theme.bg,
         )}
       >
         Start 14-Day Free Trial
       </button>
-      <p className="text-xs text-zinc-400 mt-4">
+      <p className="text-xs text-zinc-400 mt-3 sm:mt-4">
         No credit card required. Cancel anytime.
       </p>
     </div>
@@ -1296,7 +1296,7 @@ export function PricingTypographic({
 
   if (!isMounted || !packages) {
     return (
-      <section className="py-32 bg-white dark:bg-zinc-950 flex justify-center items-center min-h-[500px] rounded-3xl border border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 sm:py-32 bg-white dark:bg-zinc-950 flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-3xl border border-zinc-200 dark:border-zinc-800">
         <div
           className={cn(
             "w-8 h-8 border-4 border-t-transparent rounded-full animate-spin",
@@ -1309,7 +1309,7 @@ export function PricingTypographic({
 
   if (!activePlans.length) {
     return (
-      <section className="py-32 bg-white dark:bg-zinc-950 text-center text-zinc-500 text-sm font-mono rounded-3xl border border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 sm:py-32 bg-white dark:bg-zinc-950 text-center text-zinc-500 text-sm font-mono rounded-3xl border border-zinc-200 dark:border-zinc-800">
         No pricing plans available.
       </section>
     );
@@ -1319,7 +1319,7 @@ export function PricingTypographic({
     <section
       style={style}
       className={cn(
-        "py-16 md:py-24 bg-white dark:bg-black text-zinc-900 dark:text-white font-sans antialiased overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 w-full transition-colors duration-300 relative",
+        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 bg-white dark:bg-black text-zinc-900 dark:text-white font-sans antialiased overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 w-full transition-colors duration-300 relative",
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
@@ -1345,21 +1345,21 @@ export function PricingTypographic({
         }}
       />
 
-      <div className="max-w-[1300px] mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 lg:mb-20">
+      <div className="max-w-[1300px] mx-auto px-1 sm:px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 mb-8 sm:mb-16 lg:mb-20">
           <div className="max-w-xl">
-            <h2 className={cn("text-xs font-mono mb-4", theme.text)}>
-              <span className="flex items-center gap-3 justify-center md:justify-start">
+            <h2 className={cn("text-xs font-mono mb-2 sm:mb-4", theme.text)}>
+              <span className="flex items-center gap-3 justify-start">
                 <span
                   className={cn("w-2 h-2 rounded-full animate-pulse", theme.bg)}
                 />
                 Pricing
               </span>
             </h2>
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-5 text-zinc-900 dark:text-white">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-3 sm:mb-5 text-zinc-900 dark:text-white">
               Pricing Model.
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-medium leading-relaxed">
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg md:text-xl font-medium leading-relaxed">
               Transparent, value-driven pricing designed for high-growth brands.
               Select a tier to explore what&apos;s included.
             </p>
