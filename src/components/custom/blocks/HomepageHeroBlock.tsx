@@ -286,7 +286,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                   <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate">
                     {cliCommand}
                   </code>
-                  <div className="pl-1.5 sm:pl-3.5 border-l border-border h-3 sm:h-5 flex items-center shrink-0">
+                  <div className="pl-1.5 sm:pl-3.5 border-l-0 h-3 sm:h-5 flex items-center shrink-0">
                     {copied ? (
                       <Check className="size-3 sm:size-4.5 text-emerald-500" />
                     ) : (
