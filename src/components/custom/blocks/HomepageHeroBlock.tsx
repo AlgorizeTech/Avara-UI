@@ -225,14 +225,14 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
             {/* Top Pill Badge */}
             {badgeText && (
-              <div>
+              <Link href={badgeHref} className="inline-block group">
                 <div
-                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] transition-all duration-300"
+                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300"
                 >
                   <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-[var(--hero-accent-text)] animate-spin shrink-0" />
                   <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">{badgeText}</span>
                 </div>
-              </div>
+              </Link>
             )}
 
             {/* Dynamic Bouncing Title Word with Locked Left Position (Single Line Guaranteed) */}
