@@ -256,6 +256,8 @@ export function HorizontalScrollStack({
     const el = containerRef.current;
     if (!el) return;
     const win = el.ownerDocument.defaultView ?? window;
+    const parentWin = typeof window !== "undefined" && window.parent !== window ? window.parent : win;
+
     const update = () => {
       const rect = el.getBoundingClientRect();
       const total = rect.height - win.innerHeight;
@@ -266,23 +268,51 @@ export function HorizontalScrollStack({
     update();
     win.addEventListener("scroll", update, { passive: true });
     win.addEventListener("resize", update);
+    if (parentWin !== win) {
+      try {
+        parentWin.addEventListener("scroll", update, { passive: true });
+      } catch {
+        // cross-origin fallback
+      }
+    }
     return () => {
       win.removeEventListener("scroll", update);
       win.removeEventListener("resize", update);
+      if (parentWin !== win) {
+        try {
+          parentWin.removeEventListener("scroll", update);
+        } catch {
+          // ignore
+        }
+      }
     };
   }, [scrollYProgress]);
 
   const isInsideIframe = typeof window !== "undefined" && window.parent !== window;
   const SCROLL_END_THRESHOLD = 0.7;
-  // Inside docs iframe preview, use pixel height so iframe height is bounded and scrollable
-  const dynamicHeightPx = items.length * 160 + 200;
   const dynamicHeightVh = Math.max(300, items.length * 60);
+
+  // Wheel scroll handler so scrolling directly inside the 800px iframe card advances the stack
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (!isInsideIframe || isMobile) return;
+    const delta = e.deltaY;
+    const current = scrollYProgress.get();
+    // Shorter items count means each step takes larger fraction of total scroll
+    const speedMultiplier = items.length <= 3 ? 0.0035 : 0.0018;
+    const next = Math.min(1, Math.max(0, current + delta * speedMultiplier));
+    scrollYProgress.set(next);
+  };
 
   return (
     <div
       ref={containerRef}
+      onWheel={handleWheel}
       style={{
-        height: isMobile ? "auto" : isInsideIframe ? `${dynamicHeightPx}px` : `${dynamicHeightVh}vh`,
+        height: isMobile
+          ? "auto"
+          : isInsideIframe
+            ? "800px"
+            : `${dynamicHeightVh}vh`,
         backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
         ...style,
       }}
@@ -330,7 +360,7 @@ export function HorizontalScrollStack({
         /* =========================================================
            DESKTOP (>= 768px): Native GPU Horizontal Sticky Deck
            ========================================================= */
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
+        <div className={cn("w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20", isInsideIframe ? "h-full py-6" : "sticky top-0 h-screen")}>
           {/* Section Header */}
           <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
