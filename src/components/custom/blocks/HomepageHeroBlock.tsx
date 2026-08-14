@@ -283,7 +283,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                   className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
                   <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
-                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-0 !p-0 !shadow-none">
+                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate">
                     {cliCommand}
                   </code>
                   <div className="pl-1.5 sm:pl-3.5 border-l border-border h-3 sm:h-5 flex items-center shrink-0">
