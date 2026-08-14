@@ -57,7 +57,7 @@ export default function BreadcrumbDemo({
     ];
 
     return (
-      <div className="w-full flex flex-col items-center justify-center gap-6">
+      <div className="w-full flex flex-col items-center justify-center gap-6 py-10">
         {variants.map((v) => (
           <BreadcrumbBlock
             key={v}
@@ -72,7 +72,7 @@ export default function BreadcrumbDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="w-full flex items-center justify-center py-10">
       {/* Key forces re-render so the "expansion" state resets when user changes length */}
       <BreadcrumbBlock
         key={`${variant}-${color}-${isLongPath}-${maxItems}-${showIcons}`}
