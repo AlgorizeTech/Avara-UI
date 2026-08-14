@@ -57,7 +57,7 @@ export default function BreadcrumbDemo({
     ];
 
     return (
-      <div className="w-full flex flex-col items-center justify-center gap-8 py-20">
+      <div className="w-full flex flex-col items-center justify-center gap-10 py-20">
         {variants.map((v) => (
           <BreadcrumbBlock
             key={v}
