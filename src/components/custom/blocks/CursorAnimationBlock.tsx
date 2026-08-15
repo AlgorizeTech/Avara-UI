@@ -74,9 +74,18 @@ export function CursorAnimation({
   className,
   ...props
 }: CursorAnimationProps) {
-  const themeObj = colorThemes[color] || colorThemes.primary;
-  const activeColor = color?.startsWith("#") ? color : themeObj.accent;
-  const activeRgb = color?.startsWith("#") ? hexToRgb(color) : themeObj.rgb;
+  const isPrimary = color === "primary" || color === "default" || !color;
+  const activeColor = isPrimary
+    ? "var(--primary)"
+    : color?.startsWith("#")
+      ? color
+      : colorThemes[color]?.accent || "var(--primary)";
+
+  const activeRgb = isPrimary
+    ? "var(--primary)"
+    : color?.startsWith("#")
+      ? hexToRgb(color)
+      : colorThemes[color]?.rgb || "99, 102, 241";
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
@@ -189,8 +198,8 @@ export function CursorAnimation({
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border"
             style={{
-              backgroundColor: `rgba(${activeRgb}, 0.12)`,
-              borderColor: `rgba(${activeRgb}, 0.3)`,
+              backgroundColor: isPrimary ? "hsl(var(--primary) / 0.12)" : `rgba(${activeRgb}, 0.12)`,
+              borderColor: isPrimary ? "hsl(var(--primary) / 0.3)" : `rgba(${activeRgb}, 0.3)`,
               color: activeColor,
             }}
           >
@@ -237,8 +246,8 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: isClicking ? "24px" : "36px",
                   height: isClicking ? "24px" : "36px",
-                  borderColor: `rgba(${activeRgb}, 0.5)`,
-                  backgroundColor: `rgba(${activeRgb}, 0.15)`,
+                  borderColor: isPrimary ? "hsl(var(--primary) / 0.5)" : `rgba(${activeRgb}, 0.5)`,
+                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -363,7 +372,7 @@ export function CursorAnimation({
                   width: isClicking ? "64px" : "40px",
                   height: isClicking ? "64px" : "40px",
                   borderColor: activeColor,
-                  backgroundColor: `rgba(${activeRgb}, 0.15)`,
+                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -384,14 +393,14 @@ export function CursorAnimation({
                 className="pointer-events-none absolute top-0 bottom-0 w-[1px]"
                 style={{
                   left: `${mousePos.x}px`,
-                  backgroundColor: `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
                 className="pointer-events-none absolute left-0 right-0 h-[1px]"
                 style={{
                   top: `${mousePos.y}px`,
-                  backgroundColor: `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -444,7 +453,7 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: "36px",
                   height: "36px",
-                  backgroundColor: `rgba(${activeRgb}, 0.25)`,
+                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.25)" : `rgba(${activeRgb}, 0.25)`,
                 }}
               />
               <div
