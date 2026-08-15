@@ -7,70 +7,69 @@ An interactive, 100% full-width and responsive custom cursor component with 10 d
 
 `CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
 
-## Examples
-
 export const usageGlow = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function GlowCursorDemo() {
-  return <CursorAnimation variant="glow" color="#6366f1" className="w-full" />;
+  return <CursorAnimation variant="glow" color="primary" className="w-full" />;
 }`;
 
 export const usageMagnetic = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function MagneticCursorDemo() {
-  return <CursorAnimation variant="magnetic" className="w-full" />;
+  return <CursorAnimation variant="magnetic" color="primary" className="w-full" />;
 }`;
 
 export const usageTrail = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function TrailCursorDemo() {
-  return <CursorAnimation variant="trail" trailCount={8} className="w-full" />;
+  return <CursorAnimation variant="trail" color="primary" trailCount={8} className="w-full" />;
 }`;
 
 export const usageBadge = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function BadgeCursorDemo() {
-  return <CursorAnimation variant="badge" label="View Project" className="w-full" />;
+  return <CursorAnimation variant="badge" color="primary" label="View Project" className="w-full" />;
 }`;
 
 export const usageSpotlight = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function SpotlightCursorDemo() {
-  return <CursorAnimation variant="spotlight" className="w-full" />;
+  return <CursorAnimation variant="spotlight" color="primary" className="w-full" />;
 }`;
 
 export const usageExpand = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function ExpandCursorDemo() {
-  return <CursorAnimation variant="expand" className="w-full" />;
+  return <CursorAnimation variant="expand" color="primary" className="w-full" />;
 }`;
 
 export const usageCrosshair = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function CrosshairCursorDemo() {
-  return <CursorAnimation variant="crosshair" className="w-full" />;
+  return <CursorAnimation variant="crosshair" color="primary" className="w-full" />;
 }`;
 
 export const usageRing = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function RingCursorDemo() {
-  return <CursorAnimation variant="ring" className="w-full" />;
+  return <CursorAnimation variant="ring" color="primary" className="w-full" />;
 }`;
 
 export const usagePulse = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function PulseCursorDemo() {
-  return <CursorAnimation variant="pulse" className="w-full" />;
+  return <CursorAnimation variant="pulse" color="primary" className="w-full" />;
 }`;
 
 export const usageSonar = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function SonarCursorDemo() {
-  return <CursorAnimation variant="sonar" className="w-full" />;
+  return <CursorAnimation variant="sonar" color="primary" className="w-full" />;
 }`;
 
 <ExampleShowcase
   name="cursor-animation"
+  colorControl
   columns={1}
   examples={[
     {
@@ -225,12 +224,12 @@ Discover the key interactive capabilities of the `CursorAnimation` block:
           <code>color</code>
         </td>
         <td>
-          <code>string</code>
+          <code>CursorColor | string</code>
         </td>
         <td>
-          <code>"#6366f1"</code>
+          <code>"primary"</code>
         </td>
-        <td>Custom hex/RGB glow accent color used for glow and spotlight effects.</td>
+        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
       </tr>
       <tr>
         <td>

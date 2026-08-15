@@ -27,24 +27,58 @@ export type CursorVariant =
   | "pulse"
   | "sonar";
 
-export interface CursorAnimationProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: CursorVariant;
-  label?: string;
-  color?: string;
-  trailCount?: number;
-  children?: React.ReactNode;
-}
+export type CursorColor = "indigo" | "rose" | "emerald" | "zinc" | "primary" | (string & {});
+
+const colorThemes: Record<string, { accent: string; shadow: string }> = {
+  primary: {
+    accent: "#6366f1",
+    shadow: "rgba(99, 102, 241, 0.4)",
+  },
+  indigo: {
+    accent: "#6366f1",
+    shadow: "rgba(99, 102, 241, 0.4)",
+  },
+  rose: {
+    accent: "#f43f5e",
+    shadow: "rgba(244, 63, 94, 0.4)",
+  },
+  emerald: {
+    accent: "#10b981",
+    shadow: "rgba(16, 185, 129, 0.4)",
+  },
+  zinc: {
+    accent: "#71717a",
+    shadow: "rgba(113, 113, 122, 0.4)",
+  },
+};
+
+const hexToRgb = (hex: string) => {
+  let cleanHex = hex.replace(/^#/, "");
+  if (cleanHex.length === 3)
+    cleanHex = cleanHex
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "99, 102, 241";
+};
 
 export function CursorAnimation({
   variant = "glow",
   label = "Explore",
-  color = "#6366f1",
+  color = "primary",
   trailCount = 6,
   children,
   className,
   ...props
 }: CursorAnimationProps) {
+  const activeColor = color?.startsWith("#")
+    ? color
+    : colorThemes[color]?.accent || colorThemes.primary.accent;
+  const activeRgb = hexToRgb(activeColor);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
   const [smoothPos, setSmoothPos] = useState({ x: -100, y: -100 });
@@ -153,7 +187,14 @@ export function CursorAnimation({
       {/* Main Interactive Demo Area Content */}
       {children || (
         <div className="relative z-10 flex flex-col items-center gap-4 max-w-md pointer-events-none">
-          <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border"
+            style={{
+              backgroundColor: `rgba(${activeRgb}, 0.12)`,
+              borderColor: `rgba(${activeRgb}, 0.3)`,
+              color: activeColor,
+            }}
+          >
             {getVariantIcon()}
           </div>
           <div>
@@ -166,7 +207,7 @@ export function CursorAnimation({
           </div>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-zinc-200/70 dark:bg-zinc-800/70 text-zinc-700 dark:text-zinc-300 border border-zinc-300/50 dark:border-zinc-700/50">
             Variant:{" "}
-            <span className="text-indigo-600 dark:text-indigo-400 capitalize">
+            <span style={{ color: activeColor }} className="capitalize font-bold">
               {variant}
             </span>
           </div>
@@ -186,24 +227,27 @@ export function CursorAnimation({
                   top: `${smoothPos.y}px`,
                   width: isClicking ? "180px" : "140px",
                   height: isClicking ? "180px" : "140px",
-                  backgroundColor: color,
+                  backgroundColor: activeColor,
                   opacity: 0.35,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-indigo-500/40 bg-indigo-500/10 backdrop-blur-xs transition-all duration-100 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-xs transition-all duration-100 ease-out"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
                   width: isClicking ? "24px" : "36px",
                   height: isClicking ? "24px" : "36px",
+                  borderColor: `rgba(${activeRgb}, 0.5)`,
+                  backgroundColor: `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full shadow-sm"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
                 }}
               />
             </>
@@ -213,22 +257,24 @@ export function CursorAnimation({
           {variant === "magnetic" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-indigo-500/70 transition-transform duration-200"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-transform duration-200"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: isClicking ? "32px" : "48px",
                   height: isClicking ? "32px" : "48px",
+                  borderColor: activeColor,
                   transform: `translate(-50%, -50%) rotate(${
                     smoothPos.x + smoothPos.y
                   }deg)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-indigo-600 dark:bg-indigo-400 shadow-md"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full shadow-md"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
                 }}
               />
             </>
@@ -243,22 +289,24 @@ export function CursorAnimation({
                 return (
                   <div
                     key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500 transition-all duration-75"
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-75"
                     style={{
                       left: `${pt.x}px`,
                       top: `${pt.y}px`,
                       width: `${size}px`,
                       height: `${size}px`,
+                      backgroundColor: activeColor,
                       opacity: opacity * 0.7,
                     }}
                   />
                 );
               })}
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-indigo-600 dark:bg-indigo-400 shadow-lg"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-lg"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
                 }}
               />
             </>
@@ -274,7 +322,10 @@ export function CursorAnimation({
                 }px, 0)`,
               }}
             >
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs font-bold shadow-xl border border-zinc-700/50 dark:border-zinc-300/50 whitespace-nowrap">
+              <div
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-xl whitespace-nowrap"
+                style={{ backgroundColor: activeColor }}
+              >
                 <span>{label}</span>
                 <MousePointer className="w-3.5 h-3.5 fill-current" />
               </div>
@@ -287,12 +338,17 @@ export function CursorAnimation({
               <div
                 className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300"
                 style={{
-                  background: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, rgba(0, 0, 0, 0.45) 100%)`,
+                  background: `radial-gradient(circle 130px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, rgba(0, 0, 0, 0.45) 100%)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_15px_#6366f1] z-30"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full z-30"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
+                  boxShadow: `0 0 15px ${activeColor}`,
+                }}
               />
             </>
           )}
@@ -301,17 +357,23 @@ export function CursorAnimation({
           {variant === "expand" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-indigo-500 bg-indigo-500/10 backdrop-invert-20 transition-all duration-200 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-all duration-200 ease-out"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: isClicking ? "64px" : "40px",
                   height: isClicking ? "64px" : "40px",
+                  borderColor: activeColor,
+                  backgroundColor: `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
+                }}
               />
             </>
           )}
@@ -320,18 +382,31 @@ export function CursorAnimation({
           {variant === "crosshair" && (
             <>
               <div
-                className="pointer-events-none absolute top-0 bottom-0 w-[1px] bg-indigo-500/40"
-                style={{ left: `${mousePos.x}px` }}
+                className="pointer-events-none absolute top-0 bottom-0 w-[1px]"
+                style={{
+                  left: `${mousePos.x}px`,
+                  backgroundColor: `rgba(${activeRgb}, 0.4)`,
+                }}
               />
               <div
-                className="pointer-events-none absolute left-0 right-0 h-[1px] bg-indigo-500/40"
-                style={{ top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute left-0 right-0 h-[1px]"
+                style={{
+                  top: `${mousePos.y}px`,
+                  backgroundColor: `rgba(${activeRgb}, 0.4)`,
+                }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border border-indigo-500 flex items-center justify-center"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border flex items-center justify-center"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  borderColor: activeColor,
+                }}
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+                <div
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ backgroundColor: activeColor }}
+                />
               </div>
             </>
           )}
@@ -340,17 +415,22 @@ export function CursorAnimation({
           {variant === "ring" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-indigo-500/80 transition-all duration-300 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-all duration-300 ease-out"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: isClicking ? "24px" : "42px",
                   height: isClicking ? "24px" : "42px",
+                  borderColor: activeColor,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
+                }}
               />
             </>
           )}
@@ -359,17 +439,22 @@ export function CursorAnimation({
           {variant === "pulse" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/20 animate-ping"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full animate-ping"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
                   width: "36px",
                   height: "36px",
+                  backgroundColor: `rgba(${activeRgb}, 0.25)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-indigo-600 dark:bg-indigo-400 shadow-md"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full shadow-md"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
+                }}
               />
             </>
           )}
@@ -378,26 +463,32 @@ export function CursorAnimation({
           {variant === "sonar" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-indigo-500/60 transition-transform duration-300"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-transform duration-300"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: "56px",
                   height: "56px",
+                  borderColor: `rgba(${activeRgb}, 0.6)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-indigo-400/40 transition-transform duration-150"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-transform duration-150"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: "32px",
                   height: "32px",
+                  borderColor: `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400 shadow-xs"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-xs"
+                style={{
+                  left: `${mousePos.x}px`,
+                  top: `${mousePos.y}px`,
+                  backgroundColor: activeColor,
+                }}
               />
             </>
           )}
