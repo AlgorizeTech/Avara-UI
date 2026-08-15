@@ -174,7 +174,7 @@ export function CursorAnimation({
       onMouseDown={() => setIsClicking(true)}
       onMouseUp={() => setIsClicking(false)}
       className={cn(
-        "relative w-full h-[360px] sm:h-[420px] rounded-2xl overflow-hidden select-none border transition-all duration-300",
+        "relative w-full h-[480px] sm:h-[560px] rounded-2xl overflow-hidden select-none border transition-all duration-300",
         "bg-zinc-50 dark:bg-[#09090b] border-zinc-200 dark:border-zinc-800/80",
         "flex flex-col items-center justify-center p-6 text-center cursor-none",
         className
