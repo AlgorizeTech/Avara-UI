@@ -227,7 +227,7 @@ export function CustomCodeBlock({
             </div>
             
             {/* File Name / Language Badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/60 border border-zinc-300/60 dark:border-zinc-700/60 rounded-md shrink-0 shadow-none">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-800 rounded-md shrink-0 shadow-none">
               <LanguageIcon language={activeLanguage} />
               <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                 {activeFileName || formatLanguageName(activeLanguage)}
@@ -238,7 +238,7 @@ export function CustomCodeBlock({
           {/* Copy Button */}
           <button
             onClick={copyToClipboard}
-            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 bg-zinc-200/60 dark:bg-zinc-800/60 hover:bg-zinc-300/60 dark:hover:bg-zinc-700/60 border border-zinc-300/60 dark:border-zinc-700/60 transition-colors ml-2 shadow-none"
+            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 bg-zinc-200/60 dark:bg-zinc-800/80 hover:bg-zinc-300/60 dark:hover:bg-zinc-700/80 border border-zinc-300/60 dark:border-zinc-800 transition-colors ml-2 shadow-none"
           >
             {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
           </button>
