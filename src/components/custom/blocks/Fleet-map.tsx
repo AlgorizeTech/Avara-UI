@@ -41,33 +41,33 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative",
+      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20",
-    mapContainer: "flex-1 w-full h-full relative z-10 min-w-0",
+      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800/80 shrink-0 flex flex-col h-full z-20",
+    mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
     itemActive: "bg-white dark:bg-zinc-900 border-l-[3px] shadow-sm",
     itemInactive:
       "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 border-l-[3px] border-transparent",
   },
   minimal: {
     wrapper:
-      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800",
+      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200/80 dark:border-zinc-800",
     // Mobile: a plain full-width panel in normal flow (same as `default`).
     // md+: the floating glass panel this variant is known for.
     sidebar:
-      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-zinc-200 dark:border-zinc-800 z-20 shrink-0 flex flex-col overflow-hidden",
-    mapContainer: "flex-1 w-full h-full relative z-0 min-w-0",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-zinc-200/80 dark:border-zinc-800 z-20 shrink-0 flex flex-col overflow-hidden",
+    mapContainer: "flex-1 w-full h-full relative z-0 min-w-0 overflow-hidden rounded-2xl",
     itemActive: "bg-zinc-100 dark:bg-zinc-900 rounded-lg mx-3 my-1",
     itemInactive:
       "hover:bg-zinc-50 dark:hover:bg-zinc-900/50 rounded-lg mx-3 my-1 border border-transparent",
   },
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden",
+      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
+      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-sm",
     itemActive: "bg-zinc-50 dark:bg-zinc-900/80 border-l-[3px]",
     itemInactive:
       "hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40 border-l-[3px] border-transparent transition-colors",
