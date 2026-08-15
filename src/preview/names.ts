@@ -25,6 +25,7 @@ export const sandboxNames = [
   "command",
   "context-menu",
   "counter",
+  "cursor-animation",
   "custom-code-block",
   "data-grid",
   "data-maps",

@@ -1,0 +1,99 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Cursor Animation
+
+An interactive, fully responsive custom cursor component with smooth physics, particle trails, magnetic alignment, and custom label badges.
+
+`CursorAnimation` replaces or enhances standard pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for both desktop and mobile devices.
+
+## Examples
+
+The first example's **Code** tab contains the full component source.
+
+export const usageGlow = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function GlowCursorDemo() {
+  return (
+    <CursorAnimation
+      variant="glow"
+      color="#6366f1"
+    />
+  );
+}`;
+
+export const usageMagnetic = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function MagneticCursorDemo() {
+  return (
+    <CursorAnimation
+      variant="magnetic"
+    />
+  );
+}`;
+
+export const usageTrail = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function TrailCursorDemo() {
+  return (
+    <CursorAnimation
+      variant="trail"
+      trailCount={8}
+    />
+  );
+}`;
+
+export const usageBadge = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function BadgeCursorDemo() {
+  return (
+    <CursorAnimation
+      variant="badge"
+      label="View Project"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="cursor-animation"
+  columns={1}
+  examples={[
+    {
+      title: "Glow Cursor",
+      subheading: "Fluid background blur glow that follows mouse pointer with smooth physics.",
+      props: { variant: "glow" },
+      usage: usageGlow,
+      code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
+    },
+    {
+      title: "Magnetic Target Cursor",
+      subheading: "Dashed target ring with physics rotation that tracks pointer movement.",
+      props: { variant: "magnetic" },
+      usage: usageMagnetic,
+    },
+    {
+      title: "Particle Trail Cursor",
+      subheading: "Fading particle trail following cursor movement with customizable count.",
+      props: { variant: "trail" },
+      usage: usageTrail,
+    },
+    {
+      title: "Badge Label Cursor",
+      subheading: "Floating custom action pill label that smoothly tags pointer location.",
+      props: { variant: "badge", label: "View Project" },
+      usage: usageBadge,
+    },
+  ]}
+/>
+
+## Installation
+
+Copy the `CursorAnimationBlock.tsx` component into your `src/components/custom/blocks/` directory.
+
+### Dependencies
+
+Ensure you have `lucide-react` installed:
+
+```bash
+npm install lucide-react
+```
