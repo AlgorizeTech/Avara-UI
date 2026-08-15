@@ -106,6 +106,7 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     categorySubtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
     icon: Sparkles,
     items: [
+      { title: "Cursor Animation", countText: "10 Fluid Variants", href: "/docs/nextjs/cursor-animation", badge: "New", illustrationType: "cursor-animation" },
       { title: "Chat Bubble", countText: "Spring Motion Feed", href: "/docs/nextjs/chat-bubble", illustrationType: "chat" },
       { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
       { title: "Typography", countText: "Animated Text", href: "/docs/nextjs/animated-typography", illustrationType: "typography" },
@@ -454,6 +455,33 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
                 <div className="bg-foreground rounded-xs" />
                 <div className="bg-foreground rounded-xs" />
               </div>
+            </div>
+          </div>
+        )}
+
+        {type === "cursor-animation" && (
+          <div className="w-full h-full p-2 rounded-xl bg-card border border-primary/40 flex flex-col items-center justify-center relative overflow-hidden my-auto shadow-2xs group/cursor">
+            {/* Ambient Background Radial Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)] opacity-15 pointer-events-none" />
+            
+            {/* Interactive Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:12px_12px] pointer-events-none" />
+
+            {/* Target Area UI */}
+            <div className="relative z-10 flex flex-col items-center gap-1 text-center">
+              <div className="size-7 rounded-lg bg-primary/10 border border-primary/30 text-primary flex items-center justify-center text-[10px] font-black shadow-xs">
+                ✦
+              </div>
+              <div className="text-[7.5px] font-extrabold text-foreground">Custom Cursor</div>
+              <div className="text-[5.5px] text-muted-foreground font-semibold">10 Motion Styles</div>
+            </div>
+
+            {/* Glowing Cursor Circle & Pointer */}
+            <div className="absolute top-2.5 right-4 size-6 rounded-full border border-primary/80 bg-primary/20 backdrop-blur-xs flex items-center justify-center shadow-[0_0_12px_var(--primary)] transition-transform duration-300 group-hover/cursor:scale-125 z-20">
+              <div className="size-1.5 rounded-full bg-primary" />
+              <svg className="size-3 text-primary absolute -bottom-1 -right-1 drop-shadow-xs" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L4.5 3.5Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
             </div>
           </div>
         )}
