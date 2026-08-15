@@ -196,7 +196,7 @@ export function CustomCodeBlock({
     <div className={cn("w-full flex flex-col gap-3 font-sans", className)} {...props}>
       {/* Separate Tabs Above */}
       {tabs && tabs.length > 0 && (
-        <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg w-max">
+        <div className="flex items-center gap-1 bg-zinc-200/60 dark:bg-zinc-900/60 p-1 rounded-lg w-max border border-zinc-200/80 dark:border-zinc-800/80">
           {tabs.map((tab, idx) => (
             <button
               key={idx}
@@ -204,7 +204,7 @@ export function CustomCodeBlock({
               className={cn(
                 "cursor-pointer flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
                 activeTabIndex === idx
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
+                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs"
                   : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
               )}
             >
@@ -215,9 +215,9 @@ export function CustomCodeBlock({
       )}
 
       {/* Main Code Block */}
-      <div className="w-full rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+      <div className="w-full rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#09090b]">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800/80 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center gap-4">
             {/* Mac Dots */}
             <div className="flex items-center gap-1.5 shrink-0">
@@ -227,9 +227,9 @@ export function CustomCodeBlock({
             </div>
             
             {/* File Name / Language Badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-200/50 dark:bg-slate-800/50 border border-slate-300/60 dark:border-slate-700/60 rounded-md shrink-0 shadow-none">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/60 border border-zinc-300/60 dark:border-zinc-700/60 rounded-md shrink-0 shadow-none">
               <LanguageIcon language={activeLanguage} />
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                 {activeFileName || formatLanguageName(activeLanguage)}
               </span>
             </div>
@@ -238,19 +238,19 @@ export function CustomCodeBlock({
           {/* Copy Button */}
           <button
             onClick={copyToClipboard}
-            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 bg-slate-200/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300/60 dark:border-slate-700/60 transition-colors ml-2 shadow-none"
+            className="cursor-pointer flex items-center justify-center shrink-0 w-8 h-8 rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 bg-zinc-200/60 dark:bg-zinc-800/60 hover:bg-zinc-300/60 dark:hover:bg-zinc-700/60 border border-zinc-300/60 dark:border-zinc-700/60 transition-colors ml-2 shadow-none"
           >
             {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
 
         {/* Code View */}
-        <div className="relative overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300/50 hover:[&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700/50 dark:hover:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full shadow-none">
+        <div className="relative overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-300/50 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-300 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-800/80 dark:hover:[&::-webkit-scrollbar-thumb]:bg-zinc-700 [&::-webkit-scrollbar-thumb]:rounded-full shadow-none">
           <pre className="p-4 text-[13.5px] leading-relaxed font-mono whitespace-pre min-w-fit pb-6">
-            <code className="block text-slate-800 dark:text-slate-200">
+            <code className="block text-zinc-800 dark:text-zinc-200">
               {lines.map((line, i) => (
                 <div key={i} className="flex min-h-[1.5rem]">
-                  <span className="shrink-0 w-10 text-right pr-4 mr-4 select-none text-slate-400 dark:text-slate-600 border-r border-slate-200/50 dark:border-slate-800/50">
+                  <span className="shrink-0 w-10 text-right pr-4 mr-4 select-none text-zinc-400 dark:text-zinc-600 border-r border-zinc-200/60 dark:border-zinc-800/60">
                     {i + 1}
                   </span>
                   <span dangerouslySetInnerHTML={{ __html: line || " " }} />
