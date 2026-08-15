@@ -230,6 +230,7 @@ export default function FleetTracker({
   const styles = fleetVariants[variant];
 
   const [mounted, setMounted] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
@@ -240,6 +241,17 @@ export default function FleetTracker({
 
   useEffect(() => {
     setMounted(true);
+    const checkDark = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+    checkDark();
+
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
   }, []);
 
   const filteredVehicles = fleetData.filter(
@@ -437,8 +449,13 @@ export default function FleetTracker({
             zoomControl={false}
           >
             <TileLayer
+              key={isDarkMode ? "dark" : "light"}
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              url={
+                isDarkMode
+                  ? "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"
+                  : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              }
             />
             <MapController activeVehicle={activeVehicle} />
             <MapResizeHandler />
