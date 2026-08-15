@@ -10,8 +10,8 @@ export default function CursorAnimationDemo({
   label?: string;
 }) {
   return (
-    <div className="w-full max-w-4xl mx-auto p-2 sm:p-4">
-      <CursorAnimation variant={variant} label={label} />
+    <div className="w-full max-w-full p-0">
+      <CursorAnimation variant={variant} label={label} className="w-full" />
     </div>
   );
 }
