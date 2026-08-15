@@ -41,9 +41,9 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative",
+      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800/80 shrink-0 flex flex-col h-full z-20",
+      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20",
     mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
     itemActive: "bg-white dark:bg-zinc-900 border-l-[3px] shadow-sm",
     itemInactive:
@@ -51,7 +51,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   },
   minimal: {
     wrapper:
-      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200/80 dark:border-zinc-800",
+      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200/80 dark:border-zinc-800 [&_.leaflet-control-attribution]:hidden",
     // Mobile: a plain full-width panel in normal flow (same as `default`).
     // md+: the floating glass panel this variant is known for.
     sidebar:
@@ -63,7 +63,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   },
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden",
+      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
     sidebar:
       "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
     mapContainer:
@@ -447,6 +447,7 @@ export default function FleetTracker({
             zoom={13}
             className="w-full h-full z-0"
             zoomControl={false}
+            attributionControl={false}
           >
             <TileLayer
               key={isDarkMode ? "dark" : "light"}
