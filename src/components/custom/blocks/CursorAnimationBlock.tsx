@@ -213,12 +213,6 @@ export function CursorAnimation({
               Interactive custom cursor animation with fluid physics and custom theme styling.
             </p>
           </div>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-zinc-200/70 dark:bg-zinc-800/70 text-zinc-700 dark:text-zinc-300 border border-zinc-300/50 dark:border-zinc-700/50">
-            Variant:{" "}
-            <span style={{ color: activeColor }} className="capitalize font-bold">
-              {variant}
-            </span>
-          </div>
         </div>
       )}
 
