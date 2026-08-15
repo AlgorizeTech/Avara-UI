@@ -29,6 +29,14 @@ export type CursorVariant =
 
 export type CursorColor = "indigo" | "rose" | "emerald" | "zinc" | "primary" | (string & {});
 
+export interface CursorAnimationProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: CursorVariant;
+  label?: string;
+  color?: CursorColor | string;
+  trailCount?: number;
+  children?: React.ReactNode;
+}
+
 const colorThemes: Record<string, { accent: string; rgb: string }> = {
   primary: {
     accent: "#6366f1",
