@@ -60,7 +60,6 @@ export const navigation: NavigationItem[] = [
       { label: "Carousel", href: "/docs/nextjs/carousel", },
       { label: "Counter", href: "/docs/nextjs/counter", },
       { label: "Command", href: "/docs/nextjs/command",  },
-      { label: "Cursor Animation", href: "/docs/nextjs/cursor-animation", badge: "New" },
       { label: "Calendar", href: "/docs/nextjs/calendar",  },
       { label: "Chat", href: "/docs/nextjs/chat",  },
       { label: "Cart", href: "/docs/nextjs/cart",  },
@@ -119,6 +118,7 @@ export const navigation: NavigationItem[] = [
     {
     label: "Animated Ui Components",
     children: [
+      { label: "Cursor Animation", href: "/docs/nextjs/cursor-animation", badge: "New" },
       { label: "Chat Bubble", href: "/docs/nextjs/chat-bubble" },
       { label: "Dock", href: "/docs/nextjs/dock", badge: "New" },
       // { label: "Flow Chart", href: "/docs/nextjs/flowchart", badge: "New" },
