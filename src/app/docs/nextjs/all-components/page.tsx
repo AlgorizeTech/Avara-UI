@@ -108,6 +108,7 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     icon: Sparkles,
     items: [
       { title: "Cursor Animation", countText: "10 Fluid Variants", href: "/docs/nextjs/cursor-animation", badge: "New", illustrationType: "cursor-animation" },
+      { title: "Curved Carousel", countText: "3D Arc Sway Deck", href: "/docs/nextjs/curved-carousel", badge: "New", illustrationType: "curved-carousel" },
       { title: "Chat Bubble", countText: "Spring Motion Feed", href: "/docs/nextjs/chat-bubble", illustrationType: "chat" },
       { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
       { title: "Typography", countText: "Animated Text", href: "/docs/nextjs/animated-typography", illustrationType: "typography" },
@@ -472,6 +473,21 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
             </div>
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 rounded-full bg-primary text-primary-foreground font-black text-[7px] flex items-center justify-center shadow-md">
               ↔
+            </div>
+          </div>
+        )}
+
+        {type === "curved-carousel" && (
+          <div className="w-full h-full rounded-xl bg-card border border-border flex items-center justify-center relative overflow-hidden my-auto shadow-2xs group/curved">
+            <div className="relative w-full h-full flex items-center justify-center scale-90">
+              <div className="w-8 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 -rotate-25 -translate-x-12 translate-y-3 opacity-60 shadow-xs" />
+              <div className="w-9 h-14 rounded-lg bg-orange-500/20 border border-orange-500/40 -rotate-12 -translate-x-6 translate-y-1 shadow-md" />
+              <div className="w-10 h-16 rounded-xl bg-primary text-primary-foreground font-mono text-[5px] flex flex-col justify-between p-1 z-10 shadow-xl border border-white/20">
+                <span className="font-bold">Violet</span>
+                <span className="self-end text-[4px]">004</span>
+              </div>
+              <div className="w-9 h-14 rounded-lg bg-amber-500/20 border border-amber-500/40 rotate-12 translate-x-6 translate-y-1 shadow-md" />
+              <div className="w-8 h-12 rounded-lg bg-purple-500/20 border border-purple-500/40 rotate-25 translate-x-12 translate-y-3 opacity-60 shadow-xs" />
             </div>
           </div>
         )}
