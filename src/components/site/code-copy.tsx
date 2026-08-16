@@ -57,8 +57,10 @@ const CodeCopy = ({
           type="button"
           onClick={() => onLanguageChange?.(value)}
           aria-pressed={selectedLanguage === value}
+          // Keeps the full name for screen readers once the word is hidden.
+          aria-label={label}
           className={cn(
-            "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer",
+            "flex items-center gap-1.5 px-1.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer",
             selectedLanguage === value
               ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
               : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
@@ -79,7 +81,9 @@ const CodeCopy = ({
               {badge}
             </span>
           </div>
-          {label}
+          {/* Below sm the badge alone carries the meaning — it already reads
+              TS/JS — so the word is dropped rather than truncated. */}
+          <span className="hidden sm:inline">{label}</span>
         </button>
       ))}
     </div>
