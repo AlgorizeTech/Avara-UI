@@ -692,3 +692,11 @@ pre.shiki::-webkit-scrollbar,
 button {
   cursor: pointer;
 }
+
+/* Global rule: Hide "Features" section in all doc pages without taking any layout space */
+#features,
+#features + p,
+#features + p + .grid,
+#features + .grid {
+  display: none !important;
+}

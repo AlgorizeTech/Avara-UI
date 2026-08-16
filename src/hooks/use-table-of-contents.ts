@@ -24,6 +24,7 @@ export function useTableOfContents() {
       headings.forEach((heading, index) => {
         // ── EXCLUSION FILTER ──────────────────────────────────────────────────
         if (
+          heading.id === "features" ||
           heading.closest(
             ".props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
           )

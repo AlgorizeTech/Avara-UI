@@ -127,7 +127,7 @@ export default function DataGridDemo({
 
   return (
     <div className="w-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
-      <div className="w-full max-w-5xl flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex flex-col">
             <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
@@ -139,7 +139,26 @@ export default function DataGridDemo({
                 : "Double-click any cell or press Enter to edit."}
             </p>
           </div>
-          <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+          <button
+            style={
+              color && String(color).startsWith("#")
+                ? { backgroundColor: String(color), color: "#fff" }
+                : undefined
+            }
+            className={`hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all shadow-xs ${
+              color === "indigo"
+                ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                : color === "rose"
+                ? "bg-rose-600 hover:bg-rose-700 text-white"
+                : color === "emerald"
+                ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                : color === "blue"
+                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                : color === "zinc"
+                ? "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200"
+                : "bg-primary text-primary-foreground hover:opacity-90"
+            }`}
+          >
             <Download className="w-3.5 h-3.5" />
             Export CSV
           </button>

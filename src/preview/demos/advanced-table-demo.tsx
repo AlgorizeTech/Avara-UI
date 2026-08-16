@@ -336,7 +336,7 @@ export default function AdvancedTableDemo({
       : `${editingNames.slice(0, 3).join(", ")} +${editingNames.length - 3} more`;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-border/70 bg-card p-2 sm:p-6 lg:p-8 overflow-hidden relative">
+    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] p-0 m-0 overflow-hidden relative">
       <AdvancedTableBlock
         key={`${searchable}-${selectable}-${example}`}
         data={data}
