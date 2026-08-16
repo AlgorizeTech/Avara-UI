@@ -1,21 +1,48 @@
 "use client";
 
 import { CodeRenderer } from "@/components/site/code-renderer";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Check, Copy, ChevronDown, ChevronUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+/** Lines shown before the reader asks for more. */
+const INITIAL_LINES = 30;
 
 export const CodeBlocks = ({ code, language = "tsx" }: any) => {
   const [copied, setCopied] = useState(false);
-  const [visibleLinesCount, setVisibleLinesCount] = useState(30);
+  const [visibleLinesCount, setVisibleLinesCount] = useState(INITIAL_LINES);
   const blockRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const lines = useMemo(() => (code ? code.split("\n") : []), [code]);
   const totalLines = lines.length;
+  const isExpanded = visibleLinesCount > INITIAL_LINES;
 
   const displayedCode = useMemo(() => {
-    if (totalLines <= 30) return code;
+    if (totalLines <= INITIAL_LINES) return code;
     return lines.slice(0, visibleLinesCount).join("\n");
   }, [code, lines, totalLines, visibleLinesCount]);
+
+  /**
+   * Collapsed, the panel is exactly as tall as its content, so a freshly
+   * opened preview never lands on a scrollbar. That natural height is
+   * remembered and becomes the cap once Show More runs — the extra lines then
+   * scroll inside the card instead of stretching it down the page.
+   */
+  const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isExpanded) return;
+    const el = contentRef.current;
+    if (!el) return;
+    // Shiki highlights asynchronously, so the height settles after mount —
+    // observe rather than measure once.
+    const measure = () => setCollapsedHeight(el.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isExpanded]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
@@ -24,11 +51,11 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
   };
 
   const handleShowMore = () => {
-    setVisibleLinesCount((prev) => Math.min(prev + 30, totalLines));
+    setVisibleLinesCount((prev) => Math.min(prev + INITIAL_LINES, totalLines));
   };
 
   const handleShowLess = () => {
-    setVisibleLinesCount(30);
+    setVisibleLinesCount(INITIAL_LINES);
     if (blockRef.current) {
       blockRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -38,7 +65,7 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
     <div ref={blockRef} className="relative group w-full bg-zinc-50 dark:bg-black border-t border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-in-out">
       <button
         onClick={handleCopy}
-        className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-sm border border-zinc-200 dark:border-zinc-700 backdrop-blur-xs"
+        className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-zinc-200 dark:border-zinc-700 backdrop-blur-xs"
         aria-label="Copy code"
       >
         {copied ? (
@@ -48,12 +75,29 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
         )}
       </button>
 
-      <div className="py-2 px-4 sm:px-6 text-sm md:text-[14px] leading-relaxed transition-all duration-300 overflow-hidden">
-        <CodeRenderer code={displayedCode} lang={language as any} />
+      <div
+        className={cn(
+          "transition-all duration-300",
+          // Long lines already scroll horizontally inside .shiki, so only the
+          // vertical axis is handed to this container.
+          isExpanded ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden",
+        )}
+        style={
+          isExpanded && collapsedHeight !== null
+            ? { maxHeight: collapsedHeight }
+            : undefined
+        }
+      >
+        <div
+          ref={contentRef}
+          className="py-2 px-4 sm:px-6 text-sm md:text-[14px] leading-relaxed"
+        >
+          <CodeRenderer code={displayedCode} lang={language} />
+        </div>
       </div>
 
-      {totalLines > 30 && (
-        <div className="relative w-full flex items-center justify-center pb-5 pt-8 -mt-6 bg-gradient-to-t from-zinc-50 via-zinc-50/90 to-transparent dark:from-black dark:via-black/90 dark:to-transparent">
+      {totalLines > INITIAL_LINES && (
+        <div className="relative w-full flex items-center justify-center py-4 bg-zinc-50 dark:bg-black border-t border-zinc-200/50 dark:border-zinc-800/50">
           {visibleLinesCount < totalLines ? (
             <button
               onClick={handleShowMore}

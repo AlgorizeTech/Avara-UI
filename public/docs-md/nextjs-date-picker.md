@@ -4,12 +4,59 @@ A completely custom, dependency-free Date Picker component. Native HTML `` eleme
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different sizing options, structural variants, and error states.
+The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required. The first example's **Code** tab contains the full component source.
 
-- The calendar dropdown automatically highlights today's date in a subtle way, while strongly highlighting your selected date.
-- It uses absolute positioning and CSS transitions for a smooth popover effect without needing heavy animation libraries.
+export const usageDefault = `"use client";
+
+export default function LaunchDatePicker() {
+  const [date, setDate] = useState(null);
+
+  return (
+    
+  );
+}`;
+
+export const usageVariants = `"use client";
+
+export default function DatePickerVariants() {
+  const [date, setDate] = useState(null);
+
+  return (
+
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+export default function DatePickerSizes() {
+  const [date, setDate] = useState(null);
+
+  return (
+
+  );
+}`;
+
+export const usageError = `"use client";
+
+export default function ValidatedDatePicker() {
+  const [date, setDate] = useState(null);
+
+  // Passing \`error\` turns the trigger red, swaps in an alert icon and
+  // replaces the helper text with your message.
+  return (
+    
+  );
+}`;
+
+export const usageDisabled = `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function DisabledDatePicker() {
+  return (
+    
+  );
+}`;
 
 ## Installation
 
@@ -20,6 +67,10 @@ This component only requires standard `lucide-react` icons (Calendar, ChevronLef
 ```bash
 npm install lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/DatePickerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
@@ -58,7 +109,7 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
 
           onChange
 
-          (val: Date) => void
+          (val: Date) =&gt; void
 
           undefined
 
@@ -92,12 +143,12 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies the global color theme to the focus ring, glow shadow, and the
-          selected date bubble in the calendar.
+          selected date bubble in the calendar. Accepts valid hex codes.
 
           label
 

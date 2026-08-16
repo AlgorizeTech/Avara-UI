@@ -28,8 +28,8 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
             prose-h3:text-xl prose-h3:font-semibold prose-h3:scroll-m-24
             prose-p:text-[15px] prose-p:leading-relaxed prose-p:text-zinc-600 dark:prose-p:text-zinc-400
             prose-a:text-zinc-900 dark:prose-a:text-zinc-100 prose-a:underline-offset-4 hover:prose-a:text-zinc-600 dark:hover:prose-a:text-zinc-300
-            prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800 prose-pre:shadow-lg
-            prose-code:text-[13px] prose-code:text-zinc-800 dark:prose-code:text-zinc-200
+            prose-code:text-[13px] prose-code:font-mono prose-code:font-semibold prose-code:text-zinc-900 dark:prose-code:text-zinc-100 prose-code:shadow-none
+            [&_:not(pre)>code]:border [&_:not(pre)>code]:border-zinc-300 dark:[&_:not(pre)>code]:border-zinc-700 [&_:not(pre)>code]:bg-zinc-100 dark:[&_:not(pre)>code]:bg-zinc-800/80 [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:rounded-md
             prose-code:before:content-none prose-code:after:content-none
             prose-img:rounded-2xl prose-img:border prose-img:border-zinc-200 dark:prose-img:border-zinc-800
           "

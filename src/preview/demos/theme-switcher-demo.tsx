@@ -11,9 +11,9 @@ export default function ThemeSwitcherDemo({
   variant?: ThemeVariant;
 }) {
   return (
-    <div className="w-full flex items-center justify-center relative overflow-hidden">
+    <div className="w-full flex items-center justify-center relative min-h-[220px] py-8 pb-20">
       {/* Render the component based on active state */}
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-6">
         <ThemeSwitcher variant={variant} />
 
         {/* Helper text for the dropdown specifically */}

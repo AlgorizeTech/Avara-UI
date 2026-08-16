@@ -15,12 +15,28 @@ import { useState } from "react";
 
 export default function DockDemo({
   activeTab = "home",
+  baseSize = 46,
+  magnification = 84,
+  distance = 135,
+  gap = 12,
+  containerHeight = 80,
+  itemSet = "full",
 }: {
   activeTab?: string;
+  /** Resting icon size in px. */
+  baseSize?: number;
+  /** Peak icon size under the cursor, in px. */
+  magnification?: number;
+  /** How far from the cursor the magnification reaches, in px. */
+  distance?: number;
+  gap?: number;
+  containerHeight?: number;
+  /** "compact" renders a four-app dock instead of the full desktop set. */
+  itemSet?: "full" | "compact";
 }) {
   const [active, setActive] = useState(activeTab);
 
-  const sampleItems: DockItem[] = [
+  const allItems: DockItem[] = [
     {
       id: "home",
       label: "Dashboard",
@@ -80,6 +96,13 @@ export default function DockDemo({
     },
   ];
 
+  const sampleItems =
+    itemSet === "compact"
+      ? allItems.filter((item) =>
+          ["home", "mail", "terminal", "settings"].includes(item.id),
+        )
+      : allItems;
+
   return (
     <div className="w-full flex flex-col items-center justify-end bg-zinc-50 dark:bg-[#0a0a0a] pt-24 pb-12 px-2 sm:px-8 relative overflow-visible min-h-[420px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
       {/* Subtle Ambient Backglow */}
@@ -97,11 +120,11 @@ export default function DockDemo({
       <div className="relative z-10 w-full flex justify-center pb-2 sm:pb-4 overflow-visible">
         <Dock
           items={sampleItems}
-          containerHeight={80}
-          baseSize={46}
-          magnification={84}
-          distance={135}
-          gap={12}
+          containerHeight={containerHeight}
+          baseSize={baseSize}
+          magnification={magnification}
+          distance={distance}
+          gap={gap}
         />
       </div>
     </div>

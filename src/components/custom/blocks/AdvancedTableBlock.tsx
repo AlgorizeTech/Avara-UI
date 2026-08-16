@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import {
   Check,
   ChevronLeft,
@@ -317,20 +318,20 @@ export const AdvancedTableBlock = forwardRef<
               )}
             >
               Show
-              <select
-                value={itemsPerPage}
-                onChange={(e) => {
-                  setItemsPerPage(Number(e.target.value));
+              <SelectBlock
+                options={itemsPerPageOptions.map((opt) => ({
+                  label: String(opt),
+                  value: String(opt),
+                }))}
+                value={String(itemsPerPage)}
+                onChange={(v) => {
+                  setItemsPerPage(Number(v));
                   setCurrentPage(1);
                 }}
-                className="bg-white dark:bg-zinc-900 border-[1.5px] border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 outline-none cursor-pointer text-zinc-700 dark:text-zinc-300"
-              >
-                {itemsPerPageOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
+                color={color as string}
+                inputSize="sm"
+                className="w-[72px] shrink-0"
+              />
               entries
             </div>
 

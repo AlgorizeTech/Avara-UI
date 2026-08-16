@@ -21,7 +21,7 @@ function AccordionItem({ className, ...props }: AccordionItemProps) {
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        "border-b last:border-b-0 data-[state=open]:bg-gray-100 data-[state=open]:dark:bg-gray-800",
+        "border-b last:border-b-0",
         className,
       )}
       {...props}

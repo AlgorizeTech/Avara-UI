@@ -1,4 +1,5 @@
-import { OtpInputShowcase } from "@/components/site/OtpInputShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # OTP Input
 
@@ -6,11 +7,105 @@ A fully accessible, developer-friendly multi-box input designed for One-Time Pas
 
 Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different variants, lengths, and masking features. **Try copying a 6-digit number and pasting it directly into the first box!**
+Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.** The first example's **Code** tab contains the full component source.
 
-<OtpInputShowcase />
+export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { useState } from "react";
+
+export default function BasicOtp() {
+  const [value, setValue] = useState("");
+
+  return (
+    <OtpInputBlock
+      length={6}
+      value={value}
+      onChange={setValue}
+      onComplete={(code) => console.log("Submitted:", code)}
+    />
+  );
+}`;
+
+export const usageFilled = `<OtpInputBlock
+  variant="filled"
+  length={6}
+  value={value}
+  onChange={setValue}
+/>`;
+
+export const usageUnderlined = `<OtpInputBlock
+  variant="underlined"
+  length={6}
+  value={value}
+  onChange={setValue}
+/>`;
+
+export const usageLengths = `<div className="flex flex-col items-center gap-8">
+  <OtpInputBlock length={4} value={value} onChange={setValue} />
+  <OtpInputBlock length={6} value={value} onChange={setValue} />
+  <OtpInputBlock length={8} value={value} onChange={setValue} />
+</div>`;
+
+export const usageMasked = `<OtpInputBlock
+  mask
+  length={6}
+  value={value}
+  onChange={setValue}
+/>`;
+
+export const usageDisabled = `<OtpInputBlock
+  disabled
+  length={6}
+  value={value}
+  onChange={setValue}
+/>`;
+
+<ExampleShowcase
+  name="otp-input"
+  colorControl
+  colorLabel="Focus Color"
+  columns={1}
+  examples={[
+    {
+      title: "OTP Input",
+      subheading: "Six boxes with paste, arrow-key and backspace handling built in.",
+      props: { length: 6 },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/OtpInputBlock.tsx"),
+    },
+    {
+      title: "Filled",
+      subheading: "Use `variant=\"filled\"` for solid, low-contrast boxes.",
+      props: { variant: "filled" },
+      usage: usageFilled,
+    },
+    {
+      title: "Underlined",
+      subheading: "Use `variant=\"underlined\"` to reduce each box to a baseline rule.",
+      props: { variant: "underlined" },
+      usage: usageUnderlined,
+    },
+    {
+      title: "Lengths",
+      subheading: "Use the `length` prop to change how many digits are collected.",
+      props: { showAll: "lengths" },
+      usage: usageLengths,
+    },
+    {
+      title: "Masked",
+      subheading: "Set `mask` to hide the entered digits, like a password field.",
+      props: { isMasked: true },
+      usage: usageMasked,
+    },
+    {
+      title: "Disabled",
+      subheading: "Set `disabled` to lock every box — useful while verifying.",
+      props: { isDisabled: true },
+      usage: usageDisabled,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -18,7 +113,7 @@ Use the control panel below to test the different variants, lengths, and masking
 
 This component handles all of the complex array-mapping and React Ref logic internally without relying on heavy third-party form libraries.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
 
 ---
 

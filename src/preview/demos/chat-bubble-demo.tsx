@@ -9,15 +9,116 @@ import {
 } from "@/components/custom/blocks/ChatBubbleBlock";
 import { Image as ImageIcon, Send, SmilePlus } from "lucide-react";
 
+/** Plain surface used by the focused examples (grouping, receipts, typing). */
+function Panel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-full flex items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#fbfbfb] dark:bg-[#050505] p-6 sm:p-10">
+      <div className="w-full max-w-md flex flex-col space-y-1">{children}</div>
+    </div>
+  );
+}
+
 export default function ChatBubbleDemo({
   color = "primary",
   isTyping = true,
   messages = [1, 2, 3],
+  example = "conversation",
 }: {
   color?: string;
   isTyping?: boolean;
   messages?: number[];
+  example?: "conversation" | "grouping" | "receipts" | "typing";
 }) {
+  if (example === "grouping") {
+    return (
+      <Panel>
+        <ChatBubble variant="received" layout="group-top">
+          <ChatAvatar fallback="SJ" />
+          <ChatMessage>Three messages, one sender.</ChatMessage>
+        </ChatBubble>
+        <ChatBubble variant="received" layout="group-middle">
+          <ChatAvatar fallback="SJ" />
+          <ChatMessage>The inner corners tighten to 4px…</ChatMessage>
+        </ChatBubble>
+        <ChatBubble variant="received" layout="group-bottom">
+          <ChatAvatar fallback="SJ" />
+          <ChatMessage>…and only the last one keeps the avatar.</ChatMessage>
+        </ChatBubble>
+
+        <div className="h-5" />
+
+        <ChatBubble variant="sent" layout="group-top">
+          <ChatAvatar fallback="ME" />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <ChatMessage color={color as any}>
+            The same logic mirrors for sent messages.
+          </ChatMessage>
+        </ChatBubble>
+        <ChatBubble variant="sent" layout="group-bottom">
+          <ChatAvatar fallback="ME" />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <ChatMessage color={color as any}>
+            No manual border-radius maths required.
+          </ChatMessage>
+        </ChatBubble>
+      </Panel>
+    );
+  }
+
+  if (example === "receipts") {
+    return (
+      <Panel>
+        <ChatBubble variant="received">
+          <ChatAvatar fallback="SJ" />
+          <ChatMessage>
+            Received bubbles show the time only.
+            <ChatTimestamp time="10:24 AM" />
+          </ChatMessage>
+        </ChatBubble>
+
+        <div className="h-4" />
+
+        <ChatBubble variant="sent">
+          <ChatAvatar fallback="ME" />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <ChatMessage color={color as any}>
+            Sent — a single tick.
+            <ChatTimestamp time="10:25 AM" status="sent" />
+          </ChatMessage>
+        </ChatBubble>
+        <ChatBubble variant="sent">
+          <ChatAvatar fallback="ME" />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <ChatMessage color={color as any}>
+            Delivered — double tick.
+            <ChatTimestamp time="10:25 AM" status="delivered" />
+          </ChatMessage>
+        </ChatBubble>
+        <ChatBubble variant="sent">
+          <ChatAvatar fallback="ME" />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <ChatMessage color={color as any}>
+            Read — double tick, accented.
+            <ChatTimestamp time="10:26 AM" status="read" />
+          </ChatMessage>
+        </ChatBubble>
+      </Panel>
+    );
+  }
+
+  if (example === "typing") {
+    return (
+      <Panel>
+        <ChatBubble variant="received">
+          <ChatAvatar fallback="SJ" />
+          <ChatMessage className="px-0 py-0 bg-transparent border-0 shadow-none dark:bg-transparent">
+            <ChatTypingIndicator />
+          </ChatMessage>
+        </ChatBubble>
+      </Panel>
+    );
+  }
+
   return (
     <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#fbfbfb] dark:bg-[#050505] p-0 overflow-hidden relative">
       {/* Mock Phone Container */}

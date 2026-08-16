@@ -4,9 +4,53 @@ A set of segmented, two-state buttons that can be toggled on or off, perfect for
 
 This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `` components inside the parent `` and it handles all of the logic automatically.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the single-selection vs multiple-selection behaviors, as well as the structural variants.
+Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+
+export const usageSingle = `import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+
+export default function AlignmentGroup() {
+  const [value, setValue] = useState("center");
+
+  return (
+
+  );
+}`;
+
+export const usageOutline = `
+
+`;
+
+export const usageGhost = `
+
+`;
+
+export const usageSizes = `
+  {items}
+  {items}
+  {items}
+`;
+
+export const usageMultiple = `import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+
+export default function FormattingGroup() {
+  const [value, setValue] = useState(["bold"]);
+
+  return (
+
+  );
+}`;
+
+export const usageDisabled = `
+
+`;
 
 ## Installation
 
@@ -14,7 +58,7 @@ Use the control panel below to test the single-selection vs multiple-selection b
 
 This component manages its own contextual state internally, requiring zero third-party dependencies while natively supporting dynamic color injections.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ToggleGroupBlock.tsx`.
+You can copy the full engine code directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleGroupBlock.tsx`.
 
 ---
 

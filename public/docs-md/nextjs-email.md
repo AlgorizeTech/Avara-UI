@@ -2,13 +2,48 @@
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Interactive Showcase
+## Examples
 
-This component is fully encapsulated. Use the control panel to switch between UI layouts (including minimal and glassmorphism) and select custom color themes.
+The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose. The first example's **Code** tab contains the full component source.
 
-Try interacting with the interface: search for a sender, star an email to see it move to the "Starred" folder, or open the Compose modal to see the glassmorphism effects applied to absolute overlays.
+export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+const emails = [
+  {
+    id: 1,
+    sender: "Tressa Gass",
+    email: "tressag@mail.com",
+    subject: "Please find attached the latest Company Report",
+    time: "01:55 PM",
+    fullDate: "Dec 10, 2026, 01:55 PM",
+    isStarred: true,
+    isRead: true,
+    avatar: "/avatars/tressa.jpg",
+    labels: [
+      {
+        color: "bg-indigo-500",
+        name: "Company",
+        pill: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+      },
+    ],
+    body: "Hello John,\\n\\nI am sending over the company report.",
+    attachments: [
+      { name: "Q3-Financial-Report.pdf", type: "pdf", size: "2.4 MB" },
+    ],
+    folder: "inbox",
+  },
+];
+
+export default function Mailbox() {
+  return ;
+}`;
+
+export const usageMinimal = `// Flattens the shell — no elevated card, lighter dividers.
+`;
+
+export const usageGlass = `// The glass variant also frosts absolute overlays like the Compose modal.
+
+`;
 
 ## Installation
 
@@ -19,6 +54,10 @@ This component relies heavily on `lucide-react` for its interface iconography. R
 ```bash
 npm install lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Email.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
@@ -68,9 +107,9 @@ Discover the Email interface component's layout features, including inbox listin
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc"
+            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the compose button, unread notification
           dots, and focus rings.

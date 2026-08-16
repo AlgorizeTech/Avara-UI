@@ -4,9 +4,76 @@ A complex navigation component that intelligently handles page rendering, ellips
 
 Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the calculation logic. Try dragging the `Total Pages` slider all the way up to 100, and then click through the page numbers in the preview to see how the ellipses dynamically shift to keep the UI clean.
+Click through the page numbers in each preview to watch the ellipses shift. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { useState } from "react";
+
+export default function BasicPagination() {
+  // You own the page state — the component only reports the new number.
+  const [currentPage, setCurrentPage] = useState(1);
+
+  return (
+    
+  );
+}`;
+
+export const usageManyPages = `import { useState } from "react";
+
+export default function DeepPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // With 100 pages the block renders 1 … 48 49 [50] 51 52 … 100 and keeps
+  // the window centred as you move.
+  return (
+    
+  );
+}`;
+
+export const usageSiblingCount = `import { useState } from "react";
+
+export default function TightPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // siblingCount is how many numbers sit either side of the active page.
+  // 1 keeps the control narrow on mobile; the default is 2.
+  return (
+    
+  );
+}`;
+
+export const usageNoEdges = `import { useState } from "react";
+
+export default function NumbersOnlyPagination() {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // showEdges={false} drops the Previous / Next controls.
+  return (
+    
+  );
+}`;
+
+export const usageTable = `import { useState } from "react";
+
+const PER_PAGE = 5;
+
+export default function CustomerDirectory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = 50;
+  const totalPages = Math.ceil(totalItems / PER_PAGE);
+
+  const start = (currentPage - 1) * PER_PAGE + 1;
+  const end = Math.min(currentPage * PER_PAGE, totalItems);
+
+  return (
+
+          Customer Directory
+          
+            Showing {start} to {end} of {totalItems} entries
+
+  );
+}`;
 
 ## Installation
 
@@ -14,25 +81,7 @@ Use the control panel below to test the calculation logic. Try dragging the `Tot
 
 This component is **100% dependency-free**. It uses standard React `useMemo` hooks to calculate the page ranges and Tailwind CSS for the styling.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/PaginationBlock.tsx`.
-
----
-
-## Usage
-
-You must maintain the `currentPage` state in your parent component. Pass this state, along with the `totalPages`, into the `Pagination` component, and it will handle the rest.
-
-```tsx
-
-export default function DataTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 25; // Typically calculated from your API response
-
-  return (
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/PaginationBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 
@@ -71,7 +120,7 @@ export default function DataTable() {
 
           number
 
-          1
+          2
 
           Determines how many page buttons to show on either side of the{" "}
           currentPage before rendering an ellipsis. Increase this

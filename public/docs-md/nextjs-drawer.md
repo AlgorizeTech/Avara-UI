@@ -2,11 +2,97 @@
 
 A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to switch the `side` prop and see the drawer slide in from different edges of the screen.
+The drawer is always controlled — you own `open` and pass `onOpenChange`. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+export const usageDefault = `import { useState } from "react";
+
+export default function DrawerDemo() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+       setOpen(true)}>Open Drawer
+
+            Interactive Drawer
+            
+              This drawer slides in from the right. It uses GSAP for
+              butter-smooth easing and handles its own unmount lifecycles.
+
+            {/* Long content scrolls here without pushing the header away */}
+
+             setOpen(false)}>Save changes
+             setOpen(false)}>
+              Cancel
+
+  );
+}`;
+
+export const usageSides = `import { useState } from "react";
+
+type Side = "top" | "bottom" | "left" | "right";
+
+function DrawerTile({ side }: { side: Side }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+       setOpen(true)}>
+        {side}
+
+            side="{side}"
+            
+              The drawer slides in from the {side} edge and sizes itself to match.
+
+             setOpen(false)}>Close
+
+  );
+}
+
+export default function DrawerSides() {
+  return (
+
+  );
+}`;
+
+export const usageBottom = `import { useState } from "react";
+
+export default function BottomSheet() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+       setOpen(true)}>Open sheet
+
+      {/* side="bottom" is the mobile sheet pattern */}
+
+            Interactive Drawer
+            
+              Anchored to the bottom edge, full width.
+
+             setOpen(false)}>Save changes
+
+  );
+}`;
+
+export const usageControlled = `import { useEffect, useState } from "react";
+
+export default function OnboardingDrawer() {
+  // Nothing says the state has to come from a button — open it yourself
+  // after a fetch, a route change, or on first mount.
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem("onboarded")) setOpen(false);
+  }, []);
+
+  return (
+
+          Welcome aboard
+
+  );
+}`;
 
 ## Installation
 
@@ -17,6 +103,10 @@ This component relies on `gsap` to handle the fluid animations and manage the en
 ```bash
 npm install gsap lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Drawer.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.

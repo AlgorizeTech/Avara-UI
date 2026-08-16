@@ -2,57 +2,70 @@
 
 A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
 
-## Interactive Showcase
+## Examples
 
-Scroll through the narrative cards on desktop to experience viewport-triggered expansion and sticky image cross-fading. On small screens, the layout adapts cleanly to a vertically stacked structure.
+Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+const items = [
+  {
+    id: "landing-page",
+    stepNumber: "01",
+    title: "Landing Page Design",
+    description:
+      "Most landing pages fail quietly. We engineer high-converting layouts with strategic visual hierarchy and micro-interactions.",
+    tags: ["CONVERSION FOCUSED DESIGN", "FIGMA TO CODE CONVERSION"],
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200",
+    badgeText: "SELECTED SERVICE",
+  },
+  {
+    id: "saas-dev",
+    stepNumber: "02",
+    title: "SaaS Product Development",
+    description:
+      "Modular, multi-tenant web applications designed to scale from your first 1,000 users to millions of daily requests.",
+    tags: ["MULTI-TENANT ARCHITECTURE", "REAL-TIME SYNC"],
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200",
+    badgeText: "SELECTED SERVICE",
+  },
+];
+
+export default function ServicesShowcase() {
+  return (
+    
+  );
+}`;
+
+export const usageTextOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+export default function TextOnlyShowcase() {
+  // "text-only" drops the sticky image column and lets the accordion
+  // run full width — useful for an FAQ or a process list.
+  return ;
+}`;
+
+export const usageImageOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+export default function ImageOnlyShowcase() {
+  // "image-only" keeps the scroll-driven visual and hides the copy.
+  return ;
+}`;
+
+export const usageDefaultIndex = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+export default function ShowcaseStartingOnThird() {
+  // defaultIndex picks which row is open before the user scrolls.
+  return ;
+}`;
 
 ## Installation
 
-### Dependencies
-
-This component relies on **Framer Motion** for smooth accordion animations and image cross-fading, alongside **Lucide React** for UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/ScrollAccordionShowcaseBlock.tsx.
+Create a new file at `components/custom/blocks/ScrollAccordionShowcaseBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
-## Usage Architecture
-
-The `` component automatically adapts to dark and light modes, stacks cleanly on mobile viewports, and reads your site's custom primary hex color from localStorage (defaulting to primaryColor).
-
-```tsx
-
-export default function ServicesSection() {
-  const items = [
-    {
-      id: "landing",
-      stepNumber: "01",
-      title: "Landing Page Design",
-      description: "We engineer high-converting layouts with scroll-triggered animations.",
-      tags: ["CONVERSION FOCUSED", "FIGMA TO CODE"],
-      image: "[https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop)",
-      badgeText: "SELECTED SERVICE",
-    },
-    {
-      id: "saas",
-      stepNumber: "02",
-      title: "SaaS Development",
-      description: "Modular, multi-tenant web applications designed to scale to millions of requests.",
-      tags: ["MULTI-TENANT ARCHITECTURE", "REAL-TIME SYNC"],
-      image: "[https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop)",
-      badgeText: "SELECTED SERVICE",
-    },
-  ];
-
-  return (
-
-  );
-}
-```
+The accent color is resolved at runtime: the component looks for a hex in `localStorage` (starting with `localStorageKey`), then in the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is found. That is why it adopts your site's primary color automatically.
 
 ## Props Reference
 

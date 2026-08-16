@@ -4,9 +4,32 @@ A fully accessible, developer-friendly multi-box input designed for One-Time Pas
 
 Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different variants, lengths, and masking features. **Try copying a 6-digit number and pasting it directly into the first box!**
+Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.** The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function BasicOtp() {
+  const [value, setValue] = useState("");
+
+  return (
+     console.log("Submitted:", code)}
+    />
+  );
+}`;
+
+export const usageFilled = ``;
+
+export const usageUnderlined = ``;
+
+export const usageLengths = `
+
+`;
+
+export const usageMasked = ``;
+
+export const usageDisabled = ``;
 
 ## Installation
 
@@ -14,7 +37,7 @@ Use the control panel below to test the different variants, lengths, and masking
 
 This component handles all of the complex array-mapping and React Ref logic internally without relying on heavy third-party form libraries.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
 
 ---
 

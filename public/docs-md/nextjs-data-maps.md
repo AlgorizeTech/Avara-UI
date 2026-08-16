@@ -6,10 +6,46 @@ A powerful, highly-customizable React-Leaflet based choropleth map component des
 
 It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations right inside your Next.js application.
 
-## Interactive Showcase
-Hover over the interactive Data Map regions to see dynamic tooltips and data values.
+## Examples
+
+The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card. The first example's **Code** tab contains the full component source.
+
+export const usageFill = `import dynamic from "next/dynamic";
+
+// Leaflet touches \`window\` on import, so the map must be client-only.
+const DataMaps = dynamic(
+  () => import("@/components/custom/blocks/DataMapsBlock").then((m) => m.DataMaps),
+  { ssr: false },
+);
+
+const mapData = [
+  { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
+  { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
+  { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
+];
+
+export default function AnalyticsDashboard() {
+  return (
+
+  );
+}`;
+
+export const usageDots = `// \`dots\` places a pulsing marker at each country's centroid instead of
+// filling the polygon — better when the regions are small or crowded.
+`;
+
+export const usageZoomable = `// Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
+// \`scrollWheelZoom\` also binds the wheel, which you may want off inside a
+// scrolling page.
+`;
+
+export const usageColors = `// \`highlightColor\` sets the global accent and \`defaultColor\` paints every
+// country without data. A \`color\` on a single data point overrides both.
+`;
 
 ## Installation
+
+### 1. Install Dependencies
 
 Ensure you have `leaflet` and `react-leaflet` installed. If not, install them using:
 
@@ -18,37 +54,9 @@ npm install leaflet react-leaflet
 npm install -D @types/leaflet
 ```
 
-## Implementation
+### 2. Copy the Component
 
-```tsx
-
-export default function AnalyticsDashboard() {
-  const mapData = [
-    { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
-    { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
-    { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
-  ];
-
-  return (
-
-  );
-}
-```
-
-```tsx
-
-export default function AnalyticsDashboard() {
-  const mapData = [
-    { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
-    { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
-    { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
-  ];
-
-  return (
-
-  );
-}
-```
+Create `components/custom/blocks/DataMapsBlock.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.

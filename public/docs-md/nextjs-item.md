@@ -4,69 +4,98 @@ A versatile layout component for displaying structured content featuring media, 
 
 Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to construct your ideal layout.
+`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed. The first example's **Code** tab contains the full component source.
 
-- The `card` variant stacks the elements vertically and pins the actions to the bottom, perfect for grids.
-- The `compact` variant reduces padding and text sizes, ideal for dense dropdown menus or sidebars.
-- Passing an `onClick` handler automatically converts the component into an accessible `` and applies standard hover/active scaling states.
+export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function SettingsRow() {
+  return (
+
+      }
+    />
+  );
+}`;
+
+export const usageVariants = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function ItemVariants() {
+  return (
+
+  );
+}`;
+
+export const usageActions = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function ActionRow() {
+  return (
+
+      }
+      // actions sit on the trailing edge and never squash the text
+      actions={
+
+      }
+    />
+  );
+}`;
+
+export const usageCard = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function FeatureCard() {
+  return (
+    // "card" stacks the slots vertically and pins actions to the bottom —
+    // drop it straight into a grid.
+
+      }
+      actions={
+        
+          Configure
+        
+      }
+    />
+  );
+}`;
+
+export const usageClickable = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function ClickableRow() {
+  return (
+    // Passing onClick renders a real  and adds hover/active states.
+
+      }
+      onClick={() => console.log("Item clicked")}
+    />
+  );
+}`;
+
+export const usageTitleOnly = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function DenseRow() {
+  // Everything but title is optional — compact + title alone is a menu row.
+  return ;
+}`;
+
+`.",
+      props: { variant: "bordered", showMedia: true, showDescription: true, showActions: false, isClickable: true },
+      usage: usageClickable,
+    },
+    {
+      title: "Title only",
+      subheading: "Drop every optional slot for a dense menu or dropdown row.",
+      props: { variant: "compact", showMedia: false, showDescription: false, showActions: false },
+      usage: usageTitleOnly,
+    },
+  ]}
+/>
 
 ## Installation
 
 ### Copy the Component
 
-This component is **100% dependency-free**. It simply uses standard Tailwind utility classes to manage the layout switching and hover effects.
+This component is dependency-free — it is pure layout logic over Tailwind classes.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ItemBlock.tsx`.
-
----
-
-## Usage
-
-### Building a List
-
-Use the `default` or `bordered` variant inside a flex-col container to easily build robust lists. Pass whatever JSX you want into the `media` and `actions` slots.
-
-```tsx
-
-export default function UserDirectory() {
-  return (
-
-        }
-        title="Sarah Jenkins"
-        description="Senior Product Designer"
-        actions={}
-        onClick={() => console.log("Navigate to user")}
-      />
-      {/* ... more items */}
-    
-  );
-}
-```
-
-## Building Cards
-
-Switch the variant to card and the component will automatically stack the media on top, allowing you to use it inside Grid layouts.
-
-```tsx
-
-export default function ProjectGrid() {
-  return (
-    
-      }
-        title="Q3 Marketing Assets"
-        description="Banners, copy, and localized strings for the upcoming Q3 campaign push."
-        actions={
-          
-            Open Project
-          
-        }
-      />
-    
-  );
-}
-```
+Create a new file at `components/custom/blocks/ItemBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.

@@ -6,9 +6,85 @@ Building animated text that scales responsively and doesn't break screen readers
 
 It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different semantic tags, alignment options, and the newly added 3D animation variants (`flip-up`, `reveal`, `pop-in`).
+Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function LandingHeader() {
+  return (
+    
+      {/* 3D flip reveal */}
+
+      {/* Staggered subheadline, started after the headline */}
+
+  );
+}`;
+
+export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function MaskReveals() {
+  return (
+    
+      {/* Words slide up out of a clipping mask, fading as they go. */}
+
+      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
+
+  );
+}`;
+
+export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function TransformEntrances() {
+  return (
+    
+      {/* 3D rotateX around each word's bottom edge. */}
+
+      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
+
+      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
+
+  );
+}`;
+
+export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ContinuousEffects() {
+  return (
+    
+      {/* Red/blue clipped copies drift behind the text, forever. */}
+
+      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
+
+  );
+}`;
+
+export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WholeStringVariants() {
+  return (
+    
+      {/* The one character-by-character effect — types out, then blinks. */}
+
+      {/* No motion at all: the block's sizing and semantics, nothing else. */}
+
+  );
+}`;
+
+export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
+// intact no matter which effect you use.
+
+`;
+
+export const usageAlign = `
+
+`;
+
+export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
+// unaffected either way.
+
+`;
 
 ## Installation
 
@@ -16,28 +92,7 @@ Use the control panel below to test the different semantic tags, alignment optio
 
 This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/AnimatedTypographyBlock.tsx`.
-
----
-
-## Usage
-
-Use the `as` prop to define the underlying semantic HTML tag. By default, it applies standard Tailwind typography sizing, but you can override this safely using the `size` prop.
-
-## Implementation
-
-```tsx
-
-export default function LandingHeader() {
-  return (
-    
-      {/* 3D Flip Reveal */}
-
-      {/* Staggered Subheadline with Custom Rem Sizing */}
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTypographyBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

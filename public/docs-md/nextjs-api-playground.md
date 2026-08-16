@@ -6,9 +6,47 @@ This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or 
 
 Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel to set the default method and color. Click **Force 401 Error** and then hit the "Send" button in the playground to see how it elegantly handles and formats error responses. Try adding some parameters!
+Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+export default function UsersEndpointDocs() {
+  // Decide how the playground responds to whatever the reader types.
+  const handleApiMock = async (req) => {
+    await new Promise((resolve) => setTimeout(resolve, 500)); // latency
+
+    if (req.method === "POST") {
+      return { status: 201, timeMs: 120, data: { id: "cus_123", created: true } };
+    }
+
+    return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageGet = `// \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
+`;
+
+export const usageError = `// Any non-2xx status you return is formatted as an error response.
+const handleApiMock = async () => ({
+  status: 401,
+  timeMs: 45,
+  data: {
+    error: "unauthorized",
+    message: "Invalid API key provided in Authorization header.",
+  },
+});
+
+`;
+
+export const usageNoMock = `// Omit \`mockHandler\` and the block answers with its own canned response —
+// handy while you are still sketching the endpoint.
+`;
 
 ## Installation
 
@@ -16,45 +54,7 @@ Use the control panel to set the default method and color. Click **Force 401 Err
 
 This component handles complex internal state (dynamic key-value pair arrays, active tabs, loading states) using pure React. It is **100% dependency-free** and fully responsive.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ApiPlaygroundBlock.tsx`.
-
----
-
-## Usage
-
-Simply drop the component into your documentation page. If you do not provide a `mockHandler`, it will automatically use a default simulated response.
-
-```tsx
-
-export default function UsersEndpointDocs() {
-  // Define how the playground should respond based on what the user types
-  const handleApiMock = async (req) => {
-    // 1. Simulate network latency
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // 2. Return specific data based on the HTTP Method
-    if (req.method === "POST") {
-      return {
-        status: 201,
-        timeMs: 120,
-        data: { id: "cus_123", created: true },
-      };
-    }
-
-    return {
-      status: 200,
-      timeMs: 80,
-      data: { list: [], has_more: false },
-    };
-  };
-
-  return (
-    
-      Create a User
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ApiPlaygroundBlock.tsx`.
 
 ## Features
 Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.

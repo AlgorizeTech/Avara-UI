@@ -1,4 +1,5 @@
-import { CommandShowcase } from "@/components/site/CommandShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Command
 
@@ -6,72 +7,140 @@ A powerful, composable command menu palette for searching data and triggering qu
 
 Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
 
-## Interactive Showcase
+## Examples
 
-Use the layout controls below to test the static and modal variants.
+Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it. The first example's **Code** tab contains the full component source.
 
-1. **Try typing in the search box:** The list will instantly filter, and any groups that become empty will automatically vanish.
-2. **Keyboard Navigation:** Use your `ArrowUp` and `ArrowDown` keys to navigate the filtered list, and hit `Enter` to trigger an action!
-
-<CommandShowcase />
-
-## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CommandBlock.tsx`.
-
----
-
-## Usage
-
-### Inline Layout
-
-To render the command menu flat on the page (like a sidebar search or settings panel):
-
-```tsx
-import {
-  Command, CommandInput, CommandList, CommandEmpty,
-  CommandGroup, CommandItem, CommandSeparator, CommandShortcut,
+export const usageDefault = `import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
 } from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, Smile } from "lucide-react";
 
-export default function StaticMenu() {
+export default function ActionSearch() {
   return (
-    <Command className="border shadow-sm max-w-sm">
-      <CommandInput placeholder="Search settings..."/>
+    <Command>
+      <CommandInput placeholder="Search actions..." />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        {/* Shown automatically when every item is filtered out */}
+        <CommandEmpty>No matching records found.</CommandEmpty>
 
-        <CommandGroup heading="General">
-          <CommandItem onSelect="{()"> alert("Profile!")}>
-            Profile
+        <CommandGroup heading="Suggestions">
+          <CommandItem onSelect={(value) => console.log(value)}>
+            <Calendar className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem onSelect={(value) => console.log(value)}>
+            <Smile className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem onSelect={(value) => console.log(value)}>
+            <Calculator className="mr-2 h-4 w-4" />
+            <span>Calculator</span>
           </CommandItem>
         </CommandGroup>
       </CommandList>
     </Command>
   );
-}
-```
+}`;
 
-## Dialog Layout (Modal)
+export const usageGroups = `import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, CreditCard, LogOut, Settings, Smile, User } from "lucide-react";
 
-To trigger the command menu as an overlay (the classic Cmd+K experience), simply swap `<Command>` for `<CommandDialog>` and manage its open state:
+export default function CommandPalette() {
+  const run = (value: string) => console.log("Selected:", value);
 
-```tsx
-import { useState, useEffect } from "react";
-import { CommandDialog, CommandInput, CommandList, CommandItem } from "@/components/custom/blocks/CommandBlock";
+  return (
+    <Command>
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No matching records found.</CommandEmpty>
+
+        <CommandGroup heading="Suggestions">
+          <CommandItem onSelect={run}>
+            <Calendar className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Smile className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Calculator className="mr-2 h-4 w-4" />
+            <span>Calculator</span>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Settings">
+          {/* CommandShortcut right-aligns the hotkey hint */}
+          <CommandItem onSelect={run}>
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+            <CommandShortcut>⌘P</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <CreditCard className="mr-2 h-4 w-4" />
+            <span>Billing</span>
+            <CommandShortcut>⌘B</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+            <CommandShortcut>⌘S</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Danger Zone">
+          {/* data-[selected=true] styles the row while it is highlighted */}
+          <CommandItem
+            className="text-red-500 data-[selected=true]:text-red-600 data-[selected=true]:bg-red-50"
+            onSelect={run}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+            <CommandShortcut>⇧⌘Q</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}`;
+
+export const usageDialog = `import { useEffect, useState } from "react";
+import {
+  CommandDialog,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
 
 export default function QuickActions() {
   const [open, setOpen] = useState(false);
 
-  // Hook to capture Cmd+K
+  // The classic ⌘K / Ctrl+K binding
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen((prev) => !prev);
       }
     };
     document.addEventListener("keydown", down);
@@ -79,17 +148,98 @@ export default function QuickActions() {
   }, []);
 
   return (
-    <CommandDialog open="{open}" onOpenChange="{setOpen}">
-      <CommandInput placeholder="What do you want to do?"/>
-      <CommandList>
-        <CommandItem onSelect="{()"> setOpen(false)}>
-          Close Menu
-        </CommandItem>
-      </CommandList>
-    </CommandDialog>
+    <>
+      <button onClick={() => setOpen(true)}>Open Command Dialog</button>
+
+      {/* Same children as the inline <Command>, rendered in a portal */}
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandGroup heading="Suggestions">
+            <CommandItem onSelect={() => setOpen(false)}>Calendar</CommandItem>
+            <CommandItem onSelect={() => setOpen(false)}>Calculator</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </>
   );
-}
-```
+}`;
+
+export const usageNoFilter = `import { useState } from "react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+
+export default function RemoteSearch() {
+  const [results, setResults] = useState<string[]>([]);
+
+  // shouldFilter={false} hands filtering back to you — required when the
+  // results come from an API instead of the DOM.
+  return (
+    <Command shouldFilter={false}>
+      <CommandInput
+        placeholder="Search the server..."
+        onChange={(e) => fetchResults(e.target.value).then(setResults)}
+      />
+      <CommandList>
+        <CommandEmpty>No matching records found.</CommandEmpty>
+        <CommandGroup heading="Results">
+          {results.map((result) => (
+            <CommandItem key={result} onSelect={() => console.log(result)}>
+              {result}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}`;
+
+<ExampleShowcase
+  name="command"
+  columns={1}
+  examples={[
+    {
+      title: "Command",
+      subheading: "Compose input, list, groups and items — filtering and keyboard nav come free.",
+      props: { layout: "simple" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
+    },
+    {
+      title: "Groups, separators & shortcuts",
+      subheading: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
+      props: { layout: "inline" },
+      usage: usageGroups,
+    },
+    {
+      title: "Command dialog",
+      subheading: "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
+      props: { layout: "dialog" },
+      usage: usageDialog,
+    },
+    {
+      title: "External filtering",
+      subheading: "`shouldFilter={false}` turns off the built-in filter for API-backed results.",
+      props: { layout: "simple", shouldFilter: false },
+      usage: usageNoFilter,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
+
+Create a new file at `components/custom/blocks/CommandBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+
 ## Features
 Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
 

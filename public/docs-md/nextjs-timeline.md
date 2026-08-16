@@ -4,25 +4,11 @@ A robust, multi-layout vertical timeline component for tracking complex events, 
 
 This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different themes and layouts. Notice how the `center` layout perfectly zig-zags the content on desktop, but elegantly collapses back to a standard left-aligned view on mobile devices!
+Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades. The first example's **Code** tab contains the full component source.
 
-## Installation
-
-### Copy the Component
-
-This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TimelineBlock.tsx`.
-
----
-
-## Usage
-
-Pass an array of items to the component. Use the `status` prop on individual items to automatically format them as `completed` (solid line and filled icon), `current` (pulsing glow), or `upcoming` (faded out).
-
-```tsx
+export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
 export default function OrderTracker() {
   const events = [
@@ -40,6 +26,7 @@ export default function OrderTracker() {
       date: "10:25 AM",
       icon: Truck,
       status: "current",
+      // \`content\` expands behind a grid transition when the row is opened.
       content: Driver is 4 stops away.,
     },
     {
@@ -51,11 +38,35 @@ export default function OrderTracker() {
     },
   ];
 
-  return (
+  return ;
+}`;
 
-  );
-}
-```
+export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
+// collapses to a single left rail below that. The breakpoint is a container
+// query, so it tracks the column the timeline sits in — not the window.
+`;
+
+export const usageRight = ``;
+
+export const usageMinimal = `// Drops the card surface; the rail and type carry the structure.
+`;
+
+export const usageGlass = `
+  
+`;
+
+export const usageNoAnimation = `// Renders in place — no staggered GSAP entrance.
+`;
+
+## Installation
+
+### Copy the Component
+
+This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
 
 ## Props Reference
 

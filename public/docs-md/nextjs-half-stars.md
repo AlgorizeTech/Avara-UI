@@ -4,58 +4,49 @@ A sleek, customizable star rating component for Next.js applications that suppor
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
-## Interactive Showcase
-Hover and click the Half Stars rating system to test its interactive fraction selection.
+## Examples
 
-## Implementation
+Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating. The first example's **Code** tab contains the full component source.
 
-```tsx
-"use client";
+export const usageFull = `"use client";
 
-export default function AppShowcasePage() {
+export default function FullStarRating() {
   const [rating, setRating] = useState(3);
 
   return (
-
+    
   );
-}
-```
+}`;
 
-```tsx
-"use client";
+export const usageHalf = `"use client";
 
-export default function AppShowcasePage() {
+export default function HalfStarRating() {
   const [rating, setRating] = useState(3.5);
 
   return (
-
+    
   );
-}
-```
+}`;
 
-```tsx
-"use client";
+export const usageContinuous = `"use client";
 
-export default function AppShowcasePage() {
+export default function PreciseRating() {
   const [rating, setRating] = useState(4.2);
 
   return (
-
+    
   );
-}
-```
+}`;
 
-```tsx
-"use client";
+export const usageCustom = `"use client";
 
-export default function AppShowcasePage() {
+export default function TenStarRating() {
   const [rating, setRating] = useState(7.5);
 
   return (
-
+    
   );
-}
-```
+}`;
 
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.

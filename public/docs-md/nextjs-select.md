@@ -4,13 +4,67 @@ A completely custom, headless-style dropdown component. Native HTML `` elements 
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different sizing options, structural variants, and advanced features.
+Explore the different variations of the Select component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-- **Multi-Select:** Automatically renders selected items as removable, colored tags.
-- **Searchable:** Injects a sticky search bar at the top of the dropdown to filter large lists.
-- **Grouped Options:** Pass a `group` string to your options, and the component will automatically categorize and label them.
+export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+
+const options = [
+  { label: "Engineering", value: "eng" },
+  { label: "Design", value: "design" },
+  { label: "Marketing", value: "mkt" },
+];
+
+export default function BasicSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    
+  );
+}`;
+
+export const usageFilled = ``;
+
+export const usageUnderlined = ``;
+
+export const usageGlow = ``;
+
+export const usageSizes = `
+
+`;
+
+export const usageSearchable = ``;
+
+export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+
+export default function MultiSelect() {
+  const [values, setValues] = useState([]);
+
+  return (
+    
+  );
+}`;
+
+export const usageGrouped = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+
+const options = [
+  { label: "React", value: "react", icon: Code, group: "Frontend" },
+  { label: "Vue", value: "vue", icon: Code, group: "Frontend" },
+  { label: "Node.js", value: "node", icon: Database, group: "Backend" },
+];
+
+export default function GroupedSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    
+  );
+}`;
+
+export const usageStates = `
+
+`;
 
 ## Installation
 

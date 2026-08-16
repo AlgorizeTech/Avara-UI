@@ -1,4 +1,5 @@
-import { ThemeSwitcherShowcase } from "@/components/site/ThemeSwitcherShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Theme Switcher
 
@@ -6,13 +7,54 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Interactive Showcase
-Interact with the Theme Switcher to see the smooth sliding animation and immediate color scheme change.
+## Examples
 
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The first example's **Code** tab contains the full component source.
 
-<div className="mt-8">
-  <ThemeSwitcherShowcase />
-</div>
+export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    <header className="flex justify-between items-center p-4 border-b">
+      <h1>My App</h1>
+      {/* Compact enough for a navbar */}
+      <ThemeSwitcher variant="icon" />
+    </header>
+  );
+}`;
+
+export const usagePill = `// A segmented control that shows the current mode explicitly — better on a
+// settings page than in a dense navbar.
+<ThemeSwitcher variant="pill" />`;
+
+export const usageDropdown = `// Includes the "system" option, so users can defer to their OS setting.
+<ThemeSwitcher variant="dropdown" />`;
+
+<ExampleShowcase
+  name="theme-switcher"
+  columns={1}
+  examples={[
+    {
+      title: "Icon",
+      subheading: "The default: one button that flips between light and dark, with a GSAP micro-interaction on the icon.",
+      props: { variant: "icon" },
+      usage: usageIcon,
+      code: extractCode("src/components/custom/blocks/ThemeSwitcherBlock.tsx"),
+    },
+    {
+      title: "Pill",
+      subheading: "`variant=\"pill\"` renders a segmented control with a sliding indicator behind the active mode.",
+      props: { variant: "pill" },
+      usage: usagePill,
+    },
+    {
+      title: "Dropdown",
+      subheading: "`variant=\"dropdown\"` opens a menu — the only variant that exposes the **system** option.",
+      props: { variant: "dropdown" },
+      usage: usageDropdown,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -51,32 +93,11 @@ export default function RootLayout({
 
 ### 3. Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ThemeSwitcherBlock.tsx.
-
-## Implementation
-
-```tsx
-import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
-
-export default function DashboardHeader() {
-  return (
-    <header className="flex justify-between items-center p-4 border-b">
-      <h1>My App</h1>
-
-      <div className="flex items-center gap-4">
-        {/* A simple icon toggle for the main navbar */}
-        <ThemeSwitcher variant="icon" />
-
-        {/* Or, a full segmented pill for a settings page */}
-        {/* <ThemeSwitcher variant="pill" /> */}
-      </div>
-    </header>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ThemeSwitcherBlock.tsx`.
 
 ## Features
-Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+
+Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">

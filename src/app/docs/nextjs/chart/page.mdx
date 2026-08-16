@@ -1,4 +1,5 @@
-import { ChartShowcase } from "@/components/site/ChartShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Chart
 
@@ -6,15 +7,101 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the completely rewritten architectures.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. The first example's **Code** tab contains the full component source.
 
-- **Bars** are now built with pure HTML/CSS, meaning they will inherently stack and position perfectly flat on the bottom axis. Tooltips trigger via CSS `group-hover`.
-- **Lines & Areas** use a custom spline function to generate smooth, premium bezier curves instead of harsh angles. The `showArea` toggle seamlessly adds a gradient fill below the stroke.
-- **Pie & Donut** use a dedicated 1:1 aspect ratio container and calculate polar coordinates automatically. They generate a beautiful monochromatic scale by reducing slice opacity based on your chosen theme color.
+export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
-<ChartShowcase />
+const revenue = [
+  { label: "Jan", value: 1200 },
+  { label: "Feb", value: 1900 },
+  { label: "Mar", value: 1500 },
+  { label: "Apr", value: 2400 },
+];
+
+export default function RevenueChart() {
+  return (
+    <ChartBlock
+      data={revenue}
+      type="bar"
+      valuePrefix="$"
+      height={300}
+    />
+  );
+}`;
+
+export const usageLine = `// Bezier-smoothed stroke, no fill.
+<ChartBlock
+  data={revenue}
+  type="line"
+  showArea={false}
+  valuePrefix="$"
+  height={300}
+/>`;
+
+export const usageArea = `// Same line, plus a gradient fill dropped beneath the stroke.
+<ChartBlock
+  data={revenue}
+  type="line"
+  showArea
+  valuePrefix="$"
+  height={300}
+/>`;
+
+export const usagePie = `// Pie and donut render in a 1:1 container, so they never stretch into
+// ovals, and shade each slice from a single theme color.
+<ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />`;
+
+export const usageDonut = `<ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />`;
+
+export const usageNoGrid = `// Grid lines only apply to bar/line charts.
+<ChartBlock data={revenue} type="bar" showGrid={false} valuePrefix="$" />`;
+
+<ExampleShowcase
+  name="chart"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Bar chart",
+      subheading: "The default. Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+      props: { type: "bar" },
+      usage: usageBar,
+      code: extractCode("src/components/custom/blocks/ChartBlock.tsx"),
+    },
+    {
+      title: "Line chart",
+      subheading: "`type=\"line\"` draws a custom spline — smooth bezier curves instead of hard angles.",
+      props: { type: "line", showArea: false },
+      usage: usageLine,
+    },
+    {
+      title: "Area chart",
+      subheading: "Add `showArea` to fill under the same line with a gradient.",
+      props: { type: "line", showArea: true },
+      usage: usageArea,
+    },
+    {
+      title: "Pie chart",
+      subheading: "`type=\"pie\"` uses SVG stroke-dasharray math in a 1:1 container, shading slices from your theme color.",
+      props: { type: "pie" },
+      usage: usagePie,
+    },
+    {
+      title: "Donut chart",
+      subheading: "`type=\"donut\"` is the same geometry with the centre cut out.",
+      props: { type: "donut" },
+      usage: usageDonut,
+    },
+    {
+      title: "Without grid lines",
+      subheading: "Set `showGrid={false}` for a cleaner, axis-free look on bar and line charts.",
+      props: { type: "bar", showGrid: false },
+      usage: usageNoGrid,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -24,40 +111,7 @@ Because this rewrite drops all external animation libraries, it is **100% depend
 
 The engine uses standard Tailwind utility classes and injects its own lightweight `@keyframes` for the bar growth, line drawing, and pie-burst animations.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ChartBlock.tsx`.
-
----
-
-## Usage
-
-Define your `data` array by passing in a `label` and a numerical `value`. The engine handles all the scaling, height distribution, and polar math automatically.
-
-```tsx
-import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-
-const monthlySignups = [
-  { label: "Jan", value: 120 },
-  { label: "Feb", value: 340 },
-  { label: "Mar", value: 290 },
-  { label: "Apr", value: 500 },
-];
-
-export default function AnalyticsWidget() {
-  return (
-    <div className="w-full p-8 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
-      <h3 className="font-bold text-lg mb-6">User Signups</h3>
-
-      <ChartBlock
-        data={monthlySignups}
-        type="line"
-        showArea={true}
-        height={350}
-        valueSuffix=" users"
-      />
-    </div>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChartBlock.tsx`.
 
 ## Features
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.

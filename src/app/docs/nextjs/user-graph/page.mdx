@@ -1,62 +1,52 @@
-import { UserGraphShowcase } from "@/components/site/UserGraphShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # User Graph
 
 An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
 
-## Interactive Showcase
+## Examples
 
-Explore the interactive user graph below. Click on any tool node or team agent to highlight the active connection path across the hierarchy.
+Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge. The first example's **Code** tab contains the full component source.
 
-_Click the **Code** tab in the preview below to copy the exact usage code for your selected configuration._
+export const usageDefault = `import { UserGraph } from "@/components/custom/blocks/UserGraphBlock";
 
-<UserGraphShowcase />
+export default function UserGraphPage() {
+  return (
+    <div className="w-full p-8 bg-slate-50 dark:bg-zinc-950">
+      <UserGraph />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="user-graph"
+  colorControl
+  columns={1}
+  minHeight={0}
+  examples={[
+    {
+      title: "User graph",
+      subheading: "The default hierarchy. Click any orbit node to move the highlight and its label tooltip.",
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/UserGraphBlock.tsx"),
+    },
+  ]}
+/>
 
 ## Installation
 
 ### 1. Install Dependencies
 
-This component relies on `framer-motion` for smooth path animations and `lucide-react` for system icons. Run the following command:
+This component uses `lucide-react` for the channel and app icons.
 
 ```bash
-npm install framer-motion lucide-react
+npm install lucide-react
 ```
 
-### 2. Copy Source Code
+### 2. Copy the Component
 
-Create a new file `src/components/ui/user-graph.tsx` and paste the component code:
-
-```tsx
-"use client";
-
-import React, { useState } from "react";
-import { User, Mic, Phone, MessageSquare, Send, Mail, Code2, Plug, Sparkles } from "lucide-react";
-
-export function UserGraph() {
-  const [selectedAgent, setSelectedAgent] = useState<string | null>("analyst");
-
-  return (
-    <div className="relative w-full p-8 bg-slate-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-      {/* Top User Orbit Node */}
-      <div className="flex flex-col items-center">
-        <div className="size-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
-          <User className="size-7" />
-        </div>
-        <span className="text-xs font-bold mt-1 text-zinc-800 dark:text-zinc-200">You</span>
-      </div>
-
-      {/* Main Orchestrator Node */}
-      <div className="flex flex-col items-center my-8">
-        <div className="size-20 rounded-full ring-4 ring-primary/40 p-1 bg-white dark:bg-zinc-900 shadow-xl">
-          <img src="/avatars/alice.jpg" alt="Alice" className="size-full rounded-full object-cover" />
-        </div>
-        <h4 className="font-bold text-sm mt-1">Alice</h4>
-        <span className="text-xs text-zinc-500">Personal Assistant Orchestrator</span>
-      </div>
-    </div>
-  );
-}
-```
+Create `components/custom/blocks/UserGraphBlock.tsx` and copy the source from the **Code** tab of the first example above. The sample orbit tools, sub-agents and orchestrator ship inside it as defaults — replace them with props rather than editing the file.
 
 ## Features
 
@@ -104,16 +94,40 @@ Discover the key capabilities of the User Graph hierarchy tree:
     </thead>
     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
       <tr>
-        <td className="py-3 px-4 font-mono text-xs">initialSelectedAgent</td>
+        <td className="py-3 px-4 font-mono text-xs">color</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
-        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"analyst"</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The initial active sub-agent ID highlighted in the graph.</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"primary"</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Accent for the avatar ring, the selected orbit node and the ambient glow. Takes <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code>, any hex string, or <code>"primary"</code> to follow your theme.</td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">defaultSelectedTool</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"phone"</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The <code>id</code> of the orbit node highlighted on first render. Clicking another node takes over from there.</td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">orbitTools</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">OrbitTool[]</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">11 sample channels</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The ring of channel nodes. Each is <code>{"{ id, name, icon }"}</code>, where <code>icon</code> is any React component. They are spaced evenly, so the ring re-balances for any array length.</td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">subAgents</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">SubAgent[]</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">5 sample agents</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The bottom tier. Each entry carries <code>title</code>, <code>role</code>, <code>avatarUrl</code>, <code>status</code>, its <code>apps</code> badges, and two positions: <code>percentX</code> for the card and <code>svgX</code> for the connector curve in the 1000-wide viewBox.</td>
+      </tr>
+      <tr>
+        <td className="py-3 px-4 font-mono text-xs">orchestrator</td>
+        <td className="py-3 px-4 font-mono text-xs text-primary">{"{ name, role, avatarUrl }"}</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">sample lead</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The middle-tier node linking the orbit to the sub-agents.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">className</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
-        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">""</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Additional CSS classes applied to the outer container.</td>
+        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">undefined</td>
+        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Merged onto the outer container. Every other <code>div</code> prop is spread there too.</td>
       </tr>
     </tbody>
   </table>

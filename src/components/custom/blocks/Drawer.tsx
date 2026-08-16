@@ -132,11 +132,11 @@ export const DrawerContent = React.forwardRef<
   // Strict layout boundaries that prevent vertical/horizontal drift
   const sideConfig = {
     top: {
-      class: "top-0 left-0 right-0 w-full rounded-b-2xl",
+      class: "top-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-b-2xl",
       hidden: { y: "-100%", x: 0 },
     },
     bottom: {
-      class: "bottom-0 left-0 right-0 w-full rounded-t-2xl",
+      class: "bottom-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-t-2xl",
       hidden: { y: "100%", x: 0 },
     },
     left: {

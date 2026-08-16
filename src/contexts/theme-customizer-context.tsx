@@ -167,6 +167,27 @@ export function ThemeCustomizerProvider({
     setHydrated(true);
   }, []);
 
+  // The docs previews are same-origin iframes running their own copy of this
+  // provider, and each only reads localStorage once, on mount. A `storage`
+  // event fires in every *other* same-origin document when the key changes, so
+  // this is what carries a sidebar edit into previews that are already open —
+  // without it they keep whatever palette they booted with until reloaded.
+  useEffect(() => {
+    // e.key is null on localStorage.clear(), which we also want to follow.
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== null && e.key !== STORAGE_KEY) return;
+      const next = loadState();
+      // Bail out when nothing actually changed. Re-injecting also re-saves,
+      // which would fire another storage event back the other way and ping-pong
+      // between the parent and its frames; keeping `prev` stops the render.
+      setState((prev) =>
+        JSON.stringify(prev) === JSON.stringify(next) ? prev : next,
+      );
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   // Re-inject CSS variables whenever state or mode changes
   useEffect(() => {
     if (!hydrated) return;

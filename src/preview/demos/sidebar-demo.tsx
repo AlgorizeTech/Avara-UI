@@ -29,15 +29,22 @@ import { useState } from "react";
 export default function SidebarDemo({
   variant = "attached",
   themeColor = "primary",
+  defaultExpanded = true,
 }: {
   variant?: "attached" | "floating";
   themeColor?: string;
+  /** false starts the sidebar as a collapsed icon rail. */
+  defaultExpanded?: boolean;
 }) {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
     <div className="w-full h-[500px] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden relative">
-      <SidebarProvider color={themeColor} defaultExpanded={true}>
+      <SidebarProvider
+        key={`${variant}-${themeColor}-${defaultExpanded}`}
+        color={themeColor}
+        defaultExpanded={defaultExpanded}
+      >
         <Sidebar variant={variant}>
           <SidebarHeader>
             <SidebarBrand

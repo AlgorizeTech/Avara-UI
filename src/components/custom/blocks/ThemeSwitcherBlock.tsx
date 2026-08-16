@@ -221,7 +221,26 @@ ThemeSwitcherIcon.displayName = "ThemeSwitcherIcon";
 const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
   ({ theme, resolvedTheme, setTheme, className, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    React.useImperativeHandle(
+      ref,
+      () => containerRef.current as HTMLDivElement,
+    );
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          containerRef.current &&
+          !containerRef.current.contains(event.target as Node)
+        ) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     useEffect(() => {
       if (!menuRef.current) return;
@@ -246,7 +265,9 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
           duration: 0.15,
           ease: "power2.in",
           onComplete: () => {
-            gsap.set(menuRef.current, { display: "none" });
+            if (menuRef.current) {
+              gsap.set(menuRef.current, { display: "none" });
+            }
           },
         });
       }
@@ -254,14 +275,13 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
 
     return (
       <div
-        ref={ref}
+        ref={containerRef}
         className={cn("relative inline-block", className)}
         {...props}
       >
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
-          className="flex items-center gap-2 px-3 h-9 rounded-lg bg-zinc-100/80 dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800 hover:bg-zinc-200/80 dark:hover:bg-zinc-800/80 transition-colors shadow-sm text-sm font-medium text-zinc-700 dark:text-zinc-300"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="flex items-center gap-2 px-3.5 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-sm text-sm font-medium text-zinc-800 dark:text-zinc-200 cursor-pointer"
         >
           {resolvedTheme === "dark" ? (
             <Moon className="w-4 h-4" />
@@ -273,7 +293,7 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
 
         <div
           ref={menuRef}
-          className="absolute right-0 top-full mt-2 w-36 p-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 hidden"
+          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 hidden"
         >
           {[
             { id: "light", icon: Sun, label: "Light" },
@@ -285,15 +305,16 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
             return (
               <button
                 key={item.id}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setTheme(item.id);
                   setIsOpen(false);
                 }}
                 className={cn(
-                  "flex items-center w-full gap-2 px-2.5 py-2 text-sm font-medium rounded-lg transition-colors",
+                  "flex items-center w-full gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer",
                   isActive
-                    ? "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-zinc-100",
+                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-zinc-100",
                 )}
               >
                 <Icon className="w-4 h-4" />

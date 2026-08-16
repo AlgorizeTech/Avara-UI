@@ -4,12 +4,47 @@ A highly composable, accessible, and smoothly animated navigation menu built for
 
 This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different styles and colors.
+The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact. The first example's **Code** tab contains the full component source.
 
-- **Composition:** The menu relies on a specific hierarchy (`Menu` > `List` > `Item` > `Trigger` / `Content`) to ensure smooth animations.
-- **Dynamic Indicator:** The `NavigationMenuIndicator` automatically calculates the width and position of the active trigger and slides to it.
+export const usageDefault = `import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/custom/blocks/NavigationMenu";
+
+export default function TopNav() {
+  return (
+
+          Features
+
+                Security
+
+                Developers
+
+            Pricing
+
+        {/* Sits last in the list — it measures its siblings. */}
+
+  );
+}`;
+
+export const usageMinimal = `// Pill chrome removed; the indicator becomes a thin underline.
+
+  {/* … */}
+`;
+
+export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over a colored surface, so
+// give it something to blur.
+
+    {/* … */}
+  
+`;
 
 ## Installation
 
@@ -17,30 +52,29 @@ Use the control panel below to test the different styles and colors.
 
 Because this relies on standard React Context and GSAP for the smooth indicator sliding, it fits right into your existing architecture.
 
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/NavigationMenu.tsx`.
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NavigationMenu.tsx`.
 
----
+## Features
+Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
 
-## Usage
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-Define your navigation structure using the provided sub-components. The `value` prop on the `NavigationMenuItem` is required to link the trigger to its content.
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-```tsx
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
 
-export default function TopNav() {
-  return (
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
-            Products
+## Best Practices & Guidelines
 
-                  SaaS Platform
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
-                  Mobile App
-
-              Pricing
-
-  );
-}
-```
+## Props Reference
 
         Component
         Prop
@@ -63,12 +97,13 @@ export default function TopNav() {
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies the active color theme to the hover states, soft backgrounds,
-          and the sliding indicator. Fully supports custom hex codes.
+          and the sliding indicator. Fully supports custom hex codes;
+          unrecognised names fall back to "primary".
 
           NavigationMenuItem
 
@@ -92,26 +127,6 @@ export default function TopNav() {
 
           Manually forces the link into an active state, applying the soft
           background color of your currently selected theme.
-
-## Features
-Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ---
 

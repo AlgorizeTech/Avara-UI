@@ -4,40 +4,123 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
 
-## Interactive Showcase
+## Examples
 
-Use the controls below to experiment with different card layouts and visual variants. Enabling `Interactive Hover` converts the card into an actionable button-like element, adding elevation shadows and transform scaling when hovered.
+The sub-components handle their own padding, so cards stay balanced whatever you put in them. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+export default function NotificationCard() {
+  return (
+
+        Notifications
+        You have 3 unread messages.
+
+            System Update
+            A new version is available.
+
+            Account Notice
+            Please verify your email address.
+
+          Mark all as read
+
+  );
+}`;
+
+export const usageDefaultVariant = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+
+export default function ActionCards() {
+  // "default" drops the border and leans on the shadow alone.
+  return (
+
+             Download Report
+
+            Export your analytics data as a CSV file for external processing.
+
+             Import Data
+
+            Upload legacy customer profiles to merge into your active CRM.
+
+  );
+}`;
+
+export const usageFlat = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+
+export default function FlatCards() {
+  // "flat" tints the surface instead of raising it — good for nested panels.
+  return (
+
+             Download Report
+          
+          Export your analytics data as a CSV file.
+
+             Import Data
+          
+          Upload legacy customer profiles into your CRM.
+
+  );
+}`;
+
+export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+
+export default function ClickableCards() {
+  // interactive adds hover elevation, a lift, and an active press scale.
+  return (
+    
+       console.log("Download")}>
+
+             Download Report
+          
+          Export your analytics data as a CSV file.
+
+       console.log("Import")}>
+
+             Import Data
+          
+          Upload legacy customer profiles into your CRM.
+
+  );
+}`;
+
+export const usageStats = `import { Card, CardContent, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+
+export default function StatGrid() {
+  return (
+
+        {/* Override the header's stack to lay the title and icon side by side */}
+        
+          Total Revenue
+
+          $45,231.89
+          +20.1% from last month
+
+          Subscriptions
+
+          +2350
+          +180.1% from last month
+
+          Active Now
+
+          +573
+          +201 since last hour
+
+  );
+}`;
 
 ## Installation
 
 ### Copy the Component
 
-This component suite is completely dependency-free, relying only on standard Tailwind utility classes.
+This component is dependency-free — a set of composable wrappers over Tailwind classes.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/CardBlock.tsx`.
-
----
-
-## Usage
-
-The Card component uses a composable architecture. You wrap your content in the main `` container, and then use the sub-components to structure the interior layout.
-
-You do not need to use all the sub-components. For example, metric/statistic cards often omit the `` entirely.
-
-```tsx
-
-export default function CheckoutForm() {
-  return (
-
-        Payment Details
-        
-          Enter your credit card information below.
-
-          Submit Payment
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/CardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.

@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-03T17:25:21.735Z
-**Total files:** 109
+**Generated at:** 2026-08-13T02:47:09.705Z
+**Total files:** 110
 
 ## Available Files
 
@@ -38,6 +38,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/data-table](/docs/nextjs-data-table.md) - Source: `nextjs\data-table\page.mdx`
 - [nextjs/date-picker](/docs/nextjs-date-picker.md) - Source: `nextjs\date-picker\page.mdx`
 - [nextjs/deployment](/docs/nextjs-deployment.md) - Source: `nextjs\deployment\page.mdx`
+- [nextjs/design-components-folder](/docs/nextjs-design-components-folder.md) - Source: `nextjs\design-components-folder\page.mdx`
 - [nextjs/dialog](/docs/nextjs-dialog.md) - Source: `nextjs\dialog\page.mdx`
 - [nextjs/dock](/docs/nextjs-dock.md) - Source: `nextjs\dock\page.mdx`
 - [nextjs/drawer](/docs/nextjs-drawer.md) - Source: `nextjs\drawer\page.mdx`
@@ -110,6 +111,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/tooltip](/docs/nextjs-tooltip.md) - Source: `nextjs\tooltip\page.mdx`
 - [nextjs/typescript](/docs/nextjs-typescript.md) - Source: `nextjs\typescript\page.mdx`
 - [nextjs/typography](/docs/nextjs-typography.md) - Source: `nextjs\typography\page.mdx`
+- [nextjs/user-graph](/docs/nextjs-user-graph.md) - Source: `nextjs\user-graph\page.mdx`
 - [nextjs/verify-badge](/docs/nextjs-verify-badge.md) - Source: `nextjs\verify-badge\page.mdx`
 - [nextjs/vertical-tabs](/docs/nextjs-vertical-tabs.md) - Source: `nextjs\vertical-tabs\page.mdx`
 - [nextjs/video-accordion](/docs/nextjs-video-accordion.md) - Source: `nextjs\video-accordion\page.mdx`

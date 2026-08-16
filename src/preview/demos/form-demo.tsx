@@ -24,10 +24,13 @@ export default function FormDemo({
   demoType = "zod",
   errorStyle = "glitch",
   color = "primary",
+  showAll,
 }: {
   demoType?: "native" | "zod";
   errorStyle?: "glitch" | "default";
   color?: FormColor | string;
+  /** Render-all modes for the docs gallery. Omitted = previous behavior. */
+  showAll?: "error-styles" | "submitting" | "bare";
 }) {
   // Native State Logic
   const [nativeEmail, setNativeEmail] = useState("");
@@ -72,6 +75,92 @@ export default function FormDemo({
       }, 1500);
     });
   };
+
+  if (showAll === "error-styles") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[500px] relative z-10 overflow-hidden">
+        <div className="w-full max-w-lg mx-auto">
+          <FormWrapper
+            key={`errors-${color}`}
+            title="Error Styles"
+            description="The same message rendered with each errorVariant."
+            color={color}
+          >
+            <FormField
+              label="Glitch (default)"
+              error="Invalid corporate email format detected."
+              errorVariant="glitch"
+            >
+              <InputBlock
+                type="email"
+                placeholder="name@company.com"
+                defaultValue="invalid-email"
+                color={color}
+              />
+            </FormField>
+
+            <FormField
+              label="Default"
+              error="Invalid corporate email format detected."
+              errorVariant="default"
+            >
+              <InputBlock
+                type="email"
+                placeholder="name@company.com"
+                defaultValue="invalid-email"
+                color={color}
+              />
+            </FormField>
+          </FormWrapper>
+        </div>
+      </div>
+    );
+  }
+
+  if (showAll === "submitting") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[500px] relative z-10 overflow-hidden">
+        <div className="w-full max-w-lg mx-auto">
+          <FormWrapper
+            key={`submitting-${color}`}
+            title="Newsletter Signup"
+            description="FormSubmit swaps its label for a spinner and disables itself while isSubmitting is true."
+            color={color}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <FormField label="Email Address">
+              <InputBlock
+                type="email"
+                placeholder="Enter your email..."
+                defaultValue="ada@example.com"
+                color={color}
+              />
+            </FormField>
+
+            <FormSubmit isSubmitting>Subscribe Now</FormSubmit>
+          </FormWrapper>
+        </div>
+      </div>
+    );
+  }
+
+  if (showAll === "bare") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[500px] relative z-10 overflow-hidden">
+        <div className="w-full max-w-lg mx-auto">
+          <FormWrapper key={`bare-${color}`} color={color}>
+            <FormField label="Display Name">
+              <InputBlock placeholder="Ada Lovelace" color={color} />
+            </FormField>
+
+            <FormField label="Time Zone">
+              <InputBlock placeholder="UTC+00:00" color={color} />
+            </FormField>
+          </FormWrapper>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[500px] relative z-10 overflow-hidden">

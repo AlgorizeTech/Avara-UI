@@ -93,8 +93,16 @@ const themeColors = {
 
 export default function MasonryGridDemo({
   triggerKey = 0,
+  columnsClassName = "columns-1 sm:columns-2 lg:columns-3",
+  gapClassName = "gap-6",
+  animateIn = true,
+  staggerDelay,
 }: {
   triggerKey?: number;
+  columnsClassName?: string;
+  gapClassName?: string;
+  animateIn?: boolean;
+  staggerDelay?: number;
 }) {
   return (
     <div className="w-full relative p-4 sm:p-8 md:p-12 bg-[#f8f9fa] dark:bg-[#0a0a0a] rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
@@ -102,10 +110,12 @@ export default function MasonryGridDemo({
       <div className="absolute bottom-0 right-1/4 w-[30rem] h-[30rem] bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
 
       <MasonryGrid
-        key={triggerKey}
+        key={`${triggerKey}-${columnsClassName}-${gapClassName}-${animateIn}-${staggerDelay}`}
         items={demoItems}
-        columnsClassName="columns-1 sm:columns-2 lg:columns-3"
-        gapClassName="gap-6"
+        columnsClassName={columnsClassName}
+        gapClassName={gapClassName}
+        animateIn={animateIn}
+        staggerDelay={staggerDelay}
         className="relative z-10"
         renderItem={(item) => {
           if (item.type === "image") {

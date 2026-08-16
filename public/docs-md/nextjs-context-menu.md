@@ -6,49 +6,122 @@ Building a Context Menu is difficult because it involves intercepting the browse
 
 This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
 
-## Interactive Showcase
+## Examples
 
-Right-click anywhere inside the dashed box below to see the context menu in action. Try clicking near the extreme edges of the dashed box to see how the boundary-collision math prevents the menu from falling off the screen.
+Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+
+export default function RightClickArea() {
+  return (
+    
+      {/* This whole element intercepts the right-click */}
+      
+        Right-click anywhere inside this box
+
+      {/* Rendered in a portal at the cursor position */}
+      
+         console.log("Edit")}>Edit File
+         console.log("Duplicate")}>Duplicate
+         console.log("Rename")}>Rename
+
+  );
+}`;
+
+export const usageFull = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+
+export default function DocumentMenu() {
+  const run = (action: string) => console.log(action);
+
+  return (
+
+        Right-click anywhere inside this box
+
+        Document Actions
+         run("Edit")}>
+          
+          Edit File
+          ⌘E
+        
+         run("Download")}>
+          
+          Download PDF
+          ⌘S
+        
+         run("Share")}>
+          
+          Share Link
+
+        Clipboard
+         run("Copy")}>
+          
+          Copy
+          ⌘C
+
+        {/* disabled dims the row and swallows the click */}
+
+          Cut
+          ⌘X
+
+        {/* className restyles a single destructive row */}
+         run("Delete")}
+          className="text-red-600 focus:bg-red-50 focus:text-red-700"
+        >
+          
+          Delete
+          ⌘⌫
+
+  );
+}`;
+
+export const usageInset = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+
+export default function ViewMenu() {
+  const run = (action: string) => console.log(action);
+
+  return (
+
+        Right-click anywhere inside this box
+
+        {/* inset pads the left edge so text-only rows line up with icon rows */}
+        View
+         run("List")}>List
+         run("Grid")}>Grid
+
+         run("Download")}>
+          
+          Download PDF
+
+  );
+}`;
 
 ## Installation
 
 ### Copy the Component
 
-This component is completely native and relies only on `react-dom` for the portal functionality.
+This component is **100% dependency-free**. It uses React's `createPortal` to render the menu above everything else, plus boundary-collision maths so it never opens off screen.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ContextMenuBlock.tsx`.
-
----
-
-## Usage
-
-A `` component requires a Trigger area and a Content portal. The `` wraps any content you want to act as the right-click listener zone.
-
-```tsx
-
-export default function RightClickTable() {
-  return (
-    
-      {/* 1. This entire DIV now intercepts right-clicks */}
-      
-        Right-click anywhere inside this div
-
-      {/* 2. The menu that appears at the cursor */}
-      
-         alert("Back clicked")}>
-          Back
-          ⌘[
-
-          Forward
-          ⌘]
-
-         alert("Reload clicked")}>
-          Reload
-          ⌘R
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/ContextMenuBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.

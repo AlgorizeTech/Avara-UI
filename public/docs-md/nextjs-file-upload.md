@@ -8,11 +8,115 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
-## Interactive Showcase
+## Examples
 
-Drag and drop some real files (images, PDFs) from your desktop into the zone below, or click to browse. The showcase includes a built-in network simulator.
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume. The first example's **Code** tab contains the full component source.
 
-_Note: The simulation will randomly force some files to "fail" at 89% to demonstrate the Inline Retry feature. Click Retry to see it resume seamlessly!_
+export const usageFlow = `"use client";
+
+export default function DocumentUploader() {
+  const [queue, setQueue] = useState([]);
+
+  const handleFilesAdded = (nativeFiles) => {
+    // 1. Turn raw files into your own state objects
+    const newItems = nativeFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      progress: 0,
+      status: "idle",
+      // Instant client-side thumbnail for images
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+
+    setQueue((prev) => [...newItems, ...prev]);
+
+    // 2. Kick off your real POST per file and update each item's
+    //    progress/status from the XHR upload-progress listener.
+  };
+
+  return (
+
+      {queue.length > 0 && (
+        
+          {queue.map((item) => (
+             console.log("Retry upload for", id)}
+              onRemove={(id) =>
+                setQueue((prev) => prev.filter((q) => q.id !== id))
+              }
+            />
+          ))}
+        
+      )}
+    
+  );
+}`;
+
+export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
+
+export default function AvatarDropzone() {
+  // accept is the native input string; maxSize is in MB and is echoed
+  // in the helper text under the icon.
+  return (
+     console.log(files)}
+      accept="image/png,image/jpeg"
+      maxSize={5}
+    />
+  );
+}`;
+
+export const usageStates = `import { UploadItem } from "@/components/custom/blocks/UploadBlock";
+
+// status is the state machine that drives every colour, icon and action
+// on the row. progress/timeLeft/errorMessage come along for the ride.
+const queue = [
+  {
+    id: "1",
+    file: new File([], "quarterly-report.pdf"),
+    progress: 42,
+    status: "uploading",
+    timeLeft: 12,
+  },
+  { id: "2", file: new File([], "product-shot.png"), progress: 66, status: "paused" },
+  {
+    id: "3",
+    file: new File([], "launch-teaser.mp4"),
+    progress: 89,
+    status: "error",
+    errorMessage: "Connection lost",
+  },
+  {
+    id: "4",
+    file: new File([], "brand-guidelines.pdf"),
+    progress: 100,
+    status: "success",
+    timeLeft: 0,
+  },
+];
+
+export default function UploadStates() {
+  return (
+    
+      {queue.map((item) => (
+         {}} onRemove={() => {}} />
+      ))}
+    
+  );
+}`;
+
+export const usageAnimated = `"use client";
+
+// UploadItem is layout-agnostic, so wrap each row to animate the queue.
+export default function AnimatedQueue({ queue, onRetry, onRemove }) {
+  return (
+    
+      {queue.map((item) => (
+
+      ))}
+    
+  );
+}`;
 
 ## Installation
 
@@ -24,53 +128,11 @@ This component relies heavily on **GSAP** to manage the smooth progress bar fill
 npm install gsap lucide-react
 ```
 
+The animated-queue example additionally uses `framer-motion`, which is optional — `UploadItem` renders fine without it.
+
 ### Copy the Component
 
-You can copy the full layout code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/UploadBlock.tsx.
-
-## Implementation
-
-```tsx
-
-export default function DocumentUploader() {
-  const [queue, setQueue] = useState([]);
-
-  const handleFilesAdded = (nativeFiles: File[]) => {
-    // 1. Transform raw files into your state objects
-    const newItems = nativeFiles.map((file) => ({
-      id: Math.random().toString(),
-      file,
-      progress: 0,
-      status: "uploading" as const,
-      // Create local preview if image
-      previewUrl: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : undefined,
-    }));
-
-    setQueue((prev) => [...prev, ...newItems]);
-
-    // 2. Map over files and trigger your actual Axios/Fetch POST requests here
-    // update queue state inside your XHR upload progress listeners
-  };
-
-  return (
-
-      {queue.length > 0 && (
-        
-          {queue.map((item) => (
-             console.log("Retry API call for", id)}
-              onRemove={(id) =>
-                setQueue((prev) => prev.filter((q) => q.id !== id))
-              }
-            />
-          ))}
-        
-      )}
-    
-  );
-}
-```
+Create a new file at `components/custom/blocks/UploadBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -173,7 +235,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           status
 
-          "idle" | "uploading" | "error" | "success"
+          "idle" | "uploading" | "paused" | "error" | "success"
 
           Required
 

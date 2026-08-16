@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import gsap from "gsap";
 import { AlertCircle, Info, X } from "lucide-react";
 import React, {
@@ -142,7 +143,7 @@ const ModalRoot = ({
   );
 };
 
-const ModalOverlay = () => {
+const ModalOverlay = ({ className }: { className?: string }) => {
   const { open, onOpenChange } = useContext(ModalContext)!;
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -165,7 +166,10 @@ const ModalOverlay = () => {
     <div
       ref={overlayRef}
       onClick={() => onOpenChange(false)}
-      className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+      className={cn(
+        "absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto",
+        className,
+      )}
     />
   );
 };
@@ -233,16 +237,29 @@ export function ModalBlock({
   color?: ModalColor;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [inviteRole, setInviteRole] = useState("Viewer");
   const { theme, style } = getThemeStyles(color);
 
   const variantStyles = {
     default:
       "bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800",
     glass:
-      "bg-white/60 dark:bg-black/60 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10",
+      "bg-white/60 dark:bg-zinc-900/50 backdrop-blur-2xl backdrop-saturate-150 rounded-3xl shadow-2xl border border-white/40 dark:border-white/10",
     minimal: "bg-white dark:bg-zinc-900 rounded-xl shadow-lg border-none",
     bordered:
       "bg-white dark:bg-zinc-950 border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)]",
+  };
+
+  // A backdrop-filter samples everything painted behind the element — including
+  // this overlay. With the default bg-black/60 scrim there is nothing left to
+  // frost but the scrim itself, so the glass panel composites translucent white
+  // over near-black and reads as a flat sheet of grey mud. Glass therefore gets
+  // a light scrim: it still dims the page, but the colour behind survives the blur.
+  const overlayStyles: Record<ModalVariant, string> = {
+    default: "",
+    glass: "bg-zinc-950/25",
+    minimal: "",
+    bordered: "",
   };
 
   const containerClass = cn(
@@ -263,7 +280,7 @@ export function ModalBlock({
       </button>
 
       <ModalRoot open={isOpen} onOpenChange={setIsOpen} type={type}>
-        <ModalOverlay />
+        <ModalOverlay className={overlayStyles[variant]} />
         <ModalContent className={containerClass}>
           {/* --- STANDARD MODAL --- */}
           {type === "standard" && (
@@ -344,16 +361,17 @@ export function ModalBlock({
                   <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
                     Role & Permissions
                   </label>
-                  <select
-                    className={cn(
-                      "w-full h-11 px-3 rounded-lg border bg-transparent focus:outline-none focus:ring-2 border-zinc-200 dark:border-zinc-800 transition-shadow text-zinc-900 dark:text-zinc-100 appearance-none",
-                      theme.ring,
-                    )}
-                  >
-                    <option>Viewer</option>
-                    <option>Editor</option>
-                    <option>Administrator</option>
-                  </select>
+                  <SelectBlock
+                    options={[
+                      { label: "Viewer", value: "Viewer" },
+                      { label: "Editor", value: "Editor" },
+                      { label: "Administrator", value: "Administrator" },
+                    ]}
+                    value={inviteRole}
+                    onChange={setInviteRole}
+                    color={color}
+                    placeholder="Select a role"
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
@@ -392,9 +410,11 @@ export function ModalBlock({
           {/* --- FULLSCREEN SHEET MODAL --- */}
           {type === "fullscreen" && (
             <>
-              <div className="px-8 py-6 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between shrink-0">
-                <div>
-                  <h2 className="text-2xl font-black text-zinc-900 dark:text-white">
+              <div className="px-5 sm:px-8 py-4 sm:py-6 border-b border-zinc-100 dark:border-zinc-800/50 flex items-start sm:items-center justify-between gap-3 shrink-0">
+                {/* min-w-0 lets the heading wrap instead of pushing the close
+                    button out from under the pointer on narrow screens. */}
+                <div className="min-w-0">
+                  <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
                     Project Configuration
                   </h2>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
@@ -403,13 +423,13 @@ export function ModalBlock({
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:rotate-90 transition-all duration-300"
+                  className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:rotate-90 transition-all duration-300"
                 >
                   <X size={20} />
                 </button>
               </div>
-              <div className="p-8 flex-1 overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-5 sm:p-8 flex-1 overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                   <div className="space-y-6">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
                       General
@@ -427,14 +447,18 @@ export function ModalBlock({
                   </div>
                 </div>
               </div>
-              <div className="px-8 py-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 shrink-0 flex justify-between items-center">
+              {/* Three side-by-side buttons need ~440px of run; the sheet is
+                  ~290px wide inside its padding on a phone, so they stack.
+                  Reversed so the primary action sits on top, matching the
+                  standard modal's footer. */}
+              <div className="px-5 sm:px-8 py-4 sm:py-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 shrink-0 flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
+                  className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
                 >
                   Delete Project
                 </button>
-                <div className="flex gap-3">
+                <div className="flex flex-col-reverse sm:flex-row gap-3">
                   <button
                     onClick={() => setIsOpen(false)}
                     className="px-6 py-3 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"

@@ -4,9 +4,107 @@ Styles for headings, paragraphs, lists, and inline text elements.
 
 While Tailwind provides fantastic utility classes for text, manually copying strings like `scroll-m-20 text-4xl font-extrabold tracking-tight` onto every single `` tag in your application is tedious and error-prone. The `TypographyBlock` provides a collection of semantic React components that standardize your vertical rhythm, sizing, and dark-mode colors across your entire project.
 
-## Interactive Showcase
+## Examples
 
-Review the preview below to see how the various typography components flow together to create a beautifully structured document.
+Every component is a thin semantic wrapper around a native HTML tag, so you compose them exactly like the tags themselves. The first example's **Code** tab contains the full component source.
+
+export const usageArticle = `import {
+  Blockquote,
+  H1,
+  H2,
+  H3,
+  InlineCode,
+  Large,
+  Lead,
+  List,
+  Muted,
+  P,
+  Small,
+} from "@/components/custom/blocks/TypographyBlock";
+
+export default function BlogPost() {
+  return (
+    
+      The Elements of UI
+      
+        A comprehensive guide to composing beautiful web applications.
+
+        Rather than scattering raw classes like{" "}
+        text-4xl font-extrabold across hundreds of
+        files, standardized components keep the rhythm predictable.
+
+      Why semantic tags matter
+      
+        "Good typography guides the reader without calling attention to itself."
+
+      Key Benefits
+      
+        Consistent margins applied automatically.
+        Perfect dark mode contrast ratios.
+
+        Written by Nexus
+        
+          Author Status: Verified
+          Published April 2026
+
+  );
+}`;
+
+export const usageHeadings = `import { H1, H2, H3, H4 } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Headings() {
+  return (
+    <>
+      The Elements of UI
+      Why semantic tags matter
+      Key benefits
+      A minor aside
+    
+  );
+}`;
+
+export const usageParagraph = `import { InlineCode, Lead, P } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Body() {
+  return (
+    <>
+      A comprehensive guide to composing beautiful web apps.
+      
+        Standardized components keep the rhythm predictable — no more pasting{" "}
+        text-4xl font-extrabold tracking-tight by hand.
+      
+      A following paragraph picks up its own top margin automatically.
+    
+  );
+}`;
+
+export const usageBlockquote = `import { Blockquote } from "@/components/custom/blocks/TypographyBlock";
+
+  "Good typography is like a good map. It guides the reader gracefully from
+  start to finish without calling attention to itself."
+`;
+
+export const usageList = `import { List } from "@/components/custom/blocks/TypographyBlock";
+
+// \`List\` styles the marker and spacing; the \`li\` children stay yours.
+
+  Consistent top and bottom margins automatically applied.
+  Perfect dark mode contrast ratios.
+  Semantic HTML attributes preserved.
+`;
+
+export const usageSupporting = `import { Large, Muted, Small } from "@/components/custom/blocks/TypographyBlock";
+
+export default function Byline() {
+  return (
+    
+      Written by Nexus
+      
+        Author Status: Verified
+        Published April 2026
+
+  );
+}`;
 
 ## Installation
 
@@ -14,37 +112,7 @@ Review the preview below to see how the various typography components flow toget
 
 This suite of components simply wraps native HTML tags with carefully crafted Tailwind CSS strings. It is completely dependency-free.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TypographyBlock.tsx`.
-
----
-
-## Usage
-
-Simply import the semantic wrappers you need and use them exactly like standard HTML tags.
-
-```tsx
-
-export default function BlogPost() {
-  return (
-    
-      Building Next-Gen UIs
-      A deep dive into modular component architecture.
-
-        When building large-scale applications, you want to avoid repeating
-        yourself. This is where Typography components
-        shine.
-
-      The Core Principles
-      
-        Maintain semantic HTML structure
-        Automate vertical spacing (margins)
-        Ensure accessible color contrast
-
-        Consistency is the easiest way to make your app look professional.
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TypographyBlock.tsx`.
 
 ## Props Reference
 

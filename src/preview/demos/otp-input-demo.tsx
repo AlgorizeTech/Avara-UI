@@ -13,15 +13,19 @@ export default function OtpInputDemo({
   isMasked = false,
   isDisabled = false,
   color = "primary",
+  showAll,
 }: {
   variant?: OtpVariant;
   length?: number;
   isMasked?: boolean;
   isDisabled?: boolean;
   color?: string;
+  /** Render-all mode: every supported length in one frame. */
+  showAll?: "lengths";
 }) {
   const [currentValue, setCurrentValue] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const [lengthValues, setLengthValues] = useState<Record<number, string>>({});
 
   const handleComplete = (val: string) => {
     setIsComplete(true);
@@ -30,6 +34,31 @@ export default function OtpInputDemo({
       setIsComplete(false);
     }, 2000);
   };
+
+  if (showAll === "lengths") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
+        <div className="flex w-full max-w-sm flex-col items-center gap-8">
+          {[4, 6, 8].map((len) => (
+            <div key={len} className="flex w-full flex-col items-center gap-2">
+              <span className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                {len} digits
+              </span>
+              <OtpInputBlock
+                length={len}
+                value={lengthValues[len] ?? ""}
+                onChange={(val) =>
+                  setLengthValues((prev) => ({ ...prev, [len]: val }))
+                }
+                variant={variant}
+                color={color}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">

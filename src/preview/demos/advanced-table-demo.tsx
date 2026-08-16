@@ -5,9 +5,27 @@ import {
   TableColor,
   TableColumn,
 } from "@/components/custom/blocks/AdvancedTableBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useState } from "react";
+
+const ROLE_OPTIONS = [
+  { label: "— No change —", value: "" },
+  { label: "Admin", value: "Admin" },
+  { label: "Editor", value: "Editor" },
+  { label: "Viewer", value: "Viewer" },
+  { label: "Manager", value: "Manager" },
+  { label: "Developer", value: "Developer" },
+];
+
+const STATUS_OPTIONS = [
+  { label: "— No change —", value: "" },
+  { label: "Active", value: "Active" },
+  { label: "Inactive", value: "Inactive" },
+  { label: "Pending", value: "Pending" },
+  { label: "Banned", value: "Banned" },
+];
 
 const now = Date.now();
 const ago = (d: number, h: number = 0) => now - (d * 86400000 + h * 3600000);
@@ -172,10 +190,13 @@ export default function AdvancedTableDemo({
   color,
   searchable = true,
   selectable = true,
+  example,
 }: {
   color?: TableColor | string;
   searchable?: boolean;
   selectable?: boolean;
+  /** Swaps the floating toolbar for a custom `batchActions` renderer. */
+  example?: "default" | "custom-batch-actions";
 }) {
   const [data, setData] = useState<Employee[]>(INITIAL_DATA);
 
@@ -317,7 +338,7 @@ export default function AdvancedTableDemo({
   return (
     <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl border border-border/70 bg-card p-2 sm:p-6 lg:p-8 overflow-hidden relative">
       <AdvancedTableBlock
-        key={`${searchable}-${selectable}`}
+        key={`${searchable}-${selectable}-${example}`}
         data={data}
         columns={columns}
         primaryKey="id"
@@ -327,6 +348,28 @@ export default function AdvancedTableDemo({
         itemsPerPageOptions={[5, 10, 25, 50]}
         onBatchDelete={handleBatchDelete}
         onBatchEdit={handleOpenEditModal}
+        batchActions={
+          example === "custom-batch-actions"
+            ? (selectedIds, clearSelection) => (
+                <>
+                  <button
+                    onClick={() =>
+                      console.log("Exporting", selectedIds.length, "rows")
+                    }
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                  >
+                    Export CSV
+                  </button>
+                  <button
+                    onClick={clearSelection}
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                  >
+                    Clear
+                  </button>
+                </>
+              )
+            : undefined
+        }
       />
 
       {/* CUSTOM EDIT MODAL */}
@@ -366,35 +409,26 @@ export default function AdvancedTableDemo({
             <label className="block text-[12px] font-semibold text-[#374151] dark:text-zinc-300 mb-[5px] uppercase tracking-[0.04em]">
               Role
             </label>
-            <select
+            <SelectBlock
+              options={ROLE_OPTIONS}
               value={editRole}
-              onChange={(e) => setEditRole(e.target.value)}
-              className="w-full p-[9px_12px] border-[1.5px] border-[#e5e7eb] dark:border-zinc-700 rounded-[9px] text-[14px] bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 outline-none focus:border-indigo-600 focus:ring-[3px] focus:ring-indigo-600/10 transition-all"
-            >
-              <option value="">— No change —</option>
-              <option value="Admin">Admin</option>
-              <option value="Editor">Editor</option>
-              <option value="Viewer">Viewer</option>
-              <option value="Manager">Manager</option>
-              <option value="Developer">Developer</option>
-            </select>
+              onChange={setEditRole}
+              color="indigo"
+              inputSize="sm"
+            />
           </div>
 
           <div className="mb-3.5">
             <label className="block text-[12px] font-semibold text-[#374151] dark:text-zinc-300 mb-[5px] uppercase tracking-[0.04em]">
               Status
             </label>
-            <select
+            <SelectBlock
+              options={STATUS_OPTIONS}
               value={editStatus}
-              onChange={(e) => setEditStatus(e.target.value)}
-              className="w-full p-[9px_12px] border-[1.5px] border-[#e5e7eb] dark:border-zinc-700 rounded-[9px] text-[14px] bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 outline-none focus:border-indigo-600 focus:ring-[3px] focus:ring-indigo-600/10 transition-all"
-            >
-              <option value="">— No change —</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Pending">Pending</option>
-              <option value="Banned">Banned</option>
-            </select>
+              onChange={setEditStatus}
+              color="indigo"
+              inputSize="sm"
+            />
           </div>
 
           <div className="flex gap-2.5 mt-[22px]">

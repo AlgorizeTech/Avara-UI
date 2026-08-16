@@ -10,11 +10,12 @@ import {
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
 import { Settings, Trash2, UserPlus } from "lucide-react";
+import { useState } from "react";
 
 export default function DialogDemo({
   layout = "standard",
 }: {
-  layout?: "standard" | "form" | "destructive";
+  layout?: "standard" | "form" | "destructive" | "no-close" | "controlled";
 }) {
   return (
     <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
@@ -134,6 +135,79 @@ export default function DialogDemo({
           </DialogContent>
         </Dialog>
       )}
+
+      {layout === "no-close" && (
+        <Dialog>
+          <DialogTrigger>
+            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+              <Settings className="w-4 h-4" /> Accept terms
+            </button>
+          </DialogTrigger>
+          <DialogContent hideCloseButton>
+            <DialogHeader>
+              <DialogTitle>Terms of Service</DialogTitle>
+              <DialogDescription>
+                There is no “X” here — the user has to pick one of the buttons
+                below (or press Escape).
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <div className="flex w-full sm:w-auto gap-2">
+                <button className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+                  Decline
+                </button>
+                <button className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+                  Accept
+                </button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {layout === "controlled" && <ControlledDialog />}
     </div>
+  );
+}
+
+/** Open state owned by the parent, so the dialog can close itself after work finishes. */
+function ControlledDialog() {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = () => {
+    setSaving(true);
+    // Stand-in for an API call.
+    setTimeout(() => {
+      setSaving(false);
+      setOpen(false);
+    }, 1200);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+          <Settings className="w-4 h-4" /> Save settings
+        </button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Save settings</DialogTitle>
+          <DialogDescription>
+            The dialog closes itself once the save finishes.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+          >
+            {saving ? "Saving…" : "Save changes"}
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

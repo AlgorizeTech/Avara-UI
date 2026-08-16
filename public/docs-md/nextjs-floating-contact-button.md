@@ -2,9 +2,31 @@
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
-## Interactive Showcase
+## Examples
 
-Test out the interactive chat box below. Type a message and hit enter to see simulated typing indicators and auto-replies. Use the control panel to flip screen corners or customize brand colors in real-time.
+Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function SupportWidget() {
+  return (
+     sendToInbox(message)}
+    />
+  );
+}`;
+
+export const usageLeft = `// Anchors to the opposite corner; the popup and its origin flip with it.
+`;
+
+export const usageClosed = `// Start collapsed — the usual behaviour on a real page.
+`;
+
+export const usageBranding = `// \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+`;
+
+export const usageAccent = `// \`defaultAccentColor\` takes a token name or any CSS color. Pass
+// \`localStorageKey\` and the widget picks up your app's stored brand color.
+`;
 
 ## Installation
 
@@ -18,26 +40,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/FloatingContactButtonBlock.tsx
-
-## Implementation
-
-```tsx
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-
-        {children}
-
-        {/* Placed at the root level of your application */}
-
-  );
-}
-```
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/FloatingContactButtonBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

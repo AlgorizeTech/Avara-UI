@@ -1,15 +1,87 @@
-import { FloatingContactButtonShowcase } from "@/components/site/FloatingContactButtonShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Floating Contact Button
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
 
-## Interactive Showcase
+## Examples
 
-Test out the interactive chat box below. Type a message and hit enter to see simulated typing indicators and auto-replies. Use the control panel to flip screen corners or customize brand colors in real-time.
+Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`. The first example's **Code** tab contains the full component source.
 
-<FloatingContactButtonShowcase />
+export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function SupportWidget() {
+  return (
+    <FloatingContactButtonBlock
+      title="Chat with us"
+      subtitle="We typically reply in a few minutes"
+      position="bottom-right"
+      onSendMessage={(message) => sendToInbox(message)}
+    />
+  );
+}`;
+
+export const usageLeft = `// Anchors to the opposite corner; the popup and its origin flip with it.
+<FloatingContactButtonBlock position="bottom-left" />`;
+
+export const usageClosed = `// Start collapsed — the usual behaviour on a real page.
+<FloatingContactButtonBlock defaultOpen={false} />`;
+
+export const usageBranding = `// \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+<FloatingContactButtonBlock
+  title="Nexus Support"
+  subtitle="Online · replies in ~2 min"
+  avatarUrl="/avatars/support.jpg"
+/>`;
+
+export const usageAccent = `// \`defaultAccentColor\` takes a token name or any CSS color. Pass
+// \`localStorageKey\` and the widget picks up your app's stored brand color.
+<FloatingContactButtonBlock
+  defaultAccentColor="#10b981"
+  localStorageKey="primaryColor"
+/>`;
+
+<ExampleShowcase
+  name="floating-contact-button"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Floating contact button",
+      subheading: "A corner-anchored trigger that expands into a glass chat panel. `onSendMessage` is where you forward the text.",
+      props: { position: "bottom-right", defaultOpen: true },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/FloatingContactButtonBlock.tsx"),
+    },
+    {
+      title: "Bottom left",
+      subheading: "`position=\"bottom-left\"` moves the anchor and mirrors the popup's transform origin.",
+      props: { position: "bottom-left", defaultOpen: true },
+      usage: usageLeft,
+    },
+    {
+      title: "Collapsed",
+      subheading: "`defaultOpen={false}` is the state a real page ships — the widget waits as a single button.",
+      props: { position: "bottom-right", defaultOpen: false },
+      usage: usageClosed,
+    },
+    {
+      title: "Branded header",
+      subheading: "Set `title`, `subtitle` and `avatarUrl` to make the panel read as your support team rather than a generic bot.",
+      props: {
+        position: "bottom-right",
+        defaultOpen: true,
+        title: "Nexus Support",
+        subtitle: "Online · replies in ~2 min",
+        avatarUrl: "https://i.pravatar.cc/150?u=support",
+      },
+      usage: usageBranding,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -23,38 +95,7 @@ npm install framer-motion lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/FloatingContactButtonBlock.tsx
-
-## Implementation
-
-```tsx
-import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-
-        {/* Placed at the root level of your application */}
-        <FloatingContactButtonBlock
-          containerMode="fixed"
-          defaultAccentColor="#6366f1"
-          localStorageKey="primaryColor"
-          position="bottom-right"
-          subtitle="We typically reply in under 5 minutes"
-          title="Chat with Engineering"
-        />
-      </body>
-    </html>
-  );
-}
-```
-
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/FloatingContactButtonBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

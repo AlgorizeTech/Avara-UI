@@ -1,4 +1,5 @@
-import { ResizableShowcase } from "@/components/site/ResizableShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Resizable
 
@@ -6,13 +7,113 @@ A high-performance system for building resizable panel layouts, complete with ke
 
 Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
 
-## Interactive Showcase
+## Examples
 
-Grab the vertical or horizontal handle bars below to resize the panels.
+Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired. The first example's **Code** tab contains the full component source.
 
-**Accessibility built-in:** Try clicking on one of the grab handles to focus it, and then use the `ArrowLeft`, `ArrowRight`, `ArrowUp`, or `ArrowDown` keys on your keyboard to resize the panels precisely!
+export const usageDefault = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
 
-<ResizableShowcase />
+export default function StudioLayout() {
+  return (
+    // The outermost container must have a defined height.
+    <div className="h-[460px]">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={22} minSize={15} maxSize={40}>
+          <Explorer />
+        </ResizablePanel>
+
+        <ResizableHandle withHandle />
+
+        <ResizablePanel defaultSize={78}>
+          {/* Groups nest freely — this one splits the main area vertically. */}
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel defaultSize={70} minSize={30}>
+              <Editor />
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={30} minSize={15}>
+              <TerminalPane />
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}`;
+
+export const usageHorizontal = `<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={40}>
+    <PanelOne />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={60}>
+    <PanelTwo />
+  </ResizablePanel>
+</ResizablePanelGroup>`;
+
+export const usageVertical = `// \`direction\` sets the flex axis of the group and the drag axis of every
+// handle inside it.
+<ResizablePanelGroup direction="vertical">
+  <ResizablePanel defaultSize={40}>
+    <PanelOne />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={60}>
+    <PanelTwo />
+  </ResizablePanel>
+</ResizablePanelGroup>`;
+
+export const usageNoGrip = `// Omit \`withHandle\` for a bare 1px divider — still draggable, still
+// keyboard accessible, just without the visible grip.
+<ResizableHandle />`;
+
+export const usageConstraints = `// Percentages of the group. The engine clamps the drag so a panel can
+// never escape its bounds.
+<ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+  <Sidebar />
+</ResizablePanel>`;
+
+<ExampleShowcase
+  name="resizable"
+  columns={1}
+  examples={[
+    {
+      title: "Resizable layout",
+      subheading: "A `ResizablePanelGroup` sets the axis; `ResizablePanel`s are separated by `ResizableHandle`s. Groups nest, so a full IDE layout is a few lines.",
+      props: { example: "ide" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ResizableBlock.tsx"),
+    },
+    {
+      title: "Horizontal split",
+      subheading: "The simplest composition — two panels, one handle.",
+      props: { example: "horizontal" },
+      usage: usageHorizontal,
+    },
+    {
+      title: "Vertical split",
+      subheading: "`direction=\"vertical\"` stacks the panels and turns the handle into a horizontal bar.",
+      props: { example: "vertical" },
+      usage: usageVertical,
+    },
+    {
+      title: "Handle without a grip",
+      subheading: "Leave `withHandle` off for a hairline divider that is still draggable and focusable.",
+      props: { example: "no-grip" },
+      usage: usageNoGrip,
+    },
+    {
+      title: "Size constraints",
+      subheading: "`defaultSize`, `minSize` and `maxSize` are percentages of the group — the drag clamps to them.",
+      props: { example: "constraints" },
+      usage: usageConstraints,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -20,42 +121,7 @@ Grab the vertical or horizontal handle bars below to resize the panels.
 
 This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ResizableBlock.tsx`.
-
----
-
-## Usage
-
-This component utilizes highly composable parts. A `<ResizablePanelGroup>` establishes the flex direction, and contains `<ResizablePanel>` elements separated by `<ResizableHandle>` elements.
-
-You can nest groups infinitely to build complex grids (like VS Code or complex dashboards).
-
-```tsx
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@/components/custom/blocks/ResizableBlock";
-
-export default function DashboardLayout() {
-  return (
-    // The outermost container must have a defined height
-    <div className="w-full h-screen">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize="{25}" minSize="{15}" maxSize="{40}">
-          <nav>Navigation Links</nav>
-        </ResizablePanel>
-
-        <ResizableHandle withHandle />
-
-        <ResizablePanel defaultSize="{75}">
-          <main>Main Application Data</main>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ResizableBlock.tsx`.
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

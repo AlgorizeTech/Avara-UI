@@ -6,9 +6,41 @@ This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
 to track pointer coordinates without triggering heavy React state re-renders,
 ensuring the volumetric glows remain silky smooth.
 
-## Interactive Showcase
+## Examples
 
-Move your cursor over the grid below to reveal the interactive 1px border track and inner card glow. The large primary card demonstrates the **Highlight Mode**, executing a continuously spinning conic gradient behind the mask.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
+
+export default function FeatureGrid() {
+  return (
+
+        Analytics
+
+      {/* highlight adds the continuously spinning conic border */}
+
+        Collaboration
+
+  );
+}`;
+
+export const usageHighlight = `// Without \`highlight\`, the border only lights where the cursor is.
+…
+
+// With it, a conic gradient spins behind the mask continuously — use it on
+// the one card you want the eye to land on first.
+…`;
+
+export const usageSpans = `// The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
+// layout with span utilities on each card.
+
+  …
+  …
+  …
+`;
 
 ## Installation
 
@@ -22,32 +54,7 @@ npm install framer-motion
 
 ### Copy the Component
 
-You can copy the full engine code directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/MagicBentoBlock.tsx.
-
-## Usage
-
-Wrap your cards in the `` grid container. You must define the CSS variables --magic-color (for the bright spotlight/border) and --magic-glow (for the soft inner background glow) on a parent wrapper to control the theme.
-
-## Implementation
-
-```tsx
-
-export default function FeatureGrid() {
-  return (
-    {/* Define the tracking glow colors via CSS Variables */}
-
-        {/* Highlight activates the spinning border */}
-
-          Front-End Architecture
-          Highly optimized Next.js environments.
-
-        {/* Standard card without spinning border */}
-
-          Performance
-
-  );
-}
-```
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MagicBentoBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

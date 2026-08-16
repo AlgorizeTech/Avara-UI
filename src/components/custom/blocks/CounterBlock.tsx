@@ -140,7 +140,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-50 transition-colors active:scale-95"
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50 shadow-sm",
+                theme.bg,
+              )}
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
@@ -220,7 +223,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50"
+              className={cn(
+                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                theme.text,
+              )}
             >
               <Minus size={20} strokeWidth={2.5} />
             </button>
@@ -236,7 +242,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-50 transition-colors active:scale-95"
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                theme.bg,
+              )}
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>

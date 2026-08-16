@@ -61,7 +61,20 @@ const demoProcessItems: ScrollStackItem[] = [
   },
 ];
 
-export default function HorizontalScrollStackDemo() {
+export default function HorizontalScrollStackDemo({
+  title,
+  subtitle,
+  itemCount,
+}: {
+  title?: string;
+  subtitle?: string;
+  /** Trims the rail so the pinned scroll distance shortens. */
+  itemCount?: number;
+}) {
+  const items = itemCount
+    ? demoProcessItems.slice(0, itemCount)
+    : demoProcessItems;
+
   return (
     <div
       className="w-full relative rounded-3xl border border-slate-200/80 dark:border-zinc-800"
@@ -70,7 +83,12 @@ export default function HorizontalScrollStackDemo() {
           "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
       }}
     >
-      <HorizontalScrollStack items={demoProcessItems} />
+      <HorizontalScrollStack
+        key={`${items.length}-${title}-${subtitle}`}
+        items={items}
+        title={title}
+        subtitle={subtitle}
+      />
     </div>
   );
 }

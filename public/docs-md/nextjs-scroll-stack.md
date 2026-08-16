@@ -2,15 +2,97 @@
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-## Interactive Showcase
+## Examples
 
-Use the master control panel below to switch between the 4 unique Scroll Stack variations: **Simple**, **Split**, **Sticky**, and **Horizontal**. Scroll down inside the preview box to see the ScrollTrigger plugin orchestrate the deck in real time.
+Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline. Each layout's first example carries its component source in the **Code** tab.
 
-## Sticky Scroll Stack
+### Simple stack
 
-## Split Scroll Stack
+export const usageSimple = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 
-## Horizontal Scroll Stack
+const items = [
+  {
+    id: "1",
+    title: "Real-time Synchronization",
+    description: "Instantly sync state across clients.",
+    icon: Zap,
+  },
+  {
+    id: "2",
+    title: "Layered Architecture",
+    description: "Swap databases or auth providers without a rewrite.",
+    icon: Layers,
+    content: ,
+  },
+];
+
+export default function FeaturesSection() {
+  return ;
+}`;
+
+export const usageSimpleDepth = `// Each card behind the active one shrinks by this fraction — 0.12 gives a
+// pronounced deck, 0.02 keeps the stack nearly flat.
+`;
+
+export const usageSimpleGap = `// Pixel distance between the stacked sticky cards.
+`;
+
+### Sticky stack
+
+export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+const items = [
+  {
+    id: "ui-design",
+    title: "UI Design",
+    badge: "Visual Identity",
+    contentType: "list",
+    description: "Interfaces that look deliberate at every breakpoint.",
+    listItems: ["Design tokens", "Component specs", "Motion guidelines"],
+  },
+];
+
+export default function ServicesSection() {
+  return (
+    
+  );
+}`;
+
+export const usageStickyNoGlow = `// Turns off the ambient glow behind the active card.
+`;
+
+export const usageStickyGeometry = `// \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
+// offset that keeps the earlier headers peeking out.
+`;
+
+### Split stack
+
+export const usageSplit = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+// One column pins while the other scrolls its stack past it.
+export default function ProcessSection() {
+  return ;
+}`;
+
+export const usageSplitLeft = ``;
+
+### Horizontal stack
+
+export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+const steps = [
+  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
+  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
+];
+
+export default function ProcessRail() {
+  return (
+    
+  );
+}`;
+
+export const usageHorizontalShort = `// Fewer steps means a shorter pinned scroll distance.
+`;
 
 ## Installation
 
@@ -24,92 +106,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Select your desired variant (Simple, Split, Sticky, or Horizontal) from the showcase tabs above. Then, open the **Code** tab inside the preview window to copy both the component source code and the implementation example.
-
-## Implementation
-
-```tsx
-
-export default function FeaturesSection() {
-  const items = [
-    {
-      id: "1",
-      title: "Real-time Synchronization",
-      description: "Instantly sync state across clients.",
-      icon: Zap,
-      content: Custom Interactive UI 1,
-    },
-    {
-      id: "2",
-      title: "Layered Architecture",
-      description: "Build robust systems with separated concerns.",
-      icon: Layers,
-      content: Custom Interactive UI 2,
-    },
-  ];
-
-  return (
-
-  );
-}
-```
-
-```tsx
-
-export default function LandingSection() {
-  const items = [
-    {
-      id: "landing",
-      stepNumber: "01",
-      title: "Landing Page Design",
-      description: "We engineer high-converting layouts.",
-      tags: ["Conversion Focused", "Figma To Code"],
-      cardContent: Custom Visual 1,
-    },
-  ];
-
-  return (
-
-  );
-}
-```
-
-```tsx
-
-export default function MobileShowcase() {
-  const items = [
-    {
-      id: "step1",
-      title: "Seamless Integration",
-      description: "Connect your existing tools with one click.",
-      color: "bg-blue-600",
-      content: Mobile Screen 1,
-    },
-  ];
-
-  return (
-
-  );
-}
-```
-
-```tsx
-
-export default function RoadmapSection() {
-  const items = [
-    {
-      id: "q1",
-      title: "Q1 Launch",
-      description: "Initial rollout of core features.",
-      content: Roadmap Details,
-    },
-  ];
-
-  return (
-
-  );
-}
-```
+Each layout above carries its own source in the **Code** tab of its first example — `ScrollStackBlock.tsx`, `StickyScrollStackBlock.tsx`, `SplitScrollStackBlock.tsx` and `HorizontalScrollStackBlock.tsx`. Copy the ones you need into `components/custom/blocks/`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

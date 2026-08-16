@@ -1,0 +1,166 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Curved Carousel
+
+An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Framer Motion spring physics, perspective depth cards, and dynamic site theme color binding.
+
+`CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
+
+export const usageArcSweep = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+
+export default function CurvedCarouselDemo() {
+  return <CurvedCarousel className="w-full" />;
+}`;
+
+export const usagePerspectiveFan = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+
+export default function PerspectiveFanDemo() {
+  return <CurvedCarousel variant="perspective-fan" color="primary" className="w-full" />;
+}`;
+
+export const usageFloatingDeck = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+
+export default function FloatingDeckDemo() {
+  return <CurvedCarousel variant="floating-deck" color="primary" className="w-full" />;
+}`;
+
+export const usageGlowingOrbit = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+
+export default function GlowingOrbitDemo() {
+  return <CurvedCarousel variant="glowing-orbit" color="primary" className="w-full" />;
+}`;
+
+<ExampleShowcase
+  name="curved-carousel"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "3D Curved Arc Sway Deck",
+      subheading: "Continuous left-to-right auto-sway motion arranged along a 3D curved arc path matching the exact reference geometry.",
+      props: { variant: "arc-sweep" },
+      usage: usageArcSweep,
+      code: extractCode("src/components/custom/blocks/CurvedCarouselBlock.tsx"),
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Oscillating Auto-Sway</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Cards automatically sway left and right in a continuous, smooth oscillating loop.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">3D Curved Arc Geometry</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">100% Theme Color Engine</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Binds directly to site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Fluid Responsive & Touch</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Fully responsive container sizing with click-to-center navigation and hover pause controls.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="space-y-3 my-6">
+  <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">When to Use</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Use <code>CurvedCarousel</code> on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"arc-sweep" | "perspective-fan" | "floating-deck" | "glowing-orbit"</code>
+        </td>
+        <td>
+          <code>"arc-sweep"</code>
+        </td>
+        <td>Selects the active 3D curve layout architecture and movement style.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>CurvedCarouselItem[]</code>
+        </td>
+        <td>
+          <code>Preset Array</code>
+        </td>
+        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>image</code>, <code>subtitle</code>, and optional <code>tag</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>Enables or disables continuous automatic left-to-right sway animation.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4</code>
+        </td>
+        <td>Oscillation sway step speed interval in seconds.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>CurvedCarouselColor | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom Tailwind CSS classes applied to the root container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

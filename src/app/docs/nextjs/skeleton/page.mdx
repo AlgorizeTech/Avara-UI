@@ -1,4 +1,5 @@
-import { SkeletonShowcase } from "@/components/site/SkeletonShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Skeleton Loader
 
@@ -6,14 +7,98 @@ A high-performance visual placeholder system used to reduce perceived loading ti
 
 While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different animation styles and structural variants.
+Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-- The `card` and `profile` variants are composite elements that automatically arrange multiple skeleton layers.
-- The `custom` variant demonstrates how you can piece together atomic skeletons using exact pixel values and radii.
+export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-<SkeletonShowcase />
+export default function CardSkeleton() {
+  return <SkeletonBlock variant="card" />;
+}`;
+
+export const usageProfile = `<SkeletonBlock variant="profile" />`;
+
+export const usageText = `<SkeletonBlock variant="text" />`;
+
+export const usageRect = `<SkeletonBlock variant="rect" className="max-w-md w-full h-48" />`;
+
+export const usageCircle = `<SkeletonBlock variant="circle" />`;
+
+export const usagePulse = `<SkeletonBlock variant="card" animation="pulse" />`;
+
+export const usageNone = `<SkeletonBlock variant="card" animation="none" />`;
+
+export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CustomSkeleton() {
+  return (
+    <div className="flex gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl w-full max-w-sm">
+      <SkeletonBlock variant="custom" width={64} height={64} radius="1rem" />
+      <div className="flex flex-col gap-2 flex-1 pt-1">
+        <SkeletonBlock variant="custom" width="100%" height={16} radius="4px" />
+        <SkeletonBlock variant="custom" width="70%" height={16} radius="4px" />
+        <SkeletonBlock variant="custom" width="40%" height={12} radius="4px" className="mt-2" />
+      </div>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="skeleton"
+  columns={1}
+  examples={[
+    {
+      title: "Card",
+      subheading: "A composite placeholder that mirrors a media card layout.",
+      props: { variant: "card" },
+      usage: usageCard,
+      code: extractCode("src/components/custom/blocks/SkeletonBlock.tsx"),
+    },
+    {
+      title: "Profile",
+      subheading: "Use `variant=\"profile\"` for an avatar with two text lines.",
+      props: { variant: "profile" },
+      usage: usageProfile,
+    },
+    {
+      title: "Text",
+      subheading: "Use `variant=\"text\"` for stacked paragraph lines.",
+      props: { variant: "text" },
+      usage: usageText,
+    },
+    {
+      title: "Rectangle",
+      subheading: "Use `variant=\"rect\"` as a block placeholder for images and charts.",
+      props: { variant: "rect" },
+      usage: usageRect,
+    },
+    {
+      title: "Circle",
+      subheading: "Use `variant=\"circle\"` for avatars and round icon slots.",
+      props: { variant: "circle" },
+      usage: usageCircle,
+    },
+    {
+      title: "Pulse animation",
+      subheading: "Use `animation=\"pulse\"` for the classic fading placeholder.",
+      props: { variant: "card", animation: "pulse" },
+      usage: usagePulse,
+    },
+    {
+      title: "No animation",
+      subheading: "Use `animation=\"none\"` for a static placeholder.",
+      props: { variant: "card", animation: "none" },
+      usage: usageNone,
+    },
+    {
+      title: "Custom composition",
+      subheading: "`variant=\"custom\"` exposes `width`, `height` and `radius` for atomic pieces.",
+      props: { variant: "custom" },
+      usage: usageCustom,
+    },
+  ]}
+/>
 
 ## Installation
 

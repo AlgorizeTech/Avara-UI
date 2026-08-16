@@ -1,4 +1,5 @@
-import { ContextMenuShowcase } from "@/components/site/ContextMenuShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Context Menu
 
@@ -8,67 +9,173 @@ Building a Context Menu is difficult because it involves intercepting the browse
 
 This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
 
-## Interactive Showcase
+## Examples
 
-Right-click anywhere inside the dashed box below to see the context menu in action. Try clicking near the extreme edges of the dashed box to see how the boundary-collision math prevents the menu from falling off the screen.
+Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen. The first example's **Code** tab contains the full component source.
 
-<ContextMenuShowcase />
+export const usageDefault = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+
+export default function RightClickArea() {
+  return (
+    <ContextMenu>
+      {/* This whole element intercepts the right-click */}
+      <ContextMenuTrigger className="w-full h-40 border-2 border-dashed rounded-2xl flex items-center justify-center">
+        Right-click anywhere inside this box
+      </ContextMenuTrigger>
+
+      {/* Rendered in a portal at the cursor position */}
+      <ContextMenuContent className="w-64">
+        <ContextMenuItem onClick={() => console.log("Edit")}>Edit File</ContextMenuItem>
+        <ContextMenuItem onClick={() => console.log("Duplicate")}>Duplicate</ContextMenuItem>
+        <ContextMenuItem onClick={() => console.log("Rename")}>Rename</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}`;
+
+export const usageFull = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+import { Copy, Download, FileEdit, Scissors, Share2, Trash } from "lucide-react";
+
+export default function DocumentMenu() {
+  const run = (action: string) => console.log(action);
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="w-full h-56 border-2 border-dashed rounded-2xl flex items-center justify-center">
+        Right-click anywhere inside this box
+      </ContextMenuTrigger>
+
+      <ContextMenuContent className="w-64">
+        <ContextMenuLabel>Document Actions</ContextMenuLabel>
+        <ContextMenuItem onClick={() => run("Edit")}>
+          <FileEdit className="w-4 h-4 mr-2" />
+          Edit File
+          <ContextMenuShortcut>⌘E</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => run("Download")}>
+          <Download className="w-4 h-4 mr-2" />
+          Download PDF
+          <ContextMenuShortcut>⌘S</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => run("Share")}>
+          <Share2 className="w-4 h-4 mr-2" />
+          Share Link
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        <ContextMenuLabel>Clipboard</ContextMenuLabel>
+        <ContextMenuItem onClick={() => run("Copy")}>
+          <Copy className="w-4 h-4 mr-2" />
+          Copy
+          <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        {/* disabled dims the row and swallows the click */}
+        <ContextMenuItem disabled>
+          <Scissors className="w-4 h-4 mr-2" />
+          Cut
+          <ContextMenuShortcut>⌘X</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        {/* className restyles a single destructive row */}
+        <ContextMenuItem
+          onClick={() => run("Delete")}
+          className="text-red-600 focus:bg-red-50 focus:text-red-700"
+        >
+          <Trash className="w-4 h-4 mr-2" />
+          Delete
+          <ContextMenuShortcut>⌘⌫</ContextMenuShortcut>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}`;
+
+export const usageInset = `import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+import { Download } from "lucide-react";
+
+export default function ViewMenu() {
+  const run = (action: string) => console.log(action);
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="w-full h-40 border-2 border-dashed rounded-2xl flex items-center justify-center">
+        Right-click anywhere inside this box
+      </ContextMenuTrigger>
+
+      <ContextMenuContent className="w-64">
+        {/* inset pads the left edge so text-only rows line up with icon rows */}
+        <ContextMenuLabel inset>View</ContextMenuLabel>
+        <ContextMenuItem inset onClick={() => run("List")}>List</ContextMenuItem>
+        <ContextMenuItem inset onClick={() => run("Grid")}>Grid</ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        <ContextMenuItem onClick={() => run("Download")}>
+          <Download className="w-4 h-4 mr-2" />
+          Download PDF
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}`;
+
+<ExampleShowcase
+  name="context-menu"
+  columns={1}
+  examples={[
+    {
+      title: "Context menu",
+      subheading: "`ContextMenuTrigger` captures the right-click; `ContextMenuContent` opens at the cursor.",
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ContextMenuBlock.tsx"),
+    },
+    {
+      title: "Labels, shortcuts & disabled",
+      subheading: "`ContextMenuLabel` titles a group, `ContextMenuShortcut` right-aligns the hotkey, `disabled` locks a row.",
+      props: { example: "full" },
+      usage: usageFull,
+    },
+    {
+      title: "Inset items",
+      subheading: "`inset` pads text-only rows so they line up with icon-bearing ones.",
+      props: { example: "inset" },
+      usage: usageInset,
+    },
+  ]}
+/>
 
 ## Installation
 
 ### Copy the Component
 
-This component is completely native and relies only on `react-dom` for the portal functionality.
+This component is **100% dependency-free**. It uses React's `createPortal` to render the menu above everything else, plus boundary-collision maths so it never opens off screen.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/ContextMenuBlock.tsx`.
-
----
-
-## Usage
-
-A `<ContextMenu>` component requires a Trigger area and a Content portal. The `<ContextMenuTrigger>` wraps any content you want to act as the right-click listener zone.
-
-```tsx
-import {
-  ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
-} from "@/components/custom/blocks/ContextMenuBlock";
-
-export default function RightClickTable() {
-  return (
-    <ContextMenu>
-      {/* 1. This entire DIV now intercepts right-clicks */}
-      <ContextMenuTrigger className="w-full h-40 bg-gray-100 flex items-center justify-center">
-        Right-click anywhere inside this div
-      </ContextMenuTrigger>
-
-      {/* 2. The menu that appears at the cursor */}
-      <ContextMenuContent className="w-64">
-        <ContextMenuItem onClick={() => alert("Back clicked")}>
-          Back
-          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-        </ContextMenuItem>
-
-        <ContextMenuItem disabled>
-          Forward
-          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
-        </ContextMenuItem>
-
-        <ContextMenuSeparator />
-
-        <ContextMenuItem onClick={() => alert("Reload clicked")}>
-          Reload
-          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
-  );
-}
-```
+Create a new file at `components/custom/blocks/ContextMenuBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.

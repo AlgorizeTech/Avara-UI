@@ -78,7 +78,7 @@ export function ComponentTemplate({
         {/* Component Demo */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6">Preview</h2>
-          <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 bg-white dark:bg-zinc-900">
+          <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-0 bg-white dark:bg-zinc-900">
             {children}
           </div>
         </section>

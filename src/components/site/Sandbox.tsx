@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CodeBlockClient } from "@/components/site/code-block-client";
+import type { BuiltinLanguage } from "shiki";
+import {
+  CodeBlockClient,
+  isTransformable,
+} from "@/components/site/code-block-client";
+import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
 import {
   Code2,
   GripVertical,
@@ -13,22 +18,44 @@ import {
   Smartphone,
   Tablet,
   Terminal,
-  ZoomIn,
+  Maximize2,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
-import React, { useEffect, useRef, useState } from "react";
+import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import {
+  DEFAULT_SHOWCASE_COLOR,
+  useShowcaseColorContext,
+} from "@/components/site/showcase-color";
+import React, { useEffect, useId, useRef, useState } from "react";
 
 const MIN_PREVIEW_WIDTH = 320;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;
 const SNAP_TO_FULL_THRESHOLD = 10;
-const ZOOM_LEVELS = [1, 0.75, 0.5];
 
 type Device = "desktop" | "tablet" | "mobile";
 
-const DEVICE_PRESETS: Record<Device, number | "100%"> = {
-  desktop: "100%",
+/**
+ * Every device button pins a REAL viewport width and lets the scale-to-fit
+ * math shrink it into the available area. Desktop used to be "100%" (i.e.
+ * whatever the docs column happened to be), so a desktop layout could never
+ * be seen from a narrow screen — the one case tablet and mobile handled fine.
+ * The Fit button returns to the fluid "100%" state at any time.
+ */
+const DESKTOP_PRESET_WIDTH = 1280;
+
+/**
+ * Screens at least this wide are treated as PCs, and open every preview on
+ * the desktop preset. The fluid "100%" default measured the docs COLUMN, not
+ * the visitor's screen, and that column is narrower than DESKTOP_MIN_WIDTH —
+ * so a PC visitor was shown (and had "Tablet" highlighted for) the tablet
+ * layout of every component, which is not what they came to see.
+ */
+const PC_SCREEN_MIN_WIDTH = 1080;
+
+const DEVICE_PRESETS: Record<Device, number> = {
+  desktop: DESKTOP_PRESET_WIDTH,
   tablet: 768,
   mobile: 375,
 };
@@ -46,11 +73,22 @@ export interface SandboxTab {
   icon?: React.ReactNode;
   /** Rendered for non-sandbox tabs (code, usage, examples...). */
   content?: React.ReactNode;
+  /**
+   * A code snippet to render instead of `content`. Handing the Sandbox the
+   * raw source (rather than a prebuilt code block) is what lets the TS/JS
+   * switch live up in the header bar next to the tab pills.
+   */
+  code?: string;
+  /** Language of `code`. Defaults to tsx. */
+  lang?: BuiltinLanguage;
   /** Marks the tab that shows the sandboxed live preview. */
   resizable?: boolean;
 }
 
 export interface SandboxOptions {
+  /** "Fit" button — snaps the preview back to a 100% fit-to-screen view. */
+  fit?: boolean;
+  /** @deprecated Renamed to `fit` when the zoom cycle became a single action. */
   zoom?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
@@ -83,18 +121,34 @@ export function Sandbox({
   minHeight?: number;
   maxHeight?: number;
 }) {
-  const { zoom: zoomOption = true, deviceSwitcher = true, reset = true } = options;
+  const {
+    fit: fitOption = options.zoom ?? true,
+    deviceSwitcher = true,
+    reset = true,
+  } = options;
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
+
+  // One selection shared by every code tab, so switching Usage → Code keeps
+  // the reader in the language they picked.
+  const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [zoom, setZoom] = useState(1);
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
+
+  // The first paint stays fluid so server and client markup agree; the desktop
+  // preset is pinned on mount instead. Runs once, before any interaction, so a
+  // device button or a drag is never overridden.
+  useEffect(() => {
+    if (window.innerWidth >= PC_SCREEN_MIN_WIDTH) {
+      setPreviewWidth(DESKTOP_PRESET_WIDTH);
+    }
+  }, []);
 
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
@@ -119,14 +173,18 @@ export function Sandbox({
     viewportWidth !== null && availableWidth !== null && viewportWidth > availableWidth
       ? availableWidth / viewportWidth
       : 1;
-  const visualScale = fitScale * zoom;
+  const visualScale = fitScale;
+  /** Fluid AND unscaled — the only state that fills the card edge to edge. */
+  const isFitted = previewWidth === "100%" && fitScale === 1;
 
+  // Derived from the MEASURED width, including the fluid "100%" state — so on
+  // first load the highlighted button is the visitor's own device class.
   const activeDevice: Device =
-    previewWidth === "100%"
+    viewportWidth === null
       ? "desktop"
-      : (viewportWidth as number) < TABLET_MIN_WIDTH
+      : viewportWidth < TABLET_MIN_WIDTH
         ? "mobile"
-        : (viewportWidth as number) < DESKTOP_MIN_WIDTH
+        : viewportWidth < DESKTOP_MIN_WIDTH
           ? "tablet"
           : "desktop";
 
@@ -180,9 +238,21 @@ export function Sandbox({
   };
 
   const deviceButtons: Array<{ device: Device; icon: React.ReactNode; label: string }> = [
-    { device: "desktop", icon: <Monitor className="w-4 h-4" />, label: "Desktop View" },
-    { device: "tablet", icon: <Tablet className="w-4 h-4" />, label: "Tablet View" },
-    { device: "mobile", icon: <Smartphone className="w-4 h-4" />, label: "Mobile View" },
+    {
+      device: "desktop",
+      icon: <Monitor className="w-4 h-4" />,
+      label: `Desktop view (${DEVICE_PRESETS.desktop}px)`,
+    },
+    {
+      device: "tablet",
+      icon: <Tablet className="w-4 h-4" />,
+      label: `Tablet view (${DEVICE_PRESETS.tablet}px)`,
+    },
+    {
+      device: "mobile",
+      icon: <Smartphone className="w-4 h-4" />,
+      label: `Mobile view (${DEVICE_PRESETS.mobile}px)`,
+    },
   ];
 
   // Visual box of the (possibly scaled) frame
@@ -190,6 +260,13 @@ export function Sandbox({
     viewportWidth === null ? null : Math.round(viewportWidth * visualScale);
   const isPreviewActive = activeTab === (previewTab?.id ?? "preview");
   const currentTab = tabs.find((t) => t.id === activeTab);
+  const currentLang = currentTab?.lang ?? "tsx";
+  // The switch shows only where it does something: a code tab whose source
+  // actually carries types.
+  const showLanguageSwitch =
+    !isPreviewActive &&
+    currentTab?.code !== undefined &&
+    isTransformable(currentLang);
 
   return (
     <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col not-prose relative">
@@ -213,13 +290,42 @@ export function Sandbox({
           ))}
         </div>
 
+        {/* Right: the code tabs get the TS/JS switch in the same slot the
+            preview tab gets its device controls. */}
+        {showLanguageSwitch && (
+          <CodeCopy
+            className="ml-auto"
+            selectedLanguage={codeLanguage}
+            onLanguageChange={setCodeLanguage}
+          />
+        )}
+
         {/* Right: preview controls */}
         {isPreviewActive && (
           <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-            <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] text-right tabular-nums">
-              {previewWidth === "100%"
-                ? "100%"
-                : `${Math.round(viewportWidth as number)}px`}
+            {/* True viewport width, plus how far it was shrunk to fit the
+                column, which the Fit button snaps back to 100%. */}
+            <span className="flex items-baseline gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
+              <span>
+                {viewportWidth === null
+                  ? "—"
+                  : `${Math.round(viewportWidth)}px`}
+              </span>
+              <span
+                className={cn(
+                  "text-[11px] hidden sm:inline-block",
+                  fitScale < 1
+                    ? "text-zinc-400 dark:text-zinc-500"
+                    : "text-zinc-300 dark:text-zinc-600",
+                )}
+                title={
+                  fitScale < 1
+                    ? `Scaled to ${Math.round(fitScale * 100)}% to fit`
+                    : "Shown at full size"
+                }
+              >
+                {Math.round(fitScale * 100)}%
+              </span>
             </span>
 
             {deviceSwitcher && (
@@ -244,19 +350,16 @@ export function Sandbox({
               </div>
             )}
 
-            {zoomOption && (
+            {/* One action, no toggled state: always snaps back to the 100%
+                fit-to-screen view, whatever device or drag width is active. */}
+            {fitOption && (
               <button
-                onClick={() =>
-                  setZoom(
-                    ZOOM_LEVELS[(ZOOM_LEVELS.indexOf(zoom) + 1) % ZOOM_LEVELS.length],
-                  )
-                }
-                className="h-8 px-2 flex items-center justify-center gap-1 rounded-lg transition-all cursor-pointer shadow-sm border text-xs font-semibold tabular-nums bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
-                title="Zoom preview"
-                aria-label={`Zoom: ${Math.round(zoom * 100)}%`}
+                onClick={() => setPreviewWidth("100%")}
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                title="Fit to screen (100%)"
+                aria-label="Fit preview to screen"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
-                {Math.round(zoom * 100)}%
+                <Maximize2 className="w-4 h-4" />
               </button>
             )}
 
@@ -319,7 +422,7 @@ export function Sandbox({
               /* +1px compensates the right border so the inner viewport is exact */
               style={{
                 width:
-                  previewWidth === "100%" && zoom === 1
+                  isFitted
                     ? "100%"
                     : visualWidth === null
                       ? "100%"
@@ -330,7 +433,7 @@ export function Sandbox({
                 "relative flex justify-center items-start transition-[width] ease-out",
                 isDragging ? "duration-0" : "duration-300",
                 "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
-                previewWidth === "100%" && zoom === 1
+                isFitted
                   ? "rounded-b-xl"
                   : "rounded-bl-xl rounded-r-none",
               )}
@@ -338,7 +441,7 @@ export function Sandbox({
               <div
                 className={cn(
                   "w-full overflow-hidden",
-                  previewWidth === "100%" && zoom === 1 ? "rounded-b-xl" : "rounded-bl-xl",
+                  isFitted ? "rounded-b-xl" : "rounded-bl-xl",
                   isDragging && "pointer-events-none select-none",
                 )}
               >
@@ -374,11 +477,24 @@ export function Sandbox({
             </div>
           </div>
 
-        {!isPreviewActive && (
-          <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {currentTab?.content}
-          </div>
-        )}
+        {!isPreviewActive &&
+          (currentTab?.code !== undefined ? (
+            /* No height cap here: CodeBlocks sizes itself to the lines it is
+               showing, so the panel opens without a scrollbar and only gains
+               one once Show More adds lines past that height. */
+            <div className="relative w-full overflow-hidden rounded-b-xl">
+              <CodeBlockClient
+                code={currentTab.code}
+                lang={currentLang}
+                selectedLanguage={codeLanguage}
+                onLanguageChange={setCodeLanguage}
+              />
+            </div>
+          ) : (
+            <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {currentTab?.content}
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -441,6 +557,10 @@ export function ExampleShowcase({
   minHeight = 400,
   maxHeight = 820,
   className,
+  colorControl = false,
+  defaultColor = DEFAULT_SHOWCASE_COLOR,
+  colorProp = "color",
+  colorLabel = "Theme Color",
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -453,25 +573,77 @@ export function ExampleShowcase({
   minHeight?: number;
   maxHeight?: number;
   className?: string;
+  /**
+   * Opts this gallery into the page's theme color: every example gets the
+   * color bridged into its props. The control itself is drawn once per page,
+   * by whichever opted-in gallery sits highest, so a page reads as one accent
+   * switch at the top rather than a picker above every section.
+   */
+  colorControl?: boolean;
+  /** Initial value of the color control. */
+  defaultColor?: string;
+  /** Demo prop the color is bridged into. */
+  colorProp?: string;
+  colorLabel?: string;
 }) {
+  const shared = useShowcaseColorContext();
+  const instanceId = useId();
+  // Outside the docs layout there is no page-level provider, so a showcase
+  // keeps its own color and draws its own picker.
+  const [localColor, setLocalColor] = useState(defaultColor);
+  const color = shared ? shared.color : localColor;
+  const setColor = shared ? shared.setColor : setLocalColor;
+  const ownsPicker = colorControl
+    ? shared
+      ? shared.claimPicker(instanceId)
+      : true
+    : false;
+
+  const seededRef = useRef(false);
+  useEffect(() => {
+    if (!shared || !ownsPicker || seededRef.current) return;
+    seededRef.current = true;
+    if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
+  }, [shared, ownsPicker, defaultColor]);
+
   return (
-    <div
-      className={cn(
-        "not-prose my-8 grid grid-cols-1 gap-10",
-        columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
-        className,
+    <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
+      {ownsPicker && (
+        <div className="flex flex-col gap-6 p-3.5 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          <ThemeColorPicker
+            color={color}
+            onChange={setColor}
+            label={colorLabel}
+            className="sm:max-w-sm"
+          />
+        </div>
       )}
-    >
-      {examples.map((example) => (
-        <ExampleCard
-          key={example.id ?? slugify(example.title)}
-          name={name}
-          example={example}
-          options={example.options ?? options}
-          minHeight={example.minHeight ?? minHeight}
-          maxHeight={example.maxHeight ?? maxHeight}
-        />
-      ))}
+
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-10",
+          columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
+        )}
+      >
+        {examples.map((example) => (
+          <ExampleCard
+            key={example.id ?? slugify(example.title)}
+            name={name}
+            example={
+              colorControl
+                ? {
+                    ...example,
+                    // Explicit per-example props still win.
+                    props: { [colorProp]: color, ...example.props },
+                  }
+                : example
+            }
+            options={example.options ?? options}
+            minHeight={example.minHeight ?? minHeight}
+            maxHeight={example.maxHeight ?? maxHeight}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -520,26 +692,10 @@ function ExampleCard({
     { id: "preview", label: "Preview", resizable: true },
   ];
   if (usage) {
-    tabs.push({
-      id: "usage",
-      label: "Usage",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={usage} lang="tsx" />
-        </div>
-      ),
-    });
+    tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
   if (code) {
-    tabs.push({
-      id: "component",
-      label: "Code",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={code} lang="tsx" />
-        </div>
-      ),
-    });
+    tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
   }
 
   return (

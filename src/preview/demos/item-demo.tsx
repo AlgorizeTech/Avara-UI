@@ -9,12 +9,15 @@ export default function ItemDemo({
   showDescription = true,
   showActions = true,
   isClickable = false,
+  showAll,
 }: {
   variant?: ItemVariant;
   showMedia?: boolean;
   showDescription?: boolean;
   showActions?: boolean;
   isClickable?: boolean;
+  /** Render-all mode: every layout variant stacked in one frame. */
+  showAll?: "variants";
 }) {
   // Mock Components for the Showcase
   const MockMedia = () => (
@@ -45,6 +48,29 @@ export default function ItemDemo({
       )}
     </>
   );
+
+  if (showAll === "variants") {
+    const variants: ItemVariant[] = ["default", "bordered", "compact", "card"];
+
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10 py-8">
+        <div className="w-full max-w-xl flex flex-col gap-5">
+          {variants.map((v) => (
+            <div key={v} className="flex flex-col gap-1.5">
+              <span className="text-xs font-mono text-zinc-400">
+                variant=&quot;{v}&quot;
+              </span>
+              <ItemBlock
+                variant={v}
+                title="System Configuration"
+                description="Manage environment variables, build settings and deployment hooks."
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">

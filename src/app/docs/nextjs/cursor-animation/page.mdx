@@ -1,0 +1,272 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Cursor Animation
+
+An interactive, 100% full-width and responsive custom cursor component with 10 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.
+
+`CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
+
+export const usageGlow = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function GlowCursorDemo() {
+  return <CursorAnimation variant="glow" color="primary" className="w-full" />;
+}`;
+
+export const usageMagnetic = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function MagneticCursorDemo() {
+  return <CursorAnimation variant="magnetic" color="primary" className="w-full" />;
+}`;
+
+export const usageTrail = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function TrailCursorDemo() {
+  return <CursorAnimation variant="trail" color="primary" trailCount={8} className="w-full" />;
+}`;
+
+export const usageBadge = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function BadgeCursorDemo() {
+  return <CursorAnimation variant="badge" color="primary" label="View Project" className="w-full" />;
+}`;
+
+export const usageSpotlight = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function SpotlightCursorDemo() {
+  return <CursorAnimation variant="spotlight" color="primary" className="w-full" />;
+}`;
+
+export const usageExpand = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function ExpandCursorDemo() {
+  return <CursorAnimation variant="expand" color="primary" className="w-full" />;
+}`;
+
+export const usageCrosshair = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function CrosshairCursorDemo() {
+  return <CursorAnimation variant="crosshair" color="primary" className="w-full" />;
+}`;
+
+export const usageRing = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function RingCursorDemo() {
+  return <CursorAnimation variant="ring" color="primary" className="w-full" />;
+}`;
+
+export const usagePulse = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function PulseCursorDemo() {
+  return <CursorAnimation variant="pulse" color="primary" className="w-full" />;
+}`;
+
+export const usageSonar = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+
+export default function SonarCursorDemo() {
+  return <CursorAnimation variant="sonar" color="primary" className="w-full" />;
+}`;
+
+<ExampleShowcase
+  name="cursor-animation"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Glow Cursor",
+      subheading: "Fluid background blur glow that follows mouse pointer with smooth physics.",
+      props: { variant: "glow" },
+      usage: usageGlow,
+      code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
+    },
+    {
+      title: "Magnetic Target Cursor",
+      subheading: "Dashed target ring with physics rotation that tracks pointer movement.",
+      props: { variant: "magnetic" },
+      usage: usageMagnetic,
+    },
+    {
+      title: "Particle Trail Cursor",
+      subheading: "Fading particle trail following cursor movement with customizable count.",
+      props: { variant: "trail" },
+      usage: usageTrail,
+    },
+    {
+      title: "Badge Label Cursor",
+      subheading: "Floating custom action pill label that smoothly tags pointer location.",
+      props: { variant: "badge", label: "View Project" },
+      usage: usageBadge,
+    },
+    {
+      title: "Spotlight Mask Cursor",
+      subheading: "Dynamic radial spotlight mask focusing ambient light on cursor position.",
+      props: { variant: "spotlight" },
+      usage: usageSpotlight,
+    },
+    {
+      title: "Expand Scaling Cursor",
+      subheading: "Inverted backdrop circle scaling on click and hover interactions.",
+      props: { variant: "expand" },
+      usage: usageExpand,
+    },
+    {
+      title: "Precision Crosshair Cursor",
+      subheading: "Full viewport crosshair grid lines for high precision UI alignment.",
+      props: { variant: "crosshair" },
+      usage: usageCrosshair,
+    },
+    {
+      title: "Smooth Ring Cursor",
+      subheading: "Minimalist lerp ring contracting tightly when clicked.",
+      props: { variant: "ring" },
+      usage: usageRing,
+    },
+    {
+      title: "Radial Pulse Cursor",
+      subheading: "Pulsing radial energy aura around active pointer location.",
+      props: { variant: "pulse" },
+      usage: usagePulse,
+    },
+    {
+      title: "Sonar Wave Cursor",
+      subheading: "Dual concentric sonar rings sweeping in synchronization with movement.",
+      props: { variant: "sonar" },
+      usage: usageSonar,
+    },
+  ]}
+/>
+
+## Installation
+
+### 1. Install Dependencies
+
+This component uses `lucide-react` for icons and utility helper functions.
+
+```bash
+npm install lucide-react
+```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/CursorAnimationBlock.tsx` and copy the wrapper code from the **Code** tab of the first example above.
+
+## Features
+
+Discover the key interactive capabilities of the `CursorAnimation` block:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">10 Distinct Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Choose from glow, magnetic, particle trail, badge label, spotlight, crosshair, and 4 other fluid styles.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Physics & Lerp</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Smooth linear interpolation (LERP) physics ensures natural inertia and responsive cursor tracking.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">100% Full-Width Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Adapts seamlessly to container boundaries across desktop, tablet, and mobile screens without breaking overflow.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dark Mode Native</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Pre-configured with zinc dark mode palettes matching site design tokens and contrast guidelines.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use <code>CursorAnimation</code> to highlight hero sections, portfolio cards, interactive canvas areas, or custom action areas. Ensure pointer-events are set correctly when layering over interactive text or buttons.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"glow" | "magnetic" | "trail" | "badge" | "spotlight" | "expand" | "crosshair" | "ring" | "pulse" | "sonar"</code>
+        </td>
+        <td>
+          <code>"glow"</code>
+        </td>
+        <td>Selects the active cursor animation style and interaction physics.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Explore"</code>
+        </td>
+        <td>Text displayed inside the floating badge pill when <code>variant="badge"</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>CursorColor | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>trailCount</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>Number of trailing particles rendered when <code>variant="trail"</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom Tailwind CSS classes applied to the root container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Custom interactive element content rendered inside the cursor hover zone.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

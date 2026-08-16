@@ -1,0 +1,280 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Image Compare
+
+An interactive, responsive image comparison slider component featuring 10 distinct visual comparison modes, fluid touch/mouse drag physics, custom label badges, and dynamic site theme color binding.
+
+`ImageCompare` allows users to seamlessly compare before-and-after visual states for photo editing, design variations, AI enhancements, or product upgrades.
+
+export const usageClassic = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function ClassicImageCompareDemo() {
+  return <ImageCompare variant="classic-slider" color="primary" className="w-full" />;
+}`;
+
+export const usageSplitHandle = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function SplitHandleDemo() {
+  return <ImageCompare variant="split-handle" color="primary" className="w-full" />;
+}`;
+
+export const usageGlowingDivider = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function GlowingDividerDemo() {
+  return <ImageCompare variant="glowing-divider" color="primary" className="w-full" />;
+}`;
+
+export const usageBadgeOverlay = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function BadgeOverlayDemo() {
+  return <ImageCompare variant="badge-overlay" color="primary" className="w-full" />;
+}`;
+
+export const usageMinimalLine = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function MinimalLineDemo() {
+  return <ImageCompare variant="minimal-line" color="primary" className="w-full" />;
+}`;
+
+export const usageHoverReveal = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function HoverRevealDemo() {
+  return <ImageCompare variant="hover-reveal" color="primary" className="w-full" />;
+}`;
+
+export const usageVerticalSlide = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function VerticalSlideDemo() {
+  return <ImageCompare variant="vertical-slide" color="primary" className="w-full" />;
+}`;
+
+export const usageCircleMagnifier = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function CircleMagnifierDemo() {
+  return <ImageCompare variant="circle-magnifier" color="primary" className="w-full" />;
+}`;
+
+export const usageGlassHandle = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function GlassHandleDemo() {
+  return <ImageCompare variant="glass-handle" color="primary" className="w-full" />;
+}`;
+
+export const usageDiagonalSplit = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function DiagonalSplitDemo() {
+  return <ImageCompare variant="diagonal-split" color="primary" className="w-full" />;
+}`;
+
+<ExampleShowcase
+  name="image-compare"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Classic Slider",
+      subheading: "Standard horizontal slider handle with dual arrow icon and smooth drag physics.",
+      props: { variant: "classic-slider" },
+      usage: usageClassic,
+      code: extractCode("src/components/custom/blocks/ImageCompareBlock.tsx"),
+    },
+    {
+      title: "Split Handle",
+      subheading: "Pill badge slider handle featuring high-contrast action text.",
+      props: { variant: "split-handle" },
+      usage: usageSplitHandle,
+    },
+    {
+      title: "Glowing Divider",
+      subheading: "Continuous ambient glow line emphasizing image transformation edges.",
+      props: { variant: "glowing-divider" },
+      usage: usageGlowingDivider,
+    },
+    {
+      title: "Badge Overlay Percentage",
+      subheading: "Floating percentage overlay pill displaying active drag slider location.",
+      props: { variant: "badge-overlay" },
+      usage: usageBadgeOverlay,
+    },
+    {
+      title: "Minimalist Thin Line",
+      subheading: "Clean ultra-thin divider line with a centered minimal dot handle.",
+      props: { variant: "minimal-line" },
+      usage: usageMinimalLine,
+    },
+    {
+      title: "Hover Pointer Reveal",
+      subheading: "Follows mouse pointer position dynamically without needing click-and-drag.",
+      props: { variant: "hover-reveal" },
+      usage: usageHoverReveal,
+    },
+    {
+      title: "Vertical Slide Compare",
+      subheading: "Top-to-bottom vertical slider orientation for height-focused comparisons.",
+      props: { variant: "vertical-slide" },
+      usage: usageVerticalSlide,
+    },
+    {
+      title: "Circular Magnifier Lens",
+      subheading: "Circular scope lens clipping mask revealing enhanced image details.",
+      props: { variant: "circle-magnifier" },
+      usage: usageCircleMagnifier,
+    },
+    {
+      title: "Glassmorphic Handle",
+      subheading: "Translucent backdrop-blur glass pill handle with layer icon graphics.",
+      props: { variant: "glass-handle" },
+      usage: usageGlassHandle,
+    },
+    {
+      title: "Diagonal Diamond Split",
+      subheading: "45-degree diamond handle accent with scanner crosshair iconography.",
+      props: { variant: "diagonal-split" },
+      usage: usageDiagonalSplit,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">10 Unique Interaction Variants</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Includes classic sliders, split badges, glowing lines, hover reveals, vertical slides, and circular lens scopes.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">100% Theme Color Engine</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Integrates with site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Touch & Gesture Responsive</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Smooth dragging for mobile touch screens, trackpads, and mouse pointers.</p>
+  </div>
+  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Custom Labels & Images</h4>
+    <p className="text-sm text-zinc-500 dark:text-zinc-400">Pass custom Before/After labels and image URLs through flexible props.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="space-y-3 my-6">
+  <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">When to Use</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Use <code>ImageCompare</code> to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"classic-slider" | "split-handle" | "glowing-divider" | "badge-overlay" | "minimal-line" | "hover-reveal" | "vertical-slide" | "circle-magnifier" | "glass-handle" | "diagonal-split"</code>
+        </td>
+        <td>
+          <code>"classic-slider"</code>
+        </td>
+        <td>Selects the image comparison interaction mode and handle style.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>beforeImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>Unsplash Preset</code>
+        </td>
+        <td>URL of the base before image displayed on the left/top.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>afterImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>Unsplash Preset</code>
+        </td>
+        <td>URL of the enhanced after image revealed by dragging.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>beforeLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Original"</code>
+        </td>
+        <td>Label badge text for the before state image.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>afterLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Enhanced"</code>
+        </td>
+        <td>Label badge text for the after state image.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialPosition</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>50</code>
+        </td>
+        <td>Starting percentage position of the slider handle (0 - 100).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>ImageCompareColor | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom Tailwind CSS classes applied to the root container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -4,9 +4,58 @@ A production-grade, highly animated multi-step wizard component engineered exclu
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
-## Interactive Showcase
+## Examples
 
-Fill in the fields below and step through the wizard. If you try clicking Next without filling required fields, red validation errors will prevent navigation. On the final **Review** step, toggle the **Simulate Server Error** checkbox to test both successful completions and backend failure alerts.
+`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component. The **Code** tab contains the full component source.
+
+export const usageFlow = `"use client";
+
+export default function OnboardingWizard() {
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({ fullName: "", company: "" });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateStep = (current) => {
+    if (current === 0 && !formData.fullName) {
+      setErrors({ fullName: "Name required" });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/submit", { method: "POST", body: JSON.stringify(formData) });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const steps = [
+    { id: "profile", title: "Profile", description: "Personal details", icon: User, content:  },
+    { id: "workspace", title: "Workspace", description: "Organization", icon: Building2, content:  },
+    { id: "review", title: "Review", description: "Confirm & Submit", icon: CheckCircle2, content:  },
+  ];
+
+  return (
+    
+      {/* onStepChange is what makes the circles clickable — gate it on validation */}
+       {
+          if (target 
+
+         setStep((s) => s - 1)} disabled={step === 0}>
+          Back
+        
+        {step === steps.length - 1 ? (
+          Submit
+        ) : (
+           validateStep(step) && setStep((s) => s + 1)}>Next
+        )}
+
+  );
+}`;
 
 ## Installation
 
@@ -20,89 +69,7 @@ npm install gsap lucide-react
 
 ### Copy the Component
 
-Copy the core engine code directly from the Component tab in the Interactive Showcase above and place it in components/custom/blocks/StepperBlock.tsx.
-
-## Usage Architecture
-
-To build a complete form wizard, manage your data in a parent state object and pass per-step validation checks into your navigation handlers:
-
-```tsx
-
-export default function RealFormWizard() {
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({ fullName: "", company: "" });
-  const [errors, setErrors] = useState>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const validateStep = (current: number) => {
-    if (current === 0 && !formData.fullName) {
-      setErrors({ fullName: "Name required" });
-      return false;
-    }
-    return true;
-  };
-
-  const handleNext = () => {
-    if (validateStep(step)) setStep((s) => s + 1);
-  };
-
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      await fetch("/api/submit", {
-        method: "POST",
-        body: JSON.stringify(formData),
-      });
-      alert("Success!");
-    } catch (err) {
-      alert("Submission failed!");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const steps = [
-    {
-      id: "1",
-      title: "Profile",
-      icon: User,
-      content: (
-        
-            setFormData({ ...formData, fullName: e.target.value })
-          }
-        />
-      ),
-    },
-    {
-      id: "2",
-      title: "Workspace",
-      icon: Building2,
-      content: Workspace Form,
-    },
-    {
-      id: "3",
-      title: "Review",
-      icon: CheckCircle2,
-      content: Summary Screen,
-    },
-  ];
-
-  return (
-
-         setStep((s) => s - 1)} disabled={step === 0}>
-          Back
-        
-        {step === steps.length - 1 ? (
-          
-            Submit
-          
-        ) : (
-          Next
-        )}
-
-  );
-}
-```
+Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the example above.
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
@@ -175,9 +142,14 @@ Learn about the Stepper component's linear progression features, providing clear
 
           "#FFAB1D"
 
-          The active theme color. Accepts valid hex codes (e.g.,{" "}
-          "#FFAB1D") which are applied dynamically via inline
-          styles, or standard Tailwind utility classes.
+          The active theme color for the progress line, completed/active
+          circles and the pulse ring. Any CSS color value — hex,{" "}
+          rgb(), hsl(), oklch() or{" "}
+          var(--token) — is applied inline. A Tailwind background
+          class (e.g. "bg-indigo-500") also works for the line and
+          circles, but the pulse ring is skipped: its border color would need a{" "}
+          border-* class built at runtime, which Tailwind's scanner
+          never sees.
 
           Stepper
 

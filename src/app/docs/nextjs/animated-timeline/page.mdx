@@ -1,4 +1,5 @@
-import { AnimatedTimelineShowcase } from "@/components/site/AnimatedTimelineShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Animated Timeline
 
@@ -6,31 +7,12 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different entry animations. **Scroll down inside the preview box** to see the intersection observers trigger the high-end entrance animations dynamically!
+Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold. The first example's **Code** tab contains the full component source.
 
-<AnimatedTimelineShowcase />
-
-## Installation
-
-### Copy the Component
-
-This component is completely dependency-free. It uses standard React hooks alongside the native JavaScript `IntersectionObserver` API, meaning it has zero impact on your bundle size compared to heavy animation libraries like Framer Motion or GSAP.
-
-You can copy the full engine code directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/AnimatedTimelineBlock.tsx`.
-
----
-
-## Usage
-
-Define your `items` array to populate the timeline. You can dynamically switch the `animation` and `layout` props to drastically change the visual feel of the page.
-
-## Implementation
-
-```tsx
-import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { Zap, Rocket } from "lucide-react";
+export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { Rocket, Zap } from "lucide-react";
 
 const EVENTS = [
   { id: "1", title: "Project Start", date: "Q1", icon: Zap },
@@ -46,16 +28,76 @@ const EVENTS = [
 export default function CompanyHistory() {
   return (
     <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock
-        items={EVENTS}
-        layout="center"
-        animation="flip-up"
-        color="#8B5CF6"
-      />
+      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="flip-up" />
     </div>
   );
-}
-```
+}`;
+
+export const usageLeft = `// Rail on the left, every card on the same side — the compact layout for
+// narrow columns and sidebars.
+<AnimatedTimelineBlock items={EVENTS} layout="left" animation="slide-in" />`;
+
+export const usageRight = `<AnimatedTimelineBlock items={EVENTS} layout="right" animation="slide-in" />`;
+
+export const usageFadeUp = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="fade-up" />`;
+
+export const usageZoom = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="zoom-in" />`;
+
+export const usageBlur = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="blur-in" />`;
+
+<ExampleShowcase
+  name="animated-timeline"
+  colorControl
+  colorLabel="Active Focus Color"
+  columns={1}
+  examples={[
+    {
+      title: "Animated timeline",
+      subheading: "Pass an `items` array — each entry needs an `id`, `title` and `date`, plus an optional `description` and lucide `icon`.",
+      props: { layout: "center", animation: "flip-up" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AnimatedTimelineBlock.tsx"),
+    },
+    {
+      title: "Left layout",
+      subheading: "`layout=\"left\"` pins the rail to one edge and stacks every card beside it.",
+      props: { layout: "left", animation: "slide-in" },
+      usage: usageLeft,
+    },
+    {
+      title: "Right layout",
+      subheading: "`layout=\"right\"` mirrors it — useful when the timeline sits next to body copy on the left.",
+      props: { layout: "right", animation: "slide-in" },
+      usage: usageRight,
+    },
+    {
+      title: "Fade up",
+      subheading: "`animation=\"fade-up\"` is the quietest entrance — a short rise with an opacity ramp.",
+      props: { layout: "center", animation: "fade-up" },
+      usage: usageFadeUp,
+    },
+    {
+      title: "Zoom in",
+      subheading: "`animation=\"zoom-in\"` scales each card up as its node lights.",
+      props: { layout: "center", animation: "zoom-in" },
+      usage: usageZoom,
+    },
+    {
+      title: "Blur in",
+      subheading: "`animation=\"blur-in\"` resolves the card out of a blur instead of moving it.",
+      props: { layout: "center", animation: "blur-in" },
+      usage: usageBlur,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free. It uses standard React hooks alongside the native JavaScript `IntersectionObserver` API, meaning it has zero impact on your bundle size compared to heavy animation libraries like Framer Motion or GSAP.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTimelineBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -77,4 +119,101 @@ Discover the key capabilities that make this component an excellent choice for m
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>AnimatedTimelineItem[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>The events to render, in order. See the item shape below.</td>
+      </tr>
+      <tr>
+        <td><code>layout</code></td>
+        <td><code>"left" | "right" | "center"</code></td>
+        <td><code>"center"</code></td>
+        <td>Where the rail sits and whether cards alternate sides.</td>
+      </tr>
+      <tr>
+        <td><code>animation</code></td>
+        <td><code>"fade-up" | "slide-in" | "zoom-in" | "flip-up" | "blur-in"</code></td>
+        <td><code>"fade-up"</code></td>
+        <td>The entrance each card plays when its node scrolls into view.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | (hex string)</code></td>
+        <td><code>"primary"</code></td>
+        <td>Accent applied to the active node, its glow and the extended rail.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AnimatedTimelineItem Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string | number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Stable React key for the event.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Headline shown on the card.</td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Free-form label beside the node — a quarter, month or "Present".</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional supporting copy under the title.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>React.ElementType</code></td>
+        <td><code>undefined</code></td>
+        <td>Component rendered inside the node — any lucide icon works.</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

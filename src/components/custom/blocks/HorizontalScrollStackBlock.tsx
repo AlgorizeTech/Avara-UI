@@ -46,21 +46,29 @@ function StackCard({
   scrollEndThreshold: number;
   isMobile?: boolean;
 }) {
-  // Distance each card travels before locking over the previous card (Desktop only)
-  const travelPerCard = cardWidth + gap - stackOffset;
-  const lockDistance = index * travelPerCard;
+  // For Shorter Rail (or general rail mode), move entire track from right to left linearly
+  const totalRailWidth = total * (cardWidth + gap);
+  const fullRailSlide = -(totalRailWidth - (cardWidth + stackOffset * 2));
 
-  // Calculate the scroll percentage (0 to scrollEndThreshold) where THIS card locks
-  const lockProgress =
-    total > 1 ? (index / (total - 1)) * scrollEndThreshold : 0;
-  const safeLockProgress = Math.max(0.0001, lockProgress);
+  // If items <= 3 (Shorter rail), sweep smoothly as a whole rail from right to left
+  const isRailMode = total <= 3;
+  const xRail = useTransform(progress, [0, 1], [0, fullRailSlide]);
 
-  // Card translates left until it hits lockProgress, then anchors in place while subsequent cards slide over it
-  const x = useTransform(
+  // Step-by-step stacking mode for long lists
+  const stepDistance = cardWidth + gap - stackOffset;
+  const stepSize = total > 1 ? 1 / (total - 1) : 1;
+  const cardStart = index > 0 ? (index - 1) * stepSize : 0;
+  const cardEnd = index * stepSize;
+  const priorTranslation = -(index - 1) * stepDistance;
+  const finalTranslation = -index * stepDistance;
+
+  const xStack = useTransform(
     progress,
-    [0, safeLockProgress, 1],
-    [0, -lockDistance, -lockDistance],
+    [0, cardStart, cardEnd, 1],
+    [0, index === 0 ? 0 : priorTranslation, index === 0 ? 0 : finalTranslation, index === 0 ? 0 : finalTranslation],
   );
+
+  const x = isRailMode ? xRail : xStack;
 
   const displayNum = item.number || `0${index + 1}`;
 
@@ -68,7 +76,8 @@ function StackCard({
     <motion.div
       style={{
         width: isMobile ? "100%" : `${cardWidth}px`,
-        x: isMobile || index === 0 ? 0 : x,
+        x: isMobile ? 0 : (isRailMode ? x : (index === 0 ? 0 : x)),
+        zIndex: index + 1,
       }}
       className={cn(
         "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] hover:shadow-lg hover:shadow-[var(--theme-color,var(--primary))]/15 transition-all duration-300 relative",
@@ -252,34 +261,64 @@ export function HorizontalScrollStack({
   // a same-origin iframe device preview, where useScroll would track the
   // parent page scroll instead). Replicates offset ["start start", "end end"].
   const scrollYProgress = useMotionValue(0);
+  const isInsideIframe = typeof window !== "undefined" && window.parent !== window;
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const win = el.ownerDocument.defaultView ?? window;
+
     const update = () => {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - win.innerHeight;
-      scrollYProgress.set(
-        total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0,
-      );
+      // Standalone or iframe inner scroll tracking
+      const scrollableHeight = el.scrollHeight - win.innerHeight;
+      if (scrollableHeight > 0) {
+        scrollYProgress.set(Math.min(1, Math.max(0, win.scrollY / scrollableHeight)));
+      } else {
+        const rect = el.getBoundingClientRect();
+        const total = rect.height - win.innerHeight;
+        scrollYProgress.set(total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0);
+      }
     };
+
+    const onWheelNative = (e: WheelEvent) => {
+      if (!isInsideIframe || isMobile) return;
+      const current = scrollYProgress.get();
+      const delta = e.deltaY;
+
+      // Lock mouse wheel to component while cards are advancing/receding
+      if ((delta > 0 && current < 1) || (delta < 0 && current > 0)) {
+        e.preventDefault();
+        e.stopPropagation();
+        const speedMultiplier = items.length <= 3 ? 0.0035 : 0.0018;
+        const next = Math.min(1, Math.max(0, current + delta * speedMultiplier));
+        scrollYProgress.set(next);
+      }
+    };
+
     update();
     win.addEventListener("scroll", update, { passive: true });
     win.addEventListener("resize", update);
+    win.addEventListener("wheel", onWheelNative, { passive: false });
+
     return () => {
       win.removeEventListener("scroll", update);
       win.removeEventListener("resize", update);
+      win.removeEventListener("wheel", onWheelNative);
     };
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isInsideIframe, isMobile, items.length]);
 
   const SCROLL_END_THRESHOLD = 0.7;
-  const dynamicHeight = Math.max(400, items.length * 70);
+  const dynamicHeightVh = Math.max(300, items.length * 60);
 
   return (
     <div
       ref={containerRef}
       style={{
-        height: isMobile ? "auto" : `${dynamicHeight}vh`,
+        height: isMobile
+          ? "auto"
+          : isInsideIframe
+            ? "800px"
+            : `${dynamicHeightVh}vh`,
         backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
         ...style,
       }}
@@ -327,13 +366,13 @@ export function HorizontalScrollStack({
         /* =========================================================
            DESKTOP (>= 768px): Native GPU Horizontal Sticky Deck
            ========================================================= */
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
+        <div className={cn("w-full overflow-hidden flex flex-col justify-center px-4 sm:px-8 lg:px-12", isInsideIframe ? "h-full py-2" : "sticky top-0 h-screen")}>
           {/* Section Header */}
-          <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+          <div className="max-w-3xl mb-3 sm:mb-6 shrink-0">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
               {title}
             </h2>
-            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">
+            <p className="text-slate-600 dark:text-zinc-400 text-xs sm:text-base mt-1 font-normal">
               {subtitle}
             </p>
           </div>
@@ -362,7 +401,7 @@ export function HorizontalScrollStack({
           </div>
 
           {/* Progress Bar Indicators */}
-          <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
+          <div className="flex items-center gap-2 mt-4 sm:mt-6 max-w-xs w-full shrink-0">
             {items.map((_, i) => (
               <ProgressBarItem
                 key={i}

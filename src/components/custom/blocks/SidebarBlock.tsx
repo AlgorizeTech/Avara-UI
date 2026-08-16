@@ -86,21 +86,29 @@ export function Sidebar({
 
   return (
     <>
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity md:hidden"
-          onClick={() => setIsMobileOpen(false)}
-        />
-      )}
+      {/* Backdrop stays mounted so it can fade both in and out with the drawer */}
+      <div
+        aria-hidden={!isMobileOpen}
+        onClick={() => setIsMobileOpen(false)}
+        className={cn(
+          "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden",
+          "transition-[opacity,visibility] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          isMobileOpen ? "visible opacity-100" : "invisible opacity-0",
+        )}
+      />
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex flex-col transition-[width,transform] duration-300 ease-in-out md:relative md:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex flex-col md:relative md:translate-x-0",
+          // Mobile drawer glides in on a decelerating curve; desktop rail keeps the shorter width tween
+          "transition-[width,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] will-change-transform motion-reduce:transition-none md:duration-300 md:ease-in-out",
           expanded ? "w-64" : "w-16",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           variant === "attached"
             ? "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505]"
             : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] shadow-sm",
+          // Lifted off the backdrop while it is an open drawer (mobile only state)
+          isMobileOpen && "shadow-2xl",
           className,
         )}
         {...props}
