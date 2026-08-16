@@ -42,6 +42,7 @@ export const sandboxNames = [
   "form",
   "half-stars",
   "hero-data",
+  "image-compare",
   "hero",
   "hero-minimal",
   "hero-saas",

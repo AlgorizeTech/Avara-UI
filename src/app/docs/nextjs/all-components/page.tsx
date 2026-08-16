@@ -99,6 +99,7 @@ const componentPreviewData: PreviewCategoryGroup[] = [
       { title: "Mobile Mockups", countText: "Device Frame", href: "/docs/nextjs/mobile-mockup", badge: "New", illustrationType: "mobile-mockup" },
       { title: "Half Stars", countText: "Rating Stars", href: "/docs/nextjs/half-stars", badge: "New", illustrationType: "half-stars" },
       { title: "Custom Code Block", countText: "Code Highlighter", href: "/docs/nextjs/custom-code-block", badge: "New", illustrationType: "code-block" },
+      { title: "Image Compare", countText: "Before & After Slider", href: "/docs/nextjs/image-compare", badge: "New", illustrationType: "image-compare" },
     ],
   },
   {
@@ -455,6 +456,22 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
                 <div className="bg-foreground rounded-xs" />
                 <div className="bg-foreground rounded-xs" />
               </div>
+            </div>
+          </div>
+        )}
+
+        {type === "image-compare" && (
+          <div className="w-full h-full rounded-xl bg-card border border-border flex flex-col justify-center relative overflow-hidden my-auto shadow-2xs group/imgcomp">
+            <div className="absolute inset-0 flex">
+              <div className="w-1/2 h-full bg-primary/20 flex items-center justify-center text-[7px] font-black text-primary border-r border-primary">
+                BEFORE
+              </div>
+              <div className="w-1/2 h-full bg-emerald-500/20 flex items-center justify-center text-[7px] font-black text-emerald-500">
+                AFTER
+              </div>
+            </div>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 rounded-full bg-primary text-primary-foreground font-black text-[7px] flex items-center justify-center shadow-md">
+              ↔
             </div>
           </div>
         )}

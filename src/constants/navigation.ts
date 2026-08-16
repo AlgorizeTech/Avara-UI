@@ -112,6 +112,7 @@ export const navigation: NavigationItem[] = [
       { label: "Mobile Mockups", href: "/docs/nextjs/mobile-mockup", badge: "New" },
       { label: "Half Stars", href: "/docs/nextjs/half-stars", badge: "New" },
       { label: "Custom Code Block", href: "/docs/nextjs/custom-code-block", badge: "New" },
+      { label: "Image Compare", href: "/docs/nextjs/image-compare", badge: "New" },
       
     ],
   },
