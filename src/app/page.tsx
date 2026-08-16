@@ -509,7 +509,7 @@ function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
 			<HomepageHeroBlock />
-			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-10">
+			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-4 sm:pb-10">
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
            ═══════════════════════════════════════════════ */}
@@ -517,7 +517,7 @@ function HeroSection() {
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, delay: 0.5 }}
-					className="w-full mt-6 sm:mt-10 flex justify-center">
+					className="w-full -mt-8 sm:mt-10 flex justify-center">
 					<DesignComponentsFolder />
 				</motion.div>
 			</div>

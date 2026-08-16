@@ -204,7 +204,7 @@ export const HomepageHeroTypingBlock = forwardRef<
         ref={ref}
         style={customStyle}
         className={cn(
-          "relative w-full flex flex-col justify-center items-center overflow-hidden py-8 sm:py-12 md:py-16",
+          "relative w-full flex flex-col justify-center items-center py-4 sm:py-8 md:py-12",
           className
         )}
         {...props}
@@ -221,7 +221,7 @@ export const HomepageHeroTypingBlock = forwardRef<
         {/* Grid Mask Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
-        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-2 sm:px-6 md:px-8 flex flex-col justify-center items-center">
+        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
             {/* Top Pill Badge */}
             {badgeText && (
@@ -239,7 +239,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 
             {/* Dynamic Typing Title */}
             <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
+              <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
                 <span>{titlePrefix}</span>
                 <span className="inline-flex items-center">
                   <span className="text-[var(--hero-accent-text)]">
@@ -255,7 +255,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 
             {/* Subtitle Paragraph */}
             {subtitle && (
-              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-[10px] xs:text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}
@@ -269,7 +269,7 @@ export const HomepageHeroTypingBlock = forwardRef<
                   className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
                   <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
-                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate">
+                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
                     {cliCommand}
                   </code>
                   <div className="pl-1.5 sm:pl-3.5 border-l border-border h-3 sm:h-5 flex items-center shrink-0">
@@ -284,11 +284,11 @@ export const HomepageHeroTypingBlock = forwardRef<
             )}
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 pt-1 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
+            <div className="flex flex-row items-center justify-center gap-1.5 xs:gap-2.5 sm:gap-4 pt-0 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{primaryActionLabel}</span>
                   <ArrowRight className="size-3 sm:size-5 shrink-0" />
@@ -303,10 +303,10 @@ export const HomepageHeroTypingBlock = forwardRef<
                       ? "_blank"
                       : undefined
                   }
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
-                  <Github className="size-3 sm:size-5 shrink-0" />
                   <span>{secondaryActionLabel}</span>
+                  <Github className="size-3 sm:size-5 shrink-0" />
                 </Link>
               )}
             </div>

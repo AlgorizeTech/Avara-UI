@@ -105,11 +105,11 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
   };
 
   return (
-    <section style={customStyle} className={cn("relative w-full py-4 md:py-8 overflow-hidden select-none flex justify-center items-center", className)}>
+    <section style={customStyle} className={cn("relative w-full py-8 md:py-16 select-none flex justify-center items-center", className)}>
       {/* 
         Full Width Responsive Stage with Scale Wrapper to ensure cards shrink smoothly on mobile/small screens
       */}
-      <div className="w-full flex justify-center items-center overflow-hidden px-1 sm:px-0">
+      <div className="w-full flex justify-center items-center px-1 sm:px-0">
         <motion.div 
           onViewportEnter={() => setIsInView(true)}
           className="relative w-full min-[494px]:w-[70%] sm:w-full max-w-[960px] mx-auto h-[380px] min-[450px]:h-[440px] min-[550px]:h-[500px] min-[620px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
@@ -125,7 +125,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 0 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
-              className="absolute top-[22%] sm:top-[2%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[26%] sm:top-[6%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/calendar" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
@@ -196,7 +196,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               initial="hidden"
               animate={!isInView ? "hidden" : retractedIndex === 1 ? "retracted" : "visible"}
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
-              className="absolute top-[20%] sm:top-[0%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[110px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
+              className="absolute top-[24%] sm:top-[4%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[110px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href="/docs/nextjs/data-table" className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}

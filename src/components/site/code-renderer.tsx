@@ -52,9 +52,7 @@ export const CodeRenderer = ({
   if (isLoading) {
     return (
       <div className="font-normal text-sm">
-        <div style={{ padding: "16px", paddingRight: "20px" }}>
-          <pre><code>{code}</code></pre>
-        </div>
+        <pre><code>{code}</code></pre>
       </div>
     );
   }
@@ -62,7 +60,6 @@ export const CodeRenderer = ({
   return (
     <div className="font-normal text-sm">
       <div
-        style={{ padding: "16px", paddingRight: "20px" }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

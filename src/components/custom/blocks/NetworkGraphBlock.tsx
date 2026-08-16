@@ -30,9 +30,9 @@ export interface NetworkGraphProps
 }
 
 const sizeMap = {
-  sm: "w-7 h-7 sm:w-10 sm:h-10",
-  md: "w-9 h-9 sm:w-12 sm:h-12",
-  lg: "w-12 h-12 sm:w-16 sm:h-16",
+  sm: "w-6 h-6 sm:w-9 sm:h-9",
+  md: "w-8 h-8 sm:w-11 sm:h-11",
+  lg: "w-10 h-10 sm:w-14 sm:h-14",
 };
 
 export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
@@ -208,7 +208,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="relative group cursor-pointer"
             >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-[4px] sm:border-[6px] border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden bg-white dark:bg-zinc-900 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-[3px] sm:border-[5px] border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden bg-white dark:bg-zinc-900 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                 {centerNode.image ? (
                   <img
                     src={centerNode.image}

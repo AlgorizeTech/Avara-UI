@@ -214,8 +214,8 @@ export interface UserGraphProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const DEFAULT_ORCHESTRATOR = {
-  name: "Shuvo Sarkar",
-  role: "Expert Software Engineer",
+  name: "John Doe",
+  role: "Senior Product Designer",
   avatarUrl:
     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
 };
@@ -261,13 +261,13 @@ export function UserGraph({
     <div
       ref={containerRef}
       className={cn(
-        "w-full p-2 sm:p-3 bg-transparent flex flex-col items-center",
+        "w-full p-2 sm:p-3 bg-transparent flex flex-col items-center overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
         className,
       )}
       {...props}
     >
           {/* Theme Dynamic Canvas */}
-          <div className="relative w-full rounded-none bg-slate-50 dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-slate-200 dark:border-zinc-800/80 min-h-[640px] sm:min-h-[760px] flex flex-col items-center justify-center transition-colors">
+          <div className="relative w-full rounded-none bg-slate-50 dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-slate-200 dark:border-zinc-800/80 flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* Ambient Dynamic Theme Glow */}
             <div
               className={cn(
@@ -279,17 +279,17 @@ export function UserGraph({
 
             <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center z-10">
               {/* TOP TIER: Concentric Circles & Dashed Orbit Ring */}
-              <div className="relative size-[240px] sm:size-[310px] flex items-center justify-center my-1 z-10 scale-95 sm:scale-100">
+              <div className="relative size-[210px] sm:size-[250px] flex items-center justify-center my-0 z-10 scale-95 sm:scale-100">
                 {/* Outer Dashed Orbit Circle */}
-                <div className="absolute size-[200px] sm:size-[260px] rounded-full border border-dashed border-slate-300 dark:border-zinc-700/60" />
+                <div className="absolute size-[170px] sm:size-[210px] rounded-full border border-dashed border-slate-300 dark:border-zinc-700/60" />
 
                 {/* Concentric Outer Solid Circle */}
-                <div className="absolute size-[115px] sm:size-[150px] rounded-full border border-slate-300 dark:border-zinc-700/50 flex items-center justify-center" />
+                <div className="absolute size-[100px] sm:size-[125px] rounded-full border border-slate-300 dark:border-zinc-700/50 flex items-center justify-center" />
 
                 {/* Concentric Inner Ring */}
                 <div
                   className={cn(
-                    "absolute size-[75px] sm:size-[100px] rounded-full border opacity-20",
+                    "absolute size-[65px] sm:size-[85px] rounded-full border opacity-20",
                     color === "default" || color === "primary" ? "border-primary bg-primary/10" : ""
                   )}
                   style={color !== "default" && color !== "primary" ? { borderColor: accentColor.hex, backgroundColor: `${accentColor.hex}10` } : undefined}
@@ -298,12 +298,12 @@ export function UserGraph({
                 {/* Center Theme-Dynamic User Avatar Circle */}
                 <div
                   className={cn(
-                    "relative z-20 size-14 sm:size-20 rounded-full flex items-center justify-center shadow-md ring-2 sm:ring-4 transition-colors",
+                    "relative z-20 size-12 sm:size-16 rounded-full flex items-center justify-center shadow-md ring-2 sm:ring-4 transition-colors",
                     accentColor.bgClass,
                     accentColor.ringClass
                   )}
                 >
-                  <User className="size-6 sm:size-9 stroke-[2.5]" />
+                  <User className="size-5 sm:size-7 stroke-[2.5]" />
                 </div>
 
                 {/* 11 Orbiting Tool Nodes mathematically spaced evenly around Dashed Circle */}
@@ -311,7 +311,7 @@ export function UserGraph({
                   // Calculate exact equal angular spacing: 360 / 11 = 32.727° per tool
                   const angleDegree = (index / orbitTools.length) * 360 - 90; // Start at top (270° / -90°)
                   const rad = (angleDegree * Math.PI) / 180;
-                  const radius = isSmallScreen ? 100 : 130;
+                  const radius = isSmallScreen ? 85 : 105;
                   const x = radius * Math.cos(rad);
                   const y = radius * Math.sin(rad);
                   const isSelected = selectedTool === tool.id;
@@ -325,23 +325,23 @@ export function UserGraph({
                       <button
                         onClick={() => setSelectedTool(tool.id)}
                         className={cn(
-                          "size-7 sm:size-10 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
+                          "size-6 sm:size-8 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
                           isSelected
-                            ? cn("shadow-md ring-2 sm:ring-4 ring-offset-1 dark:ring-offset-zinc-900", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
+                            ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 dark:ring-offset-zinc-900", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
                             : "bg-white dark:bg-[#181c2b] border-slate-200 dark:border-zinc-700/80 text-slate-600 dark:text-zinc-400 hover:border-slate-400 dark:hover:border-zinc-500"
                         )}
                       >
-                        <tool.icon className="size-3 sm:size-4" />
+                        <tool.icon className="size-3 sm:size-3.5" />
                       </button>
 
                       {/* Active Selected Tool Label Tooltip with Arrow Pointer */}
                       {isSelected && (
-                        <div className="absolute top-8 sm:top-11 z-40 flex flex-col items-center pointer-events-none drop-shadow-md">
+                        <div className="absolute top-7 sm:top-9 z-40 flex flex-col items-center pointer-events-none drop-shadow-md">
                           {/* Visible Solid Arrow Pointer Triangle */}
-                          <div className="w-0 h-0 border-x-[6px] border-x-transparent border-b-[6px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
+                          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-b-[5px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
                           
                           {/* Tooltip Content Badge */}
-                          <div className="px-2 py-0.5 rounded-md bg-slate-800 text-white dark:bg-zinc-200 dark:text-slate-900 text-[9px] sm:text-[10px] font-bold whitespace-nowrap shadow-md">
+                          <div className="px-2 py-0.5 rounded-md bg-slate-800 text-white dark:bg-zinc-200 dark:text-slate-900 text-[9px] font-bold whitespace-nowrap shadow-md">
                             {tool.name}
                           </div>
                         </div>
@@ -354,28 +354,28 @@ export function UserGraph({
               {/* DYNAMIC VIEW SWITCH BASED ON EXACT CONTAINER OR SCREEN SIZE */}
               {!isSmallScreen ? (
                 /* DESKTOP & TABLET INTEGRATED SVG GRAPH DIAGRAM */
-                <div className="relative w-full h-[430px]">
+                <div className="relative w-full h-[330px]">
                   {/* SVG Precision Connector Lines Layer */}
                   <svg
                     className="pointer-events-none absolute inset-0 size-full overflow-visible"
-                    viewBox="0 0 1000 430"
+                    viewBox="0 0 1000 330"
                     preserveAspectRatio="none"
                     style={{ zIndex: 1 }}
                   >
-                    {/* 1. Straight Line from Top Orbit to Shuvo Avatar Top */}
+                    {/* 1. Straight Line from Top User Avatar to John Doe Avatar Top */}
                     <line
                       x1="500"
-                      y1="-10"
+                      y1="-110"
                       x2="500"
-                      y2="30"
+                      y2="15"
                       stroke="#cbd5e1"
                       strokeWidth="1.5"
                       className="dark:stroke-zinc-700"
                     />
 
-                    {/* 2. 5 Branch Curves emanating directly from Shuvo Avatar BOTTOM (500, 110) */}
+                    {/* 2. 5 Branch Curves emanating directly from Shuvo Avatar BOTTOM (500, 90) */}
                     {subAgents.map((agent) => {
-                      const curvePath = `M 500 110 C 500 175, ${agent.svgX} 150, ${agent.svgX} 225`;
+                      const curvePath = `M 500 90 C 500 135, ${agent.svgX} 125, ${agent.svgX} 175`;
                       return (
                         <g key={agent.id}>
                           <path
@@ -390,27 +390,27 @@ export function UserGraph({
                           {/* 3 Radiating Sub-App Lines */}
                           <line
                             x1={agent.svgX}
-                            y1={289}
-                            x2={agent.svgX - 45}
-                            y2={365}
+                            y1={225}
+                            x2={agent.svgX - 35}
+                            y2={275}
                             stroke="#cbd5e1"
                             strokeWidth="1.2"
                             className="dark:stroke-zinc-700"
                           />
                           <line
                             x1={agent.svgX}
-                            y1={289}
+                            y1={225}
                             x2={agent.svgX}
-                            y2={365}
+                            y2={275}
                             stroke="#cbd5e1"
                             strokeWidth="1.2"
                             className="dark:stroke-zinc-700"
                           />
                           <line
                             x1={agent.svgX}
-                            y1={289}
-                            x2={agent.svgX + 45}
-                            y2={365}
+                            y1={225}
+                            x2={agent.svgX + 35}
+                            y2={275}
                             stroke="#cbd5e1"
                             strokeWidth="1.2"
                             className="dark:stroke-zinc-700"
@@ -421,10 +421,10 @@ export function UserGraph({
                   </svg>
 
                   {/* MIDDLE TIER: Shuvo Sarkar Main Orchestrator Avatar Node */}
-                  <div className="absolute top-[30px] left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
+                  <div className="absolute top-[15px] left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
                     <div
                       className={cn(
-                        "relative size-20 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
+                        "relative size-16 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
                         accentColor.ringClass
                       )}
                     >
@@ -434,12 +434,12 @@ export function UserGraph({
                         className="size-full rounded-full object-cover"
                       />
                       {/* Status Dot */}
-                      <span className="absolute bottom-0 right-1 size-3.5 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
+                      <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                     </div>
                     {/* Shuvo Sarkar Info Text */}
                     <div className="mt-1 text-center">
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
-                      <p className="text-[11px] font-medium text-slate-500 dark:text-zinc-400 whitespace-nowrap">{orchestrator.role}</p>
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
+                      <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400 whitespace-nowrap">{orchestrator.role}</p>
                     </div>
                   </div>
 
@@ -453,7 +453,7 @@ export function UserGraph({
                           className="absolute -translate-x-1/2 flex flex-col items-center group w-[19%]"
                         >
                           {/* Sub-Agent Avatar Circle */}
-                          <div className="relative size-16 rounded-full p-0.5 bg-white dark:bg-[#181c2b] shadow-sm mt-[225px] mb-2 ring-1 ring-slate-300 dark:ring-zinc-700/80">
+                          <div className="relative size-13 rounded-full p-0.5 bg-white dark:bg-[#181c2b] shadow-sm mt-[175px] mb-1 ring-1 ring-slate-300 dark:ring-zinc-700/80">
                             <img
                               src={agent.avatarUrl}
                               alt={agent.title}
@@ -461,7 +461,7 @@ export function UserGraph({
                             />
                             <span
                               className={cn(
-                                "absolute bottom-0 right-0 size-3.5 rounded-full ring-2 ring-slate-50 dark:ring-[#0c0e1a]",
+                                "absolute bottom-0 right-0 size-3 rounded-full ring-2 ring-slate-50 dark:ring-[#0c0e1a]",
                                 agent.status === "online"
                                   ? "bg-emerald-500"
                                   : agent.status === "idle"
@@ -472,12 +472,12 @@ export function UserGraph({
                           </div>
 
                           {/* Sub-Agent Title Header BELOW Avatar Image */}
-                          <span className="text-[12px] font-bold text-slate-900 dark:text-white text-center leading-tight mb-10 whitespace-nowrap">
+                          <span className="text-[11px] font-bold text-slate-900 dark:text-white text-center leading-tight mb-5 whitespace-nowrap">
                             {agent.title}
                           </span>
 
                           {/* 3 Sub-App Badges */}
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5">
                             {appList(agent.apps)}
                           </div>
                         </div>

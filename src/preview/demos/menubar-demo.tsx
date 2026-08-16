@@ -54,7 +54,7 @@ function BareBar({ children }: { children: React.ReactNode }) {
 
 export default function MenubarDemo({
   theme: initialTheme = "System",
-  example = "app",
+  example = "basic",
 }: {
   theme?: string;
   /** "app" is the classic OS-window frame; the others isolate one feature. */

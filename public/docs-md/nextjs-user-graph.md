@@ -14,19 +14,6 @@ export default function UserGraphPage() {
   );
 }`;
 
-export const usageSelected = `// \`defaultSelectedTool\` is the orbit node highlighted on first render —
-// match it to whichever channel the page is about.
-`;
-
-export const usageOrchestrator = `// \`orchestrator\` is the middle-tier node. Every tier takes data the same
-// way, so you can replace one without touching the others.
-`;
-
-export const usageData = `// The full data surface. Each sub-agent carries its own horizontal
-// position: \`percentX\` places the card, \`svgX\` anchors the connector curve
-// in the 1000-wide viewBox — keep the two in step.
-`;
-
 ## Installation
 
 ### 1. Install Dependencies

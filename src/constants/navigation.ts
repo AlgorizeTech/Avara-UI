@@ -112,12 +112,15 @@ export const navigation: NavigationItem[] = [
       { label: "Mobile Mockups", href: "/docs/nextjs/mobile-mockup", badge: "New" },
       { label: "Half Stars", href: "/docs/nextjs/half-stars", badge: "New" },
       { label: "Custom Code Block", href: "/docs/nextjs/custom-code-block", badge: "New" },
+      { label: "Image Compare", href: "/docs/nextjs/image-compare", badge: "New" },
       
     ],
   },
     {
     label: "Animated Ui Components",
     children: [
+      { label: "Cursor Animation", href: "/docs/nextjs/cursor-animation", badge: "New" },
+      { label: "Curved Carousel", href: "/docs/nextjs/curved-carousel", badge: "New" },
       { label: "Chat Bubble", href: "/docs/nextjs/chat-bubble" },
       { label: "Dock", href: "/docs/nextjs/dock", badge: "New" },
       // { label: "Flow Chart", href: "/docs/nextjs/flowchart", badge: "New" },

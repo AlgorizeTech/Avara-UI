@@ -44,6 +44,47 @@ const EVENT_PLATFORM_OPTIONS = [
 // ==========================================
 export type CalendarVariant = "default" | "minimal" | "glass";
 
+const TIME_SLOTS = [
+  { label: "12:00 AM", startHour: 0, timeStr: "00:00" },
+  { label: "1:00 AM", startHour: 1, timeStr: "01:00" },
+  { label: "2:00 AM", startHour: 2, timeStr: "02:00" },
+  { label: "3:00 AM", startHour: 3, timeStr: "03:00" },
+  { label: "4:00 AM", startHour: 4, timeStr: "04:00" },
+  { label: "5:00 AM", startHour: 5, timeStr: "05:00" },
+  { label: "6:00 AM", startHour: 6, timeStr: "06:00" },
+  { label: "7:00 AM", startHour: 7, timeStr: "07:00" },
+  { label: "8:00 AM", startHour: 8, timeStr: "08:00" },
+  { label: "9:00 AM", startHour: 9, timeStr: "09:00" },
+  { label: "10:00 AM", startHour: 10, timeStr: "10:00" },
+  { label: "11:00 AM", startHour: 11, timeStr: "11:00" },
+  { label: "12:00 PM", startHour: 12, timeStr: "12:00" },
+  { label: "1:00 PM", startHour: 13, timeStr: "13:00" },
+  { label: "2:00 PM", startHour: 14, timeStr: "14:00" },
+  { label: "3:00 PM", startHour: 15, timeStr: "15:00" },
+  { label: "4:00 PM", startHour: 16, timeStr: "16:00" },
+  { label: "5:00 PM", startHour: 17, timeStr: "17:00" },
+  { label: "6:00 PM", startHour: 18, timeStr: "18:00" },
+  { label: "7:00 PM", startHour: 19, timeStr: "19:00" },
+  { label: "8:00 PM", startHour: 20, timeStr: "20:00" },
+  { label: "9:00 PM", startHour: 21, timeStr: "21:00" },
+  { label: "10:00 PM", startHour: 22, timeStr: "22:00" },
+  { label: "11:00 PM", startHour: 23, timeStr: "23:00" },
+];
+
+const getSlotIndexForTime = (timeStr?: string) => {
+  if (!timeStr) return 2;
+  const parts = timeStr.split(":");
+  const hour = parseInt(parts[0], 10);
+  if (isNaN(hour)) return 2;
+
+  for (let i = TIME_SLOTS.length - 1; i >= 0; i--) {
+    if (hour >= TIME_SLOTS[i].startHour) {
+      return i;
+    }
+  }
+  return 0;
+};
+
 // Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
 export type CalendarColor =
   | "indigo"
@@ -404,6 +445,7 @@ function CalendarDashboard({
   );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
+  const [selectedTime, setSelectedTime] = useState("12:00");
   const [editingEvent, setEditingEvent] = useState<any | null>(null);
   const [eventType, setEventType] = useState("pentest");
   const [eventPlatform, setEventPlatform] = useState("meet");
@@ -546,9 +588,10 @@ function CalendarDashboard({
     setActivePopupEventId(null);
   };
 
-  const openAddModalForDate = (dateKey: string) => {
+  const openAddModalForDate = (dateKey: string, timeStr: string = "12:00") => {
     setEditingEvent(null);
     setSelectedDateKey(dateKey);
+    setSelectedTime(timeStr);
     setEventType("pentest");
     setEventPlatform("meet");
     setIsAddModalOpen(true);
@@ -590,7 +633,7 @@ function CalendarDashboard({
     <div className={`${isDark ? "dark" : ""} w-full h-full max-w-full overflow-hidden`} style={customVars}>
       <div
         className={cn(
-          "w-full max-w-full h-auto lg:h-[700px] flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 overflow-hidden",
+          "w-full max-w-full h-auto flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300",
           styles.wrapper,
           variant !== "minimal" ? "rounded-xl" : "",
         )}
@@ -994,15 +1037,15 @@ function CalendarDashboard({
             </div>
           </header>
 
-          {/* Grid Container without scrollbars */}
+          {/* Grid Container */}
           <div
             className={cn(
-              "flex-1 overflow-hidden relative transition-colors duration-300",
+              "flex-1 overflow-hidden relative transition-colors duration-300 flex flex-col",
               styles.gridOuter,
             )}
           >
-            <div className="w-full min-w-0 flex flex-col h-full">
-              {view !== "day" && (
+            {view === "month" ? (
+              <div className="w-full min-w-0 flex flex-col h-full">
                 <div
                   className={cn(
                     "sticky top-0 z-20 grid grid-cols-7 transition-colors duration-300",
@@ -1032,39 +1075,158 @@ function CalendarDashboard({
                     </div>
                   ))}
                 </div>
-              )}
 
-              <div
-                className={cn(
-                  `grid flex-1 ${view === "day" ? "grid-cols-1 auto-rows-[minmax(350px,1fr)]" : "grid-cols-7 auto-rows-[minmax(65px,1fr)] md:auto-rows-[minmax(95px,1fr)] lg:auto-rows-[minmax(120px,1fr)]"}`,
-                  styles.gridGap,
-                )}
-              >
-                {calendarDays.map((dayObj, index) => {
-                  const dayEvents = filteredEvents.filter(
-                    (e) => e.date === dayObj.dateKey,
-                  );
-                  return (
-                    <CalendarCell
-                      key={index}
-                      day={dayObj.day}
-                      events={dayEvents}
-                      isGray={!dayObj.isCurrentMonth}
-                      activePopupEventId={activePopupEventId}
-                      setActivePopupEventId={setActivePopupEventId}
-                      colIndex={view === "day" ? 0 : index % 7}
-                      rowIndex={Math.floor(index / 7)}
-                      dateStr={dayObj.dateKey.split("-").reverse().join(".")}
-                      onDeleteEvent={deleteEvent}
-                      onEditEvent={openEditModal}
-                      onClickCell={() => openAddModalForDate(dayObj.dateKey)}
-                      cellClass={styles.cellBg}
-                      theme={theme}
-                    />
-                  );
-                })}
+                <div
+                  className={cn(
+                    "grid flex-1 grid-cols-7 auto-rows-[minmax(65px,1fr)] md:auto-rows-[minmax(95px,1fr)] lg:auto-rows-[minmax(120px,1fr)]",
+                    styles.gridGap,
+                  )}
+                >
+                  {calendarDays.map((dayObj, index) => {
+                    const dayEvents = filteredEvents.filter(
+                      (e) => e.date === dayObj.dateKey,
+                    );
+                    return (
+                      <CalendarCell
+                        key={index}
+                        day={dayObj.day}
+                        events={dayEvents}
+                        isGray={!dayObj.isCurrentMonth}
+                        activePopupEventId={activePopupEventId}
+                        setActivePopupEventId={setActivePopupEventId}
+                        colIndex={index % 7}
+                        rowIndex={Math.floor(index / 7)}
+                        dateStr={dayObj.dateKey.split("-").reverse().join(".")}
+                        onDeleteEvent={deleteEvent}
+                        onEditEvent={openEditModal}
+                        onClickCell={() => openAddModalForDate(dayObj.dateKey)}
+                        cellClass={styles.cellBg}
+                        theme={theme}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="w-full min-w-0 flex flex-col bg-card/60">
+                {/* Time Grid Sticky Header Bar */}
+                <div
+                  className={cn(
+                    "sticky top-0 z-20 flex border-b border-border transition-colors duration-300 shrink-0",
+                    styles.gridHeader,
+                  )}
+                >
+                  <div className="w-16 sm:w-20 shrink-0 py-2 px-1 text-center text-xs font-semibold text-muted-foreground border-r border-border/70 flex items-center justify-center bg-muted/20">
+                    Time
+                  </div>
+                  <div
+                    className={cn(
+                      "flex-1 grid",
+                      view === "week" ? "grid-cols-7" : "grid-cols-1",
+                    )}
+                  >
+                    {calendarDays.map((dayObj, idx) => {
+                      const [y, m, d] = dayObj.dateKey.split("-").map(Number);
+                      const dateObj = new Date(y, m - 1, d);
+                      const dayName = dateObj.toLocaleDateString("en-US", {
+                        weekday: "short",
+                      });
+                      const fullDayName = dateObj.toLocaleDateString("en-US", {
+                        weekday: "long",
+                      });
+                      const isToday =
+                        new Date().toDateString() === dateObj.toDateString();
+
+                      return (
+                        <div
+                          key={dayObj.dateKey}
+                          className={cn(
+                            "py-2 px-1 text-center font-medium text-xs sm:text-sm text-foreground truncate flex flex-col items-center justify-center gap-0.5",
+                            idx < calendarDays.length - 1
+                              ? "border-r border-border"
+                              : "",
+                          )}
+                        >
+                          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                            {view === "day" ? fullDayName : dayName}
+                          </span>
+                          <span
+                            className={cn(
+                              "text-xs sm:text-sm font-bold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
+                              isToday
+                                ? theme.primaryBg
+                                : "text-foreground hover:bg-muted",
+                            )}
+                          >
+                            {dayObj.day}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Time Grid Body */}
+                <div className="flex-1 flex flex-col">
+                  {TIME_SLOTS.map((slot, slotIdx) => (
+                    <div
+                      key={slot.label}
+                      className="flex min-h-[38px] sm:min-h-[44px] border-b border-border/70"
+                    >
+                      {/* Time Label Column */}
+                      <div className="w-16 sm:w-20 shrink-0 px-1 py-1 flex items-center justify-center text-[10px] sm:text-xs font-semibold text-muted-foreground border-r border-border/70 bg-muted/20 select-none">
+                        {slot.label}
+                      </div>
+
+                      {/* Days Grid Columns */}
+                      <div
+                        className={cn(
+                          "flex-1 grid",
+                          view === "week" ? "grid-cols-7" : "grid-cols-1",
+                        )}
+                      >
+                        {calendarDays.map((dayObj, dayIdx) => {
+                          const slotEvents = filteredEvents.filter((e) => {
+                            if (e.date !== dayObj.dateKey) return false;
+                            return getSlotIndexForTime(e.time) === slotIdx;
+                          });
+
+                          return (
+                            <TimeGridCell
+                              key={`${dayObj.dateKey}-${slot.label}`}
+                              events={slotEvents}
+                              activePopupEventId={activePopupEventId}
+                              setActivePopupEventId={setActivePopupEventId}
+                              colIndex={view === "day" ? 0 : dayIdx}
+                              rowIndex={slotIdx}
+                              dateStr={dayObj.dateKey
+                                .split("-")
+                                .reverse()
+                                .join(".")}
+                              onDeleteEvent={deleteEvent}
+                              onEditEvent={openEditModal}
+                              onClickCell={() =>
+                                openAddModalForDate(
+                                  dayObj.dateKey,
+                                  slot.timeStr,
+                                )
+                              }
+                              cellClass={cn(
+                                styles.cellBg,
+                                dayIdx < calendarDays.length - 1
+                                  ? "border-r border-border/70"
+                                  : "",
+                              )}
+                              theme={theme}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </main>
       </div>
@@ -1136,7 +1298,7 @@ function CalendarDashboard({
                     required
                     name="time"
                     type="time"
-                    defaultValue={editingEvent ? editingEvent.time : "12:00"}
+                    defaultValue={editingEvent ? editingEvent.time : selectedTime || "12:00"}
                     className={cn(
                       "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark] transition-shadow",
                       theme.focusRing,
@@ -1270,6 +1432,166 @@ function CalendarCell({
                   className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer ${iconColor}`}
                 />
                 <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">{event.title}</span>
+              </div>
+              <span className="opacity-70 shrink-0 ml-1 hidden sm:inline cursor-pointer">
+                {event.time}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {events.map((event: any) => {
+        const isPopupOpen = activePopupEventId === event.id;
+        if (!isPopupOpen) return null;
+
+        const PlatformIcon =
+          event.platform === "meet"
+            ? Video
+            : event.platform === "slack"
+              ? Hash
+              : MessageSquare;
+        const iconColor =
+          event.platform === "meet"
+            ? "text-green-600"
+            : event.platform === "slack"
+              ? "text-blue-500"
+              : "text-indigo-500";
+
+        return (
+          <div key={`popup-${event.id}`}>
+            <div
+              className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 sm:bg-transparent cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActivePopupEventId(null);
+              }}
+            />
+            <div
+              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <h4 className="font-semibold text-base text-gray-900 dark:text-white truncate pr-4">
+                  {event.title}
+                </h4>
+                <div className="flex items-center gap-2 text-gray-400 shrink-0">
+                  <Edit2
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEditEvent(event);
+                    }}
+                    className="w-4 h-4 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors"
+                  />
+                  <Trash2
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteEvent(event.id);
+                    }}
+                    className="w-4 h-4 cursor-pointer hover:text-red-500 transition-colors"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
+                    theme.lightBg,
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full animate-pulse",
+                      theme.pulse,
+                    )}
+                  ></div>{" "}
+                  Pending
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <Calendar1 className="w-4 h-4" /> {dateStr} at {event.time}
+              </div>
+              <button className="w-full flex items-center justify-center gap-2 py-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors cursor-pointer">
+                Join with{" "}
+                {event.platform === "meet"
+                  ? "Google Meet"
+                  : event.platform === "slack"
+                    ? "Slack"
+                    : "Discord"}{" "}
+                <PlatformIcon
+                  className={`w-4 h-4 cursor-pointer ${iconColor}`}
+                />
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// === Sub Component: TimeGridCell ===
+function TimeGridCell({
+  events = [],
+  activePopupEventId,
+  setActivePopupEventId,
+  colIndex,
+  rowIndex,
+  dateStr,
+  onDeleteEvent,
+  onEditEvent,
+  onClickCell,
+  cellClass,
+  theme,
+}: any) {
+  const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
+  const popupYClass = rowIndex >= 6 ? "sm:bottom-full sm:mb-2" : "sm:top-10";
+  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
+
+  return (
+    <div
+      onClick={onClickCell}
+      className={cn(
+        `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} text-gray-900 dark:text-gray-100 min-h-[52px]`,
+        cellClass,
+      )}
+    >
+      <div className="flex-1 overflow-y-auto space-y-1 pr-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {events.map((event: any) => {
+          const isPopupOpen = activePopupEventId === event.id;
+          const isPentest = event.type === "pentest";
+          const borderClass = isPentest
+            ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+            : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
+          const PlatformIcon =
+            event.platform === "meet"
+              ? Video
+              : event.platform === "slack"
+                ? Hash
+                : MessageSquare;
+          const iconColor =
+            event.platform === "meet"
+              ? "text-green-600"
+              : event.platform === "slack"
+                ? "text-blue-500"
+                : "text-indigo-500";
+
+          return (
+            <div
+              key={event.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActivePopupEventId(isPopupOpen ? null : event.id);
+              }}
+              className={`flex items-center justify-between px-1 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded border cursor-pointer hover:brightness-95 transition-all ${borderClass}`}
+            >
+              <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+                <PlatformIcon
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer ${iconColor}`}
+                />
+                <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">
+                  {event.title}
+                </span>
               </div>
               <span className="opacity-70 shrink-0 ml-1 hidden sm:inline cursor-pointer">
                 {event.time}

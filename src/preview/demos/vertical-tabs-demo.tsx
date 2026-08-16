@@ -73,9 +73,9 @@ export default function VerticalTabsDemo({
 }) {
   return (
     <div
-      className={`w-full flex items-center justify-center min-h-[500px] transition-colors duration-300 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black rounded-2xl" : "bg-white dark:bg-black py-12"}`}
+      className={`w-full max-w-full overflow-hidden flex items-center justify-center min-h-[450px] sm:min-h-[500px] transition-colors duration-300 ${variant === "glass" ? "p-3 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "bg-white dark:bg-black p-2 sm:p-6"}`}
     >
-      <div className="w-full max-w-4xl mx-auto px-4">
+      <div className="w-full max-w-4xl min-w-0 mx-auto">
         <VerticalTabs
           key={`${variant}-${orientation}-${color}-${defaultActiveId ?? ""}`}
           tabs={sampleTabs}

@@ -17,7 +17,7 @@ export function CSSExportDialog() {
 
   React.useEffect(() => {
     if (open) {
-      setCssCode(generateCSS(exportMode));
+      setCssCode(generateCSS());
     }
   }, [open, exportMode, generateCSS]);
 

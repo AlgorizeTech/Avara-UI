@@ -106,7 +106,8 @@ html.dark .shiki span {
   font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
   font-size: 0.875rem;
   line-height: 1.5;
-  border: 1px solid hsl(var(--border)) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .shiki code {
@@ -115,6 +116,23 @@ html.dark .shiki span {
   border-radius: 0 !important;
   font-size: inherit !important;
   color: inherit !important;
+  border: none !important;
+}
+
+/* Global inline code styling */
+:not(pre) > code {
+  border: 1px solid #cbd5e1 !important;
+  background-color: #f1f5f9 !important;
+  padding: 0.15rem 0.4rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.85em !important;
+  box-shadow: none !important;
+}
+
+.dark :not(pre) > code {
+  border: 1px solid #334155 !important;
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
 }
 
 /* Scrollbar styling for code blocks */

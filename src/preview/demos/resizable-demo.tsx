@@ -9,7 +9,7 @@ import {
 function Pane({ label, muted }: { label: string; muted?: boolean }) {
   return (
     <div
-      className={`h-full w-full flex items-center justify-center text-xs font-bold uppercase tracking-wider ${
+      className={`h-full w-full flex items-center justify-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-center p-2 ${
         muted ? "bg-muted/40 text-muted-foreground" : "text-foreground"
       }`}
     >
@@ -29,8 +29,8 @@ export default function ResizableDemo({
     const direction = example === "vertical" ? "vertical" : "horizontal";
 
     return (
-      <div className="w-full flex items-center justify-center min-h-[380px] p-6 sm:p-10 relative z-10">
-        <div className="w-full h-[320px] border border-border rounded-xl overflow-hidden bg-background">
+      <div className="w-full flex items-center justify-center min-h-[320px] sm:min-h-[380px] p-2 xs:p-4 sm:p-10 relative z-10">
+        <div className="w-full h-[280px] sm:h-[320px] border border-border rounded-xl overflow-hidden bg-background">
           <ResizablePanelGroup direction={direction}>
             {example === "constraints" ? (
               <>
@@ -125,7 +125,7 @@ export default function ResizableDemo({
                       <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
                       <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-xl font-bold&quot;</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                      <span className="text-foreground font-bold">Shuvo Sarkar</span>
+                      <span className="text-foreground font-bold">John Doe</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                     </div>
                     <div className="pl-6 text-[#6a737d] dark:text-[#6a737d] italic text-[10px]">
@@ -192,7 +192,7 @@ export default function ResizableDemo({
                           <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
                           <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-bold&quot;</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                          <span className="text-foreground font-bold">Shuvo Sarkar</span>
+                          <span className="text-foreground font-bold">John Doe</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                         </div>
                         <div className="pl-12 text-[#6a737d] dark:text-[#6a737d] italic">

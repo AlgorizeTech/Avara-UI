@@ -150,7 +150,7 @@ export function DialogContent({
     <>
       <span ref={anchorRef} hidden />
       {createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
@@ -164,7 +164,7 @@ export function DialogContent({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "relative z-50 w-full max-w-lg grid gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 p-6 shadow-lg sm:rounded-xl",
+          "relative z-50 w-full max-w-lg grid gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 p-6 shadow-lg rounded-xl max-h-[85vh] overflow-y-auto",
           "animate-in fade-in zoom-in-95 slide-in-from-top-[5%] duration-200",
           className,
         )}

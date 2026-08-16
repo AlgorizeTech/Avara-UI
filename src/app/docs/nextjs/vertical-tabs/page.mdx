@@ -117,40 +117,10 @@ export default function SettingsFirst() {
       code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
     },
     {
-      title: "Horizontal tabs",
-      subheading: "`orientation=\"horizontal\"` runs the same rail across the top as a pill bar. Tabs keep their natural width and scroll sideways instead of squashing.",
-      props: { variant: "default", orientation: "horizontal" },
-      usage: usageHorizontal,
-    },
-    {
-      title: "Horizontal + bordered",
-      subheading: "Orientation and `variant` compose — `bordered` simply moves its divider from the side of the rail to the bottom.",
-      props: { variant: "bordered", orientation: "horizontal" },
-      usage: usageHorizontalBordered,
-    },
-    {
-      title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the card chrome down to rail and pane.",
-      props: { variant: "minimal" },
-      usage: usageMinimal,
-    },
-    {
-      title: "Bordered",
-      subheading: "`variant=\"bordered\"` outlines both the rail and the content pane.",
-      props: { variant: "bordered" },
-      usage: usageBordered,
-    },
-    {
       title: "Glass",
       subheading: "`variant=\"glass\"` frosts the panel — give it a rich background to blur.",
-      props: { variant: "glass" },
+      props: { variant: "glass", orientation: "vertical" },
       usage: usageGlass,
-    },
-    {
-      title: "Default active tab",
-      subheading: "`defaultActiveId` opens a specific tab on first render.",
-      props: { variant: "default", defaultActiveId: "settings" },
-      usage: usageDefaultActive,
     },
   ]}
 />

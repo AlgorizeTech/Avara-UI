@@ -129,12 +129,12 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
 
     const layoutStyles = {
       center:
-        "flex flex-col items-center text-center max-w-5xl mx-auto pt-24 pb-20 px-6",
-      left: "flex flex-col items-start text-left max-w-5xl mx-auto pt-24 pb-20 px-6",
+        "flex flex-col items-center text-center max-w-5xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
+      left: "flex flex-col items-start text-left max-w-5xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
       "split-right":
-        "grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto py-20 px-6",
+        "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center max-w-7xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
       "split-left":
-        "grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto py-20 px-6",
+        "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center max-w-7xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
     };
 
     return (
@@ -144,7 +144,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
           className={cn(
             "relative w-full overflow-hidden transition-all duration-700",
             variant === "glass" &&
-              "min-h-[700px] flex items-center justify-center",
+              "flex items-center justify-center py-4 sm:py-8 md:py-12",
             variant === "glow" && "bg-[#fafafa] dark:bg-[#050505]",
             className,
           )}
@@ -187,7 +187,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
               "relative z-10 w-full",
               variant !== "glass" && layoutStyles[layout],
               variant === "glass" &&
-                "h-full flex items-center justify-center w-full max-w-7xl mx-auto px-6",
+                "flex items-center justify-center w-full max-w-7xl mx-auto px-3 sm:px-6",
             )}
           >
             {children}
@@ -222,7 +222,7 @@ export const HeroContent = forwardRef<
         contentStyles[layout],
         `hero-stagger-${uniqueId}`,
         variant === "glass" &&
-          "p-8 sm:p-14 rounded-[2rem] backdrop-blur-xl bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 max-w-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+          "p-6 sm:p-12 my-6 sm:my-12 rounded-[1.5rem] sm:rounded-[2.5rem] backdrop-blur-xl bg-white/70 dark:bg-zinc-950/70 border border-white/40 dark:border-zinc-800/80 shadow-2xl z-10 max-w-3xl mx-auto text-center items-center justify-center ring-1 ring-black/5 dark:ring-white/10",
         className,
       )}
       {...props}
@@ -243,9 +243,9 @@ export const HeroBadge = forwardRef<
       ref={ref}
       href={href}
       className={cn(
-        "inline-flex items-center gap-2 px-3.5 py-1.5 mb-8 rounded-full text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
+        "inline-flex items-center gap-2 px-3 py-1 mb-4 sm:mb-8 rounded-full text-xs sm:text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
         variant === "glass"
-          ? "bg-white/20 border-white/30 text-white shadow-sm"
+          ? "bg-zinc-900/10 dark:bg-white/10 border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white shadow-sm"
           : cn(theme.bgSoft, theme.border, "shadow-sm"),
         className,
       )}
@@ -270,7 +270,7 @@ export const HeroBadgeText = ({
     <span
       className={cn(
         "text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 mr-1 font-bold",
-        variant === "glass" ? "bg-white/20 text-white" : theme.bg,
+        variant === "glass" ? "bg-zinc-900/20 dark:bg-white/20 text-zinc-900 dark:text-white" : theme.bg,
         className,
       )}
     >
@@ -305,9 +305,9 @@ export const HeroTitle = forwardRef<HTMLHeadingElement, HeroTitleProps>(
           ref={ref}
           data-text={typeof children === "string" ? children : undefined}
           className={cn(
-            "text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] font-black tracking-tighter leading-[1.05]",
+            "text-[1.75rem] xs:text-3xl sm:text-[3.5rem] lg:text-[4.5rem] font-black tracking-tighter leading-[1.1]",
             variant === "glass"
-              ? "text-white drop-shadow-md"
+              ? "text-zinc-900 dark:text-white"
               : "text-zinc-900 dark:text-zinc-50",
             animation === "glitch" && `hero-glitch-${uniqueId}`,
             animation === "blur-in" &&
@@ -334,12 +334,12 @@ export const HeroDescription = forwardRef<
     <p
       ref={ref}
       className={cn(
-        "mt-6 text-[17px] sm:text-[19px] leading-relaxed tracking-wide",
+        "mt-3 sm:mt-6 text-sm sm:text-[19px] leading-relaxed tracking-wide",
         layout === "center" || variant === "glass"
           ? "max-w-2xl mx-auto"
           : "max-w-xl",
         variant === "glass"
-          ? "text-zinc-200 drop-shadow-sm"
+          ? "text-zinc-600 dark:text-zinc-300"
           : "text-zinc-600 dark:text-zinc-400",
         className,
       )}
@@ -440,12 +440,12 @@ export const HeroVisual = forwardRef<
 
   const visualStyles = {
     center:
-      "w-full max-w-5xl mt-16 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    left: "w-full max-w-5xl mt-16 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-right":
-      "w-full h-full min-h-[300px] lg:min-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-left":
-      "w-full h-full min-h-[300px] lg:min-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
   };
 
   return (
