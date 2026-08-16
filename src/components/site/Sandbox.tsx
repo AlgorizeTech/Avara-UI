@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CodeBlockClient } from "@/components/site/code-block-client";
+import type { BuiltinLanguage } from "shiki";
+import {
+  CodeBlockClient,
+  isTransformable,
+} from "@/components/site/code-block-client";
+import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
 import {
   Code2,
   GripVertical,
@@ -68,6 +73,14 @@ export interface SandboxTab {
   icon?: React.ReactNode;
   /** Rendered for non-sandbox tabs (code, usage, examples...). */
   content?: React.ReactNode;
+  /**
+   * A code snippet to render instead of `content`. Handing the Sandbox the
+   * raw source (rather than a prebuilt code block) is what lets the TS/JS
+   * switch live up in the header bar next to the tab pills.
+   */
+  code?: string;
+  /** Language of `code`. Defaults to tsx. */
+  lang?: BuiltinLanguage;
   /** Marks the tab that shows the sandboxed live preview. */
   resizable?: boolean;
 }
@@ -116,6 +129,10 @@ export function Sandbox({
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
+
+  // One selection shared by every code tab, so switching Usage → Code keeps
+  // the reader in the language they picked.
+  const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
@@ -243,6 +260,13 @@ export function Sandbox({
     viewportWidth === null ? null : Math.round(viewportWidth * visualScale);
   const isPreviewActive = activeTab === (previewTab?.id ?? "preview");
   const currentTab = tabs.find((t) => t.id === activeTab);
+  const currentLang = currentTab?.lang ?? "tsx";
+  // The switch shows only where it does something: a code tab whose source
+  // actually carries types.
+  const showLanguageSwitch =
+    !isPreviewActive &&
+    currentTab?.code !== undefined &&
+    isTransformable(currentLang);
 
   return (
     <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col not-prose relative">
@@ -265,6 +289,16 @@ export function Sandbox({
             </button>
           ))}
         </div>
+
+        {/* Right: the code tabs get the TS/JS switch in the same slot the
+            preview tab gets its device controls. */}
+        {showLanguageSwitch && (
+          <CodeCopy
+            className="ml-auto"
+            selectedLanguage={codeLanguage}
+            onLanguageChange={setCodeLanguage}
+          />
+        )}
 
         {/* Right: preview controls */}
         {isPreviewActive && (
@@ -445,7 +479,16 @@ export function Sandbox({
 
         {!isPreviewActive && (
           <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {currentTab?.content}
+            {currentTab?.code !== undefined ? (
+              <CodeBlockClient
+                code={currentTab.code}
+                lang={currentLang}
+                selectedLanguage={codeLanguage}
+                onLanguageChange={setCodeLanguage}
+              />
+            ) : (
+              currentTab?.content
+            )}
           </div>
         )}
       </div>
@@ -645,26 +688,10 @@ function ExampleCard({
     { id: "preview", label: "Preview", resizable: true },
   ];
   if (usage) {
-    tabs.push({
-      id: "usage",
-      label: "Usage",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={usage} lang="tsx" />
-        </div>
-      ),
-    });
+    tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
   if (code) {
-    tabs.push({
-      id: "component",
-      label: "Code",
-      content: (
-        <div className="p-3">
-          <CodeBlockClient code={code} lang="tsx" />
-        </div>
-      ),
-    });
+    tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
   }
 
   return (
