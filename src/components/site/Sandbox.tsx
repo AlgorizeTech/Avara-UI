@@ -477,20 +477,24 @@ export function Sandbox({
             </div>
           </div>
 
-        {!isPreviewActive && (
-          <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {currentTab?.code !== undefined ? (
+        {!isPreviewActive &&
+          (currentTab?.code !== undefined ? (
+            /* No height cap here: CodeBlocks sizes itself to the lines it is
+               showing, so the panel opens without a scrollbar and only gains
+               one once Show More adds lines past that height. */
+            <div className="relative w-full overflow-hidden rounded-b-xl">
               <CodeBlockClient
                 code={currentTab.code}
                 lang={currentLang}
                 selectedLanguage={codeLanguage}
                 onLanguageChange={setCodeLanguage}
               />
-            ) : (
-              currentTab?.content
-            )}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {currentTab?.content}
+            </div>
+          ))}
       </div>
     </div>
   );
