@@ -45,15 +45,6 @@ type Device = "desktop" | "tablet" | "mobile";
  */
 const DESKTOP_PRESET_WIDTH = 1280;
 
-/**
- * Screens at least this wide are treated as PCs, and open every preview on
- * the desktop preset. The fluid "100%" default measured the docs COLUMN, not
- * the visitor's screen, and that column is narrower than DESKTOP_MIN_WIDTH —
- * so a PC visitor was shown (and had "Tablet" highlighted for) the tablet
- * layout of every component, which is not what they came to see.
- */
-const PC_SCREEN_MIN_WIDTH = 1080;
-
 const DEVICE_PRESETS: Record<Device, number> = {
   desktop: DESKTOP_PRESET_WIDTH,
   tablet: 768,
@@ -135,20 +126,16 @@ export function Sandbox({
   const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
+  // Every preview opens fitted: fluid "100%", unscaled, filling the card edge
+  // to edge. That is the visitor's OWN viewport, so the first thing they see is
+  // the component exactly as it renders on the device they arrived on — no
+  // preset width, no shrink-to-fit. The device buttons are there for anyone who
+  // wants to check a class other than their own.
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
-
-  // The first paint stays fluid so server and client markup agree; the desktop
-  // preset is pinned on mount instead. Runs once, before any interaction, so a
-  // device button or a drag is never overridden.
-  useEffect(() => {
-    if (window.innerWidth >= PC_SCREEN_MIN_WIDTH) {
-      setPreviewWidth(DESKTOP_PRESET_WIDTH);
-    }
-  }, []);
 
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
@@ -350,14 +337,21 @@ export function Sandbox({
               </div>
             )}
 
-            {/* One action, no toggled state: always snaps back to the 100%
-                fit-to-screen view, whatever device or drag width is active. */}
+            {/* Snaps back to the 100% fit-to-screen view from whatever device
+                or drag width is active — and reads as selected while the
+                preview is in that state, which is how every preview opens. */}
             {fitOption && (
               <button
                 onClick={() => setPreviewWidth("100%")}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                className={cn(
+                  "h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border",
+                  isFitted
+                    ? "bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-600"
+                    : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
+                )}
                 title="Fit to screen (100%)"
                 aria-label="Fit preview to screen"
+                aria-pressed={isFitted}
               >
                 <Maximize2 className="w-4 h-4" />
               </button>
@@ -694,9 +688,9 @@ function ExampleCard({
   if (usage) {
     tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
-  if (code) {
-    tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
-  }
+  // if (code) {
+  //   tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
+  // }
 
   return (
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
