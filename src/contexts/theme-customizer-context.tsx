@@ -24,6 +24,7 @@ import {
   COLOR_TOKENS,
   THEME_PRESETS,
   DEFAULT_PRESET,
+  THEME_CUSTOMIZER_STORAGE_KEY,
 } from "@/lib/theme-presets";
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -58,7 +59,8 @@ interface ThemeCustomizerContextValue {
   currentMode: "light" | "dark";
 }
 
-const STORAGE_KEY = "theme-customizer-state";
+// Shared with ThemeInitScript, which reads the same key before first paint.
+const STORAGE_KEY = THEME_CUSTOMIZER_STORAGE_KEY;
 
 // ─── Helpers ─────────────────────────────────────────────────────
 
@@ -99,6 +101,17 @@ function loadState(): ThemeCustomizerState {
     // Corrupted data, use defaults
   }
   return getInitialState();
+}
+
+/**
+ * Read the mode ThemeInitScript already committed to <html> rather than
+ * defaulting to "dark". next-themes resolves `resolvedTheme` in its own mount
+ * effect, which runs *after* this provider's — so a light-mode reader would
+ * otherwise get one commit of dark colors injected before the sync catches up.
+ */
+function getInitialMode(): "light" | "dark" {
+  if (typeof document === "undefined") return "dark";
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
 function saveState(state: ThemeCustomizerState) {
@@ -149,7 +162,7 @@ export function ThemeCustomizerProvider({
   const [state, setState] = useState<ThemeCustomizerState>(getInitialState);
   const [hydrated, setHydrated] = useState(false);
   const { theme, resolvedTheme } = useTheme();
-  const [activeMode, setActiveMode] = useState<"light" | "dark">("dark");
+  const [activeMode, setActiveMode] = useState<"light" | "dark">(getInitialMode);
 
   // Keep activeMode strictly synced with resolvedTheme
   useEffect(() => {
