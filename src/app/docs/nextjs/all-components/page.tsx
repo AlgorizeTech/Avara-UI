@@ -548,29 +548,54 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "network-graph" && (
-          <div className="w-full h-full relative flex items-center justify-center p-1 my-auto overflow-hidden">
-            <div className="size-24 rounded-full border border-dashed border-primary/25 absolute flex items-center justify-center pointer-events-none">
-              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
-                A
+          <div className="w-full h-full relative flex items-center justify-center p-1 my-auto overflow-hidden bg-card rounded-xl border border-border group/netgraph">
+            {/* Ambient Background Grid & Radial Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_75%)] opacity-20 pointer-events-none" />
+            
+            {/* SVG Connecting Ray Lines */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--primary)" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.3" />
+              <circle cx="50" cy="50" r="24" fill="none" stroke="var(--primary)" strokeWidth="1" opacity="0.4" />
+              <circle cx="50" cy="50" r="12" fill="none" stroke="var(--primary)" strokeWidth="1.2" opacity="0.6" />
+              
+              <line x1="50" y1="50" x2="50" y2="12" stroke="var(--primary)" strokeWidth="1" opacity="0.5" />
+              <line x1="50" y1="50" x2="88" y2="50" stroke="var(--primary)" strokeWidth="1" opacity="0.5" />
+              <line x1="50" y1="50" x2="50" y2="88" stroke="var(--primary)" strokeWidth="1" opacity="0.5" />
+              <line x1="50" y1="50" x2="12" y2="50" stroke="var(--primary)" strokeWidth="1" opacity="0.5" />
+            </svg>
+
+            {/* Outer Orbital Orbit Ring 3 */}
+            <div className="size-28 rounded-full absolute flex items-center justify-center pointer-events-none animate-[spin_30s_linear_infinite]">
+              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-4 rounded-full ring-2 ring-emerald-500 bg-card p-0.5 shadow-md">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&auto=format&fit=crop&q=80" alt="Node" className="size-full rounded-full object-cover" />
               </div>
-              <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
-                B
+              <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-4 rounded-full ring-2 ring-amber-500 bg-card p-0.5 shadow-md">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&auto=format&fit=crop&q=80" alt="Node" className="size-full rounded-full object-cover" />
               </div>
-              <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-3 rounded-full bg-indigo-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
-                C
+              <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-4 rounded-full ring-2 ring-indigo-500 bg-card p-0.5 shadow-md">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&auto=format&fit=crop&q=80" alt="Node" className="size-full rounded-full object-cover" />
               </div>
-              <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-3 rounded-full bg-sky-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
-                D
+              <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-4 rounded-full ring-2 ring-sky-500 bg-card p-0.5 shadow-md">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&auto=format&fit=crop&q=80" alt="Node" className="size-full rounded-full object-cover" />
               </div>
             </div>
 
-            <div className="size-14 rounded-full border border-primary/40 bg-primary/5 absolute flex items-center justify-center pointer-events-none">
-              <div className="absolute top-0 right-1 size-2.5 rounded-full bg-primary/70" />
-              <div className="absolute bottom-0 left-1 size-2.5 rounded-full bg-primary/70" />
+            {/* Middle Concentric Orbital Ring 2 */}
+            <div className="size-18 rounded-full absolute flex items-center justify-center pointer-events-none animate-[spin_18s_linear_infinite_reverse]">
+              <div className="absolute top-0 right-1 size-3.5 rounded-full bg-rose-500 text-white font-extrabold text-[5px] flex items-center justify-center shadow-md ring-2 ring-background">
+                API
+              </div>
+              <div className="absolute bottom-0 left-1 size-3.5 rounded-full bg-purple-500 text-white font-extrabold text-[5px] flex items-center justify-center shadow-md ring-2 ring-background">
+                DB
+              </div>
             </div>
 
-            <div className="size-6 rounded-full bg-primary text-primary-foreground font-black text-[7.5px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-primary/20">
-              Core
+            {/* Central Core Pulse Node */}
+            <div className="relative z-10 flex items-center justify-center">
+              <span className="animate-ping absolute size-8 rounded-full bg-primary opacity-40" />
+              <div className="size-8 rounded-full bg-primary text-primary-foreground font-black text-[7.5px] flex flex-col items-center justify-center shadow-xl border-2 border-background ring-4 ring-primary/30">
+                <span>CORE</span>
+              </div>
             </div>
           </div>
         )}
@@ -1169,54 +1194,42 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
         )}
 
         {type === "user-graph" && (
-          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
-            <div className="flex flex-col items-center gap-1 my-auto scale-90">
-              {/* You Node */}
-              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
-                You
-              </div>
-              <div className="w-0.5 h-3 bg-primary/40" />
-              {/* Alice Node */}
-              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
-                  alt="Alice"
-                  className="size-full rounded-full object-cover"
-                />
-              </div>
-              <span className="text-[7px] font-bold text-foreground">Alice</span>
-              {/* 3 Sub-Agent Dots */}
-              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
-                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
-                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
-                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
-              </div>
-            </div>
-          </div>
-        )}
+          <div className="w-full h-full p-2 rounded-xl bg-card border border-border flex flex-col justify-center items-center overflow-hidden relative my-auto">
+            {/* SVG Connecting Branch Lines */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 60">
+              <path d="M 50 15 L 30 35" stroke="var(--primary)" strokeWidth="1.5" strokeDasharray="2 2" opacity="0.6" />
+              <path d="M 50 15 L 70 35" stroke="var(--primary)" strokeWidth="1.5" strokeDasharray="2 2" opacity="0.6" />
+              <path d="M 30 35 L 20 50" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              <path d="M 30 35 L 40 50" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              <path d="M 70 35 L 60 50" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              <path d="M 70 35 L 80 50" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+            </svg>
 
-        {type === "network-graph" && (
-          <div className="w-full h-full p-2 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-border/80 flex flex-col justify-center items-center overflow-hidden relative">
-            <div className="flex flex-col items-center gap-1 my-auto scale-90">
-              {/* You Node */}
-              <div className="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[8px] font-bold shadow-xs">
-                You
+            <div className="flex flex-col items-center justify-between h-full w-full py-1 z-10">
+              {/* Root Node (Top Admin) */}
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-black shadow-md border border-white/20">
+                <span className="size-1.5 rounded-full bg-white animate-ping" />
+                <span>You (Admin)</span>
               </div>
-              <div className="w-0.5 h-3 bg-primary/40" />
-              {/* Alice Node */}
-              <div className="size-8 rounded-full ring-2 ring-primary/40 bg-card p-0.5 shadow-xs">
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80"
-                  alt="Alice"
-                  className="size-full rounded-full object-cover"
-                />
+
+              {/* Tier 2 Nodes (Team Leads) */}
+              <div className="flex justify-between w-4/5 px-2">
+                <div className="flex items-center gap-1 p-0.5 pr-1.5 rounded-lg bg-card border border-primary/40 shadow-2xs">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&auto=format&fit=crop&q=80" alt="Sarah" className="size-3.5 rounded-full object-cover" />
+                  <span className="text-[5.5px] font-extrabold text-foreground">Sarah</span>
+                </div>
+                <div className="flex items-center gap-1 p-0.5 pr-1.5 rounded-lg bg-card border border-primary/40 shadow-2xs">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&auto=format&fit=crop&q=80" alt="Alex" className="size-3.5 rounded-full object-cover" />
+                  <span className="text-[5.5px] font-extrabold text-foreground">Alex</span>
+                </div>
               </div>
-              <span className="text-[7px] font-bold text-foreground">Alice</span>
-              {/* 3 Sub-Agent Dots */}
-              <div className="flex gap-2.5 mt-1 pt-1 border-t border-border/60">
-                <div className="size-3 rounded-full bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-[5px] font-extrabold text-amber-600">S</div>
-                <div className="size-3 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-[5px] font-extrabold text-blue-600">M</div>
-                <div className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[5px] font-extrabold text-emerald-600">A</div>
+
+              {/* Tier 3 Nodes (Sub-Agent Workers) */}
+              <div className="flex justify-between w-full px-1">
+                <span className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500 text-[4.5px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-center">A1</span>
+                <span className="size-3 rounded-full bg-sky-500/20 border border-sky-500 text-[4.5px] font-bold text-sky-600 dark:text-sky-400 flex items-center justify-center">A2</span>
+                <span className="size-3 rounded-full bg-amber-500/20 border border-amber-500 text-[4.5px] font-bold text-amber-600 dark:text-amber-400 flex items-center justify-center">B1</span>
+                <span className="size-3 rounded-full bg-purple-500/20 border border-purple-500 text-[4.5px] font-bold text-purple-600 dark:text-purple-400 flex items-center justify-center">B2</span>
               </div>
             </div>
           </div>
