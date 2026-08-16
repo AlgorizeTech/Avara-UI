@@ -39,6 +39,16 @@ export interface ThemePreset {
   };
 }
 
+// ─── Storage ─────────────────────────────────────────────────────
+
+/**
+ * localStorage key holding the persisted ThemeCustomizerState.
+ *
+ * Lives here rather than in the (client-only) context so the blocking
+ * pre-hydration script — a server component — can read the same key.
+ */
+export const THEME_CUSTOMIZER_STORAGE_KEY = "theme-customizer-state";
+
 // ─── All Color Tokens ────────────────────────────────────────────
 
 export const COLOR_TOKENS: ColorToken[] = [
