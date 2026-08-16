@@ -134,11 +134,11 @@ const highlightCode = (code: string, language: string) => {
       }
       if (comment) return `<span class="${colors.comment}">${comment}</span>`;
       if (jsxTag) {
-        let isClosing = jsxTag.includes("/");
-        let brackets = isClosing ? "&lt;/" : "&lt;";
-        let tagName = jsxTag.replace(brackets, "");
-        let isComponent = /^[A-Z]/.test(tagName);
-        let tagColor = isComponent ? colors.component : colors.tag;
+        const isClosing = jsxTag.includes("/");
+        const brackets = isClosing ? "&lt;/" : "&lt;";
+        const tagName = jsxTag.replace(brackets, "");
+        const isComponent = /^[A-Z]/.test(tagName);
+        const tagColor = isComponent ? colors.component : colors.tag;
         return `<span class="${colors.punctuation}">${brackets}</span><span class="${tagColor}">${tagName}</span>`;
       }
       if (jsxBracket) return `<span class="${colors.punctuation}">${jsxBracket}</span>`;

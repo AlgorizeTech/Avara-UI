@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ui-avatar",
+  "title": "Ui Avatar",
+  "author": "AlgorizeTech",
+  "description": "TODO: describe ui-avatar. Generated placeholder.",
+  "dependencies": [
+    "@radix-ui/react-avatar"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/ui/avatar.tsx",
+      "content": "\"use client\";\n\nimport * as AvatarPrimitive from \"@radix-ui/react-avatar\";\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\ntype AvatarRootProps = React.ComponentPropsWithoutRef<\n  typeof AvatarPrimitive.Root\n>;\ntype AvatarImageProps = React.ComponentPropsWithoutRef<\n  typeof AvatarPrimitive.Image\n>;\ntype AvatarFallbackProps = React.ComponentPropsWithoutRef<\n  typeof AvatarPrimitive.Fallback\n>;\n\nfunction Avatar({ className, ...props }: AvatarRootProps) {\n  return (\n    <AvatarPrimitive.Root\n      data-slot=\"avatar\"\n      className={cn(\n        // Fixed: Replaced `size-8` with explicit `h-8 w-8`\n        \"relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full items-center justify-center\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AvatarImage({ className, ...props }: AvatarImageProps) {\n  return (\n    <AvatarPrimitive.Image\n      data-slot=\"avatar-image\"\n      // Fixed: Replaced `size-full` with `h-full w-full` and added `object-cover`\n      className={cn(\"aspect-square h-full w-full object-cover\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AvatarFallback({ className, ...props }: AvatarFallbackProps) {\n  return (\n    <AvatarPrimitive.Fallback\n      data-slot=\"avatar-fallback\"\n      className={cn(\n        // Fixed: Replaced `size-full` with `h-full w-full`\n        \"bg-muted flex h-full w-full items-center justify-center rounded-full\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Avatar, AvatarFallback, AvatarImage };\n",
+      "type": "registry:ui",
+      "target": "components/custom/ui/avatar.tsx"
+    }
+  ],
+  "categories": [],
+  "type": "registry:ui"
+}

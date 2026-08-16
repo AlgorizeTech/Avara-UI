@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "magic-bento",
+  "title": "Magic Bento",
+  "author": "AlgorizeTech",
+  "description": "TODO: describe magic-bento. Generated placeholder.",
+  "dependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/MagicBentoBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport { motion, useMotionTemplate, useMotionValue } from \"framer-motion\";\nimport React, { ReactNode } from \"react\";\n\n// ==========================================\n// BENTO GRID CONTAINER\n// ==========================================\nexport interface MagicBentoProps extends React.HTMLAttributes<HTMLDivElement> {\n  children: ReactNode;\n}\n\nexport const MagicBento = React.forwardRef<HTMLDivElement, MagicBentoProps>(\n  ({ children, className, ...props }, ref) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(\n          \"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto w-full auto-rows-[minmax(180px,auto)]\",\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </div>\n    );\n  },\n);\nMagicBento.displayName = \"MagicBento\";\n\n// ==========================================\n// BENTO CARD (With Magic Hover Effects)\n// ==========================================\nexport interface MagicBentoCardProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  children: ReactNode;\n  highlight?: boolean; // Activates the continuously spinning border\n}\n\nexport const MagicBentoCard = React.forwardRef<\n  HTMLDivElement,\n  MagicBentoCardProps\n>(({ children, className, highlight = false, ...props }, ref) => {\n  const mouseX = useMotionValue(0);\n  const mouseY = useMotionValue(0);\n\n  // Track mouse position relative to the card\n  function handleMouseMove({\n    currentTarget,\n    clientX,\n    clientY,\n  }: React.MouseEvent) {\n    const { left, top } = currentTarget.getBoundingClientRect();\n    mouseX.set(clientX - left);\n    mouseY.set(clientY - top);\n  }\n\n  return (\n    <div\n      ref={ref}\n      onMouseMove={handleMouseMove}\n      className={cn(\n        \"group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]\",\n        className,\n      )}\n      {...props}\n    >\n      {/* 1. Base Static Border */}\n      <div className=\"absolute inset-0 rounded-3xl bg-zinc-200 dark:bg-zinc-800/80 transition-colors\" />\n\n      {/* 2. Highlight: Continuously Spinning Conic Gradient */}\n      {highlight && (\n        <div className=\"absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-30 dark:opacity-50 group-hover:opacity-80 transition-opacity duration-500\" />\n      )}\n\n      {/* 3. Hover: Mouse-Tracking Border Spotlight */}\n      <motion.div\n        className=\"absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100\"\n        style={{\n          background: useMotionTemplate`\n              radial-gradient(\n                600px circle at ${mouseX}px ${mouseY}px,\n                var(--magic-color),\n                transparent 40%\n              )\n            `,\n        }}\n      />\n\n      {/* 4. Content Mask (Creates the 1px border effect) */}\n      <div className=\"absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0\" />\n\n      {/* 5. Hover: Inner Card Soft Glow (FIXED: mix-blend-normal in light mode so white background can be tinted!) */}\n      <motion.div\n        className=\"absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-normal dark:mix-blend-screen\"\n        style={{\n          background: useMotionTemplate`\n              radial-gradient(\n                600px circle at ${mouseX}px ${mouseY}px,\n                var(--magic-glow),\n                transparent 40%\n              )\n            `,\n        }}\n      />\n\n      {/* 6. Actual Content Area */}\n      <div className=\"relative z-20 flex flex-col h-full p-6 sm:p-8 pointer-events-auto\">\n        {children}\n      </div>\n    </div>\n  );\n});\nMagicBentoCard.displayName = \"MagicBentoCard\";\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/MagicBentoBlock.tsx"
+    }
+  ],
+  "categories": [],
+  "type": "registry:component"
+}

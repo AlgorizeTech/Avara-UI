@@ -17,10 +17,10 @@ try {
 
   // Run the build registry script
   console.log("📦 Building registry...");
-  execSync("npx tsx src/scripts/build-registry.ts", { stdio: "inherit" });
+  execSync("npm run build:registry", { stdio: "inherit" });
 
   console.log("✅ Components registry regenerated successfully!");
-  console.log("📁 Registry files updated in public/registry/");
+  console.log("📁 Registry files updated in public/r/");
   
 } catch (error) {
   console.error("❌ Error regenerating components registry:", error);

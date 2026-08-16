@@ -53,7 +53,7 @@ interface ThemeCustomizerContextValue {
   activePreset: string;
   // Actions
   resetToDefaults: () => void;
-  generateCSS: () => string;
+  generateCSS: (exportMode?: "both" | "light" | "dark") => string;
   // Current mode awareness
   currentMode: "light" | "dark";
 }

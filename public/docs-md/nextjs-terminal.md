@@ -24,7 +24,7 @@ export const usageLanguages = `// \`language\` drives the badge; the block never
 // highlighter, so any language string is safe to pass.
 `;
 
-export const usageGlass = `// Backdrop-blurred chrome — put it over a photo or gradient.
+export const usageGlass = `// Backdrop-blurred chrome — put it over a gradient.
 
 `;
 

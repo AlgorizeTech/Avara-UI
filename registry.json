@@ -1,0 +1,2499 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "algorize-ui",
+  "homepage": "https://algorize-ui.vercel.app",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:component",
+      "title": "Accordion",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe accordion. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-accordion.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Accordion.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "advanced-table",
+      "type": "registry:component",
+      "title": "Advanced Table",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe advanced-table. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AdvancedTableBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ai-chat",
+      "type": "registry:component",
+      "title": "Ai Chat",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ai-chat. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Ai-chat.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Ai-chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:component",
+      "title": "Alert",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe alert. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Alerts.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Alerts.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-list",
+      "type": "registry:component",
+      "title": "Animated List",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe animated-list. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedListBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedListBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-timeline",
+      "type": "registry:component",
+      "title": "Animated Timeline",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe animated-timeline. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedTimelineBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedTimelineBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "animated-typography",
+      "type": "registry:component",
+      "title": "Animated Typography",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe animated-typography. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedTypographyBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedTypographyBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "api-playground",
+      "type": "registry:component",
+      "title": "Api Playground",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe api-playground. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ApiPlaygroundBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-form",
+      "type": "registry:component",
+      "title": "Auth Form",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe auth-form. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AuthForm.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AuthForm.tsx"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:component",
+      "title": "Breadcrumb",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe breadcrumb. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BreadcrumbBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BreadcrumbBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:component",
+      "title": "Button",
+      "author": "AlgorizeTech",
+      "description": "A button with variants, sizes, loading state, and a click ripple effect. Reach for it as the default action element anywhere in an interface.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Button.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Button.tsx"
+        }
+      ],
+      "docs": "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed."
+    },
+    {
+      "name": "calendar",
+      "type": "registry:component",
+      "title": "Calendar",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe calendar. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "https://algorize-ui.vercel.app/r/ui-button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Calendar.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:component",
+      "title": "Card",
+      "author": "AlgorizeTech",
+      "description": "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
+      "categories": [
+        "layout"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CardBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
+    },
+    {
+      "name": "carousel-3d",
+      "type": "registry:component",
+      "title": "Carousel 3D",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe carousel-3d. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ThreeDCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cart",
+      "type": "registry:component",
+      "title": "Cart",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe cart. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CartBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CartBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:component",
+      "title": "Chart",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe chart. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ChartBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ChartBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat",
+      "type": "registry:component",
+      "title": "Chat",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe chat. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Chat.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Chat.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-bubble",
+      "type": "registry:component",
+      "title": "Chat Bubble",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe chat-bubble. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ChatBubbleBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ChatBubbleBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:component",
+      "title": "Collapsible",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe collapsible. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CollapsibleBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CollapsibleBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:component",
+      "title": "Command",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe command. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CommandBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CommandBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "compute",
+      "type": "registry:component",
+      "title": "Compute",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe compute. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-base.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ComputeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ComputeBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:component",
+      "title": "Context Menu",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe context-menu. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ContextMenuBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ContextMenuBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "counter",
+      "type": "registry:component",
+      "title": "Counter",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe counter. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CounterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CounterBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "custom-code-block",
+      "type": "registry:component",
+      "title": "Custom Code Block",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe custom-code-block. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react",
+        "react-icons"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CustomCodeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CustomCodeBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:component",
+      "title": "Data Grid",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe data-grid. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataGridBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-maps",
+      "type": "registry:component",
+      "title": "Data Maps",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe data-maps. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "react-leaflet"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataMapsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataMapsBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:component",
+      "title": "Date Picker",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe date-picker. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DatePickerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DatePickerBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "design-components-folder",
+      "type": "registry:component",
+      "title": "Design Components Folder",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe design-components-folder. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DesignComponentsFolder.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DesignComponentsFolder.tsx"
+        }
+      ]
+    },
+    {
+      "name": "design-folder-box",
+      "type": "registry:component",
+      "title": "Design Folder Box",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe design-folder-box. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DesignFolderBox.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DesignFolderBox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:component",
+      "title": "Dialog",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe dialog. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DialogBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DialogBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dock",
+      "type": "registry:component",
+      "title": "Dock",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe dock. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DockBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DockBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:component",
+      "title": "Drawer",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe drawer. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Drawer.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "email",
+      "type": "registry:component",
+      "title": "Email",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe email. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Email.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Email.tsx"
+        }
+      ]
+    },
+    {
+      "name": "fleet-map",
+      "type": "registry:component",
+      "title": "Fleet Map",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe fleet-map. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "leaflet",
+        "lucide-react",
+        "react-leaflet"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Fleet-map.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Fleet-map.tsx"
+        }
+      ]
+    },
+    {
+      "name": "fleet-tracker",
+      "type": "registry:component",
+      "title": "Fleet Tracker",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe fleet-tracker. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Fleet-tracker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Fleet-tracker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "floating-contact-button",
+      "type": "registry:component",
+      "title": "Floating Contact Button",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe floating-contact-button. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FloatingContactButtonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FloatingContactButtonBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "flowchart",
+      "type": "registry:component",
+      "title": "Flowchart",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe flowchart. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FlowchartBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FlowchartBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:component",
+      "title": "Form",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe form. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FormBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FormBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "half-stars",
+      "type": "registry:component",
+      "title": "Half Stars",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe half-stars. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HalfStarsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HalfStarsBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero",
+      "type": "registry:component",
+      "title": "Hero",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe hero. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeroBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "hero-video-player",
+      "type": "registry:component",
+      "title": "Hero Video Player",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe hero-video-player. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeroVideoPlayerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeroVideoPlayerBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "homepage-hero",
+      "type": "registry:component",
+      "title": "Homepage Hero",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe homepage-hero. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HomepageHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HomepageHeroBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "homepage-hero-typing",
+      "type": "registry:component",
+      "title": "Homepage Hero Typing",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe homepage-hero-typing. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HomepageHeroTypingBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HomepageHeroTypingBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "horizontal-scroll-stack",
+      "type": "registry:component",
+      "title": "Horizontal Scroll Stack",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe horizontal-scroll-stack. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HorizontalScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HorizontalScrollStackBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "icons",
+      "type": "registry:component",
+      "title": "Icons",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe icons. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Icons.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Icons.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:component",
+      "title": "Input",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe input. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/InputBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/InputBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "invoice",
+      "type": "registry:component",
+      "title": "Invoice",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe invoice. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Invoice.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Invoice.tsx"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:component",
+      "title": "Item",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe item. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ItemBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ItemBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:component",
+      "title": "Kbd",
+      "author": "AlgorizeTech",
+      "description": "An inline keyboard-key badge for rendering shortcuts. Use it in menus, tooltips, and docs where a keystroke needs to look pressable.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/KbdBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/KbdBlock.tsx"
+        }
+      ],
+      "docs": "Compose several side by side for chords, e.g. <Kbd>Ctrl</Kbd> <Kbd>K</Kbd>."
+    },
+    {
+      "name": "loader",
+      "type": "registry:component",
+      "title": "Loader",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe loader. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/LoaderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/LoaderBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "magic-bento",
+      "type": "registry:component",
+      "title": "Magic Bento",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe magic-bento. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MagicBentoBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MagicBentoBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:component",
+      "title": "Marquee",
+      "author": "AlgorizeTech",
+      "description": "A continuously scrolling row or column of content that loops seamlessly. Use it for logo walls and testimonial strips.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MarqueeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MarqueeBlock.tsx"
+        }
+      ],
+      "docs": "Duplicate the children set to keep the loop seamless; supports reverse and vertical orientations."
+    },
+    {
+      "name": "masonry-grid",
+      "type": "registry:component",
+      "title": "Masonry Grid",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe masonry-grid. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MasonryGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MasonryGridBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "memories-card",
+      "type": "registry:component",
+      "title": "Memories Card",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe memories-card. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MemoriesCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MemoriesCardBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:component",
+      "title": "Menubar",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe menubar. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MenubarBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MenubarBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mobile-mockup",
+      "type": "registry:component",
+      "title": "Mobile Mockup",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe mobile-mockup. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MobileMockupBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MobileMockupBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "modal",
+      "type": "registry:component",
+      "title": "Modal",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe modal. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ModalBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ModalBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "navbar",
+      "type": "registry:component",
+      "title": "Navbar",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe navbar. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NavbarBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NavbarBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:component",
+      "title": "Navigation Menu",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe navigation-menu. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NavigationMenu.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NavigationMenu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "network-graph",
+      "type": "registry:component",
+      "title": "Network Graph",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe network-graph. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NetworkGraphBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NetworkGraphBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:component",
+      "title": "Otp Input",
+      "author": "AlgorizeTech",
+      "description": "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
+      "categories": [
+        "forms",
+        "authentication"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/OtpInputBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/OtpInputBlock.tsx"
+        }
+      ],
+      "docs": "Pasting a full code into any cell distributes the digits across all cells."
+    },
+    {
+      "name": "pagination",
+      "type": "registry:component",
+      "title": "Pagination",
+      "author": "AlgorizeTech",
+      "description": "A page navigator with previous/next controls and truncated page ranges. Use it for paged tables and result lists.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PaginationBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PaginationBlock.tsx"
+        }
+      ],
+      "docs": "Renders framework-agnostic buttons, not router links, so wire navigation through your own handler."
+    },
+    {
+      "name": "payment",
+      "type": "registry:component",
+      "title": "Payment",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe payment. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "https://algorize-ui.vercel.app/r/ui-base.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PaymentBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PaymentBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:component",
+      "title": "Popover",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe popover. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PopoverBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PopoverBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing",
+      "type": "registry:component",
+      "title": "Pricing",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe pricing. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Pricing.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Pricing.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-plan",
+      "type": "registry:component",
+      "title": "Pricing Plan",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe pricing-plan. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-badge.json",
+        "https://algorize-ui.vercel.app/r/ui-button.json",
+        "https://algorize-ui.vercel.app/r/ui-card.json",
+        "https://algorize-ui.vercel.app/r/ui-slider.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Pricing-plan.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Pricing-plan.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-plans",
+      "type": "registry:component",
+      "title": "Pricing Plans",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe pricing-plans. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PricingPlans.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PricingPlans.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-section",
+      "type": "registry:component",
+      "title": "Pricing Section",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe pricing-section. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PricingSection.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PricingSection.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pricing-section-v4",
+      "type": "registry:component",
+      "title": "Pricing Section V4",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe pricing-section-v4. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PricingSectionV4.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PricingSectionV4.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:component",
+      "title": "Progress",
+      "author": "AlgorizeTech",
+      "description": "A themeable progress bar with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+      "categories": [
+        "feedback"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProgressBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProgressBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Progress, ProgressField, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout."
+    },
+    {
+      "name": "qr-code-generator",
+      "type": "registry:component",
+      "title": "Qr Code Generator",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe qr-code-generator. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "qrcode.react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/QrCodeGeneratorBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/QrCodeGeneratorBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "qr-code-reader",
+      "type": "registry:component",
+      "title": "Qr Code Reader",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe qr-code-reader. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "jsqr",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/QrCodeReaderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/QrCodeReaderBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:component",
+      "title": "Resizable",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe resizable. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ResizableBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ResizableBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-accordion-showcase",
+      "type": "registry:component",
+      "title": "Scroll Accordion Showcase",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe scroll-accordion-showcase. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ScrollAccordionShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ScrollAccordionShowcaseBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:component",
+      "title": "Scroll Area",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe scroll-area. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ScrollAreaBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ScrollAreaBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-stack",
+      "type": "registry:component",
+      "title": "Scroll Stack",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe scroll-stack. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ScrollStackBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:component",
+      "title": "Select",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe select. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SelectBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SelectBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "type": "registry:component",
+      "title": "Settings",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe settings. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-base.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SettingsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SettingsBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:component",
+      "title": "Sidebar",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe sidebar. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SidebarBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SidebarBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "signup-form",
+      "type": "registry:component",
+      "title": "Signup Form",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe signup-form. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SignupForm.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SignupForm.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:component",
+      "title": "Skeleton",
+      "author": "AlgorizeTech",
+      "description": "A loading placeholder with a pulse or shimmer sweep. Use it to hold layout space while content is still being fetched.",
+      "categories": [
+        "feedback"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SkeletonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SkeletonBlock.tsx"
+        }
+      ],
+      "docs": "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required."
+    },
+    {
+      "name": "sonner",
+      "type": "registry:component",
+      "title": "Sonner",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe sonner. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SonnerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SonnerBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "split-scroll-stack",
+      "type": "registry:component",
+      "title": "Split Scroll Stack",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe split-scroll-stack. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SplitScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SplitScrollStackBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "split-stepper",
+      "type": "registry:component",
+      "title": "Split Stepper",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe split-stepper. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SplitStepperBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SplitStepperBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:component",
+      "title": "Stepper",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe stepper. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/StepperBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/StepperBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sticky-scroll-stack",
+      "type": "registry:component",
+      "title": "Sticky Scroll Stack",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe sticky-scroll-stack. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/StickyScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "support-container",
+      "type": "registry:component",
+      "title": "Support Container",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe support-container. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SupportContainer.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SupportContainer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "support-dashboard",
+      "type": "registry:component",
+      "title": "Support Dashboard",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe support-dashboard. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Support-dashboard.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Support-dashboard.tsx"
+        }
+      ]
+    },
+    {
+      "name": "support-page",
+      "type": "registry:component",
+      "title": "Support Page",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe support-page. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SupportPage.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SupportPage.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:component",
+      "title": "Table",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe table. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TableBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TableBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:component",
+      "title": "Terminal",
+      "author": "AlgorizeTech",
+      "description": "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
+      "categories": [
+        "code",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TerminalBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TerminalBlock.tsx"
+        }
+      ],
+      "docs": "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost)."
+    },
+    {
+      "name": "text-animation",
+      "type": "registry:component",
+      "title": "Text Animation",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe text-animation. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TextAnimationBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TextAnimationBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "theme-switcher",
+      "type": "registry:component",
+      "title": "Theme Switcher",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe theme-switcher. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react",
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ThemeSwitcherBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ThemeSwitcherBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tilted-card",
+      "type": "registry:component",
+      "title": "Tilted Card",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe tilted-card. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TiltedCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TiltedCardBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:component",
+      "title": "Timeline",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe timeline. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelineBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelineBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:component",
+      "title": "Toast",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe toast. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ToastBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ToastBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:component",
+      "title": "Toggle",
+      "author": "AlgorizeTech",
+      "description": "A two-state switch with controlled and uncontrolled modes. Use it for settings that apply immediately, rather than a checkbox in a submitted form.",
+      "categories": [
+        "forms"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ToggleBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ToggleBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled."
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:component",
+      "title": "Toggle Group",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe toggle-group. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ToggleGroupBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ToggleGroupBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:component",
+      "title": "Tooltip",
+      "author": "AlgorizeTech",
+      "description": "A portal-rendered tooltip with fade and zoom entrance, positioned on hover or focus. Use it for short labels that clarify an unlabeled control.",
+      "categories": [
+        "overlays"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TooltipBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TooltipBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: TooltipProvider, Tooltip, TooltipTrigger, TooltipContent. Requires the `animate-in`, `fade-in` and `zoom-in-95` utilities — on Tailwind v4 add `@import \"tw-animate-css\";` to your global stylesheet, on v3 use the `tailwindcss-animate` plugin. Content renders through a React portal at z-index 9999."
+    },
+    {
+      "name": "typography",
+      "type": "registry:component",
+      "title": "Typography",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe typography. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TypographyBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TypographyBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-accordion",
+      "type": "registry:ui",
+      "title": "Ui Accordion",
+      "author": "AlgorizeTech",
+      "description": "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/accordion.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/accordion.tsx"
+        }
+      ],
+      "docs": "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead."
+    },
+    {
+      "name": "ui-avatar",
+      "type": "registry:ui",
+      "title": "Ui Avatar",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-avatar. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "@radix-ui/react-avatar"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-badge",
+      "type": "registry:ui",
+      "title": "Ui Badge",
+      "author": "AlgorizeTech",
+      "description": "A small status label primitive with CVA-driven variants. Used internally by pricing blocks.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/badge.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-base",
+      "type": "registry:ui",
+      "title": "Ui Base",
+      "author": "AlgorizeTech",
+      "description": "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/ui/base.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/base.tsx"
+        }
+      ],
+      "docs": "Named exports: ComponentCard, ToggleSwitch. Pulled in automatically as a dependency — rarely installed directly."
+    },
+    {
+      "name": "ui-button",
+      "type": "registry:ui",
+      "title": "Ui Button",
+      "author": "AlgorizeTech",
+      "description": "A minimal CVA button primitive with Radix Slot support for `asChild`. Used internally by the Calendar and pricing blocks.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/button.tsx"
+        }
+      ],
+      "docs": "This is the internal primitive, not the main `button` item. Prefer `button` unless you specifically need the Slot-based base."
+    },
+    {
+      "name": "ui-card",
+      "type": "registry:ui",
+      "title": "Ui Card",
+      "author": "AlgorizeTech",
+      "description": "The card surface primitive that the pricing-plan block composes.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/card.tsx"
+        }
+      ],
+      "docs": "NOTE: installs to components/ui/card.tsx and will overwrite a shadcn `card` already present. Review before installing into an existing project."
+    },
+    {
+      "name": "ui-codeblocks",
+      "type": "registry:ui",
+      "title": "Ui Codeblocks",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-codeblocks. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/codeblocks.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/codeblocks.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-fluid-glass-slider",
+      "type": "registry:ui",
+      "title": "Ui Fluid Glass Slider",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-fluid-glass-slider. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/ui/FluidGlassSlider.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/FluidGlassSlider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-multi-select",
+      "type": "registry:ui",
+      "title": "Ui Multi Select",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-multi-select. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/multi-select.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/multi-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-sheet",
+      "type": "registry:ui",
+      "title": "Ui Sheet",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-sheet. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/sheet.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ui-slider",
+      "type": "registry:ui",
+      "title": "Ui Slider",
+      "author": "AlgorizeTech",
+      "description": "The Radix slider primitive used by pricing blocks for usage-based tier selection.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [
+        "@radix-ui/react-slider"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/slider.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "upload",
+      "type": "registry:component",
+      "title": "Upload",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe upload. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/UploadBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/UploadBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "user-graph",
+      "type": "registry:component",
+      "title": "User Graph",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe user-graph. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/UserGraphBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/UserGraphBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "utility",
+      "type": "registry:component",
+      "title": "Utility",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe utility. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-base.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/UtilityBlocks.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/UtilityBlocks.tsx"
+        }
+      ]
+    },
+    {
+      "name": "verify-badge",
+      "type": "registry:component",
+      "title": "Verify Badge",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe verify-badge. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VerifyBadgeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VerifyBadgeBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "vertical-tabs",
+      "type": "registry:component",
+      "title": "Vertical Tabs",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe vertical-tabs. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VerticalTabs.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VerticalTabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "video-accordion",
+      "type": "registry:component",
+      "title": "Video Accordion",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe video-accordion. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VideoAccordionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VideoAccordionBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "wizard",
+      "type": "registry:component",
+      "title": "Wizard",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe wizard. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/WizardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/WizardBlock.tsx"
+        }
+      ]
+    }
+  ]
+}
