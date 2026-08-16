@@ -32,6 +32,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-indigo-600",
     bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
     ring: "focus:border-indigo-600 focus:ring-indigo-600/10",
+    headerBg: "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300",
   },
   rose: {
     bg: "bg-rose-600",
@@ -39,6 +40,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-rose-600",
     bgSoft: "bg-rose-50 dark:bg-rose-500/10",
     ring: "focus:border-rose-600 focus:ring-rose-600/10",
+    headerBg: "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300",
   },
   emerald: {
     bg: "bg-emerald-600",
@@ -46,6 +48,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-emerald-600",
     bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
     ring: "focus:border-emerald-600 focus:ring-emerald-600/10",
+    headerBg: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300",
   },
   blue: {
     bg: "bg-blue-600",
@@ -53,6 +56,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-blue-600",
     bgSoft: "bg-blue-50 dark:bg-blue-500/10",
     ring: "focus:border-blue-600 focus:ring-blue-600/10",
+    headerBg: "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300",
   },
   zinc: {
     bg: "bg-zinc-900 dark:bg-zinc-100",
@@ -60,6 +64,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     border: "border-zinc-900 dark:border-zinc-100",
     bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
     ring: "focus:border-zinc-900 focus:ring-zinc-900/10",
+    headerBg: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
   },
 };
 
@@ -86,6 +91,7 @@ export const getThemeStyles = (color?: string) => {
         border: "border-[var(--table-color)]",
         bgSoft: "bg-[rgba(var(--table-rgb),0.1)]",
         ring: "focus:border-[var(--table-color)] focus:ring-[rgba(var(--table-rgb),0.1)]",
+        headerBg: "bg-[rgba(var(--table-rgb),0.12)] text-[var(--table-color)]",
       },
       style: {
         "--table-color": color,
@@ -104,6 +110,7 @@ export const getThemeStyles = (color?: string) => {
       border: "border-primary",
       bgSoft: "bg-primary/10",
       ring: "focus:border-primary focus:ring-primary/20",
+      headerBg: "bg-primary/10 dark:bg-primary/20 text-primary",
     },
     style: {},
   };
@@ -270,7 +277,7 @@ export const AdvancedTableBlock = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "w-full flex flex-col gap-4 font-sans max-w-[960px] mx-auto text-[#1a1a2e]",
+          "w-full flex flex-col gap-4 font-sans text-[#1a1a2e]",
           className,
         )}
         style={style}
@@ -388,9 +395,14 @@ export const AdvancedTableBlock = forwardRef<
         </div>
 
         {/* --- TABLE CONTAINER --- */}
-        <div className="w-full overflow-x-auto rounded-xl sm:rounded-2xl border border-border/80 bg-card shadow-sm">
+        <div className="w-full overflow-x-auto overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]">
           <table className="w-full text-[13px] sm:text-[13.5px] text-left border-collapse whitespace-nowrap">
-            <thead className="bg-primary/5 border-b border-border/60">
+            <thead
+              className={cn(
+                "border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md transition-colors duration-150",
+                theme.headerBg,
+              )}
+            >
               <tr>
                 {selectable && (
                   <th className="w-11 px-4 py-[11px] text-center">
@@ -448,11 +460,13 @@ export const AdvancedTableBlock = forwardRef<
                               strokeWidth="2.5"
                               className={cn("w-3 h-3 block", theme.text)}
                             >
-                              {sortConfig.direction === "asc" ? (
-                                <polyline points="18 15 12 9 6 15" />
-                              ) : (
-                                <polyline points="6 9 12 15 18 9" />
-                              )}
+                              <path
+                                d={
+                                  sortConfig.direction === "asc"
+                                    ? "M12 19V5M5 12l7-7 7 7"
+                                    : "M12 5v14M5 12l7 7 7-7"
+                                }
+                              />
                             </svg>
                           ) : (
                             <svg
@@ -460,10 +474,9 @@ export const AdvancedTableBlock = forwardRef<
                               fill="none"
                               stroke="currentColor"
                               strokeWidth="2"
-                              className="w-3 h-3 block"
+                              className="w-3 h-3 text-zinc-400"
                             >
-                              <polyline points="18 15 12 9 6 15" />
-                              <polyline points="6 9 12 15 18 9" opacity=".4" />
+                              <path d="M7 15l5 5 5-5M7 9l5-5 5 5" />
                             </svg>
                           )}
                         </div>
@@ -495,8 +508,8 @@ export const AdvancedTableBlock = forwardRef<
                       className={cn(
                         "border-b border-zinc-100 dark:border-zinc-800/60 transition-all duration-150",
                         isSelected
-                          ? "bg-primary/10 border-l-2 border-l-primary"
-                          : "hover:bg-primary/5",
+                          ? "bg-zinc-100/80 dark:bg-zinc-800/60"
+                          : "hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
                       )}
                       style={{
                         animation: `fadeUp-${tableId} 0.2s ease ${rowIndex * 30}ms both`,
