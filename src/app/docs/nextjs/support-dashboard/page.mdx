@@ -12,7 +12,7 @@ It now features a **dual-layout system**:
 
 ## Examples
 
-Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one. The first example's **Code** tab contains the full component source.
+Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
 export const usageChat = `import SupportDashboard, {
   SupportData,
@@ -199,22 +199,7 @@ export default function GlassDashboard() {
 
 ## Installation
 
-<Cli command={`add support-dashboard.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its standard UI icons.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from the **Code** tab of the first example above.
+<Installation name="support-dashboard" />
 
 ## Props Reference
 

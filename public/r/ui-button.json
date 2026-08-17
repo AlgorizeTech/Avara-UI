@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-button",
-  "title": "Ui Button",
+  "title": "UI Button",
   "author": "AlgorizeTech",
   "description": "A minimal CVA button primitive with Radix Slot support for `asChild`. Used internally by the Calendar and pricing blocks.",
   "dependencies": [

@@ -9,7 +9,7 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 
 ## Examples
 
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component. The **Code** tab contains the full component source.
+`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
 export const usageFlow = `"use client";
 
@@ -117,22 +117,7 @@ export default function OnboardingWizard() {
 
 ## Installation
 
-<Cli command={`add stepper.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This component relies exclusively on **GSAP** for all line scaling, icon scaling, ring pulsing, and layout transitions.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the example above.
+<Installation name="stepper" />
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.

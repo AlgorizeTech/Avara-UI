@@ -11,7 +11,7 @@ It features interactive hover tooltips, multiple visual variants (such as solid 
 
 ## Examples
 
-The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card. The first example's **Code** tab contains the full component source.
+The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
 export const usageFill = `import dynamic from "next/dynamic";
 
@@ -169,23 +169,7 @@ export default function ColoredMap() {
 
 ## Installation
 
-<Cli command={`add data-maps.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-Ensure you have `leaflet` and `react-leaflet` installed. If not, install them using:
-
-```bash
-npm install leaflet react-leaflet
-npm install -D @types/leaflet
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/DataMapsBlock.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
+<Installation name="data-maps" />
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.

@@ -9,7 +9,7 @@ This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.
 
 ## Examples
 
-One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. The first example's **Code** tab contains the full component source.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
 
 export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
@@ -198,18 +198,7 @@ export default function CleanBarChart() {
 
 ## Installation
 
-<Cli command={`add chart.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-Because this rewrite drops all external animation libraries, it is **100% dependency-free**.
-
-The engine uses standard Tailwind utility classes and injects its own lightweight `@keyframes` for the bar growth, line drawing, and pie-burst animations.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChartBlock.tsx`.
+<Installation name="chart" />
 
 ## Features
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.

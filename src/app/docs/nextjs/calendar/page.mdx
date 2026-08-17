@@ -7,7 +7,7 @@ A comprehensive, interactive calendar dashboard and date-picker system. Includes
 
 ## Examples
 
-`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look. The first example's **Code** tab contains the full component source.
+`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
 
 export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
@@ -130,23 +130,7 @@ export default function EmptyCalendar() {
 
 ## Installation
 
-<Cli command={`add calendar.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `react-day-picker` and the standard `shadcn/ui` button primitive. Run the following commands:
-
-```bash
-npm install lucide-react date-fns react-day-picker
-npx shadcn-ui@latest add button
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Calendar.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="calendar" />
 
 ## Features
 Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.

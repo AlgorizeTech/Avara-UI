@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-badge",
-  "title": "Ui Badge",
+  "title": "UI Badge",
   "author": "AlgorizeTech",
   "description": "A small status label primitive with CVA-driven variants. Used internally by pricing blocks.",
   "dependencies": [

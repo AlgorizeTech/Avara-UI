@@ -7,7 +7,7 @@ A collection of modern, highly composable Hero components for marketing websites
 
 ## Examples
 
-Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections. Each gallery's first example carries its own **Code** tab with the full source.
+Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections.
 
 ### Composable hero
 
@@ -595,24 +595,13 @@ export default function MinimalHero() {
 
 ## Installation
 
-<Cli command={`add hero.json`} />
+Three independent blocks live on this page. Install whichever you need — they share no files.
 
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-The composable block uses `motion` (Framer Motion) for the title entrances and `lucide-react` for icons.
-
-```bash
-npm install motion lucide-react
-```
-
-### 2. Copy the Component
-
-The composable system handles every layout shift through Tailwind grid utilities — copy `HeroBlock.tsx` once and build all four layouts from it. Take the source from the **Code** tab of the first example above and place it in `components/custom/blocks/HeroBlock.tsx`.
-
-The two homepage heroes are separate, self-contained files: copy them from the **Code** tab of their own examples into `components/custom/blocks/HomepageHeroBlock.tsx` and `components/custom/blocks/HomepageHeroTypingBlock.tsx`.
+<InstallGroup>
+  <Installation name="hero" />
+  <Installation name="homepage-hero" />
+  <Installation name="homepage-hero-typing" />
+</InstallGroup>
 
 ## Props Reference
 

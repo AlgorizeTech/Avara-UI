@@ -9,7 +9,7 @@ This engine separates data flow layout orchestration from canvas tracking. By co
 
 ## Examples
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path. The first example's **Code** tab contains the full component source.
+Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
 
 export const usageDefault = `import {
   FlowCanvas,
@@ -191,22 +191,7 @@ export default function AccentedPipeline() {
 
 ## Installation
 
-<Cli command={`add flowchart.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This layout block depends explicitly on **GSAP** for the vector draw-in and spring element entrance scaling sequences.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/FlowchartBlock.tsx`.
+<Installation name="flowchart" />
 
 ## Best Practices & Guidelines
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "qr-code-generator",
-  "title": "Qr Code Generator",
+  "title": "QR Code Generator",
   "author": "AlgorizeTech",
   "description": "A QR code renderer with size, colour and error-correction options. Use it for sharing links, tickets and pairing codes.",
   "dependencies": [

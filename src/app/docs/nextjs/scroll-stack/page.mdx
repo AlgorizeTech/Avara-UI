@@ -8,7 +8,7 @@ A premium collection of scroll-driven 3D card stacking layouts engineered exclus
 
 ## Examples
 
-Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline. Each layout's first example carries its component source in the **Code** tab.
+Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
 ### Simple stack
 
@@ -325,23 +325,14 @@ export default function ShortRail() {
 
 ## Installation
 
-<Cli command={`add scroll-stack.json`} />
+Each layout is its own block file. Install only the ones you use — they share no code.
 
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-These layouts rely exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Each layout above carries its own source in the **Code** tab of its first example — `ScrollStackBlock.tsx`, `StickyScrollStackBlock.tsx`, `SplitScrollStackBlock.tsx` and `HorizontalScrollStackBlock.tsx`. Copy the ones you need into `components/custom/blocks/`.
-
+<InstallGroup>
+  <Installation name="scroll-stack" />
+  <Installation name="sticky-scroll-stack" />
+  <Installation name="split-scroll-stack" />
+  <Installation name="horizontal-scroll-stack" />
+</InstallGroup>
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-accordion",
-  "title": "Ui Accordion",
+  "title": "UI Accordion",
   "author": "AlgorizeTech",
   "description": "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",
   "dependencies": [

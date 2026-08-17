@@ -9,7 +9,7 @@ This headless-style Toast component handles its own global state via Context, us
 
 ## Examples
 
-Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually. The first example's **Code** tab contains the full component source.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
 
 export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
 
@@ -269,28 +269,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ## Installation
 
-<Cli command={`add toast.json`} />
+<Installation name="toast" />
 
-The CLI writes the component into your project and installs anything it depends on.
+### Wrap your app
 
-
-### 1. Install Dependencies
-
-This component relies on `gsap` for the entrance/exit animations and `lucide-react` for standard UI icons (Check, AlertCircle, Info).
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-This component includes the `ToastProvider`, the `useToast` hook, and the individual `ToastItem` renderer all inside a single file.
-
-Create a new file at `components/custom/blocks/ToastBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 3. Wrap your app
-
-You must wrap the highest level of your application (usually `layout.tsx` or `App.tsx`) with `<ToastProvider>`. The global `variant`, `color` and `position` are set there.
+`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
 
 ## Features
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.

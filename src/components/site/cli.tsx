@@ -9,6 +9,7 @@ import {
   usePackageManager,
   type PackageManager,
   PM_COMMANDS,
+  PM_INSTALL_COMMANDS,
 } from "@/contexts/package-manager-context";
 
 type CliProps = {
@@ -24,17 +25,73 @@ type CliProps = {
  */
 const REGISTRY_BASE_URL = "https://algorize-ui.vercel.app/r";
 
+/** One coloured run of the rendered command line. */
+type Segment = { text: string; tone: "runner" | "package" | "args" };
+
+/**
+ * Expands one argument of a shadcn `add`.
+ *
+ * A bare `foo.json` is one of ours and becomes the full published URL. Anything
+ * else is passed through untouched — a name with no extension (`utils`) is a
+ * component in shadcn's own upstream registry, and a URL is already resolved.
+ */
+function resolveAddArg(arg: string): string {
+  const own = arg.replace(/^"|"$/g, "");
+  return /^[\w-]+\.json$/.test(own) ? `${REGISTRY_BASE_URL}/${own}` : own;
+}
+
+/**
+ * Expands the shorthand a page writes into the real command for `pm`.
+ *
+ *   `add button.json`            → `npx shadcn@latest add https://…/r/button.json`
+ *   `add select.json utils`      → both, space-separated: shadcn takes several
+ *                                  items at once and mixes our URLs with its
+ *                                  own bare names freely
+ *   `install gsap lucide-react`  → `npm install gsap lucide-react`
+ *                                  (`pnpm add …`, `yarn add …`, `bun add …`)
+ *
+ * The two forms are not interchangeable: a registry component is installed by
+ * the shadcn CLI, never by `npm install`, because it is a source file rather
+ * than a package. Keeping both here is what lets a page state each dependency
+ * with the command that actually installs it.
+ */
+function resolveSegments(command: string, pm: PackageManager): Segment[] {
+  const deps = command.match(/^install\s+(.+)$/);
+  if (deps) {
+    // "npm install" / "pnpm add" — the runner and its subcommand are coloured
+    // separately, so split on the space rather than printing one blob.
+    const [runner, ...sub] = PM_INSTALL_COMMANDS[pm].split(" ");
+    return [
+      { text: runner, tone: "runner" },
+      { text: sub.join(" "), tone: "package" },
+      { text: deps[1], tone: "args" },
+    ];
+  }
+
+  const add = command.match(/^add\s+(.+)$/);
+  const args = add
+    ? `add ${add[1].trim().split(/\s+/).map(resolveAddArg).join(" ")}`
+    : command;
+
+  return [
+    { text: PM_COMMANDS[pm], tone: "runner" },
+    { text: "shadcn@latest", tone: "package" },
+    { text: args, tone: "args" },
+  ];
+}
+
+const TONE_CLASS: Record<Segment["tone"], string> = {
+  runner: "text-amber-400",
+  package: "text-teal-500",
+  args: "text-zinc-700 dark:text-zinc-300",
+};
+
 export const Cli = ({ command }: CliProps) => {
   const { packageManager: pm, setPackageManager: setPm } = usePackageManager();
   const [copied, setCopied] = useState(false);
 
-  // 'add something.json' is expanded to the full published registry URL.
-  const match = command.match(/^add\s+"?([\w-]+\.json)"?$/);
-  const finalCommand = match
-    ? `add ${REGISTRY_BASE_URL}/${match[1]}`
-    : command;
-
-  const fullCommand = `${PM_COMMANDS[pm]} shadcn@latest ${finalCommand}`;
+  const segments = resolveSegments(command, pm);
+  const fullCommand = segments.map((s) => s.text).join(" ");
 
   const handleCopy = async () => {
     try {
@@ -103,11 +160,12 @@ export const Cli = ({ command }: CliProps) => {
             targets that bare class name with !important table-wrapper styles
             (1.5rem block margins, an 8px gray-track scrollbar). */}
         <div className="min-w-0 max-w-full py-5 pl-4 pr-14 text-left font-mono text-sm font-medium whitespace-nowrap [overflow-x:auto] [overflow-y:hidden] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <span className="text-amber-400">{PM_COMMANDS[pm]}</span>{" "}
-          <span className="text-teal-500">shadcn@latest</span>{" "}
-          <span className="text-zinc-700 dark:text-zinc-300">
-            {finalCommand}
-          </span>
+          {segments.map((segment, i) => (
+            <span key={segment.tone} className={TONE_CLASS[segment.tone]}>
+              {i > 0 && " "}
+              {segment.text}
+            </span>
+          ))}
         </div>
 
         {/* Fades the command out beneath the button so a long, scrolled command
