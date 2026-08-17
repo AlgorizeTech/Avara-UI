@@ -133,9 +133,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     table: ({ children, ...props }: React.ComponentProps<'table'>) => {
       return (
-        <div className="my-6 w-full max-w-full overflow-x-auto bg-transparent [scrollbar-width:thin] cursor-pointer">
+        <div className="my-6 w-full max-w-full overflow-x-auto lg:overflow-x-hidden bg-transparent [scrollbar-width:thin] cursor-pointer">
           <table
-            className="w-full max-w-full border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm cursor-pointer overflow-hidden"
+            className="w-full max-w-full min-w-[35rem] lg:min-w-60 table-auto border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm cursor-pointer overflow-hidden"
             {...props}
           >
             {children}
@@ -177,7 +177,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     th: ({ children, ...props }: React.ComponentProps<'th'>) => {
       return (
         <th
-          className="px-4 sm:px-5 py-3.5 text-left text-[12px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider border-b border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 whitespace-nowrap cursor-pointer"
+          className="px-4 sm:px-5 py-3.5 text-left text-[12px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider border-b border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer"
           {...props}
         >
           {children}
@@ -187,7 +187,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     td: ({ children, ...props }: React.ComponentProps<'td'>) => {
       return (
-        <td className="px-4 sm:px-5 py-3 text-sm text-zinc-800 dark:text-zinc-200 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 align-top first:font-extrabold first:text-zinc-900 dark:first:text-white break-words cursor-pointer" {...props}>
+        <td className="px-4 sm:px-5 py-3 text-sm text-zinc-800 dark:text-zinc-200 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 align-top first:font-extrabold first:text-zinc-900 dark:first:text-white whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer" {...props}>
           {children}
         </td>
       );
