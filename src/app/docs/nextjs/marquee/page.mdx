@@ -1,0 +1,147 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Marquee
+
+An infinite, seamless scrolling container ideal for logos, testimonials, and image galleries.
+
+This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
+
+## Examples
+
+You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+
+export default function LogoSection() {
+  return (
+    <MarqueeBlock direction="left" speed="normal" pauseOnHover fade gap="4rem">
+      {logos.map((logo) => (
+        <div key={logo} className="text-xl font-bold text-zinc-400">
+          {logo}
+        </div>
+      ))}
+    </MarqueeBlock>
+  );
+}`;
+
+export const usageRight = `// Reverses the travel; everything else is identical.
+<MarqueeBlock direction="right" gap="4rem">
+  {logos.map((logo) => <Logo key={logo} name={logo} />)}
+</MarqueeBlock>`;
+
+export const usageVertical = `// Vertical marquees need a bounded height on the container.
+<MarqueeBlock direction="up" gap="1.5rem" className="h-[400px] w-[300px]">
+  {testimonials.map((t) => <TestimonialCard key={t.name} {...t} />)}
+</MarqueeBlock>`;
+
+export const usageSpeed = `// "slow" | "normal" | "fast", or a raw duration in seconds.
+<MarqueeBlock speed="slow" gap="1.5rem">
+  {images.map((src) => <img key={src} src={src} className="w-[200px] rounded-2xl" />)}
+</MarqueeBlock>`;
+
+export const usageBare = `// No edge mask, and the loop keeps running under the cursor.
+<MarqueeBlock fade={false} pauseOnHover={false} gap="4rem">
+  {logos.map((logo) => <Logo key={logo} name={logo} />)}
+</MarqueeBlock>`;
+
+<ExampleShowcase
+  name="marquee"
+  columns={1}
+  examples={[
+    {
+      title: "Marquee",
+      subheading: "Drop your items inside — one copy is enough. `fade` masks both edges and `pauseOnHover` stops the loop under the cursor.",
+      props: { contentType: "logos", direction: "left" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/MarqueeBlock.tsx"),
+    },
+    {
+      title: "Reverse direction",
+      subheading: "Set `direction=\"right\"` — pair two rows travelling opposite ways for a classic logo wall.",
+      props: { contentType: "logos", direction: "right" },
+      usage: usageRight,
+    },
+    {
+      title: "Vertical",
+      subheading: "`direction=\"up\"` or `\"down\"` scrolls the column instead; give the container a fixed height.",
+      props: { contentType: "testimonials", direction: "up" },
+      usage: usageVertical,
+    },
+    {
+      title: "Speed",
+      subheading: "`speed` takes `\"slow\"`, `\"normal\"`, `\"fast\"` — or a number of seconds for one full pass.",
+      props: { contentType: "images", direction: "left", speed: "slow" },
+      usage: usageSpeed,
+    },
+    {
+      title: "Without fade or pause",
+      subheading: "Turn off `fade` for hard edges and `pauseOnHover` to keep it moving no matter what.",
+      props: { contentType: "logos", direction: "left", fade: false, pauseOnHover: false },
+      usage: usageBare,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component relies entirely on injected `@keyframes` and dynamic CSS variables to function, meaning it is **100% dependency-free**.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MarqueeBlock.tsx`.
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>React.ReactNode</code></td>
+        <td><strong>Required</strong></td>
+        <td>One set of items. The block duplicates them internally to close the loop.</td>
+      </tr>
+      <tr>
+        <td><code>direction</code></td>
+        <td><code>"left" | "right" | "up" | "down"</code></td>
+        <td><code>"left"</code></td>
+        <td>Travel direction. Vertical values need a bounded height on the container.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>"slow" | "normal" | "fast" | number</code></td>
+        <td><code>"normal"</code></td>
+        <td>Preset pace, or the duration of one full pass in seconds.</td>
+      </tr>
+      <tr>
+        <td><code>pauseOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Pauses the animation while the pointer is over the marquee.</td>
+      </tr>
+      <tr>
+        <td><code>fade</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Applies a gradient <code>mask-image</code> so items dissolve at both edges.</td>
+      </tr>
+      <tr>
+        <td><code>gap</code></td>
+        <td><code>string</code></td>
+        <td><code>"1rem"</code></td>
+        <td>CSS gap between items. The loop math accounts for it, so any value stays seamless.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -111,6 +111,10 @@ export function ResizableHandle({
     const handle = handleRef.current;
     if (!handle) return;
 
+    // Resolve the document/window the handle actually lives in (supports iframe rendering).
+    const doc = handle.ownerDocument;
+    const win = doc.defaultView ?? window;
+
     const prev = handle.previousElementSibling as HTMLElement;
     const next = handle.nextElementSibling as HTMLElement;
     if (
@@ -141,8 +145,8 @@ export function ResizableHandle({
     const nextMin = parseFloat(next.getAttribute("data-min-size") || "0");
     const nextMax = parseFloat(next.getAttribute("data-max-size") || "100");
 
-    document.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
-    document.body.style.userSelect = "none";
+    doc.body.style.cursor = isHorizontal ? "col-resize" : "row-resize";
+    doc.body.style.userSelect = "none";
 
     const onPointerMove = (moveEvent: PointerEvent) => {
       const currentPos = isHorizontal ? moveEvent.clientX : moveEvent.clientY;
@@ -167,14 +171,14 @@ export function ResizableHandle({
     };
 
     const onPointerUp = () => {
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
+      doc.body.style.cursor = "";
+      doc.body.style.userSelect = "";
+      win.removeEventListener("pointermove", onPointerMove);
+      win.removeEventListener("pointerup", onPointerUp);
     };
 
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
+    win.addEventListener("pointermove", onPointerMove);
+    win.addEventListener("pointerup", onPointerUp);
   };
 
   // --- ACCESSIBILITY: KEYBOARD NAVIGATION ---
@@ -232,31 +236,31 @@ export function ResizableHandle({
       onPointerDown={handlePointerDown}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative flex shrink-0 items-center justify-center bg-zinc-200 dark:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
-        isHorizontal ? "w-1 cursor-col-resize" : "h-1 cursor-row-resize",
+        "relative flex shrink-0 items-center justify-center bg-border/80 hover:bg-primary/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        isHorizontal ? "w-1.5 cursor-col-resize" : "h-1.5 cursor-row-resize",
         className,
       )}
       {...props}
     >
-      {/* Invisible wider grab area for easier clicking */}
+      {/* Invisible wider grab area for easier touch and drag clicking */}
       <div
         className={cn(
           "absolute z-10",
-          isHorizontal ? "inset-y-0 -inset-x-2" : "inset-x-0 -inset-y-2",
+          isHorizontal ? "inset-y-0 -inset-x-3" : "inset-x-0 -inset-y-3",
         )}
       />
 
       {withHandle && (
         <div
           className={cn(
-            "z-20 flex items-center justify-center rounded-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm",
-            isHorizontal ? "h-6 w-3" : "h-3 w-6",
+            "z-20 flex items-center justify-center rounded-md border border-border bg-card shadow-xs text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors",
+            isHorizontal ? "h-6 w-3.5" : "h-3.5 w-6",
           )}
         >
           {isHorizontal ? (
-            <GripVertical className="h-2.5 w-2.5 text-zinc-500" />
+            <GripVertical className="h-3 w-3" />
           ) : (
-            <GripHorizontal className="h-2.5 w-2.5 text-zinc-500" />
+            <GripHorizontal className="h-3 w-3" />
           )}
         </div>
       )}

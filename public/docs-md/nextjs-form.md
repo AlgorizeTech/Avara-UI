@@ -4,14 +4,106 @@ A high-fidelity Form toolkit engineered for both simple landing pages and comple
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different implementations.
+`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s. The first example's **Code** tab contains the full component source.
 
-- The **Basic Native State** demo shows how to easily wrap a simple email input. Try submitting an invalid email to see the custom glitching `FormError` text in action.
-- The **Advanced (RHF + Zod)** demo showcases a complex grid layout. Because the `FormWrapper` is unopinionated, it natively accepts the `onSubmit={handleSubmit()}` methods from `react-hook-form` without breaking child `refs`.
+export const usageNative = `"use client";
 
----
+export default function NewsletterForm() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!email.includes("@")) {
+      setError("Please provide a valid email address.");
+      return;
+    }
+    setError("");
+    // Submit logic...
+  };
+
+  return (
+
+         setEmail(e.target.value)}
+        />
+
+      Subscribe Now
+    
+  );
+}`;
+
+export const usageZod = `"use client";
+
+const schema = z.object({
+  companyName: z.string().min(2, "Company name is strictly required."),
+  workEmail: z.string().email("Invalid corporate email format detected."),
+  password: z.string().min(8, "Security requirement: Minimum 8 characters."),
+});
+
+export default function EnterpriseForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({ resolver: zodResolver(schema), mode: "onTouched" });
+
+  return (
+     console.log(data))}
+    >
+
+      Create Workspace
+    
+  );
+}`;
+
+export const usageErrorStyles = `import {
+  FormField,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+
+export default function ErrorStyles() {
+  const message = "Invalid corporate email format detected.";
+
+  return (
+    
+      {/* "glitch" is the default — animated RGB-split text */}
+
+      {/* "default" is the quiet, static variant */}
+
+  );
+}`;
+
+export const usageSubmitting = `import {
+  FormField,
+  FormSubmit,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+
+export default function SubmittingForm() {
+  return (
+     e.preventDefault()}
+    >
+
+      {/* Wire this to react-hook-form's formState.isSubmitting */}
+      Subscribe Now
+    
+  );
+}`;
+
+export const usageBare = `import {
+  FormField,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+
+export default function SettingsPanel() {
+  // No title/description = no header. No onSubmit = a , not a ,
+  // so the wrapper can nest inside a form you already own.
+  return (
+
+  );
+}`;
 
 ## Installation
 
@@ -21,53 +113,133 @@ This component exports four modular building blocks: `FormWrapper`, `FormField`,
 
 The high-fidelity styling (the spinning conic gradient and the CSS glitch animations) are self-contained within this file and require no external animation libraries.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/FormBlock.tsx`.
+Create a new file at `components/custom/blocks/FormBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ### 2. (Optional) Install React Hook Form & Zod
 
-If you intend to use the advanced enterprise validation shown in the second showcase demo, you will need to install the following packages:
+If you intend to use the advanced enterprise validation shown in the second example, you will need to install the following packages:
 
 ```bash
 npm install react-hook-form zod @hookform/resolvers
 ```
 
-## Usage
+## Features
+Explore the Form component's validation integration, accessible error messages, and loading state management.
 
-1. Advanced Integration (RHF + Zod)
-   This is the recommended setup for any form with more than 2 fields. Define your schema, pass the register refs to your inputs, and wrap them in the FormField block to automatically parse and render the glitch error text.
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-```tsx
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-// 1. Define strict validation rules
-const schema = z.object({
-  companyName: z.string().min(2, "Company name is strictly required."),
-  workEmail: z.string().email("Invalid corporate email format detected."),
-});
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
 
-export default function EnterpriseForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
-  const processData = async (data) => {
-    // API Call Logic
-    console.log(data);
-  };
+## Best Practices & Guidelines
 
-  return (
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
-        {/* Pass the Zod error message directly to FormField */}
+## Props Reference
 
-      {/* Automatically handles spinning loading state */}
-      Create Account
-    
-  );
-}
-```
+        Component
+        Prop
+        Type
+        Default
+        Description
+
+          FormWrapper
+
+          title
+
+          string
+
+          undefined
+        
+        Heading shown above the divider. Omit it (along with description) to drop the header entirely.
+
+          FormWrapper
+
+          description
+
+          string
+
+          undefined
+        
+        Supporting copy rendered under the title.
+
+          FormWrapper
+
+          color
+
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
+
+          "primary"
+        
+        Drives the animated border, focus ring and submit button. Accepts any hex string.
+
+          FormWrapper
+
+          onSubmit
+
+          (e: React.FormEvent) =&gt; void
+
+          undefined
+        
+        When provided the children are wrapped in a &lt;form&gt;; otherwise a plain &lt;div&gt; is used.
+
+          FormField
+
+          label
+
+          string
+
+          undefined
+        
+        Field label. Turns red automatically while error is set.
+
+          FormField
+
+          error
+
+          string
+
+          undefined
+        
+        Message to render below the input. Falsy values render nothing.
+
+          FormField
+
+          errorVariant
+
+          "glitch" | "default"
+
+          "glitch"
+        
+        Selects the animated RGB-split error text or the static one.
+
+          FormError
+
+          message
+
+          string
+
+          undefined
+        
+        Standalone error renderer, for when you are not using FormField.
+
+          FormSubmit
+
+          isSubmitting
+
+          boolean
+
+          false
+        
+        Replaces the label with a spinner and disables the button.
 
 ---
 

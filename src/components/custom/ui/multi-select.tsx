@@ -307,13 +307,13 @@ export default function MultiSelect({
               left: `${dropdownPosition.left}px`,
               width: `${dropdownPosition.width}px`,
               zIndex: 99999,
-              maxHeight: "300px",
+              maxHeight: "200px",
             }
           : {
               top: "100%",
               left: 0,
               right: 0,
-              maxHeight: "300px",
+              maxHeight: "200px",
             }
       }
       onClick={(e) => e.stopPropagation()}
@@ -333,16 +333,16 @@ export default function MultiSelect({
       </div>
       <ul
         ref={listRef}
-        className="max-h-52 overflow-auto py-1"
+        className="max-h-44 overflow-auto p-1.5 space-y-0.5"
         onClick={(e) => e.stopPropagation()}
       >
         {loading ? (
-          <li className="flex items-center justify-center px-3 py-3 text-sm text-gray-500">
+          <li className="flex items-center justify-center px-3 py-3 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin mr-2" />
             Loading...
           </li>
         ) : filteredOptions.length === 0 ? (
-          <li className="px-3 py-2 text-sm text-gray-500">
+          <li className="px-3 py-2 text-sm text-muted-foreground">
             {searchTerm ? "No options found" : "No options available"}
           </li>
         ) : hierarchical ? (
@@ -358,12 +358,12 @@ export default function MultiSelect({
               }}
               onMouseEnter={() => setHighlightedIndex(idx)}
               className={cn(
-                "flex cursor-pointer items-center px-3 py-2 text-sm transition-colors",
+                "flex cursor-pointer items-center px-3 py-2 text-sm rounded-md transition-all duration-150 font-medium",
                 isSelected(option)
-                  ? "bg-primary/5 text-primary"
+                  ? "bg-primary text-primary-foreground font-semibold"
                   : highlightedIndex === idx
-                    ? "bg-gray-100 dark:bg-gray-700"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-700",
+                    ? "bg-primary/10 text-primary"
+                    : "hover:bg-primary/10 hover:text-primary text-foreground"
               )}
             >
               {isMulti && (
@@ -371,7 +371,7 @@ export default function MultiSelect({
                   className={cn(
                     "mr-2 flex h-4 w-4 items-center justify-center rounded",
                     isSelected(option)
-                      ? "bg-primary/50"
+                      ? "bg-primary-foreground/20 text-primary-foreground"
                       : "border border-border",
                   )}
                 >
@@ -380,7 +380,7 @@ export default function MultiSelect({
               )}
               <span>{option.label}</span>
               {!isMulti && isSelected(option) && (
-                <Check className="ml-auto h-4 w-4 text-primary" />
+                <Check className="ml-auto h-4 w-4 text-primary-foreground" />
               )}
             </li>
           ))
@@ -394,7 +394,7 @@ export default function MultiSelect({
     : value !== null && value !== undefined && !Array.isArray(value);
 
   return (
-    <div ref={containerRef} className={`relative ${className}`}>
+    <div ref={containerRef} className={cn("relative transition-all duration-300", isOpen && !portal && "pb-[210px]", className)}>
       <div
         className="flex min-h-10 cursor-pointer items-center justify-between rounded-sm border border-border bg-background px-3 md:py-2.5 py-3 text-sm"
         tabIndex={0}

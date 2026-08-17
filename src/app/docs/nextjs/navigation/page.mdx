@@ -1,0 +1,225 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Navigation Menu
+
+A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
+
+This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
+
+## Examples
+
+The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/custom/blocks/NavigationMenu";
+
+export default function TopNav() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem value="features">
+          <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-1 p-1 w-[440px] md:grid-cols-2">
+              <li>
+                <NavigationMenuLink href="/security">Security</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/developers">Developers</NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem value="pricing">
+          <NavigationMenuLink href="/pricing" active>
+            Pricing
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        {/* Sits last in the list — it measures its siblings. */}
+        <NavigationMenuIndicator />
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}`;
+
+export const usageMinimal = `// Pill chrome removed; the indicator becomes a thin underline.
+<NavigationMenu variant="minimal" color="emerald">
+  <NavigationMenuList>{/* … */}</NavigationMenuList>
+</NavigationMenu>`;
+
+export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over a colored surface, so
+// give it something to blur.
+<div className="bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-12">
+  <NavigationMenu variant="glass" color="#8B5CF6">
+    <NavigationMenuList>{/* … */}</NavigationMenuList>
+  </NavigationMenu>
+</div>`;
+
+<ExampleShowcase
+  name="navigation-menu"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Navigation menu",
+      subheading: "The default bar. Hover **Features** or **Resources** to open a dropdown and watch the indicator slide and resize to the active trigger.",
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/NavigationMenu.tsx"),
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` strips the pill background from the bar and its panels for a lighter, text-first header.",
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` frosts the bar and dropdowns — the preview puts a photo behind it so the blur is visible.",
+      props: { variant: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+Because this relies on standard React Context and GSAP for the smooth indicator sliding, it fits right into your existing architecture.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NavigationMenu.tsx`.
+
+## Features
+Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>NavigationMenu</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the core visual architecture and styling of the navigation
+          bar and its dropdown menus.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenu</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies the active color theme to the hover states, soft backgrounds,
+          and the sliding indicator. Fully supports custom hex codes;
+          unrecognised names fall back to <code>"primary"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenuItem</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique string identifier used by the internal context engine to link
+          the <code>Trigger</code> to its specific <code>Content</code>{" "}
+          dropdown.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>NavigationMenuLink</code>
+        </td>
+        <td>
+          <code>active</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Manually forces the link into an active state, applying the soft
+          background color of your currently selected theme.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

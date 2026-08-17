@@ -1,0 +1,388 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Advanced Timeline
+
+A robust, multi-layout vertical timeline component for tracking complex events, order statuses, and company histories.
+
+This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
+
+## Examples
+
+Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+export default function OrderTracker() {
+  const events = [
+    {
+      id: "1",
+      title: "Order Placed",
+      date: "10:24 AM",
+      icon: Package,
+      status: "completed",
+      action: <button className="border rounded px-3 py-1">Invoice</button>,
+    },
+    {
+      id: "2",
+      title: "Out for Delivery",
+      date: "10:25 AM",
+      icon: Truck,
+      status: "current",
+      // \`content\` expands behind a grid transition when the row is opened.
+      content: <p>Driver is 4 stops away.</p>,
+    },
+    {
+      id: "3",
+      title: "Delivered",
+      date: "Pending",
+      icon: CheckCircle2,
+      status: "upcoming",
+    },
+  ];
+
+  return <TimelineBlock items={events} layout="left" />;
+}`;
+
+export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
+// collapses to a single left rail below that. The breakpoint is a container
+// query, so it tracks the column the timeline sits in — not the window.
+<TimelineBlock items={events} layout="center" />`;
+
+export const usageRight = `<TimelineBlock items={events} layout="right" />`;
+
+export const usageMinimal = `// Drops the card surface; the rail and type carry the structure.
+<TimelineBlock items={events} layout="left" variant="minimal" />`;
+
+export const usageGlass = `<div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+  <TimelineBlock items={events} layout="left" variant="glass" />
+</div>`;
+
+export const usageNoAnimation = `// Renders in place — no staggered GSAP entrance.
+<TimelineBlock items={events} layout="left" animate={false} />`;
+
+<ExampleShowcase
+  name="timeline"
+  colorControl
+  colorLabel="Status Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Timeline",
+      subheading: "Pass `items`; each one can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+      props: { layout: "left", variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TimelineBlock.tsx"),
+    },
+    {
+      title: "Center layout",
+      subheading: "`layout=\"center\"` alternates cards either side of the rail once the timeline is wide enough, and folds back to a single column below that. Each card's date drops onto its own line while the card is narrow, so the copy keeps the full width.",
+      props: { layout: "center", variant: "default" },
+      usage: usageCenter,
+    },
+    {
+      title: "Right layout",
+      subheading: "`layout=\"right\"` mirrors the left rail.",
+      props: { layout: "right", variant: "default" },
+      usage: usageRight,
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` removes the card chrome for a lighter feed.",
+      props: { layout: "left", variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      subheading: "`variant=\"glass\"` frosts the cards — put something behind it.",
+      props: { layout: "left", variant: "glass" },
+      usage: usageGlass,
+    },
+    {
+      title: "Without the entrance",
+      subheading: "Set `animate={false}` to skip the staggered entrance — right for content that is already on screen.",
+      props: { layout: "left", variant: "default", animate: false },
+      usage: usageNoAnimation,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
+
+Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>TimelineItemType[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of configuration objects representing each event on the
+          timeline. See the TimelineItemType reference below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"left" | "center" | "right"</code>
+        </td>
+        <td>
+          <code>"left"</code>
+        </td>
+        <td>
+          Determines the structural alignment of the timeline. Using{" "}
+          <code>center</code> creates an alternating zig-zag layout on desktop
+          and elegantly falls back to left-aligned on mobile.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the architectural style of the event cards, backgrounds,
+          and the vertical tracking line.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The dynamic accent color applied to completed/current tracking lines,
+          glowing nodes, and hover states. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineBlock</code>
+        </td>
+        <td>
+          <code>animate</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, the timeline nodes will execute a staggered fade-and-slide
+          entry animation powered by GSAP when the component mounts.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelineItemType Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier for the event. Used internally for React keys and
+          handling the expansion state safely.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The primary headline for the specific timeline event.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>date</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The timestamp, date string, or status badge displayed inside the event
+          header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"completed" | "current" | "upcoming"</code>
+        </td>
+        <td>
+          <code>"completed"</code>
+        </td>
+        <td>
+          Drives the visual styling. <code>completed</code> fills the vertical
+          line, <code>current</code> adds a pulsing glow, and{" "}
+          <code>upcoming</code> fades the node out.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional secondary text string displayed directly beneath the
+          title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional Lucide (or custom SVG) icon to render inside the circular
+          indicator node. If omitted, a clean solid dot is used.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, the entire event header becomes a clickable trigger that
+          smoothly expands to reveal this detailed content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TimelineItemType</code>
+        </td>
+        <td>
+          <code>action</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional slot for rendering buttons, links, or specific badges
+          immediately below the header area.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

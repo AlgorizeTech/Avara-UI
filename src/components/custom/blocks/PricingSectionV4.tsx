@@ -215,7 +215,7 @@ export default function PricingSectionV4({ packages }: any) {
                 </div>
 
                 <Link
-                  href="/book-call"
+                  href="#"
                   className={`group mt-auto w-max py-4 px-8 rounded-full text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden ${activePlan.isFeatured ? "bg-lime-400 text-black dark:bg-[#CCFF00]" : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black"}`}
                 >
                   <div className={`absolute inset-0 translate-y-[100%] rounded-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${activePlan.isFeatured ? "bg-white" : "bg-lime-500 dark:bg-[#CCFF00]"}`} />
@@ -271,7 +271,7 @@ export default function PricingSectionV4({ packages }: any) {
                           </div>
                         ))}
                       </div>
-                      <Link href="/book-call" className={`group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10 ${plan.isFeatured ? "bg-lime-400 text-black dark:bg-[#CCFF00]" : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black"}`}>
+                      <Link href="#" className={`group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10 ${plan.isFeatured ? "bg-lime-400 text-black dark:bg-[#CCFF00]" : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black"}`}>
                         <div className={`absolute inset-0 translate-y-[100%] rounded-xl group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${plan.isFeatured ? "bg-white" : "bg-lime-500 dark:bg-[#CCFF00]"}`} />
                         <span className="relative z-10 transition-colors duration-500">Initiate Project</span>
                         <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">

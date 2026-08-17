@@ -1,4 +1,5 @@
-import { PopoverShowcase } from "@/components/site/PopoverShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Popover
 
@@ -6,13 +7,250 @@ Displays rich, interactive content in a portal, triggered by a click.
 
 While tooltips are meant for small text hints on hover, Popovers are designed to hold rich HTML (like forms, grids, and settings menus) triggered by a click. This `PopoverBlock` solves the biggest problem with complex layouts: clipping. By utilizing React's `createPortal`, the popover content is rendered at the root `document.body` level, meaning it will **never** be hidden or cropped by parent layout constraints like `overflow-hidden`.
 
-## Interactive Showcase
+The same goes for the screen edge. `side` and `align` are *preferences*: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport when it still overhangs, and caps its own width and height to the screen — so a `w-72` panel opened `side="left"` next to a phone-width trigger stays fully readable instead of running off the edge. Pass `avoidCollisions={false}` to opt out.
 
-Click the "Configure Settings" trigger below to open the Popover. You can interact with the inputs inside without it closing. Try clicking outside the bubble, or pressing the `Escape` key, to see it automatically dismiss itself.
+## Examples
 
-<PopoverShowcase />
+Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss. The first example's **Code** tab contains the full component source.
 
----
+export const usageDefault = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+import { Settings2 } from "lucide-react";
+
+export default function PopoverDemo() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <div className="flex items-center gap-2 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+          <Settings2 className="w-4 h-4" />
+          Configure Settings
+        </div>
+      </PopoverTrigger>
+
+      <PopoverContent side="bottom" align="center">
+        <div className="space-y-4">
+          <div className="space-y-1 text-sm border-b pb-3">
+            <h4 className="font-bold">Dimensions</h4>
+            <p className="text-zinc-500 text-xs">Set the dimensions for the layer.</p>
+          </div>
+          <div className="grid gap-3">
+            <div className="grid grid-cols-3 items-center gap-4 text-sm">
+              <label htmlFor="width">Width</label>
+              <input id="width" defaultValue="100%" className="col-span-2 h-8 rounded-md border bg-transparent px-3" />
+            </div>
+            <div className="grid grid-cols-3 items-center gap-4 text-sm">
+              <label htmlFor="height">Height</label>
+              <input id="height" defaultValue="25px" className="col-span-2 h-8 rounded-md border bg-transparent px-3" />
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}`;
+
+export const usageSides = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+
+export default function PopoverSides() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <Popover>
+        <PopoverTrigger>
+          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+            top
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="top" className="w-48">
+          <p className="text-sm">Rendered on the top side of the trigger.</p>
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger>
+          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+            right
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="right" className="w-48">
+          <p className="text-sm">Rendered on the right side of the trigger.</p>
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger>
+          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+            bottom
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="bottom" className="w-48">
+          <p className="text-sm">Rendered on the bottom side of the trigger.</p>
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger>
+          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+            left
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="left" className="w-48">
+          <p className="text-sm">Rendered on the left side of the trigger.</p>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}`;
+
+export const usageAlign = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+
+export default function PopoverAlign() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Popover>
+        <PopoverTrigger>
+          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
+            align="start"
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="bottom" align="start" className="w-48">
+          <p className="text-sm">Aligned to the start edge.</p>
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger>
+          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
+            align="center"
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="bottom" align="center" className="w-48">
+          <p className="text-sm">Aligned to the center edge.</p>
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger>
+          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
+            align="end"
+          </div>
+        </PopoverTrigger>
+        <PopoverContent side="bottom" align="end" className="w-48">
+          <p className="text-sm">Aligned to the end edge.</p>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}`;
+
+export const usageMenu = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+import { User } from "lucide-react";
+
+export default function AccountMenu() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center cursor-pointer">
+          <User className="w-5 h-5" />
+        </div>
+      </PopoverTrigger>
+
+      {/* className overrides the default w-72 */}
+      <PopoverContent side="bottom" align="end" className="w-64">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3 border-b pb-3">
+            <div className="w-10 h-10 rounded-full bg-zinc-200 shrink-0" />
+            <div className="flex flex-col">
+              <span className="text-sm font-bold">Andy Bernard</span>
+              <span className="text-xs text-zinc-500">andy@dundermifflin.com</span>
+            </div>
+          </div>
+          <button className="text-left text-sm">View Profile</button>
+          <button className="text-left text-sm">Billing Settings</button>
+          <button className="text-left text-sm text-red-600 mt-2">Log out</button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}`;
+
+export const usageOffset = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+import { Settings2 } from "lucide-react";
+
+export default function OffsetPopover() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <div className="flex items-center gap-2 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+          <Settings2 className="w-4 h-4" />
+          Configure Settings
+        </div>
+      </PopoverTrigger>
+
+      {/* sideOffset pushes the panel further from the trigger (default 8) */}
+      <PopoverContent side="right" align="start" sideOffset={24}>
+        {/* the same Dimensions panel as the first example */}
+        <DimensionsPanel />
+      </PopoverContent>
+    </Popover>
+  );
+}`;
+
+<ExampleShowcase
+  name="popover"
+  columns={1}
+  examples={[
+    {
+      title: "Popover",
+      subheading: "Compose `Popover`, `PopoverTrigger` and `PopoverContent` — no provider needed.",
+      props: { example: "settings", side: "bottom", align: "center" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/PopoverBlock.tsx"),
+    },
+    {
+      title: "Sides",
+      subheading: "Use the `side` prop to open the panel above, below or beside the trigger.",
+      props: { example: "sides" },
+      usage: usageSides,
+    },
+    {
+      title: "Alignment",
+      subheading: "`align` shifts the panel along the chosen side — start, center or end.",
+      props: { example: "align" },
+      usage: usageAlign,
+    },
+    {
+      title: "Account menu",
+      subheading: "Any markup fits inside — here an avatar trigger with a `w-64` menu panel.",
+      props: { example: "menu", align: "end" },
+      usage: usageMenu,
+    },
+    {
+      title: "Offset",
+      subheading: "`sideOffset` sets the gap in pixels between the trigger and the panel.",
+      props: { example: "settings", side: "right", align: "start", sideOffset: 24 },
+      usage: usageOffset,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -20,51 +258,39 @@ Click the "Configure Settings" trigger below to open the Popover. You can intera
 
 This component is **100% dependency-free**. It uses native `createPortal` for rendering and highly optimized `getBoundingClientRect` logic to place the portal exactly next to the trigger button.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/PopoverBlock.tsx`.
+Create a new file at `components/custom/blocks/PopoverBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
----
+## Features
+Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
 
-## Usage
 
-Wrap the elements inside the `<Popover>` root. The `<PopoverTrigger>` will automatically capture the click event and calculate its dimensions to pass coordinates to the `<PopoverContent>`.
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
 
-```tsx
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/custom/blocks/PopoverBlock";
-import { Filter } from "lucide-react";
+## Best Practices & Guidelines
 
-export default function FilterMenu() {
-  return (
-    <Popover>
-      <PopoverTrigger>
-        <button className="flex items-center gap-2 border px-3 py-1.5 rounded-lg">
-          <Filter className="w-4 h-4" /> Filters
-        </button>
-      </PopoverTrigger>
-
-      <PopoverContent side="bottom" align="start" className="w-64">
-        <div className="space-y-4">
-          <h4 className="font-bold border-b pb-2">Filter Options</h4>
-
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="active" />
-            <label htmlFor="active" className="text-sm">
-              Show active only
-            </label>
-          </div>
-
-          <button className="w-full bg-black text-white py-2 rounded-md mt-4">
-            Apply Filters
-          </button>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
-```
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
 
 ## Props Reference
 
@@ -132,6 +358,46 @@ export default function FilterMenu() {
         <td>
           The distance (in pixels) to render the popover away from the trigger
           element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>avoidCollisions</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Flips the panel to the opposite side and shifts it back into view when
+          the preferred placement would overflow the viewport — this is what
+          keeps <code>side="left" / "right"</code> and{" "}
+          <code>align="start" / "end"</code> from being cropped on phones. Set
+          to <code>false</code> to pin the panel to <code>side</code>/
+          <code>align</code> regardless.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>collisionPadding</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>
+          Minimum gap (in pixels) kept between the panel and the viewport edges
+          when <code>avoidCollisions</code> is on.
         </td>
       </tr>
       <tr>

@@ -1,241 +1,347 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { ScrollArea } from '@/components/site/scroll-area';
-import { navigation } from '@/constants/navigation';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+"use client";
+
+import { ScrollArea } from "@/components/site/scroll-area";
+import { navigation } from "@/constants/navigation";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, ChevronRight, PlayCircle, Search, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
 
 // Custom hook for static export compatibility
 const useCurrentPath = () => {
-  const [currentPath, setCurrentPath] = useState('');
+  const [currentPath, setCurrentPath] = useState("");
   const pathname = usePathname();
 
   useEffect(() => {
-    // For static exports, use window.location.pathname
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const path = window.location.pathname;
-      // Remove trailing slash for consistency
-      setCurrentPath(path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path);
+      setCurrentPath(
+        path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path,
+      );
     }
   }, [pathname]);
 
-  // Fallback to usePathname for development, also normalize
   const normalizedPathname =
-    pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+    pathname.endsWith("/") && pathname !== "/"
+      ? pathname.slice(0, -1)
+      : pathname;
   return currentPath || normalizedPathname;
 };
 
-interface MenuItem {
+export interface MenuItemType {
   label: string;
   href: string;
   badge?: string;
   badges?: string[];
-  children?: MenuItem[];
+  children?: MenuItemType[];
 }
 
-// Transform the existing navigation data to match our new MenuItem interface
-const transformNavigation = (): MenuItem[] => {
-  return navigation.map(section => ({
+// 1. Recursive transformation: cleanly maps unlimited nesting depths
+const transformItem = (item: any): MenuItemType => ({
+  label: item.label,
+  href: item.href || (item.children?.[0]?.href ?? "#"),
+  badge: item.badge,
+  children: item.children ? item.children.map(transformItem) : undefined,
+});
+
+const transformNavigation = (): MenuItemType[] => {
+  return navigation.map((section) => ({
     label: section.label,
-    href: section.children[0]?.href || '#',
-    children: section.children.map(child => ({
-      label: child.label,
-      href: child.href,
-      badge: child.badge,
-      // The navigation data doesn't have badges array, only badge
-      badges: undefined,
-    })),
+    href: section.children[0]?.href || "#",
+    children: section.children.map(transformItem),
   }));
 };
 
 const menuData = transformNavigation();
 
-// Helper function to get badge styling
+// Premium Badge Styling
 const getBadgeStyle = (badge: string) => {
   switch (badge) {
-    case 'New':
-      return 'bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-400';
-    case 'Updated':
-      return 'bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-400';
-    case 'Tool':
-      return 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400 border border-blue-200 dark:border-blue-800';
-    case 'Premium':
-      return 'bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 dark:from-purple-950/60 dark:to-indigo-950/60 dark:text-purple-400 border border-purple-200 dark:border-purple-800/50';
-    case 'Pro':
-      return 'bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 text-black font-bold shadow-lg shadow-amber-500/25 border border-amber-300 dark:from-amber-500 dark:via-yellow-400 dark:to-amber-500 dark:text-black dark:shadow-amber-400/30 dark:border-amber-400';
+    case "New":
+      return "bg-primary/15 text-primary border border-primary/30";
+    case "Updated":
+      return "bg-primary/10 text-primary border border-primary/20";
+    case "Tool":
+      return "bg-primary/10 text-primary border border-primary/20";
+    case "Premium":
+      return "bg-primary/15 text-primary border border-primary/30";
     default:
-      return 'bg-gray-100 text-gray-700 dark:bg-gray-950/60 dark:text-gray-400';
+      return "bg-primary/10 text-primary border border-primary/20";
   }
 };
 
-const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean }> = ({ item, isNested = false }) => {
-  const pathName = useCurrentPath();
-  const [isOpen, setIsOpen] = useState(true);
-  const isActive = pathName === item.href;
-  const hasActiveChild = item.children?.some(child => pathName === child.href);
+// 2. Recursive active checker: returns true if THIS item or ANY descendant is active
+const checkActiveRecursive = (
+  item: MenuItemType,
+  currentPath: string,
+): boolean => {
+  if (item.href === currentPath) return true;
+  return (
+    item.children?.some((child) => checkActiveRecursive(child, currentPath)) ??
+    false
+  );
+};
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (item.children) {
-      e.preventDefault();
-      setIsOpen(!isOpen);
+// 3. Unified Recursive Menu Item Component
+const MenuItem: React.FC<{
+  item: MenuItemType;
+  level?: number;
+  defaultOpen?: boolean;
+  isSearching?: boolean;
+}> = ({ item, level = 0, defaultOpen = false, isSearching = false }) => {
+  const pathName = useCurrentPath();
+  const hasChildren = Boolean(item.children && item.children.length > 0);
+
+  // Auto-expand folder if any child or descendant is currently active
+  const hasActiveDescendant =
+    hasChildren &&
+    item.children!.some((child) => checkActiveRecursive(child, pathName));
+
+  const [isOpen, setIsOpen] = useState(defaultOpen || hasActiveDescendant);
+
+  // Force open state when searching, otherwise use local state
+  const actualIsOpen = isSearching ? true : isOpen;
+
+  // --- UPDATED ACTIVE LOGIC ---
+  // isExactActive: True ONLY when you are on this exact link (for leaf items & indicator bar)
+  const isExactActive = pathName === item.href && !hasChildren;
+
+  // isParentActive: True if this is a folder AND one of its children is active
+  const isParentActive = hasChildren && hasActiveDescendant;
+
+  // Keep folder open if a user navigates to an inner child via another link
+  useEffect(() => {
+    if (hasActiveDescendant) {
+      setIsOpen(true);
     }
+  }, [hasActiveDescendant]);
+
+  // Dynamic visual hierarchy styling based on depth level
+  const getLevelClasses = () => {
+    if (level === 0) {
+      return cn(
+        "font-semibold text-[14px] py-1.5 px-3",
+        isExactActive || isParentActive
+          ? "bg-primary/10 text-primary font-bold"
+          : "text-zinc-900 dark:text-zinc-100 hover:bg-primary/5 hover:text-primary",
+      );
+    }
+    if (level === 1) {
+      return cn(
+        "font-medium text-[13.5px] py-1.5 px-2.5",
+        // Highlights the Level 1 parent (e.g., "Scroll Stack") when any child is clicked!
+        isExactActive || isParentActive
+          ? "bg-primary/10 text-primary font-semibold"
+          : "text-zinc-600 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
+      );
+    }
+    // Level 2+ (Sub-children and deeper)
+    return cn(
+      "text-[13px] py-1 px-2.5",
+      isExactActive || isParentActive
+        ? "bg-primary/10 text-primary font-medium"
+        : "text-zinc-500 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
+    );
   };
 
-  return (
-    <li>
-      <div
-        onClick={handleClick}
-        className={cn(
-          'flex items-center justify-between py-1 text-sm transition-colors cursor-pointer',
-          isNested ? 'pl-6' : 'font-medium',
-          isActive || hasActiveChild
-            ? 'text-zinc-900 dark:text-white'
-            : isNested
-              ? 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              : 'text-zinc-500 dark:text-white/80 hover:text-zinc-900 dark:hover:text-white/90'
+  const triggerContent = (
+    <span className="flex items-center justify-between w-full truncate pr-1">
+      <span className="flex items-center gap-2 truncate">
+        {hasChildren && (
+          <span className="text-zinc-400 shrink-0 transition-transform duration-200">
+            {actualIsOpen ? (
+              <ChevronDown className="w-3.5 h-3.5" />
+            ) : (
+              <ChevronRight className="w-3.5 h-3.5" />
+            )}
+          </span>
         )}
-      >
-        <span className="flex items-center gap-2">
-          {/* Active indicator dot for main section links */}
-          {!isNested && (isActive || hasActiveChild) && (
-            <div className="w-2 h-2 bg-blue-500 rounded-full mr-1 flex-shrink-0" />
-          )}
-          {!isNested && item.children && (
-            <span>
-              {isOpen ? (
-                <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-              ) : (
-                <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-              )}
-            </span>
-          )}
-          {isNested && (
-            <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-500 mr-2"></span>
-          )}
-          {item.label}
-          {item.badge && (
-            <span
-              className={cn(
-                'text-xs font-medium px-2 py-0.5 rounded-full ml-1.5',
-                getBadgeStyle(item.badge)
-              )}
-            >
-              {item.badge}
-            </span>
-          )}
-          {item.badges &&
-            item.badges.map((badge, index) => (
-              <span
-                key={index}
-                className={cn(
-                  'text-xs font-medium px-2 py-0.5 rounded-full ml-1',
-                  getBadgeStyle(badge)
-                )}
-              >
-                {badge}
-              </span>
-            ))}
-        </span>
-      </div>
+        <span className="truncate">{item.label}</span>
+      </span>
 
-      {item.children && isOpen && (
-        <ul
+      {item.badge && (
+        <span
           className={cn(
-            'mt-0.5 space-y-0.5',
-            isNested ? 'pl-2' : 'ml-4 border-l border-zinc-100 dark:border-zinc-800 mt-0.5 relative'
+            "text-[10px] font-bold px-1.5 py-px rounded-md ml-2 shrink-0",
+            getBadgeStyle(item.badge),
           )}
         >
-          {item.children.map((child, index) => {
-            const isChildActive = pathName === child.href;
-
-            return isNested ? (
-              <MenuItem key={index} item={child} isNested />
-            ) : (
-              <li key={child.href} className="relative py-0 pl-4">
-                <div className="flex items-center">
-                  {/* Active indicator dot for child links */}
-                  {isChildActive && (
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
-                  )}
-                  <Link
-                    href={child.href}
-                    className={cn(
-                      'block py-1 text-sm',
-                      isChildActive
-                        ? 'text-blue-600 dark:text-blue-400 font-medium'
-                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-                    )}
-                    aria-current={isChildActive ? 'page' : undefined}
-                  >
-                    {child.label}
-                  </Link>
-                  {child.badge && (
-                    <span
-                      className={cn(
-                        'text-xs font-medium px-2 py-0.5 rounded-full ml-1.5',
-                        getBadgeStyle(child.badge)
-                      )}
-                    >
-                      {child.badge}
-                    </span>
-                  )}
-                  {child.badges &&
-                    child.badges.map((badge, index) => (
-                      <span
-                        key={index}
-                        className={cn(
-                          'text-xs font-medium px-2 py-0.5 rounded-full ml-1',
-                          getBadgeStyle(badge)
-                        )}
-                      >
-                        {badge}
-                      </span>
-                    ))}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+          {item.badge}
+        </span>
       )}
+    </span>
+  );
+
+  const baseClasses = cn(
+    "relative flex items-center justify-between rounded-lg transition-all duration-200 select-none w-full text-left cursor-pointer",
+    getLevelClasses(),
+  );
+
+  return (
+    <li className="flex flex-col">
+      {/* Trigger: Renders button for folders, Link for leaves */}
+      {hasChildren ? (
+        <button
+          type="button"
+          onClick={() => !isSearching && setIsOpen(!isOpen)}
+          className={baseClasses}
+        >
+          {triggerContent}
+        </button>
+      ) : (
+        <Link href={item.href} className={baseClasses}>
+          {/* Active indicator pill ONLY renders on the exact active child leaf */}
+          {isExactActive && (
+            <motion.div
+              layoutId="sidebar-active-indicator"
+              className="absolute left-0 w-[3px] h-[16px] bg-primary rounded-full -ml-[7px]"
+            />
+          )}
+          {triggerContent}
+        </Link>
+      )}
+
+      {/* Recursive Children Render */}
+      <AnimatePresence initial={false}>
+        {hasChildren && actualIsOpen && (
+          <motion.ul
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className={cn(
+              "overflow-hidden relative flex flex-col gap-0.5 mt-0.5",
+              // Dynamic left indentation & guide line for every nested level
+              "ml-3.5 pl-2.5 border-l border-zinc-200 dark:border-zinc-800/80",
+            )}
+          >
+            {item.children!.map((child, index) => (
+              <MenuItem
+                key={`${child.label}-${index}`}
+                item={child}
+                level={level + 1}
+                isSearching={isSearching}
+              />
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </li>
   );
 };
 
+// 4. Recursive search filtering: Keeps parents if their children match
+const filterMenuData = (
+  data: MenuItemType[],
+  query: string,
+): MenuItemType[] => {
+  if (!query) return data;
+  const lowerQuery = query.toLowerCase();
+
+  return data.reduce<MenuItemType[]>((acc, item) => {
+    const matches = item.label.toLowerCase().includes(lowerQuery);
+
+    if (matches) {
+      // If the parent explicitly matches, include it and all its original children
+      acc.push(item);
+    } else if (item.children) {
+      // If the parent doesn't match, check if any of its children match
+      const filteredChildren = filterMenuData(item.children, query);
+      if (filteredChildren.length > 0) {
+        acc.push({ ...item, children: filteredChildren });
+      }
+    }
+    return acc;
+  }, []);
+};
+
 const Sidebar = () => {
   const currentPath = useCurrentPath();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Memoize filtered data to prevent unnecessary deep-tree recalculations
+  const filteredMenuData = useMemo(() => {
+    return filterMenuData(menuData, searchQuery);
+  }, [searchQuery]);
+
+  const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:block w-[260px] h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-100 dark:border-zinc-800">
-      <ScrollArea className="h-full w-full">
-        <div className="py-6 px-4">
-          <nav role="navigation" aria-label="Documentation navigation">
-            <ul className="space-y-0.5">
-              {menuData.map((item, index) => (
-                <MenuItem key={index} item={item} />
-              ))}
-            </ul>
+    <aside className="hidden md:flex flex-col w-[260px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
+      {/* --- STICKY SEARCH INPUT --- */}
+      <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0">
+        <div className="relative flex items-center w-full">
+          <Search className="absolute left-3 w-4 h-4 text-zinc-400 pointer-events-none" />
+          <input
+            type="search"
+            placeholder="Search components..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-sm [&::-webkit-search-cancel-button]:appearance-none"
+            aria-label="Search documentation components"
+          />
+          {isSearching && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+              aria-label="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      <ScrollArea className="flex-1 w-full">
+        <div className="py-4 px-4 pl-0 flex flex-col h-full">
+
+          {/* --- NAVIGATION TREE --- */}
+          <nav
+            role="navigation"
+            aria-label="Documentation navigation"
+            className="flex-1"
+          >
+            {filteredMenuData.length > 0 ? (
+              <ul className="space-y-4">
+                {filteredMenuData.map((item, index) => (
+                  <MenuItem
+                    key={`${item.label}-${index}`}
+                    item={item}
+                    level={0}
+                    defaultOpen={index === 0}
+                    isSearching={isSearching}
+                  />
+                ))}
+              </ul>
+            ) : (
+              <div className="pl-4 py-8 text-center flex flex-col items-center justify-center gap-2">
+                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  No results found
+                </p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  We couldn't find anything for "{searchQuery}"
+                </p>
+              </div>
+            )}
           </nav>
 
-          <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-            <div className="flex items-center">
-              {/* Active indicator dot for Getting Started Guide */}
-              {currentPath === '/docs' && (
-                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
+          {/* Quick Links Section */}
+          <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800/50 pl-4">
+            <Link
+              href="/docs"
+              className={cn(
+                "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all cursor-pointer",
+                currentPath === "/docs"
+                  ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50 font-medium"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
               )}
-              <Link
-                href="/docs"
-                className={cn(
-                  'block py-1.5 text-sm',
-                  currentPath === '/docs'
-                    ? 'text-blue-600 dark:text-blue-400 font-medium'
-                    : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300'
-                )}
-              >
-                Getting Started Guide
-              </Link>
-            </div>
+            >
+              <PlayCircle className="w-4 h-4 text-zinc-400 shrink-0" />
+              Getting Started Guide
+            </Link>
           </div>
         </div>
       </ScrollArea>

@@ -22,7 +22,9 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
 // Generate static paths for all documentation pages
 export async function generateStaticParams() {
   const paths = getDocPaths()
-  return paths.map((slug) => ({
-    slug,
-  }))
+  return paths
+    .filter((slug) => slug !== 'index' && slug !== 'architecture')
+    .map((slug) => ({
+      slug,
+    }))
 }

@@ -12,6 +12,14 @@ export type SelectVariant = "default" | "filled" | "underlined" | "glow";
 export type SelectSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    ring: "ring-primary/30 border-primary",
+    text: "text-primary",
+    bg: "bg-primary text-primary-foreground",
+    bgSoft:
+      "bg-primary/10 text-foreground",
+    glow: "shadow-[0_0_20px_var(--primary)] border-primary",
+  },
   indigo: {
     ring: "ring-indigo-500/30 border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -75,7 +83,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -87,6 +95,23 @@ export interface SelectOption {
   icon?: React.ElementType;
   group?: string; // Added for nested/grouped options
 }
+
+// Walks up the tree to the first ancestor that clips its overflow (a modal
+// shell, a scroll pane, a card with overflow-hidden). That element — not the
+// viewport — is what actually crops the dropdown, so it defines the space the
+// menu has to work with. Returns null when nothing clips, meaning the viewport
+// is the only bound.
+const getClippingRect = (el: HTMLElement): DOMRect | null => {
+  let node = el.parentElement;
+  while (node && node !== document.body) {
+    const { overflow, overflowX, overflowY } = window.getComputedStyle(node);
+    if (/(auto|scroll|hidden|clip)/.test(overflow + overflowX + overflowY)) {
+      return node.getBoundingClientRect();
+    }
+    node = node.parentElement;
+  }
+  return null;
+};
 
 export interface SelectBlockProps {
   options: SelectOption[];
@@ -114,7 +139,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
       onChange,
       placeholder = "Select an option",
       variant = "default",
-      color = "indigo",
+      color = "primary",
       inputSize = "md",
       label,
       helperText,
@@ -128,8 +153,10 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [dropUp, setDropUp] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const selectRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const { theme, style } = getThemeStyles(color);
 
@@ -178,6 +205,30 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    // Decide which way the menu opens *before* it becomes visible, so it never
+    // renders in the wrong place for a frame. The menu is always mounted (it is
+    // only hidden via opacity), so its height is measurable while closed.
+    const handleToggle = () => {
+      if (!isOpen && selectRef.current) {
+        const trigger = selectRef.current.getBoundingClientRect();
+        const clip = getClippingRect(selectRef.current);
+        const menuHeight = dropdownRef.current?.offsetHeight ?? 240;
+
+        const bottomBound = Math.min(
+          window.innerHeight,
+          clip ? clip.bottom : Number.POSITIVE_INFINITY,
+        );
+        const topBound = Math.max(0, clip ? clip.top : 0);
+
+        const spaceBelow = bottomBound - trigger.bottom - 8;
+        const spaceAbove = trigger.top - topBound - 8;
+
+        // Only flip when below genuinely can't fit and above is roomier.
+        setDropUp(spaceBelow < menuHeight && spaceAbove > spaceBelow);
+      }
+      setIsOpen(!isOpen);
+    };
 
     const handleSelect = (optValue: string, e: React.MouseEvent) => {
       e.stopPropagation();
@@ -359,7 +410,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         <button
           type="button"
           disabled={disabled}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleToggle}
           className={cn(
             styles.wrapper,
             isOpen && styles.active,
@@ -395,12 +446,28 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
 
         {/* Dropdown Menu */}
         <div
+          ref={dropdownRef}
           className={cn(
-            "absolute left-0 right-0 z-50 overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-all duration-200 ease-out origin-top",
-            variant === "underlined" ? "top-[100%]" : "top-[calc(100%+8px)]",
+            "absolute left-0 right-0 z-50 overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-all duration-200 ease-out",
+            dropUp
+              ? cn(
+                  "origin-bottom",
+                  variant === "underlined"
+                    ? "bottom-[100%]"
+                    : "bottom-[calc(100%+8px)]",
+                )
+              : cn(
+                  "origin-top",
+                  variant === "underlined"
+                    ? "top-[100%]"
+                    : "top-[calc(100%+8px)]",
+                ),
             isOpen
               ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none",
+              : cn(
+                  "opacity-0 scale-y-95 pointer-events-none",
+                  dropUp ? "translate-y-2" : "-translate-y-2",
+                ),
           )}
         >
           {searchable && (
@@ -464,11 +531,13 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                                   : "border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900",
                               )}
                             >
+                              {/* No hardcoded colour: theme.bg already carries the
+                                  correct contrasting text colour for each theme
+                                  (text-white for indigo/rose/hex, but
+                                  text-primary-foreground for "primary", which
+                                  inverts in dark mode). */}
                               {isSelected && (
-                                <Check
-                                  className="w-3 h-3 text-white"
-                                  strokeWidth={3}
-                                />
+                                <Check className="w-3 h-3" strokeWidth={3} />
                               )}
                             </div>
                           )}

@@ -1,0 +1,260 @@
+# UX Engineered Upload Flow
+
+A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `` by addressing five distinct user feedback signals.
+
+1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events via GSAP.
+2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
+3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
+4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
+5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
+
+## Examples
+
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume. The first example's **Code** tab contains the full component source.
+
+export const usageFlow = `"use client";
+
+export default function DocumentUploader() {
+  const [queue, setQueue] = useState([]);
+
+  const handleFilesAdded = (nativeFiles) => {
+    // 1. Turn raw files into your own state objects
+    const newItems = nativeFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      progress: 0,
+      status: "idle",
+      // Instant client-side thumbnail for images
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+
+    setQueue((prev) => [...newItems, ...prev]);
+
+    // 2. Kick off your real POST per file and update each item's
+    //    progress/status from the XHR upload-progress listener.
+  };
+
+  return (
+
+      {queue.length > 0 && (
+        
+          {queue.map((item) => (
+             console.log("Retry upload for", id)}
+              onRemove={(id) =>
+                setQueue((prev) => prev.filter((q) => q.id !== id))
+              }
+            />
+          ))}
+        
+      )}
+    
+  );
+}`;
+
+export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
+
+export default function AvatarDropzone() {
+  // accept is the native input string; maxSize is in MB and is echoed
+  // in the helper text under the icon.
+  return (
+     console.log(files)}
+      accept="image/png,image/jpeg"
+      maxSize={5}
+    />
+  );
+}`;
+
+export const usageStates = `import { UploadItem } from "@/components/custom/blocks/UploadBlock";
+
+// status is the state machine that drives every colour, icon and action
+// on the row. progress/timeLeft/errorMessage come along for the ride.
+const queue = [
+  {
+    id: "1",
+    file: new File([], "quarterly-report.pdf"),
+    progress: 42,
+    status: "uploading",
+    timeLeft: 12,
+  },
+  { id: "2", file: new File([], "product-shot.png"), progress: 66, status: "paused" },
+  {
+    id: "3",
+    file: new File([], "launch-teaser.mp4"),
+    progress: 89,
+    status: "error",
+    errorMessage: "Connection lost",
+  },
+  {
+    id: "4",
+    file: new File([], "brand-guidelines.pdf"),
+    progress: 100,
+    status: "success",
+    timeLeft: 0,
+  },
+];
+
+export default function UploadStates() {
+  return (
+    
+      {queue.map((item) => (
+         {}} onRemove={() => {}} />
+      ))}
+    
+  );
+}`;
+
+export const usageAnimated = `"use client";
+
+// UploadItem is layout-agnostic, so wrap each row to animate the queue.
+export default function AnimatedQueue({ queue, onRetry, onRemove }) {
+  return (
+    
+      {queue.map((item) => (
+
+      ))}
+    
+  );
+}`;
+
+## Installation
+
+### Dependencies
+
+This component relies heavily on **GSAP** to manage the smooth progress bar fill and the instantaneous dropzone border reactions.
+
+```bash
+npm install gsap lucide-react
+```
+
+The animated-queue example additionally uses `framer-motion`, which is optional — `UploadItem` renders fine without it.
+
+### Copy the Component
+
+Create a new file at `components/custom/blocks/UploadBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+    Fluid Animations
+    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+
+    Highly Customizable
+    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+    Responsive Design
+    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+    Accessible
+    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+
+## Best Practices & Guidelines
+
+    Animation Performance
+    Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+
+    State Management
+    When triggering animations via state changes, ensure you wrap state updates in startTransition or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+
+## Props Reference
+
+        Component / Interface
+        Prop
+        Type
+        Default
+        Description
+
+          Dropzone
+
+          onFilesDrop
+
+          (files: File[]) =&gt; void
+
+          Required
+
+          Callback function triggered when the user successfully drops files
+          into the zone or selects them via the native file browser.
+
+          Dropzone
+
+          maxSize
+
+          number
+
+          50
+
+          The maximum allowed file size in Megabytes (MB). Displayed dynamically
+          in the helper text.
+
+          Dropzone
+
+          accept
+
+          string
+
+          undefined
+
+          Native HTML input accept string restricting file types (e.g.,{" "}
+          "image/*,application/pdf").
+
+          UploadItem
+
+          item
+
+          FileUploadState
+
+          Required
+
+          The data object tracking the specific file's progress, status, and
+          metadata.
+
+          UploadItem
+
+          onRetry
+
+          (id: string) =&gt; void
+
+          undefined
+
+          Callback fired when the user clicks the inline "Retry" button after a
+          file fails to upload.
+
+          UploadItem
+
+          onRemove
+
+          (id: string) =&gt; void
+
+          undefined
+
+          Callback fired when the user clicks the "X" button to cancel an upload
+          or clear a completed file from the queue.
+
+          FileUploadState
+
+          status
+
+          "idle" | "uploading" | "paused" | "error" | "success"
+
+          Required
+
+          The core state machine parameter that drives the UI colors, icons, and
+          messaging for the specific upload item.
+
+          FileUploadState
+
+          previewUrl
+
+          string
+
+          undefined
+
+          Optional local Blob URL used to render instant client-side image
+          thumbnails before the upload completes.
+
+---
+
+**Component Path:** `nextjs\file-upload\page.mdx`
+
+**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.

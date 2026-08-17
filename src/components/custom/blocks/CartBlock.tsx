@@ -20,6 +20,13 @@ export type CartColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type CartType = "drawer" | "modal" | "popover" | "page";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    bgSoft: "bg-primary/10",
+    ring: "focus:ring-primary",
+  },
   indigo: {
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -80,7 +87,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 export interface CartItem {
@@ -235,7 +242,7 @@ const Summary = ({
 
 export function CartBlock({
   type = "drawer",
-  color = "indigo",
+  color = "primary",
 }: {
   type?: CartType;
   color?: CartColor;

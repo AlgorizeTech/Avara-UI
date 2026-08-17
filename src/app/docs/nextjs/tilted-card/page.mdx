@@ -1,0 +1,246 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Tilted Card
+
+A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates via Framer Motion's `useMotionValue` to rotate the card along the X and Y axes, mimicking a physical object held in space.
+
+It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
+
+
+## Examples
+
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function AccessKeyCard() {
+  return (
+    <div className="w-[340px] aspect-[3/4]">
+      <TiltedCard>
+        <div className="w-full h-full rounded-2xl border p-8">
+          <h3 className="text-2xl font-black uppercase">Access Key</h3>
+        </div>
+      </TiltedCard>
+    </div>
+  );
+}`;
+
+export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+// card is small — past that the perspective starts to shear.
+<TiltedCard tiltIntensity={35}>{card}</TiltedCard>`;
+
+export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
+<TiltedCard tiltIntensity={6} scaleOnHover={1.01}>{card}</TiltedCard>`;
+
+export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+// pointer. Set it to 0 to drop the reflection entirely.
+<TiltedCard glareOpacity={0.55}>{card}</TiltedCard>`;
+
+export const usageNoGlare = `<TiltedCard glareOpacity={0}>{card}</TiltedCard>`;
+
+export const usageScale = `// How far the card lifts toward the viewer on hover.
+<TiltedCard scaleOnHover={1.12}>{card}</TiltedCard>`;
+
+<ExampleShowcase
+  name="tilted-card"
+  colorControl
+  defaultColor="#FFAB1D"
+  columns={1}
+  examples={[
+    {
+      title: "Tilted card",
+      subheading: "Wrap any content — the block adds the 3D transform, the spring physics and the glare layer without touching your markup.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
+    },
+    {
+      title: "Stronger tilt",
+      subheading: "`tiltIntensity` is the maximum rotation in degrees on each axis.",
+      props: { tiltIntensity: 35 },
+      usage: usageIntensity,
+    },
+    {
+      title: "Subtle tilt",
+      subheading: "Dial it right down when several cards share a viewport.",
+      props: { tiltIntensity: 6, scaleOnHover: 1.01 },
+      usage: usageSubtle,
+    },
+    {
+      title: "Stronger glare",
+      subheading: "`glareOpacity` sets the peak alpha of the pointer-tracked highlight.",
+      props: { glareOpacity: 0.55 },
+      usage: usageGlare,
+    },
+    {
+      title: "Without glare",
+      subheading: "Set `glareOpacity={0}` when the card already carries its own lighting.",
+      props: { glareOpacity: 0 },
+      usage: usageNoGlare,
+    },
+    {
+      title: "Lift on hover",
+      subheading: "`scaleOnHover` controls how far the card comes toward the viewer.",
+      props: { scaleOnHover: 1.12 },
+      usage: usageScale,
+    },
+  ]}
+/>
+
+## Installation
+
+### Dependencies
+
+This component requires **Framer Motion** for its spring physics and `useTransform` logic.
+
+```bash
+npm install framer-motion
+```
+
+### Copy the Component
+
+Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TiltedCard</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The internal content and visual design of the card to be mapped into
+          the 3D space.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TiltedCard</code>
+        </td>
+        <td>
+          <code>tiltIntensity</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>15</code>
+        </td>
+        <td>
+          The maximum rotational degree the card can reach when the mouse hits
+          the absolute edge of the bounding box.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TiltedCard</code>
+        </td>
+        <td>
+          <code>glareOpacity</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.2</code>
+        </td>
+        <td>
+          The maximum opacity (from 0 to 1) of the mouse-tracking radial
+          gradient light reflection. Set to 0 to disable the glare.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TiltedCard</code>
+        </td>
+        <td>
+          <code>scaleOnHover</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1.02</code>
+        </td>
+        <td>
+          The transform scale multiplier applied to the entire component when
+          the mouse enters the bounding box, creating a subtle lift effect.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TiltedCard</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost perspective
+          wrapper.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

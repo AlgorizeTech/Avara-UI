@@ -3,7 +3,14 @@
 import { cn } from "@/lib/utils";
 import type * as LeafletTypes from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Menu, Navigation2, Search, Truck, X } from "lucide-react";
+import {
+  Map as MapIcon,
+  MapPin,
+  Menu,
+  Navigation2,
+  Search,
+  Truck,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
@@ -11,7 +18,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 // TYPES & INTERFACES
 // ==========================================
 export type FleetVariant = "default" | "minimal" | "modern";
-export type FleetColor = "indigo" | "rose" | "emerald" | "zinc";
+export type FleetColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 export interface Vehicle {
   id: string;
@@ -34,38 +41,49 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative",
+      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20",
-    mapContainer: "flex-1 w-full h-full relative z-10 min-w-0",
+      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20",
+    mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
     itemActive: "bg-white dark:bg-zinc-900 border-l-[3px] shadow-sm",
     itemInactive:
       "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 border-l-[3px] border-transparent",
   },
   minimal: {
     wrapper:
-      "flex relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800",
+      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200/80 dark:border-zinc-800 [&_.leaflet-control-attribution]:hidden",
+    // Mobile: a plain full-width panel in normal flow (same as `default`).
+    // md+: the floating glass panel this variant is known for.
     sidebar:
-      "absolute top-4 left-4 bottom-4 w-[300px] lg:w-[340px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 z-20 shrink-0 hidden md:flex flex-col overflow-hidden",
-    mapContainer: "flex-1 w-full h-full relative z-0 min-w-0",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-zinc-200/80 dark:border-zinc-800 z-20 shrink-0 flex flex-col overflow-hidden",
+    mapContainer: "flex-1 w-full h-full relative z-0 min-w-0 overflow-hidden rounded-2xl",
     itemActive: "bg-zinc-100 dark:bg-zinc-900 rounded-lg mx-3 my-1",
     itemInactive:
       "hover:bg-zinc-50 dark:hover:bg-zinc-900/50 rounded-lg mx-3 my-1 border border-transparent",
   },
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative",
+      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
+      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-sm",
     itemActive: "bg-zinc-50 dark:bg-zinc-900/80 border-l-[3px]",
     itemInactive:
       "hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40 border-l-[3px] border-transparent transition-colors",
   },
 };
 
-const colorThemes: Record<FleetColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    border: "border-primary",
+    lightBg: "bg-primary/10",
+    focusRing:
+      "focus-within:ring-primary/20 focus-within:border-primary/50",
+    marker: "violet",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -138,13 +156,45 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
   const map = useMap();
   useEffect(() => {
     if (
-      activeVehicle &&
-      typeof activeVehicle.lat === "number" &&
-      typeof activeVehicle.lng === "number"
-    ) {
-      map.flyTo([activeVehicle.lat, activeVehicle.lng], 15, { duration: 1.5 });
+      !activeVehicle ||
+      typeof activeVehicle.lat !== "number" ||
+      typeof activeVehicle.lng !== "number"
+    )
+      return;
+
+    const target: [number, number] = [activeVehicle.lat, activeVehicle.lng];
+
+    // On mobile the map pane is revealed in the same render that selects a
+    // vehicle, so Leaflet still holds the zero size it measured while hidden.
+    // flyTo divides by that size and ends up with NaN coordinates, so
+    // re-measure first and skip the animation until the pane has a real box.
+    map.invalidateSize({ animate: false, pan: false });
+    const size = map.getSize();
+    if (!size.x || !size.y) {
+      map.setView(target, 15, { animate: false });
+      return;
     }
+
+    map.flyTo(target, 15, { duration: 1.5 });
   }, [activeVehicle, map]);
+  return null;
+}
+
+// Leaflet only measures its container once; refit whenever the container
+// resizes (docs device preview, responsive layouts). The ResizeObserver must
+// come from the container's own window — a parent-realm observer never fires
+// for elements inside an iframe.
+function MapResizeHandler() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    const win = container.ownerDocument.defaultView ?? window;
+    const FrameResizeObserver =
+      (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
+    const observer = new FrameResizeObserver(() => map.invalidateSize());
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
   return null;
 }
 
@@ -152,20 +202,56 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
 export default function FleetTracker({
   fleetData = [],
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: FleetTrackerProps) {
-  const theme = colorThemes[color];
+  // Custom hex injection logic
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--fleet-custom": color,
+        "--fleet-custom-10": `${color}1a`,
+        "--fleet-custom-20": `${color}33`,
+        "--fleet-custom-50": `${color}80`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        text: "text-[var(--fleet-custom)]",
+        bg: "bg-[var(--fleet-custom)] hover:brightness-110 text-white",
+        border: "border-[var(--fleet-custom)]",
+        lightBg: "bg-[var(--fleet-custom-10)]",
+        focusRing:
+          "focus-within:ring-[var(--fleet-custom-20)] focus-within:border-[var(--fleet-custom-50)]",
+        marker: "black", // Fallback marker for arbitrary colors
+      }
+    : colorThemes[color as string] || colorThemes["primary"];
+
   const styles = fleetVariants[variant];
 
   const [mounted, setMounted] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
   );
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  // Below md the list and the map share the same box, so only one is shown at a
+  // time. The list is the landing view; the header/floating buttons swap them.
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    const checkDark = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+    checkDark();
+
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
   }, []);
 
   const filteredVehicles = fleetData.filter(
@@ -194,25 +280,24 @@ export default function FleetTracker({
 
   return (
     <div
+      style={customVars}
       className={cn(
         "w-full h-[600px] md:h-[700px] font-sans transition-all duration-300",
         styles.wrapper,
       )}
     >
-      {/* Mobile Toggle Button for Non-Default Variants */}
-      {variant !== "default" && (
+      {/* Mobile: jump back to the vehicle list while the map is showing */}
+      {!isMobileSidebarOpen && (
         <button
-          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          type="button"
+          aria-label="Show vehicle list"
+          onClick={() => setIsMobileSidebarOpen(true)}
           className={cn(
             "md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800",
             theme.bg,
           )}
         >
-          {isMobileSidebarOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Menu className="w-5 h-5" />
-          )}
+          <Menu className="w-5 h-5" />
         </button>
       )}
 
@@ -220,12 +305,7 @@ export default function FleetTracker({
       <aside
         className={cn(
           styles.sidebar,
-          variant !== "default" && !isMobileSidebarOpen
-            ? "hidden md:flex"
-            : "flex",
-          variant !== "default" && isMobileSidebarOpen
-            ? "absolute inset-4 z-[30] shadow-2xl"
-            : "",
+          isMobileSidebarOpen ? "flex" : "hidden md:flex",
         )}
       >
         <div className="p-5 shrink-0 border-b border-zinc-100 dark:border-zinc-800/50">
@@ -248,15 +328,15 @@ export default function FleetTracker({
                 </p>
               </div>
             </div>
-            {/* Mobile close button specifically for the default variant which flows normally */}
-            {variant === "default" && (
-              <button
-                className="md:hidden text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-            )}
+            {/* Mobile: swap the list out for the map */}
+            <button
+              type="button"
+              aria-label="Show map"
+              className="md:hidden text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              onClick={() => setIsMobileSidebarOpen(false)}
+            >
+              <MapIcon className="w-5 h-5" />
+            </button>
           </div>
 
           <div
@@ -284,8 +364,8 @@ export default function FleetTracker({
                 key={vehicle.id}
                 onClick={() => {
                   setActiveVehicle(vehicle);
-                  if (window.innerWidth < 768 && variant !== "default")
-                    setIsMobileSidebarOpen(false);
+                  // On mobile, reveal the map so the fly-to is actually visible.
+                  if (window.innerWidth < 768) setIsMobileSidebarOpen(false);
                 }}
                 className={cn(
                   "px-5 py-4 cursor-pointer transition-all flex items-start gap-4",
@@ -358,9 +438,7 @@ export default function FleetTracker({
       <main
         className={cn(
           styles.mapContainer,
-          variant === "default" && isMobileSidebarOpen
-            ? "hidden md:block"
-            : "block",
+          isMobileSidebarOpen ? "hidden md:block" : "block",
         )}
       >
         {L && (
@@ -369,12 +447,19 @@ export default function FleetTracker({
             zoom={13}
             className="w-full h-full z-0"
             zoomControl={false}
+            attributionControl={false}
           >
             <TileLayer
+              key={isDarkMode ? "dark" : "light"}
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              url={
+                isDarkMode
+                  ? "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"
+                  : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              }
             />
             <MapController activeVehicle={activeVehicle} />
+            <MapResizeHandler />
             {fleetData.map((vehicle) => (
               <Marker
                 key={vehicle.id}

@@ -1,7 +1,10 @@
 "use client";
 
-import { Settings, TimerReset } from "lucide-react";
+import { Palette, Settings, TimerReset } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
+import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
+import { usePathname } from "next/navigation";
 
 import {
   Sheet,
@@ -21,12 +24,19 @@ import {
 import { DarkModeControl } from "./darkmode-control";
 import { FontFamilyControl } from "./font-family-control";
 import { FontSizeControl } from "./font-size-control";
-import { PrimaryColorControl } from "./primary-color-control";
+import { ThemePresetSelector } from "./theme-preset-selector";
+import { RadiusPicker } from "./radius-picker";
 
 export function ThemeControl() {
-  const { dir, setPrimaryColor, setFontSize, setFontFamily } =
+  const { dir, setFontSize, setFontFamily } =
     useThemeContext();
+  const { resetToDefaults } = useThemeCustomizer();
   const { setTheme } = useTheme();
+  const pathname = usePathname();
+
+  if (pathname === "/themes" || pathname?.startsWith("/preview")) {
+    return null;
+  }
 
   function resetThemeCustomization() {
     localStorage.removeItem("primaryColor");
@@ -34,53 +44,67 @@ export function ThemeControl() {
     localStorage.removeItem("fontFamily");
 
     const root = window.document.documentElement;
-    root.style.setProperty("--primary", DEFAULT_PRIMARY_COLOR);
     root.style.fontSize = DEFAULT_FONT_SIZE + "%";
     document.body.style.fontFamily = "";
 
     const dynamicFontLink = document.getElementById("dynamic-google-font");
     if (dynamicFontLink) dynamicFontLink.remove();
 
-    setPrimaryColor(DEFAULT_PRIMARY_COLOR);
+    resetToDefaults();
     setFontSize(DEFAULT_FONT_SIZE);
     setFontFamily(DEFAULT_FONT_FAMILY);
     setTheme("system");
   }
 
   return (
-    <div className={`fixed top-40 ${dir === "rtl" ? "left-0" : "right-0"} z-40`}>
+    <div
+      /* bottom-right on phones so it doesn't cover content toolbars; edge tab at top-40 from sm up */
+      className={`fixed bottom-24 top-auto sm:top-40 sm:bottom-auto ${dir === "rtl" ? "left-0" : "right-0"} z-40`}
+    >
       <Sheet>
         <SheetTrigger asChild>
           <div
-            className={`bg-primary cursor-pointer rounded ${dir === "rtl" ? "rounded-l-none" : "rounded-r-none"} px-3 py-2 text-white`}
+            className={`bg-primary text-primary-foreground hover:opacity-90 transition-all cursor-pointer rounded ${dir === "rtl" ? "rounded-l-none" : "rounded-r-none"} px-3 py-2 shadow-md`}
           >
             <Settings />
           </div>
         </SheetTrigger>
-        <SheetContent className="hide-scroll z-[101] overflow-y-auto">
-          <SheetHeader className="border-b">
-            <SheetTitle className="flex items-center gap-4">
-              <span>Customization</span>
-              <span
-                className="relative cursor-pointer"
-                onClick={resetThemeCustomization}
-                aria-label="Reset customization"
-              >
-                <TimerReset />
-                <span className="min-w-size-2 absolute top-0 -right-1 size-2 rounded-full bg-red-600" />
-              </span>
-            </SheetTitle>
-            <SheetDescription>
-              Customize and preview in real time
-            </SheetDescription>
-          </SheetHeader>
-          <div className="space-y-8 px-4">
-            <PrimaryColorControl />
-            <DarkModeControl />
-            <FontSizeControl />
-            <FontFamilyControl />
+
+        {/* Added flex flex-col to ensure the footer button can push to the very bottom */}
+        <SheetContent className="hide-scroll z-[101] overflow-y-auto flex flex-col justify-between">
+          <div>
+            <SheetHeader className="border-b pb-4">
+              <SheetTitle>Customization</SheetTitle>
+              <SheetDescription>
+                Customize and preview in real time
+              </SheetDescription>
+            </SheetHeader>
+            <div className="space-y-8 px-4 py-6">
+              <ThemePresetSelector />
+              <RadiusPicker />
+              <DarkModeControl />
+              <FontSizeControl />
+              <FontFamilyControl />
+            </div>
+          {/* Theme Customizer Link + Reset Button Footer */}
+          <div className="mt-auto pt-4 pb-10 px-4 border-t border-border flex items-center justify-between gap-3">
+            <Link
+              href="/themes"
+              className="flex-1 flex items-center justify-center gap-2 h-9 px-3 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm cursor-pointer"
+            >
+              <Palette className="w-4 h-4" />
+              <span>Theme Customizer</span>
+            </Link>
+            <button
+              onClick={resetThemeCustomization}
+              className="flex items-center justify-center gap-1.5 h-9 px-3 text-xs font-medium text-muted-foreground hover:text-foreground bg-background hover:bg-accent border border-border transition-all rounded-lg shadow-sm cursor-pointer shrink-0"
+            >
+              <TimerReset className="w-4 h-4" />
+              <span>Reset</span>
+            </button>
           </div>
-          <span className="block w-full border-b" />
+        </div>
+
         </SheetContent>
       </Sheet>
     </div>

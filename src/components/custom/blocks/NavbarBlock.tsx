@@ -52,23 +52,50 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
+/**
+ * Foreground that stays legible on top of a filled `--theme-color` swatch.
+ * Without this a light pick (white especially) leaves white-on-white content
+ * inside the logo tile and the CTA buttons.
+ */
+const contrastingForeground = (rgb: string) => {
+  const [r, g, b] = rgb.split(",").map((v) => parseInt(v.trim(), 10));
+  const channel = (v: number) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  const luminance =
+    0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+  return luminance > 0.45 ? "#09090b" : "#ffffff";
+};
+
 export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+  if (color === "primary" || color === "default" || !colorThemes[color]) {
+    if (color && color.startsWith("#")) {
+      const rgb = hexToRgb(color);
+      return {
+        theme: {
+          text: "text-[var(--theme-color)]",
+          bg: "bg-[var(--theme-color)] text-[var(--theme-on-color)] hover:opacity-90",
+          bgSoft:
+            "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        },
+        style: {
+          "--theme-color": color,
+          "--theme-color-rgb": rgb,
+          "--theme-on-color": contrastingForeground(rgb),
+        } as React.CSSProperties,
+      };
+    }
     return {
       theme: {
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
+        text: "text-primary",
+        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+        bgSoft: "bg-primary/10 text-primary",
       },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
+      style: {} as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color], style: {} };
 };
 
 const NAV_LINKS = [
@@ -130,13 +157,13 @@ export function NavbarBlock({
       case "floating":
         return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
       case "glass":
-        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 md:px-12";
+        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
       case "minimal":
-        return "w-full bg-transparent px-6 md:px-12 pt-6";
+        return "w-full bg-transparent px-6 lg:px-12 pt-6";
       case "centered":
       case "default":
       default:
-        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 md:px-12";
+        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 lg:px-12";
     }
   };
 
@@ -148,7 +175,9 @@ export function NavbarBlock({
           theme.bg,
         )}
       >
-        <Command className="w-4 h-4 text-white" />
+        {/* No hardcoded colour: theme.bg above already carries the correct
+            contrasting foreground for every theme, including a white pick. */}
+        <Command className="w-4 h-4" />
       </div>
       <span className="font-black text-xl tracking-tight text-zinc-900 dark:text-white">
         {logoText}
@@ -157,7 +186,7 @@ export function NavbarBlock({
   );
 
   const DesktopLinks = () => (
-    <ul className="hidden md:flex items-center gap-1">
+    <ul className="hidden lg:flex items-center gap-1">
       {NAV_LINKS.map((link) => (
         <li key={link.name} className="relative group">
           <Link
@@ -207,7 +236,7 @@ export function NavbarBlock({
   );
 
   const DesktopActions = () => (
-    <div className="hidden md:flex items-center gap-3">
+    <div className="hidden lg:flex items-center gap-3">
       <Link
         href="#"
         className="px-4 py-2 text-sm font-bold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
@@ -235,7 +264,11 @@ export function NavbarBlock({
         )}
       >
         {variant === "centered" ? (
-          <div className="w-full grid grid-cols-3 items-center">
+          // Not grid-cols-3: equal thirds give the links only a third of the
+          // width, which the four of them overflow long before the viewport
+          // runs out. Letting the logo size to its content and splitting the
+          // remainder keeps it centred while giving the links real room.
+          <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center gap-4">
             <div className="flex justify-start">
               <DesktopLinks />
             </div>
@@ -245,7 +278,7 @@ export function NavbarBlock({
             <div className="flex justify-end gap-4">
               <DesktopActions />
               <button
-                className="md:hidden"
+                className="lg:hidden"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <Menu className="w-6 h-6 text-zinc-900 dark:text-white" />
@@ -261,7 +294,7 @@ export function NavbarBlock({
             <div className="flex items-center gap-4">
               <DesktopActions />
               <button
-                className="md:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-300"
+                className="lg:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-300"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <Menu className="w-6 h-6" />
@@ -272,7 +305,7 @@ export function NavbarBlock({
       </nav>
       <div
         className={cn(
-          "fixed inset-0 z-[100] pointer-events-none md:hidden",
+          "fixed inset-0 z-[100] pointer-events-none lg:hidden",
           !renderLayer && "hidden",
         )}
       >

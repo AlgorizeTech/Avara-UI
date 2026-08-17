@@ -1,0 +1,196 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Theme Switcher
+
+A premium, GSAP-powered dark mode toggle component built specifically for Next.js applications using `next-themes`.
+
+It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
+
+## Examples
+
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The first example's **Code** tab contains the full component source.
+
+export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    <header className="flex justify-between items-center p-4 border-b">
+      <h1>My App</h1>
+      {/* Compact enough for a navbar */}
+      <ThemeSwitcher variant="icon" />
+    </header>
+  );
+}`;
+
+export const usagePill = `// A segmented control that shows the current mode explicitly — better on a
+// settings page than in a dense navbar.
+<ThemeSwitcher variant="pill" />`;
+
+export const usageDropdown = `// Includes the "system" option, so users can defer to their OS setting.
+<ThemeSwitcher variant="dropdown" />`;
+
+<ExampleShowcase
+  name="theme-switcher"
+  columns={1}
+  examples={[
+    {
+      title: "Icon",
+      subheading: "The default: one button that flips between light and dark, with a GSAP micro-interaction on the icon.",
+      props: { variant: "icon" },
+      usage: usageIcon,
+      code: extractCode("src/components/custom/blocks/ThemeSwitcherBlock.tsx"),
+    },
+    {
+      title: "Pill",
+      subheading: "`variant=\"pill\"` renders a segmented control with a sliding indicator behind the active mode.",
+      props: { variant: "pill" },
+      usage: usagePill,
+    },
+    {
+      title: "Dropdown",
+      subheading: "`variant=\"dropdown\"` opens a menu — the only variant that exposes the **system** option.",
+      props: { variant: "dropdown" },
+      usage: usageDropdown,
+    },
+  ]}
+/>
+
+## Installation
+
+### 1. Install Dependencies
+
+This component relies heavily on `next-themes` to manage the actual CSS classes and localStorage states securely, and `gsap` for the micro-interactions.
+
+```bash
+npm install next-themes gsap lucide-react
+```
+
+### 2. Configure Next Themes
+
+Ensure your app/layout.tsx (or pages/\_app.tsx) is wrapped in the ThemeProvider so the hook functions correctly across your app.
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider } from "next-themes";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### 3. Copy the Component
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ThemeSwitcherBlock.tsx`.
+
+## Features
+
+Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">3 Layout Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">System Sync</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">SSR Considerations</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"icon" | "pill" | "dropdown"</code>
+        </td>
+        <td>
+          <code>"icon"</code>
+        </td>
+        <td>
+          Determines the structural layout and specific GSAP animations applied
+          to the toggler.
+          <ul>
+            <li>
+              <code>icon</code>: A simple, rotating toggle button.
+            </li>
+            <li>
+              <code>pill</code>: A segmented control with a sliding active
+              indicator.
+            </li>
+            <li>
+              <code>dropdown</code>: A click-to-open menu with all theme
+              options.
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML div attributes (e.g., <code>className</code>,{" "}
+          <code>id</code>) which are seamlessly forwarded to the root wrapper.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

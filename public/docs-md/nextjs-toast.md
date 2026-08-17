@@ -4,15 +4,144 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different visual variants and placement locations on the screen.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually. The first example's **Code** tab contains the full component source.
 
-- The **Glass** variant uses a high-intensity backdrop blur, making it perfect for apps with complex or photographic backgrounds.
-- The **Glow** variant and **Minimal** variant automatically inherit the custom hex color you select in the control panel.
-- Toasts auto-dismiss after 5 seconds, but you can hover them to keep them open, or click the `X` to dismiss manually.
+export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
 
----
+// 1. Wrap your app (usually layout.tsx) once.
+export function Providers({ children }: { children: React.ReactNode }) {
+  return {children};
+}
+
+// 2. Fire toasts from any child component.
+export default function SendMessage() {
+  const { toast } = useToast();
+
+  return (
+    
+        toast({
+          title: "Message sent",
+          description: "We'll let you know as soon as they reply.",
+        })
+      }
+    >
+      Show toast
+    
+  );
+}`;
+
+export const usageTypes = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ToastTypes() {
+  const { toast } = useToast();
+
+  return (
+    
+       toast({ type: "success", title: "Action completed", description: "Your file has been uploaded successfully." })}>
+        Success
+      
+       toast({ type: "error", title: "Connection failed", description: "Could not connect to the database." })}>
+        Error
+      
+       toast({ type: "warning", title: "Storage almost full", description: "You've used 92% of your quota." })}>
+        Warning
+      
+       toast({ type: "info", title: "Update available", description: "A new version is ready to install." })}>
+        Info
+      
+       toast({ type: "default", title: "Message sent" })}>
+        Default
+
+  );
+}`;
+
+export const usageAction = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ActionToast() {
+  const { toast } = useToast();
+
+  return (
+    
+        toast({
+          type: "info",
+          title: "Update available",
+          description: "A new version of the app is ready to install.",
+          action: {
+            label: "Install Now",
+            onClick: () => console.log("Installing..."),
+          },
+        })
+      }
+    >
+      Toast with action
+    
+  );
+}`;
+
+export const usageDuration = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+
+export default function ToastDuration() {
+  const { toast } = useToast();
+
+  return (
+    
+      {/* duration: 0 disables auto-dismiss — the user must close it */}
+      
+          toast({
+            type: "info",
+            title: "Upload in progress",
+            description: "This toast stays until you dismiss it.",
+            duration: 0,
+          })
+        }
+      >
+        Persistent toast
+
+          toast({
+            type: "success",
+            title: "Saved",
+            description: "This one disappears after 1.5 seconds.",
+            duration: 1500,
+          })
+        }
+      >
+        Quick toast
+
+  );
+}`;
+
+export const usageGlow = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    
+      {children}
+    
+  );
+}`;
+
+export const usageGlass = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // Glass leans on a backdrop blur — best over photos or rich backgrounds.
+  return {children};
+}`;
+
+export const usageMinimal = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return {children};
+}`;
+
+export const usagePosition = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // "top-right" | "top-left" | "top-center"
+  // "bottom-right" | "bottom-left" | "bottom-center"
+  return {children};
+}`;
 
 ## Installation
 
@@ -24,66 +153,35 @@ This component relies on `gsap` for the entrance/exit animations and `lucide-rea
 npm install gsap lucide-react
 ```
 
-2. Copy the Component
-   This component includes the ToastProvider, the useToast hook, and the individual ToastItem renderer all inside a single file.
+### 2. Copy the Component
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the Component tab in the Interactive Showcase above. Place it in components/custom/blocks/ToastBlock.tsx.
+This component includes the `ToastProvider`, the `useToast` hook, and the individual `ToastItem` renderer all inside a single file.
 
-## Usage
+Create a new file at `components/custom/blocks/ToastBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
-1. Wrap Your App
-   You must wrap the highest level of your application (usually layout.tsx or App.tsx) with the ``. You can set the global variant and positioning here.
+### 3. Wrap your app
 
-```jsx
+You must wrap the highest level of your application (usually `layout.tsx` or `App.tsx`) with ``. The global `variant`, `color` and `position` are set there.
 
-export default function RootLayout({ children }) {
-  return (
+## Features
+Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.
 
-          {children}
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-  );
-}
-```
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-2. Trigger Toasts via Hook
-   Inside any child component, simply call the `useToast` hook.
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
 
-```jsx
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
 
-export default function ProfileForm() {
-  const { toast } = useToast();
+## Best Practices & Guidelines
 
-  const handleSave = () => {
-    // API call logic here...
-
-    toast({
-      title: "Profile Updated",
-      description: "Your changes have been saved successfully.",
-      type: "success", // success | error | warning | info | default
-      duration: 3000, // Optional: Auto-dismisses after 3 seconds
-    });
-  };
-
-  const handleActionToast = () => {
-    toast({
-      title: "Update Available",
-      description: "A new version of the app is ready to install.",
-      type: "info",
-      action: {
-        label: "Install Now",
-        onClick: () => console.log("Installing..."),
-      },
-    });
-  };
-
-  return (
-    
-      Save Profile
-      Show Action Toast
-    
-  );
-}
-```
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

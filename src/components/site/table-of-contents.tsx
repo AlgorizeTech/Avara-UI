@@ -1,232 +1,291 @@
 "use client";
 
-import { useTableOfContents } from "@/hooks/use-table-of-contents";
+import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowDown, ArrowUp, ExternalLink, Sparkles } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
+
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
-  // 1. Default to closed for SSR safety and mobile-first approach
-  const [isOpen, setIsOpen] = useState(false);
-
-  // 2. Automatically open the TOC on mount ONLY for desktop screens
   useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
-      setIsOpen(true);
-    }
-  }, []);
+    const update = () => {
+      const scrolled = window.scrollY;
+      const total =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
 
-  // --- Smooth Scroll Tracker ---
-  useEffect(() => {
-    const updateProgress = () => {
-      const currentScrollY = window.scrollY;
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight;
+      const progress = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+      setScrollProgress(progress);
 
-      const windowHeight = scrollHeight - clientHeight;
-      const progress =
-        windowHeight > 0 ? (currentScrollY / windowHeight) * 100 : 0;
-
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
+      setIsAtTop(scrolled < 100);
+      setIsAtBottom(
+        progress >= 99 ||
+          scrolled + document.documentElement.clientHeight >=
+            document.documentElement.scrollHeight - 20,
+      );
     };
 
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress();
-
-    return () => window.removeEventListener("scroll", updateProgress);
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
-  if (toc.length === 0 || toc.every((item) => !item.text.trim())) {
-    return null;
+  // Group items into chapters by H1 Root (#) or H2 sections unconditionally
+  const chapters = useMemo(() => {
+    const result: { root?: TOCItem; items: TOCItem[] }[] = [];
+    let currentChapter: { root?: TOCItem; items: TOCItem[] } = { items: [] };
+
+    toc.forEach((item) => {
+      if (item.level === 1 || (item.level === 2 && !currentChapter.root)) {
+        if (currentChapter.root || currentChapter.items.length > 0) {
+          result.push(currentChapter);
+        }
+        currentChapter = { root: item, items: [] };
+      } else {
+        currentChapter.items.push(item);
+      }
+    });
+    if (currentChapter.root || currentChapter.items.length > 0) {
+      result.push(currentChapter);
+    }
+    return result;
+  }, [toc]);
+
+  // --- SMART ACTIVE ID OVERRIDE ---
+  let displayActiveId = activeId;
+  if (toc.length > 0) {
+    if (isAtTop) {
+      displayActiveId = toc[0].id;
+    } else if (isAtBottom) {
+      displayActiveId = toc[toc.length - 1].id;
+    }
   }
 
-  // 3. Helper function to handle link clicks and auto-close on mobile
-  const handleLinkClick = (id: string) => {
-    scrollToHeading(id);
-    if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setIsOpen(false);
-    }
-  };
+  // Determine active chapter
+  const activeChapterIndex = chapters.findIndex(
+    (ch) =>
+      ch.root?.id === displayActiveId ||
+      ch.items.some((i) => i.id === displayActiveId),
+  );
 
-  // --- Style Helper based on progress ---
-  const getProgressStyles = (val: number) => {
-    if (val <= 25) {
-      return {
-        background: `linear-gradient(90deg, #ef4444 0%, #f59e0b ${val * 4}%, #ef4444 100%)`,
-        shadow: "0 0 8px rgba(239, 68, 68, 0.4)",
-        color: "#ef4444",
-        bgColor: "rgba(239, 68, 68, 0.1)",
-        borderColor: "1px solid rgba(239, 68, 68, 0.2)",
-      };
-    } else if (val <= 50) {
-      return {
-        background: `linear-gradient(90deg, #f59e0b 0%, #f97316 ${(val - 25) * 4}%, #f59e0b 100%)`,
-        shadow: "0 0 8px rgba(245, 158, 11, 0.4)",
-        color: "#f59e0b",
-        bgColor: "rgba(245, 158, 11, 0.1)",
-        borderColor: "1px solid rgba(245, 158, 11, 0.2)",
-      };
-    } else if (val <= 75) {
-      return {
-        background: `linear-gradient(90deg, #f97316 0%, #84cc16 ${(val - 50) * 4}%, #f97316 100%)`,
-        shadow: "0 0 8px rgba(249, 115, 22, 0.4)",
-        color: "#f97316",
-        bgColor: "rgba(249, 115, 22, 0.1)",
-        borderColor: "1px solid rgba(249, 115, 22, 0.2)",
-      };
-    } else {
-      return {
-        background: `linear-gradient(90deg, #84cc16 0%, #22c55e ${(val - 75) * 4}%, #22c55e 100%)`,
-        shadow: "0 0 8px rgba(34, 197, 94, 0.4)",
-        color: "#22c55e",
-        bgColor: "rgba(34, 197, 94, 0.1)",
-        borderColor: "1px solid rgba(34, 197, 94, 0.2)",
-      };
-    }
-  };
+  const activeChapter =
+    activeChapterIndex !== -1 ? chapters[activeChapterIndex] : chapters[0];
 
-  const dynamicStyles = getProgressStyles(scrollProgress);
+  const dynamicColor =
+    scrollProgress > 50
+      ? `rgb(${Math.round(255 - ((scrollProgress - 50) / 50) * 200)}, 180, 100)`
+      : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
 
   return (
-    <>
-      {/* Sliding Table of Contents Drawer */}
-      <motion.aside
-        initial={{ x: "100%" }}
-        animate={{ x: isOpen ? "0%" : "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-[57px] z-40 w-64 h-[calc(100dvh-57px)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex-shrink-0"
-      >
-        {/* Attached Pull-Tab Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="absolute top-12 right-full translate-x-[1px] w-10 h-14 bg-white dark:bg-zinc-950 border-y border-l border-zinc-200 dark:border-zinc-800 rounded-l-xl flex items-center justify-center cursor-pointer shadow-[-6px_0_16px_-4px_rgba(0,0,0,0.1)] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus:outline-none"
-          aria-label="Toggle Table of Contents"
-        >
-          {isOpen ? (
-            <ChevronRight className="w-5 h-5" />
-          ) : (
-            <ChevronLeft className="w-5 h-5" />
-          )}
-        </button>
+    <aside className="hidden lg:flex flex-col w-[210px] 2xl:w-[260px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
+      <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
+        {/* Header: Title + Progress Bar */}
+        <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+              On this page
+            </span>
+          </div>
 
-        <div className="h-full py-8 px-6 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <div className="space-y-6">
-            {/* Table of Contents */}
-            <nav
-              className="relative"
-              role="navigation"
-              aria-label="Table of contents"
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-[3px] rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+              <div
+                className="h-full transition-all duration-150 rounded-full"
+                style={{
+                  width: `${scrollProgress}%`,
+                  backgroundColor: dynamicColor,
+                }}
+              />
+            </div>
+            <span
+              className="text-[10.5px] font-bold tabular-nums w-7 text-right transition-colors duration-100"
+              style={{ color: dynamicColor }}
             >
-              <div className="space-y-3">
-                {toc.map((item) => {
-                  const isActive = item.id === activeId;
-                  const indentLevel = item.level - 1;
-                  const leftOffset = indentLevel * 16;
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="relative flex items-start"
-                      style={{ marginLeft: `${leftOffset}px` }}
-                    >
-                      <button
-                        onClick={() => handleLinkClick(item.id)}
-                        className={cn(
-                          "text-left transition-all duration-200 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer",
-                          item.level === 1
-                            ? "text-[0.80rem] font-medium"
-                            : item.level === 2
-                              ? "text-[0.8rem]"
-                              : "text-[0.75rem]",
-                          isActive
-                            ? "text-blue-600 dark:text-blue-400 font-medium"
-                            : "text-zinc-600 dark:text-zinc-400",
-                        )}
-                      >
-                        {item.text}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </nav>
-
-            {/* Reading Progress */}
-            <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
-              <div className="relative">
-                <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 shadow-inner">
-                  <motion.div
-                    className="h-2 rounded-full relative overflow-hidden shadow-lg"
-                    style={{
-                      background: dynamicStyles.background,
-                      boxShadow: dynamicStyles.shadow,
-                    }}
-                    initial={{ width: "0%" }}
-                    animate={{ width: `${scrollProgress}%` }}
-                    transition={{ duration: 0.1, ease: "linear" }}
-                  >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                      animate={{ x: ["-100%", "100%"] }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
-                  </motion.div>
-                </div>
-
-                <motion.div
-                  className="absolute top-0 -mt-6 text-xs font-medium px-2 py-1 rounded-md shadow-sm"
-                  style={{
-                    transform: "translateX(-50%)",
-                    background: dynamicStyles.bgColor,
-                    color: dynamicStyles.color,
-                    border: dynamicStyles.borderColor,
-                  }}
-                  animate={{ left: `${scrollProgress}%` }}
-                  transition={{ duration: 0.1, ease: "linear" }}
-                >
-                  {Math.round(scrollProgress)}%
-                </motion.div>
-              </div>
-
-              <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                <span>Start</span>
-                <span>End</span>
-              </div>
-            </div>
-
-            {/* Glassy Navigation Buttons */}
-            <div className="space-y-2">
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-md border border-white/20 dark:border-zinc-700/50 rounded-lg hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-                <span>Back to top</span>
-              </button>
-              <button
-                onClick={() =>
-                  window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: "smooth",
-                  })
-                }
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-md border border-white/20 dark:border-zinc-700/50 rounded-lg hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                <ArrowDown className="w-3.5 h-3.5" />
-                <span>Go to bottom</span>
-              </button>
-            </div>
+              {Math.round(scrollProgress)}%
+            </span>
           </div>
         </div>
-      </motion.aside>
-    </>
+
+        <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
+
+        {/* Accordion Chapters List (Original Table of Contents) */}
+        <div className="flex-1 overflow-y-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav
+            role="navigation"
+            aria-label="Table of contents"
+            className="relative py-1"
+          >
+            {/* Static vertical track line */}
+            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+
+            {chapters.map((chapter, chapterIndex) => {
+              const isChapterOpen = chapter === activeChapter;
+              const isRootActive = chapter.root?.id === displayActiveId;
+              const isChapterBreak = chapterIndex > 0;
+
+              return (
+                <div
+                  key={chapter.root?.id || `chapter-${chapterIndex}`}
+                  className="flex flex-col"
+                >
+                  {/* H1 Chapter Root Button */}
+                  {chapter.root && (
+                    <button
+                      onClick={() => scrollToHeading(chapter.root!.id)}
+                      style={{ paddingLeft: "32px" }}
+                      className={cn(
+                        "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
+                        "py-2 mb-1 text-[13px] font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100",
+                        isChapterBreak &&
+                          "mt-4 pt-4 border-t border-zinc-200/80 dark:border-zinc-800/80",
+                      )}
+                    >
+                      {isRootActive && (
+                        <motion.div
+                          layoutId="active-toc-pill"
+                          className="absolute left-[18px] w-[3px] h-5 rounded-full bg-primary z-10"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                      <span className={cn("truncate", isRootActive && "text-primary")}>{chapter.root.text}</span>
+                    </button>
+                  )}
+
+                  {/* Collapsible Accordion Container for Sub-items */}
+                  <AnimatePresence initial={false}>
+                    {isChapterOpen && chapter.items.length > 0 && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden flex flex-col"
+                      >
+                        {chapter.items.map((item) => {
+                          const isActive = item.id === displayActiveId;
+                          const isSection = item.level === 2;
+                          const isChild = item.level >= 3;
+                          const indent = isSection ? 12 : (item.level - 1) * 12;
+
+                          return (
+                            <button
+                              key={item.id}
+                              onClick={() => scrollToHeading(item.id)}
+                              style={{ paddingLeft: `${32 + indent}px` }}
+                              className={cn(
+                                "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
+                                isSection &&
+                                  "py-1.5 mt-0.5 text-[12.5px] font-medium text-zinc-700 dark:text-zinc-300",
+                                isChild &&
+                                  "py-1 text-[12px] font-normal text-zinc-500 dark:text-zinc-400",
+                                isActive
+                                  ? "text-primary font-semibold"
+                                  : "hover:text-primary",
+                              )}
+                            >
+                              {isActive && (
+                                <motion.div
+                                  layoutId="active-toc-pill"
+                                  className="absolute left-[18px] w-[3px] h-4 rounded-full bg-primary z-10"
+                                  transition={{
+                                    type: "spring",
+                                    stiffness: 380,
+                                    damping: 30,
+                                  }}
+                                />
+                              )}
+                              {isChild && (
+                                <span
+                                  className={cn(
+                                    "inline-block w-1 h-1 rounded-full mr-2 shrink-0 transition-colors",
+                                    isActive
+                                      ? "bg-primary"
+                                      : "bg-zinc-300 dark:bg-zinc-700 group-hover:bg-primary/70",
+                                  )}
+                                />
+                              )}
+                              <span className="truncate">{item.text}</span>
+                            </button>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Algorize Tech Promo Banner Image Segment */}
+        <div className="px-2.5 py-2.5 border-t border-zinc-200 dark:border-zinc-800/80 shrink-0">
+          <a
+            href="https://algorizetech.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-primary dark:hover:border-primary transition-colors duration-200 shadow-none cursor-pointer"
+          >
+            <img
+              src="/assets/algorizetech-banner.png"
+              alt="AlgorizeTech - Engineering scalable SaaS & AI products"
+              className="w-full h-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-[1.03]"
+            />
+            {/* Hover Dark Overlay with Centered URL Icon */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl">
+              <div className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <ExternalLink className="w-4 h-4" />
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
+
+        {/* Footer nav */}
+        <div className="flex-shrink-0 px-3 py-3 flex gap-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5",
+              "py-[7px] rounded-lg text-[11.5px] font-medium",
+              "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
+              "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
+              "transition-all duration-150 cursor-pointer shadow-sm",
+            )}
+          >
+            <ArrowUp className="w-3 h-3" /> Top
+          </button>
+          <button
+            onClick={() =>
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth",
+              })
+            }
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5",
+              "py-[7px] rounded-lg text-[11.5px] font-medium",
+              "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
+              "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/80",
+              "hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
+              "transition-all duration-150 cursor-pointer shadow-sm",
+            )}
+          >
+            <ArrowDown className="w-3 h-3" /> End
+          </button>
+        </div>
+      </div>
+    </aside>
   );
 };

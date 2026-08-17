@@ -13,6 +13,14 @@ export type CounterType = "stepper" | "animated" | "circular" | "countdown";
 export type CounterVariant = "default" | "outline" | "soft" | "vertical";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary",
+    ring: "ring-primary/20",
+    fill: "stroke-primary",
+    bgSoft: "bg-primary/10 text-primary",
+  },
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -81,7 +89,7 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================
@@ -132,7 +140,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-50 transition-colors active:scale-95"
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50 shadow-sm",
+                theme.bg,
+              )}
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
@@ -212,7 +223,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50"
+              className={cn(
+                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                theme.text,
+              )}
             >
               <Minus size={20} strokeWidth={2.5} />
             </button>
@@ -228,7 +242,10 @@ const StepperCounter = ({
             <button
               onClick={handleDec}
               disabled={count <= min}
-              className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-50 transition-colors active:scale-95"
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                theme.bg,
+              )}
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
@@ -239,7 +256,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -460,7 +477,7 @@ export interface CounterProps {
 export function CounterBlock({
   type = "stepper",
   variant = "default",
-  color = "indigo",
+  color = "primary",
   label = "Counter",
   initialValue = 1,
   min = 0,

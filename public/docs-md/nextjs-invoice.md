@@ -2,15 +2,57 @@
 
 A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
 
-## Interactive Showcase
+## Examples
 
-This component is fully encapsulated. Use the control panel to switch between UI layouts (including minimal and glassmorphism) and select custom color themes.
+The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON. The first example's **Code** tab contains the full component source.
 
-Click the **"Edit"** button in the right sidebar of the preview below to test the editing mode. You can add items, change quantities, and download the resulting data.
+export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+const invoiceData = {
+  invoiceNumber: "#4987",
+  dateIssued: "13 Mar 2026",
+  dateDue: "23 Mar 2026",
+  invoiceTo: {
+    name: "Jordan Stevenson",
+    company: "Hall-Robbins PLC",
+    address: "7777 Mendez Plains",
+    phone: "(616) 865-4180",
+    email: "don85@johnson.com",
+  },
+  billTo: {
+    totalDue: "$12,110.55",
+    bankName: "American Bank",
+    country: "United States",
+    iban: "ETD95476213874685",
+    swift: "BR91905",
+  },
+  items: [
+    {
+      item: "Premium Branding Package",
+      description: "Branding & Promotion",
+      hours: 48,
+      qty: 1,
+      total: "$32",
+    },
+  ],
+  subtotal: "$1800",
+  discount: "$28",
+  tax: "21%",
+  grandTotal: "$1690",
+  salesPerson: "Tommy Shelby",
+  note: "It was a pleasure working with you and your team.",
+};
 
----
+export default function InvoicePage() {
+  return ;
+}`;
+
+export const usageMinimal = `// Strips the card chrome down to type and rules — the print-friendly layout.
+`;
+
+export const usageGlass = `// Glass needs something behind it to refract.
+
+`;
 
 ## Installation
 
@@ -21,6 +63,30 @@ This component utilizes `lucide-react` for its interface iconography. Run the fo
 ```bash
 npm install lucide-react
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Invoice.tsx` and copy the source from the **Code** tab of the first example above.
+
+## Features
+Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

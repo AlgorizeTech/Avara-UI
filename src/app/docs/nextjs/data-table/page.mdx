@@ -1,0 +1,492 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Advanced Table
+
+A high-performance record management table featuring global search, multi-column sorting, pagination, and an animated batch-action toolbar.
+
+This component is the engine for SaaS dashboards and administrative panels. Unlike our spreadsheet-focused `DataGrid`, this `AdvancedTableBlock` is optimized for displaying, filtering, and manipulating large datasets with a beautiful, modern aesthetic. It perfectly replicates the UI of top-tier platforms with a floating dark-mode batch actions pill and staggered CSS entry animations.
+
+## Examples
+
+Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in. The first example's **Code** tab contains the full component source.
+
+_Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
+
+export const usageDefault = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+
+// The \`render\` prop overrides the default text output, so a column can
+// return badges, avatars or any other React node.
+const COLUMNS = [
+  { key: "name", header: "Full Name", sortable: true },
+  { key: "role", header: "Role", sortable: true },
+  {
+    key: "lastActiveTs",
+    header: "Last Active",
+    sortable: true,
+    sortType: "number", // number sorting for timestamps
+    render: (row) => <span className="text-zinc-500">{row.lastActive}</span>,
+  },
+];
+
+const DATA = [
+  { id: 1, name: "Alice", role: "Admin", lastActive: "2 min ago", lastActiveTs: 1690000000 },
+  { id: 2, name: "Bob", role: "Editor", lastActive: "1 hr ago", lastActiveTs: 1680000000 },
+];
+
+export default function UserManagement() {
+  return (
+    <div className="w-full max-w-5xl mx-auto p-4">
+      <AdvancedTableBlock
+        columns={COLUMNS}
+        data={DATA}
+        primaryKey="id"
+        onBatchDelete={(ids) => console.log("Deleting:", ids)}
+        onBatchEdit={(ids) => console.log("Editing:", ids)}
+      />
+    </div>
+  );
+}`;
+
+export const usageNoSearch = `// Drop the global search bar when the dataset is small enough to scan.
+<AdvancedTableBlock
+  columns={COLUMNS}
+  data={DATA}
+  primaryKey="id"
+  searchable={false}
+/>`;
+
+export const usageNoSelection = `// Without selection there is no checkbox column and no batch toolbar —
+// a purely read-only report table.
+<AdvancedTableBlock
+  columns={COLUMNS}
+  data={DATA}
+  primaryKey="id"
+  selectable={false}
+/>`;
+
+export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+
+export default function ExportableTable() {
+  return (
+    <AdvancedTableBlock
+      columns={COLUMNS}
+      data={DATA}
+      primaryKey="id"
+      // Replaces the built-in Edit/Delete buttons inside the floating pill.
+      batchActions={(selectedIds, clearSelection) => (
+        <>
+          <button onClick={() => exportCsv(selectedIds)}>Export CSV</button>
+          <button onClick={clearSelection}>Clear</button>
+        </>
+      )}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="advanced-table"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Advanced table",
+      subheading: "Declare the schema in `columns`, point `primaryKey` at your unique field, and the search, sort and pagination logic comes for free.",
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AdvancedTableBlock.tsx"),
+    },
+    {
+      title: "Without search",
+      subheading: "Set `searchable={false}` to hide the global filter input.",
+      props: { searchable: false },
+      usage: usageNoSearch,
+    },
+    {
+      title: "Without selection",
+      subheading: "Set `selectable={false}` for a read-only table — no checkbox column, no batch toolbar.",
+      props: { selectable: false },
+      usage: usageNoSelection,
+    },
+    {
+      title: "Custom batch actions",
+      subheading: "Pass `batchActions` to replace the default Edit/Delete buttons with your own — it receives the selected ids and a `clearSelection` callback.",
+      props: { example: "custom-batch-actions" },
+      usage: usageBatchActions,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component handles all complex filtering, sorting, and pagination logic purely through React's `useMemo` hooks, ensuring blazing-fast performance without any third-party dependencies like `react-table` or `ag-grid`.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AdvancedTableBlock.tsx`.
+
+## Features
+Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>T[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The array of data objects to display in the table.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>TableColumn[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Defines the headers, data keys, and custom rendering logic for the
+          table columns. See the TableColumn object reference below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>primaryKey</code>
+        </td>
+        <td>
+          <code>keyof T</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The unique identifier field in your data objects (e.g.,{" "}
+          <code>"id"</code> or <code>"uuid"</code>). This is strictly required
+          to ensure robust row selection and stable React keys.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "blue" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The dynamic accent color applied to the search focus ring, selected
+          row backgrounds, active checkboxes, and pagination buttons. Fully
+          supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>searchable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders a global fuzzy-search input above the table that
+          automatically filters the dataset across all stringified object
+          values.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>selectable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders a far-left column of custom checkboxes allowing users
+          to select individual rows, or select all rows currently visible on the
+          page.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>itemsPerPageOptions</code>
+        </td>
+        <td>
+          <code>number[]</code>
+        </td>
+        <td>
+          <code>[5, 10, 25, 50]</code>
+        </td>
+        <td>
+          An array of numbers that populates the "Show entries" dropdown
+          selector in the top-right toolbar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>onBatchDelete</code>
+        </td>
+        <td>
+          <code>(ids: string[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, automatically renders a red Trash icon in the floating
+          batch toolbar whenever rows are selected. Returns an array of the
+          selected <code>primaryKey</code> strings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>onBatchEdit</code>
+        </td>
+        <td>
+          <code>(ids: string[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, automatically renders an Edit icon in the floating batch
+          toolbar whenever rows are selected. Returns an array of the selected{" "}
+          <code>primaryKey</code> strings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AdvancedTableBlock</code>
+        </td>
+        <td>
+          <code>batchActions</code>
+        </td>
+        <td>
+          <code>
+            (selectedIds: string[], clearSelection: () =&gt; void) =&gt;
+            ReactNode
+          </code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, overrides the default Edit/Delete buttons inside the
+          floating toolbar, allowing you to inject completely custom action
+          buttons or menus.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TableColumn Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>key</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The object key to look up in your <code>data</code> array to populate
+          this specific column's default text value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>header</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The human-readable text title displayed inside the sticky table header
+          for this column.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>sortable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds chevron icons and makes the column header clickable,
+          allowing the user to toggle ascending and descending sorts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>sortType</code>
+        </td>
+        <td>
+          <code>"string" | "number"</code>
+        </td>
+        <td>
+          <code>"string"</code>
+        </td>
+        <td>
+          Determines the comparison math used when sorting this column. Set this
+          to <code>"number"</code> for integers, floats, or parsed timestamps to
+          ensure accurate sorting.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>width</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional fixed CSS width for the column (e.g., <code>"250px"</code>{" "}
+          or <code>"20%"</code>) to prevent layout shifts during pagination.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TableColumn</code>
+        </td>
+        <td>
+          <code>render</code>
+        </td>
+        <td>
+          <code>(row: T) =&gt; ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional function that allows you to override the default text
+          output. Receives the full row object and lets you return custom React
+          nodes (like Avatars, formatted Badges, or complex layouts).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

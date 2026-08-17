@@ -1,20 +1,137 @@
-import { CounterShowcase } from "@/components/site/CounterShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Counter Block
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to flip between the four counter layouts. **When using the `stepper` type, you unlock four unique structural variants** (`default`, `outline`, `soft`, `vertical`) to fit perfectly into horizontal product bars or tight vertical sidebars.
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-You can also apply global color themes (or custom hex codes) that cascade instantly across buttons, strokes, and text elements.
+export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
-_Click the **Code** tab in the preview below to copy the full component engine._
+export default function QuantityStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
 
-<CounterShowcase />
+export const usageOutline = `<CounterBlock
+  type="stepper"
+  variant="outline"
+  label="Select Quantity"
+  initialValue={1}
+  min={1}
+  max={10}
+/>`;
 
----
+export const usageSoft = `<CounterBlock
+  type="stepper"
+  variant="soft"
+  label="Select Quantity"
+  initialValue={1}
+  min={1}
+  max={10}
+/>`;
+
+export const usageVertical = `<CounterBlock
+  type="stepper"
+  variant="vertical"
+  label="Select Quantity"
+  initialValue={1}
+  min={1}
+  max={10}
+/>`;
+
+export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SubscriberTicker() {
+  return (
+    <CounterBlock
+      type="animated"
+      label="Total Subscribers"
+      targetValue={12500}
+      prefix="+"
+    />
+  );
+}`;
+
+export const usageCircular = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function StorageMeter() {
+  return (
+    <CounterBlock
+      type="circular"
+      label="Storage Used"
+      targetValue={78}
+      suffix="%"
+    />
+  );
+}`;
+
+export const usageCountdown = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function LaunchCountdown() {
+  return <CounterBlock type="countdown" label="Next Product Launch" />;
+}`;
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Stepper",
+      subheading: "An interactive quantity picker clamped between `min` and `max`.",
+      props: { type: "stepper" },
+      usage: usageStepper,
+      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
+    },
+    {
+      title: "Outline stepper",
+      subheading: "Use `variant=\"outline\"` for a bordered, transparent stepper.",
+      props: { type: "stepper", variant: "outline" },
+      usage: usageOutline,
+    },
+    {
+      title: "Soft stepper",
+      subheading: "Use `variant=\"soft\"` for a tinted, low-contrast stepper.",
+      props: { type: "stepper", variant: "soft" },
+      usage: usageSoft,
+    },
+    {
+      title: "Vertical stepper",
+      subheading: "Use `variant=\"vertical\"` to stack the controls for tight sidebars.",
+      props: { type: "stepper", variant: "vertical" },
+      usage: usageVertical,
+    },
+    {
+      title: "Animated ticker",
+      subheading: "`type=\"animated\"` interpolates from zero up to `targetValue`.",
+      props: { type: "animated" },
+      usage: usageAnimated,
+    },
+    {
+      title: "Circular progress",
+      subheading: "`type=\"circular\"` draws the value as an animated SVG ring.",
+      props: { type: "circular" },
+      usage: usageCircular,
+    },
+    {
+      title: "Countdown",
+      subheading: "`type=\"countdown\"` ticks down to a launch date.",
+      props: { type: "countdown" },
+      usage: usageCountdown,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -25,6 +142,38 @@ This component relies heavily on `gsap` to handle the rapid number interpolation
 ```bash
 npm install gsap lucide-react
 ```
+
+## Features
+Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
 
 ## Props Reference
 

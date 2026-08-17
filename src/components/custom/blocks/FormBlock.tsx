@@ -27,18 +27,24 @@ export const getThemeStyles = (color: string) => {
 
   // Map standard colors to tailwind variables if not hex
   const colorMap: Record<string, string> = {
+    primary: "var(--primary)",
     indigo: "#4f46e5",
     rose: "#e11d48",
     emerald: "#10b981",
     zinc: "#18181b",
   };
 
-  const finalColor = isHex ? color : colorMap[color] || colorMap.indigo;
+  const finalColor = isHex ? color : colorMap[color] || colorMap.primary;
+  // "primary" tracks the site theme (can be light or dark), so its
+  // button text must track --primary-foreground instead of a fixed white.
+  const finalForeground =
+    !isHex && color === "primary" ? "var(--primary-foreground)" : "#ffffff";
 
   return {
     style: {
       "--theme-color": finalColor,
       "--theme-color-rgb": isHex ? rgb : hexToRgb(finalColor),
+      "--theme-color-foreground": finalForeground,
     } as React.CSSProperties,
   };
 };
@@ -57,7 +63,7 @@ export interface FormWrapperProps {
 
 export function FormWrapper({
   children,
-  color = "indigo",
+  color = "primary",
   title,
   description,
   className,
@@ -73,7 +79,7 @@ export function FormWrapper({
       </div>
 
       {/* Inner Container */}
-      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full shadow-xl z-10">
+      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {/* Header */}
         {(title || description) && (
           <div className="mb-8 border-b border-zinc-100 dark:border-zinc-800/50 pb-6">
@@ -104,10 +110,27 @@ export function FormWrapper({
 }
 
 // ==========================================
-// FORM ERROR (Glitch Effect)
+// FORM ERROR (With Toggleable Glitch Effect)
 // ==========================================
-export function FormError({ message }: { message?: string }) {
+export function FormError({
+  message,
+  variant = "glitch",
+}: {
+  message?: string;
+  variant?: "default" | "glitch";
+}) {
   if (!message) return null;
+
+  if (variant === "default") {
+    return (
+      <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
+        <div className="w-1 h-3 bg-red-500 shrink-0" />
+        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">
+          {message}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -173,10 +196,12 @@ export function FormError({ message }: { message?: string }) {
 export function FormField({
   label,
   error,
+  errorVariant = "glitch",
   children,
 }: {
   label?: string;
   error?: string;
+  errorVariant?: "default" | "glitch";
   children: ReactNode;
 }) {
   return (
@@ -192,7 +217,7 @@ export function FormField({
         </label>
       )}
       {children}
-      <FormError message={error} />
+      <FormError message={error} variant={errorVariant} />
     </div>
   );
 }
@@ -211,12 +236,12 @@ export function FormSubmit({
     <button
       type="submit"
       disabled={isSubmitting}
-      className="relative w-full overflow-hidden rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
+      className="relative w-full overflow-hidden rounded-xl font-bold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
     >
       <div className="absolute inset-0 bg-[var(--theme-color)] transition-opacity group-hover:opacity-90" />
       <div className="relative px-6 py-3.5 flex items-center justify-center gap-2 w-full h-full">
         {isSubmitting ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[var(--theme-color-foreground)]/30 border-t-[var(--theme-color-foreground)] rounded-full animate-spin" />
         ) : (
           children
         )}

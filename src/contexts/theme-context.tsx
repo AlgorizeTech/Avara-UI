@@ -42,10 +42,6 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     const storedDir = localStorage.getItem("dir") as "ltr" | "rtl" | null;
     const root = window.document.documentElement;
 
-    if (storedPrimaryColor) {
-      setPrimaryColor(storedPrimaryColor);
-      root.style.setProperty("--primary", storedPrimaryColor);
-    }
     if (storedFontSize) {
       setFontSize(storedFontSize);
       root.style.fontSize = storedFontSize + "%";
@@ -60,6 +56,8 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
       root.setAttribute("dir", storedDir);
     }
   }, []);
+
+
 
   return (
     <ThemeContext.Provider

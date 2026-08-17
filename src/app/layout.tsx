@@ -3,7 +3,9 @@ import { ThemeProvider } from 'next-themes';
 import { geistMono } from '@/assets/fonts';
 import { PackageManagerProvider } from '@/contexts/package-manager-context';
 import { ThemeContextProvider } from '@/contexts/theme-context';
+import { ThemeCustomizerProvider } from '@/contexts/theme-customizer-context';
 import { ThemeControl } from '@/components/theme-control/theme-control';
+import { ThemeInitScript } from '@/components/theme-control/theme-init-script';
 import { Inter } from 'next/font/google';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { WebVitals } from '@/components/performance/web-vitals';
@@ -30,8 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        {/* Must run before anything paints — keep it first in <head>. */}
+        <ThemeInitScript />
         <MetaTags />
         <CriticalCSS />
         <ResourcePreloader fonts={[]} images={['/logo.svg', '/og-image.png']} />
@@ -41,15 +45,17 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
           <ThemeContextProvider>
-            <PackageManagerProvider>
-              <SolidProgressBar />
+            <ThemeCustomizerProvider>
+              <PackageManagerProvider>
+                <SolidProgressBar />
 
-              <Header />
-              {children}
-              <ThemeControl />
-              <PerformanceMonitor />
-              <WebVitals />
-            </PackageManagerProvider>
+                <Header />
+                {children}
+                <ThemeControl />
+                <PerformanceMonitor />
+                <WebVitals />
+              </PackageManagerProvider>
+            </ThemeCustomizerProvider>
           </ThemeContextProvider>
         </ThemeProvider>
 

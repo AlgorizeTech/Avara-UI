@@ -1,9 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SelectBlock } from "./SelectBlock";
 import {
   AlertCircle,
   ArrowLeft,
+  Check,
   CheckCircle2,
   ChevronDown,
   Clock,
@@ -21,13 +23,16 @@ import {
   User,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+const SORT_OPTIONS = ["Newest", "Oldest"];
+const FALLBACK_STATUSES = ["Open", "Pending", "Resolved", "Closed"];
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type SupportVariant = "default" | "minimal" | "glass";
-export type SupportColor = "indigo" | "rose" | "emerald" | "zinc";
+export type SupportColor = "primary" | "indigo" | "rose" | "emerald" | "zinc";
 export type SupportLayout = "chat" | "table";
 
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
@@ -116,7 +121,21 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
   },
 };
 
+const PRIORITY_OPTIONS = ["Low", "Medium", "High", "Urgent"].map((p) => ({
+  label: p,
+  value: p,
+}));
+
 const colorThemes: Record<SupportColor, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
+    lightBg: "bg-primary/10 text-primary",
+    border: "border-primary",
+    activeBorder: "border-b-2 border-primary",
+    focusRing: "focus:ring-primary/20 focus:border-primary",
+    iconBg: "bg-primary/10 text-primary",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white shadow-indigo-500/20",
@@ -235,6 +254,11 @@ export default function SupportDashboard({
   // === STATE MANAGEMENT ===
   const [tickets, setTickets] = useState<Ticket[]>(data?.tickets || []);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+  // Property dropdown edits, keyed by `${ticketId}-${propertyKey}` so values
+  // don't leak between tickets. Falls back to the ticket's own property value.
+  const [ticketProperties, setTicketProperties] = useState<
+    Record<string, string>
+  >({});
   const [activeReplyTab, setActiveReplyTab] = useState("Reply");
   const [activeDetailsTab, setActiveDetailsTab] = useState("Details");
 
@@ -250,6 +274,55 @@ export default function SupportDashboard({
   // Reply State
   const [replyText, setReplyText] = useState("");
 
+  // Sidebar filter bar. Both buttons already drew a chevron but did nothing —
+  // these back them with real dropdowns. Defaults come from the data's own
+  // labels so the bar reads exactly as before on first paint.
+  const [statusFilter, setStatusFilter] = useState(
+    () => data?.filters?.find((f) => f.id === "status")?.label ?? "All",
+  );
+  const [sortOrder, setSortOrder] = useState(
+    () => data?.filters?.find((f) => f.id === "sort")?.label ?? "Newest",
+  );
+  const [openFilterId, setOpenFilterId] = useState<string | null>(null);
+  const filterBarRef = useRef<HTMLDivElement>(null);
+
+  // Table view: which ticket is open in the email modal, plus its own composer
+  // state so typing there never bleeds into the chat view's reply box.
+  const [modalTicketId, setModalTicketId] = useState<string | null>(null);
+  const [modalReplyText, setModalReplyText] = useState("");
+  const [modalReplyTab, setModalReplyTab] = useState("Reply");
+
+  useEffect(() => {
+    if (!openFilterId) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (!filterBarRef.current?.contains(e.target as Node)) {
+        setOpenFilterId(null);
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [openFilterId]);
+
+  const statusOptions = useMemo(
+    () => [
+      "All",
+      ...(data?.detailsSection?.dropdownOptions?.status ?? FALLBACK_STATUSES),
+    ],
+    [data],
+  );
+
+  const visibleTickets = useMemo(() => {
+    const byStatus =
+      statusFilter === "All"
+        ? tickets
+        : tickets.filter(
+            (t) => t.status.toLowerCase() === statusFilter.toLowerCase(),
+          );
+    // `time` is a display string ("10m ago"), not a timestamp, so the incoming
+    // order is the only reliable chronology — authored newest-first.
+    return sortOrder === "Oldest" ? [...byStatus].reverse() : byStatus;
+  }, [tickets, statusFilter, sortOrder]);
+
   if (!data || !data.tickets)
     return (
       <div className="w-full h-[500px] flex items-center justify-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-500">
@@ -257,11 +330,12 @@ export default function SupportDashboard({
       </div>
     );
 
-  const theme = colorThemes[color];
-  const styles = supportVariants[variant];
+  const theme = colorThemes[color] || colorThemes.indigo;
+  const styles = supportVariants[variant] || supportVariants.default;
 
   // Derive active ticket and metrics from STATE, not static data
   const selectedTicket = tickets.find((t) => t.id === selectedTicketId);
+  const modalTicket = tickets.find((t) => t.id === modalTicketId);
   const totalTickets = tickets.length;
   const openTickets = tickets.filter(
     (t) => t.status.toLowerCase() === "open",
@@ -326,33 +400,48 @@ export default function SupportDashboard({
     });
   };
 
+  // Shared by the chat view's composer and the table view's modal composer, so
+  // a reply sent from either place lands in the same conversation.
+  const appendReply = (ticketId: string, text: string) => {
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.id === ticketId
+          ? {
+              ...ticket,
+              chatHistory: [
+                ...ticket.chatHistory,
+                {
+                  id: Date.now(),
+                  type: "sent",
+                  sender: data.emptyState.userName || "Agent",
+                  initials: "ME",
+                  color: "bg-indigo-500",
+                  message: text,
+                  time: "Just now",
+                  showAvatar: false, // Hide avatar for consecutive agent messages for clean UI
+                } as TicketMessage,
+              ],
+            }
+          : ticket,
+      ),
+    );
+  };
+
   const handleSendReply = () => {
     if (!replyText.trim() || !selectedTicketId) return;
-
-    const updatedTickets = tickets.map((ticket) => {
-      if (ticket.id === selectedTicketId) {
-        return {
-          ...ticket,
-          chatHistory: [
-            ...ticket.chatHistory,
-            {
-              id: Date.now(),
-              type: "sent",
-              sender: data.emptyState.userName || "Agent",
-              initials: "ME",
-              color: "bg-indigo-500",
-              message: replyText,
-              time: "Just now",
-              showAvatar: false, // Hide avatar for consecutive agent messages for clean UI
-            } as TicketMessage,
-          ],
-        };
-      }
-      return ticket;
-    });
-
-    setTickets(updatedTickets);
+    appendReply(selectedTicketId, replyText);
     setReplyText("");
+  };
+
+  const handleSendModalReply = () => {
+    if (!modalReplyText.trim() || !modalTicketId) return;
+    appendReply(modalTicketId, modalReplyText);
+    setModalReplyText("");
+  };
+
+  const closeTicketModal = () => {
+    setModalTicketId(null);
+    setModalReplyText("");
   };
 
   return (
@@ -362,6 +451,184 @@ export default function SupportDashboard({
         styles.wrapper,
       )}
     >
+      {/* === TABLE VIEW: EMAIL / CONVERSATION MODAL === */}
+      {modalTicket && (
+        <div
+          onClick={closeTicketModal}
+          className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={cn(
+              "w-full max-w-2xl max-h-full rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200",
+              variant === "glass"
+                ? "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 backdrop-blur-xl"
+                : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+            )}
+          >
+            <div
+              className={cn(
+                "flex items-start justify-between gap-3 px-5 py-4 border-b shrink-0",
+                variant === "glass"
+                  ? "border-zinc-200 dark:border-white/10"
+                  : "border-zinc-200 dark:border-zinc-800",
+              )}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <BulletproofAvatar
+                  initials={modalTicket.initials}
+                  color={modalTicket.color}
+                  size={40}
+                />
+                <div className="min-w-0">
+                  <div className="text-sm font-bold text-zinc-900 dark:text-white truncate">
+                    {modalTicket.title}
+                  </div>
+                  <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 truncate">
+                    {modalTicket.author} ({modalTicket.company}) •{" "}
+                    <span className={theme.text}>{modalTicket.id}</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={closeTicketModal}
+                className="shrink-0 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Same bubble treatment as the chat view, so an email opened from
+                the table reads identically to one opened from the inbox. */}
+            <div className="flex-1 min-h-0 overflow-y-auto p-5">
+              <div className="flex flex-col gap-6">
+                {modalTicket.chatHistory.map((msg) => {
+                  const isAgent = msg.type === "sent";
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`flex gap-3 w-full ${isAgent ? "flex-row-reverse" : "flex-row"}`}
+                    >
+                      <div
+                        className={`shrink-0 ${!msg.showAvatar && "invisible"}`}
+                      >
+                        <BulletproofAvatar
+                          initials={msg.initials}
+                          color={msg.color || "bg-zinc-600 dark:bg-zinc-700"}
+                          size={32}
+                        />
+                      </div>
+                      <div
+                        className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
+                      >
+                        <div className="flex items-baseline gap-2 px-1">
+                          <span className="text-[11px] font-bold text-zinc-700 dark:text-zinc-400">
+                            {msg.sender}
+                          </span>
+                          <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
+                            {msg.time}
+                          </span>
+                        </div>
+                        <div
+                          className={cn(
+                            "px-4 sm:px-5 py-3 shadow-sm text-sm whitespace-pre-wrap break-words leading-relaxed",
+                            isAgent
+                              ? cn(
+                                  "rounded-2xl rounded-tl-sm border border-transparent",
+                                  theme.bg,
+                                )
+                              : cn(styles.chatBubbleReceived),
+                          )}
+                        >
+                          {msg.message}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Same composer as the chat view: Reply / Note tabs, textarea and
+                send button, writing into the same conversation. */}
+            <div
+              className={cn("p-4 shrink-0 flex-none", styles.chatFooter)}
+            >
+              <div className="bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden shadow-sm">
+                <div className="flex border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217]">
+                  {data.replySection.tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setModalReplyTab(tab)}
+                      className={cn(
+                        "px-5 py-2.5 text-[13px] font-bold transition-colors cursor-pointer",
+                        modalReplyTab === tab
+                          ? cn(
+                              "bg-white dark:bg-[#121217]",
+                              theme.text,
+                              theme.activeBorder,
+                            )
+                          : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 border-b-2 border-transparent",
+                      )}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={modalReplyText}
+                  onChange={(e) => setModalReplyText(e.target.value)}
+                  rows={3}
+                  placeholder={
+                    modalReplyTab === "Reply"
+                      ? data.replySection.placeholder
+                      : "Type an internal note..."
+                  }
+                  className={cn(
+                    "w-full p-4 text-sm resize-none outline-none bg-transparent text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 focus:ring-0",
+                    modalReplyTab !== "Reply" &&
+                      "bg-amber-50/30 dark:bg-amber-900/5",
+                  )}
+                />
+                <div className="flex items-center justify-between px-3 py-2 border-t border-zinc-100 dark:border-zinc-800/80">
+                  <div className="flex items-center gap-1">
+                    <button className="p-2 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer">
+                      <Smile className="w-4 h-4" />
+                    </button>
+                    <button className="p-2 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer">
+                      <Paperclip className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={closeTicketModal}
+                      className="px-4 py-2 rounded-lg text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={handleSendModalReply}
+                      disabled={!modalReplyText.trim()}
+                      className={cn(
+                        "flex items-center gap-2 px-5 py-2 text-white text-xs font-bold rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
+                        modalReplyTab === "Reply"
+                          ? theme.bg
+                          : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20",
+                      )}
+                    >
+                      {modalReplyTab === "Reply"
+                        ? data.replySection.buttonText
+                        : "Add Note"}{" "}
+                      <Send className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* === CREATE TICKET MODAL OVERLAY === */}
       {isCreatingTicket && (
         <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
@@ -369,7 +636,7 @@ export default function SupportDashboard({
             className={cn(
               "w-full max-w-md p-6 rounded-2xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200",
               variant === "glass"
-                ? "bg-zinc-900/90 border border-white/10 backdrop-blur-xl"
+                ? "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 backdrop-blur-xl"
                 : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
             )}
           >
@@ -432,25 +699,18 @@ export default function SupportDashboard({
                   <label className="text-xs font-bold uppercase text-zinc-500">
                     Priority
                   </label>
-                  <select
+                  <SelectBlock
+                    options={PRIORITY_OPTIONS}
                     value={newTicketForm.priority}
-                    onChange={(e) =>
+                    onChange={(v) =>
                       setNewTicketForm({
                         ...newTicketForm,
-                        priority: e.target.value,
+                        priority: v,
                       })
                     }
-                    className={cn(
-                      "p-2.5 text-sm rounded-lg outline-none cursor-pointer appearance-none",
-                      styles.input,
-                      theme.focusRing,
-                    )}
-                  >
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                    <option>Urgent</option>
-                  </select>
+                    color={color}
+                    placeholder="Select priority"
+                  />
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -621,7 +881,11 @@ export default function SupportDashboard({
                   )}
                 >
                   {tickets.map((ticket) => (
-                    <tr key={ticket.id} className={styles.tableRow}>
+                    <tr
+                      key={ticket.id}
+                      onClick={() => setModalTicketId(ticket.id)}
+                      className={styles.tableRow}
+                    >
                       <td
                         className={cn(
                           "px-6 py-4 text-sm font-bold whitespace-nowrap",
@@ -705,6 +969,7 @@ export default function SupportDashboard({
             )}
           >
             <div
+              ref={filterBarRef}
               className={cn(
                 "flex items-center shrink-0 flex-none m-0 p-0",
                 styles.filterBar,
@@ -712,15 +977,89 @@ export default function SupportDashboard({
             >
               {data.filters.map((filter, idx) => {
                 const Icon = ICON_MAP[filter.icon] || List;
+                const isStatus = filter.id === "status";
+                const isSort = filter.id === "sort";
+                // Anything the component doesn't know how to drive keeps its
+                // original inert-label behaviour rather than opening an empty menu.
+                const options = isStatus
+                  ? statusOptions
+                  : isSort
+                    ? SORT_OPTIONS
+                    : null;
+                const selected = isStatus
+                  ? statusFilter
+                  : isSort
+                    ? sortOrder
+                    : filter.label;
+                const isOpen = openFilterId === filter.id;
+
                 return (
-                  <button
+                  <div
                     key={filter.id}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors m-0 cursor-pointer ${idx !== 0 ? (variant === "glass" ? "border-l border-white/10" : "border-l border-zinc-200 dark:border-zinc-800/80") : ""}`}
+                    className={cn(
+                      "relative flex-1 m-0 p-0",
+                      idx !== 0 &&
+                        (variant === "glass"
+                          ? "border-l border-white/10"
+                          : "border-l border-zinc-200 dark:border-zinc-800/80"),
+                    )}
                   >
-                    <Icon className="w-3.5 h-3.5" />
-                    {filter.label} {filter.count && `(${filter.count})`}
-                    <ChevronDown className="w-3 h-3 opacity-50" />
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        options && setOpenFilterId(isOpen ? null : filter.id)
+                      }
+                      className="w-full flex items-center justify-center gap-2 py-3 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors m-0 cursor-pointer"
+                    >
+                      <Icon className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">
+                        {selected} {filter.count && `(${filter.count})`}
+                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "w-3 h-3 opacity-50 shrink-0 transition-transform",
+                          isOpen && "rotate-180",
+                        )}
+                      />
+                    </button>
+
+                    {options && isOpen && (
+                      <div
+                        className={cn(
+                          "absolute left-1 right-1 top-full z-30 mt-1 p-1 rounded-lg border shadow-xl flex flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-150",
+                          variant === "glass"
+                            ? "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-white/10 backdrop-blur-xl"
+                            : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800",
+                        )}
+                      >
+                        {options.map((opt) => {
+                          const active = opt === selected;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => {
+                                if (isStatus) setStatusFilter(opt);
+                                else setSortOrder(opt);
+                                setOpenFilterId(null);
+                              }}
+                              className={cn(
+                                "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-md text-xs font-semibold text-left transition-colors cursor-pointer",
+                                active
+                                  ? cn(theme.lightBg, theme.text)
+                                  : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60",
+                              )}
+                            >
+                              {opt}
+                              {active && (
+                                <Check className="w-3.5 h-3.5 shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -734,7 +1073,12 @@ export default function SupportDashboard({
                     : "divide-zinc-100 dark:divide-zinc-800/60",
                 )}
               >
-                {tickets.map((ticket) => {
+                {visibleTickets.length === 0 && (
+                  <div className="px-4 py-10 text-center text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                    No tickets match this filter.
+                  </div>
+                )}
+                {visibleTickets.map((ticket) => {
                   const isActive = selectedTicketId === ticket.id;
                   return (
                     <div
@@ -1121,20 +1465,25 @@ export default function SupportDashboard({
                             <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1 m-0 p-0">
                               {key.replace(/([A-Z])/g, " $1")}
                             </label>
-                            <select
-                              defaultValue={selectedTicket.properties[key]}
-                              className={cn(
-                                "w-full p-2 rounded-lg text-xs font-semibold outline-none text-zinc-900 dark:text-zinc-100 transition-all cursor-pointer m-0",
-                                styles.input,
-                                theme.focusRing,
-                              )}
-                            >
-                              {options.map((opt) => (
-                                <option key={opt} value={opt}>
-                                  {opt}
-                                </option>
-                              ))}
-                            </select>
+                            <SelectBlock
+                              options={options.map((opt) => ({
+                                label: opt,
+                                value: opt,
+                              }))}
+                              value={
+                                ticketProperties[
+                                  `${selectedTicket.id}-${key}`
+                                ] ?? selectedTicket.properties[key]
+                              }
+                              onChange={(v) =>
+                                setTicketProperties((prev) => ({
+                                  ...prev,
+                                  [`${selectedTicket.id}-${key}`]: v,
+                                }))
+                              }
+                              color={color}
+                              inputSize="sm"
+                            />
                           </div>
                         ))}
                       </div>

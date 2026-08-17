@@ -26,7 +26,8 @@ const colorMap: Record<string, string> = {
 };
 
 const getThemeColor = (color: string) => {
-  return color.startsWith("#") ? color : colorMap[color] || colorMap.indigo;
+  if (color.startsWith("#") || color.startsWith("var(")) return color;
+  return colorMap[color] || "var(--primary)";
 };
 
 // ==========================================
@@ -55,7 +56,7 @@ export interface ChartBlockProps {
 export function ChartBlock({
   data,
   type = "bar",
-  color = "indigo",
+  color = "var(--primary)",
   height = 300,
   className,
   valuePrefix = "",
@@ -131,12 +132,12 @@ function BarChart({
   const gridLines = [1, 0.75, 0.5, 0.25, 0];
 
   return (
-    <div className="relative w-full h-full flex flex-col pt-6 animate-fade">
+    <div className="relative w-full h-full flex flex-col pt-6 pl-12 pr-4 animate-fade">
       {/* Background Grid & Y-Axis */}
-      <div className="absolute inset-0 top-6 bottom-8 flex flex-col justify-between pointer-events-none z-0">
+      <div className="absolute inset-0 top-6 bottom-8 left-12 right-4 flex flex-col justify-between pointer-events-none z-0">
         {gridLines.map((ratio, i) => (
           <div key={i} className="flex items-center w-full relative">
-            <span className="absolute -left-2 -translate-x-full text-[10px] font-medium text-zinc-400">
+            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-zinc-400">
               {prefix}
               {Math.round(maxVal * ratio)}
               {suffix}
@@ -233,12 +234,12 @@ function SmoothLineChart({
   const areaPath = `${smoothPath} L 100 100 L 0 100 Z`;
 
   return (
-    <div className="relative w-full h-full pt-6 pb-8 pl-8 pr-2 animate-fade">
+    <div className="relative w-full h-full pt-6 pb-8 pl-12 pr-4 animate-fade">
       {/* Background Grid */}
-      <div className="absolute inset-0 top-6 bottom-8 left-8 right-2 flex flex-col justify-between pointer-events-none z-0">
+      <div className="absolute inset-0 top-6 bottom-8 left-12 right-4 flex flex-col justify-between pointer-events-none z-0">
         {[1, 0.5, 0].map((ratio, i) => (
           <div key={i} className="flex items-center w-full relative h-0">
-            <span className="absolute -left-2 -translate-x-full text-[10px] font-medium text-zinc-400">
+            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-zinc-400">
               {prefix}
               {Math.round(maxVal * ratio)}
               {suffix}
@@ -254,7 +255,7 @@ function SmoothLineChart({
       <svg
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        className="absolute inset-0 top-6 bottom-8 left-8 right-2 w-[calc(100%-40px)] h-[calc(100%-56px)] overflow-visible z-10"
+        className="absolute inset-0 top-6 bottom-8 left-12 right-4 w-[calc(100%-64px)] h-[calc(100%-56px)] overflow-visible z-10"
       >
         <defs>
           <linearGradient
@@ -294,7 +295,7 @@ function SmoothLineChart({
       </svg>
 
       {/* HTML Interaction Overlay (Perfectly round dots that never squash) */}
-      <div className="absolute inset-0 top-6 bottom-8 left-8 right-2 z-20">
+      <div className="absolute inset-0 top-6 bottom-8 left-12 right-4 z-20">
         {points.map((p, i) => (
           <div
             key={i}

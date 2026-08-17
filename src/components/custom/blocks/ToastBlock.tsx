@@ -14,6 +14,7 @@ export type ToastType = "success" | "error" | "info" | "warning" | "default";
 export type ToastPosition = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  primary: { bg: "bg-primary text-primary-foreground", text: "text-primary", bgSoft: "bg-primary/10", border: "border-primary", glow: "shadow-[0_0_20px_var(--primary)] border-primary" },
   indigo: { bg: "bg-indigo-600 text-white", text: "text-indigo-600 dark:text-indigo-400", bgSoft: "bg-indigo-50 dark:bg-indigo-500/10", border: "border-indigo-600", glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500" },
   rose: { bg: "bg-rose-600 text-white", text: "text-rose-600 dark:text-rose-400", bgSoft: "bg-rose-50 dark:bg-rose-500/10", border: "border-rose-600", glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500" },
   emerald: { bg: "bg-emerald-600 text-white", text: "text-emerald-600 dark:text-emerald-400", bgSoft: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-600", glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500" },
@@ -41,7 +42,7 @@ export const getThemeStyles = (color: string) => {
       style: { "--theme-color": color, "--theme-color-rgb": rgb } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.indigo, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
 // ==========================================

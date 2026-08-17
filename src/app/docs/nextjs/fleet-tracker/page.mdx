@@ -1,20 +1,77 @@
-import { FleetShowcase } from "@/components/site/FleetShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Fleet Tracker Map
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
-## Interactive Showcase
+## Examples
 
-Explore the different architectural variants of the fleet tracker. Switch between the classic split-view (`default`), a floating panel over a light map (`minimal`), or a stunning backdrop-blurred panel (`modern`).
+Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar. The first example's **Code** tab contains the full component source.
 
-Click on any vehicle in the sidebar to dynamically fly the map to its precise latitude/longitude, or click a map marker to highlight it in the sidebar.
+export const usageDefault = `import dynamic from "next/dynamic";
 
-_Click the **Code** tab in the preview below to copy the full component engine or the dynamic usage snippet for your current selection._
+// Leaflet touches \`window\` on import, so the map must be client-only.
+const FleetTracker = dynamic(
+  () => import("@/components/custom/blocks/Fleet-map"),
+  { ssr: false },
+);
 
-<FleetShowcase />
+const fleet = [
+  {
+    id: "VOL-342808",
+    location: "Chelsea, NY",
+    lat: 40.7465,
+    lng: -74.0014,
+    status: "active",
+    speed: "45 mph",
+  },
+  {
+    id: "VOL-954784",
+    location: "Lincoln Harbor, NJ",
+    lat: 40.7621,
+    lng: -74.0205,
+    status: "maintenance",
+    speed: "0 mph",
+  },
+];
 
----
+export default function FleetDashboard() {
+  return <FleetTracker fleetData={fleet} />;
+}`;
+
+export const usageMinimal = `// A floating panel over a light map canvas.
+<FleetTracker variant="minimal" fleetData={fleet} />`;
+
+export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
+<FleetTracker variant="modern" fleetData={fleet} />`;
+
+<ExampleShowcase
+  name="fleet"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Fleet tracker",
+      subheading: "The default split view — a fixed sidebar beside the map canvas, synchronized in both directions.",
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Fleet-map.tsx"),
+    },
+    {
+      title: "Minimal",
+      subheading: "`variant=\"minimal\"` floats the vehicle list as a panel over a light map.",
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Modern",
+      subheading: "`variant=\"modern\"` renders a backdrop-blurred glass panel over a darker canvas.",
+      props: { variant: "modern" },
+      usage: usageModern,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -26,6 +83,42 @@ This component requires `react-leaflet` to manage the map canvas, and `lucide-re
 npm install leaflet react-leaflet lucide-react
 npm install -D @types/leaflet
 ```
+
+### 2. Copy the Component
+
+Create a new file at `components/custom/blocks/Fleet-map.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
+
+## Features
+Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
 
 ## Props Reference
 
@@ -78,10 +171,12 @@ npm install -D @types/leaflet
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc"</code>
+          <code>
+            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
+          </code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the active map markers, sidebar icons,

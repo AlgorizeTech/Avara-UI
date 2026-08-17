@@ -4,11 +4,29 @@ A premium, dependency-free loading indicator component.
 
 Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`. This component consolidates 5 distinct, ultra-smooth animations into a single block.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the variants, scale the sizes, and apply theme colors. The injected animations are buttery-smooth CSS `@keyframes` that require zero external libraries.
+Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
----
+export const usageSpinner = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function BasicLoader() {
+  return ;
+}`;
+
+export const usageDots = ``;
+
+export const usagePulse = ``;
+
+export const usageRing = ``;
+
+export const usageBar = ``;
+
+export const usageSizes = `
+
+`;
+
+export const usageText = ``;
 
 ## Installation
 
@@ -16,7 +34,7 @@ Use the control panel below to test the variants, scale the sizes, and apply the
 
 This component is **100% dependency-free** and relies exclusively on standard Tailwind CSS classes alongside a few lightweight custom `@keyframes` for the specialized staggered animations (like the bouncing dots and the indeterminate bar).
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/LoaderBlock.tsx`.
+You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/LoaderBlock.tsx`.
 
 ---
 
@@ -32,6 +50,26 @@ export default function LoadingState() {
   );
 }
 ```
+
+## Features
+Discover the Loader component's animated states, offering various spinner styles and sizes for indicating background processes.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

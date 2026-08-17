@@ -1,0 +1,383 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Progress
+
+A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards.
+
+This block is split into two composable pieces: the core `<Progress />` bar for the visual fill, and the optional `<ProgressField />` wrapper which automatically handles the layout for labels and percentage text.
+
+## Examples
+
+Each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressDemo() {
+  return <Progress value={45} max={100} />;
+}`;
+
+export const usageField = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function LabelledProgress() {
+  return (
+    <ProgressField label="Database Synchronization Pipeline" value={45} max={100}>
+      <Progress value={45} max={100} variant="glow" />
+    </ProgressField>
+  );
+}`;
+
+export const usageVariants = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressVariants() {
+  return (
+    <div className="flex flex-col gap-6">
+      <ProgressField label="default" value={45} max={100}>
+        <Progress value={45} max={100} variant="default" />
+      </ProgressField>
+
+      <ProgressField label="glass" value={45} max={100}>
+        <Progress value={45} max={100} variant="glass" />
+      </ProgressField>
+
+      <ProgressField label="glow" value={45} max={100}>
+        <Progress value={45} max={100} variant="glow" />
+      </ProgressField>
+
+      <ProgressField label="minimal" value={45} max={100}>
+        <Progress value={45} max={100} variant="minimal" />
+      </ProgressField>
+    </div>
+  );
+}`;
+
+export const usageSizes = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ProgressSizes() {
+  return (
+    <div className="flex flex-col gap-6">
+      <ProgressField label='barSize="sm"' value={45} max={100}>
+        <Progress value={45} max={100} variant="glow" barSize="sm" />
+      </ProgressField>
+
+      <ProgressField label='barSize="md"' value={45} max={100}>
+        <Progress value={45} max={100} variant="glow" barSize="md" />
+      </ProgressField>
+
+      <ProgressField label='barSize="lg"' value={45} max={100}>
+        <Progress value={45} max={100} variant="glow" barSize="lg" />
+      </ProgressField>
+    </div>
+  );
+}`;
+
+export const usageFormatted = `import { useState } from "react";
+import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function StorageWidget() {
+  const [usedSpace] = useState(72); // 72 GB of 100 GB
+
+  return (
+    <ProgressField
+      label="Storage Usage"
+      value={usedSpace}
+      max={100}
+      valueFormat={(value, max) => \`\${value} GB / \${max} GB\`}
+    >
+      <Progress value={usedSpace} max={100} variant="glow" barSize="md" />
+    </ProgressField>
+  );
+}`;
+
+export const usageSteps = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function WizardProgress() {
+  const step = 2;
+  const totalSteps = 4;
+
+  return (
+    // showValue={false} hides the percentage when the label already says it.
+    <ProgressField
+      label={\`Step \${step} of \${totalSteps} — Billing details\`}
+      value={step}
+      max={totalSteps}
+      showValue={false}
+    >
+      <Progress value={step} max={totalSteps} variant="default" barSize="sm" />
+    </ProgressField>
+  );
+}`;
+
+<ExampleShowcase
+  name="progress"
+  colorControl
+  colorLabel="Accent Brand Theme"
+  columns={1}
+  examples={[
+    {
+      title: "Progress",
+      subheading: "The bare bar — `value` and `max` are all it needs.",
+      props: { example: "bare", variant: "default", value: 45 },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ProgressBlock.tsx"),
+    },
+    {
+      title: "With label",
+      subheading: "Wrap it in `ProgressField` to align a label and the percentage above the bar.",
+      props: { example: "field", variant: "glow", value: 45 },
+      usage: usageField,
+    },
+    {
+      title: "Variants",
+      subheading: "Use the `variant` prop to change the track and indicator style.",
+      props: { showAll: "variants", value: 45 },
+      usage: usageVariants,
+    },
+    {
+      title: "Sizes",
+      subheading: "Use the `barSize` prop to change the bar thickness.",
+      props: { showAll: "sizes", variant: "glow", value: 45 },
+      usage: usageSizes,
+    },
+    {
+      title: "Custom value format",
+      subheading: "`valueFormat` replaces the percentage with any text you want.",
+      props: { example: "formatted", variant: "glow", value: 72 },
+      usage: usageFormatted,
+    },
+    {
+      title: "Step indicator",
+      subheading: "Set `showValue={false}` and a small `max` for wizard-style progress.",
+      props: { example: "steps", variant: "default", barSize: "sm", value: 2, max: 4 },
+      usage: usageSteps,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component handles its own internal transition math and relies purely on standard Tailwind utilities.
+
+Create a new file at `components/custom/blocks/ProgressBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+
+
+## Features
+Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>The current progress value to display.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>max</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>100</code>
+        </td>
+        <td>The maximum possible value. Used internally to calculate the percentage fill.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glass" | "glow" | "minimal"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Determines the visual styling of the track background and the active indicator fill.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>Applies the active color theme to the progress indicator. Fully supports custom hex codes.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>barSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>Adjusts the vertical thickness (height) of the progress bar track and indicator.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>indicatorClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Optional Tailwind classes to append directly to the moving inner fill element.</td>
+      </tr>
+
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>The text or React element to display on the top-left above the progress bar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>The current numerical value passed down to handle display formatting.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>max</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>100</code>
+        </td>
+        <td>The maximum numerical value passed down to handle display formatting.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>showValue</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>If true, displays the current value/percentage on the top-right above the progress bar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>valueFormat</code>
+        </td>
+        <td>
+          <code>(value: number, max: number) => ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>A custom formatter function. If not provided, it defaults to calculating and displaying <code>[percentage]%</code>.</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

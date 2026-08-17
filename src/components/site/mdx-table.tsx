@@ -237,7 +237,7 @@ export function MdxTable({
         elements.push(
           <code
             key={match.index}
-            className="px-2 py-1 text-xs font-mono bg-zinc-100 dark:bg-zinc-800 rounded border mx-0.5"
+            className="font-mono font-extrabold text-xs text-zinc-900 dark:text-zinc-100 bg-transparent border-none p-0"
           >
             {codeContent}
           </code>

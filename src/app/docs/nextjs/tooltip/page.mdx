@@ -1,4 +1,5 @@
-import { TooltipShowcase } from "@/components/site/TooltipShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Tooltip
 
@@ -6,13 +7,268 @@ A context-aware popup that displays information when an element receives keyboar
 
 Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
 
-## Interactive Showcase
+## Examples
 
-Hover over or tab to the center icon to see the tooltip render. Use the controls to test how the dynamic `getBoundingClientRect` math positions the portal perfectly across all sides and alignments.
+Hover or tab to each trigger to open its tooltip. The first example's **Code** tab contains the full component source.
 
-<TooltipShowcase />
+export const usageDefault = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import { Plus } from "lucide-react";
 
----
+export default function TooltipDemo() {
+  return (
+    // Wrap your app (or the nearest parent) once.
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+            <Plus className="w-6 h-6" />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p>Create new project</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageSides = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+
+export default function TooltipSides() {
+  return (
+    <TooltipProvider>
+      <div className="flex flex-wrap gap-6">
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              top
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="top">Side: top</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              right
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">Side: right</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              bottom
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Side: bottom</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              left
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="left">Side: left</TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageAlign = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+
+export default function TooltipAlign() {
+  return (
+    <TooltipProvider>
+      <div className="flex flex-col gap-6">
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-56 h-12 flex items-center justify-center rounded-xl border">
+              align="start"
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" align="start">
+            Aligned start
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-56 h-12 flex items-center justify-center rounded-xl border">
+              align="center"
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" align="center">
+            Aligned center
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="w-56 h-12 flex items-center justify-center rounded-xl border">
+              align="end"
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" align="end">
+            Aligned end
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageDelay = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+
+export default function TooltipDelay() {
+  return (
+    <TooltipProvider>
+      <div className="flex gap-6">
+        {/* Opens the moment the pointer lands */}
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              0ms
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>Opens instantly</TooltipContent>
+        </Tooltip>
+
+        {/* Waits, so a passing cursor doesn't flash the bubble */}
+        <Tooltip delayDuration={700}>
+          <TooltipTrigger>
+            <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+              700ms
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>Waits 700ms</TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageRich = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import { Settings } from "lucide-react";
+
+export default function RichTooltip() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <button className="p-3 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800">
+            <Settings className="w-6 h-6" />
+          </button>
+        </TooltipTrigger>
+        {/* className lands on the bubble — widen it and lay out real content */}
+        <TooltipContent side="top" className="max-w-[220px] p-3">
+          <p className="font-semibold mb-1">System preferences</p>
+          <p className="opacity-80">
+            Theme, notifications and keyboard shortcuts live here.
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageOffset = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import { Plus } from "lucide-react";
+
+export default function OffsetTooltip() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
+            <Plus className="w-6 h-6" />
+          </div>
+        </TooltipTrigger>
+        {/* sideOffset is the gap in px between trigger and bubble */}
+        <TooltipContent side="right" sideOffset={16}>
+          <p>Create new project</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`;
+
+<ExampleShowcase
+  name="tooltip"
+  columns={1}
+  examples={[
+    {
+      title: "Tooltip",
+      subheading: "Compose `Tooltip`, `TooltipTrigger` and `TooltipContent` inside a `TooltipProvider`.",
+      props: { example: "single", side: "top", align: "center" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TooltipBlock.tsx"),
+    },
+    {
+      title: "Sides",
+      subheading: "Use the `side` prop to place the bubble above, below or beside the trigger.",
+      props: { example: "sides" },
+      usage: usageSides,
+    },
+    {
+      title: "Alignment",
+      subheading: "`align` shifts the bubble along the chosen side — start, center or end.",
+      props: { example: "align" },
+      usage: usageAlign,
+    },
+    {
+      title: "Delay",
+      subheading: "`delayDuration` controls how long a hover must last before the tooltip opens.",
+      props: { example: "delay" },
+      usage: usageDelay,
+    },
+    {
+      title: "Rich content",
+      subheading: "`TooltipContent` takes any children plus a `className` for width and padding.",
+      props: { example: "rich" },
+      usage: usageRich,
+    },
+    {
+      title: "Offset",
+      subheading: "`sideOffset` sets the gap in pixels between the trigger and the bubble.",
+      props: { example: "single", side: "right", align: "center", sideOffset: 16 },
+      usage: usageOffset,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -20,43 +276,7 @@ Hover over or tab to the center icon to see the tooltip render. Use the controls
 
 This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/TooltipBlock.tsx`.
-
----
-
-## Usage
-
-The Tooltip leverages a highly composable architecture. Ensure you wrap your application (or the immediate parent) in a `<TooltipProvider>`.
-
-```tsx
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/custom/blocks/TooltipBlock";
-import { Info } from "lucide-react";
-
-export default function IconRow() {
-  return (
-    <TooltipProvider>
-      <div className="flex gap-4">
-        <Tooltip delayDuration="{300}">
-          <TooltipTrigger>
-            {/* The trigger automatically handles focus/hover states */}
-            <button className="p-2 bg-gray-100 rounded-full">
-              <Info className="w-4 h-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="top" align="center">
-            View detailed analytics
-          </TooltipContent>
-        </Tooltip>
-      </div>
-    </TooltipProvider>
-  );
-}
-```
+Create a new file at `components/custom/blocks/TooltipBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

@@ -35,8 +35,10 @@ export function DarkModeControl() {
   };
 
   return (
-    <div className="space-y-3">
-      <p>Mode</p>
+    <div className="space-y-2.5">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+        Mode
+      </span>
       <div className="flex gap-2">
         {renderTile("light", Sun, "Light")}
         {renderTile("dark", Moon, "Dark")}

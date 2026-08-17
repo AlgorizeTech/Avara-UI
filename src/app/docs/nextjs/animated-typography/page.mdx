@@ -1,0 +1,391 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Animated Typography
+
+A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced, staggered visual effects and deep layout controls.
+
+Building animated text that scales responsively and doesn't break screen readers is tricky. Standard staggered character animations often result in screen readers spelling out words letter-by-letter. This `AnimatedTypographyBlock` automatically wraps your content in an `sr-only` tag for assistive technologies, while orchestrating the visual animations on hidden child spans.
+
+It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
+
+
+## Examples
+
+Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it. The first example's **Code** tab contains the full component source.
+
+export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function LandingHeader() {
+  return (
+    <div className="flex flex-col max-w-3xl">
+      {/* 3D flip reveal */}
+      <AnimatedTypographyBlock
+        as="h1"
+        variant="flip-up"
+        align="center"
+        size="6xl"
+        text="The Future of User Interfaces."
+      />
+
+      {/* Staggered subheadline, started after the headline */}
+      <AnimatedTypographyBlock
+        as="p"
+        variant="reveal"
+        align="center"
+        size="1.25rem"
+        delay={400}
+        speed={1.5}
+        text="Build faster, accessible, and stunning applications."
+      />
+    </div>
+  );
+}`;
+
+export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function MaskReveals() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* Words slide up out of a clipping mask, fading as they go. */}
+      <AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+
+      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
+      <AnimatedTypographyBlock as="h3" variant="reveal" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function TransformEntrances() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* 3D rotateX around each word's bottom edge. */}
+      <AnimatedTypographyBlock as="h3" variant="flip-up" text="The quick brown fox." />
+
+      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
+      <AnimatedTypographyBlock as="h3" variant="pop-in" text="The quick brown fox." />
+
+      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
+      <AnimatedTypographyBlock as="h3" variant="blur-in" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ContinuousEffects() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* Red/blue clipped copies drift behind the text, forever. */}
+      <AnimatedTypographyBlock as="h3" variant="glitch" text="The quick brown fox." />
+
+      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
+      <AnimatedTypographyBlock as="h3" variant="glow" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WholeStringVariants() {
+  return (
+    <div className="flex flex-col gap-8">
+      {/* The one character-by-character effect — types out, then blinks. */}
+      <AnimatedTypographyBlock as="h3" variant="typewriter" speed={1} text="The quick brown fox." />
+
+      {/* No motion at all: the block's sizing and semantics, nothing else. */}
+      <AnimatedTypographyBlock as="h3" variant="none" text="The quick brown fox." />
+    </div>
+  );
+}`;
+
+export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
+// intact no matter which effect you use.
+<AnimatedTypographyBlock as="h1" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="p" variant="fade-up" text="The quick brown fox." />
+<AnimatedTypographyBlock as="blockquote" variant="fade-up" text="The quick brown fox." />`;
+
+export const usageAlign = `<AnimatedTypographyBlock as="p" align="left" text={copy} />
+<AnimatedTypographyBlock as="p" align="center" text={copy} />
+<AnimatedTypographyBlock as="p" align="right" text={copy} />
+<AnimatedTypographyBlock as="p" align="justify" text={copy} />`;
+
+export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
+// unaffected either way.
+<AnimatedTypographyBlock as="h2" size="5xl" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" size="24px" text="The quick brown fox." />
+<AnimatedTypographyBlock as="h2" size="2rem" text="The quick brown fox." />`;
+
+<ExampleShowcase
+  name="animated-typography"
+  colorControl
+  colorLabel="Text Color"
+  columns={1}
+  examples={[
+    {
+      title: "Animated typography",
+      subheading: "Pass `text` rather than children — the component mirrors it into an `sr-only` node so screen readers never spell it out character by character.",
+      props: { tag: "h1", variant: "flip-up", align: "center" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
+    },
+    {
+      title: "Masked reveals",
+      subheading: "Both slide each word up out of a clipping mask — `fade-up` fades as it rises, `reveal` stays solid on a sharper curve.",
+      props: { variants: ["fade-up", "reveal"] },
+      usage: usageMaskReveals,
+    },
+    {
+      title: "Transform entrances",
+      subheading: "Word-by-word entrances that transform rather than slide: a 3D `flip-up`, a springy `pop-in`, and a `blur-in` that resolves from 12px of blur.",
+      props: { variants: ["flip-up", "pop-in", "blur-in"] },
+      usage: usageTransformEntrances,
+    },
+    {
+      title: "Continuous effects",
+      subheading: "These two never settle — `glitch` drifts red/blue copies behind the text and `glow` pulses a halo. Reserve them for short display text.",
+      props: { variants: ["glitch", "glow"] },
+      usage: usageContinuous,
+    },
+    {
+      title: "Typewriter & no animation",
+      subheading: "The two that leave the string whole instead of splitting it into words: `typewriter` types it out character by character, `none` renders it plainly.",
+      props: { variants: ["typewriter", "none"] },
+      usage: usageWholeString,
+    },
+    {
+      title: "Semantic tags",
+      subheading: "Use the `as` prop to choose the rendered element — heading levels keep their document meaning.",
+      props: { showAll: "tags" },
+      usage: usageTags,
+    },
+    {
+      title: "Alignment",
+      subheading: "Use the `align` prop to set the text alignment.",
+      props: { showAll: "align" },
+      usage: usageAlign,
+    },
+    {
+      title: "Size override",
+      subheading: "Use the `size` prop to override the visual size without changing the tag — Tailwind steps and raw CSS lengths both work.",
+      props: { showAll: "sizes" },
+      usage: usageSizes,
+    },
+  ]}
+/>
+
+## Installation
+
+### Copy the Component
+
+This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
+
+Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTypographyBlock.tsx`.
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The text content to render. Staggered variants (like{" "}
+          <code>fade-up</code> or <code>pop-in</code>) automatically split this
+          string by spaces to animate word-by-word.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>
+            "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" |
+            "blockquote"
+          </code>
+        </td>
+        <td>
+          <code>"p"</code>
+        </td>
+        <td>
+          The semantic HTML tag to render. Automatically applies sensible
+          responsive sizing based on the tag unless overridden by the{" "}
+          <code>size</code> prop.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>
+            "fade-up" | "reveal" | "flip-up" | "blur-in" | "pop-in" |
+            "typewriter" | "glitch" | "glow" | "none"
+          </code>
+        </td>
+        <td>
+          <code>"fade-up"</code>
+        </td>
+        <td>The animation effect applied to the text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"left" | "center" | "right" | "justify"</code>
+        </td>
+        <td>
+          <code>"left"</code>
+        </td>
+        <td>Controls the CSS text alignment of the underlying container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Overrides the default tag size. Supports Tailwind scale sizes (e.g.,{" "}
+          <code>"sm"</code>, <code>"3xl"</code>) OR standard CSS values (e.g.,{" "}
+          <code>"24px"</code>, <code>"2rem"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "zinc" | "default" | string
+          </code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          The text color. If <code>"default"</code>, it inherits the parent
+          container's color. Fully supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>delay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The initial delay in milliseconds before the animation begins.
+          Essential for sequencing multiple typography blocks (e.g., fading a
+          subheadline in after the main headline).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          A multiplier for the animation speed. Lower numbers mean faster
+          animations (e.g., <code>0.5</code> makes the staggered delays run
+          twice as fast).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

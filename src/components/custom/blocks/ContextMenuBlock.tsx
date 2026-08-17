@@ -46,18 +46,58 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
   if (!context) throw new Error("ContextMenuTrigger must be used within a ContextMenu");
 
   const { setOpen, setCoords } = context;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const openMenuAt = (x: number, y: number) => {
+    setCoords({ x, y });
+    setOpen(true);
+  };
 
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault(); // Stop the native browser menu
     e.stopPropagation();
-    setCoords({ x: e.clientX, y: e.clientY });
-    setOpen(true);
+    openMenuAt(e.clientX, e.clientY);
+  };
+
+  // Long press for mobile touch screens
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      const x = touch.clientX;
+      const y = touch.clientY;
+      timerRef.current = setTimeout(() => {
+        openMenuAt(x, y);
+      }, 500); // 500ms long press
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const handleTouchMove = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Also trigger on left click if desired for user convenience
+    openMenuAt(e.clientX, e.clientY);
   };
 
   return (
     <div
       onContextMenu={handleContextMenu}
-      className={cn("w-full h-full", className)}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+      className={cn("w-full h-full select-none cursor-pointer", className)}
       {...props}
     >
       {children}
@@ -76,6 +116,7 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
 
   const { open, setOpen, coords } = context;
   const contentRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const [mounted, setMounted] = useState(false);
   const [adjustedCoords, setAdjustedCoords] = useState({ x: -9999, y: -9999 });
   const [visible, setVisible] = useState(false);
@@ -96,18 +137,34 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
       const menu = contentRef.current;
       if (!menu) return;
 
+      // Resolve the window & viewport width the menu lives in (supports iframe rendering).
+      const win = menu.ownerDocument.defaultView ?? window;
+      const viewportWidth = win.document.documentElement.clientWidth || win.innerWidth;
+      const viewportHeight = win.document.documentElement.clientHeight || win.innerHeight;
+
       const rect = menu.getBoundingClientRect();
       let x = coords.x;
       let y = coords.y;
 
-      // Prevent opening off the right edge
-      if (x + rect.width > window.innerWidth) {
-        x = window.innerWidth - rect.width - 8;
+      // On small screens, if clicking near the right half or if menu extends near right edge, shift left
+      if (x + rect.width > viewportWidth - 16 || (viewportWidth < 640 && x > viewportWidth / 2)) {
+        x = Math.max(12, x - rect.width);
+        if (x + rect.width > viewportWidth - 12) {
+          x = Math.max(12, viewportWidth - rect.width - 16);
+        }
       }
-      
+      // Prevent opening off the left edge
+      if (x < 12) {
+        x = 12;
+      }
+
       // Prevent opening off the bottom edge
-      if (y + rect.height > window.innerHeight) {
-        y = window.innerHeight - rect.height - 8;
+      if (y + rect.height > viewportHeight - 16) {
+        y = Math.max(12, viewportHeight - rect.height - 16);
+      }
+      // Prevent opening off the top edge
+      if (y < 12) {
+        y = 12;
       }
 
       setAdjustedCoords({ x, y });
@@ -137,22 +194,32 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
       setOpen(false); // Typically scrolling dismisses a context menu
     };
 
-    document.addEventListener("mousedown", handleInteractOutside);
-    document.addEventListener("touchstart", handleInteractOutside);
-    document.addEventListener("keydown", handleEscape);
-    window.addEventListener("scroll", handleScroll, true);
+    // Listen on the document/window the menu actually lives in (supports iframe rendering).
+    const doc = contentRef.current?.ownerDocument ?? document;
+    const win = doc.defaultView ?? window;
+
+    doc.addEventListener("mousedown", handleInteractOutside);
+    doc.addEventListener("touchstart", handleInteractOutside);
+    doc.addEventListener("keydown", handleEscape);
+    win.addEventListener("scroll", handleScroll, true);
 
     return () => {
-      document.removeEventListener("mousedown", handleInteractOutside);
-      document.removeEventListener("touchstart", handleInteractOutside);
-      document.removeEventListener("keydown", handleEscape);
-      window.removeEventListener("scroll", handleScroll, true);
+      doc.removeEventListener("mousedown", handleInteractOutside);
+      doc.removeEventListener("touchstart", handleInteractOutside);
+      doc.removeEventListener("keydown", handleEscape);
+      win.removeEventListener("scroll", handleScroll, true);
     };
   }, [open, setOpen]);
 
-  if (!mounted || !open) return null;
+  if (!mounted || !open) return <span ref={anchorRef} hidden />;
 
-  return createPortal(
+  // Portal into the anchor's own document (supports iframe rendering).
+  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {createPortal(
     <div
       ref={contentRef}
       role="menu"
@@ -162,7 +229,7 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
         opacity: visible ? 1 : 0,
       }}
       className={cn(
-        "fixed z-[9999] min-w-[12rem] overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150",
+        "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150 text-xs sm:text-sm",
         className
       )}
       onClick={(e) => e.stopPropagation()}
@@ -171,7 +238,9 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
     >
       {children}
     </div>,
-    document.body
+    portalTarget
+      )}
+    </>
   );
 }
 

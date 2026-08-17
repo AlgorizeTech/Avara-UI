@@ -1,4 +1,5 @@
-import { PaginationShowcase } from "@/components/site/PaginationShowcase";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
 
 # Pagination
 
@@ -6,13 +7,149 @@ A complex navigation component that intelligently handles page rendering, ellips
 
 Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the calculation logic. Try dragging the `Total Pages` slider all the way up to 100, and then click through the page numbers in the preview to see how the ellipses dynamically shift to keep the UI clean.
+Click through the page numbers in each preview to watch the ellipses shift. The first example's **Code** tab contains the full component source.
 
-<PaginationShowcase />
+export const usageDefault = `import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
----
+export default function BasicPagination() {
+  // You own the page state — the component only reports the new number.
+  const [currentPage, setCurrentPage] = useState(1);
+
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={10}
+      onPageChange={setCurrentPage}
+    />
+  );
+}`;
+
+export const usageManyPages = `import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function DeepPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // With 100 pages the block renders 1 … 48 49 [50] 51 52 … 100 and keeps
+  // the window centred as you move.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={100}
+      onPageChange={setCurrentPage}
+    />
+  );
+}`;
+
+export const usageSiblingCount = `import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function TightPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // siblingCount is how many numbers sit either side of the active page.
+  // 1 keeps the control narrow on mobile; the default is 2.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={100}
+      onPageChange={setCurrentPage}
+      siblingCount={1}
+    />
+  );
+}`;
+
+export const usageNoEdges = `import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function NumbersOnlyPagination() {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // showEdges={false} drops the Previous / Next controls.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={10}
+      onPageChange={setCurrentPage}
+      showEdges={false}
+    />
+  );
+}`;
+
+export const usageTable = `import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+const PER_PAGE = 5;
+
+export default function CustomerDirectory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = 50;
+  const totalPages = Math.ceil(totalItems / PER_PAGE);
+
+  const start = (currentPage - 1) * PER_PAGE + 1;
+  const end = Math.min(currentPage * PER_PAGE, totalItems);
+
+  return (
+    <div className="border rounded-xl p-6">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-semibold">Customer Directory</h3>
+          <p className="text-xs text-zinc-500">
+            Showing {start} to {end} of {totalItems} entries
+          </p>
+        </div>
+      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="pagination"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Pagination",
+      subheading: "Hold `currentPage` yourself and update it from `onPageChange`.",
+      props: { example: "bare", totalPages: 10, currentPage: 1 },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
+    },
+    {
+      title: "Many pages",
+      subheading: "The window stays centred on the active page and collapses the rest into `…`.",
+      props: { example: "bare", totalPages: 100, currentPage: 50 },
+      usage: usageManyPages,
+    },
+    {
+      title: "Sibling count",
+      subheading: "`siblingCount` sets how many numbers flank the active page (default `2`).",
+      props: { example: "bare", totalPages: 100, currentPage: 50, siblingCount: 1 },
+      usage: usageSiblingCount,
+    },
+    {
+      title: "Without edge controls",
+      subheading: "Set `showEdges={false}` to drop the Previous / Next buttons.",
+      props: { example: "bare", totalPages: 10, currentPage: 1, showEdges: false },
+      usage: usageNoEdges,
+    },
+    {
+      title: "In a data table",
+      subheading: "Derive `totalPages` from your row count and pair it with a range readout.",
+      props: { example: "table", totalPages: 10, currentPage: 1 },
+      usage: usageTable,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -20,34 +157,7 @@ Use the control panel below to test the calculation logic. Try dragging the `Tot
 
 This component is **100% dependency-free**. It uses standard React `useMemo` hooks to calculate the page ranges and Tailwind CSS for the styling.
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/PaginationBlock.tsx`.
-
----
-
-## Usage
-
-You must maintain the `currentPage` state in your parent component. Pass this state, along with the `totalPages`, into the `Pagination` component, and it will handle the rest.
-
-```tsx
-import { useState } from "react";
-import { Pagination } from "@/components/custom/blocks/PaginationBlock";
-
-export default function DataTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 25; // Typically calculated from your API response
-
-  return (
-    <div className="w-full flex flex-col gap-8">
-      <Pagination
-        currentPage="{currentPage}"
-        totalPages="{totalPages}"
-        onPageChange="{setCurrentPage}"
-        siblingCount="{1}"
-      />
-    </div>
-  );
-}
-```
+Create a new file at `components/custom/blocks/PaginationBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 
@@ -112,7 +222,7 @@ export default function DataTable() {
           <code>number</code>
         </td>
         <td>
-          <code>1</code>
+          <code>2</code>
         </td>
         <td>
           Determines how many page buttons to show on either side of the{" "}

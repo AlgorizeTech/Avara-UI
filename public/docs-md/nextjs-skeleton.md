@@ -4,14 +4,35 @@ A high-performance visual placeholder system used to reduce perceived loading ti
 
 While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
 
-## Interactive Showcase
+## Examples
 
-Use the control panel below to test the different animation styles and structural variants.
+Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
 
-- The `card` and `profile` variants are composite elements that automatically arrange multiple skeleton layers.
-- The `custom` variant demonstrates how you can piece together atomic skeletons using exact pixel values and radii.
+export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
----
+export default function CardSkeleton() {
+  return ;
+}`;
+
+export const usageProfile = ``;
+
+export const usageText = ``;
+
+export const usageRect = ``;
+
+export const usageCircle = ``;
+
+export const usagePulse = ``;
+
+export const usageNone = ``;
+
+export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CustomSkeleton() {
+  return (
+
+  );
+}`;
 
 ## Installation
 
@@ -52,6 +73,26 @@ export default function CustomDashboardLoader() {
   );
 }
 ```
+
+## Features
+Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
+
+    Customizable
+    Easily adapt the component's styling and behavior to fit your application's unique design system.
+
+    Accessible
+    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+    Responsive
+    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+    Performant
+    Optimized for maximum performance with minimal re-renders and efficient state management.
+
+## Best Practices & Guidelines
+
+    Usage Guidelines
+    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 

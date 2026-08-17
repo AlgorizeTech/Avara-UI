@@ -19,12 +19,14 @@ import { useEffect, useRef, useState } from "react";
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
 export type ChatVariant = "default" | "minimal" | "glass";
-export type ChatColor = "indigo" | "rose" | "emerald" | "zinc";
+
+// Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
+export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-xl rounded-2xl",
+      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl",
     sidebar:
       "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
     main: "bg-white dark:bg-[#09090b]",
@@ -55,7 +57,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl",
     sidebar:
       "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
     main: "bg-transparent",
@@ -71,7 +73,16 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
   },
 };
 
-const colorThemes: Record<ChatColor, Record<string, string>> = {
+const colorThemes: Record<string, Record<string, string>> = {
+  primary: {
+    text: "text-primary",
+    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
+    lightBg: "bg-primary/10 text-primary",
+    gradient: "from-primary to-primary/80",
+    shadow: "shadow-primary/20",
+    focusRing:
+      "focus-within:border-primary/30 focus-within:ring-primary/10 dark:focus-within:ring-primary/20",
+  },
   indigo: {
     text: "text-indigo-500 dark:text-indigo-400",
     bg: "bg-indigo-500 hover:bg-indigo-600 text-white",
@@ -176,14 +187,36 @@ export default function ChatApp({
   currentUser,
   contactsData,
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   currentUser: CurrentUser;
   contactsData: Contact[];
   variant?: ChatVariant;
   color?: ChatColor;
 }) {
-  const theme = colorThemes[color];
+  // Custom hex injection logic
+  const isCustomHex = color?.startsWith("#");
+  const customVars = isCustomHex
+    ? ({
+        "--chat-custom": color,
+        "--chat-custom-10": `${color}1a`,
+        "--chat-custom-20": `${color}33`,
+        "--chat-custom-50": `${color}80`,
+      } as React.CSSProperties)
+    : {};
+
+  const theme = isCustomHex
+    ? {
+        text: "text-[var(--chat-custom)]",
+        bg: "bg-[var(--chat-custom)] hover:brightness-110 text-white",
+        lightBg: "bg-[var(--chat-custom-10)] text-[var(--chat-custom)]",
+        gradient: "from-[var(--chat-custom)] to-[var(--chat-custom-50)]",
+        shadow: "shadow-[0_4px_14px_0_var(--chat-custom-20)]",
+        focusRing:
+          "focus-within:border-[var(--chat-custom-50)] focus-within:ring-2 focus-within:ring-[var(--chat-custom-20)]",
+      }
+    : colorThemes[color] || colorThemes["primary"];
+
   const styles = chatVariants[variant];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -220,6 +253,16 @@ export default function ChatApp({
       chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
     }
   }, [chatHistories, activeContact, isTyping]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const filteredContacts = contacts.filter((contact) => {
     const matchesSearch = contact.name
@@ -308,15 +351,16 @@ export default function ChatApp({
 
   return (
     <div
+      style={customVars}
       className={cn(
-        "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
+        "w-full max-w-full h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,
       )}
     >
       {/* === LEFT SIDEBAR === */}
       <aside
         className={cn(
-          `absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`,
+          `absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`,
           styles.sidebar,
         )}
       >
