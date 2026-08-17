@@ -1,0 +1,181 @@
+#!/usr/bin/env node
+/**
+ * Registry drift checks.
+ *
+ * Run with: npm run check:registry
+ *
+ * registry.json is generated and public/r/ is built from it, but generated
+ * artifacts go stale the moment someone renames a source file and doesn't
+ * re-run the pipeline. These assertions make that failure loud instead of
+ * silent — a stale registry ships broken code into other people's projects,
+ * which is exactly how public/registry/button.json came to contain the demo
+ * component instead of the real one.
+ *
+ * Exit code 1 on any FAIL. WARNs are reported but do not block.
+ */
+
+import fs from "fs";
+import path from "path";
+
+const ROOT = path.resolve(__dirname, "../..");
+const REGISTRY = path.join(ROOT, "registry.json");
+const OUT_DIR = path.join(ROOT, "public/r");
+const DEMOS_DIR = path.join(ROOT, "src/preview/demos");
+
+type Item = {
+  name: string;
+  description: string;
+  files: { path: string; target: string }[];
+  registryDependencies?: string[];
+};
+
+const failures: string[] = [];
+const warnings: string[] = [];
+
+const fail = (msg: string) => failures.push(msg);
+const warn = (msg: string) => warnings.push(msg);
+
+// ---------------------------------------------------------------------------
+
+if (!fs.existsSync(REGISTRY)) {
+  console.error("FAIL: registry.json does not exist. Run: npm run generate:registry");
+  process.exit(1);
+}
+
+const registry = JSON.parse(fs.readFileSync(REGISTRY, "utf8"));
+const items: Item[] = registry.items ?? [];
+const names = new Set(items.map((i) => i.name));
+
+console.log(`Checking ${items.length} registry items...\n`);
+
+// --- 1. Every declared source file resolves on disk -------------------------
+for (const item of items) {
+  for (const f of item.files) {
+    if (!fs.existsSync(path.join(ROOT, f.path))) {
+      fail(`[${item.name}] source path does not exist: ${f.path}`);
+    }
+  }
+}
+
+// --- 2. Every registryDependency resolves ---------------------------------
+// Intra-registry dependencies MUST be absolute URLs. A bare name resolves
+// against shadcn's upstream registry, and shadcn ships items called `select`,
+// `card`, `button` and `table` — so a bare name would silently install the
+// wrong component rather than failing. Only genuine upstream items stay bare.
+const UPSTREAM_ITEMS = new Set(["utils"]);
+for (const item of items) {
+  for (const dep of item.registryDependencies ?? []) {
+    if (UPSTREAM_ITEMS.has(dep)) continue;
+
+    if (!/^https?:\/\//.test(dep)) {
+      fail(
+        `[${item.name}] registryDependency "${dep}" is a bare name. ` +
+          `It would resolve against shadcn's upstream registry, not ours. ` +
+          `Emit an absolute URL instead.`
+      );
+      continue;
+    }
+    const local = dep.match(/\/r\/([^/]+)\.json$/);
+    if (local && !names.has(local[1])) {
+      fail(`[${item.name}] registryDependency "${dep}" points at no known item`);
+    }
+  }
+}
+
+// --- 3. Where a demo exists, it must import the same file the item ships -----
+// This is the assertion that catches the historical button.json defect: the
+// published item shipped the demo component instead of the component itself.
+const demoFor = (name: string) => path.join(DEMOS_DIR, `${name}-demo.tsx`);
+let demoChecked = 0;
+const undemoed: string[] = [];
+
+for (const item of items) {
+  const demoPath = demoFor(item.name);
+  if (!fs.existsSync(demoPath)) {
+    undemoed.push(item.name);
+    continue;
+  }
+  demoChecked++;
+  const demoSrc = fs.readFileSync(demoPath, "utf8");
+  const shipped = item.files[0].path; // e.g. src/components/custom/blocks/Button.tsx
+  const expectedSpecifier = shipped
+    .replace(/^src\//, "@/")
+    .replace(/\.tsx$/, "");
+
+  if (!demoSrc.includes(expectedSpecifier)) {
+    warn(
+      `[${item.name}] demo does not import the shipped file.\n` +
+        `        ships:  ${shipped}\n` +
+        `        expect: ${expectedSpecifier}`
+    );
+  }
+}
+
+// --- 4. Built output matches the manifest, with no orphans ------------------
+if (!fs.existsSync(OUT_DIR)) {
+  fail("public/r/ does not exist. Run: npm run build:registry");
+} else {
+  const built = new Set(
+    fs
+      .readdirSync(OUT_DIR)
+      .filter((f) => f.endsWith(".json"))
+      .map((f) => f.replace(/\.json$/, ""))
+  );
+  built.delete("registry"); // shadcn build emits a copy of the manifest
+
+  for (const item of items) {
+    if (!built.has(item.name)) {
+      fail(`[${item.name}] declared in registry.json but not built into public/r/`);
+    }
+  }
+  for (const b of built) {
+    if (!names.has(b)) {
+      fail(`public/r/${b}.json is an orphan — not declared in registry.json`);
+    }
+  }
+}
+
+// --- 5. No CRLF in shipped file contents ------------------------------------
+if (fs.existsSync(OUT_DIR)) {
+  for (const item of items) {
+    const p = path.join(OUT_DIR, `${item.name}.json`);
+    if (!fs.existsSync(p)) continue;
+    const built = JSON.parse(fs.readFileSync(p, "utf8"));
+    for (const f of built.files ?? []) {
+      if (typeof f.content === "string" && f.content.includes("\r\n")) {
+        fail(`[${item.name}] built content contains CRLF line endings`);
+        break;
+      }
+    }
+  }
+}
+
+// --- 6. Metadata completeness (warn until Phase 4 lands) --------------------
+const placeholders = items.filter((i) => i.description.startsWith("TODO:"));
+if (placeholders.length) {
+  warn(
+    `${placeholders.length} of ${items.length} items still have placeholder descriptions:\n` +
+      `        ${placeholders.map((i) => i.name).join(", ")}`
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Report
+// ---------------------------------------------------------------------------
+
+console.log(`  demos cross-checked:  ${demoChecked}`);
+console.log(`  items without a demo: ${undemoed.length}`);
+if (undemoed.length) console.log(`        ${undemoed.join(", ")}`);
+console.log("");
+
+for (const w of warnings) console.log(`WARN  ${w}`);
+if (warnings.length) console.log("");
+
+for (const f of failures) console.error(`FAIL  ${f}`);
+
+if (failures.length) {
+  console.error(`\n${failures.length} failure(s).`);
+  process.exit(1);
+}
+
+console.log(`All checks passed (${warnings.length} warning(s)).`);

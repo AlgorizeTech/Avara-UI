@@ -1,0 +1,15 @@
+# Normalize line endings. Registry JSON embeds source file contents verbatim,
+# so CRLF in the working tree would ship \r\n to every consumer.
+* text=auto eol=lf
+
+# Binary / generated assets — never normalize.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary
+*.lockb binary

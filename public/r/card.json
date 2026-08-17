@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "title": "Card",
+  "author": "AlgorizeTech",
+  "description": "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/CardBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React from \"react\";\n\n// ==========================================\n// 1. ROOT CARD WRAPPER\n// ==========================================\nexport interface CardProps extends React.HTMLAttributes<HTMLDivElement> {\n  variant?: \"default\" | \"bordered\" | \"flat\";\n  interactive?: boolean;\n}\n\nexport function Card({\n  className,\n  variant = \"bordered\",\n  interactive = false,\n  children,\n  ...props\n}: CardProps) {\n  const variants = {\n    default: \"bg-white dark:bg-[#050505] shadow-sm\",\n    bordered:\n      \"bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm\",\n    flat: \"bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50\",\n  };\n\n  return (\n    <div\n      className={cn(\n        \"rounded-xl text-zinc-950 dark:text-zinc-50 flex flex-col transition-all duration-200\",\n        variants[variant],\n        interactive &&\n          \"hover:shadow-md hover:-translate-y-0.5 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 active:scale-[0.98]\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n\n// ==========================================\n// 2. HEADER\n// ==========================================\nexport function CardHeader({\n  className,\n  children,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div className={cn(\"flex flex-col space-y-1.5 p-6\", className)} {...props}>\n      {children}\n    </div>\n  );\n}\n\nexport function CardTitle({\n  className,\n  children,\n  ...props\n}: React.HTMLAttributes<HTMLHeadingElement>) {\n  return (\n    <h3\n      className={cn(\n        \"font-semibold leading-none tracking-tight text-lg\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </h3>\n  );\n}\n\nexport function CardDescription({\n  className,\n  children,\n  ...props\n}: React.HTMLAttributes<HTMLParagraphElement>) {\n  return (\n    <p\n      className={cn(\"text-sm text-zinc-500 dark:text-zinc-400\", className)}\n      {...props}\n    >\n      {children}\n    </p>\n  );\n}\n\n// ==========================================\n// 3. CONTENT AREA\n// ==========================================\nexport function CardContent({\n  className,\n  children,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div className={cn(\"p-6 pt-0 flex-1\", className)} {...props}>\n      {children}\n    </div>\n  );\n}\n\n// ==========================================\n// 4. FOOTER\n// ==========================================\nexport function CardFooter({\n  className,\n  children,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      className={cn(\"flex items-center p-6 pt-0 mt-auto\", className)}\n      {...props}\n    >\n      {children}\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/CardBlock.tsx"
+    }
+  ],
+  "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element.",
+  "categories": [
+    "layout"
+  ],
+  "type": "registry:component"
+}
