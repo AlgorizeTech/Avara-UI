@@ -17,22 +17,48 @@ export default function BasicLoader() {
   return <LoaderBlock variant="spinner" />;
 }`;
 
-export const usageDots = `<LoaderBlock variant="dots" />`;
+export const usageDots = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-export const usagePulse = `<LoaderBlock variant="pulse" />`;
+export default function DotsLoader() {
+  return <LoaderBlock variant="dots" />;
+}`;
 
-export const usageRing = `<LoaderBlock variant="ring" />`;
+export const usagePulse = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-export const usageBar = `<LoaderBlock variant="bar" />`;
+export default function PulseLoader() {
+  return <LoaderBlock variant="pulse" />;
+}`;
 
-export const usageSizes = `<div className="flex items-center gap-10">
-  <LoaderBlock size="sm" />
-  <LoaderBlock size="md" />
-  <LoaderBlock size="lg" />
-  <LoaderBlock size="xl" />
-</div>`;
+export const usageRing = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-export const usageText = `<LoaderBlock variant="spinner" text="Processing data..." />`;
+export default function RingLoader() {
+  return <LoaderBlock variant="ring" />;
+}`;
+
+export const usageBar = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function BarLoader() {
+  return <LoaderBlock variant="bar" />;
+}`;
+
+export const usageSizes = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function LoaderSizes() {
+  return (
+    <div className="flex items-center gap-10">
+      <LoaderBlock size="sm" />
+      <LoaderBlock size="md" />
+      <LoaderBlock size="lg" />
+      <LoaderBlock size="xl" />
+    </div>
+  );
+}`;
+
+export const usageText = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function LoaderWithText() {
+  return <LoaderBlock variant="spinner" text="Processing data..." />;
+}`;
 
 <ExampleShowcase
   name="loader"
@@ -41,44 +67,107 @@ export const usageText = `<LoaderBlock variant="spinner" text="Processing data..
   examples={[
     {
       title: "Spinner",
-      subheading: "The default indicator — a rotating arc.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"spinner"',
+          effect:
+            "is the default — a rotating arc over a faint circle. The neutral choice when you have no reason to pick another.",
+        },
+        {
+          prop: "color",
+          effect:
+            "Tints the strokes, dots and borders. Takes a named key — `primary`, `indigo`, `rose`, `emerald`, `zinc`, `blue`, `amber` — or any `#hex`. Anything unrecognised falls back to `primary`, which follows your theme token.",
+        },
+      ],
       props: { variant: "spinner" },
       usage: usageSpinner,
       code: extractCode("src/components/custom/blocks/LoaderBlock.tsx"),
     },
     {
       title: "Dots",
-      subheading: "Use `variant=\"dots\"` for a staggered bouncing sequence.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"dots"',
+          effect:
+            "for a staggered bouncing sequence — three dots, 0.15s apart. Stays legible at small sizes, so it reads well inline with text.",
+        },
+      ],
       props: { variant: "dots" },
       usage: usageDots,
     },
     {
       title: "Pulse",
-      subheading: "Use `variant=\"pulse\"` for a soft breathing circle.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"pulse"',
+          effect:
+            "for a soft breathing circle — a half-size centre dot with a full-size halo pinging behind it. The quietest of the five: no rotation, no travel.",
+        },
+      ],
       props: { variant: "pulse" },
       usage: usagePulse,
     },
     {
       title: "Ring",
-      subheading: "Use `variant=\"ring\"` for a full track with a moving head.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"ring"',
+          effect:
+            "for a full track with a moving head — two counter-rotating arcs (3s clockwise, 2s anticlockwise) around a solid core. The most detailed variant, so it needs room to read.",
+        },
+      ],
       props: { variant: "ring" },
       usage: usageRing,
     },
     {
       title: "Bar",
-      subheading: "Use `variant=\"bar\"` for an indeterminate progress line.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"bar"',
+          effect:
+            "for an indeterminate progress line — a zinc track with a sweeping 50%-width fill on a 1.5s loop. The only non-square variant, and it renders at a fixed width, so `w-full` won't stretch it.",
+        },
+      ],
       props: { variant: "bar" },
       usage: usageBar,
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          value: '"sm"',
+          effect: "for a 16px box with a `text-xs` label — button scale.",
+        },
+        { prop: "size", value: '"md"', effect: "is the default: 32px box, `text-sm` label." },
+        { prop: "size", value: '"lg"', effect: "gives a 48px box, `text-base` label — panel scale." },
+        { prop: "size", value: '"xl"', effect: "gives a 64px box, `text-lg` label — full-page scale." },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "With text",
-      subheading: "Pass `text` to label what the user is waiting for.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "text",
+          value: '"Processing data..."',
+          effect:
+            "to label what the user is waiting for — it adds a pulsing caption below the indicator, sized by `size`.",
+        },
+        { prop: "text", effect: "left off renders no caption at all." },
+      ],
       props: { variant: "spinner", showText: true },
       usage: usageText,
     },
@@ -87,11 +176,15 @@ export const usageText = `<LoaderBlock variant="spinner" text="Processing data..
 
 ## Installation
 
-### Copy the Component
+<Cli command={`add loader.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
+### Manual
 
 This component is **100% dependency-free** and relies exclusively on standard Tailwind CSS classes alongside a few lightweight custom `@keyframes` for the specialized staggered animations (like the bouncing dots and the indeterminate bar).
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/LoaderBlock.tsx`.
+Copy the full engine code into `components/custom/blocks/LoaderBlock.tsx`.
 
 ---
 
@@ -194,15 +287,18 @@ Discover the Loader component's animated states, offering various spinner styles
         </td>
         <td>
           <code>
-            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+            "primary" | "indigo" | "rose" | "emerald" | "amber" | "blue" |
+            "zinc" | string
           </code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies the active color theme to the SVG strokes, dots, and borders.
-          Accepts custom hex codes.
+          Accepts custom hex codes. Unrecognised values fall back to{" "}
+          <code>"primary"</code>, which follows your theme's{" "}
+          <code>--primary</code> token.
         </td>
       </tr>
       <tr>

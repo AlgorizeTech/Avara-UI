@@ -100,32 +100,72 @@ export default function WideBreadcrumb() {
   examples={[
     {
       title: "Breadcrumb",
-      subheading: "Pass an `items` array of `{ label, href }` — the last entry is the current page.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as an array of `{ label, href }` — the last entry is treated as the current page and is not linked.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the active text and hover states — a named key or a hex string such as `#00FF00`.",
+        },
+      ],
       props: { variant: "classic", showIcons: false },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/BreadcrumbBlock.tsx"),
     },
     {
       title: "With icons",
-      subheading: "Give an item an `icon` (the Lucide component) to label it visually.",
+      propNotes: [
+        {
+          lead: "Give an item an",
+          prop: "icon",
+          effect:
+            "— the Lucide component itself, not its name — to label it visually beside the text.",
+        },
+      ],
       props: { variant: "classic", showIcons: true },
       usage: usageIcons,
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the link and divider styling.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "to change the link and divider styling — `classic`, `slash`, `solid` or `ghost`.",
+        },
+      ],
       props: { showAll: "variants", showIcons: true },
       usage: usageVariants,
     },
     {
       title: "Truncated path",
-      subheading: "Past `maxItems` the middle collapses behind a `...` — click it to expand.",
+      propNotes: [
+        {
+          prop: "maxItems",
+          value: "{4}",
+          effect:
+            "is the default — past that many links the middle collapses behind a `...` the reader can click to expand.",
+        },
+      ],
       props: { variant: "classic", isLongPath: true, maxItems: 4 },
       usage: usageTruncated,
     },
     {
       title: "No truncation",
-      subheading: "Raise `maxItems` above the item count to always show the full trail.",
+      propNotes: [
+        {
+          lead: "Raise",
+          prop: "maxItems",
+          value: "{10}",
+          effect: "above the item count to always show the full trail.",
+        },
+      ],
       props: { variant: "classic", isLongPath: true, maxItems: 10 },
       usage: usageMaxItems,
     },
@@ -133,6 +173,11 @@ export default function WideBreadcrumb() {
 />
 
 ## Installation
+
+<Cli command={`add breadcrumb.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### 1. Install Dependencies
 

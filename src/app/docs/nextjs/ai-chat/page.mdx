@@ -40,22 +40,38 @@ export default function Assistant() {
   );
 }`;
 
-export const usageMinimal = `// Card chrome and dividers removed — drops cleanly into an existing panel.
-<AIChat
-  variant="minimal"
-  chatHistory={chatHistory}
-  initialMessages={initialMessages}
-/>`;
+export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
+import { chatHistory, initialMessages } from "./data";
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <AIChat
-    variant="glass"
-    color="#8b5cf6"
-    chatHistory={chatHistory}
-    initialMessages={initialMessages}
-  />
-</div>`;
+export default function MinimalAssistant() {
+  return (
+    <div className="w-full h-[600px]">
+      {/* Card chrome and dividers removed — drops cleanly into an existing panel. */}
+      <AIChat
+        variant="minimal"
+        chatHistory={chatHistory}
+        initialMessages={initialMessages}
+      />
+    </div>
+  );
+}`;
+
+export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
+import { chatHistory, initialMessages } from "./data";
+
+export default function GlassAssistant() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <AIChat
+        variant="glass"
+        color="#8b5cf6"
+        chatHistory={chatHistory}
+        initialMessages={initialMessages}
+      />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="ai-chat"
@@ -64,20 +80,59 @@ export const usageGlass = `// \`glass\` is translucent by design — give it a c
   examples={[
     {
       title: "AI assistant",
-      subheading: "The default layout — a grouped thread sidebar beside the conversation, collapsing on narrow screens.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "chatHistory",
+          effect:
+            "as `{ id, title, date }[]` — the `date` string is what the sidebar groups threads by.",
+        },
+        {
+          prop: "initialMessages",
+          effect:
+            "seeds the conversation with `{ id, role, content, time }[]`, where `role` is `\"ai\"` or `\"user\"`.",
+        },
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "is the default shell — a thread sidebar beside the conversation, collapsing on narrow screens.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Ai-chat.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the borders and shadows so the assistant blends into a surrounding surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the borders, shadows and dividers so the assistant blends into a surrounding surface.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` renders translucent panels with backdrop blur — the preview supplies the gradient behind it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for translucent panels with backdrop blur — it needs a colourful backdrop behind it to read.",
+        },
+        {
+          prop: "color",
+          value: '"#8b5cf6"',
+          effect: "tints the accents so they hold up against your own backdrop.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },
@@ -85,6 +140,11 @@ export const usageGlass = `// \`glass\` is translucent by design — give it a c
 />
 
 ## Installation
+
+<Cli command={`add ai-chat.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### 1. Install Dependencies
 

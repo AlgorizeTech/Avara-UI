@@ -153,7 +153,28 @@ export default function RichAlert() {
   examples={[
     {
       title: "Alert",
-      subheading: "The default `modern` alert with a title, message and icon.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "title",
+          effect: "and `message` for the heading and body text.",
+        },
+        {
+          prop: "type",
+          value: '"success"',
+          effect: "picks the semantic colour scheme.",
+        },
+        {
+          prop: "variant",
+          value: '"modern"',
+          effect: "sets the visual style — a card with a coloured left rail and shadow.",
+        },
+        {
+          prop: "icon",
+          value: '"CheckCircle2"',
+          effect: "names an icon from the block's `ICON_MAP`.",
+        },
+      ],
       props: {
         type: "success",
         variant: "modern",
@@ -167,19 +188,50 @@ export default function RichAlert() {
     },
     {
       title: "Semantic types",
-      subheading: "Use the `type` prop to pick the semantic color scheme.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "type",
+          effect:
+            "to pick the semantic colour scheme — `primary`, `secondary`, `success`, `danger`, `warning`, `info` or `dark`. It tints every variant the same way.",
+        },
+      ],
       props: { showAll: "types" },
       usage: usageTypes,
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the visual style.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"solid"',
+          effect: "gives a tinted background with a matching border.",
+        },
+        {
+          prop: "variant",
+          value: '"outline"',
+          effect: "gives a plain surface with a coloured border only.",
+        },
+        {
+          prop: "variant",
+          value: '"modern"',
+          effect: "is the card style — coloured left rail and a shadow.",
+        },
+      ],
       props: { showAll: "variants" },
       usage: usageVariants,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` frosts the alert — put it over a gradient or image.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the alert with a slow shimmer sweep — it needs a gradient or image behind it to read.",
+        },
+      ],
       props: {
         type: "primary",
         variant: "glass",
@@ -192,7 +244,15 @@ export default function RichAlert() {
     },
     {
       title: "Glow",
-      subheading: "`variant=\"glow\"` adds a neon border and a pulsing icon for dark surfaces.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glow"',
+          effect:
+            "for a neon border, shadow and a pulsing icon — built for dark dashboards.",
+        },
+      ],
       props: {
         type: "warning",
         variant: "glow",
@@ -205,13 +265,37 @@ export default function RichAlert() {
     },
     {
       title: "Icons",
-      subheading: "`icon` accepts an `ICON_MAP` name, any other string (emoji), or `null`.",
+      propNotes: [
+        {
+          prop: "icon",
+          value: '"Info"',
+          effect:
+            "renders a Lucide icon when the string is a key of `ICON_MAP` — `CheckCircle2`, `AlertTriangle`, `Info`, `Bell`, `XCircle`.",
+        },
+        {
+          prop: "icon",
+          value: '"🚀"',
+          effect: "any other string is rendered as-is, so emoji work.",
+        },
+        { prop: "icon", effect: "omitted (or `null`) gives a text-only alert." },
+      ],
       props: { showAll: "icons" },
       usage: usageIcons,
     },
     {
       title: "Dismissible",
-      subheading: "Set `dismissible` to add a close button that animates the alert out.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "dismissible",
+          effect: "to add a close button that animates the alert out.",
+        },
+        {
+          prop: "onDismiss",
+          effect:
+            "fires after that animation, so it is where you drop the alert from your own state.",
+        },
+      ],
       props: {
         type: "danger",
         variant: "modern",
@@ -224,7 +308,14 @@ export default function RichAlert() {
     },
     {
       title: "Rich content",
-      subheading: "Pass `children` to render buttons, lists or any markup inside the alert.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "children",
+          effect:
+            "to render buttons, lists or any markup. It appears below `message` rather than replacing it, so omit `message` when the children say it all.",
+        },
+      ],
       props: {
         type: "warning",
         variant: "modern",
@@ -239,6 +330,11 @@ export default function RichAlert() {
 />
 
 ## Installation
+
+<Cli command={`add alert.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### 1. Copy the Component
 

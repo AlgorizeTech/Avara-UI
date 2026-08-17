@@ -15,9 +15,26 @@ type CliProps = {
   command: string;
 };
 
+/**
+ * Where `shadcn build` publishes the registry. Hard-coded rather than read from
+ * `window.location.origin` for two reasons: the command has to keep working
+ * when it is copied off a localhost or preview deployment, and deriving it on
+ * the client only meant the server rendered a different string and hydration
+ * mismatched.
+ */
+const REGISTRY_BASE_URL = "https://algorize-ui.vercel.app/r";
+
 export const Cli = ({ command }: CliProps) => {
   const { packageManager: pm, setPackageManager: setPm } = usePackageManager();
   const [copied, setCopied] = useState(false);
+
+  // 'add something.json' is expanded to the full published registry URL.
+  const match = command.match(/^add\s+"?([\w-]+\.json)"?$/);
+  const finalCommand = match
+    ? `add ${REGISTRY_BASE_URL}/${match[1]}`
+    : command;
+
+  const fullCommand = `${PM_COMMANDS[pm]} shadcn@latest ${finalCommand}`;
 
   const handleCopy = async () => {
     try {
@@ -28,19 +45,6 @@ export const Cli = ({ command }: CliProps) => {
       console.error("Failed to copy text: ", err);
     }
   };
-
-  // Dynamically build the registry URL if command looks like 'add *.json'
-  let finalCommand = command;
-  if (typeof window !== "undefined") {
-    // Match 'add something.json' optionally with quotes
-    const match = command.match(/^add\s+"?([\w-]+\.json)"?$/);
-    if (match) {
-      const file = match[1];
-      finalCommand = `add \"${window.location.origin}/registry/${file}\"`;
-    }
-  }
-
-  const fullCommand = `${PM_COMMANDS[pm]} shadcn@latest ${finalCommand}`;
 
   return (
     <div className="w-full rounded-lg bg-zinc-100 dark:bg-zinc-950 relative overflow-hidden border border-zinc-200 dark:border-zinc-800">

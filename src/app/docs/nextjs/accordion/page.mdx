@@ -193,32 +193,92 @@ export default function PlusFaq() {
   examples={[
     {
       title: "Accordion",
-      subheading: "Pass an `accordionData` array — one panel open at a time.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "accordionData",
+          effect:
+            "as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
+        },
+        {
+          prop: "type",
+          value: '"single"',
+          effect: "keeps one panel open at a time.",
+        },
+        {
+          prop: "collapsible",
+          effect: "lets the open panel be closed again, leaving all of them shut.",
+        },
+        {
+          prop: "defaultValue",
+          value: '"getting-started"',
+          effect: "matches an item's `value` to decide which panel starts open.",
+        },
+      ],
       props: { variant: "default", interaction: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the item styling.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "to change the item styling — `default`, `bordered`, `filled`, `ghost` or `elevated`. It only affects the chrome, never the behaviour.",
+        },
+      ],
       props: { showAll: "variants" },
       usage: usageVariants,
     },
     {
       title: "Multiple open",
-      subheading: "`type=\"multiple\"` lets several panels stay open; `defaultValue` becomes an array.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"multiple"',
+          effect: "to let any number of panels stay open at once.",
+        },
+        {
+          prop: "defaultValue",
+          effect:
+            "becomes an **array** in this mode — passing a bare string silently opens nothing.",
+        },
+        {
+          prop: "collapsible",
+          effect: "is ignored here; every panel can always be closed.",
+        },
+      ],
       props: { variant: "bordered", interaction: "multiple" },
       usage: usageMultiple,
     },
     {
       title: "Always one open",
-      subheading: "`collapsible={false}` stops the user closing the last open panel.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "collapsible",
+          value: "{false}",
+          effect:
+            "to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.",
+        },
+      ],
       props: { variant: "filled", interaction: "single-mandatory" },
       usage: usageMandatory,
     },
     {
       title: "Custom expand icon",
-      subheading: "`expandIcon` replaces the chevron with any name from the block's `ICON_MAP`.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "expandIcon",
+          value: '"Plus"',
+          effect:
+            "to replace the chevron with any name from the block's `ICON_MAP`. It rotates on open just as the chevron does.",
+        },
+      ],
       props: { variant: "elevated", interaction: "single", expandIcon: "Plus" },
       usage: usageIcon,
     },
@@ -226,6 +286,11 @@ export default function PlusFaq() {
 />
 
 ## Installation
+
+<Cli command={`add accordion.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### 1. Install Dependencies
 
