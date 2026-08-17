@@ -67,7 +67,7 @@ export function SkeletonBlock({
   if (variant === "profile") {
     return (
       <div
-        className={cn("flex items-center gap-4 w-full", className)}
+        className={cn("flex items-center justify-center gap-4 w-full max-w-xs mx-auto", className)}
         style={style}
         {...props}
       >
@@ -81,6 +81,26 @@ export function SkeletonBlock({
           <div className={cn(baseClasses, "h-3 w-2/3 rounded-md")}>
             <ShimmerLayer />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "text") {
+    return (
+      <div
+        className={cn(
+          "flex flex-col gap-2.5 w-full max-w-sm mx-auto items-center",
+          className,
+        )}
+        style={style}
+        {...props}
+      >
+        <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
+          <ShimmerLayer />
+        </div>
+        <div className={cn(baseClasses, "h-4 w-3/4 rounded-md")}>
+          <ShimmerLayer />
         </div>
       </div>
     );
@@ -117,8 +137,6 @@ export function SkeletonBlock({
   const atomicClasses = cn(
     baseClasses,
     variant === "circle" && !radius && "rounded-full w-12 h-12",
-    variant === "text" && !height && "h-4 w-full",
-    variant === "text" && !radius && "rounded-md",
     variant === "rect" && !height && "min-h-[100px] w-full",
     variant === "rect" && !radius && "rounded-xl",
     className,
