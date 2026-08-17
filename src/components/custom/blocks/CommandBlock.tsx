@@ -128,6 +128,7 @@ export function CommandDialog({
   open,
   onOpenChange,
   children,
+  className,
   ...props
 }: CommandDialogProps) {
   const [mounted, setMounted] = useState(false);
