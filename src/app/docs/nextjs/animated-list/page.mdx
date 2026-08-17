@@ -48,40 +48,80 @@ export default function NotificationFeed() {
   );
 }`;
 
-export const usageFlip = `// The 3D flip is the signature entrance — children rotate in on the X axis.
-<AnimatedList variant="flip" staggerDelay={0.15}>
-  {items.map((item) => (
-    <AnimatedListItem key={item.id}>{/* … */}</AnimatedListItem>
-  ))}
-</AnimatedList>`;
+export const usageFlip = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { items } from "./items";
 
-export const usageSlideUp = `// Slide variants come in from a direction instead of rotating.
-<AnimatedList variant="slide-up" staggerDelay={0.15}>
-  {items.map((item) => (
-    <AnimatedListItem key={item.id}>{/* … */}</AnimatedListItem>
-  ))}
-</AnimatedList>`;
+export default function FlipFeed() {
+  // The 3D flip is the signature entrance — children rotate in on the X axis.
+  return (
+    <AnimatedList variant="flip" staggerDelay={0.15}>
+      {items.map((item) => (
+        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
 
-export const usagePop = `<AnimatedList variant="pop" ease="elastic.out(1, 0.5)" staggerDelay={0.12}>
-  {items.map((item) => (
-    <AnimatedListItem key={item.id}>{/* … */}</AnimatedListItem>
-  ))}
-</AnimatedList>`;
+export const usageSlideUp = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { items } from "./items";
 
-export const usageTiming = `// \`staggerDelay\` is the gap between children, \`duration\` how long each one
-// takes, \`animationDelay\` how long the whole sequence waits before starting,
-// and \`ease\` is any GSAP easing string.
-<AnimatedList
-  variant="slide-right"
-  staggerDelay={0.35}
-  duration={1.1}
-  animationDelay={0.3}
-  ease="power4.out"
->
-  {items.map((item) => (
-    <AnimatedListItem key={item.id}>{/* … */}</AnimatedListItem>
-  ))}
-</AnimatedList>`;
+export default function SlideUpFeed() {
+  // Slide variants come in from a direction instead of rotating.
+  return (
+    <AnimatedList variant="slide-up" staggerDelay={0.15}>
+      {items.map((item) => (
+        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usagePop = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { items } from "./items";
+
+export default function PopFeed() {
+  return (
+    <AnimatedList variant="pop" ease="elastic.out(1, 0.5)" staggerDelay={0.12}>
+      {items.map((item) => (
+        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usageTiming = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { items } from "./items";
+
+export default function TunedFeed() {
+  // \`staggerDelay\` is the gap between children, \`duration\` how long each one
+  // takes, \`animationDelay\` how long the whole sequence waits before starting,
+  // and \`ease\` is any GSAP easing string.
+  return (
+    <AnimatedList
+      variant="slide-right"
+      staggerDelay={0.35}
+      duration={1.1}
+      animationDelay={0.3}
+      ease="power4.out"
+    >
+      {items.map((item) => (
+        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
 
 <ExampleShowcase
   name="animated-list"
@@ -90,31 +130,84 @@ export const usageTiming = `// \`staggerDelay\` is the gap between children, \`d
     {
       title: "Animated list",
       subheading: "Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "staggerDelay",
+          value: "{0.15}",
+          effect: "to the gap in seconds between one child starting and the next.",
+        },
+      ],
       props: { variant: "slide-right" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AnimatedListBlock.tsx"),
     },
     {
       title: "Flip",
-      subheading: "`variant=\"flip\"` rotates each row in against the container's perspective.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"flip"',
+          effect:
+            "to rotate each row in on the X axis against the container's 3D perspective — the signature entrance.",
+        },
+      ],
       props: { variant: "flip" },
       usage: usageFlip,
     },
     {
       title: "Slide up",
-      subheading: "`slide-up`, `slide-left` and `slide-right` translate the rows in from an edge instead.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"slide-up"',
+          effect:
+            "to translate the rows in from an edge instead of rotating. `slide-left` and `slide-right` do the same from the sides.",
+        },
+      ],
       props: { variant: "slide-up" },
       usage: usageSlideUp,
     },
     {
       title: "Pop",
-      subheading: "`variant=\"pop\"` scales each row in — pair it with an elastic `ease` for extra bounce.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"pop"',
+          effect: "to scale each row in from small.",
+        },
+        {
+          prop: "ease",
+          value: '"elastic.out(1, 0.5)"',
+          effect: "adds the overshoot that makes the pop bounce.",
+        },
+      ],
       props: { variant: "pop", ease: "elastic.out(1, 0.5)", staggerDelay: 0.12 },
       usage: usagePop,
     },
     {
       title: "Timing",
-      subheading: "Tune the cascade with `staggerDelay`, `duration`, `animationDelay` and any GSAP `ease` string.",
+      propNotes: [
+        {
+          prop: "staggerDelay",
+          value: "{0.35}",
+          effect: "is the gap between children.",
+        },
+        { prop: "duration", value: "{1.1}", effect: "is how long each one takes." },
+        {
+          prop: "animationDelay",
+          value: "{0.3}",
+          effect: "is how long the whole sequence waits before starting.",
+        },
+        {
+          prop: "ease",
+          value: '"power4.out"',
+          effect: "takes any GSAP easing string.",
+        },
+      ],
       props: {
         variant: "slide-right",
         staggerDelay: 0.35,
@@ -128,6 +221,11 @@ export const usageTiming = `// \`staggerDelay\` is the gap between children, \`d
 />
 
 ## Installation
+
+<Cli command={`add animated-list.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### Dependencies
 

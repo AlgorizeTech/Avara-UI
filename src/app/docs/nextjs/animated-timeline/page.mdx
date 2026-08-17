@@ -33,17 +33,62 @@ export default function CompanyHistory() {
   );
 }`;
 
-export const usageLeft = `// Rail on the left, every card on the same side — the compact layout for
-// narrow columns and sidebars.
-<AnimatedTimelineBlock items={EVENTS} layout="left" animation="slide-in" />`;
+export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { EVENTS } from "./events";
 
-export const usageRight = `<AnimatedTimelineBlock items={EVENTS} layout="right" animation="slide-in" />`;
+export default function LeftTimeline() {
+  // Rail on the left, every card on the same side — the compact layout for
+  // narrow columns and sidebars.
+  return (
+    <div className="w-full max-w-5xl mx-auto py-24">
+      <AnimatedTimelineBlock items={EVENTS} layout="left" animation="slide-in" />
+    </div>
+  );
+}`;
 
-export const usageFadeUp = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="fade-up" />`;
+export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { EVENTS } from "./events";
 
-export const usageZoom = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="zoom-in" />`;
+export default function RightTimeline() {
+  return (
+    <div className="w-full max-w-5xl mx-auto py-24">
+      <AnimatedTimelineBlock items={EVENTS} layout="right" animation="slide-in" />
+    </div>
+  );
+}`;
 
-export const usageBlur = `<AnimatedTimelineBlock items={EVENTS} layout="center" animation="blur-in" />`;
+export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { EVENTS } from "./events";
+
+export default function FadeUpTimeline() {
+  return (
+    <div className="w-full max-w-5xl mx-auto py-24">
+      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="fade-up" />
+    </div>
+  );
+}`;
+
+export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { EVENTS } from "./events";
+
+export default function ZoomTimeline() {
+  return (
+    <div className="w-full max-w-5xl mx-auto py-24">
+      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="zoom-in" />
+    </div>
+  );
+}`;
+
+export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { EVENTS } from "./events";
+
+export default function BlurTimeline() {
+  return (
+    <div className="w-full max-w-5xl mx-auto py-24">
+      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="blur-in" />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="animated-timeline"
@@ -53,38 +98,93 @@ export const usageBlur = `<AnimatedTimelineBlock items={EVENTS} layout="center" 
   examples={[
     {
       title: "Animated timeline",
-      subheading: "Pass an `items` array — each entry needs an `id`, `title` and `date`, plus an optional `description` and lucide `icon`.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as an array of `{ id, title, date }` — `description` and a lucide `icon` component are optional.",
+        },
+        {
+          prop: "layout",
+          value: '"center"',
+          effect: "is the default: rail down the middle with cards alternating sides.",
+        },
+        {
+          prop: "color",
+          effect:
+            "accents the active node, its glow and the extended rail — a named key or a hex string.",
+        },
+      ],
       props: { layout: "center", animation: "flip-up" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AnimatedTimelineBlock.tsx"),
     },
     {
       title: "Left layout",
-      subheading: "`layout=\"left\"` pins the rail to one edge and stacks every card beside it.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "layout",
+          value: '"left"',
+          effect:
+            "to pin the rail to one edge and stack every card beside it — the compact option for narrow columns and sidebars.",
+        },
+      ],
       props: { layout: "left", animation: "slide-in" },
       usage: usageLeft,
     },
     {
       title: "Right layout",
-      subheading: "`layout=\"right\"` mirrors it — useful when the timeline sits next to body copy on the left.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "layout",
+          value: '"right"',
+          effect:
+            "to mirror it — useful when the timeline sits next to body copy on the left.",
+        },
+      ],
       props: { layout: "right", animation: "slide-in" },
       usage: usageRight,
     },
     {
       title: "Fade up",
-      subheading: "`animation=\"fade-up\"` is the quietest entrance — a short rise with an opacity ramp.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animation",
+          value: '"fade-up"',
+          effect:
+            "for the quietest entrance — a short rise with an opacity ramp. It is the default.",
+        },
+      ],
       props: { layout: "center", animation: "fade-up" },
       usage: usageFadeUp,
     },
     {
       title: "Zoom in",
-      subheading: "`animation=\"zoom-in\"` scales each card up as its node lights.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animation",
+          value: '"zoom-in"',
+          effect: "to scale each card up as its node lights.",
+        },
+      ],
       props: { layout: "center", animation: "zoom-in" },
       usage: usageZoom,
     },
     {
       title: "Blur in",
-      subheading: "`animation=\"blur-in\"` resolves the card out of a blur instead of moving it.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animation",
+          value: '"blur-in"',
+          effect: "to resolve the card out of a blur instead of moving it.",
+        },
+      ],
       props: { layout: "center", animation: "blur-in" },
       usage: usageBlur,
     },
@@ -92,6 +192,11 @@ export const usageBlur = `<AnimatedTimelineBlock items={EVENTS} layout="center" 
 />
 
 ## Installation
+
+<Cli command={`add animated-timeline.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### Copy the Component
 

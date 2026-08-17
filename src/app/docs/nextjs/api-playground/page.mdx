@@ -36,14 +36,23 @@ export default function UsersEndpointDocs() {
   );
 }`;
 
-export const usageGet = `// \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
-<ApiPlaygroundBlock
-  defaultUrl="https://api.acme.com/v1/customers"
-  defaultMethod="GET"
-  mockHandler={handleApiMock}
-/>`;
+export const usageGet = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+import { handleApiMock } from "./mock";
 
-export const usageError = `// Any non-2xx status you return is formatted as an error response.
+export default function GetPlayground() {
+  // \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
+  return (
+    <ApiPlaygroundBlock
+      defaultUrl="https://api.acme.com/v1/customers"
+      defaultMethod="GET"
+      mockHandler={handleApiMock}
+    />
+  );
+}`;
+
+export const usageError = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+// Any non-2xx status you return is formatted as an error response.
 const handleApiMock = async () => ({
   status: 401,
   timeMs: 45,
@@ -53,11 +62,27 @@ const handleApiMock = async () => ({
   },
 });
 
-<ApiPlaygroundBlock defaultUrl="https://api.acme.com/v1/customers" mockHandler={handleApiMock} />`;
+export default function ErrorPlayground() {
+  return (
+    <ApiPlaygroundBlock
+      defaultUrl="https://api.acme.com/v1/customers"
+      mockHandler={handleApiMock}
+    />
+  );
+}`;
 
-export const usageNoMock = `// Omit \`mockHandler\` and the block answers with its own canned response —
-// handy while you are still sketching the endpoint.
-<ApiPlaygroundBlock defaultUrl="https://api.acme.com/v1/customers" defaultMethod="POST" />`;
+export const usageNoMock = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+export default function SketchPlayground() {
+  // Omit \`mockHandler\` and the block answers with its own canned response —
+  // handy while you are still sketching the endpoint.
+  return (
+    <ApiPlaygroundBlock
+      defaultUrl="https://api.acme.com/v1/customers"
+      defaultMethod="POST"
+    />
+  );
+}`;
 
 <ExampleShowcase
   name="api-playground"
@@ -67,26 +92,60 @@ export const usageNoMock = `// Omit \`mockHandler\` and the block answers with i
   examples={[
     {
       title: "API playground",
-      subheading: "A split-pane request builder. `mockHandler` receives the method, url, headers, params and body, and returns the status, latency and payload to render.",
+      subheading: "A split-pane request builder.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "mockHandler",
+          effect:
+            "an async function — it receives the method, url, headers, params and body, and returns `{ status, timeMs, data }` for the response pane to render.",
+        },
+        {
+          prop: "defaultUrl",
+          effect: "seeds the address bar the reader lands on.",
+        },
+      ],
       props: { defaultMethod: "POST" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ApiPlaygroundBlock.tsx"),
     },
     {
       title: "GET request",
-      subheading: "Seed a different starting request with `defaultMethod` — the body editor steps aside for GET.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultMethod",
+          value: '"GET"',
+          effect:
+            "to seed a different starting request — the body editor steps aside for GET.",
+        },
+      ],
       props: { defaultMethod: "GET" },
       usage: usageGet,
     },
     {
       title: "Error responses",
-      subheading: "Return a 4xx/5xx from the handler and the response pane formats it as an error. Press **Send** to see it.",
+      subheading: "Press **Send** to see it.",
+      propNotes: [
+        {
+          prop: "mockHandler",
+          effect:
+            "returning a non-2xx `status` makes the response pane format the payload as an error rather than a result.",
+        },
+      ],
       props: { defaultMethod: "POST", simulateError: true },
       usage: usageError,
     },
     {
       title: "Without a mock handler",
-      subheading: "Leave `mockHandler` off and the block falls back to its own built-in simulated response.",
+      propNotes: [
+        {
+          lead: "Leave",
+          prop: "mockHandler",
+          effect:
+            "off and the block answers with its own built-in canned response — handy while you are still sketching the endpoint.",
+        },
+      ],
       props: { defaultMethod: "POST", useMockHandler: false },
       usage: usageNoMock,
     },
@@ -94,6 +153,11 @@ export const usageNoMock = `// Omit \`mockHandler\` and the block answers with i
 />
 
 ## Installation
+
+<Cli command={`add api-playground.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### Copy the Component
 
