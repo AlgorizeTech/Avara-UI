@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-13T02:47:09.599Z",
-  "totalFiles": 110,
+  "generatedAt": "2026-08-17T02:25:00.629Z",
+  "totalFiles": 113,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -145,6 +145,18 @@
       "path": "/docs/nextjs-counter.md",
       "url": "/docs/nextjs/counter",
       "originalMdx": "nextjs\\counter\\page.mdx"
+    },
+    {
+      "name": "nextjs/cursor-animation",
+      "path": "/docs/nextjs-cursor-animation.md",
+      "url": "/docs/nextjs/cursor-animation",
+      "originalMdx": "nextjs\\cursor-animation\\page.mdx"
+    },
+    {
+      "name": "nextjs/curved-carousel",
+      "path": "/docs/nextjs-curved-carousel.md",
+      "url": "/docs/nextjs/curved-carousel",
+      "originalMdx": "nextjs\\curved-carousel\\page.mdx"
     },
     {
       "name": "nextjs/custom-code-block",
@@ -301,6 +313,12 @@
       "path": "/docs/nextjs-hero-video-player.md",
       "url": "/docs/nextjs/hero-video-player",
       "originalMdx": "nextjs\\hero-video-player\\page.mdx"
+    },
+    {
+      "name": "nextjs/image-compare",
+      "path": "/docs/nextjs-image-compare.md",
+      "url": "/docs/nextjs/image-compare",
+      "originalMdx": "nextjs\\image-compare\\page.mdx"
     },
     {
       "name": "nextjs/image-optimization",

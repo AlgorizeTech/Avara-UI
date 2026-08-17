@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-13T02:47:09.705Z
-**Total files:** 110
+**Generated at:** 2026-08-17T02:25:00.658Z
+**Total files:** 113
 
 ## Available Files
 
@@ -31,6 +31,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/command](/docs/nextjs-command.md) - Source: `nextjs\command\page.mdx`
 - [nextjs/context-menu](/docs/nextjs-context-menu.md) - Source: `nextjs\context-menu\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `nextjs\counter\page.mdx`
+- [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `nextjs\cursor-animation\page.mdx`
+- [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `nextjs\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `nextjs\custom-code-block\page.mdx`
 - [nextjs/data-fetching](/docs/nextjs-data-fetching.md) - Source: `nextjs\data-fetching\page.mdx`
 - [nextjs/data-grid](/docs/nextjs-data-grid.md) - Source: `nextjs\data-grid\page.mdx`
@@ -57,6 +59,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `nextjs\half-stars\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `nextjs\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `nextjs\hero-video-player\page.mdx`
+- [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `nextjs\image-compare\page.mdx`
 - [nextjs/image-optimization](/docs/nextjs-image-optimization.md) - Source: `nextjs\image-optimization\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `nextjs\index\page.mdx`
 - [nextjs/input](/docs/nextjs-input.md) - Source: `nextjs\input\page.mdx`

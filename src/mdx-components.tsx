@@ -114,7 +114,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // Otherwise, it's inline code, so style it appropriately
       return (
         <code
-          className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono text-red-600 dark:text-red-400"
+          className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-xs font-mono text-red-600 dark:text-red-400 whitespace-nowrap"
           {...props}
         >
           {children}
@@ -133,9 +133,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     table: ({ children, ...props }: React.ComponentProps<'table'>) => {
       return (
-        <div className="my-8 w-full overflow-x-auto">
+        <div className="my-6 w-full max-w-full overflow-x-auto bg-transparent [scrollbar-width:thin] cursor-pointer">
           <table
-            className="w-full border-collapse rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+            className="w-full max-w-full border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm cursor-pointer overflow-hidden"
             {...props}
           >
             {children}
@@ -147,7 +147,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     thead: ({ children, ...props }: React.ComponentProps<'thead'>) => {
       return (
         <thead
-          className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700"
+          className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 cursor-pointer"
           {...props}
         >
           {children}
@@ -157,7 +157,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     tbody: ({ children, ...props }: React.ComponentProps<'tbody'>) => {
       return (
-        <tbody className="divide-y divide-gray-100 dark:divide-gray-800" {...props}>
+        <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 cursor-pointer" {...props}>
           {children}
         </tbody>
       );
@@ -166,7 +166,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     tr: ({ children, ...props }: React.ComponentProps<'tr'>) => {
       return (
         <tr
-          className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-150 hover:shadow-sm"
+          className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors duration-150 cursor-pointer"
           {...props}
         >
           {children}
@@ -177,7 +177,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     th: ({ children, ...props }: React.ComponentProps<'th'>) => {
       return (
         <th
-          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600"
+          className="px-4 sm:px-5 py-3.5 text-left text-[12px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider border-b border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 whitespace-nowrap cursor-pointer"
           {...props}
         >
           {children}
@@ -187,7 +187,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     td: ({ children, ...props }: React.ComponentProps<'td'>) => {
       return (
-        <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100" {...props}>
+        <td className="px-4 sm:px-5 py-3 text-sm text-zinc-800 dark:text-zinc-200 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 align-top first:font-extrabold first:text-zinc-900 dark:first:text-white break-words cursor-pointer" {...props}>
           {children}
         </td>
       );
