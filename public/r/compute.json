@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "compute",
+  "title": "Compute",
+  "author": "AlgorizeTech",
+  "description": "TODO: describe compute. Generated placeholder.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/ui-base.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/ComputeBlock.tsx",
+      "content": "\"use client\";\nimport React, { useState } from \"react\";\nimport { ComponentCard } from \"../ui/base\";\n\nexport function ComputeBlock() {\n  const [computeEnv, setComputeEnv] = useState<\"kubernetes\" | \"vm\">(\"kubernetes\");\n  const [gpuCount, setGpuCount] = useState(8);\n\n  return (\n    <ComponentCard>\n      <div className=\"p-6 pb-4\">\n        <h3 className=\"font-semibold text-sm\">Compute Environment</h3>\n        <p className=\"text-xs text-zinc-500 dark:text-zinc-400 mt-1\">Select the compute environment for your cluster.</p>\n      </div>\n      <div className=\"px-6 pb-6 space-y-3\">\n        <div onClick={() => setComputeEnv(\"kubernetes\")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === \"kubernetes\" ? \"border-zinc-900 dark:border-zinc-50 bg-white dark:bg-zinc-950\" : \"border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-zinc-300 dark:hover:border-zinc-700\"}`}>\n          <div className=\"flex items-center gap-3\">\n            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === \"kubernetes\" ? \"border-zinc-900 dark:border-zinc-50\" : \"border-zinc-300 dark:border-zinc-700\"}`}></div>\n            <div>\n              <p className=\"text-sm font-medium\">Kubernetes</p>\n              <p className=\"text-xs text-zinc-500 dark:text-zinc-400\">Run workloads on a K8s cluster.</p>\n            </div>\n          </div>\n        </div>\n        <div onClick={() => setComputeEnv(\"vm\")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === \"vm\" ? \"border-zinc-900 dark:border-zinc-50 bg-white dark:bg-zinc-950\" : \"border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-zinc-300 dark:hover:border-zinc-700\"}`}>\n          <div className=\"flex items-center gap-3\">\n            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === \"vm\" ? \"border-zinc-900 dark:border-zinc-50\" : \"border-zinc-300 dark:border-zinc-700\"}`}></div>\n            <div>\n              <p className=\"text-sm font-medium\">Virtual Machine</p>\n              <p className=\"text-xs text-zinc-500 dark:text-zinc-400\">Access a VM configured cluster.</p>\n            </div>\n          </div>\n        </div>\n        <div className=\"pt-4 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/50\">\n          <div>\n            <p className=\"text-sm font-medium\">Number of GPUs</p>\n            <p className=\"text-[10px] text-zinc-500\">You can add more later.</p>\n          </div>\n          <div className=\"flex items-center border border-zinc-200 dark:border-zinc-800 rounded-md\">\n            <button onClick={() => setGpuCount(Math.max(0, gpuCount - 1))} className=\"cursor-pointer px-2 py-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors active:bg-zinc-100 dark:active:bg-zinc-800 rounded-l-md\">-</button>\n            <span className=\"px-2 text-sm text-center w-8 font-mono\">{gpuCount}</span>\n            <button onClick={() => setGpuCount(gpuCount + 1)} className=\"cursor-pointer px-2 py-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors active:bg-zinc-100 dark:active:bg-zinc-800 rounded-r-md\">+</button>\n          </div>\n        </div>\n      </div>\n    </ComponentCard>\n  );\n}",
+      "type": "registry:component",
+      "target": "components/custom/blocks/ComputeBlock.tsx"
+    }
+  ],
+  "categories": [],
+  "type": "registry:component"
+}

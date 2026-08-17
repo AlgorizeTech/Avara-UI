@@ -130,27 +130,45 @@ export const META: Record<string, ItemMeta> = {
   },
 
   // ---- Shared primitives (src/components/custom/ui) ----
+  // accordion / avatar / badge / button / sheet / slider are derived from
+  // shadcn/ui (MIT, Copyright (c) 2023 shadcn). See THIRD-PARTY-NOTICES.md.
+  // The attribution is repeated in each item's `docs` so it reaches the
+  // consumer at install time, not only in a file in our repo.
   "ui-accordion": {
     description:
       "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",
     categories: ["utilities"],
-    docs: "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead.",
+    docs: "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
+  },
+  "ui-avatar": {
+    description:
+      "The Radix avatar primitive with image and fallback slots. Used for user representation in the chat, support and dashboard blocks.",
+    categories: ["utilities"],
+    docs: "Named exports: Avatar, AvatarImage, AvatarFallback. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
   "ui-badge": {
     description:
       "A small status label primitive with CVA-driven variants. Used internally by pricing blocks.",
     categories: ["utilities"],
+    docs: "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
   "ui-button": {
     description:
       "A minimal CVA button primitive with Radix Slot support for `asChild`. Used internally by the Calendar and pricing blocks.",
     categories: ["utilities"],
-    docs: "This is the internal primitive, not the main `button` item. Prefer `button` unless you specifically need the Slot-based base.",
+    docs: "This is the internal primitive, not the main `button` item. Prefer `button` unless you specifically need the Slot-based base. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
+  },
+  "ui-sheet": {
+    description:
+      "The Radix dialog-based sheet primitive that slides in from a screen edge. Used for drawers and mobile navigation panels.",
+    categories: ["utilities"],
+    docs: "Named exports: Sheet, SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
   "ui-slider": {
     description:
       "The Radix slider primitive used by pricing blocks for usage-based tier selection.",
     categories: ["utilities"],
+    docs: "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
   "ui-base": {
     description:

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "author": "AlgorizeTech",
+  "description": "A loading placeholder with a pulse or shimmer sweep. Use it to hold layout space while content is still being fetched.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/SkeletonBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React from \"react\";\n\n// ==========================================\n// TYPES & PROPS\n// ==========================================\nexport type SkeletonVariant =\n  | \"rect\"\n  | \"circle\"\n  | \"text\"\n  | \"profile\"\n  | \"card\"\n  | \"custom\";\nexport type SkeletonAnimation = \"pulse\" | \"shimmer\" | \"none\";\n\nexport interface SkeletonBlockProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  variant?: SkeletonVariant;\n  animation?: SkeletonAnimation;\n  width?: string | number;\n  height?: string | number;\n  radius?: string | number;\n  className?: string;\n}\n\n// ==========================================\n// MAIN COMPONENT\n// ==========================================\nexport function SkeletonBlock({\n  variant = \"rect\",\n  animation = \"shimmer\",\n  width,\n  height,\n  radius,\n  className,\n  style,\n  ...props\n}: SkeletonBlockProps) {\n  // Base shapes for the atomic components\n  const baseClasses = cn(\n    \"relative overflow-hidden bg-zinc-200 dark:bg-zinc-800/80\",\n    animation === \"pulse\" && \"animate-pulse\",\n  );\n\n  // The Shimmer Effect Layer\n  const ShimmerLayer = () => {\n    if (animation !== \"shimmer\") return null;\n    return (\n      <>\n        <style>{`\n          @keyframes shimmer-slide {\n            100% { transform: translateX(100%); }\n          }\n          .animate-shimmer-slide {\n            animation: shimmer-slide 1.5s infinite linear;\n          }\n        `}</style>\n        <div className=\"absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer-slide z-10\" />\n      </>\n    );\n  };\n\n  // --- COMPOSITE VARIANTS ---\n\n  if (variant === \"profile\") {\n    return (\n      <div\n        className={cn(\"flex items-center gap-4 w-full\", className)}\n        style={style}\n        {...props}\n      >\n        <div className={cn(baseClasses, \"w-12 h-12 rounded-full shrink-0\")}>\n          <ShimmerLayer />\n        </div>\n        <div className=\"flex flex-col gap-2 w-full max-w-[200px]\">\n          <div className={cn(baseClasses, \"h-4 w-full rounded-md\")}>\n            <ShimmerLayer />\n          </div>\n          <div className={cn(baseClasses, \"h-3 w-2/3 rounded-md\")}>\n            <ShimmerLayer />\n          </div>\n        </div>\n      </div>\n    );\n  }\n\n  if (variant === \"card\") {\n    return (\n      <div\n        className={cn(\n          \"flex flex-col gap-3 w-full max-w-sm p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-[#050505]\",\n          className,\n        )}\n        style={style}\n        {...props}\n      >\n        <div className={cn(baseClasses, \"w-full h-40 rounded-xl mb-2\")}>\n          <ShimmerLayer />\n        </div>\n        <div className={cn(baseClasses, \"h-5 w-3/4 rounded-md\")}>\n          <ShimmerLayer />\n        </div>\n        <div className={cn(baseClasses, \"h-4 w-full rounded-md\")}>\n          <ShimmerLayer />\n        </div>\n        <div className={cn(baseClasses, \"h-4 w-5/6 rounded-md\")}>\n          <ShimmerLayer />\n        </div>\n      </div>\n    );\n  }\n\n  // --- ATOMIC & CUSTOM VARIANTS ---\n\n  const atomicClasses = cn(\n    baseClasses,\n    variant === \"circle\" && !radius && \"rounded-full w-12 h-12\",\n    variant === \"text\" && !height && \"h-4 w-full\",\n    variant === \"text\" && !radius && \"rounded-md\",\n    variant === \"rect\" && !height && \"min-h-[100px] w-full\",\n    variant === \"rect\" && !radius && \"rounded-xl\",\n    className,\n  );\n\n  // Combine standard style prop with our explicit custom props\n  const customStyles: React.CSSProperties = {\n    ...style,\n    width: width ?? style?.width,\n    height: height ?? style?.height,\n    borderRadius: radius ?? style?.borderRadius,\n  };\n\n  return (\n    <div className={atomicClasses} style={customStyles} {...props}>\n      <ShimmerLayer />\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/SkeletonBlock.tsx"
+    }
+  ],
+  "docs": "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required.",
+  "categories": [
+    "feedback"
+  ],
+  "type": "registry:component"
+}

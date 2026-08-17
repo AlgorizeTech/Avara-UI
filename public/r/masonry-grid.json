@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "masonry-grid",
+  "title": "Masonry Grid",
+  "author": "AlgorizeTech",
+  "description": "TODO: describe masonry-grid. Generated placeholder.",
+  "dependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/MasonryGridBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport { HTMLMotionProps, motion, Variants } from \"framer-motion\";\nimport React from \"react\";\n\n// 1. FIXED TS ERROR: Extend HTMLMotionProps instead of React.HTMLAttributes\nexport interface MasonryGridProps<T>\n  extends Omit<HTMLMotionProps<\"div\">, \"children\"> {\n  items: T[];\n  renderItem: (item: T, index: number) => React.ReactNode;\n  columnsClassName?: string;\n  gapClassName?: string;\n  animateIn?: boolean;\n  staggerDelay?: number;\n}\n\nexport function MasonryGrid<T extends { id: string | number }>({\n  items,\n  renderItem,\n  columnsClassName = \"columns-1 sm:columns-2 md:columns-3 lg:columns-4\",\n  gapClassName = \"gap-6\",\n  animateIn = true,\n  staggerDelay = 0.08,\n  className,\n  ...props\n}: MasonryGridProps<T>) {\n  const itemSpacingClass = gapClassName.replace(\"gap-\", \"mb-\");\n\n  const containerVariants: Variants = {\n    hidden: { opacity: 0 },\n    visible: {\n      opacity: 1,\n      transition: {\n        staggerChildren: staggerDelay,\n        delayChildren: 0.1,\n      },\n    },\n  };\n\n  const itemVariants: Variants = {\n    hidden: {\n      opacity: 0,\n      y: 40,\n      filter: \"blur(8px)\",\n      scale: 0.95,\n    },\n    visible: {\n      opacity: 1,\n      y: 0,\n      filter: \"blur(0px)\",\n      scale: 1,\n      transition: {\n        type: \"spring\",\n        stiffness: 200,\n        damping: 20,\n        mass: 1,\n      },\n    },\n  };\n\n  return (\n    <motion.div\n      className={cn(\"w-full\", columnsClassName, gapClassName, className)}\n      variants={animateIn ? containerVariants : undefined}\n      initial={animateIn ? \"hidden\" : \"visible\"}\n      whileInView={animateIn ? \"visible\" : undefined}\n      viewport={{ once: true, margin: \"-50px\" }}\n      {...props}\n    >\n      {items.map((item, index) => (\n        <motion.div\n          key={item.id}\n          layout\n          variants={animateIn ? itemVariants : undefined}\n          // 2. FIXED GAP ISSUE: Added \"inline-block w-full\" to prevent margin collapse & awkward breaks\n          className={cn(\n            \"break-inside-avoid inline-block w-full\",\n            itemSpacingClass,\n          )}\n        >\n          {renderItem(item, index)}\n        </motion.div>\n      ))}\n    </motion.div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/MasonryGridBlock.tsx"
+    }
+  ],
+  "categories": [],
+  "type": "registry:component"
+}
