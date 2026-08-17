@@ -16,29 +16,29 @@ export type ScrollAreaColor =
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    thumb: "var(--primary)",
-    thumbHover: "var(--primary)",
-    track: "rgba(var(--primary), 0.1)",
+    thumb: "hsl(var(--primary))",
+    thumbHover: "hsl(var(--primary) / 0.85)",
+    track: "hsl(var(--primary) / 0.18)",
   },
   indigo: {
     thumb: "#4f46e5",
     thumbHover: "#4338ca",
-    track: "rgba(79, 70, 229, 0.1)",
+    track: "rgba(79, 70, 229, 0.18)",
   },
   rose: {
     thumb: "#e11d48",
     thumbHover: "#be123c",
-    track: "rgba(225, 29, 72, 0.1)",
+    track: "rgba(225, 29, 72, 0.18)",
   },
   emerald: {
     thumb: "#10b981",
     thumbHover: "#059669",
-    track: "rgba(16, 185, 129, 0.1)",
+    track: "rgba(16, 185, 129, 0.18)",
   },
   zinc: {
-    thumb: "#52525b",
-    thumbHover: "#3f3f46",
-    track: "rgba(113, 113, 122, 0.1)",
+    thumb: "#71717a",
+    thumbHover: "#52525b",
+    track: "rgba(113, 113, 122, 0.2)",
   },
 };
 
@@ -104,25 +104,25 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
   ) => {
     const { style } = getThemeStyles(color as string);
 
-    // Generate dynamic class name to avoid conflicts if multiple variants exist on one page
-    const uniqueClass = `custom-scroll-${variant}-${orientation}`;
+    const instanceId = React.useId().replace(/:/g, "");
+    const uniqueClass = `custom-scroll-${instanceId}`;
 
     const variantStyles = {
       default: {
-        width: "8px",
-        height: "8px",
+        width: "10px",
+        height: "12px",
         radius: "8px",
         border: "2px solid transparent",
       },
       minimal: {
-        width: "4px",
-        height: "4px",
+        width: "6px",
+        height: "8px",
         radius: "4px",
         border: "none",
       },
       glass: {
-        width: "10px",
-        height: "10px",
+        width: "12px",
+        height: "14px",
         radius: "10px",
         border: "2px solid transparent",
       },
@@ -132,7 +132,7 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
 
     const overflowClass = {
       vertical: "overflow-y-auto overflow-x-hidden",
-      horizontal: "overflow-x-auto overflow-y-hidden",
+      horizontal: "overflow-x-auto overflow-y-auto",
       both: "overflow-auto",
     }[orientation];
 
@@ -153,36 +153,44 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
           /* Webkit Browsers (Chrome, Safari, Edge) */
           .${uniqueClass}::-webkit-scrollbar {
             width: ${v.width};
-            height: ${v.height};
+            height: 7px !important;
+            display: block !important;
+          }
+          .${uniqueClass}::-webkit-scrollbar:horizontal {
+            height: 7px !important;
+            display: block !important;
           }
           .${uniqueClass}::-webkit-scrollbar-track {
-            background: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(255,255,255,0.05)" : "var(--scroll-track)"};
+            background-color: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(255,255,255,0.12)" : "rgba(228, 228, 231, 0.7)"} !important;
             border-radius: ${v.radius};
-            backdrop-filter: ${variant === "glass" ? "blur(8px)" : "none"};
+            display: block !important;
+          }
+          .dark .${uniqueClass}::-webkit-scrollbar-track {
+            background-color: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(255,255,255,0.12)" : "rgba(39, 39, 42, 0.7)"} !important;
           }
           .${uniqueClass}::-webkit-scrollbar-thumb {
-            background-color: var(--scroll-thumb);
+            background-color: var(--scroll-thumb, #71717a) !important;
             border-radius: ${v.radius};
-            border: ${v.border};
-            background-clip: padding-box;
+            min-width: 40px !important;
+            display: block !important;
           }
           .${uniqueClass}::-webkit-scrollbar-thumb:hover {
-            background-color: var(--scroll-thumb-hover);
+            background-color: var(--scroll-thumb-hover, #52525b) !important;
           }
 
           /* Firefox standard */
           .${uniqueClass} {
-            scrollbar-width: ${variant === "minimal" ? "thin" : "auto"};
-            scrollbar-color: var(--scroll-thumb) ${hideTrack ? "transparent" : "var(--scroll-track)"};
+            scrollbar-width: auto !important;
+            scrollbar-color: var(--scroll-thumb, #71717a) ${hideTrack ? "transparent" : "var(--scroll-track, rgba(161, 161, 170, 0.25))"} !important;
           }
 
           /* Auto-Hide Logic for Webkit */
           .auto-hide-scroll::-webkit-scrollbar-thumb {
-            background-color: transparent;
+            background-color: transparent !important;
             transition: background-color 0.3s;
           }
           .auto-hide-scroll:hover::-webkit-scrollbar-thumb {
-            background-color: var(--scroll-thumb);
+            background-color: var(--scroll-thumb, #71717a) !important;
           }
         `}</style>
         {children}
