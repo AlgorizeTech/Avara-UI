@@ -76,14 +76,13 @@ const sampleChartData = [
 	{ label: "Sun", value: 990 },
 ];
 
-const sampleTerminalCode = `$ npx docs-ui@latest init
-✔ Initialized Docs UI configuration in project root.
-✔ Installed dependencies: framer-motion, gsap, lucide-react, clsx.
+/** Copied verbatim by the terminal card's Copy button, so it has to be runnable. */
+const sampleTerminalCode = `$ npx shadcn@latest init
+✔ Created components.json and lib/utils.ts.
 
-$ npx docs-ui@latest add ai-chat chart-block
-✔ Copying Ai-chat.tsx to src/components/custom/blocks/
-✔ Copying ChartBlock.tsx to src/components/custom/blocks/
-✔ All components ready to import!
+$ npx shadcn@latest add https://algorize-ui.vercel.app/r/ai-chat.json
+✔ Installed dependencies: lucide-react
+✔ Created components/custom/blocks/Ai-chat.tsx
 
 $ npm run dev
 ▲ Next.js (Turbopack)
@@ -323,9 +322,9 @@ function HeroInteractiveHub() {
 									<div className="p-2.5 rounded-2xl rounded-tl-none bg-muted/80 text-foreground max-w-[85%] leading-relaxed border border-border/40">
 										Run{" "}
 										<code className="px-1 py-0.5 rounded bg-background font-mono text-[11px] text-primary">
-											npx docs-ui@latest add &lt;component&gt;
+											npx shadcn@latest add &lt;url&gt;
 										</code>{" "}
-										or copy the source code directly. Zero npm lock-in!
+										and the source lands in your project. Zero npm lock-in!
 									</div>
 								</div>
 							</div>
@@ -436,7 +435,7 @@ function HeroInteractiveHub() {
 								<div className="flex items-center gap-1.5">
 									<Terminal className="size-3.5 text-primary" />
 									<span className="text-[11px] font-bold text-zinc-300">
-										docs-ui.sh
+										install.sh
 									</span>
 								</div>
 								<button
@@ -455,26 +454,24 @@ function HeroInteractiveHub() {
 								</button>
 							</div>
 
+							{/* Mirrors sampleTerminalCode, which the Copy button writes. */}
 							<div className="space-y-2 text-[11px] leading-relaxed text-zinc-300">
 								<p>
 									<span className="text-primary font-bold">$</span> npx
-									docs-ui@latest init
+									shadcn@latest init
 								</p>
 								<p className="text-emerald-400">
-									✔ Initialized Docs UI configuration in project root.
+									✔ Created components.json and lib/utils.ts.
 								</p>
-								<p className="text-emerald-400">
-									✔ Installed dependencies: framer-motion, gsap, lucide-react.
-								</p>
-								<p>
+								<p className="break-all">
 									<span className="text-primary font-bold">$</span> npx
-									docs-ui@latest add ai-chat chart-block
+									shadcn@latest add algorize-ui.vercel.app/r/ai-chat.json
 								</p>
 								<p className="text-emerald-400">
-									✔ Copying components to src/components/custom/blocks/
+									✔ Installed dependencies: lucide-react
 								</p>
 								<p className="text-emerald-400 font-bold">
-									✔ All components ready to import!
+									✔ Created components/custom/blocks/Ai-chat.tsx
 								</p>
 							</div>
 
@@ -992,7 +989,7 @@ const matrixNodes: SystemNode[] = [
 		tag: "Popular",
 		description:
 			"Production-ready AI chat interface with message streaming, history sidebar, and custom prompts.",
-		cliCommand: "npx docs-ui@latest add ai-chat",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/ai-chat.json",
 		features: [
 			"Streaming Message Support",
 			"Multi-Thread Sidebar",
@@ -1008,7 +1005,7 @@ const matrixNodes: SystemNode[] = [
 		tag: "Interactive",
 		description:
 			"Stackable 3D cards with Framer Motion spring physics, drag gestures, and tilt effects.",
-		cliCommand: "npx docs-ui@latest add memories-card",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/memories-card.json",
 		features: ["Drag & Swipe Physics", "3D Gyro Tilt", "Zero Config"],
 		docPath: "/docs/nextjs/memories-card",
 	},
@@ -1020,7 +1017,7 @@ const matrixNodes: SystemNode[] = [
 		tag: "macOS",
 		description:
 			"Apple macOS style dock with fluid cursor proximity magnification physics.",
-		cliCommand: "npx docs-ui@latest add dock",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/dock.json",
 		features: [
 			"Cursor Proximity Magnification",
 			"Custom Icon Slots",
@@ -1036,13 +1033,13 @@ const matrixNodes: SystemNode[] = [
 		tag: "SVG Engine",
 		description:
 			"Lightweight, responsive SVG bar and line chart component with hover tooltips.",
-		cliCommand: "npx docs-ui@latest add chart-block",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/chart.json",
 		features: [
 			"Zero Chart Library Weight",
 			"Auto Theme Gradient",
 			"Hover Value Tooltips",
 		],
-		docPath: "/docs/nextjs/chart-block",
+		docPath: "/docs/nextjs/chart",
 	},
 	{
 		id: "auth",
@@ -1052,13 +1049,13 @@ const matrixNodes: SystemNode[] = [
 		tag: "Security",
 		description:
 			"Glassmorphic login and signup forms with social auth buttons and input validation.",
-		cliCommand: "npx docs-ui@latest add auth-form",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/auth-form.json",
 		features: [
 			"Glassmorphic Styling",
 			"Social Login Providers",
 			"Password Visibility Toggle",
 		],
-		docPath: "/docs/nextjs/auth-form",
+		docPath: "/docs/nextjs/signup-form",
 	},
 	{
 		id: "cli",
@@ -1068,7 +1065,7 @@ const matrixNodes: SystemNode[] = [
 		tag: "Dev Tool",
 		description:
 			"Interactive code terminal with syntax highlighting, tabbed output, and instant copy.",
-		cliCommand: "npx docs-ui@latest add terminal",
+		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/terminal.json",
 		features: ["Copy Code Button", "Multiple Shell Tabs", "Dark Theme Native"],
 		docPath: "/docs/nextjs/terminal",
 	},
@@ -3070,7 +3067,7 @@ function CTASection() {
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
 	const [typedText, setTypedText] = useState("");
-	const fullCommand = "npx docs-ui@latest init";
+	const fullCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 
 	useEffect(() => {
 		let index = 0;
@@ -3096,7 +3093,7 @@ function CTASection() {
 	}, []);
 
 	const handleCopy = () => {
-		const textToCopy = "npx docs-ui@latest init";
+		const textToCopy = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 		if (navigator.clipboard && navigator.clipboard.writeText) {
 			navigator.clipboard
 				.writeText(textToCopy)
@@ -3159,7 +3156,7 @@ function CTASection() {
 					</h2>
 
 					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
-						Copy-paste fully responsive, accessible, and animated UI components
+						Install fully responsive, accessible, and animated UI components
 						built for Next.js, React, and Tailwind CSS.
 					</p>
 
@@ -3174,7 +3171,7 @@ function CTASection() {
 									&gt;_
 								</span>
 								<span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">
-									npx docs-ui@latest init
+									npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json
 								</span>
 							</div>
 							<div className="flex items-center gap-2 shrink-0">

@@ -58,14 +58,14 @@ This section outlines the architectural foundation of our reusable component lib
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8 not-prose">
   <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
     <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">01. Architecture</div>
-    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Copy & Paste Model</h4>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400">Zero dependency bloat. Copy component code directly into your repository with 100% ownership.</p>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Registry Install Model</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">The shadcn CLI writes each component's source into your repository. There is no wrapper package to depend on, so you own and edit the code outright.</p>
   </div>
 
   <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
     <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">02. Modularity</div>
-    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Modular Primitives</h4>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400">Built with complete isolation using Tailwind CSS, Framer Motion, and Radix UI primitives.</p>
+    <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Per-Component Dependencies</h4>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400">Each component declares only what it actually imports — usually <code className="text-xs px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">lucide-react</code>, <code className="text-xs px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">gsap</code> or <code className="text-xs px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">framer-motion</code>. Install one and you get its dependencies, not the whole library's.</p>
   </div>
 
   <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs">
