@@ -1,22 +1,24 @@
 {
-  "name": "nextjs-documentation",
+  "name": "Algorize UI",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tsx ./src/scripts/build-md-files.ts && next build",
+    "build": "tsx ./src/scripts/build-md-files.ts && npm run build:registry && next build",
     "build:analyze": "set ANALYZE=true && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build",
-    "build:registry": "tsx ./src/scripts/auto-generate-components.ts && tsx ./src/scripts/build-registry.ts",
+    "build:registry": "npm run generate:registry && shadcn build",
     "build:md": "tsx ./src/scripts/build-md-files.ts",
     "generate:preview": "tsx ./src/scripts/generate-preview-registry.ts",
     "generate:components": "tsx ./src/scripts/auto-generate-components.ts",
     "watch:components": "tsx ./src/scripts/watch-components.ts",
     "perf:audit": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
     "perf:bundle": "npx bundle-analyzer .next/static/chunks/*.js",
-    "perf:optimize": "node scripts/optimize-build.js"
+    "perf:optimize": "node scripts/optimize-build.js",
+    "generate:registry": "tsx ./src/scripts/generate-registry.ts",
+    "check:registry": "tsx ./src/scripts/check-registry.ts"
   },
   "dependencies": {
     "@babel/generator": "^7.28.0",
@@ -89,6 +91,7 @@
     "eslint": "^9",
     "eslint-config-next": "^15.5.15",
     "prettier": "^3.6.2",
+    "shadcn": "^4.18.0",
     "shiki": "^3.4.0",
     "tailwindcss": "^4",
     "tsx": "^4.19.4",

@@ -25,7 +25,7 @@ function buildRegistry() {
   try {
     // First regenerate components.ts, then build registry
     execSync("npm run generate:components", { stdio: "inherit" });
-    execSync("tsx ./src/scripts/build-registry.ts", { stdio: "inherit" });
+    execSync("npm run build:registry", { stdio: "inherit" });
     console.log("✅ Components and registry rebuilt successfully!\n");
   } catch (error) {
     console.error("❌ Error rebuilding:", error);

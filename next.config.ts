@@ -14,11 +14,14 @@ const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 
   // Skip type and lint checks during build (Vercel deploy)
+  // Type and lint errors fail the build. This repo publishes source code as a
+  // shadcn registry, so type errors here land in consumers' projects — they
+  // must not be suppressed. Warnings are still allowed through.
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 
   // SEO and Performance Optimizations
