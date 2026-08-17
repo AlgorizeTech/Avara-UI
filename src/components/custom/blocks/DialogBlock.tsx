@@ -96,6 +96,35 @@ export function DialogTrigger({
 }
 
 // ==========================================
+// 3b. CLOSE BUTTON
+// ==========================================
+export interface DialogCloseProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+export function DialogClose({
+  children,
+  className,
+  onClick,
+  ...props
+}: DialogCloseProps) {
+  const { setOpen } = useDialog();
+
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        onClick?.(e);
+        setOpen(false);
+      }}
+      className={className}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ==========================================
 // 4. CONTENT (Portal Renderer with Scroll Lock)
 // ==========================================
 export interface DialogContentProps

@@ -27,25 +27,79 @@ export default function LogoSection() {
   );
 }`;
 
-export const usageRight = `// Reverses the travel; everything else is identical.
-<MarqueeBlock direction="right" gap="4rem">
-  {logos.map((logo) => <Logo key={logo} name={logo} />)}
-</MarqueeBlock>`;
+export const usageRight = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-export const usageVertical = `// Vertical marquees need a bounded height on the container.
-<MarqueeBlock direction="up" gap="1.5rem" className="h-[400px] w-[300px]">
-  {testimonials.map((t) => <TestimonialCard key={t.name} {...t} />)}
-</MarqueeBlock>`;
+const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
 
-export const usageSpeed = `// "slow" | "normal" | "fast", or a raw duration in seconds.
-<MarqueeBlock speed="slow" gap="1.5rem">
-  {images.map((src) => <img key={src} src={src} className="w-[200px] rounded-2xl" />)}
-</MarqueeBlock>`;
+export default function ReverseLogoWall() {
+  return (
+    // Reverses the travel; everything else is identical.
+    <MarqueeBlock direction="right" gap="4rem" fade pauseOnHover>
+      {logos.map((logo) => (
+        <div key={logo} className="text-xl font-bold text-zinc-400">
+          {logo}
+        </div>
+      ))}
+    </MarqueeBlock>
+  );
+}`;
 
-export const usageBare = `// No edge mask, and the loop keeps running under the cursor.
-<MarqueeBlock fade={false} pauseOnHover={false} gap="4rem">
-  {logos.map((logo) => <Logo key={logo} name={logo} />)}
-</MarqueeBlock>`;
+export const usageVertical = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+const testimonials = [
+  { name: "Ada", quote: "Shipped our landing page in an afternoon." },
+  { name: "Grace", quote: "The loop is genuinely seamless." },
+  { name: "Alan", quote: "Dropped three dependencies for this one." },
+];
+
+export default function TestimonialColumn() {
+  return (
+    // Vertical marquees need a bounded height on the container.
+    <MarqueeBlock direction="up" gap="1.5rem" fade className="h-[400px] w-[300px]">
+      {testimonials.map((t) => (
+        <div
+          key={t.name}
+          className="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800"
+        >
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">{t.quote}</p>
+          <p className="mt-2 text-xs font-semibold text-zinc-400">{t.name}</p>
+        </div>
+      ))}
+    </MarqueeBlock>
+  );
+}`;
+
+export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+const images = ["/gallery/01.jpg", "/gallery/02.jpg", "/gallery/03.jpg"];
+
+export default function SlowGallery() {
+  return (
+    // "slow" | "normal" | "fast", or a raw duration in seconds.
+    <MarqueeBlock speed="slow" gap="1.5rem" fade>
+      {images.map((src) => (
+        <img key={src} src={src} alt="" className="w-[200px] rounded-2xl" />
+      ))}
+    </MarqueeBlock>
+  );
+}`;
+
+export const usageBare = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+
+export default function BareMarquee() {
+  return (
+    // No edge mask, and the loop keeps running under the cursor.
+    <MarqueeBlock fade={false} pauseOnHover={false} gap="4rem">
+      {logos.map((logo) => (
+        <div key={logo} className="text-xl font-bold text-zinc-400">
+          {logo}
+        </div>
+      ))}
+    </MarqueeBlock>
+  );
+}`;
 
 <ExampleShowcase
   name="marquee"
@@ -53,32 +107,114 @@ export const usageBare = `// No edge mask, and the loop keeps running under the 
   examples={[
     {
       title: "Marquee",
-      subheading: "Drop your items inside — one copy is enough. `fade` masks both edges and `pauseOnHover` stops the loop under the cursor.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "children",
+          value: "once",
+          effect:
+            "— the block renders a second `aria-hidden` copy itself to close the loop. Duplicating them yourself gives a visible double run.",
+        },
+        {
+          prop: "fade",
+          effect:
+            "is off by default; on, it masks the first and last 10% so items dissolve instead of being clipped.",
+        },
+        {
+          prop: "pauseOnHover",
+          effect:
+            "is off by default; on, it freezes the loop while the pointer is inside.",
+        },
+        {
+          prop: "gap",
+          value: '"4rem"',
+          effect:
+            "is a raw CSS length that both spaces the items and feeds the loop maths — a `%` value breaks it.",
+        },
+        {
+          prop: "direction",
+          value: '"left"',
+          effect: "is the default: content travels leftwards.",
+        },
+      ],
       props: { contentType: "logos", direction: "left" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MarqueeBlock.tsx"),
     },
     {
       title: "Reverse direction",
-      subheading: "Set `direction=\"right\"` — pair two rows travelling opposite ways for a classic logo wall.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "direction",
+          value: '"right"',
+          effect:
+            "to run the same animation backwards — pair it with a `left` row above or below for a two-row logo wall.",
+        },
+      ],
       props: { contentType: "logos", direction: "right" },
       usage: usageRight,
     },
     {
       title: "Vertical",
-      subheading: "`direction=\"up\"` or `\"down\"` scrolls the column instead; give the container a fixed height.",
+      subheading: "Vertical marquees need a bounded height — without one the container grows to fit both tracks and nothing appears to move.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "direction",
+          value: '"up"',
+          effect:
+            "to scroll the column upwards — it switches the container to `flex-col` and animates `translateY`.",
+        },
+        {
+          prop: "direction",
+          value: '"down"',
+          effect: "runs the same column the other way.",
+        },
+        {
+          prop: "fade",
+          effect: "follows the axis on its own, masking the top and bottom edges here.",
+        },
+      ],
       props: { contentType: "testimonials", direction: "up" },
       usage: usageVertical,
     },
     {
       title: "Speed",
-      subheading: "`speed` takes `\"slow\"`, `\"normal\"`, `\"fast\"` — or a number of seconds for one full pass.",
+      subheading: "`speed` is a duration for one full pass, not a pixels-per-second rate — the same value moves faster with fewer items.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "speed",
+          value: '"slow"',
+          effect: "for 40s per pass — a calm drift, good for large imagery.",
+        },
+        { prop: "speed", value: '"normal"', effect: "is the default: 20s per pass." },
+        { prop: "speed", value: '"fast"', effect: "gives 10s per pass — ticker pace." },
+        {
+          prop: "speed",
+          value: "{45}",
+          effect: "a raw number sets the seconds per pass directly.",
+        },
+      ],
       props: { contentType: "images", direction: "left", speed: "slow" },
       usage: usageSpeed,
     },
     {
       title: "Without fade or pause",
-      subheading: "Turn off `fade` for hard edges and `pauseOnHover` to keep it moving no matter what.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "fade",
+          value: "{false}",
+          effect: "to drop the edge mask and let items run to a hard edge.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "{false}",
+          effect: "keeps the loop running under the cursor. Both are the defaults.",
+        },
+      ],
       props: { contentType: "logos", direction: "left", fade: false, pauseOnHover: false },
       usage: usageBare,
     },
@@ -86,6 +222,11 @@ export const usageBare = `// No edge mask, and the loop keeps running under the 
 />
 
 ## Installation
+
+<Cli command={`add marquee.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### Copy the Component
 

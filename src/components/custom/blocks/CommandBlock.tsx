@@ -161,7 +161,10 @@ export function CommandDialog({
           />
           <div className="z-50 w-full max-w-xl animate-in fade-in zoom-in-95 slide-in-from-top-[10%] duration-200 px-4 sm:px-0">
             <Command
-              className="shadow-2xl h-[400px] border-none ring-1 ring-zinc-200 dark:ring-zinc-800"
+              className={cn(
+                "shadow-2xl h-auto border-none ring-1 ring-zinc-200 dark:ring-zinc-800",
+                className,
+              )}
               {...props}
             >
               {children}

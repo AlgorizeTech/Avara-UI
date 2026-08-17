@@ -78,35 +78,34 @@ const alignStyles: Record<TypographyAlign, string> = {
   justify: "text-justify",
 };
 
-// Fallback base styles for tags if no custom size is provided
-const tagBaseStyles: Record<TypographyTag, string> = {
-  h1: "font-extrabold tracking-tight leading-[1.1]",
-  h2: "font-bold tracking-tight",
-  h3: "font-semibold tracking-tight",
-  h4: "font-semibold tracking-tight",
-  h5: "font-medium",
-  h6: "font-medium",
-  p: "leading-relaxed",
-  span: "",
-  blockquote: "pl-6 italic border-l-4 border-zinc-300 dark:border-zinc-700",
+const baseStyles: Record<TypographyTag, string> = {
+  h1: "font-extrabold tracking-tight leading-[1.1] break-words",
+  h2: "font-bold tracking-tight break-words",
+  h3: "font-semibold tracking-tight break-words",
+  h4: "font-semibold tracking-tight break-words",
+  h5: "font-medium break-words",
+  h6: "font-medium break-words",
+  p: "leading-relaxed break-words",
+  span: "break-words",
+  blockquote: "pl-4 sm:pl-6 italic border-l-4 border-zinc-300 dark:border-zinc-700 break-words",
 };
 
-// Map of valid tailwind text sizes
-const tailwindSizes = new Set([
-  "xs",
-  "sm",
-  "base",
-  "lg",
-  "xl",
-  "2xl",
-  "3xl",
-  "4xl",
-  "5xl",
-  "6xl",
-  "7xl",
-  "8xl",
-  "9xl",
-]);
+// Map of valid tailwind text sizes to responsive scaling classes
+const tailwindSizeMap: Record<string, string> = {
+  xs: "text-xs",
+  sm: "text-xs sm:text-sm",
+  base: "text-xs sm:text-base",
+  lg: "text-sm sm:text-lg",
+  xl: "text-base sm:text-xl",
+  "2xl": "text-lg sm:text-2xl",
+  "3xl": "text-xl sm:text-3xl",
+  "4xl": "text-2xl sm:text-4xl",
+  "5xl": "text-2xl sm:text-4xl lg:text-5xl",
+  "6xl": "text-3xl sm:text-5xl lg:text-6xl",
+  "7xl": "text-3xl sm:text-5xl lg:text-7xl",
+  "8xl": "text-4xl sm:text-6xl lg:text-8xl",
+  "9xl": "text-4xl sm:text-7xl lg:text-9xl",
+};
 
 // ==========================================
 // INTERFACES
@@ -118,7 +117,7 @@ export interface AnimatedTypographyProps
   text: string;
   color?: TypographyColor;
   align?: TypographyAlign;
-  size?: string; // Can be a tailwind size (e.g. "3xl") or exact value (e.g. "24px", "2rem")
+  size?: string;
   delay?: number; // Base delay in ms
   speed?: number; // Speed multiplier for staggered effects
 }
@@ -177,13 +176,13 @@ export const AnimatedTypographyBlock = forwardRef<
       }
     }, [text, variant, delay, speed]);
 
-    // Smart Sizing Logic
+    // Smart Sizing Logic with Responsive Scaling
     let sizeClass = "";
     let customSizeStyle: React.CSSProperties = {};
 
     if (size) {
-      if (tailwindSizes.has(size)) {
-        sizeClass = `text-${size}`;
+      if (tailwindSizeMap[size]) {
+        sizeClass = tailwindSizeMap[size];
       } else {
         customSizeStyle = { fontSize: size };
       }
@@ -384,7 +383,7 @@ export const AnimatedTypographyBlock = forwardRef<
         <Tag
           ref={ref as any}
           className={cn(
-            tagBaseStyles[Tag],
+            baseStyles[Tag],
             alignStyles[align],
             sizeClass,
             colorClass,

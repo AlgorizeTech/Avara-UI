@@ -96,59 +96,63 @@ export function CursorAnimation({
       : colorThemes[color]?.rgb || "99, 102, 241";
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const targetPosRef = useRef({ x: -100, y: -100 });
+  const smoothPosRef = useRef({ x: -100, y: -100 });
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
   const [smoothPos, setSmoothPos] = useState({ x: -100, y: -100 });
   const [isHovered, setIsHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
 
-  // Smooth lerp follow effect
+  // High-performance RAF loop for hyper-responsive, lag-free cursor tracking
   useEffect(() => {
-    let animationFrameId: number;
+    if (!isHovered) return;
 
-    const lerp = (start: number, end: number, factor: number) => {
-      return start + (end - start) * factor;
+    let animId: number;
+    let lastTrailTime = 0;
+
+    const loop = (timestamp: number) => {
+      const target = targetPosRef.current;
+      const smooth = smoothPosRef.current;
+
+      // 0.65 LERP factor for ultra-fast, smooth trailing ring
+      const nextX = smooth.x + (target.x - smooth.x) * 0.65;
+      const nextY = smooth.y + (target.y - smooth.y) * 0.65;
+
+      smoothPosRef.current = { x: nextX, y: nextY };
+      setSmoothPos({ x: nextX, y: nextY });
+
+      // Dense 20ms trail update
+      if (variant === "trail" && timestamp - lastTrailTime > 20) {
+        lastTrailTime = timestamp;
+        setTrail((prev) => [
+          { x: target.x, y: target.y, id: timestamp },
+          ...prev.slice(0, trailCount - 1),
+        ]);
+      }
+
+      animId = requestAnimationFrame(loop);
     };
 
-    const updateSmoothPosition = () => {
-      setSmoothPos((prev) => {
-        const nextX = lerp(prev.x, mousePos.x, 0.15);
-        const nextY = lerp(prev.y, mousePos.y, 0.15);
-        return { x: nextX, y: nextY };
-      });
-
-      animationFrameId = requestAnimationFrame(updateSmoothPosition);
-    };
-
-    animationFrameId = requestAnimationFrame(updateSmoothPosition);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [mousePos]);
-
-  // Trail history updates
-  useEffect(() => {
-    if (variant === "trail" && isHovered) {
-      setTrail((prev) => {
-        const newTrail = [
-          { x: mousePos.x, y: mousePos.y, id: Date.now() },
-          ...prev,
-        ];
-        return newTrail.slice(0, trailCount);
-      });
-    }
-  }, [mousePos, variant, isHovered, trailCount]);
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [isHovered, variant, trailCount]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    targetPosRef.current = { x, y };
+    // Instantaneous 0ms dot response directly on mouse move
+    setMousePos({ x, y });
   };
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
     setIsHovered(false);
+    targetPosRef.current = { x: -100, y: -100 };
+    smoothPosRef.current = { x: -100, y: -100 };
     setMousePos({ x: -100, y: -100 });
     setSmoothPos({ x: -100, y: -100 });
     setTrail([]);
@@ -231,7 +235,7 @@ export function CursorAnimation({
           {variant === "glow" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-transform duration-75"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-[width,height,opacity] duration-150"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
@@ -242,7 +246,7 @@ export function CursorAnimation({
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-xs transition-all duration-100 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-xs transition-[width,height] duration-150"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,
@@ -267,7 +271,7 @@ export function CursorAnimation({
           {variant === "magnetic" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-transform duration-200"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed transition-[width,height] duration-150"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
@@ -299,7 +303,7 @@ export function CursorAnimation({
                 return (
                   <div
                     key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-75"
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
                     style={{
                       left: `${pt.x}px`,
                       top: `${pt.y}px`,
@@ -325,7 +329,7 @@ export function CursorAnimation({
           {/* VARIANT 4: BADGE LABEL CURSOR */}
           {variant === "badge" && (
             <div
-              className="pointer-events-none absolute left-0 top-0 transition-transform duration-100 ease-out z-30"
+              className="pointer-events-none absolute left-0 top-0 z-30"
               style={{
                 transform: `translate3d(${mousePos.x + 12}px, ${
                   mousePos.y + 12
@@ -346,7 +350,7 @@ export function CursorAnimation({
           {variant === "spotlight" && (
             <>
               <div
-                className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300"
+                className="pointer-events-none absolute inset-0 z-20"
                 style={{
                   background: `radial-gradient(circle 130px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, rgba(0, 0, 0, 0.45) 100%)`,
                 }}
@@ -367,7 +371,7 @@ export function CursorAnimation({
           {variant === "expand" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-all duration-200 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-[width,height] duration-150"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
@@ -425,7 +429,7 @@ export function CursorAnimation({
           {variant === "ring" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-all duration-300 ease-out"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-[width,height] duration-150"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
@@ -473,7 +477,7 @@ export function CursorAnimation({
           {variant === "sonar" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-transform duration-300"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
@@ -483,7 +487,7 @@ export function CursorAnimation({
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border transition-transform duration-150"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,

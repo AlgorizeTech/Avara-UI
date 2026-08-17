@@ -101,24 +101,50 @@ export default function WholeStringVariants() {
   );
 }`;
 
-export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
-// intact no matter which effect you use.
-<AnimatedTypographyBlock as="h1" variant="fade-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h2" variant="fade-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="p" variant="fade-up" text="The quick brown fox." />
-<AnimatedTypographyBlock as="blockquote" variant="fade-up" text="The quick brown fox." />`;
+export const usageTags = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export const usageAlign = `<AnimatedTypographyBlock as="p" align="left" text={copy} />
-<AnimatedTypographyBlock as="p" align="center" text={copy} />
-<AnimatedTypographyBlock as="p" align="right" text={copy} />
-<AnimatedTypographyBlock as="p" align="justify" text={copy} />`;
+export default function SemanticTags() {
+  // \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
+  // intact no matter which effect you use.
+  return (
+    <div className="flex flex-col gap-4">
+      <AnimatedTypographyBlock as="h1" variant="fade-up" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="h2" variant="fade-up" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="p" variant="fade-up" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="blockquote" variant="fade-up" text="The quick brown fox." />
+    </div>
+  );
+}`;
 
-export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
-// unaffected either way.
-<AnimatedTypographyBlock as="h2" size="5xl" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h2" size="24px" text="The quick brown fox." />
-<AnimatedTypographyBlock as="h2" size="2rem" text="The quick brown fox." />`;
+export const usageAlign = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const copy = "The quick brown fox jumps over the lazy dog.";
+
+export default function Alignment() {
+  return (
+    <div className="flex flex-col gap-4">
+      <AnimatedTypographyBlock as="p" align="left" text={copy} />
+      <AnimatedTypographyBlock as="p" align="center" text={copy} />
+      <AnimatedTypographyBlock as="p" align="right" text={copy} />
+      <AnimatedTypographyBlock as="p" align="justify" text={copy} />
+    </div>
+  );
+}`;
+
+export const usageSizes = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function SizeOverride() {
+  // \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
+  // unaffected either way.
+  return (
+    <div className="flex flex-col gap-4">
+      <AnimatedTypographyBlock as="h2" size="5xl" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="h2" size="24px" text="The quick brown fox." />
+      <AnimatedTypographyBlock as="h2" size="2rem" text="The quick brown fox." />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="animated-typography"
@@ -128,50 +154,124 @@ export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length
   examples={[
     {
       title: "Animated typography",
-      subheading: "Pass `text` rather than children — the component mirrors it into an `sr-only` node so screen readers never spell it out character by character.",
+      subheading: "The component mirrors your string into an `sr-only` node so screen readers never spell it out character by character.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "text",
+          effect: "rather than children — the split-and-animate pass needs the raw string.",
+        },
+        {
+          prop: "variant",
+          value: '"flip-up"',
+          effect: "chooses the entrance; see the next four examples for the full set.",
+        },
+      ],
       props: { tag: "h1", variant: "flip-up", align: "center" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
     {
       title: "Masked reveals",
-      subheading: "Both slide each word up out of a clipping mask — `fade-up` fades as it rises, `reveal` stays solid on a sharper curve.",
+      subheading: "Both slide each word up out of a clipping mask.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"fade-up"',
+          effect: "fades each word as it rises.",
+        },
+        {
+          prop: "variant",
+          value: '"reveal"',
+          effect: "keeps it solid on a sharper curve.",
+        },
+      ],
       props: { variants: ["fade-up", "reveal"] },
       usage: usageMaskReveals,
     },
     {
       title: "Transform entrances",
-      subheading: "Word-by-word entrances that transform rather than slide: a 3D `flip-up`, a springy `pop-in`, and a `blur-in` that resolves from 12px of blur.",
+      subheading: "Word-by-word entrances that transform rather than slide.",
+      propNotes: [
+        { prop: "variant", value: '"flip-up"', effect: "rotates each word in 3D." },
+        { prop: "variant", value: '"pop-in"', effect: "scales it up with a spring." },
+        {
+          prop: "variant",
+          value: '"blur-in"',
+          effect: "resolves it from 12px of blur.",
+        },
+      ],
       props: { variants: ["flip-up", "pop-in", "blur-in"] },
       usage: usageTransformEntrances,
     },
     {
       title: "Continuous effects",
-      subheading: "These two never settle — `glitch` drifts red/blue copies behind the text and `glow` pulses a halo. Reserve them for short display text.",
+      subheading: "These two never settle — reserve them for short display text.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"glitch"',
+          effect: "drifts red and blue copies behind the text, forever.",
+        },
+        { prop: "variant", value: '"glow"', effect: "pulses a halo behind it, forever." },
+      ],
       props: { variants: ["glitch", "glow"] },
       usage: usageContinuous,
     },
     {
       title: "Typewriter & no animation",
-      subheading: "The two that leave the string whole instead of splitting it into words: `typewriter` types it out character by character, `none` renders it plainly.",
+      subheading: "The two that leave the string whole instead of splitting it into words.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"typewriter"',
+          effect: "types the string out character by character.",
+        },
+        {
+          prop: "variant",
+          value: '"none"',
+          effect: "renders it plainly — the escape hatch when you only want the tag and size handling.",
+        },
+      ],
       props: { variants: ["typewriter", "none"] },
       usage: usageWholeString,
     },
     {
       title: "Semantic tags",
-      subheading: "Use the `as` prop to choose the rendered element — heading levels keep their document meaning.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "as",
+          effect:
+            "to choose the rendered element — `h1`…`h3`, `p`, `blockquote`. The real tag ships, so heading levels keep their document meaning whatever the effect.",
+        },
+      ],
       props: { showAll: "tags" },
       usage: usageTags,
     },
     {
       title: "Alignment",
-      subheading: "Use the `align` prop to set the text alignment.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "align",
+          effect: "to set the text alignment — `left`, `center`, `right` or `justify`.",
+        },
+      ],
       props: { showAll: "align" },
       usage: usageAlign,
     },
     {
       title: "Size override",
-      subheading: "Use the `size` prop to override the visual size without changing the tag — Tailwind steps and raw CSS lengths both work.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          value: '"5xl"',
+          effect:
+            "to override the visual size without changing the tag. A Tailwind step or a raw CSS length such as `24px` or `2rem` both work.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
@@ -179,6 +279,11 @@ export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length
 />
 
 ## Installation
+
+<Cli command={`add animated-typography.json`} />
+
+The CLI writes the component into your project and installs anything it depends on.
+
 
 ### Copy the Component
 

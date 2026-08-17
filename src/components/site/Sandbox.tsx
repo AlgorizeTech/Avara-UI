@@ -26,9 +26,9 @@ import {
   DEFAULT_SHOWCASE_COLOR,
   useShowcaseColorContext,
 } from "@/components/site/showcase-color";
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { Fragment, useEffect, useId, useRef, useState } from "react";
 
-const MIN_PREVIEW_WIDTH = 320;
+const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;
@@ -519,9 +519,38 @@ export function Sandbox({
  * side by side on lg+ screens; 1 stacks them vertically.
  */
 
+/**
+ * One line of the "What the props do" cheat sheet that sits above a preview.
+ *
+ * The point is that a reader can tell what a prop CHANGES without opening the
+ * Usage tab: `prop` + `value` show the exact spelling to copy, `effect`
+ * explains what happens when it is set — and, where it matters, what happens
+ * when it is not.
+ */
+export interface PropNote {
+  /**
+   * Optional word or two placed BEFORE the badges so the row reads as one
+   * sentence — `lead: "Use"` renders `Use variant = "ring" for a full track…`.
+   */
+  lead?: string;
+  /** Prop name as written in JSX, e.g. `layout`. */
+  prop: string;
+  /**
+   * The value this example uses, written the way you'd type it —
+   * `"group-top"`, `{400}`, `true`. Omit for boolean props used bare, or when
+   * the note is about the prop in general rather than one value.
+   */
+  value?: string;
+  /** One short line on what setting it does. Backticks render as inline code. */
+  effect: string;
+}
+
 export interface ShowcaseExample {
   title: string;
+  /** One-line summary under the title. Backticks render as inline code. */
   subheading?: string;
+  /** Short prop-by-prop cheat sheet rendered above the preview. */
+  propNotes?: PropNote[];
   /** Anchor id override; defaults to a slug of the title. */
   id?: string;
   /** JSON-serializable props bridged into the sandbox demo for this preview. */
@@ -542,6 +571,106 @@ const slugify = (value: string) =>
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+
+/**
+ * Example prose is authored as plain strings inside a JS array, so MDX never
+ * parses it and its backticks used to reach the page literally. This renders
+ * the small slice of markdown that prose actually uses — `code` and **bold** —
+ * so a prop name reads as a prop name.
+ */
+function renderInline(text: string): React.ReactNode {
+  return text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map((part, i) => {
+    if (part.length > 2 && part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code
+          key={i}
+          className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[0.85em] text-red-600 dark:bg-zinc-800 dark:text-red-400"
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    if (part.length > 4 && part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-zinc-700 dark:text-zinc-200">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part ? <Fragment key={i}>{part}</Fragment> : null;
+  });
+}
+
+/** Badge used for both halves of a prop reference — name and value alike. */
+const PROP_BADGE =
+  "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
+
+/**
+ * The prop cheat sheet. Runs on directly under the subheading — same text
+ * block, no separate panel — so the reader picks up what each knob does while
+ * still reading the intro, rather than treating it as a section to skip.
+ *
+ * The name and its value are badged so they stay findable inside the prose.
+ */
+function PropNotes({ notes }: { notes: PropNote[] }) {
+  return (
+    <dl className="mt-2 flex flex-col gap-1.5">
+      {notes.map((note, i) => (
+        <div
+          key={`${note.prop}-${note.value ?? i}`}
+          className="text-sm leading-6 text-zinc-500 dark:text-zinc-400"
+        >
+          <dt className="mr-1.5 inline-flex items-center gap-1 align-middle">
+            {note.lead && <span className="mr-0.5">{note.lead}</span>}
+            <code className={PROP_BADGE}>{note.prop}</code>
+            {note.value !== undefined && (
+              <>
+                <span aria-hidden className="font-mono text-xs text-zinc-400">
+                  =
+                </span>
+                <code className={PROP_BADGE}>{note.value}</code>
+              </>
+            )}
+          </dt>
+          <dd className="inline">{renderInline(note.effect)}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+const toPascalCase = (str: string) =>
+  str
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("");
+
+const generateFallbackUsage = (
+  componentName: string,
+  variantTitle: string,
+  props?: Record<string, unknown>
+): string => {
+  const pascalName = toPascalCase(componentName);
+  const cleanTitle = variantTitle.replace(/[^a-zA-Z0-9]/g, "");
+
+  const propEntries = props
+    ? Object.entries(props)
+        .map(([key, val]) => {
+          if (typeof val === "string") return `${key}="${val}"`;
+          if (typeof val === "boolean") return val ? key : `${key}={false}`;
+          return `${key}={${JSON.stringify(val)}}`;
+        })
+        .join(" ")
+    : "";
+
+  const propString = propEntries ? ` ${propEntries}` : "";
+
+  return `import { ${pascalName} } from "@/components/custom/blocks/${pascalName}Block";
+
+export default function ${cleanTitle}Demo() {
+  return <${pascalName}${propString} className="w-full" />;
+}`;
+};
 
 export function ExampleShowcase({
   name,
@@ -600,6 +729,9 @@ export function ExampleShowcase({
     if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
   }, [shared, ownsPicker, defaultColor]);
 
+  // Find component source code fallback from any example that explicitly provides it
+  const fallbackCode = examples.find((ex) => ex.code)?.code;
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
       {ownsPicker && (
@@ -619,24 +751,33 @@ export function ExampleShowcase({
           columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
         )}
       >
-        {examples.map((example) => (
-          <ExampleCard
-            key={example.id ?? slugify(example.title)}
-            name={name}
-            example={
-              colorControl
-                ? {
-                    ...example,
-                    // Explicit per-example props still win.
-                    props: { [colorProp]: color, ...example.props },
-                  }
-                : example
-            }
-            options={example.options ?? options}
-            minHeight={example.minHeight ?? minHeight}
-            maxHeight={example.maxHeight ?? maxHeight}
-          />
-        ))}
+        {examples.map((example) => {
+          const effectiveProps = colorControl
+            ? { [colorProp]: color, ...example.props }
+            : example.props;
+
+          const effectiveUsage =
+            example.usage ??
+            generateFallbackUsage(name, example.title, effectiveProps);
+
+          const effectiveCode = example.code ?? fallbackCode;
+
+          return (
+            <ExampleCard
+              key={example.id ?? slugify(example.title)}
+              name={name}
+              example={{
+                ...example,
+                props: effectiveProps,
+                usage: effectiveUsage,
+                code: effectiveCode,
+              }}
+              options={example.options ?? options}
+              minHeight={example.minHeight ?? minHeight}
+              maxHeight={example.maxHeight ?? maxHeight}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -655,7 +796,7 @@ function ExampleCard({
   minHeight: number;
   maxHeight: number;
 }) {
-  const { title, subheading, props, usage, code } = example;
+  const { title, subheading, propNotes, props, usage, code } = example;
   const anchor = example.id ?? slugify(title);
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
@@ -706,8 +847,11 @@ function ExampleCard({
           </a>
         </h3>
         {subheading && (
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{subheading}</p>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            {renderInline(subheading)}
+          </p>
         )}
+        {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
