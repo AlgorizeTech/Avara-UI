@@ -227,7 +227,7 @@ html.dark .shiki span {
   }
 
   .vitepress-table td {
-    @apply px-4 py-3 text-sm text-gray-700 dark:text-gray-300;
+    @apply px-4 py-3 text-sm text-gray-700 dark:text-gray-300 break-words;
     @apply border-b border-r border-gray-100 dark:border-gray-800;
   }
 
@@ -240,9 +240,349 @@ html.dark .shiki span {
   }
 
   .vitepress-table code {
-    @apply font-mono text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-gray-800 dark:text-gray-200;
+    @apply font-mono text-xs bg-transparent border-none p-0 font-bold text-zinc-900 dark:text-zinc-100;
   }
 
+}
+
+/* Prevent prose & table content from expanding past main container into sidebars */
+.prose {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Pure Table Grid Layout */
+.prose table {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #e4e4e7 !important;
+  overflow: hidden !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: 0.875rem !important;
+  text-align: left !important;
+  background-color: transparent !important;
+}
+
+/* Devices >= 1024px (lg & xl): NO Scrollbar, Type column values wrap onto lines below, table fits 100% width */
+@media (min-width: 1024px) {
+  .prose table {
+    min-width: 0 !important;
+    table-layout: auto !important;
+  }
+
+  .prose div:has(> table),
+  .prose .overflow-x-auto,
+  .overflow-x-auto {
+    overflow-x: hidden !important;
+  }
+
+  /* Type column & code values wrap onto lines below according to available space */
+  .prose td:nth-child(2),
+  .prose td:nth-child(2) code {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+}
+
+/* Devices < 1024px (< lg / md & mobile): Enable Horizontal Touch Scrollbar */
+@media (max-width: 1023px) {
+  .prose table {
+    min-width: 560px !important;
+  }
+
+  .prose div:has(> table),
+  .prose .overflow-x-auto,
+  .overflow-x-auto {
+    overflow-x: auto !important;
+  }
+}
+
+.dark .prose table {
+  border: 1px solid #27272a !important;
+  background-color: transparent !important;
+}
+
+/* Data Cells Rules */
+.prose td {
+  padding: 0.875rem 1.25rem !important;
+  border-right: 1px solid #f4f4f5 !important;
+  vertical-align: top !important;
+}
+
+.dark .prose td {
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+/* Prop Name / Default / Required columns: Single line */
+.prose th:not(:last-child),
+.prose td:first-child,
+.prose td:nth-child(3),
+.prose td:nth-child(4) {
+  white-space: nowrap !important;
+}
+
+.prose td:first-child {
+  font-weight: 800 !important;
+  color: #09090b !important;
+}
+
+.dark .prose td:first-child {
+  color: #ffffff !important;
+}
+
+/* Type & Description columns: Graceful text wrapping */
+.prose td:nth-child(2),
+.prose td:last-child {
+  border-right: none !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  color: #52525b !important;
+  line-height: 1.6 !important;
+}
+
+.dark .prose td:nth-child(2),
+.dark .prose td:last-child {
+  color: #a1a1aa !important;
+}
+
+/* Outer scroll wrapper: positions scrollbar directly at bottom border of table */
+.prose div:has(> table),
+.prose .overflow-x-auto,
+.overflow-x-auto {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  border-radius: 0.75rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  padding: 0 !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(161, 161, 170, 0.5) transparent !important;
+}
+
+.dark .prose div:has(> table),
+.dark .prose .overflow-x-auto,
+.dark .overflow-x-auto {
+  border: none !important;
+  scrollbar-color: rgba(113, 113, 122, 0.5) transparent !important;
+}
+
+/* Custom WebKit Sleek Pill Scrollbar with Visible Gray Track Background */
+.prose div:has(> table)::-webkit-scrollbar,
+.prose .overflow-x-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px !important;
+  display: block !important;
+}
+
+/* KILL ALL SCROLLBAR ARROW BUTTONS & ANGLES IN ALL BROWSERS (Windows/Mac/Linux) */
+.prose div:has(> table)::-webkit-scrollbar-button,
+.prose .overflow-x-auto::-webkit-scrollbar-button,
+.overflow-x-auto::-webkit-scrollbar-button,
+.prose div:has(> table)::-webkit-scrollbar-button:single-button,
+.prose .overflow-x-auto::-webkit-scrollbar-button:single-button,
+.overflow-x-auto::-webkit-scrollbar-button:single-button,
+.prose div:has(> table)::-webkit-scrollbar-button:horizontal:decrement,
+.prose .overflow-x-auto::-webkit-scrollbar-button:horizontal:decrement,
+.overflow-x-auto::-webkit-scrollbar-button:horizontal:decrement,
+.prose div:has(> table)::-webkit-scrollbar-button:horizontal:increment,
+.prose .overflow-x-auto::-webkit-scrollbar-button:horizontal:increment,
+.overflow-x-auto::-webkit-scrollbar-button:horizontal:increment,
+.prose div:has(> table)::-webkit-scrollbar-corner,
+.prose .overflow-x-auto::-webkit-scrollbar-corner,
+.overflow-x-auto::-webkit-scrollbar-corner {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  background: transparent !important;
+}
+
+/* Track (where the scrollbar slides) - Visible Gray Background */
+.prose div:has(> table)::-webkit-scrollbar-track,
+.prose .overflow-x-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #e4e4e7 !important;
+  border-radius: 0 0 0.5rem 0.5rem !important;
+  margin: 0 !important;
+}
+
+.dark .prose div:has(> table)::-webkit-scrollbar-track,
+.dark .prose .overflow-x-auto::-webkit-scrollbar-track,
+.dark .overflow-x-auto::-webkit-scrollbar-track {
+  background: #27272a !important;
+}
+
+/* Thumb (the draggable bar) */
+.prose div:has(> table)::-webkit-scrollbar-thumb,
+.prose .overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #a1a1aa !important;
+  border-radius: 9999px !important;
+  border: 1.5px solid #e4e4e7 !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.dark .prose div:has(> table)::-webkit-scrollbar-thumb,
+.dark .prose .overflow-x-auto::-webkit-scrollbar-thumb,
+.dark .overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #52525b !important;
+  border: 1.5px solid #27272a !important;
+}
+
+.prose div:has(> table)::-webkit-scrollbar-thumb:hover,
+.prose .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #71717a !important;
+}
+
+.dark .prose div:has(> table)::-webkit-scrollbar-thumb:hover,
+.dark .prose .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #71717a !important;
+}
+
+/* Header: Transparent Background & Subtle Gray Bottom Border */
+.prose thead {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid #e4e4e7 !important;
+}
+
+.dark .prose thead {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid #27272a !important;
+}
+
+.prose th {
+  padding: 0.875rem 1.25rem !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #71717a !important;
+  border-bottom: 1px solid #e4e4e7 !important;
+  border-right: 1px solid #f4f4f5 !important;
+  white-space: nowrap !important;
+}
+
+.dark .prose th {
+  color: #a1a1aa !important;
+  border-bottom: 1px solid #27272a !important;
+  border-right: 1px solid #27272a !important;
+}
+
+.prose th:last-child {
+  border-right: none !important;
+}
+
+/* Rows & Gridlines */
+.prose tbody tr {
+  border-bottom: 1px solid #f4f4f5 !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.dark .prose tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+.prose tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.prose tbody tr:hover {
+  background-color: rgba(244, 244, 245, 0.6) !important;
+}
+
+.dark .prose tbody tr:hover {
+  background-color: rgba(39, 39, 42, 0.4) !important;
+}
+
+/* Data Cells with Subtle Gray Vertical Gridlines */
+.prose td {
+  padding: 0.875rem 1.25rem !important;
+  border-right: 1px solid #f4f4f5 !important;
+  vertical-align: top !important;
+}
+
+.dark .prose td {
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+.prose td:first-child {
+  font-weight: 800 !important;
+  color: #09090b !important;
+  white-space: nowrap !important;
+}
+
+.dark .prose td:first-child {
+  color: #ffffff !important;
+}
+
+.prose td:last-child {
+  border-right: none !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  min-width: 220px !important;
+  color: #52525b !important;
+  line-height: 1.6 !important;
+}
+
+.dark .prose td:last-child {
+  color: #a1a1aa !important;
+}
+
+.prose td:not(:last-child) {
+  white-space: nowrap !important;
+}
+
+/* Table code elements: NO background, NO border, EXTRA BOLD text */
+.prose table code,
+.prose td code,
+.prose th code,
+.vitepress-table code {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-weight: 800 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* Table Cursor Behavior */
+.prose table,
+.prose table tr,
+.prose table td,
+.prose table th,
+.vitepress-table table,
+.vitepress-table tr,
+.vitepress-table td,
+.vitepress-table th {
+  cursor: pointer !important;
+}
+
+.prose table td p,
+.prose table td span,
+.prose table td code,
+.vitepress-table td p,
+.vitepress-table td span,
+.vitepress-table td code {
+  cursor: text !important;
 }
 
 /* Radix dialogs (theme sheet, modals) scroll-lock <body> while open.

@@ -9,19 +9,19 @@ import { DocsPagination } from "@/components/site/DocsPagination";
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
   return (
     <div className="w-full min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 relative">
-      <div className="mx-auto max-w-[1800px] flex px-4 md:px-5">
+      <div className="mx-auto max-w-[1800px] flex px-4 md:px-5 w-full min-w-0">
         {/* Left Navigation */}
         <Sidebar />
 
         {/* Center Main Content */}
         <main
           className={cn(
-            "flex-1 min-w-0 px-4 py-6 lg:px-6 lg:py-8 xl:px-8 xl:py-12 transition-all duration-300 ease-in-out max-w-7xl",
+            "flex-1 min-w-0 w-full max-w-full px-4 py-6 lg:px-6 lg:py-8 xl:px-8 xl:py-12 transition-all duration-300 ease-in-out max-w-7xl",
           )}
         >
           {/* Premium Typography Prose overrides */}
           <div
-            className="prose prose-zinc dark:prose-invert max-w-none
+            className="prose prose-zinc dark:prose-invert max-w-none w-full min-w-0 max-w-full
             prose-headings:font-bold prose-headings:tracking-tight 
             prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mb-8
             prose-h2:text-2xl sm:prose-h2:text-2xl prose-h2:mt-16 prose-h2:scroll-m-24 
