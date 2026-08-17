@@ -1,0 +1,46 @@
+name: Registry
+
+# The registry publishes source code that other people compile in their own
+# projects. A stale or invalid registry ships broken code downstream, so these
+# checks gate every change.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npx next lint --max-warnings=9999
+
+      - name: Regenerate and build registry
+        run: npm run build:registry
+
+      - name: Registry drift checks
+        run: npm run check:registry
+
+      # If regenerating changed anything, the committed artifacts were stale.
+      # Fail loudly rather than letting a stale registry.json or public/r/ ship.
+      - name: Fail if generated artifacts are stale
+        run: |
+          if ! git diff --exit-code -- registry.json public/r; then
+            echo ""
+            echo "registry.json or public/r/ is out of date."
+            echo "Run 'npm run build:registry' locally and commit the result."
+            exit 1
+          fi

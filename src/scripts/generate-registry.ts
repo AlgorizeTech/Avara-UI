@@ -1,0 +1,330 @@
+#!/usr/bin/env node
+/**
+ * Generates registry.json from the component sources.
+ *
+ * Run with: npm run generate:registry
+ *
+ * Everything mechanical is derived by parsing the source files — item names,
+ * file paths, install targets, npm dependencies and inter-component registry
+ * dependencies. Prose (description / categories / docs) comes from
+ * registry-meta.ts, which is hand-authored.
+ *
+ * TARGET STRATEGY — important:
+ * Install targets mirror the source directory structure:
+ *   src/components/custom/blocks/X.tsx -> components/custom/blocks/X.tsx
+ *   src/components/custom/ui/X.tsx     -> components/custom/ui/X.tsx
+ * This is deliberate. Several blocks import siblings relatively ("./SelectBlock",
+ * "../ui/base") or by alias ("@/components/custom/ui/accordion"). Renaming files
+ * on install would break those imports in the consumer's project. Item NAMES are
+ * still kebab-case for clean install URLs; the name and the filename are
+ * independent.
+ */
+
+import fs from "fs";
+import path from "path";
+import { META, NAME_OVERRIDES, CATEGORIES, type ItemMeta } from "./registry-meta";
+
+const ROOT = path.resolve(__dirname, "../..");
+const BLOCKS_DIR = path.join(ROOT, "src/components/custom/blocks");
+const PRIMITIVES_DIR = path.join(ROOT, "src/components/custom/ui");
+const SITE_UI_DIR = path.join(ROOT, "src/components/ui");
+
+const REGISTRY_NAME = "algorize-ui";
+/**
+ * Canonical registry host. This is a PERMANENT PUBLIC CONTRACT — it is baked
+ * into every published item's registryDependencies, so changing it breaks
+ * anyone who has already installed. Move to a custom domain before announcing.
+ */
+const HOMEPAGE = "https://algorize-ui.vercel.app";
+const AUTHOR = "AlgorizeTech";
+
+/**
+ * Base URL that registryDependencies pointing at THIS registry resolve against.
+ *
+ * Bare names in registryDependencies resolve against shadcn's own upstream
+ * registry, not ours. That is not merely a 404 risk — shadcn ships items called
+ * `select`, `card`, `button`, `table`, so a bare "select" would silently install
+ * shadcn's component instead of ours. Every intra-registry dependency must
+ * therefore be emitted as an absolute URL.
+ *
+ * Override for local smoke testing:
+ *   REGISTRY_BASE_URL=http://localhost:3000 npm run build:registry
+ */
+const BASE_URL = (process.env.REGISTRY_BASE_URL || HOMEPAGE).replace(/\/+$/, "");
+
+/** Items genuinely provided by shadcn's upstream registry — stay bare. */
+const UPSTREAM_ITEMS = new Set(["utils"]);
+
+const depRef = (name: string) =>
+  UPSTREAM_ITEMS.has(name) ? name : `${BASE_URL}/r/${name}.json`;
+
+/** Packages that are always present in a consumer project — never declare them. */
+const AMBIENT_PACKAGES = new Set(["react", "react-dom", "next"]);
+
+/** Site-ui files that blocks depend on and must therefore ship. */
+const SITE_UI_ITEMS = new Set(["card"]);
+
+type Source = {
+  /** Absolute path on disk. */
+  abs: string;
+  /** Repo-relative path, used as files[].path. */
+  rel: string;
+  /** Bare filename, e.g. "AdvancedTableBlock.tsx". */
+  basename: string;
+  /** Install destination, e.g. "components/custom/blocks/AdvancedTableBlock.tsx". */
+  target: string;
+  /** Generated kebab-case registry item name. */
+  name: string;
+  /** "block" | "primitive" | "site-ui" */
+  kind: "block" | "primitive" | "site-ui";
+};
+
+// ---------------------------------------------------------------------------
+// Name derivation
+// ---------------------------------------------------------------------------
+
+function toKebab(input: string): string {
+  return input
+    // Split camel/Pascal boundaries, including acronym runs (QRCode -> QR-Code).
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
+    .replace(/[\s_]+/g, "-")
+    .toLowerCase()
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function deriveName(basename: string, kind: Source["kind"]): string {
+  const override = NAME_OVERRIDES[basename];
+  if (override) return override;
+
+  let stem = basename.replace(/\.tsx$/, "");
+  // Strip the "Block"/"Blocks" suffix that most files carry.
+  stem = stem.replace(/Blocks?$/, "");
+  let name = toKebab(stem);
+
+  if (kind === "primitive") name = `ui-${name}`;
+  if (kind === "site-ui") name = `ui-${name}`;
+  return name;
+}
+
+// ---------------------------------------------------------------------------
+// Import parsing
+// ---------------------------------------------------------------------------
+
+const IMPORT_RE =
+  /import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/g;
+
+function parseImports(src: string): string[] {
+  const specs: string[] = [];
+  IMPORT_RE.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = IMPORT_RE.exec(src))) specs.push(m[1]);
+  return specs;
+}
+
+function packageOf(spec: string): string {
+  return spec.startsWith("@")
+    ? spec.split("/").slice(0, 2).join("/")
+    : spec.split("/")[0];
+}
+
+// ---------------------------------------------------------------------------
+// Source discovery
+// ---------------------------------------------------------------------------
+
+function collect(dir: string, kind: Source["kind"], filter?: Set<string>): Source[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".tsx"))
+    .filter((f) => (filter ? filter.has(f.replace(/\.tsx$/, "")) : true))
+    .sort()
+    .map((basename) => {
+      const abs = path.join(dir, basename);
+      const rel = path.relative(ROOT, abs).split(path.sep).join("/");
+      const target = rel.replace(/^src\//, "");
+      return {
+        abs,
+        rel,
+        basename,
+        target,
+        name: deriveName(basename, kind),
+        kind,
+      };
+    });
+}
+
+const sources: Source[] = [
+  ...collect(BLOCKS_DIR, "block"),
+  ...collect(PRIMITIVES_DIR, "primitive"),
+  ...collect(SITE_UI_DIR, "site-ui", SITE_UI_ITEMS),
+];
+
+/** Resolve an import specifier to another item in this registry, if any. */
+const byAbsPath = new Map<string, Source>();
+for (const s of sources) byAbsPath.set(path.normalize(s.abs).toLowerCase(), s);
+
+function resolveLocal(spec: string, fromFile: string): Source | undefined {
+  let candidate: string | undefined;
+
+  if (spec.startsWith("@/")) {
+    candidate = path.join(ROOT, "src", spec.slice(2));
+  } else if (spec.startsWith(".")) {
+    candidate = path.resolve(path.dirname(fromFile), spec);
+  }
+  if (!candidate) return undefined;
+
+  for (const ext of [".tsx", ".ts", "/index.tsx", "/index.ts"]) {
+    const hit = byAbsPath.get(path.normalize(candidate + ext).toLowerCase());
+    if (hit) return hit;
+  }
+  return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Item construction
+// ---------------------------------------------------------------------------
+
+type BuiltItem = {
+  name: string;
+  type: string;
+  title: string;
+  author: string;
+  description: string;
+  categories: string[];
+  dependencies: string[];
+  registryDependencies: string[];
+  files: { path: string; type: string; target: string }[];
+  docs?: string;
+};
+
+const missingMeta: string[] = [];
+const badCategories: string[] = [];
+const nextCoupled: string[] = [];
+const nameSeen = new Map<string, string>();
+const collisions: string[] = [];
+
+function titleFor(name: string, meta?: ItemMeta): string {
+  void meta;
+  return name
+    .split("-")
+    .map((w) => (/^\d/.test(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
+const items: BuiltItem[] = sources.map((s) => {
+  const src = fs.readFileSync(s.abs, "utf8");
+  const specs = parseImports(src);
+
+  const dependencies = new Set<string>();
+  const registryDependencies = new Set<string>();
+  let usesNext = false;
+
+  for (const spec of specs) {
+    if (spec.startsWith("@/") || spec.startsWith(".")) {
+      if (spec === "@/lib/utils") {
+        // `cn` — provided by shadcn's own `utils` item.
+        registryDependencies.add("utils");
+        continue;
+      }
+      const local = resolveLocal(spec, s.abs);
+      if (local && local.name !== s.name) {
+        registryDependencies.add(local.name);
+      }
+      continue;
+    }
+    const pkg = packageOf(spec);
+    if (pkg === "next") usesNext = true;
+    if (AMBIENT_PACKAGES.has(pkg)) continue;
+    dependencies.add(pkg);
+  }
+
+  if (usesNext) nextCoupled.push(s.name);
+
+  const prev = nameSeen.get(s.name);
+  if (prev) collisions.push(`${s.name}: ${prev} vs ${s.basename}`);
+  else nameSeen.set(s.name, s.basename);
+
+  const meta = META[s.name];
+  if (!meta) missingMeta.push(s.name);
+  for (const c of meta?.categories ?? []) {
+    if (!(CATEGORIES as readonly string[]).includes(c)) {
+      badCategories.push(`${s.name}: "${c}"`);
+    }
+  }
+
+  const fileType = s.kind === "block" ? "registry:component" : "registry:ui";
+
+  const item: BuiltItem = {
+    name: s.name,
+    type: fileType,
+    title: titleFor(s.name, meta),
+    author: AUTHOR,
+    description:
+      meta?.description ?? `TODO: describe ${s.name}. Generated placeholder.`,
+    categories: meta?.categories ?? [],
+    dependencies: [...dependencies].sort(),
+    registryDependencies: [...registryDependencies].sort().map(depRef),
+    files: [{ path: s.rel, type: fileType, target: s.target }],
+  };
+  if (meta?.docs) item.docs = meta.docs;
+  return item;
+});
+
+// ---------------------------------------------------------------------------
+// Emit
+// ---------------------------------------------------------------------------
+
+const registry = {
+  $schema: "https://ui.shadcn.com/schema/registry.json",
+  name: REGISTRY_NAME,
+  homepage: BASE_URL,
+  items: items.sort((a, b) => a.name.localeCompare(b.name)),
+};
+
+const outPath = path.join(ROOT, "registry.json");
+fs.writeFileSync(outPath, JSON.stringify(registry, null, 2) + "\n");
+
+// ---------------------------------------------------------------------------
+// Report — gaps are printed loudly, never silently shipped
+// ---------------------------------------------------------------------------
+
+console.log(`\nregistry.json written: ${items.length} items`);
+console.log(`  blocks:     ${sources.filter((s) => s.kind === "block").length}`);
+console.log(`  primitives: ${sources.filter((s) => s.kind === "primitive").length}`);
+console.log(`  site-ui:    ${sources.filter((s) => s.kind === "site-ui").length}`);
+
+if (collisions.length) {
+  console.error(`\nFATAL — duplicate item names (${collisions.length}):`);
+  for (const c of collisions) console.error(`  ${c}`);
+  console.error("Add an entry to NAME_OVERRIDES in registry-meta.ts.");
+  process.exit(1);
+}
+
+if (badCategories.length) {
+  console.error(`\nFATAL — categories outside the controlled vocabulary:`);
+  for (const c of badCategories) console.error(`  ${c}`);
+  process.exit(1);
+}
+
+const allDeps = new Set(items.flatMap((i) => i.dependencies));
+console.log(`\nnpm dependencies across registry: ${[...allDeps].sort().join(", ")}`);
+
+if (nextCoupled.length) {
+  console.log(
+    `\nNext.js-coupled (import next/image or next/link) — ${nextCoupled.length} items:`
+  );
+  console.log(`  ${nextCoupled.sort().join(", ")}`);
+  console.log("  These will not work in Vite/Remix without edits.");
+}
+
+if (missingMeta.length) {
+  console.log(
+    `\nMISSING METADATA — ${missingMeta.length} of ${items.length} items have placeholder descriptions:`
+  );
+  console.log(`  ${missingMeta.sort().join(", ")}`);
+  console.log("  Add entries to META in src/scripts/registry-meta.ts (Phase 4).");
+}
+
+console.log("");
