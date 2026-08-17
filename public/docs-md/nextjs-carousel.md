@@ -4,7 +4,7 @@ A collection of highly interactive carousel components for image galleries, hero
 
 ## Examples
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`. Each example's **Code** tab holds the source for the file it comes from.
+Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`.
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
@@ -46,7 +46,11 @@ export default function Showcase() {
   return ;
 }`;
 
-export const usageThumbnailsSide = ``;
+export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
+
+export default function SideThumbnails() {
+  return ;
+}`;
 
 export const usageFluid = `import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
 
@@ -55,25 +59,9 @@ export default function FluidShowcase() {
   return ;
 }`;
 
-## Installation: Standard Carousels
+## Installation
 
-This installation covers the `Standard Image`, `Hero Slider`, and `Thumbnails` variations.
-
-### 1. Copy the Component
-
-Create a new file at `components/custom/carousel.tsx` and copy the source from the **Code** tab of the first example above — it exports all three standard carousels.
-
-Then import the named export you need — `ImageCarousel`, `HeroCarousel` or `CustomCarousel`. Each example's **Usage** tab above shows the exact call.
-
-## Installation: Fluid Glass Slider
-
-This installation covers the Fluid Glass variation, which requires the GSAP animation library for its liquid mouse-tracking and smooth transitions.
-
-```bash
-npm install gsap
-```
-
-Then create `components/custom/ui/FluidGlassSlider.tsx` and copy the source from the **Code** tab of the **Fluid glass slider** example above.
+Four components live on this page. The three standard carousels share one file — import `ImageCarousel`, `HeroCarousel` or `CustomCarousel` from it. The fluid glass slider is its own file, installed separately.
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

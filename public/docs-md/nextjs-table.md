@@ -6,7 +6,7 @@ We've removed the rigid, static feeling of standard HTML tables by injecting **m
 
 ## Examples
 
-Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions. The first example's **Code** tab contains the full component source.
+Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
 export const usageDefault = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
@@ -31,12 +31,21 @@ export default function TransactionsTable() {
   );
 }`;
 
-export const usageMinimal = ``;
+export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
-export const usageGlass = `// Pair the glass variant with a colored backdrop so the blur has
-// something to refract.
+export default function MinimalTable() {
+  return ;
+}`;
 
-`;
+export const usageGlass = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+export default function GlassTable() {
+  return (
+    // Pair the glass variant with a colored backdrop so the blur has
+    // something to refract.
+
+  );
+}`;
 
 export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
@@ -70,21 +79,15 @@ export default function ExpandableTable() {
   );
 }`;
 
-export const usagePagination = ``;
+export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+export default function PaginatedTable() {
+  return (
+    
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on `gsap` for the entrance animations and `lucide-react` for standard UI icons (Chevron Up/Down, Check, Edit, Trash).
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/TableBlock.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.

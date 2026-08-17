@@ -4,7 +4,7 @@ A premium collection of scroll-driven 3D card stacking layouts engineered exclus
 
 ## Examples
 
-Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline. Each layout's first example carries its component source in the **Code** tab.
+Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
 ### Simple stack
 
@@ -30,12 +30,20 @@ export default function FeaturesSection() {
   return ;
 }`;
 
-export const usageSimpleDepth = `// Each card behind the active one shrinks by this fraction — 0.12 gives a
-// pronounced deck, 0.02 keeps the stack nearly flat.
-`;
+export const usageSimpleDepth = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 
-export const usageSimpleGap = `// Pixel distance between the stacked sticky cards.
-`;
+export default function DeepStack() {
+  // Each card behind the active one shrinks by this fraction — 0.12 gives a
+  // pronounced deck, 0.02 keeps the stack nearly flat.
+  return ;
+}`;
+
+export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+
+export default function GappedStack() {
+  // Pixel distance between the stacked sticky cards.
+  return ;
+}`;
 
 ### Sticky stack
 
@@ -58,12 +66,20 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyNoGlow = `// Turns off the ambient glow behind the active card.
-`;
+export const usageStickyNoGlow = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
 
-export const usageStickyGeometry = `// \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
-// offset that keeps the earlier headers peeking out.
-`;
+export default function FlatStickyStack() {
+  // Turns off the ambient glow behind the active card.
+  return ;
+}`;
+
+export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+export default function TunedStickyStack() {
+  // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
+  // offset that keeps the earlier headers peeking out.
+  return ;
+}`;
 
 ### Split stack
 
@@ -74,7 +90,13 @@ export default function ProcessSection() {
   return ;
 }`;
 
-export const usageSplitLeft = ``;
+export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+export default function PinnedLeftStack() {
+  return (
+    
+  );
+}`;
 
 ### Horizontal stack
 
@@ -91,22 +113,16 @@ export default function ProcessRail() {
   );
 }`;
 
-export const usageHorizontalShort = `// Fewer steps means a shorter pinned scroll distance.
-`;
+export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+export default function ShortRail() {
+  // Fewer steps means a shorter pinned scroll distance.
+  return ;
+}`;
 
 ## Installation
 
-### Dependencies
-
-These layouts rely exclusively on **GSAP** and its native `ScrollTrigger` plugin for viewport detection and scroll-scrubbed physics.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Each layout above carries its own source in the **Code** tab of its first example — `ScrollStackBlock.tsx`, `StickyScrollStackBlock.tsx`, `SplitScrollStackBlock.tsx` and `HorizontalScrollStackBlock.tsx`. Copy the ones you need into `components/custom/blocks/`.
+Each layout is its own block file. Install only the ones you use — they share no code.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

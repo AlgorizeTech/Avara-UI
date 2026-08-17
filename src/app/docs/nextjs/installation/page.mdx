@@ -51,7 +51,7 @@ Before installing Next.js, ensure your environment meets the following requireme
       <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Framework</div>
       <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Next.js App Router</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Next.js 14 / 15 App Router Architecture</p>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Next.js 14 / 15 / 16 App Router Architecture</p>
   </div>
 
   <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
@@ -76,6 +76,17 @@ Before installing Next.js, ensure your environment meets the following requireme
       <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">TypeScript 5+ & JS</h4>
     </div>
     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Strict type checking or pure JavaScript</p>
+  </div>
+</div>
+
+### Next.js 16
+
+Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `<Image>` props, no `next/amp`, and no runtime config. The only Next.js APIs the components reach for are `next/link`, `next/image` and `next/dynamic`, and the ones that defer a browser-only library with `ssr: false` already carry `"use client"` — so they behave the same under both versions.
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">What Next.js 16 asks of your project</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Next.js 16 itself raises the floor: <strong>Node.js 20.9+</strong>, <strong>TypeScript 5.1+</strong> and <strong>React 19.2</strong>, with Turbopack as the default bundler for <code>next dev</code> and <code>next build</code>. These are requirements of the framework, not of the components — the library builds cleanly under Turbopack. If your app still has a custom <code>webpack</code> config, either migrate it to <code>turbopack</code> or run <code>next build --webpack</code>.</p>
   </div>
 </div>
 

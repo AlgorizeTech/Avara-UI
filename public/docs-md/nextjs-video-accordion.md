@@ -6,7 +6,7 @@ This layout is incredibly useful for portfolio reels, storytelling feature secti
 
 ## Examples
 
-Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause. The first example's **Code** tab contains the full component source.
+Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
 
 export const usageDefault = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
 
@@ -32,27 +32,23 @@ export default function FeatureReel() {
   return ;
 }`;
 
-export const usageDefaultActive = `// Land with one panel already open — good for hero sections where the
-// first frame should not look inert.
-`;
+export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
 
-export const usageShortRail = `// Fewer, wider panels. Each one keeps a legible title strip even when
-// compressed, so two or three read as well as five.
-`;
+export default function OpenedOnLoad() {
+  // Land with one panel already open — good for hero sections where the
+  // first frame should not look inert.
+  return ;
+}`;
+
+export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+
+export default function ShortReel() {
+  // Fewer, wider panels. Each one keeps a legible title strip even when
+  // compressed, so two or three read as well as five.
+  return ;
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component utilizes **GSAP** to handle the heavy mathematical lifting of flex-basis interpolation during the expansion tracking.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/VideoAccordionBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

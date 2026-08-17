@@ -8,7 +8,7 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 ## Examples
 
-Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance. The first example's **Code** tab contains the full component source.
+Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
 export const usageDefault = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
@@ -30,33 +30,39 @@ export default function CommunityMap() {
   );
 }`;
 
-export const usageRings = `// \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
-// ring's radius and \`ringGap\` the distance to each next one — both as a
-// percentage of the square container, so the layout scales on any screen.
-`;
+export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
-export const usageStatic = `// Rings hold their position — the entrance animation still plays.
-`;
+export default function RingLayout() {
+  // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
+  // ring's radius and \`ringGap\` the distance to each next one — both as a
+  // percentage of the square container, so the layout scales on any screen.
+  return (
+    
+  );
+}`;
 
-export const usageSpeed = `// Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-`;
+export const usageStatic = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
-export const usageNoCenter = `// Omit \`centerNode\` and the rings orbit an empty hub.
-`;
+export default function StaticGraph() {
+  // Rings hold their position — the entrance animation still plays.
+  return ;
+}`;
+
+export const usageSpeed = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+
+export default function FastGraph() {
+  // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
+  return ;
+}`;
+
+export const usageNoCenter = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+
+export default function HublessGraph() {
+  // Omit \`centerNode\` and the rings orbit an empty hub.
+  return ;
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component uses **Framer Motion** for the staggered spring animations and continuous floating effects.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NetworkGraphBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

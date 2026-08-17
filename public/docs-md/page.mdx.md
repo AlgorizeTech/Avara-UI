@@ -56,9 +56,8 @@ While we focus on Next.js documentation, Next.js Documentation still provides a 
 If you need help with Next.js Documentation or Next.js:
 
 - Check the [Next.js Documentation](https://nextjs.org/docs)
-- Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
-- Join our [Discord Community](#)
-- Contact our support team at support@seraui.com
+- Visit our [GitHub organisation](https://github.com/AlgorizeTech)
+- Browse the [component library](/docs/nextjs/all-components)
 
 ## Contributing
 
@@ -69,7 +68,7 @@ We welcome contributions to Next.js Documentation! If you'd like to contribute:
 3. Make your changes
 4. Submit a pull request
 
-See our [Contributing Guide](/docs/contributing) for more details.
+Open an issue or pull request on [GitHub](https://github.com/AlgorizeTech) to get started.
 
 ---
 

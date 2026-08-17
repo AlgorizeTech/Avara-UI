@@ -8,7 +8,7 @@ This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's 
 
 ## Examples
 
-Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen. The first example's **Code** tab contains the full component source.
+Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
 
 export const usageDefault = `import {
   ContextMenu,
@@ -116,12 +116,6 @@ export default function ViewMenu() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses React's `createPortal` to render the menu above everything else, plus boundary-collision maths so it never opens off screen.
-
-Create a new file at `components/custom/blocks/ContextMenuBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.

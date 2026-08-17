@@ -8,7 +8,7 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 ## Examples
 
-These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice. The first example's **Code** tab contains the full component source.
+These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
 export const usageConversation = `import {
   ChatAvatar,
@@ -30,45 +30,74 @@ export default function ChatInterface() {
   );
 }`;
 
-export const usageGrouping = `// \`layout\` is the only thing that connects stacked messages — set it per
-// bubble and the radii, spacing and avatar visibility follow.
+export const usageGrouping = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+} from "@/components/custom/blocks/ChatBubbleBlock";
 
-  Three messages, one sender.
+export default function GroupedMessages() {
+  return (
+    
+      {/* \`layout\` is the only thing that connects stacked messages — set it
+          per bubble and the radii and avatar visibility follow. */}
 
-  The inner corners tighten to 4px…
+        Three messages, one sender.
 
-  …and only the last one keeps the avatar.
-`;
+        The inner corners tighten to 4px…
 
-export const usageReceipts = `// \`status\` is read from the bubble's \`variant\` — it only renders ticks on
-// sent messages, so received bubbles show the time alone.
+        …and only the last one keeps the avatar.
 
-    Sent — a single tick.
+      {/* The same three values mirror for outgoing messages. */}
 
-    Delivered — double tick.
+          The same logic mirrors for sent messages.
 
-    Read — double tick, accented.
+          No manual border-radius maths required.
 
-`;
+  );
+}`;
 
-export const usageTyping = `// Drop the bubble's padding and background so the three dots float on their
-// own while you wait for the reply.
+export const usageReceipts = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTimestamp,
+} from "@/components/custom/blocks/ChatBubbleBlock";
 
-`;
+export default function ReadReceipts() {
+  return (
+    
+      {/* \`status\` is read from the bubble's \`variant\` — ticks render on sent
+          messages only, so a received bubble shows the time alone. */}
+
+          Received bubbles show the time only.
+
+          Sent — a single tick.
+
+          Delivered — double tick.
+
+          Read — double tick, accented.
+
+  );
+}`;
+
+export const usageTyping = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
+
+export default function TypingIndicator() {
+  return (
+    
+      {/* Drop the message padding and background so the three dots float on
+          their own while you wait for the reply. */}
+
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component relies on **GSAP** for the high-performance entrance and typing indicator animations, and **Lucide React** for the read receipt ticks.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChatBubbleBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

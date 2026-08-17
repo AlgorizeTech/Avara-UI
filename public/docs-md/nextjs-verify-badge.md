@@ -6,7 +6,7 @@ It includes distinct customization options to match different areas of your appl
 
 ## Examples
 
-Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
 
 export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -18,11 +18,19 @@ export default function ProfileName() {
   );
 }`;
 
-export const usageSizes = `
+export const usageSizes = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
-`;
+export default function BadgeSizes() {
+  return (
 
-export const usageStatic = ``;
+  );
+}`;
+
+export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function StaticBadge() {
+  return ;
+}`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -37,12 +45,6 @@ export default function NotificationCard() {
 }`;
 
 ## Installation
-
-This component uses `lucide-react` for the checkmark icon and standard Tailwind utilities.
-
-```bash
-npm install lucide-react clsx tailwind-merge
-```
 
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.

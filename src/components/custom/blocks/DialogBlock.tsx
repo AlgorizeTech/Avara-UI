@@ -98,8 +98,7 @@ export function DialogTrigger({
 // ==========================================
 // 3b. CLOSE BUTTON
 // ==========================================
-export interface DialogCloseProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type DialogCloseProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function DialogClose({
   children,

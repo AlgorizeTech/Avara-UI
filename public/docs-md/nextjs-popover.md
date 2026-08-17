@@ -8,7 +8,7 @@ The same goes for the screen edge. `side` and `align` are *preferences*: the pan
 
 ## Examples
 
-Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss. The first example's **Code** tab contains the full component source.
+Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
 
 export const usageDefault = `import {
   Popover,
@@ -123,12 +123,6 @@ export default function OffsetPopover() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for rendering and highly optimized `getBoundingClientRect` logic to place the portal exactly next to the trigger button.
-
-Create a new file at `components/custom/blocks/PopoverBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.

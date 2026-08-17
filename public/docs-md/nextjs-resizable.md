@@ -6,7 +6,7 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 
 ## Examples
 
-Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired. The first example's **Code** tab contains the full component source.
+Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
 export const usageDefault = `import {
   ResizableHandle,
@@ -23,31 +23,63 @@ export default function StudioLayout() {
   );
 }`;
 
-export const usageHorizontal = `
+export const usageHorizontal = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
 
-`;
+export default function HorizontalSplit() {
+  return (
 
-export const usageVertical = `// \`direction\` sets the flex axis of the group and the drag axis of every
-// handle inside it.
+  );
+}`;
 
-`;
+export const usageVertical = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
 
-export const usageNoGrip = `// Omit \`withHandle\` for a bare 1px divider — still draggable, still
-// keyboard accessible, just without the visible grip.
-`;
+export default function VerticalSplit() {
+  // \`direction\` sets the flex axis of the group and the drag axis of every
+  // handle inside it.
+  return (
 
-export const usageConstraints = `// Percentages of the group. The engine clamps the drag so a panel can
-// never escape its bounds.
+  );
+}`;
 
-`;
+export const usageNoGrip = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+export default function HairlineDivider() {
+  return (
+
+      {/* Omit \`withHandle\` for a bare 1px divider — still draggable, still
+          keyboard accessible, just without the visible grip. */}
+
+  );
+}`;
+
+export const usageConstraints = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+export default function ConstrainedSidebar() {
+  return (
+    
+      {/* Percentages of the group. The engine clamps the drag so a panel can
+          never escape its bounds. */}
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ResizableBlock.tsx`.
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

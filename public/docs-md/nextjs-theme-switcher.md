@@ -6,7 +6,7 @@ It includes three distinct layout variants (Icon, Pill, and Dropdown) to match d
 
 ## Examples
 
-Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The first example's **Code** tab contains the full component source.
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
 
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
 
@@ -19,26 +19,26 @@ export default function DashboardHeader() {
   );
 }`;
 
-export const usagePill = `// A segmented control that shows the current mode explicitly — better on a
-// settings page than in a dense navbar.
-`;
+export const usagePill = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
 
-export const usageDropdown = `// Includes the "system" option, so users can defer to their OS setting.
-`;
+export default function PillSwitcher() {
+  // A segmented control that shows the current mode explicitly — better on a
+  // settings page than in a dense navbar.
+  return ;
+}`;
+
+export const usageDropdown = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DropdownSwitcher() {
+  // Includes the "system" option, so users can defer to their OS setting.
+  return ;
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
+### Configure next-themes
 
-This component relies heavily on `next-themes` to manage the actual CSS classes and localStorage states securely, and `gsap` for the micro-interactions.
-
-```bash
-npm install next-themes gsap lucide-react
-```
-
-### 2. Configure Next Themes
-
-Ensure your app/layout.tsx (or pages/\_app.tsx) is wrapped in the ThemeProvider so the hook functions correctly across your app.
+`ThemeSwitcher` reads and writes the theme through `next-themes`, so your app has to be wrapped in its provider once. `suppressHydrationWarning` on `` is required — the theme class is applied before React hydrates.
 
 ```tsx
 // app/layout.tsx
@@ -55,10 +55,6 @@ export default function RootLayout({
   );
 }
 ```
-
-### 3. Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ThemeSwitcherBlock.tsx`.
 
 ## Features
 

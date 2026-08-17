@@ -6,7 +6,7 @@ Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden i
 
 ## Examples
 
-Hover or tab to each trigger to open its tooltip. The first example's **Code** tab contains the full component source.
+Hover or tab to each trigger to open its tooltip.
 
 export const usageDefault = `import {
   Tooltip,
@@ -140,12 +140,6 @@ export default function OffsetTooltip() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
-
-Create a new file at `components/custom/blocks/TooltipBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 
