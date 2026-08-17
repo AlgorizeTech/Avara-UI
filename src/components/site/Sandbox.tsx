@@ -28,7 +28,7 @@ import {
 } from "@/components/site/showcase-color";
 import React, { useEffect, useId, useRef, useState } from "react";
 
-const MIN_PREVIEW_WIDTH = 320;
+const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
 const DESKTOP_MIN_WIDTH = 1024;

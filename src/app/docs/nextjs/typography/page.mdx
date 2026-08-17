@@ -28,33 +28,33 @@ export const usageArticle = `import {
 export default function BlogPost() {
   return (
     <article className="mx-auto max-w-2xl">
-      <H1>The Elements of UI</H1>
+      <H1>Crafting High-Performance UI Architecture</H1>
       <Lead className="mt-4">
-        A comprehensive guide to composing beautiful web applications.
+        A modern engineering guide to building scalable, accessible, and resilient design systems.
       </Lead>
 
       <P>
-        Rather than scattering raw classes like{" "}
-        <InlineCode>text-4xl font-extrabold</InlineCode> across hundreds of
-        files, standardized components keep the rhythm predictable.
+        Typography is the backbone of intuitive user interface design. Rather than hardcoding chaotic inline utilities like{" "}
+        <InlineCode>text-4xl font-extrabold tracking-tight</InlineCode> across hundreds of files, establishing a unified typography token hierarchy brings rhythmic consistency.
       </P>
 
-      <H2>Why semantic tags matter</H2>
+      <H2>Semantic Structure & Accessibility</H2>
       <Blockquote>
-        "Good typography guides the reader without calling attention to itself."
+        "Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs
       </Blockquote>
 
-      <H3>Key Benefits</H3>
+      <H3>Core Engineering Principles</H3>
       <List>
-        <li>Consistent margins applied automatically.</li>
-        <li>Perfect dark mode contrast ratios.</li>
+        <li>Automatic vertical rhythm and baseline spacing between components.</li>
+        <li>Native dark mode contrast compliance with HSL color tokens.</li>
+        <li>Fluid typography scaling across mobile, tablet, and desktop displays.</li>
       </List>
 
-      <div className="mt-12 flex items-center justify-between border-t pt-6">
-        <Large>Written by Nexus</Large>
-        <div className="flex flex-col items-end">
-          <Small>Author Status: Verified</Small>
-          <Muted>Published April 2026</Muted>
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t pt-6">
+        <Large>Written by Alex Rivers</Large>
+        <div className="flex flex-col sm:items-end">
+          <Small>Author Status: Principal Architect</Small>
+          <Muted>Updated August 2026</Muted>
         </div>
       </div>
     </article>
@@ -66,10 +66,10 @@ export const usageHeadings = `import { H1, H2, H3, H4 } from "@/components/custo
 export default function Headings() {
   return (
     <>
-      <H1>The Elements of UI</H1>
-      <H2>Why semantic tags matter</H2>
-      <H3>Key benefits</H3>
-      <H4>A minor aside</H4>
+      <H1>Crafting High-Performance UI</H1>
+      <H2>Semantic Structure & Accessibility</H2>
+      <H3>Core Engineering Principles</H3>
+      <H4>Implementation Details & Guidelines</H4>
     </>
   );
 }`;
@@ -79,12 +79,12 @@ export const usageParagraph = `import { InlineCode, Lead, P } from "@/components
 export default function Body() {
   return (
     <>
-      <Lead>A comprehensive guide to composing beautiful web apps.</Lead>
+      <Lead>A modern engineering guide to building scalable, accessible design systems.</Lead>
       <P>
-        Standardized components keep the rhythm predictable — no more pasting{" "}
+        Typography is the backbone of intuitive user interface design. Standardized components keep the rhythm predictable — no more pasting{" "}
         <InlineCode>text-4xl font-extrabold tracking-tight</InlineCode> by hand.
       </P>
-      <P>A following paragraph picks up its own top margin automatically.</P>
+      <P>Subsequent paragraphs automatically maintain predictable top margins.</P>
     </>
   );
 }`;
@@ -92,28 +92,27 @@ export default function Body() {
 export const usageBlockquote = `import { Blockquote } from "@/components/custom/blocks/TypographyBlock";
 
 <Blockquote>
-  "Good typography is like a good map. It guides the reader gracefully from
-  start to finish without calling attention to itself."
+  "Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs
 </Blockquote>`;
 
 export const usageList = `import { List } from "@/components/custom/blocks/TypographyBlock";
 
 // \`List\` styles the marker and spacing; the \`li\` children stay yours.
 <List>
-  <li>Consistent top and bottom margins automatically applied.</li>
-  <li>Perfect dark mode contrast ratios.</li>
-  <li>Semantic HTML attributes preserved.</li>
+  <li>Automatic vertical rhythm and baseline spacing between components.</li>
+  <li>Native dark mode contrast compliance with HSL color tokens.</li>
+  <li>Fluid typography scaling across mobile, tablet, and desktop displays.</li>
 </List>`;
 
 export const usageSupporting = `import { Large, Muted, Small } from "@/components/custom/blocks/TypographyBlock";
 
 export default function Byline() {
   return (
-    <div className="flex items-center justify-between border-t pt-6">
-      <Large>Written by Nexus</Large>
-      <div className="flex flex-col items-end">
-        <Small>Author Status: Verified</Small>
-        <Muted>Published April 2026</Muted>
+    <div className="flex flex-wrap items-center justify-between gap-4 border-t pt-6">
+      <Large>Written by Alex Rivers</Large>
+      <div className="flex flex-col sm:items-end">
+        <Small>Author Status: Principal Architect</Small>
+        <Muted>Updated August 2026</Muted>
       </div>
     </div>
   );

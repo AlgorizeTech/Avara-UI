@@ -29,59 +29,67 @@ export default function TypographyDemo({
 }) {
   if (example && example !== "article") {
     return (
-      <div className="w-full min-h-[400px] relative z-10 overflow-hidden p-6 sm:p-10">
-        <div className="mx-auto max-w-2xl">
+      <div className="w-full relative z-10 p-4 sm:p-8">
+        <div className="mx-auto max-w-2xl w-full">
           {example === "headings" && (
             <>
-              <H1>The Elements of UI</H1>
-              <H2>Why semantic tags matter</H2>
-              <H3>Key benefits</H3>
-              <H4>A minor aside</H4>
+              <H1>Crafting High-Performance UI</H1>
+              <H2>Semantic Structure & Accessibility</H2>
+              <H3>Core Engineering Principles</H3>
+              <H4>Implementation Details & Guidelines</H4>
             </>
           )}
 
           {example === "paragraph" && (
             <>
               <Lead>
-                A comprehensive guide to composing beautiful web applications
-                using modular design systems.
+                A modern engineering guide to building scalable, accessible, and
+                resilient design systems for Next.js applications.
               </Lead>
               <P>
-                Typography is the foundation of any good interface. Rather than
-                scattering raw Tailwind classes like{" "}
+                Typography is the backbone of intuitive user interface design.
+                Rather than hardcoding chaotic inline utilities like{" "}
                 <InlineCode>text-4xl font-extrabold tracking-tight</InlineCode>{" "}
-                across hundreds of files, standardized components keep the
-                rhythm predictable everywhere.
+                across hundreds of files, establishing a unified typography token
+                hierarchy brings rhythmic consistency and effortless readability to
+                every screen.
               </P>
               <P>
-                A second paragraph picks up its own top margin automatically, so
-                you never hand-tune spacing between blocks.
+                Subsequent paragraphs automatically maintain predictable top
+                margins, eliminating manual spacing tweaks across layout templates.
               </P>
             </>
           )}
 
           {example === "blockquote" && (
             <Blockquote>
-              &quot;Good typography is like a good map. It guides the reader
-              gracefully from start to finish without calling attention to
-              itself.&quot;
+              &quot;Design is not just what it looks like and feels like. Design
+              is how it works.&quot; — Steve Jobs
             </Blockquote>
           )}
 
           {example === "list" && (
             <List>
-              <li>Consistent top and bottom margins automatically applied.</li>
-              <li>Perfect dark mode contrast ratios.</li>
-              <li>Semantic HTML attributes preserved.</li>
+              <li>
+                Automatic vertical rhythm and baseline spacing between
+                components.
+              </li>
+              <li>
+                Native dark mode contrast compliance with HSL color tokens.
+              </li>
+              <li>
+                Fluid typography scaling across mobile, tablet, and desktop
+                displays.
+              </li>
             </List>
           )}
 
           {example === "supporting" && (
-            <div className="flex items-center justify-between border-t border-zinc-200 dark:border-zinc-800 pt-6">
-              <Large>Written by Nexus</Large>
-              <div className="flex flex-col items-end">
-                <Small>Author Status: Verified</Small>
-                <Muted>Published April 2026</Muted>
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+              <Large>Written by Alex Rivers</Large>
+              <div className="flex flex-col sm:items-end">
+                <Small>Author Status: Principal Architect</Small>
+                <Muted>Updated August 2026</Muted>
               </div>
             </div>
           )}
@@ -91,47 +99,55 @@ export default function TypographyDemo({
   }
 
   return (
-    <div className="w-full min-h-[400px] relative z-10 overflow-hidden">
-      <div className="mx-auto max-w-2xl">
-        <H1>The Elements of UI</H1>
+    <div className="w-full relative z-10 p-4 sm:p-8">
+      <div className="mx-auto max-w-2xl w-full">
+        <H1>Crafting High-Performance UI Architecture</H1>
         <Lead className="mt-4">
-          A comprehensive guide to composing beautiful web applications using
-          modular design systems.
+          A modern engineering guide to building scalable, accessible, and
+          resilient design systems for Next.js applications.
         </Lead>
 
         <P>
-          Typography is the foundation of any good interface. Rather than
-          scattering raw Tailwind classes like{" "}
+          Typography is the backbone of intuitive user interface design. Rather
+          than hardcoding chaotic inline utilities like{" "}
           <InlineCode>text-4xl font-extrabold tracking-tight</InlineCode>{" "}
-          across hundreds of files, utilizing standardized components ensures
-          your text maintains a perfect, predictable rhythm everywhere.
+          across hundreds of files, establishing a unified typography token
+          hierarchy brings rhythmic consistency and effortless readability to
+          every screen.
         </P>
 
-        <H2>Why semantic tags matter</H2>
+        <H2>Semantic Structure & Accessibility</H2>
         <P>
-          Using the correct HTML tag is crucial for accessibility. Screen
-          readers rely heavily on heading structures (
-          <InlineCode>h1</InlineCode> through <InlineCode>h6</InlineCode>) to
-          navigate documents.
+          Utilizing precise semantic HTML tags ensures native screen reader
+          navigation (
+          <InlineCode>h1</InlineCode> through <InlineCode>h6</InlineCode>),
+          superior SEO indexability, and automatic dark mode contrast compliance.
         </P>
 
         <Blockquote>
-          "Good typography is like a good map. It guides the reader gracefully
-          from start to finish without calling attention to itself."
+          &quot;Design is not just what it looks like and feels like. Design is
+          how it works.&quot; — Steve Jobs
         </Blockquote>
 
-        <H3>Key Benefits</H3>
+        <H3>Core Engineering Principles</H3>
         <List>
-          <li>Consistent top and bottom margins automatically applied.</li>
-          <li>Perfect dark mode contrast ratios.</li>
-          <li>Semantic HTML attributes preserved.</li>
+          <li>
+            Automatic vertical rhythm and baseline spacing between components.
+          </li>
+          <li>
+            Native dark mode contrast compliance with HSL color tokens.
+          </li>
+          <li>
+            Fluid typography scaling across mobile, tablet, and desktop
+            displays.
+          </li>
         </List>
 
-        <div className="mt-12 flex items-center justify-between border-t border-zinc-200 dark:border-zinc-800 pt-6">
-          <Large>Written by Nexus</Large>
-          <div className="flex flex-col items-end">
-            <Small>Author Status: Verified</Small>
-            <Muted>Published April 2026</Muted>
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+          <Large>Written by Alex Rivers</Large>
+          <div className="flex flex-col sm:items-end">
+            <Small>Author Status: Principal Architect</Small>
+            <Muted>Updated August 2026</Muted>
           </div>
         </div>
       </div>
