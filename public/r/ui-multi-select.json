@@ -3,7 +3,7 @@
   "name": "ui-multi-select",
   "title": "Ui Multi Select",
   "author": "AlgorizeTech",
-  "description": "TODO: describe ui-multi-select. Generated placeholder.",
+  "description": "A multi-select combobox with search, clearable chips, hierarchical options and optional portal rendering. Use it when users pick several values from a long list.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/ui/multi-select.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: MultiSelect. Set `hierarchical` with nested `children` options for parent/child groups, and `portal` to escape a clipping overflow container. `isMulti` and `isClearable` are independent, so it also works as a searchable single select.",
+  "categories": [
+    "forms",
+    "utilities"
+  ],
   "type": "registry:ui"
 }

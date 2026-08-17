@@ -3,7 +3,7 @@
   "name": "fleet-map",
   "title": "Fleet Map",
   "author": "AlgorizeTech",
-  "description": "TODO: describe fleet-map. Generated placeholder.",
+  "description": "A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
   "dependencies": [
     "leaflet",
     "lucide-react",
@@ -20,6 +20,10 @@
       "target": "components/custom/blocks/Fleet-map.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only. For the map-free list, use `fleet-tracker`.",
+  "categories": [
+    "maps",
+    "data-display"
+  ],
   "type": "registry:component"
 }

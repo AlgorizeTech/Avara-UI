@@ -3,7 +3,7 @@
   "name": "command",
   "title": "Command",
   "author": "AlgorizeTech",
-  "description": "TODO: describe command. Generated placeholder.",
+  "description": "A command palette with fuzzy search, grouped results and a dialog mode. Use it for the ⌘K quick-action menu in an application.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/CommandBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you.",
+  "categories": [
+    "navigation",
+    "overlays"
+  ],
   "type": "registry:component"
 }

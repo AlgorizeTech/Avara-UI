@@ -3,7 +3,7 @@
   "name": "custom-code-block",
   "title": "Custom Code Block",
   "author": "AlgorizeTech",
-  "description": "TODO: describe custom-code-block. Generated placeholder.",
+  "description": "A tabbed code viewer with filenames, language badges and per-tab copy. Use it in documentation to show the same example across several files.",
   "dependencies": [
     "lucide-react",
     "react-icons"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/CustomCodeBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
+  "categories": [
+    "code"
+  ],
   "type": "registry:component"
 }

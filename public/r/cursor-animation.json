@@ -3,7 +3,7 @@
   "name": "cursor-animation",
   "title": "Cursor Animation",
   "author": "AlgorizeTech",
-  "description": "TODO: describe cursor-animation. Generated placeholder.",
+  "description": "A custom cursor with magnetic, glow, trail, spotlight and crosshair effects, scoped to its children. Use it on portfolio and agency sites.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/CursorAnimationBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: CursorAnimation. `variant` is magnetic | glow | trail | badge | spotlight | expand | crosshair; `trailCount` sets trail length and `label` fills the badge variant. Wrap a region rather than the page so normal cursors survive elsewhere. Pointer-only — no effect on touch.",
+  "categories": [
+    "utilities",
+    "marketing"
+  ],
   "type": "registry:component"
 }

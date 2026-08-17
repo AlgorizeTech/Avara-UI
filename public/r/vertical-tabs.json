@@ -3,7 +3,7 @@
   "name": "vertical-tabs",
   "title": "Vertical Tabs",
   "author": "AlgorizeTech",
-  "description": "TODO: describe vertical-tabs. Generated placeholder.",
+  "description": "A tab panel that stacks vertically or horizontally, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
   "dependencies": [
     "gsap"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/VerticalTabs.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` switches between vertical and horizontal without changing the API. Variants: default | glass | minimal | bordered.",
+  "categories": [
+    "navigation",
+    "layout"
+  ],
   "type": "registry:component"
 }

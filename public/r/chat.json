@@ -3,7 +3,7 @@
   "name": "chat",
   "title": "Chat",
   "author": "AlgorizeTech",
-  "description": "TODO: describe chat. Generated placeholder.",
+  "description": "A complete messaging interface with contact list, conversation pane and composer. Use it as the shell for a support or direct-messaging feature.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/Chat.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ChatApp, plus Contact and CurrentUser types. A full application layout rather than a single element — it ships demo contacts and messages you replace with your own data. Variants: default | minimal | glass. For individual message bubbles, use `chat-bubble`.",
+  "categories": [
+    "communication"
+  ],
   "type": "registry:component"
 }

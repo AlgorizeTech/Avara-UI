@@ -3,7 +3,7 @@
   "name": "signup-form",
   "title": "Signup Form",
   "author": "AlgorizeTech",
-  "description": "TODO: describe signup-form. Generated placeholder.",
+  "description": "A standalone registration form with inline field validation and animated error states. Use it where sign-up is its own page rather than a tab beside sign-in.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/SignupForm.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
+  "categories": [
+    "authentication",
+    "forms"
+  ],
   "type": "registry:component"
 }

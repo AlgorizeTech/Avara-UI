@@ -3,7 +3,7 @@
   "name": "support-dashboard",
   "title": "Support Dashboard",
   "author": "AlgorizeTech",
-  "description": "TODO: describe support-dashboard. Generated placeholder.",
+  "description": "A full help-desk dashboard with tickets, SLA tracking, contact details and chat or table layouts. Use it as the agent-facing side of a support product.",
   "dependencies": [
     "lucide-react"
   ],
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/Support-dashboard.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: SupportDashboard, plus Ticket, TicketContact, TicketSLA, TicketMessage and SupportData types. `layout` switches between chat and table views over the same ticket data. Depends on `select`. The most feature-complete block in the registry — expect to replace its demo data wholesale.",
+  "categories": [
+    "communication",
+    "data-display"
+  ],
   "type": "registry:component"
 }

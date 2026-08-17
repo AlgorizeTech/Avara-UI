@@ -3,7 +3,7 @@
   "name": "mobile-mockup",
   "title": "Mobile Mockup",
   "author": "AlgorizeTech",
-  "description": "TODO: describe mobile-mockup. Generated placeholder.",
+  "description": "Device frames for iPhone, Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/MobileMockupBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

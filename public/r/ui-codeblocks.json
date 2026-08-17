@@ -3,7 +3,7 @@
   "name": "ui-codeblocks",
   "title": "Ui Codeblocks",
   "author": "AlgorizeTech",
-  "description": "TODO: describe ui-codeblocks. Generated placeholder.",
+  "description": "A compact code surface with syntax colouring and a copy button, used inside the docs site. Install it for a lightweight code display without tabs.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/ui/codeblocks.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`.",
+  "categories": [
+    "code"
+  ],
   "type": "registry:ui"
 }

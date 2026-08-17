@@ -3,7 +3,7 @@
   "name": "counter",
   "title": "Counter",
   "author": "AlgorizeTech",
-  "description": "TODO: describe counter. Generated placeholder.",
+  "description": "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/CounterBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical.",
+  "categories": [
+    "data-display",
+    "forms"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "timeline",
   "title": "Timeline",
   "author": "AlgorizeTech",
-  "description": "TODO: describe timeline. Generated placeholder.",
+  "description": "A vertical event timeline with status states, icons and GSAP scroll reveal. Use it for order tracking and process status where each step is done, current or upcoming.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/TimelineBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: TimelineBlock, getThemeStyles. Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "verify-badge",
   "title": "Verify Badge",
   "author": "AlgorizeTech",
-  "description": "TODO: describe verify-badge. Generated placeholder.",
+  "description": "A small verified checkmark badge with an optional draw-in animation. Use it beside names and handles to mark a confirmed account.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/VerifyBadgeBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: VerifyBadge. Sizes are sm | md | lg | xl, `color` takes any CSS colour, and `animate` plays the check-draw on mount.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

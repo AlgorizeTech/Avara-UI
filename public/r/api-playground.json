@@ -3,7 +3,7 @@
   "name": "api-playground",
   "title": "Api Playground",
   "author": "AlgorizeTech",
-  "description": "TODO: describe api-playground. Generated placeholder.",
+  "description": "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
   "dependencies": [
     "lucide-react"
   ],
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
+  "categories": [
+    "code",
+    "data-display"
+  ],
   "type": "registry:component"
 }

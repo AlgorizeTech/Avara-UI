@@ -3,7 +3,7 @@
   "name": "homepage-hero",
   "title": "Homepage Hero",
   "author": "AlgorizeTech",
-  "description": "TODO: describe homepage-hero. Generated placeholder.",
+  "description": "A prop-driven hero with rotating typed words, badge link, CLI command and two CTAs. Use it as a complete above-the-fold section without composing parts.",
   "dependencies": [
     "lucide-react",
     "motion"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/HomepageHeroBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HomepageHeroBlock. Everything is a prop — `typingWords` cycles between `titlePrefix` and `titleSuffix`, and `cliCommand` renders a copyable install line. Animated with Motion; uses next/link, so it needs edits outside Next.js. `homepage-hero-typing` is the same layout without the motion dependency.",
+  "categories": [
+    "marketing"
+  ],
   "type": "registry:component"
 }

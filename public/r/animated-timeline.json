@@ -3,7 +3,7 @@
   "name": "animated-timeline",
   "title": "Animated Timeline",
   "author": "AlgorizeTech",
-  "description": "TODO: describe animated-timeline. Generated placeholder.",
+  "description": "A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/AnimatedTimelineBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
+  "categories": [
+    "data-display",
+    "marketing"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "modal",
   "title": "Modal",
   "author": "AlgorizeTech",
-  "description": "TODO: describe modal. Generated placeholder.",
+  "description": "A themed modal with standard, form, fullscreen and confirmation presets and GSAP transitions. Use it when you want a ready-made layout rather than composing a dialog.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -20,6 +20,9 @@
       "target": "components/custom/blocks/ModalBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ModalBlock, getThemeStyles. `type` is standard | form | fullscreen | confirmation; variants are default | glass | minimal | bordered. Depends on `select` for the form preset. For an unopinionated primitive, use `dialog`.",
+  "categories": [
+    "overlays"
+  ],
   "type": "registry:component"
 }

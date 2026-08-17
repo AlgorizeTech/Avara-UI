@@ -3,7 +3,7 @@
   "name": "ai-chat",
   "title": "Ai Chat",
   "author": "AlgorizeTech",
-  "description": "TODO: describe ai-chat. Generated placeholder.",
+  "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/Ai-chat.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AIChat, plus ChatThread and Message types. Presentation only — responses are mocked, so wire it to your own model endpoint. Variants: default | minimal | glass. Handles thread switching and message rendering; streaming and persistence are yours.",
+  "categories": [
+    "communication"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "network-graph",
   "title": "Network Graph",
   "author": "AlgorizeTech",
-  "description": "TODO: describe network-graph. Generated placeholder.",
+  "description": "Concentric rings of avatar nodes around a centre node, with a staggered entrance. Use it for community, integration and social-proof sections.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/NetworkGraphBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
+  "categories": [
+    "data-display",
+    "marketing"
+  ],
   "type": "registry:component"
 }

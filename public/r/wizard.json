@@ -3,7 +3,7 @@
   "name": "wizard",
   "title": "Wizard",
   "author": "AlgorizeTech",
-  "description": "TODO: describe wizard. Generated placeholder.",
+  "description": "A multi-step form flow with context-driven navigation, progress bar and completion callback. Reach for it when a form is long enough to need splitting across steps.",
   "dependencies": [
     "gsap"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/WizardBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Wizard, WizardProgress, WizardContainer, WizardStep, WizardTitle, WizardDescription, useWizard. Wizard owns the step state; children read `currentStep`, `nextStep` and `prevStep` from the useWizard hook. `onComplete` fires on the final step. Unlike `stepper`, this manages navigation for you.",
+  "categories": [
+    "forms",
+    "navigation"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "date-picker",
   "title": "Date Picker",
   "author": "AlgorizeTech",
-  "description": "TODO: describe date-picker. Generated placeholder.",
+  "description": "A single-date field with a popover calendar, typed entry and validation states. Use it for one-off dates such as a deadline or birth date.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/DatePickerBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead.",
+  "categories": [
+    "forms",
+    "dates"
+  ],
   "type": "registry:component"
 }

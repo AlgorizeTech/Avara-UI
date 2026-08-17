@@ -3,7 +3,7 @@
   "name": "payment",
   "title": "Payment",
   "author": "AlgorizeTech",
-  "description": "TODO: describe payment. Generated placeholder.",
+  "description": "A card payment form with number, expiry month/year selects and a simulated submit state. Use it as the checkout step in a commerce flow.",
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/select.json",
@@ -17,6 +17,10 @@
       "target": "components/custom/blocks/PaymentBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements.",
+  "categories": [
+    "commerce",
+    "forms"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "compute",
   "title": "Compute",
   "author": "AlgorizeTech",
-  "description": "TODO: describe compute. Generated placeholder.",
+  "description": "A compute-resource panel showing instance sizing and usage as a settings-style card. Use it as a starting point for an infrastructure or plan-usage screen.",
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/ui-base.json"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ComputeBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: ComputeBlock. A self-contained example with hardcoded values and local state — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard.",
+  "categories": [
+    "data-display",
+    "layout"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "form",
   "title": "Form",
   "author": "AlgorizeTech",
-  "description": "TODO: describe form. Generated placeholder.",
+  "description": "Form scaffolding — wrapper, field, error and submit — with a shared color theme and a glitch error variant. Use it to keep field spacing and validation styling consistent across a form.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/FormBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state.",
+  "categories": [
+    "forms"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "pricing",
   "title": "Pricing",
   "author": "AlgorizeTech",
-  "description": "TODO: describe pricing. Generated placeholder.",
+  "description": "A complete pricing system with plan cards, a comparison table and an interactive plan builder. Use it as the full pricing page rather than a single section.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/Pricing.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: PricingCards, PricingBuilder, getThemeStyles, plus Plan, PricingData, TableFeature, TableSection and PricingTableData types. The largest pricing item — variants are default | premium | elegant | minimal | bordered. Uses next/link, so it needs edits outside Next.js. For a single card row, use `pricing-plans` or `pricing-section`.",
+  "categories": [
+    "commerce",
+    "marketing"
+  ],
   "type": "registry:component"
 }

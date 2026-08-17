@@ -3,7 +3,7 @@
   "name": "toggle-group",
   "title": "Toggle Group",
   "author": "AlgorizeTech",
-  "description": "TODO: describe toggle-group. Generated placeholder.",
+  "description": "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ToggleGroupBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down.",
+  "categories": [
+    "forms",
+    "actions"
+  ],
   "type": "registry:component"
 }

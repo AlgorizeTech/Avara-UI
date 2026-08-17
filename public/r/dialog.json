@@ -3,7 +3,7 @@
   "name": "dialog",
   "title": "Dialog",
   "author": "AlgorizeTech",
-  "description": "TODO: describe dialog. Generated placeholder.",
+  "description": "A composable modal dialog with focus trapping, overlay and controlled or uncontrolled open state. Use it as the general-purpose dialog primitive.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/DialogBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, useDialog. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it. `asChild` on the trigger merges props into your own element instead of rendering a button. For preset confirmation and fullscreen layouts, use `modal`.",
+  "categories": [
+    "overlays"
+  ],
   "type": "registry:component"
 }

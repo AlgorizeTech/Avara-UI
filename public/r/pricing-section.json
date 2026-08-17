@@ -3,7 +3,7 @@
   "name": "pricing-section",
   "title": "Pricing Section",
   "author": "AlgorizeTech",
-  "description": "TODO: describe pricing-section. Generated placeholder.",
+  "description": "A compact pricing section with monthly and annual toggle. Use it when pricing is one part of a longer landing page rather than its own page.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -17,6 +17,10 @@
       "target": "components/custom/blocks/PricingSection.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: PricingSection. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. Installs standalone with no registry dependencies.",
+  "categories": [
+    "commerce",
+    "marketing"
+  ],
   "type": "registry:component"
 }

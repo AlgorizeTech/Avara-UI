@@ -3,7 +3,7 @@
   "name": "email",
   "title": "Email",
   "author": "AlgorizeTech",
-  "description": "TODO: describe email. Generated placeholder.",
+  "description": "A full email client layout with folders, labels, message list, reading pane and attachments. Use it as the shell for an inbox or ticketing view.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/Email.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass.",
+  "categories": [
+    "communication"
+  ],
   "type": "registry:component"
 }

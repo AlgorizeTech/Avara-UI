@@ -3,7 +3,7 @@
   "name": "scroll-stack",
   "title": "Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "TODO: describe scroll-stack. Generated placeholder.",
+  "description": "Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ScrollStackBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ScrollStack, StackItem. `items` take { id, title, description?, content?, color?, icon? }; `depthScale` and `cardGap` tune the stack. Pass `scroller` when the page scrolls inside a container rather than the window. No runtime dependencies.",
+  "categories": [
+    "scroll",
+    "marketing"
+  ],
   "type": "registry:component"
 }

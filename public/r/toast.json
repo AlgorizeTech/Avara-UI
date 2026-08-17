@@ -3,7 +3,7 @@
   "name": "toast",
   "title": "Toast",
   "author": "AlgorizeTech",
-  "description": "TODO: describe toast. Generated placeholder.",
+  "description": "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/ToastBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider.",
+  "categories": [
+    "feedback"
+  ],
   "type": "registry:component"
 }

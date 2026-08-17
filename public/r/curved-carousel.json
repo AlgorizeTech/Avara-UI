@@ -3,7 +3,7 @@
   "name": "curved-carousel",
   "title": "Curved Carousel",
   "author": "AlgorizeTech",
-  "description": "TODO: describe curved-carousel. Generated placeholder.",
+  "description": "A continuously scrolling carousel whose cards follow a curved arc path. Use it for logo walls and showcase strips that should feel ambient.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/CurvedCarouselBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: CurvedCarousel, CurvedCarouselCard. `speed` sets the drift rate and `autoPlay` toggles motion. Loops continuously rather than paging, so it suits decorative rows more than navigable content.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

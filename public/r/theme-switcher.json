@@ -3,7 +3,7 @@
   "name": "theme-switcher",
   "title": "Theme Switcher",
   "author": "AlgorizeTech",
-  "description": "TODO: describe theme-switcher. Generated placeholder.",
+  "description": "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
   "dependencies": [
     "gsap",
     "lucide-react",
@@ -20,6 +20,10 @@
       "target": "components/custom/blocks/ThemeSwitcherBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
+  "categories": [
+    "utilities",
+    "actions"
+  ],
   "type": "registry:component"
 }

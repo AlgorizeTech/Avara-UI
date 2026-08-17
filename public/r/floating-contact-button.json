@@ -3,7 +3,7 @@
   "name": "floating-contact-button",
   "title": "Floating Contact Button",
   "author": "AlgorizeTech",
-  "description": "TODO: describe floating-contact-button. Generated placeholder.",
+  "description": "A floating support bubble that expands into a chat panel, with state persisted to localStorage. Use it for live chat and contact widgets on marketing sites.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/FloatingContactButtonBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: FloatingContactButtonBlock. `position` is bottom-right | bottom-left; `containerMode` fixed pins it to the viewport while absolute scopes it to a parent. Open state survives reloads via `localStorageKey`. Messages are local — connect your own backend.",
+  "categories": [
+    "communication",
+    "marketing"
+  ],
   "type": "registry:component"
 }

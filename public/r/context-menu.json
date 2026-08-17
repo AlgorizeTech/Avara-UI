@@ -3,7 +3,7 @@
   "name": "context-menu",
   "title": "Context Menu",
   "author": "AlgorizeTech",
-  "description": "TODO: describe context-menu. Generated placeholder.",
+  "description": "A right-click context menu that opens at the pointer, with items, separators and shortcut hints. Use it for secondary actions on a row or canvas object.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ContextMenuBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut. The trigger suppresses the native browser menu inside its bounds. Positioned from pointer coordinates, so it opens where the user clicked rather than anchored to an element.",
+  "categories": [
+    "overlays",
+    "actions"
+  ],
   "type": "registry:component"
 }

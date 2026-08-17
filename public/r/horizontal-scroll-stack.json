@@ -3,7 +3,7 @@
   "name": "horizontal-scroll-stack",
   "title": "Horizontal Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "TODO: describe horizontal-scroll-stack. Generated placeholder.",
+  "description": "A section that converts vertical scrolling into horizontal card movement with a progress indicator. Use it for process timelines and step sequences.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/HorizontalScrollStackBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HorizontalScrollStack. Items take { id, number, title, description, icon? }. Pins the section and maps scroll progress to horizontal travel, so it needs enough page height to complete — and it takes over scrolling while pinned, which is worth testing on touch.",
+  "categories": [
+    "scroll",
+    "marketing"
+  ],
   "type": "registry:component"
 }

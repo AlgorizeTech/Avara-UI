@@ -3,7 +3,7 @@
   "name": "alert",
   "title": "Alert",
   "author": "AlgorizeTech",
-  "description": "TODO: describe alert. Generated placeholder.",
+  "description": "An inline alert with seven semantic types, five visual styles and optional dismiss. Use it for form-level and page-level messages that stay in the layout.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/Alerts.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: Alert. `type` is primary | secondary | success | danger | warning | info | dark; `variant` is solid | outline | modern | glass | glow. Set `dismissible` with `onDismiss` to make it closable. For transient messages, use `toast` or `sonner`.",
+  "categories": [
+    "feedback"
+  ],
   "type": "registry:component"
 }

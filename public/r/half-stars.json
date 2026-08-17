@@ -3,7 +3,7 @@
   "name": "half-stars",
   "title": "Half Stars",
   "author": "AlgorizeTech",
-  "description": "TODO: describe half-stars. Generated placeholder.",
+  "description": "A star rating supporting half-star precision, in read-only or interactive mode. Use it for reviews and any score shown out of five.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/HalfStarsBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score.",
+  "categories": [
+    "forms",
+    "data-display"
+  ],
   "type": "registry:component"
 }

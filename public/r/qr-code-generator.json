@@ -3,7 +3,7 @@
   "name": "qr-code-generator",
   "title": "Qr Code Generator",
   "author": "AlgorizeTech",
-  "description": "TODO: describe qr-code-generator. Generated placeholder.",
+  "description": "A QR code renderer with size, colour and error-correction options. Use it for sharing links, tickets and pairing codes.",
   "dependencies": [
     "qrcode.react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/QrCodeGeneratorBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: QrCodeGenerator. `value` is the encoded string; `level` is L | M | Q | H — higher survives more damage but packs less data. Keep `bgColor` and `fgColor` high-contrast or scanners will fail. Renders to canvas via qrcode.react.",
+  "categories": [
+    "utilities"
+  ],
   "type": "registry:component"
 }

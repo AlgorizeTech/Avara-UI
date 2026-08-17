@@ -3,7 +3,7 @@
   "name": "scroll-accordion-showcase",
   "title": "Scroll Accordion Showcase",
   "author": "AlgorizeTech",
-  "description": "TODO: describe scroll-accordion-showcase. Generated placeholder.",
+  "description": "A scroll-linked accordion pairing expanding text steps with a synced image panel. Use it for long-form product explainers.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/ScrollAccordionShowcaseBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: ScrollAccordionShowcase. `displayMode` is both | text-only | image-only; items carry stepNumber, tags and an image. The open step persists via `localStorageKey`. Needs real page height to advance.",
+  "categories": [
+    "scroll",
+    "marketing"
+  ],
   "type": "registry:component"
 }

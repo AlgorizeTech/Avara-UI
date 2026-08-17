@@ -3,7 +3,7 @@
   "name": "settings",
   "title": "Settings",
   "author": "AlgorizeTech",
-  "description": "TODO: describe settings. Generated placeholder.",
+  "description": "Pre-built settings panels for notification and security preferences, laid out as toggle rows. Use them as a starting point for an account settings page.",
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/ui-base.json"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/SettingsBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: NotificationsBlock, SecurityBlock. These are self-contained example panels with their own local state and hardcoded labels — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard and ToggleSwitch.",
+  "categories": [
+    "forms",
+    "layout"
+  ],
   "type": "registry:component"
 }

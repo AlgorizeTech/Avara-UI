@@ -3,7 +3,7 @@
   "name": "typography",
   "title": "Typography",
   "author": "AlgorizeTech",
-  "description": "TODO: describe typography. Generated placeholder.",
+  "description": "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/TypographyBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers.",
+  "categories": [
+    "typography"
+  ],
   "type": "registry:component"
 }

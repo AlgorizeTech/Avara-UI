@@ -3,7 +3,7 @@
   "name": "advanced-table",
   "title": "Advanced Table",
   "author": "AlgorizeTech",
-  "description": "TODO: describe advanced-table. Generated placeholder.",
+  "description": "A data table with search, per-column filtering, pagination, column sizing and typed sorting. Reach for it when a plain table is no longer enough.",
   "dependencies": [
     "lucide-react"
   ],
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/AdvancedTableBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AdvancedTableBlock, getThemeStyles. `columns` take { key, header, sortable?, width?, sortType?, render? } — set `sortType` to number so numeric columns do not sort lexically. Depends on `select` for the page-size control. For a simpler table, use `table`.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

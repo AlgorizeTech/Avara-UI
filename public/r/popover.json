@@ -3,7 +3,7 @@
   "name": "popover",
   "title": "Popover",
   "author": "AlgorizeTech",
-  "description": "TODO: describe popover. Generated placeholder.",
+  "description": "A floating panel anchored to a trigger, with collision detection and side/align control. Use it for filter menus and inline detail cards.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/PopoverBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Popover, PopoverTrigger, PopoverContent. `side` and `align` set the preferred placement; `avoidCollisions` flips it near a viewport edge, with `collisionPadding` as the margin. Zero runtime dependencies — positioning is hand-rolled, not Floating UI. For hover labels use `tooltip`, for right-click use `context-menu`.",
+  "categories": [
+    "overlays"
+  ],
   "type": "registry:component"
 }

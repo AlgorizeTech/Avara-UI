@@ -3,7 +3,7 @@
   "name": "scroll-area",
   "title": "Scroll Area",
   "author": "AlgorizeTech",
-  "description": "TODO: describe scroll-area. Generated placeholder.",
+  "description": "A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ScrollAreaBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
+  "categories": [
+    "layout",
+    "scroll"
+  ],
   "type": "registry:component"
 }

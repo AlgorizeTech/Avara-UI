@@ -3,7 +3,7 @@
   "name": "menubar",
   "title": "Menubar",
   "author": "AlgorizeTech",
-  "description": "TODO: describe menubar. Generated placeholder.",
+  "description": "A desktop-style menu bar with click-to-open menus, separators and keyboard navigation. Use it for application chrome rather than website navigation.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/MenubarBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem, MenubarSeparator. Once a menu is open, hovering another trigger switches to it — the File/Edit/View behaviour of a native app.",
+  "categories": [
+    "navigation"
+  ],
   "type": "registry:component"
 }

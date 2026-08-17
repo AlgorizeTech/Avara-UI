@@ -3,7 +3,7 @@
   "name": "split-stepper",
   "title": "Split Stepper",
   "author": "AlgorizeTech",
-  "description": "TODO: describe split-stepper. Generated placeholder.",
+  "description": "A two-column stepper with a sticky side panel and stacked cards that advance as you scroll. Use it for onboarding and feature walkthroughs on a landing page.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,11 @@
       "target": "components/custom/blocks/SplitStepperBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: SplitStepper. `stickySide` places the pinned column left or right; `cardDepthScale` and `cardOffset` tune the stacked-card depth effect. Needs real page height to scroll through — it will look inert inside a short container.",
+  "categories": [
+    "navigation",
+    "scroll",
+    "marketing"
+  ],
   "type": "registry:component"
 }

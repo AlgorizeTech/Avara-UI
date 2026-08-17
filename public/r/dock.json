@@ -3,7 +3,7 @@
   "name": "dock",
   "title": "Dock",
   "author": "AlgorizeTech",
-  "description": "TODO: describe dock. Generated placeholder.",
+  "description": "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/DockBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row.",
+  "categories": [
+    "navigation"
+  ],
   "type": "registry:component"
 }

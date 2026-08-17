@@ -3,7 +3,7 @@
   "name": "video-accordion",
   "title": "Video Accordion",
   "author": "AlgorizeTech",
-  "description": "TODO: describe video-accordion. Generated placeholder.",
+  "description": "Horizontal panels that expand on selection to play a video, with poster fallbacks. Use it for product feature showcases.",
   "dependencies": [
     "gsap"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/VideoAccordionBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: VideoAccordion, AccordionPanel. Panels take { id, title, description?, videoSrc, posterUrl? }; `defaultActiveId` sets the initially open one. Videos load per panel — keep them short and muted, since autoplay with sound is blocked by browsers.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "upload",
   "title": "Upload",
   "author": "AlgorizeTech",
-  "description": "TODO: describe upload. Generated placeholder.",
+  "description": "A drag-and-drop file dropzone with per-file progress, previews, retry and time-remaining. Use it for multi-file uploads where users need to watch each file land.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/UploadBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Dropzone, UploadItem, formatBytes, formatTimeLeft. Dropzone handles the drop target and reports via `onFilesDrop`; render an UploadItem per file and drive its `status` and `progress` yourself. No transport is included — wire it to your own upload call.",
+  "categories": [
+    "forms",
+    "feedback"
+  ],
   "type": "registry:component"
 }

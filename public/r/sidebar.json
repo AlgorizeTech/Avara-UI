@@ -3,7 +3,7 @@
   "name": "sidebar",
   "title": "Sidebar",
   "author": "AlgorizeTech",
-  "description": "TODO: describe sidebar. Generated placeholder.",
+  "description": "A collapsible application sidebar with grouped items, brand header, footer and a mobile drawer. Use it as the primary shell for a dashboard.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/SidebarBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating.",
+  "categories": [
+    "navigation",
+    "layout"
+  ],
   "type": "registry:component"
 }

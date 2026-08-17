@@ -3,7 +3,7 @@
   "name": "carousel-3d",
   "title": "Carousel 3D",
   "author": "AlgorizeTech",
-  "description": "TODO: describe carousel-3d. Generated placeholder.",
+  "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }
