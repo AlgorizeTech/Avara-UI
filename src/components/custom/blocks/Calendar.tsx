@@ -437,7 +437,7 @@ function CalendarDashboard({
 
   // View & Date State
   const [view, setView] = useState("month");
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 8, 1));
+  const [currentDate, setCurrentDate] = useState(() => new Date());
 
   // UI State
   const [activePopupEventId, setActivePopupEventId] = useState<string | null>(

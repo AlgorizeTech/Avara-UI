@@ -6,12 +6,15 @@ import {
   CalendarVariant,
 } from "@/components/custom/blocks/Calendar";
 
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+
 const DEMO_EVENTS: Record<string, string[]> = {
-  "2025-8-31": ["pentest", "kickoff", "pentest"],
-  "2025-9-2": ["pentest", "kickoff"],
-  "2025-9-10": ["pentest", "kickoff"],
-  "2025-9-15": ["pentest", "kickoff"],
-  "2025-9-24": ["kickoff", "pentest"],
+  [`${currentYear}-${currentMonth}-2`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-10`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-15`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-24`]: ["kickoff", "pentest"],
 };
 
 export default function CalendarDemo({
