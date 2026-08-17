@@ -267,39 +267,74 @@ html.dark .shiki span {
   background-color: transparent !important;
 }
 
-/* Devices >= 1024px (lg & xl): NO Scrollbar, Type column values wrap onto lines below, table fits 100% width */
-@media (min-width: 1024px) {
-  .prose table {
-    min-width: 0 !important;
-    table-layout: auto !important;
-  }
-
-  .prose div:has(> table),
-  .prose .overflow-x-auto,
-  .overflow-x-auto {
-    overflow-x: hidden !important;
-  }
-
-  /* Type column & code values wrap onto lines below according to available space */
-  .prose td:nth-child(2),
-  .prose td:nth-child(2) code {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-  }
+/* Cells wrap on every device instead of stretching the table onto one line. */
+.prose th,
+.prose td,
+.prose th code,
+.prose td code,
+.prose th a,
+.prose td a {
+  white-space: normal !important;
+  hyphens: none;
 }
 
-/* Devices < 1024px (< lg / md & mobile): Enable Horizontal Touch Scrollbar */
-@media (max-width: 1023px) {
-  .prose table {
-    min-width: 560px !important;
-  }
+/* Component / Prop / Type / Default (every column except the trailing
+   Description): wrap between words, but never split a word or a type token in
+   half. They also hold a readable minimum width so they never collapse to a
+   sliver when the Description column is long. */
+.prose th:not(:last-child),
+.prose td:not(:last-child),
+.prose th:not(:last-child) code,
+.prose td:not(:last-child) code,
+.prose th:not(:last-child) a,
+.prose td:not(:last-child) a {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
 
-  .prose div:has(> table),
-  .prose .overflow-x-auto,
-  .overflow-x-auto {
-    overflow-x: auto !important;
-  }
+.prose th:nth-child(1):not(:last-child),
+.prose td:nth-child(1):not(:last-child),
+.prose th:nth-child(2):not(:last-child),
+.prose td:nth-child(2):not(:last-child) {
+  min-width: 8rem !important;
+}
+
+.prose th:nth-child(3):not(:last-child),
+.prose td:nth-child(3):not(:last-child) {
+  min-width: 6.5rem !important;
+}
+
+.prose th:nth-child(4):not(:last-child),
+.prose td:nth-child(4):not(:last-child) {
+  min-width: 5rem !important;
+}
+
+/* Description (last column) absorbs the remaining space and is the only one
+   allowed to break a long word, so the table can always fit its container.
+   `overflow-wrap: anywhere` (not break-word) is what actually shrinks the
+   cell's min-content width. */
+.prose th:last-child,
+.prose td:last-child,
+.prose th:last-child code,
+.prose td:last-child code,
+.prose th:last-child a,
+.prose td:last-child a {
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* …but it still needs a floor, otherwise the auto layout squeezes it into a
+   few-characters-per-line sliver and the prose breaks mid-word. Below xl the
+   table is allowed to scroll, so it can afford a generous minimum. */
+.prose th:last-child,
+.prose td:last-child {
+  min-width: 15rem !important;
+}
+
+.prose th code,
+.prose td code {
+  display: inline !important;
+  max-width: 100% !important;
 }
 
 .dark .prose table {
@@ -318,14 +353,6 @@ html.dark .shiki span {
   border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
 }
 
-/* Prop Name / Default / Required columns: Single line */
-.prose th:not(:last-child),
-.prose td:first-child,
-.prose td:nth-child(3),
-.prose td:nth-child(4) {
-  white-space: nowrap !important;
-}
-
 .prose td:first-child {
   font-weight: 800 !important;
   color: #09090b !important;
@@ -339,9 +366,6 @@ html.dark .shiki span {
 .prose td:nth-child(2),
 .prose td:last-child {
   border-right: none !important;
-  white-space: normal !important;
-  word-break: break-word !important;
-  overflow-wrap: break-word !important;
   color: #52525b !important;
   line-height: 1.6 !important;
 }
@@ -357,7 +381,8 @@ html.dark .shiki span {
 .overflow-x-auto {
   width: 100% !important;
   max-width: 100% !important;
-  overflow-x: auto !important;
+  /* overflow-x is set per breakpoint at the end of this table block —
+     declaring it here would override the lg rule (same specificity, later wins). */
   display: block !important;
   box-sizing: border-box !important;
   border-radius: 0.75rem !important;
@@ -475,7 +500,6 @@ html.dark .shiki span {
   color: #71717a !important;
   border-bottom: 1px solid #e4e4e7 !important;
   border-right: 1px solid #f4f4f5 !important;
-  white-space: nowrap !important;
 }
 
 .dark .prose th {
@@ -524,7 +548,6 @@ html.dark .shiki span {
 .prose td:first-child {
   font-weight: 800 !important;
   color: #09090b !important;
-  white-space: nowrap !important;
 }
 
 .dark .prose td:first-child {
@@ -533,19 +556,12 @@ html.dark .shiki span {
 
 .prose td:last-child {
   border-right: none !important;
-  white-space: normal !important;
-  word-break: break-word !important;
-  min-width: 220px !important;
   color: #52525b !important;
   line-height: 1.6 !important;
 }
 
 .dark .prose td:last-child {
   color: #a1a1aa !important;
-}
-
-.prose td:not(:last-child) {
-  white-space: nowrap !important;
 }
 
 /* Table code elements: NO background, NO border, EXTRA BOLD text */
@@ -583,6 +599,67 @@ html.dark .shiki span {
 .vitepress-table td span,
 .vitepress-table td code {
   cursor: text !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive table overflow. Declared last so these win over the base rules
+   above (all are !important with equal specificity, so source order decides).
+   --------------------------------------------------------------------------- */
+
+/* >= 1024px: the table is sized to the container, never to its content. Cells
+   trade horizontal space for extra lines instead of widening the table.
+   Padding is tightened here so the fixed-width columns leave the Description
+   column as much room as possible. */
+@media (min-width: 1024px) {
+  .prose table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.75rem !important;
+  }
+
+  /* The no-break columns shrink to exactly their content; the Description
+     column takes everything that is left over, instead of the mono columns
+     hogging the surplus. */
+  .prose th:not(:last-child),
+  .prose td:not(:last-child) {
+    width: 1% !important;
+  }
+
+  .prose th:last-child,
+  .prose td:last-child {
+    width: 99% !important;
+  }
+
+  /* The generous Description floor is a small-screen affordance (there the
+     table scrolls anyway). From lg up the table has to fit the container, so
+     the floor drops to whatever is left after the fixed columns. */
+  .prose th:last-child,
+  .prose td:last-child {
+    min-width: 6rem !important;
+  }
+}
+
+/* Scroll rather than clip, at every width. On a wide screen the table fits, so
+   no scrollbar is drawn; it only appears on the narrow layouts where four
+   no-break columns genuinely cannot fit the content area. */
+.prose div:has(> table),
+.prose .overflow-x-auto,
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+/* < 1024px (md & mobile): keep a readable minimum width and scroll horizontally.
+   Text still wraps inside each column. */
+@media (max-width: 1023px) {
+  .prose table {
+    min-width: 560px !important;
+  }
 }
 
 /* Radix dialogs (theme sheet, modals) scroll-lock <body> while open.
@@ -1002,10 +1079,12 @@ html:not(.dark) .terminal-block {
   opacity: 1;
 }
 
-/* Completely hide scrollbars on Code blocks while retaining scrollability */
+/* Completely hide scrollbars on Code blocks while retaining scrollability.
+   `:not(:has(table))` keeps table wrappers out of this — they own their
+   overflow/scrollbar rules in the table block above and must stay unscrolled at lg. */
 .shiki pre,
 pre.shiki,
-.overflow-x-auto,
+.overflow-x-auto:not(:has(table)),
 .overflow-x-auto pre {
   white-space: pre !important;
   word-break: normal !important;
@@ -1022,7 +1101,7 @@ pre.shiki code {
 
 .shiki pre::-webkit-scrollbar,
 pre.shiki::-webkit-scrollbar,
-.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-auto:not(:has(table))::-webkit-scrollbar,
 .overflow-x-auto pre::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
