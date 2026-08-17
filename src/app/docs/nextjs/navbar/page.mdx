@@ -58,37 +58,83 @@ export default function BrandedHeader() {
     {
       title: "Navbar",
       subheading: "The default bar: wordmark, desktop links with dropdowns, and a mobile drawer.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "themes the logo mark and the primary CTA — a named key or any hex.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
     },
     {
       title: "Floating",
-      subheading: "`variant=\"floating\"` gives a pill-shaped glass bar that hovers over the hero.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"floating"',
+          effect:
+            "for a pill-shaped glass bar that hovers over the hero.",
+        },
+      ],
       props: { variant: "floating" },
       usage: usageFloating,
     },
     {
       title: "Centered",
-      subheading: "`variant=\"centered\"` balances the logo in the middle with links either side.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"centered"',
+          effect:
+            "to balance the logo in the middle with links either side.",
+        },
+      ],
       props: { variant: "centered" },
       usage: usageCentered,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the border and background entirely.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the border and background entirely.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` keeps the full-width bar but blurs whatever scrolls beneath.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to keep the full-width bar but blur whatever scrolls beneath it.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Custom wordmark",
-      subheading: "Pass `logoText` to swap the brand name.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "logoText",
+          effect:
+            "to swap the brand name beside the mark. Defaults to `Nexus`.",
+        },
+      ],
       props: { variant: "floating", logoText: "Acme" },
       usage: usageLogo,
     },

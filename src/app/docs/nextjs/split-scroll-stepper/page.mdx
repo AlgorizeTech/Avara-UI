@@ -73,26 +73,62 @@ export default function ShowcaseStartingOnThird() {
   examples={[
     {
       title: "Scroll accordion showcase",
-      subheading: "One `AccordionShowcaseItem` per row; the sticky card follows whichever row is active.",
+      subheading: "One row per item; the sticky card follows whichever row is active.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `{ id, stepNumber, title, description, image }[]` — `tags` is optional and renders as pill badges when the row expands.",
+        },
+      ],
       props: { displayMode: "both" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ScrollAccordionShowcaseBlock.tsx"),
     },
     {
       title: "Text only",
-      subheading: "`displayMode=\"text-only\"` drops the sticky image column and runs the accordion full width.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "displayMode",
+          value: '"text-only"',
+          effect:
+            "to drop the sticky image column and run the accordion full width.",
+        },
+      ],
       props: { displayMode: "text-only" },
       usage: usageTextOnly,
     },
     {
       title: "Image only",
-      subheading: "`displayMode=\"image-only\"` keeps the scroll-driven visual and hides the copy.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "displayMode",
+          value: '"image-only"',
+          effect:
+            "to keep the scroll-driven visual and replace the copy with a horizontal step selector.",
+        },
+      ],
       props: { displayMode: "image-only" },
       usage: usageImageOnly,
     },
     {
       title: "Starting row",
-      subheading: "`defaultIndex` picks which row is expanded before the user scrolls.",
+      propNotes: [
+        {
+          prop: "defaultIndex",
+          value: '{0}',
+          effect:
+            "is the zero-based row expanded before the reader scrolls.",
+        },
+        {
+          prop: "scrollerRef",
+          effect:
+            "points the internal IntersectionObserver at a custom scroll container instead of the window.",
+        },
+      ],
       props: { displayMode: "both", defaultIndex: 2 },
       usage: usageDefaultIndex,
     },

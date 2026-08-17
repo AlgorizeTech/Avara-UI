@@ -154,26 +154,68 @@ export default function AnimatedQueue({ queue, onRetry, onRemove }) {
   examples={[
     {
       title: "Upload flow",
-      subheading: "`Dropzone` hands you `File[]`; you own the queue and feed each row back to `UploadItem`.",
+      subheading: "You own the queue; `Dropzone` and `UploadItem` are the two halves.",
+      propNotes: [
+        {
+          prop: "onFilesDrop",
+          effect:
+            "hands you `File[]` from both the drop and the native file browser.",
+        },
+        {
+          prop: "item",
+          effect:
+            "on `UploadItem` is the per-file state object you feed back in for each row.",
+        },
+      ],
       props: { variant: "slide-up" },
       usage: usageFlow,
       code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
     },
     {
       title: "Dropzone",
-      subheading: "Use `accept` and `maxSize` (MB) on its own — the limit is echoed in the helper text.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "accept",
+          effect:
+            "with a native input accept string such as `\"image/*,application/pdf\"` to restrict types.",
+        },
+        {
+          prop: "maxSize",
+          value: '{50}',
+          effect:
+            "is the limit in **megabytes**, and is echoed in the helper text automatically.",
+        },
+      ],
       props: { layout: "dropzone" },
       usage: usageDropzone,
     },
     {
       title: "Upload states",
-      subheading: "`status` drives the whole row: `uploading`, `paused`, `error` (with inline retry) and `success`.",
+      propNotes: [
+        {
+          prop: "status",
+          effect:
+            "drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.",
+        },
+        {
+          prop: "onRetry",
+          effect:
+            "is what the inline Retry button calls after an `error`; `onRemove` backs the X.",
+        },
+      ],
       props: { showAll: "states" },
       usage: usageStates,
     },
     {
       title: "Animated queue",
-      subheading: "`UploadItem` is layout-agnostic, so wrap each row in `motion.div` to animate entries and exits.",
+      propNotes: [
+        {
+          prop: "item",
+          effect:
+            "is all `UploadItem` needs — it is layout-agnostic, so wrap each row in `motion.div` yourself to animate entries and exits.",
+        },
+      ],
       props: { variant: "pop" },
       usage: usageAnimated,
     },

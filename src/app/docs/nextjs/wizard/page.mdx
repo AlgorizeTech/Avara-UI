@@ -102,19 +102,44 @@ export default function BareWizard() {
     {
       title: "Wizard",
       subheading: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
+      propNotes: [
+        {
+          prop: "index",
+          effect:
+            "on each `WizardStep` is its 0-based position, and is what the animation uses to compute the Y-offset.",
+        },
+        {
+          prop: "onComplete",
+          effect:
+            "fires when Next or Enter is pressed on the final step.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
     },
     {
       title: "Starting step",
-      subheading: "Use `initialStep` to resume a flow partway through instead of restarting it.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "initialStep",
+          effect:
+            "to resume a flow partway through instead of restarting it.",
+        },
+      ],
       props: { initialStep: 1 },
       usage: usageInitialStep,
     },
     {
       title: "Without the progress bar",
-      subheading: "`WizardProgress` is an independent child — leave it out and navigation is unchanged.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "can omit `WizardProgress` entirely — it is an independent child, and navigation is unchanged without it.",
+        },
+      ],
       props: { showProgress: false },
       usage: usageNoProgress,
     },

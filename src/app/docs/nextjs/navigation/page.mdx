@@ -52,18 +52,36 @@ export default function TopNav() {
   );
 }`;
 
-export const usageMinimal = `// Pill chrome removed; the indicator becomes a thin underline.
-<NavigationMenu variant="minimal" color="emerald">
-  <NavigationMenuList>{/* … */}</NavigationMenuList>
-</NavigationMenu>`;
+export const usageMinimal = `import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/custom/blocks/NavigationMenu";
 
-export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over a colored surface, so
-// give it something to blur.
-<div className="bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-12">
-  <NavigationMenu variant="glass" color="#8B5CF6">
-    <NavigationMenuList>{/* … */}</NavigationMenuList>
-  </NavigationMenu>
-</div>`;
+export default function MinimalNav() {
+  // Pill chrome removed; the indicator becomes a thin underline.
+  return (
+    <NavigationMenu variant="minimal" color="emerald">
+      <NavigationMenuList>{/* … */}</NavigationMenuList>
+    </NavigationMenu>
+  );
+}`;
+
+export const usageGlass = `import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/custom/blocks/NavigationMenu";
+
+export default function GlassNav() {
+  return (
+    // Translucent and backdrop-blurred — meant to sit over a colored surface, so
+    // give it something to blur.
+    <div className="bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-12">
+      <NavigationMenu variant="glass" color="#8B5CF6">
+        <NavigationMenuList>{/* … */}</NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="navigation-menu"
@@ -72,20 +90,53 @@ export const usageGlass = `// Translucent and backdrop-blurred — meant to sit 
   examples={[
     {
       title: "Navigation menu",
-      subheading: "The default bar. Hover **Features** or **Resources** to open a dropdown and watch the indicator slide and resize to the active trigger.",
+      subheading: "Hover **Features** or **Resources** and watch the indicator slide and resize to the active trigger.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "on each `NavigationMenuItem` links a trigger to its dropdown — it is required.",
+        },
+        {
+          prop: "active",
+          effect:
+            "on a `NavigationMenuLink` forces the selected styling by hand.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/NavigationMenu.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the pill background from the bar and its panels for a lighter, text-first header.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the pill background from the bar and its panels — the indicator becomes a thin underline.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` frosts the bar and dropdowns — the preview puts a photo behind it so the blur is visible.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the bar and dropdowns; it needs something behind it for the blur to read.",
+        },
+        {
+          prop: "color",
+          effect:
+            "accepts a hex, and anything unrecognised falls back to `primary`.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },

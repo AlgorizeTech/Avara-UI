@@ -119,50 +119,132 @@ export default function InputStates() {
     {
       title: "Input",
       subheading: "A labelled text field with helper text and a leading icon.",
+      propNotes: [
+        {
+          prop: "label",
+          effect:
+            "sits above the field and `helperText` below it.",
+        },
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "is the bordered box; see the next three for the alternatives.",
+        },
+      ],
       props: { inputType: "email" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
     },
     {
       title: "Filled",
-      subheading: "Use `variant=\"filled\"` for a solid, low-contrast field.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"filled"',
+          effect:
+            "for a solid, low-contrast field with no visible border at rest.",
+        },
+      ],
       props: { variant: "filled" },
       usage: usageFilled,
     },
     {
       title: "Underlined",
-      subheading: "Use `variant=\"underlined\"` for a single baseline rule.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"underlined"',
+          effect:
+            "to reduce the chrome to a single baseline rule.",
+        },
+      ],
       props: { variant: "underlined" },
       usage: usageUnderlined,
     },
     {
       title: "Glow",
-      subheading: "Use `variant=\"glow\"` to light the field up on focus.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"glow"',
+          effect:
+            "to light the field up on focus — `color` sets what colour it glows.",
+        },
+      ],
       props: { variant: "glow" },
       usage: usageGlow,
     },
     {
       title: "Sizes",
-      subheading: "Use the `inputSize` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "inputSize",
+          effect:
+            "to scale height, padding, text and icons together — `sm`, `md` or `lg`.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Password",
-      subheading: "`type=\"password\"` adds the show/hide toggle automatically.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"password"',
+          effect:
+            "and the show/hide toggle is added for you — there is no separate prop for it.",
+        },
+      ],
       props: { inputType: "password" },
       usage: usagePassword,
     },
     {
       title: "File upload",
-      subheading: "`type=\"file\"` turns the field into a drag & drop zone with previews.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"file"',
+          effect:
+            "to turn the field into a drag-and-drop zone with previews.",
+        },
+        {
+          prop: "onFilesChange",
+          effect:
+            "is file mode only — it returns native `File[]` on drop, selection and removal.",
+        },
+        {
+          prop: "multiple",
+          effect:
+            "and `accept` are also file-mode only; `accept` takes the standard HTML string such as `\"image/*\"`.",
+        },
+      ],
       props: { inputType: "file", isMultiple: true, isImageOnly: true },
       usage: usageFile,
       minHeight: 460,
     },
     {
       title: "Error and disabled",
-      subheading: "Pass `error` for the invalid state, `disabled` to lock the field.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "error",
+          effect:
+            "for the invalid state — it replaces the helper text with your message.",
+        },
+        {
+          prop: "disabled",
+          effect:
+            "locks the field and fades it.",
+        },
+      ],
       props: { showAll: "states" },
       usage: usageStates,
     },

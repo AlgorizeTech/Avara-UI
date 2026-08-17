@@ -27,20 +27,47 @@ export default function Docs() {
   );
 }`;
 
-export const usageLanguages = `// \`language\` drives the badge; the block never ships a heavyweight
-// highlighter, so any language string is safe to pass.
-<TerminalBlock code={source} language="python" filename="main.py" />`;
+export const usageLanguages = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
 
-export const usageGlass = `// Backdrop-blurred chrome — put it over a gradient.
-<div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <TerminalBlock code={source} language="tsx" filename="Button.tsx" variant="glass" />
-</div>`;
+export default function PythonTerminal() {
+  // \`language\` drives the badge; the block never ships a heavyweight
+  // highlighter, so any language string is safe to pass.
+  return <TerminalBlock code={source} language="python" filename="main.py" />;
+}`;
 
-export const usageMinimal = `// Drops the window controls and the border for inline snippets.
-<TerminalBlock code={source} language="tsx" variant="minimal" />`;
+export const usageGlass = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
 
-export const usageBare = `// No filename header, no copy button — just the code.
-<TerminalBlock code={source} language="tsx" copyable={false} />`;
+export default function GlassTerminal() {
+  return (
+    // Backdrop-blurred chrome — put it over a gradient.
+    <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <TerminalBlock
+        code={source}
+        language="tsx"
+        filename="Button.tsx"
+        variant="glass"
+      />
+    </div>
+  );
+}`;
+
+export const usageMinimal = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function MinimalTerminal() {
+  // Drops the window controls and the border for inline snippets.
+  return <TerminalBlock code={source} language="tsx" variant="minimal" />;
+}`;
+
+export const usageBare = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function BareTerminal() {
+  // No filename header, no copy button — just the code.
+  return <TerminalBlock code={source} language="tsx" copyable={false} />;
+}`;
 
 <ExampleShowcase
   name="terminal"
@@ -50,32 +77,80 @@ export const usageBare = `// No filename header, no copy button — just the cod
   examples={[
     {
       title: "Terminal",
-      subheading: "Mac-style window controls, a language badge and a copy button, all from one `code` string.",
+      subheading: "Mac-style window controls, a language badge and a copy button, all from one string.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "code",
+          effect:
+            "as the whole snippet — newlines in the string become terminal lines.",
+        },
+        {
+          prop: "copyable",
+          effect:
+            "is on by default and renders the copy button.",
+        },
+      ],
       props: { activeTab: "Bash" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TerminalBlock.tsx"),
     },
     {
       title: "Any language",
-      subheading: "Set `language` and `filename` to label the snippet — here a Python file instead of a shell session.",
+      propNotes: [
+        {
+          prop: "language",
+          value: '"python"',
+          effect:
+            "sets the badge and highlighting. Defaults to `bash`; the block ships no heavyweight highlighter, so any string is safe.",
+        },
+        {
+          prop: "filename",
+          effect:
+            "is the label beside the badge.",
+        },
+      ],
       props: { activeTab: "Python" },
       usage: usageLanguages,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` blurs whatever sits behind the window — ideal over imagery.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to blur whatever sits behind the window — ideal over imagery.",
+        },
+      ],
       props: { variant: "glass", activeTab: "React" },
       usage: usageGlass,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the chrome down to the code itself.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the chrome down to the code itself.",
+        },
+      ],
       props: { variant: "minimal", activeTab: "React" },
       usage: usageMinimal,
     },
     {
       title: "Without header controls",
-      subheading: "Omit `filename` and set `copyable={false}` for a bare, read-only block.",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "filename",
+          effect:
+            "and set `copyable={false}` for a bare, read-only block.",
+        },
+      ],
       props: { activeTab: "React", showFilename: false, isCopyable: false },
       usage: usageBare,
     },
@@ -108,101 +183,109 @@ Copy the full engine code from the **Code** tab of the first example above into 
         <th>Description</th>
       </tr>
     </thead>
-    <tbody>
+<tbody>
       <tr>
         <td>
-          <code>MarqueeBlock</code>
+          <code>TerminalBlock</code>
         </td>
         <td>
-          <code>direction</code>
+          <code>code</code>
         </td>
         <td>
-          <code>"left" | "right" | "up" | "down"</code>
+          <code>{`string`}</code>
         </td>
         <td>
-          <code>"left"</code>
+          <code>{`Required`}</code>
         </td>
         <td>
-          Determines the direction the marquee will continuously slide. Note:
-          Ensure you set a fixed <code>height</code> on the component when using
-          "up" or "down".
+          The snippet rendered inside the window. Newlines in the string become terminal lines.
         </td>
       </tr>
       <tr>
         <td>
-          <code>MarqueeBlock</code>
+          <code>TerminalBlock</code>
         </td>
         <td>
-          <code>speed</code>
+          <code>language</code>
         </td>
         <td>
-          <code>"slow" | "normal" | "fast" | number</code>
+          <code>{`string`}</code>
         </td>
         <td>
-          <code>"normal"</code>
+          <code>{`"bash"`}</code>
         </td>
         <td>
-          Controls the animation duration. Can use a preset string or a specific
-          number representing duration in seconds (e.g., <code>speed={15}</code>{" "}
-          equals a 15s loop).
+          Drives the syntax highlighting and the badge shown in the header.
         </td>
       </tr>
       <tr>
         <td>
-          <code>MarqueeBlock</code>
+          <code>TerminalBlock</code>
         </td>
         <td>
-          <code>pauseOnHover</code>
+          <code>filename</code>
         </td>
         <td>
-          <code>boolean</code>
+          <code>{`string`}</code>
         </td>
         <td>
-          <code>false</code>
+          <code>{`undefined`}</code>
         </td>
         <td>
-          If true, the animation automatically pauses when the user's cursor
-          hovers over the container.
+          Label beside the badge. Omit it and the header keeps only the window controls.
         </td>
       </tr>
       <tr>
         <td>
-          <code>MarqueeBlock</code>
+          <code>TerminalBlock</code>
         </td>
         <td>
-          <code>fade</code>
+          <code>copyable</code>
         </td>
         <td>
-          <code>boolean</code>
+          <code>{`boolean`}</code>
         </td>
         <td>
-          <code>false</code>
+          <code>{`true`}</code>
         </td>
         <td>
-          If true, applies a CSS <code>mask-image</code> gradient to smoothly
-          fade out the edges of the marquee container. Works seamlessly across
-          light and dark modes.
+          Renders the copy button. Set it false for a read-only block.
         </td>
       </tr>
       <tr>
         <td>
-          <code>MarqueeBlock</code>
+          <code>TerminalBlock</code>
         </td>
         <td>
-          <code>gap</code>
+          <code>variant</code>
         </td>
         <td>
-          <code>string</code>
+          <code>{`"default" | "glass" | "minimal"`}</code>
         </td>
         <td>
-          <code>"1rem"</code>
+          <code>{`"default"`}</code>
         </td>
         <td>
-          The CSS gap applied between the individual items inside the marquee.
-          Accepts any valid CSS unit (e.g., <code>"2rem"</code>,{" "}
-          <code>"32px"</code>).
+          Surface treatment of the window chrome.
         </td>
       </tr>
-    </tbody>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>{`"primary" | "indigo" | "rose" | "emerald" | "zinc" | string`}</code>
+        </td>
+        <td>
+          <code>{`"primary"`}</code>
+        </td>
+        <td>
+          Accent for the language badge and border. Unrecognised values fall back to <code>"primary"</code>.
+        </td>
+      </tr>
+      </tbody>
   </table>
 </div>

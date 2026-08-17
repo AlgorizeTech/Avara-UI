@@ -38,20 +38,40 @@ export default function FeatureGrid() {
   );
 }`;
 
-export const usageHighlight = `// Without \`highlight\`, the border only lights where the cursor is.
-<MagicBentoCard>…</MagicBentoCard>
+export const usageHighlight = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
 
-// With it, a conic gradient spins behind the mask continuously — use it on
-// the one card you want the eye to land on first.
-<MagicBentoCard highlight>…</MagicBentoCard>`;
+export default function HighlightedBento() {
+  return (
+    <MagicBento>
+      {/* Without \`highlight\`, the border only lights where the cursor is. */}
+      <MagicBentoCard>…</MagicBentoCard>
 
-export const usageSpans = `// The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-// layout with span utilities on each card.
-<MagicBento className="auto-rows-[160px]">
-  <MagicBentoCard className="md:col-span-2">…</MagicBentoCard>
-  <MagicBentoCard className="row-span-2">…</MagicBentoCard>
-  <MagicBentoCard>…</MagicBentoCard>
-</MagicBento>`;
+      {/* With it, a conic gradient spins behind the mask continuously — use it
+          on the one card you want the eye to land on first. */}
+      <MagicBentoCard highlight>…</MagicBentoCard>
+    </MagicBento>
+  );
+}`;
+
+export const usageSpans = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
+
+export default function BentoSpans() {
+  // The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
+  // layout with span utilities on each card.
+  return (
+    <MagicBento className="auto-rows-[160px]">
+      <MagicBentoCard className="md:col-span-2">…</MagicBentoCard>
+      <MagicBentoCard className="row-span-2">…</MagicBentoCard>
+      <MagicBentoCard>…</MagicBentoCard>
+    </MagicBento>
+  );
+}`;
 
 <ExampleShowcase
   name="magic-bento"
@@ -60,20 +80,45 @@ export const usageSpans = `// The grid is plain Tailwind: 4 columns on lg with a
   examples={[
     {
       title: "Magic bento",
-      subheading: "`MagicBento` lays out the grid; each `MagicBentoCard` owns its own pointer-tracked border and glow.",
+      subheading: "`MagicBento` lays out the grid; each card owns its own pointer-tracked border and glow.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `MagicBento` are the `MagicBentoCard`s — the grid does nothing else.",
+        },
+        {
+          prop: "className",
+          effect:
+            "on the grid is where `auto-rows-*` goes, which sets the baseline track height.",
+        },
+      ],
       props: { example: "grid" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MagicBentoBlock.tsx"),
     },
     {
       title: "Highlight card",
-      subheading: "Add `highlight` to run a spinning conic gradient behind the mask — compare the two cards below.",
+      propNotes: [
+        {
+          lead: "Add",
+          prop: "highlight",
+          effect:
+            "to spin a conic gradient behind the 1px mask continuously — use it on the one card the eye should land on first. Without it, the border only lights where the cursor is.",
+        },
+      ],
       props: { example: "highlight" },
       usage: usageHighlight,
     },
     {
       title: "Grid spans",
-      subheading: "Sizing is ordinary Tailwind: pass `col-span-*` / `row-span-*` on the cards and `auto-rows-*` on the grid.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on a card carries the `col-span-*` and `row-span-*` utilities. Sizing is ordinary Tailwind — there is no span prop.",
+        },
+      ],
       props: { example: "spans" },
       usage: usageSpans,
     },

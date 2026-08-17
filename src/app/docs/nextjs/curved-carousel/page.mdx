@@ -38,7 +38,30 @@ export default function GlowingOrbitDemo() {
   examples={[
     {
       title: "3D Curved Arc Sway Deck",
-      subheading: "Continuous left-to-right auto-sway motion arranged along a 3D curved arc path matching the exact reference geometry.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"arc-sweep"',
+          effect:
+            "to lay the cards along a 3D curved arc with a continuous left-to-right sway. It is the default; `perspective-fan`, `floating-deck` and `glowing-orbit` are the other layouts.",
+        },
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `{ id, title, image, subtitle }[]` — `tag` is optional. Omit it entirely and a preset deck is used.",
+        },
+        {
+          prop: "autoPlay",
+          effect: "is on by default; set it `false` to stop the sway and leave the deck static.",
+        },
+        {
+          prop: "speed",
+          value: "{4}",
+          effect: "is the oscillation step interval in seconds — larger is slower.",
+        },
+      ],
       props: { variant: "arc-sweep" },
       usage: usageArcSweep,
       code: extractCode("src/components/custom/blocks/CurvedCarouselBlock.tsx"),

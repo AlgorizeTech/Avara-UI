@@ -17,11 +17,17 @@ export default function BasicKbd() {
   return <Kbd>⌘</Kbd>;
 }`;
 
-export const usageSizes = `<div className="flex items-center gap-4">
-  <Kbd size="sm">⌘</Kbd>
-  <Kbd size="md">⌘</Kbd>
-  <Kbd size="lg">⌘</Kbd>
-</div>`;
+export const usageSizes = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function KbdSizes() {
+  return (
+    <div className="flex items-center gap-4">
+      <Kbd size="sm">⌘</Kbd>
+      <Kbd size="md">⌘</Kbd>
+      <Kbd size="lg">⌘</Kbd>
+    </div>
+  );
+}`;
 
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
@@ -56,25 +62,52 @@ export default function InlineShortcut() {
     {
       title: "Kbd",
       subheading: "A single key, rendered as a semantic `<kbd>` element.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is the key glyph — the component adds no label text of its own.",
+        },
+      ],
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect:
+            "to set height, padding and font-size — `sm` (the default), `md` or `lg`.",
+        },
+      ],
       props: { example: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Combinations",
-      subheading: "Sequence several keys to spell out a shortcut.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "holds one key each — sequence several `Kbd` elements side by side to spell out a shortcut.",
+        },
+      ],
       props: {},
       usage: usageCombinations,
     },
     {
       title: "Inline in text",
-      subheading: "Keys sit on the text baseline, so they read naturally in prose.",
+      propNotes: [
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "keeps keys on the text baseline so they read naturally inside prose.",
+        },
+      ],
       props: { example: "inline" },
       usage: usageInline,
     },

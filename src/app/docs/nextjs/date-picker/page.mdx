@@ -107,32 +107,77 @@ export default function DisabledDatePicker() {
   examples={[
     {
       title: "Date picker",
-      subheading: "Controlled through `value` and `onChange` — both work with a plain `Date | null`.",
+      propNotes: [
+        {
+          lead: "Control it with",
+          prop: "value",
+          effect:
+            "and `onChange` — both work with a plain `Date | null`.",
+        },
+        {
+          prop: "placeholder",
+          effect:
+            "is the trigger text while nothing is selected, defaulting to `Pick a date`.",
+        },
+        {
+          prop: "label",
+          effect:
+            "renders a bold label above the input and `helperText` a subtle line below it.",
+        },
+      ],
       props: { variant: "default", inputSize: "md" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the border, background and focus treatment.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "to change the border, background and focus treatment — `default`, `filled`, `underlined` or `glow`.",
+        },
+      ],
       props: { showAll: "variants" },
       usage: usageVariants,
     },
     {
       title: "Sizes",
-      subheading: "Use the `inputSize` prop to scale padding, text and the calendar icon together.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "inputSize",
+          effect:
+            "to scale the padding, text and calendar icon together — `sm`, `md` or `lg`.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Error",
-      subheading: "Pass `error` to turn the trigger red, add an alert icon and replace the helper text.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "error",
+          effect:
+            "to turn the trigger red, add an alert icon and replace `helperText` with your message.",
+        },
+      ],
       props: { showError: true },
       usage: usageError,
     },
     {
       title: "Disabled",
-      subheading: "Set `disabled` to fade the trigger and block the dropdown from opening.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "to fade the trigger and stop the dropdown opening.",
+        },
+      ],
       props: { isDisabled: true },
       usage: usageDisabled,
     },

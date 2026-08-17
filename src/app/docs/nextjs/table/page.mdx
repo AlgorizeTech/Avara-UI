@@ -37,13 +37,25 @@ export default function TransactionsTable() {
   );
 }`;
 
-export const usageMinimal = `<TableBlock variant="minimal" data={data} columns={columns} />`;
+export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+import { columns, data } from "./table-data";
 
-export const usageGlass = `// Pair the glass variant with a colored backdrop so the blur has
-// something to refract.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <TableBlock variant="glass" data={data} columns={columns} />
-</div>`;
+export default function MinimalTable() {
+  return <TableBlock variant="minimal" data={data} columns={columns} />;
+}`;
+
+export const usageGlass = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+import { columns, data } from "./table-data";
+
+export default function GlassTable() {
+  return (
+    // Pair the glass variant with a colored backdrop so the blur has
+    // something to refract.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <TableBlock variant="glass" data={data} columns={columns} />
+    </div>
+  );
+}`;
 
 export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
@@ -90,11 +102,14 @@ export default function ExpandableTable() {
   );
 }`;
 
-export const usagePagination = `<TableBlock
-  data={data}
-  columns={columns}
-  pagination={{ itemsPerPage: 5 }}
-/>`;
+export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+import { columns, data } from "./table-data";
+
+export default function PaginatedTable() {
+  return (
+    <TableBlock data={data} columns={columns} pagination={{ itemsPerPage: 5 }} />
+  );
+}`;
 
 <ExampleShowcase
   name="table"
@@ -103,44 +118,112 @@ export const usagePagination = `<TableBlock
   examples={[
     {
       title: "Table",
-      subheading: "Pass `data` and `columns` — every row needs a unique `id`. Mark a column `sortable` and the header handles the rest.",
+      subheading: "Every row needs a unique `id`.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "data",
+          effect:
+            "and `columns` — the column definitions map headers to row keys.",
+        },
+        {
+          prop: "sortable",
+          effect:
+            "on a column makes its header handle the sorting for you.",
+        },
+      ],
       props: { isSelectable: false, isPaginated: false, isExpandable: false },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the card wrapper so the table sits directly on the page.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card wrapper so the table sits directly on the page.",
+        },
+      ],
       props: { variant: "minimal", isSelectable: false, isPaginated: false, isExpandable: false },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` renders a frosted, backdrop-blurred surface for use over imagery.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for a frosted, backdrop-blurred surface — it needs imagery behind it to read.",
+        },
+      ],
       props: { variant: "glass", isSelectable: false, isPaginated: false, isExpandable: false },
       usage: usageGlass,
     },
     {
       title: "Sizes",
-      subheading: "Use the `tableSize` prop to change row density.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "tableSize",
+          effect:
+            "to change row density. Note it is `tableSize`, not `size`.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Selectable rows",
-      subheading: "Set `selectable` to inject a checkbox column, and read the picks from `onSelectionChange`.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "selectable",
+          effect:
+            "to inject a checkbox column.",
+        },
+        {
+          prop: "onSelectionChange",
+          effect:
+            "is where the current picks arrive.",
+        },
+      ],
       props: { isSelectable: true, isPaginated: false, isExpandable: false },
       usage: usageSelectable,
     },
     {
       title: "Expandable rows",
-      subheading: "Set `expandable` and return the detail panel from `renderExpanded` — clicking a row grid-animates it open.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "expandable",
+          effect:
+            "to make rows open on click.",
+        },
+        {
+          prop: "renderExpanded",
+          effect:
+            "returns the detail panel, which grid-animates open beneath the row.",
+        },
+      ],
       props: { isExpandable: true, isSelectable: false, isPaginated: false },
       usage: usageExpandable,
     },
     {
       title: "Pagination",
-      subheading: "Pass `pagination` and the table chunks the data and renders its own pager.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "pagination",
+          value: '{{ itemsPerPage: 5 }}',
+          effect:
+            "and the table chunks the data and renders its own pager — you keep passing the full array.",
+        },
+      ],
       props: { isPaginated: true, isSelectable: false, isExpandable: false },
       usage: usagePagination,
     },

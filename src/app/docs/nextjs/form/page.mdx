@@ -191,32 +191,78 @@ export default function SettingsPanel() {
   examples={[
     {
       title: "Form",
-      subheading: "Wrap a single field in native React state — submit an invalid value to see the glitching `FormError`.",
+      subheading: "Submit an invalid value to see the glitching `FormError`.",
+      propNotes: [
+        {
+          prop: "onSubmit",
+          effect:
+            "on `FormWrapper` is what decides the element: given one the children are wrapped in a `<form>`, otherwise a plain `<div>`.",
+        },
+        {
+          prop: "error",
+          effect:
+            "on `FormField` renders below the input and turns the label red. A falsy value renders nothing.",
+        },
+      ],
       props: { demoType: "native" },
       usage: usageNative,
       code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
     },
     {
       title: "React Hook Form + Zod",
-      subheading: "`FormWrapper` accepts `handleSubmit()` directly and never breaks child `ref`s, so `register()` just works.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "onSubmit",
+          effect:
+            "the result of RHF's `handleSubmit()` directly — `FormWrapper` never breaks child `ref`s, so `register()` just works.",
+        },
+      ],
       props: { demoType: "zod" },
       usage: usageZod,
     },
     {
       title: "Error styles",
-      subheading: "Use `errorVariant` to pick between the animated `glitch` text and the quieter `default`.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "errorVariant",
+          value: '"glitch"',
+          effect:
+            "for the animated RGB-split error text. It is the default; `\"default\"` is the static, quieter one.",
+        },
+      ],
       props: { showAll: "error-styles" },
       usage: usageErrorStyles,
     },
     {
       title: "Submitting",
-      subheading: "Pass `isSubmitting` to `FormSubmit` for a spinner that also blocks double submits.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "isSubmitting",
+          effect:
+            "to `FormSubmit` to swap the label for a spinner and disable the button, which is what blocks double submits.",
+        },
+      ],
       props: { showAll: "submitting" },
       usage: usageSubmitting,
     },
     {
       title: "Without a header",
-      subheading: "Omit `title`, `description` and `onSubmit` and the wrapper becomes a plain themed panel.",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "title",
+          effect:
+            "and `description` to drop the header and divider entirely.",
+        },
+        {
+          prop: "color",
+          effect:
+            "still drives the animated border, focus ring and submit button — any named key or hex.",
+        },
+      ],
       props: { showAll: "bare" },
       usage: usageBare,
     },

@@ -29,47 +29,88 @@ export default function LongList() {
   );
 }`;
 
-export const usageHorizontal = `// Horizontal areas need content wider than the box — \`w-max\` on the inner
-// row is the usual way to get it.
-<ScrollAreaBlock
-  orientation="horizontal"
-  className="w-full max-w-2xl whitespace-nowrap rounded-md border p-6"
->
-  <div className="flex w-max space-x-4 pb-4">
-    {artwork.map((item) => <Card key={item.id} {...item} />)}
-  </div>
-</ScrollAreaBlock>`;
+export const usageHorizontal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+import { Card } from "./card";
+import { artwork } from "./artwork";
 
-export const usageBoth = `<ScrollAreaBlock
-  orientation="both"
-  className="h-[300px] w-full max-w-sm whitespace-nowrap rounded-md border p-6"
->
-  <Grid />
-</ScrollAreaBlock>`;
+export default function HorizontalScroller() {
+  // Horizontal areas need content wider than the box — \`w-max\` on the inner
+  // row is the usual way to get it.
+  return (
+    <ScrollAreaBlock
+      orientation="horizontal"
+      className="w-full max-w-2xl whitespace-nowrap rounded-md border p-6"
+    >
+      <div className="flex w-max space-x-4 pb-4">
+        {artwork.map((item) => (
+          <Card key={item.id} {...item} />
+        ))}
+      </div>
+    </ScrollAreaBlock>
+  );
+}`;
 
-export const usageMinimal = `// Thinner thumb, no track chrome.
-<ScrollAreaBlock variant="minimal" className="h-[350px] max-w-sm rounded-md border p-6">
-  <LongList />
-</ScrollAreaBlock>`;
+export const usageBoth = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+import { Grid } from "./grid";
 
-export const usageGlass = `<div className="p-6 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <ScrollAreaBlock
-    variant="glass"
-    className="h-[350px] max-w-sm rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl"
-  >
-    <LongList />
-  </ScrollAreaBlock>
-</div>`;
+export default function BothAxes() {
+  return (
+    <ScrollAreaBlock
+      orientation="both"
+      className="h-[300px] w-full max-w-sm whitespace-nowrap rounded-md border p-6"
+    >
+      <Grid />
+    </ScrollAreaBlock>
+  );
+}`;
 
-export const usageAutoHide = `// \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`
-// removes the groove behind the thumb entirely.
-<ScrollAreaBlock
-  autoHide
-  hideTrack
-  className="h-[350px] max-w-sm rounded-md border p-6"
->
-  <LongList />
-</ScrollAreaBlock>`;
+export const usageMinimal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+import { LongList } from "./long-list";
+
+export default function MinimalScroller() {
+  // Thinner thumb, no track chrome.
+  return (
+    <ScrollAreaBlock
+      variant="minimal"
+      className="h-[350px] max-w-sm rounded-md border p-6"
+    >
+      <LongList />
+    </ScrollAreaBlock>
+  );
+}`;
+
+export const usageGlass = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+import { LongList } from "./long-list";
+
+export default function GlassScroller() {
+  return (
+    <div className="p-6 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <ScrollAreaBlock
+        variant="glass"
+        className="h-[350px] max-w-sm rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl"
+      >
+        <LongList />
+      </ScrollAreaBlock>
+    </div>
+  );
+}`;
+
+export const usageAutoHide = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+import { LongList } from "./long-list";
+
+export default function AutoHideScroller() {
+  // \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`
+  // removes the groove behind the thumb entirely.
+  return (
+    <ScrollAreaBlock
+      autoHide
+      hideTrack
+      className="h-[350px] max-w-sm rounded-md border p-6"
+    >
+      <LongList />
+    </ScrollAreaBlock>
+  );
+}`;
 
 <ExampleShowcase
   name="scroll-area"
@@ -79,38 +120,89 @@ export const usageAutoHide = `// \`autoHide\` fades the bar out until you scroll
   examples={[
     {
       title: "Scroll area",
-      subheading: "Wrap overflowing content and constrain the box — the styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
+      subheading: "The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "is where the height or width constraint goes — without one there is nothing to scroll.",
+        },
+      ],
       props: { variant: "default", orientation: "vertical" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ScrollAreaBlock.tsx"),
     },
     {
       title: "Horizontal",
-      subheading: "`orientation=\"horizontal\"` applies the matching overflow utilities and moves the bar to the bottom edge.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "orientation",
+          value: '"horizontal"',
+          effect:
+            "to apply the matching overflow utilities and move the bar to the bottom edge. The inner row needs `w-max` to overflow.",
+        },
+      ],
       props: { variant: "default", orientation: "horizontal" },
       usage: usageHorizontal,
     },
     {
       title: "Both axes",
-      subheading: "`orientation=\"both\"` renders and styles a scrollbar on each axis.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "orientation",
+          value: '"both"',
+          effect:
+            "to render and style a scrollbar on each axis.",
+        },
+      ],
       props: { variant: "default", orientation: "both" },
       usage: usageBoth,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` slims the thumb down for dense UI.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to slim the thumb down for dense UI.",
+        },
+      ],
       props: { variant: "minimal", orientation: "vertical" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` tints the bar for use over frosted surfaces.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to tint the bar for use over frosted surfaces.",
+        },
+      ],
       props: { variant: "glass", orientation: "vertical" },
       usage: usageGlass,
     },
     {
       title: "Auto-hide",
-      subheading: "Set `autoHide` to reveal the bar only while scrolling, and `hideTrack` to drop the groove behind it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "autoHide",
+          effect:
+            "to fade the thumb out until the container is hovered or scrolled.",
+        },
+        {
+          prop: "hideTrack",
+          effect:
+            "removes the groove behind the thumb entirely.",
+        },
+      ],
       props: { variant: "default", orientation: "vertical", autoHide: true, hideTrack: true },
       usage: usageAutoHide,
     },

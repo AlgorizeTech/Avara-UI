@@ -50,13 +50,25 @@ export default function InvoicePage() {
   return <Invoice invoiceData={invoiceData} />;
 }`;
 
-export const usageMinimal = `// Strips the card chrome down to type and rules — the print-friendly layout.
-<Invoice variant="minimal" invoiceData={invoiceData} />`;
+export const usageMinimal = `import { Invoice } from "@/components/custom/blocks/Invoice";
+import { invoiceData } from "./invoice-data";
 
-export const usageGlass = `// Glass needs something behind it to refract.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <Invoice variant="glass" invoiceData={invoiceData} />
-</div>`;
+export default function MinimalInvoice() {
+  // Strips the card chrome down to type and rules — the print-friendly layout.
+  return <Invoice variant="minimal" invoiceData={invoiceData} />;
+}`;
+
+export const usageGlass = `import { Invoice } from "@/components/custom/blocks/Invoice";
+import { invoiceData } from "./invoice-data";
+
+export default function GlassInvoice() {
+  return (
+    // Glass needs something behind it to refract.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <Invoice variant="glass" invoiceData={invoiceData} />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="invoice"
@@ -65,20 +77,49 @@ export const usageGlass = `// Glass needs something behind it to refract.
   examples={[
     {
       title: "Invoice",
-      subheading: "Pass one `invoiceData` object; editing, totals, printing and JSON export are all handled internally.",
+      subheading: "Editing, totals, printing and JSON export are all handled internally.",
+      propNotes: [
+        {
+          lead: "Pass one",
+          prop: "invoiceData",
+          effect:
+            "object holding the dates, addresses, billing details, line items, totals and notes.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the primary buttons, focus rings and heart icon.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Invoice.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the card surface for a flatter, document-like sheet.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card surface for a flatter, print-friendly document sheet.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` renders a frosted panel — pair it with a colorful backdrop.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for a frosted panel — it needs a colourful backdrop behind it to refract.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },

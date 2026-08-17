@@ -124,38 +124,75 @@ export default function Byline() {
   examples={[
     {
       title: "Typography",
-      subheading: "The whole set composed as an article — margins and rhythm come from the components, not from your markup.",
+      subheading: "Margins and rhythm come from the components, not from your markup.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is all any of these take — they add the tag, the type scale and the spacing.",
+        },
+      ],
       props: { example: "article" },
       usage: usageArticle,
       code: extractCode("src/components/custom/blocks/TypographyBlock.tsx"),
     },
     {
       title: "Headings",
-      subheading: "`H1` through `H4` render the matching semantic tag with the right size, weight and tracking.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `H1` through `H4` renders inside the matching semantic tag, with the right size, weight and tracking.",
+        },
+      ],
       props: { example: "headings" },
       usage: usageHeadings,
     },
     {
       title: "Paragraph & lead",
-      subheading: "`Lead` opens a section, `P` carries the body, and `InlineCode` marks up identifiers inline.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `Lead` opens a section at a larger, muted size; `P` carries the body and handles its own top margin after another element; `InlineCode` marks up identifiers inline.",
+        },
+      ],
       props: { example: "paragraph" },
       usage: usageParagraph,
     },
     {
       title: "Blockquote",
-      subheading: "`Blockquote` indents and italicizes the quote behind a left rule.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `Blockquote` is indented and italicised behind a left rule.",
+        },
+      ],
       props: { example: "blockquote" },
       usage: usageBlockquote,
     },
     {
       title: "List",
-      subheading: "`List` handles markers and item spacing for a plain `ul`.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `List` are plain `<li>` tags — markers, indentation and item spacing are handled for you.",
+        },
+      ],
       props: { example: "list" },
       usage: usageList,
     },
     {
       title: "Supporting text",
-      subheading: "`Large`, `Small` and `Muted` cover bylines, captions and metadata.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `Large`, `Small` and `Muted` covers bylines, captions and metadata respectively.",
+        },
+      ],
       props: { example: "supporting" },
       usage: usageSupporting,
     },

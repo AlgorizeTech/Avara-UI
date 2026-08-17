@@ -25,7 +25,14 @@ export default function Showcase() {
   examples={[
     {
       title: "Design components folder",
-      subheading: "The cards fan out once the folder scrolls into view, then retract one at a time on hover. `color` re-points the `--primary` variable, so the accent flows through every card.",
+      subheading: "The cards fan out once the folder scrolls into view, then retract one at a time on hover.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "accents the folder and every card — a preset name (`indigo`, `rose`, `emerald`, `zinc`) or any CSS colour. It works by overriding the `--primary` variable on the wrapper, so leaving it unset inherits your theme.",
+        },
+      ],
       usage: usageFolder,
       code: extractCode("src/components/custom/blocks/DesignComponentsFolder.tsx"),
     },
@@ -42,9 +49,13 @@ export default function Container() {
   return <DesignFolderBox />;
 }`;
 
-export const usageBoxLabels = `// \`title\` and \`subtitle\` are the only text in the box — they default to
-// "Design" / "Components".
-<DesignFolderBox title="Motion" subtitle="Primitives" />`;
+export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
+
+export default function CustomLabelBox() {
+  // \`title\` and \`subtitle\` are the only text in the box — they default to
+  // "Design" / "Components".
+  return <DesignFolderBox title="Motion" subtitle="Primitives" />;
+}`;
 
 <ExampleShowcase
   name="design-folder-box"
@@ -53,13 +64,31 @@ export const usageBoxLabels = `// \`title\` and \`subtitle\` are the only text i
   examples={[
     {
       title: "Folder box",
-      subheading: "The frosted shell on its own. It accepts every `div` prop, so drop your own children, `className` or handlers straight onto it.",
+      subheading: "The frosted shell on its own.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "and every other `div` prop pass straight through — handlers and `className` included.",
+        },
+      ],
       usage: usageBox,
       code: extractCode("src/components/custom/blocks/DesignFolderBox.tsx"),
     },
     {
       title: "Custom labels",
-      subheading: "`title` and `subtitle` replace the default \"Design / Components\" wordmark on the folder tab.",
+      propNotes: [
+        {
+          prop: "title",
+          value: '"Motion"',
+          effect: "is the first line of the wordmark on the folder tab, defaulting to `Design`.",
+        },
+        {
+          prop: "subtitle",
+          value: '"Primitives"',
+          effect: "is the second line, defaulting to `Components`.",
+        },
+      ],
       props: { title: "Motion", subtitle: "Primitives" },
       usage: usageBoxLabels,
     },

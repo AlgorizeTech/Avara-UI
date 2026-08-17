@@ -116,38 +116,80 @@ export default function WizardProgress() {
   examples={[
     {
       title: "Progress",
-      subheading: "The bare bar — `value` and `max` are all it needs.",
+      subheading: "The bare bar.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "and `max` are all it needs — the percentage is derived from the two.",
+        },
+      ],
       props: { example: "bare", variant: "default", value: 45 },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ProgressBlock.tsx"),
     },
     {
       title: "With label",
-      subheading: "Wrap it in `ProgressField` to align a label and the percentage above the bar.",
+      propNotes: [
+        {
+          lead: "Wrap it in",
+          prop: "ProgressField",
+          effect:
+            "to align a `label` on the left and the value on the right, above the bar.",
+        },
+      ],
       props: { example: "field", variant: "glow", value: 45 },
       usage: usageField,
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the track and indicator style.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "to change the track and indicator style — `default`, `glass`, `glow` or `minimal`.",
+        },
+      ],
       props: { showAll: "variants", value: 45 },
       usage: usageVariants,
     },
     {
       title: "Sizes",
-      subheading: "Use the `barSize` prop to change the bar thickness.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "barSize",
+          effect:
+            "to change the bar thickness — `sm`, `md` or `lg`. Note it is `barSize`, not `size`.",
+        },
+      ],
       props: { showAll: "sizes", variant: "glow", value: 45 },
       usage: usageSizes,
     },
     {
       title: "Custom value format",
-      subheading: "`valueFormat` replaces the percentage with any text you want.",
+      propNotes: [
+        {
+          prop: "valueFormat",
+          effect:
+            "receives `(value, max)` and returns whatever should sit where the percentage normally does.",
+        },
+      ],
       props: { example: "formatted", variant: "glow", value: 72 },
       usage: usageFormatted,
     },
     {
       title: "Step indicator",
-      subheading: "Set `showValue={false}` and a small `max` for wizard-style progress.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showValue",
+          value: '{false}',
+          effect:
+            "and give `max` a small number for wizard-style step progress.",
+        },
+      ],
       props: { example: "steps", variant: "default", barSize: "sm", value: 2, max: 4 },
       usage: usageSteps,
     },

@@ -54,32 +54,72 @@ export default function MinimalLoginPage() {
   examples={[
     {
       title: "Signup",
-      subheading: "The default form — name fields, a confirm-password field and a terms checkbox, all validated on submit.",
+      subheading: "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"signup"',
+          effect:
+            "is the default, and picks both the layout and the validation rules.",
+        },
+      ],
       props: { type: "signup", variant: "default" },
       usage: usageSignup,
       code: extractCode("src/components/custom/blocks/AuthForm.tsx"),
     },
     {
       title: "Login",
-      subheading: "Set `type=\"login\"` to collapse down to email and password with a forgot-password link.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"login"',
+          effect:
+            "to collapse down to email and password with a forgot-password link.",
+        },
+      ],
       props: { type: "login", variant: "default" },
       usage: usageLogin,
     },
     {
       title: "Split",
-      subheading: "`variant=\"split\"` pairs the form with a full-height marketing panel on large screens.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"split"',
+          effect:
+            "to pair the form with a full-height marketing panel on large screens.",
+        },
+      ],
       props: { type: "signup", variant: "split" },
       usage: usageSplit,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` goes translucent — intended to sit over a photo or gradient background.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit over a photo or gradient.",
+        },
+      ],
       props: { type: "signup", variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the card away and leaves the fields on your own background.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the card away and leave the fields on your own background.",
+        },
+      ],
       props: { type: "login", variant: "minimal" },
       usage: usageMinimal,
     },

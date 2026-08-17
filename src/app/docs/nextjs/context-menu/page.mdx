@@ -150,19 +150,47 @@ export default function ViewMenu() {
     {
       title: "Context menu",
       subheading: "`ContextMenuTrigger` captures the right-click; `ContextMenuContent` opens at the cursor.",
+      propNotes: [
+        {
+          prop: "onClick",
+          effect:
+            "on `ContextMenuItem` fires on left-click, and the menu closes itself afterwards.",
+        },
+        {
+          prop: "className",
+          value: '"w-64"',
+          effect:
+            "on `ContextMenuContent` is where you set the menu width — it has no default of its own.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ContextMenuBlock.tsx"),
     },
     {
       title: "Labels, shortcuts & disabled",
-      subheading: "`ContextMenuLabel` titles a group, `ContextMenuShortcut` right-aligns the hotkey, `disabled` locks a row.",
+      subheading: "`ContextMenuLabel` titles a group and `ContextMenuShortcut` right-aligns the hotkey.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "on an item to fade it, drop its hover state and stop `onClick` firing.",
+        },
+      ],
       props: { example: "full" },
       usage: usageFull,
     },
     {
       title: "Inset items",
-      subheading: "`inset` pads text-only rows so they line up with icon-bearing ones.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "inset",
+          effect:
+            "to pad a text-only row so it lines up with the icon-bearing ones above it. It works on `ContextMenuLabel` too.",
+        },
+      ],
       props: { example: "inset" },
       usage: usageInset,
     },

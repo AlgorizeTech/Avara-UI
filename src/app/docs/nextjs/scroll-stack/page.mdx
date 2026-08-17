@@ -35,12 +35,22 @@ export default function FeaturesSection() {
   return <ScrollStack items={items} />;
 }`;
 
-export const usageSimpleDepth = `// Each card behind the active one shrinks by this fraction — 0.12 gives a
-// pronounced deck, 0.02 keeps the stack nearly flat.
-<ScrollStack items={items} depthScale={0.12} />`;
+export const usageSimpleDepth = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { items } from "./items";
 
-export const usageSimpleGap = `// Pixel distance between the stacked sticky cards.
-<ScrollStack items={items} cardGap={64} />`;
+export default function DeepStack() {
+  // Each card behind the active one shrinks by this fraction — 0.12 gives a
+  // pronounced deck, 0.02 keeps the stack nearly flat.
+  return <ScrollStack items={items} depthScale={0.12} />;
+}`;
+
+export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { items } from "./items";
+
+export default function GappedStack() {
+  // Pixel distance between the stacked sticky cards.
+  return <ScrollStack items={items} cardGap={64} />;
+}`;
 
 <ExampleShowcase
   name="scroll-stack"
@@ -49,20 +59,42 @@ export const usageSimpleGap = `// Pixel distance between the stacked sticky card
   examples={[
     {
       title: "Scroll stack",
-      subheading: "Cards pin to the viewport and the next one slides up to cover them. Each item takes a `title`, `description`, optional `icon` and arbitrary `content`.",
+      subheading: "Cards pin to the viewport and the next one slides up to cover them.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "where each takes a `title`, `description`, optional `icon` and arbitrary `content`.",
+        },
+      ],
       props: {},
       usage: usageSimple,
       code: extractCode("src/components/custom/blocks/ScrollStackBlock.tsx"),
     },
     {
       title: "Depth scale",
-      subheading: "`depthScale` controls how much each covered card shrinks — raise it for a deeper deck.",
+      propNotes: [
+        {
+          prop: "depthScale",
+          value: '{0.12}',
+          effect:
+            "is the fraction each covered card shrinks by — `0.12` is a pronounced deck, `0.02` stays nearly flat.",
+        },
+      ],
       props: { depthScale: 0.12 },
       usage: usageSimpleDepth,
     },
     {
       title: "Card gap",
-      subheading: "`cardGap` is the pixel offset between stacked cards, so the titles underneath stay readable.",
+      propNotes: [
+        {
+          prop: "cardGap",
+          value: '{64}',
+          effect:
+            "is the pixel offset between stacked cards, which is what keeps the titles underneath readable.",
+        },
+      ],
       props: { cardGap: 64 },
       usage: usageSimpleGap,
     },
@@ -95,12 +127,22 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyNoGlow = `// Turns off the ambient glow behind the active card.
-<StickyScrollStack items={items} enableGlow={false} />`;
+export const usageStickyNoGlow = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+import { items } from "./items";
 
-export const usageStickyGeometry = `// \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
-// offset that keeps the earlier headers peeking out.
-<StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />`;
+export default function FlatStickyStack() {
+  // Turns off the ambient glow behind the active card.
+  return <StickyScrollStack items={items} enableGlow={false} />;
+}`;
+
+export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+import { items } from "./items";
+
+export default function TunedStickyStack() {
+  // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
+  // offset that keeps the earlier headers peeking out.
+  return <StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />;
+}`;
 
 <ExampleShowcase
   name="sticky-scroll-stack"
@@ -109,20 +151,48 @@ export const usageStickyGeometry = `// \`scaleStep\` shrinks each covered card; 
   examples={[
     {
       title: "Sticky stack",
-      subheading: "A headed section where each card sticks and the next overlaps it. Items pick a `contentType` — `list`, `image`, `split` or `custom`.",
+      subheading: "A headed section where each card sticks and the next overlaps it.",
+      propNotes: [
+        {
+          prop: "contentType",
+          effect:
+            "on an item picks its body: `list`, `image`, `split` or `custom`.",
+        },
+      ],
       props: { headerMode: "text-button" },
       usage: usageSticky,
       code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
     },
     {
       title: "Without the glow",
-      subheading: "Set `enableGlow={false}` for a flatter, quieter section.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "enableGlow",
+          value: '{false}',
+          effect:
+            "for a flatter, quieter section with no ambient bloom behind the active card.",
+        },
+      ],
       props: { headerMode: "text-only", enableGlow: false },
       usage: usageStickyNoGlow,
     },
     {
       title: "Stack geometry",
-      subheading: "`scaleStep` and `stackOffsetStep` tune how far each card recedes and how much of it stays visible.",
+      propNotes: [
+        {
+          prop: "scaleStep",
+          value: '{0.08}',
+          effect:
+            "is how far each covered card recedes.",
+        },
+        {
+          prop: "stackOffsetStep",
+          value: '{28}',
+          effect:
+            "is the pixel offset that keeps earlier headers peeking out.",
+        },
+      ],
       props: { headerMode: "image-button", scaleStep: 0.08, stackOffsetStep: 28 },
       usage: usageStickyGeometry,
     },
@@ -138,12 +208,19 @@ export default function ProcessSection() {
   return <SplitScrollStack items={items} stickySide="right" />;
 }`;
 
-export const usageSplitLeft = `<SplitScrollStack
-  items={items}
-  stickySide="left"
-  cardDepthScale={0.1}
-  cardOffset={32}
-/>`;
+export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+import { items } from "./items";
+
+export default function PinnedLeftStack() {
+  return (
+    <SplitScrollStack
+      items={items}
+      stickySide="left"
+      cardDepthScale={0.1}
+      cardOffset={32}
+    />
+  );
+}`;
 
 <ExampleShowcase
   name="split-scroll-stack"
@@ -152,14 +229,34 @@ export const usageSplitLeft = `<SplitScrollStack
   examples={[
     {
       title: "Split stack",
-      subheading: "A two-column layout: one side pins while the other scrolls its deck past it. `stickySide` picks which.",
+      subheading: "A two-column layout: one side pins while the other scrolls its deck past it.",
+      propNotes: [
+        {
+          prop: "stickySide",
+          effect:
+            "picks which column pins — `left` or `right`.",
+        },
+      ],
       props: { stickySide: "right" },
       usage: usageSplit,
       code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
     },
     {
       title: "Pinned left",
-      subheading: "Flip `stickySide` and tune `cardDepthScale` / `cardOffset` for the deck on the other side.",
+      propNotes: [
+        {
+          lead: "Flip",
+          prop: "stickySide",
+          value: '"left"',
+          effect:
+            "and the deck moves to the other side.",
+        },
+        {
+          prop: "cardDepthScale",
+          effect:
+            "and `cardOffset` tune that deck's shrink and spacing.",
+        },
+      ],
       props: { stickySide: "left", cardDepthScale: 0.1, cardOffset: 32 },
       usage: usageSplitLeft,
     },
@@ -185,8 +282,13 @@ export default function ProcessRail() {
   );
 }`;
 
-export const usageHorizontalShort = `// Fewer steps means a shorter pinned scroll distance.
-<HorizontalScrollStack items={steps.slice(0, 3)} />`;
+export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { steps } from "./steps";
+
+export default function ShortRail() {
+  // Fewer steps means a shorter pinned scroll distance.
+  return <HorizontalScrollStack items={steps.slice(0, 3)} />;
+}`;
 
 <ExampleShowcase
   name="horizontal-scroll-stack"
@@ -194,14 +296,27 @@ export const usageHorizontalShort = `// Fewer steps means a shorter pinned scrol
   examples={[
     {
       title: "Horizontal stack",
-      subheading: "The section pins and vertical scroll is translated into horizontal travel across the card rail.",
+      subheading: "The section pins and vertical scroll is translated into horizontal travel.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "become the cards on the rail, in order.",
+        },
+      ],
       props: { title: "How we work", subtitle: "Four steps, start to ship." },
       usage: usageHorizontal,
       code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
     },
     {
       title: "Shorter rail",
-      subheading: "The pinned scroll distance is derived from the item count, so trimming `items` shortens the section.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "also sets the pinned scroll distance — it is derived from the count, so trimming the array shortens the section.",
+        },
+      ],
       props: { itemCount: 3 },
       usage: usageHorizontalShort,
     },

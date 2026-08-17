@@ -36,13 +36,23 @@ export default function FeatureReel() {
   return <VideoAccordion panels={panels} />;
 }`;
 
-export const usageDefaultActive = `// Land with one panel already open — good for hero sections where the
-// first frame should not look inert.
-<VideoAccordion panels={panels} defaultActiveId="wildlife" />`;
+export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+import { panels } from "./panels";
 
-export const usageShortRail = `// Fewer, wider panels. Each one keeps a legible title strip even when
-// compressed, so two or three read as well as five.
-<VideoAccordion panels={panels.slice(0, 2)} />`;
+export default function OpenedOnLoad() {
+  // Land with one panel already open — good for hero sections where the
+  // first frame should not look inert.
+  return <VideoAccordion panels={panels} defaultActiveId="wildlife" />;
+}`;
+
+export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+import { panels } from "./panels";
+
+export default function ShortReel() {
+  // Fewer, wider panels. Each one keeps a legible title strip even when
+  // compressed, so two or three read as well as five.
+  return <VideoAccordion panels={panels.slice(0, 2)} />;
+}`;
 
 <ExampleShowcase
   name="video-accordion"
@@ -50,20 +60,46 @@ export const usageShortRail = `// Fewer, wider panels. Each one keeps a legible 
   examples={[
     {
       title: "Video accordion",
-      subheading: "Each panel needs an `id`, `title`, `description` and `videoSrc`; `posterUrl` covers the frame until the video is ready.",
+      subheading: "Panels expand on hover to reveal their video.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "panels",
+          effect:
+            "where each needs `id`, `title`, `description` and `videoSrc`.",
+        },
+        {
+          prop: "posterUrl",
+          effect:
+            "is optional but worth setting — it covers the frame while the video buffers, preventing a black flash.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VideoAccordionBlock.tsx"),
     },
     {
       title: "Opened on load",
-      subheading: "Pass `defaultActiveId` to expand a panel immediately instead of starting in the resting state.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "defaultActiveId",
+          effect:
+            "to expand a panel immediately. Omit it and the accordion starts in the fully collapsed, text-free resting state.",
+        },
+      ],
       props: { defaultActiveId: "wildlife" },
       usage: usageDefaultActive,
     },
     {
       title: "Fewer panels",
-      subheading: "The rail redistributes space automatically, so a two-panel reel works as well as a five-panel one.",
+      propNotes: [
+        {
+          prop: "panels",
+          effect:
+            "sets the rail's divisions — space redistributes automatically, so a two-panel reel works as well as a five-panel one.",
+        },
+      ],
       props: { panelCount: 2 },
       usage: usageShortRail,
     },

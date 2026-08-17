@@ -23,25 +23,45 @@ export default function SupportWidget() {
   );
 }`;
 
-export const usageLeft = `// Anchors to the opposite corner; the popup and its origin flip with it.
-<FloatingContactButtonBlock position="bottom-left" />`;
+export const usageLeft = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageClosed = `// Start collapsed — the usual behaviour on a real page.
-<FloatingContactButtonBlock defaultOpen={false} />`;
+export default function LeftAnchoredWidget() {
+  // Anchors to the opposite corner; the popup and its origin flip with it.
+  return <FloatingContactButtonBlock position="bottom-left" />;
+}`;
 
-export const usageBranding = `// \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
-<FloatingContactButtonBlock
-  title="Nexus Support"
-  subtitle="Online · replies in ~2 min"
-  avatarUrl="/avatars/support.jpg"
-/>`;
+export const usageClosed = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageAccent = `// \`defaultAccentColor\` takes a token name or any CSS color. Pass
-// \`localStorageKey\` and the widget picks up your app's stored brand color.
-<FloatingContactButtonBlock
-  defaultAccentColor="#10b981"
-  localStorageKey="primaryColor"
-/>`;
+export default function CollapsedWidget() {
+  // Start collapsed — the usual behaviour on a real page.
+  return <FloatingContactButtonBlock defaultOpen={false} />;
+}`;
+
+export const usageBranding = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function BrandedWidget() {
+  // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+  return (
+    <FloatingContactButtonBlock
+      title="Nexus Support"
+      subtitle="Online · replies in ~2 min"
+      avatarUrl="/avatars/support.jpg"
+    />
+  );
+}`;
+
+export const usageAccent = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function AccentedWidget() {
+  // \`defaultAccentColor\` takes a token name or any CSS color. Pass
+  // \`localStorageKey\` and the widget picks up your app's stored brand color.
+  return (
+    <FloatingContactButtonBlock
+      defaultAccentColor="#10b981"
+      localStorageKey="primaryColor"
+    />
+  );
+}`;
 
 <ExampleShowcase
   name="floating-contact-button"
@@ -51,26 +71,72 @@ export const usageAccent = `// \`defaultAccentColor\` takes a token name or any 
   examples={[
     {
       title: "Floating contact button",
-      subheading: "A corner-anchored trigger that expands into a glass chat panel. `onSendMessage` is where you forward the text.",
+      subheading: "A corner-anchored trigger that expands into a glass chat panel.",
+      propNotes: [
+        {
+          prop: "onSendMessage",
+          effect:
+            "is where you forward the typed text — the widget does not send anything itself.",
+        },
+        {
+          prop: "containerMode",
+          value: '"fixed"',
+          effect:
+            "anchors to the viewport for real pages; use `\"absolute\"` to keep it inside a bounded box.",
+        },
+        {
+          prop: "initialMessages",
+          effect:
+            "seeds the thread the reader sees on opening.",
+        },
+      ],
       props: { position: "bottom-right", defaultOpen: true },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/FloatingContactButtonBlock.tsx"),
     },
     {
       title: "Bottom left",
-      subheading: "`position=\"bottom-left\"` moves the anchor and mirrors the popup's transform origin.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "position",
+          value: '"bottom-left"',
+          effect:
+            "to move the anchor and mirror the popup's transform origin with it.",
+        },
+      ],
       props: { position: "bottom-left", defaultOpen: true },
       usage: usageLeft,
     },
     {
       title: "Collapsed",
-      subheading: "`defaultOpen={false}` is the state a real page ships — the widget waits as a single button.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultOpen",
+          value: '{false}',
+          effect:
+            "— the default, and what a real page ships: the widget waits as a single button.",
+        },
+      ],
       props: { position: "bottom-right", defaultOpen: false },
       usage: usageClosed,
     },
     {
       title: "Branded header",
-      subheading: "Set `title`, `subtitle` and `avatarUrl` to make the panel read as your support team rather than a generic bot.",
+      propNotes: [
+        {
+          prop: "title",
+          value: '"Nexus Support"',
+          effect:
+            "is the headline in the panel header, beside the sparkles badge.",
+        },
+        {
+          prop: "subtitle",
+          effect:
+            "is the status line under it, and `avatarUrl` the agent photo with its online dot.",
+        },
+      ],
       props: {
         position: "bottom-right",
         defaultOpen: true,

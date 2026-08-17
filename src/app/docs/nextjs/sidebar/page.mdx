@@ -155,19 +155,52 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
     {
       title: "Sidebar",
       subheading: "Wrap the shell in `SidebarProvider`, then compose header, groups and footer.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "on the provider themes every active item below it.",
+        },
+        {
+          prop: "active",
+          effect:
+            "on a `SidebarItem` is what highlights it in that colour.",
+        },
+        {
+          prop: "label",
+          effect:
+            "on a `SidebarGroup` is the uppercase cluster header — it hides itself when collapsed.",
+        },
+      ],
       props: { variant: "attached", defaultExpanded: true },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
     },
     {
       title: "Floating",
-      subheading: "`variant=\"floating\"` lifts the panel off the edge and rounds its corners.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"floating"',
+          effect:
+            "to lift the panel off the edge and round its corners. `attached` pins it flat.",
+        },
+      ],
       props: { variant: "floating", defaultExpanded: true },
       usage: usageFloating,
     },
     {
       title: "Collapsed rail",
-      subheading: "`defaultExpanded={false}` boots straight into the icon rail with hover tooltips.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultExpanded",
+          value: '{false}',
+          effect:
+            "to boot straight into the icon rail — item icons centre themselves and labels become hover tooltips.",
+        },
+      ],
       props: { variant: "attached", defaultExpanded: false },
       usage: usageCollapsed,
     },

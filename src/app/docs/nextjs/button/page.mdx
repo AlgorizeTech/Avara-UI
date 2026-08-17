@@ -92,43 +92,90 @@ export default function SocialLoginButtons() {
     {
       title: "Button",
       subheading: "The default button, with its built-in click ripple.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "children",
+          effect: "for the label — everything else has a default.",
+        },
+      ],
       props: { layout: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the visual style.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "to change the visual style — `default`, `destructive`, `outline`, `secondary`, `ghost` or `link`.",
+        },
+      ],
       props: { layout: "variants" },
       usage: usageVariants,
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect: "to change the height and padding — `sm`, `default` or `lg`.",
+        },
+      ],
       props: { layout: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Loading",
-      subheading: "Set `loading` to show a spinner and block interaction.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "loading",
+          effect:
+            "to swap the content for a spinner and block interaction, so you don't need a separate `disabled`.",
+        },
+      ],
       props: { layout: "loading" },
       usage: usageLoading,
     },
     {
       title: "With icon",
-      subheading: "Pass `iconLeft` or `iconRight` to pair the label with an icon.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "iconLeft",
+          effect: "to put an icon before the label.",
+        },
+        { prop: "iconRight", effect: "puts one after it. Both take a node, not a name." },
+      ],
       props: { layout: "with-icon" },
       usage: usageWithIcon,
     },
     {
       title: "Icon only",
-      subheading: "Omit the children and the button collapses to a square icon target.",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "children",
+          effect:
+            "and the button collapses to a square icon target — pass only `iconLeft`.",
+        },
+      ],
       props: { layout: "icon-only" },
       usage: usageIconOnly,
     },
     {
       title: "Social login",
-      subheading: "Brand SVGs from the bundled icon set as leading icons.",
+      propNotes: [
+        {
+          prop: "iconLeft",
+          effect:
+            "also takes the bundled brand SVGs — `GoogleIcon`, `GitHubIcon` and friends from the icon set.",
+        },
+      ],
       props: { layout: "social" },
       usage: usageSocial,
     },

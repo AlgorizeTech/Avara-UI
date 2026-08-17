@@ -84,7 +84,30 @@ export default function OnboardingWizard() {
   examples={[
     {
       title: "Stepper",
-      subheading: "A full flow: per-step validation blocks Next, and the Review step can simulate a failed submit. Use the picker above to repaint the line, circles and pulse ring.",
+      subheading: "Per-step validation blocks Next, and the Review step can simulate a failed submit.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "steps",
+          effect:
+            "as `{ id, title }[]` — `description`, `icon` and `content` are optional per step.",
+        },
+        {
+          prop: "currentStep",
+          effect:
+            "is the zero-indexed active step, and drives the progress line fill.",
+        },
+        {
+          prop: "onStepChange",
+          effect:
+            "makes the circles clickable. Omit it and they become static indicators.",
+        },
+        {
+          prop: "color",
+          effect:
+            "takes any CSS colour — hex, `rgb()`, `oklch()`, `var(--token)` — applied inline. A Tailwind class works for the line and circles, but the pulse ring is skipped, since its border colour would need a class Tailwind's scanner never sees.",
+        },
+      ],
       props: {},
       usage: usageFlow,
       code: extractCode("src/components/custom/blocks/StepperBlock.tsx"),

@@ -193,31 +193,67 @@ export default function StatGrid() {
     {
       title: "Card",
       subheading: "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect: "is the default — a subtle stroke around the surface.",
+        },
+      ],
       props: { variant: "bordered", layout: "standard" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
     },
     {
       title: "Default variant",
-      subheading: "`variant=\"default\"` drops the border and relies on the shadow alone.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"default"',
+          effect: "to drop the border and rely on the shadow alone.",
+        },
+      ],
       props: { variant: "default", layout: "grid" },
       usage: usageDefaultVariant,
     },
     {
       title: "Flat",
-      subheading: "`variant=\"flat\"` tints the surface instead of raising it — ideal when nested.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"flat"',
+          effect:
+            "to tint the surface instead of raising it — no shadow, so it reads correctly when nested inside another card.",
+        },
+      ],
       props: { variant: "flat", layout: "grid" },
       usage: usageFlat,
     },
     {
       title: "Interactive",
-      subheading: "Set `interactive` for hover elevation, a slight lift and an active press state.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "interactive",
+          effect:
+            "for hover elevation, a border-colour change and a slight scale — the affordance that says the whole card is clickable.",
+        },
+      ],
       props: { variant: "bordered", layout: "grid", interactive: true },
       usage: usageInteractive,
     },
     {
       title: "Stat grid",
-      subheading: "Override `CardHeader`'s stack with `className` to line a title up against an icon.",
+      subheading: "`CardHeader` stacks its children by default; override that to line a title up against an icon.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect: "keeps each tile separated in a dense grid.",
+        },
+      ],
       props: { variant: "bordered", layout: "stats" },
       usage: usageStats,
     },

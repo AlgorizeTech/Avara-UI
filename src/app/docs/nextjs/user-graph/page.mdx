@@ -27,7 +27,14 @@ export default function UserGraphPage() {
   examples={[
     {
       title: "User graph",
-      subheading: "The default hierarchy. Click any orbit node to move the highlight and its label tooltip.",
+      subheading: "Click any orbit node to move the highlight and its label tooltip.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "sizes the square container the orbits are laid out inside.",
+        },
+      ],
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/UserGraphBlock.tsx"),
     },

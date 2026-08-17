@@ -264,32 +264,73 @@ export default function AppWindow() {
   examples={[
     {
       title: "Menubar",
-      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`; each menu needs a `value`.",
+      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "on each `MenubarMenu` is required — it is how the context tracks which dropdown is open.",
+        },
+        {
+          prop: "align",
+          effect:
+            "on `MenubarContent` anchors the dropdown to its trigger: `start` (the default), `center` or `end`.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MenubarBlock.tsx"),
     },
     {
       title: "Shortcuts & separators",
-      subheading: "`MenubarShortcut` right-aligns a hint; `MenubarSeparator` groups the rows.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `MenubarShortcut` right-aligns a hint inside the row; `MenubarSeparator` takes none and just rules off a group.",
+        },
+      ],
       props: { example: "shortcuts" },
       usage: usageShortcuts,
     },
     {
       title: "Icons & labels",
-      subheading: "`MenubarLabel` titles a group. Give every row an icon and the label sits flush left — nothing reserves an empty gutter.",
+      propNotes: [
+        {
+          prop: "inset",
+          effect:
+            "pads a row to line up with icon-bearing neighbours. Give every row an icon instead and nothing reserves an empty gutter.",
+        },
+      ],
       props: { example: "icons" },
       usage: usageIcons,
     },
     {
       title: "Disabled & destructive",
-      subheading: "`disabled` blocks the row entirely; `className` restyles a single item.",
+      propNotes: [
+        {
+          prop: "disabled",
+          effect:
+            "dims the row and kills its pointer events and `onClick` entirely.",
+        },
+        {
+          prop: "onClick",
+          effect:
+            "fires your action and the menu closes itself afterwards.",
+        },
+      ],
       props: { example: "disabled" },
       usage: usageDisabled,
     },
     {
       title: "Application menubar",
-      subheading: "Strip the bar's chrome with `className` to fuse it into a window title bar.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on the bar is how you strip its chrome to fuse it into a window title bar.",
+        },
+      ],
       props: { example: "app" },
       usage: usageApp,
     },

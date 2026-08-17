@@ -31,32 +31,65 @@ export default function RevenueChart() {
   );
 }`;
 
-export const usageLine = `// Bezier-smoothed stroke, no fill.
-<ChartBlock
-  data={revenue}
-  type="line"
-  showArea={false}
-  valuePrefix="$"
-  height={300}
-/>`;
+export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
 
-export const usageArea = `// Same line, plus a gradient fill dropped beneath the stroke.
-<ChartBlock
-  data={revenue}
-  type="line"
-  showArea
-  valuePrefix="$"
-  height={300}
-/>`;
+export default function RevenueLine() {
+  // Bezier-smoothed stroke, no fill.
+  return (
+    <ChartBlock
+      data={revenue}
+      type="line"
+      showArea={false}
+      valuePrefix="$"
+      height={300}
+    />
+  );
+}`;
 
-export const usagePie = `// Pie and donut render in a 1:1 container, so they never stretch into
-// ovals, and shade each slice from a single theme color.
-<ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />`;
+export const usageArea = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
 
-export const usageDonut = `<ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />`;
+export default function RevenueArea() {
+  // Same line, plus a gradient fill dropped beneath the stroke.
+  return (
+    <ChartBlock
+      data={revenue}
+      type="line"
+      showArea
+      valuePrefix="$"
+      height={300}
+    />
+  );
+}`;
 
-export const usageNoGrid = `// Grid lines only apply to bar/line charts.
-<ChartBlock data={revenue} type="bar" showGrid={false} valuePrefix="$" />`;
+export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function RevenuePie() {
+  // Pie and donut render in a 1:1 container, so they never stretch into
+  // ovals, and shade each slice from a single theme color.
+  return (
+    <ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />
+  );
+}`;
+
+export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function RevenueDonut() {
+  return (
+    <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
+  );
+}`;
+
+export const usageNoGrid = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function CleanBarChart() {
+  // Grid lines only apply to bar/line charts.
+  return <ChartBlock data={revenue} type="bar" showGrid={false} valuePrefix="$" />;
+}`;
 
 <ExampleShowcase
   name="chart"
@@ -65,38 +98,98 @@ export const usageNoGrid = `// Grid lines only apply to bar/line charts.
   examples={[
     {
       title: "Bar chart",
-      subheading: "The default. Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+      subheading: "Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "data",
+          effect: "as `{ label, value }[]`.",
+        },
+        { prop: "type", value: '"bar"', effect: "is the default." },
+        {
+          prop: "valuePrefix",
+          value: '"$"',
+          effect: "is prepended to every rendered number, axis labels and tooltip alike.",
+        },
+        {
+          prop: "height",
+          value: "{300}",
+          effect:
+            "fixes the pixel height to stop layout shift — width is always 100% responsive.",
+        },
+      ],
       props: { type: "bar" },
       usage: usageBar,
       code: extractCode("src/components/custom/blocks/ChartBlock.tsx"),
     },
     {
       title: "Line chart",
-      subheading: "`type=\"line\"` draws a custom spline — smooth bezier curves instead of hard angles.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"line"',
+          effect: "to draw a custom spline — smooth bezier curves instead of hard angles.",
+        },
+        {
+          prop: "showArea",
+          value: "{false}",
+          effect: "leaves the stroke bare, with nothing under it.",
+        },
+      ],
       props: { type: "line", showArea: false },
       usage: usageLine,
     },
     {
       title: "Area chart",
-      subheading: "Add `showArea` to fill under the same line with a gradient.",
+      propNotes: [
+        {
+          lead: "Add",
+          prop: "showArea",
+          effect: "to fill under that same line with a gradient. The stroke is unchanged.",
+        },
+      ],
       props: { type: "line", showArea: true },
       usage: usageArea,
     },
     {
       title: "Pie chart",
-      subheading: "`type=\"pie\"` uses SVG stroke-dasharray math in a 1:1 container, shading slices from your theme color.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"pie"',
+          effect:
+            "to render in a 1:1 container — so it never stretches into an oval — with each slice shaded from your `color`.",
+        },
+      ],
       props: { type: "pie" },
       usage: usagePie,
     },
     {
       title: "Donut chart",
-      subheading: "`type=\"donut\"` is the same geometry with the centre cut out.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"donut"',
+          effect: "for the same geometry with the centre cut out.",
+        },
+      ],
       props: { type: "donut" },
       usage: usageDonut,
     },
     {
       title: "Without grid lines",
-      subheading: "Set `showGrid={false}` for a cleaner, axis-free look on bar and line charts.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showGrid",
+          value: "{false}",
+          effect:
+            "for a cleaner, axis-free look. Grid lines only exist on `bar` and `line` charts, so it does nothing for pie or donut.",
+        },
+      ],
       props: { type: "bar", showGrid: false },
       usage: usageNoGrid,
     },

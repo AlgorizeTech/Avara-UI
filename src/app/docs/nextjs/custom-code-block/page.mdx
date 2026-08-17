@@ -24,20 +24,31 @@ export default function Snippet() {
   return <CustomCodeBlock code={html} language="html" fileName="index.html" />;
 }`;
 
-export const usageTypescript = `// \`language\` drives both the highlighter and the icon in the header;
-// \`fileName\` is the label beside it.
-<CustomCodeBlock
-  code={source}
-  language="tsx"
-  fileName="SystemStatus.tsx"
-/>`;
+export const usageTypescript = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+import { source } from "./source";
 
-export const usageBash = `// Shell snippets get a terminal icon and comment-aware highlighting.
-<CustomCodeBlock
-  code={"npm install clsx tailwind-merge\nnpm run dev"}
-  language="bash"
-  fileName="terminal"
-/>`;
+export default function TypeScriptBlock() {
+  // \`language\` drives both the highlighter and the icon in the header;
+  // \`fileName\` is the label beside it.
+  return (
+    <CustomCodeBlock
+      code={source}
+      language="tsx"
+      fileName="SystemStatus.tsx"
+    />
+  );
+}`;
+
+export const usageBash = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+const commands = "npm install clsx tailwind-merge\\nnpm run dev";
+
+export default function ShellBlock() {
+  // Shell snippets get a terminal icon and comment-aware highlighting.
+  return (
+    <CustomCodeBlock code={commands} language="bash" fileName="terminal" />
+  );
+}`;
 
 export const usageTabs = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
@@ -60,26 +71,59 @@ export default function MultiFileSnippet() {
   examples={[
     {
       title: "Code block",
-      subheading: "Pass `code`, `language` and `fileName` — the header, icon and highlighting follow.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "code",
+          effect: "as the raw source string — the block does not read children.",
+        },
+        {
+          prop: "language",
+          effect:
+            "drives both the highlighter and the header icon. Defaults to `typescript`.",
+        },
+        { prop: "fileName", effect: "is the label shown beside that icon." },
+      ],
       props: { activeTab: "HTML" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CustomCodeBlock.tsx"),
     },
     {
       title: "TypeScript",
-      subheading: "Set `language` to `tsx`/`ts` for TypeScript highlighting and the matching badge.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "language",
+          value: '"tsx"',
+          effect: "— or `\"ts\"` — for TypeScript highlighting and the matching badge.",
+        },
+      ],
       props: { activeTab: "TypeScript" },
       usage: usageTypescript,
     },
     {
       title: "Shell commands",
-      subheading: "`language=\"bash\"` swaps the badge for a terminal icon and dims comment lines.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "language",
+          value: '"bash"',
+          effect: "to swap the badge for a terminal icon and dim comment lines.",
+        },
+      ],
       props: { activeTab: "Terminal" },
       usage: usageBash,
     },
     {
       title: "Multiple files",
-      subheading: "Pass `tabs` instead of `code` to group related files behind a switcher in a single block.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "tabs",
+          effect:
+            "instead of `code` to group related files behind a switcher in one block.",
+        },
+      ],
       props: { example: "tabs" },
       usage: usageTabs,
     },

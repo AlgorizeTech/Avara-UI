@@ -19,10 +19,16 @@ export default function Layout() {
   );
 }`;
 
-export const usageModal = `// Centred dialog with a blurred backdrop — same trigger, same state.
-<CartBlock type="modal" color="rose" />`;
+export const usageModal = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
-export const usagePage = `// Full-width two-column layout for a dedicated /cart route.
+export default function ModalCart() {
+  // Centred dialog with a blurred backdrop — same trigger, same state.
+  return <CartBlock type="modal" color="rose" />;
+}`;
+
+export const usagePage = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+
+// Full-width two-column layout for a dedicated /cart route.
 // No trigger button — the cart is the page.
 export default function CartPage() {
   return <CartBlock type="page" color="zinc" />;
@@ -35,20 +41,49 @@ export default function CartPage() {
   examples={[
     {
       title: "Drawer",
-      subheading: "The default. Slides in from the right edge over a blurred overlay — click the bag icon to open it.",
+      subheading: "Click the bag icon to open it.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"drawer"',
+          effect:
+            "is the default — the panel slides in from the right edge over a blurred overlay.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the primary buttons, focus rings, badges and icons. Takes `indigo`, `rose`, `emerald`, `zinc` or a hex; anything unrecognised — including the `primary` default — falls back to indigo.",
+        },
+      ],
       props: { type: "drawer" },
       usage: usageDrawer,
       code: extractCode("src/components/custom/blocks/CartBlock.tsx"),
     },
     {
       title: "Modal",
-      subheading: "`type=\"modal\"` centres the same panel and scales it in instead of sliding.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"modal"',
+          effect:
+            "to centre the same panel and scale it in instead of sliding. Trigger and state are unchanged.",
+        },
+      ],
       props: { type: "modal" },
       usage: usageModal,
     },
     {
       title: "Page",
-      subheading: "`type=\"page\"` drops the trigger and overlay entirely and renders the items beside a sticky order summary, sized for a dedicated `/cart` route.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"page"',
+          effect:
+            "to drop the trigger and overlay entirely and render the items beside a sticky order summary — sized for a dedicated `/cart` route.",
+        },
+      ],
       props: { type: "page" },
       usage: usagePage,
     },

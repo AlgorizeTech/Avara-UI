@@ -50,7 +50,11 @@ export const Cli = ({ command }: CliProps) => {
     <div className="w-full rounded-lg bg-zinc-100 dark:bg-zinc-950 relative overflow-hidden border border-zinc-200 dark:border-zinc-800">
       {/* PM Selector */}
       <div className="flex items-center justify-between py-2 bg-zinc-100 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div
+          role="tablist"
+          aria-label="Package manager"
+          className="flex items-center gap-1 sm:gap-2 px-2"
+        >
           {(Object.keys(PM_COMMANDS) as PackageManager[]).map((name) => {
             const isActive = name === pm;
             return (
@@ -58,21 +62,12 @@ export const Cli = ({ command }: CliProps) => {
                 key={name}
                 onClick={() => setPm(name)}
                 className={cn(
-                  "flex items-center gap-1 px-2 sm:px-4 py-2 text-sm font-medium border-b-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring00",
-                  "cursor-pointer",
+                  "flex min-w-0 cursor-pointer items-center gap-1 rounded-t-lg border-b-2 px-2 py-2 text-sm font-medium transition-all duration-200 sm:px-4",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400",
                   isActive
-                    ? "border-amber-400 text-zinc-900 dark:text-zinc-50 font-bold bg-white dark:bg-zinc-900/80 shadow-sm rounded-t-md"
-                    : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/60 rounded-t-md"
+                    ? "border-amber-400 bg-white font-bold text-zinc-900 shadow-sm dark:bg-zinc-900/80 dark:text-zinc-50"
+                    : "border-transparent text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-200"
                 )}
-                style={{
-                  background: isActive ? undefined : "none",
-                  borderRadius: "0.5rem 0.5rem 0 0", // top rounded
-                  boxShadow: isActive
-                    ? "0 2px 8px 0 rgba(0,0,0,0.04)"
-                    : undefined,
-                  outline: "none",
-                  minWidth: 0,
-                }}
                 aria-selected={isActive}
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
@@ -95,10 +90,36 @@ export const Cli = ({ command }: CliProps) => {
             );
           })}
         </div>
+      </div>
+
+      {/* Command row. The button and its fade live here, as siblings of the
+          scroll region rather than inside it — an absolute child of a scroll
+          container scrolls away with the content, and any vertical offset on it
+          turns the container's implied `overflow-y: auto` into a real scrollbar. */}
+      <div className="relative bg-white dark:bg-zinc-950">
+        {/* Deliberately not Tailwind's `overflow-x-auto` class: globals.css
+            targets that bare class name with !important table-wrapper styles
+            (1.5rem block margins, an 8px gray-track scrollbar). */}
+        <div className="min-w-0 max-w-full py-3 pl-4 pr-14 text-left font-mono text-sm font-medium whitespace-nowrap [overflow-x:auto] [overflow-y:hidden] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <span className="text-amber-400">{PM_COMMANDS[pm]}</span>{" "}
+          <span className="text-teal-500">shadcn@latest</span>{" "}
+          <span className="text-zinc-700 dark:text-zinc-300">
+            {finalCommand}
+          </span>
+        </div>
+
+        {/* Fades the command out beneath the button so a long, scrolled command
+            never collides with the icon. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white via-white/90 to-transparent dark:from-zinc-950 dark:via-zinc-950/90"
+        />
+
         <button
           onClick={handleCopy}
-          className="relative top-0 right-0 text-zinc-900 dark:text-zinc-50 p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+          className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md border border-zinc-200/80 bg-white/60 text-zinc-500 backdrop-blur-sm transition-colors duration-200 hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:right-3 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
           title={copied ? "Copied!" : "Copy command"}
+          aria-label={copied ? "Copied!" : "Copy command"}
         >
           {copied ? (
             <Check size={16} className="text-green-500" />
@@ -106,12 +127,6 @@ export const Cli = ({ command }: CliProps) => {
             <Copy size={16} />
           )}
         </button>
-      </div>
-
-      <div className="text-sm text-left font-mono text-nowrap font-medium bg-white dark:bg-zinc-950 py-4 overflow-x-auto max-w-full min-w-0">
-        <span className="text-amber-400">{PM_COMMANDS[pm]}</span>{" "}
-        <span className="text-teal-500">shadcn@latest</span>{" "}
-        <span className="text-zinc-700 dark:text-zinc-300">{finalCommand}</span>
       </div>
     </div>
   );

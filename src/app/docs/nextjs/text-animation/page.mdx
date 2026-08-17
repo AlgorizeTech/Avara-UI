@@ -28,33 +28,53 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageVariants = `// Seven effects behind one prop.
-<TextAnimation text="Better Experiences" variant="typewriter" />
-<TextAnimation text="Better Experiences" variant="blur-reveal" />
-<TextAnimation text="Better Experiences" variant="wave" />
-<TextAnimation text="Better Experiences" variant="pop-in" />
-<TextAnimation text="Better Experiences" variant="flip" />
-<TextAnimation text="Better Experiences" variant="spin-in" />
-<TextAnimation text="Better Experiences" variant="blur-in-up" />`;
+export const usageVariants = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
-export const usageTiming = `// \`duration\` stretches each character's transition, \`delay\` holds the whole
-// sequence back — useful for staging a headline against a subheadline.
-<TextAnimation
-  text="Better Experiences"
-  variant="wave"
-  duration={1.2}
-  delay={0.4}
-/>`;
+export default function AnimationVariants() {
+  // Seven effects behind one prop.
+  return (
+    <div className="flex flex-col gap-4">
+      <TextAnimation text="Better Experiences" variant="typewriter" />
+      <TextAnimation text="Better Experiences" variant="blur-reveal" />
+      <TextAnimation text="Better Experiences" variant="wave" />
+      <TextAnimation text="Better Experiences" variant="pop-in" />
+      <TextAnimation text="Better Experiences" variant="flip" />
+      <TextAnimation text="Better Experiences" variant="spin-in" />
+      <TextAnimation text="Better Experiences" variant="blur-in-up" />
+    </div>
+  );
+}`;
 
-export const usageAs = `// \`as\` swaps the rendered element so the headline keeps its document
-// meaning; \`style\` and \`className\` pass straight through.
-<TextAnimation
-  as="h1"
-  text="Better Experiences"
-  variant="blur-in-up"
-  className="text-5xl font-extrabold tracking-tight"
-  style={{ color: "#4f46e5" }}
-/>`;
+export const usageTiming = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function TimedAnimation() {
+  // \`duration\` stretches each character's transition, \`delay\` holds the whole
+  // sequence back — useful for staging a headline against a subheadline.
+  return (
+    <TextAnimation
+      text="Better Experiences"
+      variant="wave"
+      duration={1.2}
+      delay={0.4}
+    />
+  );
+}`;
+
+export const usageAs = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeadlineAnimation() {
+  // \`as\` swaps the rendered element so the headline keeps its document
+  // meaning; \`style\` and \`className\` pass straight through.
+  return (
+    <TextAnimation
+      as="h1"
+      text="Better Experiences"
+      variant="blur-in-up"
+      className="text-5xl font-extrabold tracking-tight"
+      style={{ color: "#4f46e5" }}
+    />
+  );
+}`;
 
 <ExampleShowcase
   name="text-animation"
@@ -62,26 +82,66 @@ export const usageAs = `// \`as\` swaps the rendered element so the headline kee
   examples={[
     {
       title: "Text animation",
-      subheading: "Pass `text` and pick a `variant` — the component splits the string and staggers each character with Framer Motion.",
+      subheading: "The component splits the string and staggers each character with Framer Motion.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "text",
+          effect:
+            "as a plain string — it is split internally, so children are not read.",
+        },
+      ],
       props: { variant: "typewriter" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TextAnimationBlock.tsx"),
     },
     {
       title: "Variants",
-      subheading: "Use the `variant` prop to change the effect.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "for the effect — `typewriter`, `blur-reveal` (the default), `wave`, `pop-in`, `flip`, `spin-in` or `blur-in-up`.",
+        },
+      ],
       props: { showAll: "variants" },
       usage: usageVariants,
     },
     {
       title: "Timing",
-      subheading: "`duration` and `delay` control how long each character takes and when the sequence starts.",
+      propNotes: [
+        {
+          prop: "duration",
+          value: '{1.2}',
+          effect:
+            "stretches each character's transition. For `typewriter` it is the total time to type the whole string, not per character.",
+        },
+        {
+          prop: "delay",
+          value: '{0.4}',
+          effect:
+            "holds the whole sequence back — useful for staging a headline against a subheadline.",
+        },
+      ],
       props: { variant: "wave", duration: 1.2, delay: 0.4 },
       usage: usageTiming,
     },
     {
       title: "Custom element & color",
-      subheading: "`as` picks the underlying tag; `className` and `style` are forwarded, so color is yours to set.",
+      propNotes: [
+        {
+          prop: "as",
+          value: '"h1"',
+          effect:
+            "picks the rendered tag so the headline keeps its document meaning. Defaults to `p`.",
+        },
+        {
+          prop: "className",
+          effect:
+            "and `style` are forwarded to that element, so colour is yours to set.",
+        },
+      ],
       props: { as: "h1", variant: "blur-in-up", textColor: "#4f46e5" },
       usage: usageAs,
     },

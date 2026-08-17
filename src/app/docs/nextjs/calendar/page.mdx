@@ -67,26 +67,61 @@ export default function EmptyCalendar() {
   examples={[
     {
       title: "Calendar dashboard",
-      subheading: "Seed it with `mockEvents` keyed by `\"YYYY-M-D\"` and everything else is internal state.",
+      subheading: "Everything past the initial events is internal state.",
+      propNotes: [
+        {
+          lead: "Seed",
+          prop: "mockEvents",
+          effect:
+            "with a map of `\"YYYY-M-D\"` to an array of event types (`\"pentest\"`, `\"kickoff\"`). Note the un-padded month and day.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the active states, primary buttons and focus rings — a named key or a hex string.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Calendar.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the card chrome so the dashboard sits flush in your layout.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card chrome so the dashboard sits flush in your own layout.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` goes translucent — intended to sit on a colored or photographic surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit on a coloured or photographic surface.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Empty state",
-      subheading: "`mockEvents` defaults to `{}` — the dashboard starts clean and fills up through its own UI.",
+      propNotes: [
+        {
+          prop: "mockEvents",
+          effect:
+            "defaults to `{}` — leave it off and the dashboard starts clean, filling up through its own UI.",
+        },
+      ],
       props: { variant: "default", mockEvents: {} },
       usage: usageEmpty,
     },

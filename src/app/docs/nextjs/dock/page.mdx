@@ -86,20 +86,56 @@ export default function DramaticDock({ items }) {
   examples={[
     {
       title: "Dock",
-      subheading: "Pass an `items` array of `{ id, label, icon }` — hover magnification is built in.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `{ id, label, icon }[]` — `label` is the hover tooltip and `icon` a node, not a name.",
+        },
+        {
+          prop: "containerHeight",
+          value: '{64}',
+          effect:
+            "sizes the glass bar; a number is pixels, a string is raw CSS.",
+        },
+      ],
       props: { itemSet: "full" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DockBlock.tsx"),
     },
     {
       title: "Badges & active app",
-      subheading: "`badge` prints a counter pill and `isActive` draws the running-app dot.",
+      propNotes: [
+        {
+          prop: "badge",
+          effect:
+            "on an item prints a pulsing counter pill in its top-right corner.",
+        },
+        {
+          prop: "isActive",
+          effect:
+            "draws the running-app dot beneath the icon.",
+        },
+      ],
       props: { itemSet: "compact", activeTab: "home" },
       usage: usageBadges,
     },
     {
       title: "Compact",
-      subheading: "Drop `baseSize`, `magnification` and `gap` for a dense toolbar-sized dock.",
+      propNotes: [
+        {
+          lead: "Drop",
+          prop: "baseSize",
+          effect:
+            "— the resting icon size, 48 by default — for a toolbar-sized dock.",
+        },
+        {
+          prop: "magnification",
+          effect:
+            "and `gap` come down with it to keep the proportions.",
+        },
+      ],
       props: {
         itemSet: "compact",
         baseSize: 36,
@@ -112,7 +148,20 @@ export default function DramaticDock({ items }) {
     },
     {
       title: "Magnification physics",
-      subheading: "`magnification` sets the peak size; `distance` how far ahead neighbours react.",
+      propNotes: [
+        {
+          prop: "magnification",
+          value: '{80}',
+          effect:
+            "is the peak size an icon reaches when the cursor is over its centre.",
+        },
+        {
+          prop: "distance",
+          value: '{140}',
+          effect:
+            "is the radius around the cursor within which neighbours start to grow — raise it for a softer, wider wave.",
+        },
+      ],
       props: {
         itemSet: "full",
         baseSize: 46,

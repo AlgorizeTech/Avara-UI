@@ -43,22 +43,36 @@ export default function Messages() {
   return <ChatApp currentUser={currentUser} contactsData={contactsData} />;
 }`;
 
-export const usageMinimal = `// Borders and shadows stripped back for embedding inside an existing panel.
-<ChatApp
-  variant="minimal"
-  currentUser={currentUser}
-  contactsData={contactsData}
-/>`;
+export const usageMinimal = `import ChatApp from "@/components/custom/blocks/Chat";
+import { currentUser, contactsData } from "./data";
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <ChatApp
-    variant="glass"
-    color="rose"
-    currentUser={currentUser}
-    contactsData={contactsData}
-  />
-</div>`;
+export default function MinimalChat() {
+  // Borders and shadows stripped back for embedding inside an existing panel.
+  return (
+    <ChatApp
+      variant="minimal"
+      currentUser={currentUser}
+      contactsData={contactsData}
+    />
+  );
+}`;
+
+export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat";
+import { currentUser, contactsData } from "./data";
+
+export default function GlassChat() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <ChatApp
+        variant="glass"
+        color="rose"
+        currentUser={currentUser}
+        contactsData={contactsData}
+      />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="chat"
@@ -67,20 +81,49 @@ export const usageGlass = `// \`glass\` is translucent by design — give it a c
   examples={[
     {
       title: "Chat application",
-      subheading: "The default two-pane layout — contact list beside the thread, collapsing to a drawer on narrow screens.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "contactsData",
+          effect: "for the contact list and `currentUser` for the sender identity.",
+        },
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "is the two-pane layout — contact list beside the thread, collapsing to a drawer on narrow screens.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Chat.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the card chrome and dividers so the chat blends into a surrounding surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card chrome and dividers so the chat blends into a surrounding surface.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` renders translucent panels with backdrop blur — the preview supplies the gradient behind it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for translucent panels with backdrop blur — it needs a colourful backdrop behind it to read.",
+        },
+        { prop: "color", value: '"rose"', effect: "tints the accents against that backdrop." },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },

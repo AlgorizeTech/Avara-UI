@@ -74,26 +74,66 @@ export default function BrandedSplitStepper() {
   examples={[
     {
       title: "Split stepper",
-      subheading: "One `SplitStep` per row: text on the scrolling side, `cardContent` on the sticky deck.",
+      subheading: "Text on the scrolling side, `cardContent` on the sticky deck.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "steps",
+          effect:
+            "as `{ id, stepNumber, title, description, cardContent }[]` — `cardContent` is arbitrary JSX for the sticky card.",
+        },
+        {
+          prop: "onStepChange",
+          effect:
+            "fires with the index whenever the reader clicks a new narrative step.",
+        },
+      ],
       props: { stickySide: "right" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SplitStepperBlock.tsx"),
     },
     {
       title: "Sticky on the left",
-      subheading: "`stickySide=\"left\"` mirrors the layout, moving the card deck opposite the narrative.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "stickySide",
+          value: '"left"',
+          effect:
+            "to mirror the layout, moving the card deck opposite the narrative. Defaults to `right`.",
+        },
+      ],
       props: { stickySide: "left" },
       usage: usageStickyLeft,
     },
     {
       title: "Deck depth",
-      subheading: "`cardOffset` (px) and `cardDepthScale` control how far back each completed card falls.",
+      propNotes: [
+        {
+          prop: "cardOffset",
+          value: '{16}',
+          effect:
+            "is the pixel Y-translation applied to each stacked card.",
+        },
+        {
+          prop: "cardDepthScale",
+          value: '{0.05}',
+          effect:
+            "shrinks each deeper card by that fraction.",
+        },
+      ],
       props: { stickySide: "right", cardOffset: 40, cardDepthScale: 0.12 },
       usage: usageDepth,
     },
     {
       title: "Custom color",
-      subheading: "`color` accepts a hex (applied inline) or a Tailwind class for the active rail, badge and arrow.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "themes the active rail, badge and arrow. A hex is applied inline; a Tailwind class also works.",
+        },
+      ],
       props: { stickySide: "right", color: "#6366f1" },
       usage: usageColor,
     },

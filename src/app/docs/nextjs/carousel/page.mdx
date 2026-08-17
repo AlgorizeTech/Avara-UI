@@ -53,7 +53,12 @@ export default function Showcase() {
   return <CustomCarousel items={slides} imageButtonPosition="bottom" />;
 }`;
 
-export const usageThumbnailsSide = `<CustomCarousel items={slides} imageButtonPosition="left" />`;
+export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
+import { slides } from "./slides";
+
+export default function SideThumbnails() {
+  return <CustomCarousel items={slides} imageButtonPosition="left" />;
+}`;
 
 export const usageFluid = `import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
 
@@ -68,32 +73,80 @@ export default function FluidShowcase() {
   examples={[
     {
       title: "Image carousel",
-      subheading: "`ImageCarousel` takes a flat `images` array and handles arrows, dots, swipe and autoplay.",
+      subheading: "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "images",
+          effect:
+            "as a flat array of URL strings or Next.js `StaticImageData` objects.",
+        },
+        {
+          prop: "autoPlay",
+          effect: "is off by default; on, it advances every `autoPlayInterval` ms (3000).",
+        },
+        {
+          prop: "showArrows",
+          effect: "and `showDots` are both on by default — set either to `false` to hide it.",
+        },
+      ],
       props: { carouselType: "image" },
       usage: usageImage,
       code: extractCode("src/components/custom/carousel.tsx"),
     },
     {
       title: "Hero carousel",
-      subheading: "`HeroCarousel` takes `slides` with `img`, `title` and `des`, and overlays the copy on a full-bleed image.",
+      subheading: "`HeroCarousel` overlays copy on a full-bleed image.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "slides",
+          effect: "as `{ img, title, des }[]` — `des` is the supporting line under the title.",
+        },
+      ],
       props: { carouselType: "hero" },
       usage: usageHero,
     },
     {
       title: "Thumbnail rail",
-      subheading: "`CustomCarousel` adds a clickable thumbnail strip — `imageButtonPosition=\"bottom\"` by default.",
+      subheading: "`CustomCarousel` adds a clickable thumbnail strip.",
+      propNotes: [
+        {
+          prop: "imageButtonPosition",
+          value: '"bottom"',
+          effect: "is the default — the rail sits under the main image.",
+        },
+        {
+          prop: "items",
+          effect: "is the slide array this variant reads, rather than `images`.",
+        },
+      ],
       props: { carouselType: "thumbnails", thumbPosition: "bottom" },
       usage: usageThumbnails,
     },
     {
       title: "Side thumbnails",
-      subheading: "Move the same rail to `\"left\"` or `\"right\"` for a gallery-style layout.",
+      propNotes: [
+        {
+          lead: "Move the rail with",
+          prop: "imageButtonPosition",
+          value: '"left"',
+          effect: "— or `\"right\"` — for a gallery-style layout.",
+        },
+      ],
       props: { carouselType: "thumbnails", thumbPosition: "left" },
       usage: usageThumbnailsSide,
     },
     {
       title: "Fluid glass slider",
-      subheading: "A separate GSAP-driven component: the glass panel distorts and follows the cursor between slides.",
+      subheading: "A separate GSAP-driven component — installed on its own, see Installation below.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "drives the glass panel that distorts and follows the cursor between slides.",
+        },
+      ],
       props: { carouselType: "fluid" },
       usage: usageFluid,
       code: extractCode("src/components/custom/ui/FluidGlassSlider.tsx"),

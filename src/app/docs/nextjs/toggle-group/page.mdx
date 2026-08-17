@@ -36,29 +36,101 @@ export default function AlignmentGroup() {
   );
 }`;
 
-export const usageOutline = `<ToggleGroup variant="outline" type="single" value={value} onValueChange={setValue}>
-  <ToggleGroupItem value="left" aria-label="Toggle align left">
-    <AlignLeft className="w-4 h-4" />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="center" aria-label="Toggle align center">
-    <AlignCenter className="w-4 h-4" />
-  </ToggleGroupItem>
-</ToggleGroup>`;
+export const usageOutline = `"use client";
 
-export const usageGhost = `<ToggleGroup variant="ghost" type="single" value={value} onValueChange={setValue}>
-  <ToggleGroupItem value="left" aria-label="Toggle align left">
-    <AlignLeft className="w-4 h-4" />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="center" aria-label="Toggle align center">
-    <AlignCenter className="w-4 h-4" />
-  </ToggleGroupItem>
-</ToggleGroup>`;
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
 
-export const usageSizes = `<div className="flex flex-col items-center gap-6">
-  <ToggleGroup size="sm" type="single" value={value} onValueChange={setValue}>{items}</ToggleGroup>
-  <ToggleGroup size="md" type="single" value={value} onValueChange={setValue}>{items}</ToggleGroup>
-  <ToggleGroup size="lg" type="single" value={value} onValueChange={setValue}>{items}</ToggleGroup>
-</div>`;
+export default function OutlineGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup
+      variant="outline"
+      type="single"
+      value={value}
+      onValueChange={setValue}
+    >
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}`;
+
+export const usageGhost = `"use client";
+
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+export default function GhostGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup
+      variant="ghost"
+      type="single"
+      value={value}
+      onValueChange={setValue}
+    >
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+const items = (
+  <>
+    <ToggleGroupItem value="left" aria-label="Toggle align left">
+      <AlignLeft className="w-4 h-4" />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="center" aria-label="Toggle align center">
+      <AlignCenter className="w-4 h-4" />
+    </ToggleGroupItem>
+  </>
+);
+
+export default function GroupSizes() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <ToggleGroup size="sm" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+      <ToggleGroup size="md" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+      <ToggleGroup size="lg" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+    </div>
+  );
+}`;
 
 export const usageMultiple = `import {
   ToggleGroup,
@@ -85,14 +157,29 @@ export default function FormattingGroup() {
   );
 }`;
 
-export const usageDisabled = `<ToggleGroup disabled type="single" value={value} onValueChange={setValue}>
-  <ToggleGroupItem value="left" aria-label="Toggle align left">
-    <AlignLeft className="w-4 h-4" />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="center" aria-label="Toggle align center">
-    <AlignCenter className="w-4 h-4" />
-  </ToggleGroupItem>
-</ToggleGroup>`;
+export const usageDisabled = `"use client";
+
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+export default function DisabledGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup disabled type="single" value={value} onValueChange={setValue}>
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}`;
 
 <ExampleShowcase
   name="toggle-group"
@@ -103,37 +190,93 @@ export const usageDisabled = `<ToggleGroup disabled type="single" value={value} 
     {
       title: "Toggle Group",
       subheading: "Single selection — exactly one item stays active at a time.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"single"',
+          effect:
+            "is the default and behaves like radio buttons.",
+        },
+        {
+          prop: "value",
+          effect:
+            "is a string here; pair it with `onValueChange`, or use `defaultValue` to stay uncontrolled.",
+        },
+      ],
       props: { example: "single" },
       usage: usageSingle,
       code: extractCode("src/components/custom/blocks/ToggleGroupBlock.tsx"),
     },
     {
       title: "Outline",
-      subheading: "Use `variant=\"outline\"` to draw a border around the segment.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"outline"',
+          effect:
+            "to draw a border around the segment.",
+        },
+      ],
       props: { example: "single", variant: "outline" },
       usage: usageOutline,
     },
     {
       title: "Ghost",
-      subheading: "Use `variant=\"ghost\"` for items that only paint when active.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"ghost"',
+          effect:
+            "for items that only paint when active — no pill container.",
+        },
+      ],
       props: { example: "single", variant: "ghost" },
       usage: usageGhost,
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect:
+            "to change the item height and padding across the whole group.",
+        },
+      ],
       props: { example: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Multiple selection",
-      subheading: "Set `type=\"multiple\"` and pass an array to allow several active items.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"multiple"',
+          effect:
+            "for checkbox behaviour.",
+        },
+        {
+          prop: "value",
+          effect:
+            "becomes a **string array** in this mode — passing a bare string selects nothing.",
+        },
+      ],
       props: { example: "multiple" },
       usage: usageMultiple,
     },
     {
       title: "Disabled",
-      subheading: "Set `disabled` on the group to lock every item at once.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "on the group to lock every item at once, rather than disabling them one by one.",
+        },
+      ],
       props: { example: "disabled" },
       usage: usageDisabled,
     },

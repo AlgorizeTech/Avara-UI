@@ -41,13 +41,25 @@ export default function Mailbox() {
   return <EmailApp initialEmails={emails} />;
 }`;
 
-export const usageMinimal = `// Flattens the shell — no elevated card, lighter dividers.
-<EmailApp variant="minimal" initialEmails={emails} />`;
+export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
+import { emails } from "./emails";
 
-export const usageGlass = `// The glass variant also frosts absolute overlays like the Compose modal.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <EmailApp variant="glass" initialEmails={emails} />
-</div>`;
+export default function MinimalMailbox() {
+  // Flattens the shell — no elevated card, lighter dividers.
+  return <EmailApp variant="minimal" initialEmails={emails} />;
+}`;
+
+export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
+import { emails } from "./emails";
+
+export default function GlassMailbox() {
+  return (
+    // The glass variant also frosts absolute overlays like the Compose modal.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <EmailApp variant="glass" initialEmails={emails} />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="email"
@@ -56,20 +68,48 @@ export const usageGlass = `// The glass variant also frosts absolute overlays li
   examples={[
     {
       title: "Email dashboard",
-      subheading: "Pass `initialEmails` — an array of messages with sender, labels, body and attachments — and the client owns every interaction from there.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "initialEmails",
+          effect:
+            "as `Email[]` — each carries its own `folder` (`inbox`, `sent`…) plus `isRead` and `isStarred`, and the client owns every interaction from there.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the compose button, unread dots and focus rings.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Email.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the elevated shell for a flatter, denser mailbox.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the elevated shell for a flatter, denser mailbox.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` frosts the sidebar, list and overlays — open Compose to see it applied to the modal too.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the sidebar, list and overlays — the Compose modal included.",
+        },
+      ],
       props: { variant: "glass" },
       usage: usageGlass,
     },
