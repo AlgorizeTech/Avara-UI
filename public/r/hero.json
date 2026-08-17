@@ -3,7 +3,7 @@
   "name": "hero",
   "title": "Hero",
   "author": "AlgorizeTech",
-  "description": "TODO: describe hero. Generated placeholder.",
+  "description": "A composable hero section with centre or split layouts, background patterns and a badge slot. Use it as the opening section of a landing page.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/HeroBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Hero, HeroContent, HeroBadge, HeroBadgeText, getThemeStyles. `layout` is center | left | split-right | split-left; `pattern` adds a grid or dot backdrop; variants are default | glass | glow. Composable and content-agnostic — no runtime dependencies. For ready-made copy and CTAs, use `homepage-hero`.",
+  "categories": [
+    "marketing",
+    "layout"
+  ],
   "type": "registry:component"
 }

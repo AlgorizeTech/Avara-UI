@@ -3,7 +3,7 @@
   "name": "collapsible",
   "title": "Collapsible",
   "author": "AlgorizeTech",
-  "description": "TODO: describe collapsible. Generated placeholder.",
+  "description": "A minimal show/hide disclosure with controlled and uncontrolled modes. Use it for a single expandable region where a full accordion is overkill.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/CollapsibleBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`.",
+  "categories": [
+    "layout"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "animated-typography",
   "title": "Animated Typography",
   "author": "AlgorizeTech",
-  "description": "TODO: describe animated-typography. Generated placeholder.",
+  "description": "Headings and paragraphs that animate in with typewriter, glitch, blur and reveal effects. Use it for section titles that should draw the eye once.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/AnimatedTypographyBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
+  "categories": [
+    "typography",
+    "marketing"
+  ],
   "type": "registry:component"
 }

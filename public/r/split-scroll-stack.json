@@ -3,7 +3,7 @@
   "name": "split-scroll-stack",
   "title": "Split Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "TODO: describe split-scroll-stack. Generated placeholder.",
+  "description": "A two-column scroll stack with a pinned side panel and cards that advance alongside it. Use it for feature tours that pair narrative with visuals.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/SplitScrollStackBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: SplitScrollStack. `stickySide` pins left or right; `cardDepthScale` and `cardOffset` tune the stack. Driven by GSAP ScrollTrigger, so it needs real page height — it will look inert in a short container. Same family as `split-stepper`.",
+  "categories": [
+    "scroll",
+    "marketing"
+  ],
   "type": "registry:component"
 }

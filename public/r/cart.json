@@ -3,7 +3,7 @@
   "name": "cart",
   "title": "Cart",
   "author": "AlgorizeTech",
-  "description": "TODO: describe cart. Generated placeholder.",
+  "description": "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/CartBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: CartBlock, getThemeStyles. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Items carry { id, name, price, quantity, size?, color? }. Cart state is yours to own — this renders it and reports changes.",
+  "categories": [
+    "commerce"
+  ],
   "type": "registry:component"
 }

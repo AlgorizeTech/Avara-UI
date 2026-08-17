@@ -3,7 +3,7 @@
   "name": "design-folder-box",
   "title": "Design Folder Box",
   "author": "AlgorizeTech",
-  "description": "TODO: describe design-folder-box. Generated placeholder.",
+  "description": "A frosted-glass folder shape with title and subtitle, used as a decorative container. Use it on portfolio and feature sections where a plain card is too plain.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/DesignFolderBox.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: DesignFolderBox. Presentational only — `color` tints the glass. For the version that holds stacked cards inside the folder, use `design-components-folder`.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

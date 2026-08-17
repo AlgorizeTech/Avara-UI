@@ -3,7 +3,7 @@
   "name": "data-grid",
   "title": "Data Grid",
   "author": "AlgorizeTech",
-  "description": "TODO: describe data-grid. Generated placeholder.",
+  "description": "An editable spreadsheet-style grid with inline cell editing and keyboard navigation. Use it when users need to change values in place rather than just read them.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/DataGridBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: DataGridBlock, getThemeStyles. `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

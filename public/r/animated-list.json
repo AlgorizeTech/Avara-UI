@@ -3,7 +3,7 @@
   "name": "animated-list",
   "title": "Animated List",
   "author": "AlgorizeTech",
-  "description": "TODO: describe animated-list. Generated placeholder.",
+  "description": "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
   "dependencies": [
     "gsap"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/AnimatedListBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline.",
+  "categories": [
+    "utilities"
+  ],
   "type": "registry:component"
 }

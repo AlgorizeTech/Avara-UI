@@ -3,7 +3,7 @@
   "name": "invoice",
   "title": "Invoice",
   "author": "AlgorizeTech",
-  "description": "TODO: describe invoice. Generated placeholder.",
+  "description": "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/Invoice.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Invoice, getThemeStyles. `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass.",
+  "categories": [
+    "commerce",
+    "data-display"
+  ],
   "type": "registry:component"
 }

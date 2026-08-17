@@ -3,7 +3,7 @@
   "name": "pricing-plans",
   "title": "Pricing Plans",
   "author": "AlgorizeTech",
-  "description": "TODO: describe pricing-plans. Generated placeholder.",
+  "description": "A three-tier pricing card row with a highlighted recommended plan and GSAP entrance. Use it as a self-contained pricing section on a landing page.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -17,6 +17,10 @@
       "target": "components/custom/blocks/PricingPlans.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: PricingPlans. Self-contained with its own plan content — copy and adapt rather than configuring through props. Uses next/link, so it needs edits outside Next.js. Installs with no registry dependencies, not even `utils`.",
+  "categories": [
+    "commerce",
+    "marketing"
+  ],
   "type": "registry:component"
 }

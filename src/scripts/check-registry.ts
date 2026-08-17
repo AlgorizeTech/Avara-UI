@@ -25,6 +25,7 @@ const DEMOS_DIR = path.join(ROOT, "src/preview/demos");
 type Item = {
   name: string;
   description: string;
+  categories?: string[];
   files: { path: string; target: string }[];
   registryDependencies?: string[];
 };
@@ -150,13 +151,23 @@ if (fs.existsSync(OUT_DIR)) {
   }
 }
 
-// --- 6. Metadata completeness (warn until Phase 4 lands) --------------------
+// --- 6. Metadata completeness ----------------------------------------------
+// Every item has a written description as of Phase 4. This is a FAIL, not a
+// warning: a placeholder shipping to the public registry index reads as an
+// abandoned project, and `description` is a required field for listing.
 const placeholders = items.filter((i) => i.description.startsWith("TODO:"));
-if (placeholders.length) {
-  warn(
-    `${placeholders.length} of ${items.length} items still have placeholder descriptions:\n` +
-      `        ${placeholders.map((i) => i.name).join(", ")}`
+for (const p of placeholders) {
+  fail(
+    `[${p.name}] has a placeholder description. ` +
+      `Add an entry to META in src/scripts/registry-meta.ts.`
   );
+}
+
+// Every item needs at least one category — that is the registry's search index.
+for (const item of items) {
+  if (!item.categories || item.categories.length === 0) {
+    fail(`[${item.name}] has no categories.`);
+  }
 }
 
 // ---------------------------------------------------------------------------

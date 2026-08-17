@@ -3,7 +3,7 @@
   "name": "calendar",
   "title": "Calendar",
   "author": "AlgorizeTech",
-  "description": "TODO: describe calendar. Generated placeholder.",
+  "description": "A full month calendar with event dots, range selection and a dashboard layout. Reach for it when dates need to be seen in context rather than just entered.",
   "dependencies": [
     "lucide-react",
     "react-day-picker"
@@ -21,6 +21,9 @@
       "target": "components/custom/blocks/Calendar.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Calendar, CalendarDashboard, CalendarDayButton. Built on react-day-picker; variants are default | minimal | glass. `mockEvents` is a Record<string, string[]> keyed by date for the event dots. Pulls in `select` and `ui-button` as registry dependencies. For a plain date field, use `date-picker`.",
+  "categories": [
+    "dates"
+  ],
   "type": "registry:component"
 }

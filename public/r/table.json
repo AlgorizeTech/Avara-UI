@@ -3,7 +3,7 @@
   "name": "table",
   "title": "Table",
   "author": "AlgorizeTech",
-  "description": "TODO: describe table. Generated placeholder.",
+  "description": "A generic data table with sortable columns, custom cell renderers and GSAP row animation. Use it for straightforward tabular data that needs sorting but not filtering.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/TableBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: TableBlock, getThemeStyles. Generic over your row type — `columns` take { key, label, sortable?, align?, render? }, where `render` receives the whole row. Variants: default | minimal | glass; sizes sm | md | lg. For search, filtering, pagination and column resizing, use `advanced-table`.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

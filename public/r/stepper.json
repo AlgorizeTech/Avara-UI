@@ -3,7 +3,7 @@
   "name": "stepper",
   "title": "Stepper",
   "author": "AlgorizeTech",
-  "description": "TODO: describe stepper. Generated placeholder.",
+  "description": "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/StepperBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Stepper, StepperContent. `steps` take { id, title, description?, icon?, content? }. Controlled via `currentStep` and `onStepChange` — the component displays progress but does not own it. For the full state machine, use `wizard`.",
+  "categories": [
+    "navigation",
+    "forms"
+  ],
   "type": "registry:component"
 }

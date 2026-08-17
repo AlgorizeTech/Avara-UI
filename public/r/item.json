@@ -3,7 +3,7 @@
   "name": "item",
   "title": "Item",
   "author": "AlgorizeTech",
-  "description": "TODO: describe item. Generated placeholder.",
+  "description": "A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/ItemBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: ItemBlock. `media` and `actions` take arbitrary nodes, so an avatar and a button drop straight in. Variants: default | compact | card | bordered. Passing `onClick` makes the whole row interactive.",
+  "categories": [
+    "layout",
+    "data-display"
+  ],
   "type": "registry:component"
 }

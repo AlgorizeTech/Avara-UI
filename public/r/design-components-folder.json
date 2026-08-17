@@ -3,7 +3,7 @@
   "name": "design-components-folder",
   "title": "Design Components Folder",
   "author": "AlgorizeTech",
-  "description": "TODO: describe design-components-folder. Generated placeholder.",
+  "description": "An animated folder that opens to fan out component preview cards. Use it on portfolio and feature pages to reveal a collection on interaction.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/DesignComponentsFolder.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

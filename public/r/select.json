@@ -3,7 +3,7 @@
   "name": "select",
   "title": "Select",
   "author": "AlgorizeTech",
-  "description": "TODO: describe select. Generated placeholder.",
+  "description": "A searchable select with single or multiple selection, option groups and per-option icons. Use it when a native <select> cannot carry enough structure.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/SelectBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
+  "categories": [
+    "forms"
+  ],
   "type": "registry:component"
 }

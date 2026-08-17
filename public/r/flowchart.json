@@ -3,7 +3,7 @@
   "name": "flowchart",
   "title": "Flowchart",
   "author": "AlgorizeTech",
-  "description": "TODO: describe flowchart. Generated placeholder.",
+  "description": "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",
   "dependencies": [
     "gsap"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/FlowchartBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

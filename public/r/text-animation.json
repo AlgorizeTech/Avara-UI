@@ -3,7 +3,7 @@
   "name": "text-animation",
   "title": "Text Animation",
   "author": "AlgorizeTech",
-  "description": "TODO: describe text-animation. Generated placeholder.",
+  "description": "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/TextAnimationBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing. For dependency-free effects, use `animated-typography`.",
+  "categories": [
+    "typography",
+    "marketing"
+  ],
   "type": "registry:component"
 }

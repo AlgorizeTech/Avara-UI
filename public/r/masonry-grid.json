@@ -3,7 +3,7 @@
   "name": "masonry-grid",
   "title": "Masonry Grid",
   "author": "AlgorizeTech",
-  "description": "TODO: describe masonry-grid. Generated placeholder.",
+  "description": "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/MasonryGridBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order.",
+  "categories": [
+    "layout",
+    "media"
+  ],
   "type": "registry:component"
 }

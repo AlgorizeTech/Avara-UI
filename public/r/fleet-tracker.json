@@ -3,7 +3,7 @@
   "name": "fleet-tracker",
   "title": "Fleet Tracker",
   "author": "AlgorizeTech",
-  "description": "TODO: describe fleet-tracker. Generated placeholder.",
+  "description": "A vehicle list with selection and location details, loading its map lazily. Use it as the lighter fleet view when a full map is not needed up front.",
   "dependencies": [
     "lucide-react"
   ],
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/Fleet-tracker.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: FleetTracker. Uses next/dynamic with `ssr: false` to defer the map, so it needs Next.js. Installs standalone with no registry dependencies. For the full map view, use `fleet-map`.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

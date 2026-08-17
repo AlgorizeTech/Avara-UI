@@ -3,7 +3,7 @@
   "name": "tilted-card",
   "title": "Tilted Card",
   "author": "AlgorizeTech",
-  "description": "TODO: describe tilted-card. Generated placeholder.",
+  "description": "A card that tilts in 3D toward the pointer with a moving glare highlight. Use it to make a single feature or product card feel tactile.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/TiltedCardBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

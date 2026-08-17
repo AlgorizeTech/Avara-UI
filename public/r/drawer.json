@@ -3,7 +3,7 @@
   "name": "drawer",
   "title": "Drawer",
   "author": "AlgorizeTech",
-  "description": "TODO: describe drawer. Generated placeholder.",
+  "description": "A panel that slides in from any screen edge, with overlay and GSAP easing. Use it for mobile navigation, filters and detail panels.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/Drawer.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter. `side` chooses the entry edge. Controlled via `open` and `onOpenChange`. Note it also exports a local `Button` used by its demo — import your own for real use.",
+  "categories": [
+    "overlays"
+  ],
   "type": "registry:component"
 }

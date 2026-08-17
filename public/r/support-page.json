@@ -3,7 +3,7 @@
   "name": "support-page",
   "title": "Support Page",
   "author": "AlgorizeTech",
-  "description": "TODO: describe support-page. Generated placeholder.",
+  "description": "A customer-facing support page with ticket list, reply composer and details sidebar. Use it as the end-user counterpart to the agent dashboard.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/SupportPage.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`.",
+  "categories": [
+    "communication"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "hero-video-player",
   "title": "Hero Video Player",
   "author": "AlgorizeTech",
-  "description": "TODO: describe hero-video-player. Generated placeholder.",
+  "description": "A video hero with thumbnail, glow and a modal player that opens on click. Use it for product demo sections that should not autoplay.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/HeroVideoPlayerBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight.",
+  "categories": [
+    "marketing",
+    "media"
+  ],
   "type": "registry:component"
 }

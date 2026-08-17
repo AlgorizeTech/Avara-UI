@@ -3,7 +3,7 @@
   "name": "data-maps",
   "title": "Data Maps",
   "author": "AlgorizeTech",
-  "description": "TODO: describe data-maps. Generated placeholder.",
+  "description": "A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
   "dependencies": [
     "react-leaflet"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/DataMapsBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: DataMaps, DataPoint. `dataPoints` take { id, name, active, new, color?, flag? } keyed by country id; `variant` is fill | dots, with `center` and `zoom` for the initial view. **Import Leaflet's CSS yourself** and supply your own GeoJSON. Uses next/image, so it needs edits outside Next.js.",
+  "categories": [
+    "maps",
+    "data-display"
+  ],
   "type": "registry:component"
 }

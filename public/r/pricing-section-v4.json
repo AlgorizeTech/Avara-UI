@@ -3,7 +3,7 @@
   "name": "pricing-section-v4",
   "title": "Pricing Section V4",
   "author": "AlgorizeTech",
-  "description": "TODO: describe pricing-section-v4. Generated placeholder.",
+  "description": "A refreshed pricing section with a cleaner card treatment and no animation dependency. Use it as the lighter alternative to the GSAP-based pricing sections.",
   "dependencies": [
     "lucide-react"
   ],
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/PricingSectionV4.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items.",
+  "categories": [
+    "commerce",
+    "marketing"
+  ],
   "type": "registry:component"
 }

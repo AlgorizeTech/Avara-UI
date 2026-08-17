@@ -3,7 +3,7 @@
   "name": "utility",
   "title": "Utility",
   "author": "AlgorizeTech",
-  "description": "TODO: describe utility. Generated placeholder.",
+  "description": "Two small dashboard panels — a team member list and a command search box — built on the shared card shell. Use them as filler panels while assembling a dashboard layout.",
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/ui-base.json"
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/UtilityBlocks.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: TeamMembersBlock, CommandSearchBlock. Self-contained examples with hardcoded content — copy and adapt rather than configuring through props. Depends on `ui-base`.",
+  "categories": [
+    "layout",
+    "utilities"
+  ],
   "type": "registry:component"
 }

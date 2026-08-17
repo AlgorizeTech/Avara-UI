@@ -3,7 +3,7 @@
   "name": "pricing-plan",
   "title": "Pricing Plan",
   "author": "AlgorizeTech",
-  "description": "TODO: describe pricing-plan. Generated placeholder.",
+  "description": "Three pricing layouts in one item — basic cards, a feature table and a usage slider that recalculates price. Use the slider variant for consumption-based products.",
   "dependencies": [
     "lucide-react"
   ],
@@ -22,6 +22,10 @@
       "target": "components/custom/blocks/Pricing-plan.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project.",
+  "categories": [
+    "commerce",
+    "marketing"
+  ],
   "type": "registry:component"
 }

@@ -3,7 +3,7 @@
   "name": "user-graph",
   "title": "User Graph",
   "author": "AlgorizeTech",
-  "description": "TODO: describe user-graph. Generated placeholder.",
+  "description": "An orbital diagram placing a user at the centre with tools and sub-agents circling around. Use it to illustrate an AI agent or integration ecosystem.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/UserGraphBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: UserGraph. Takes orbiting tools, sub-apps and sub-agents, each with its own icon and colour tokens. Presentational — the layout is decorative, not a real graph engine, so it will not lay out arbitrary node counts gracefully.",
+  "categories": [
+    "data-display",
+    "marketing"
+  ],
   "type": "registry:component"
 }

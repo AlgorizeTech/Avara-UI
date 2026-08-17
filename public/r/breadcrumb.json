@@ -3,7 +3,7 @@
   "name": "breadcrumb",
   "title": "Breadcrumb",
   "author": "AlgorizeTech",
-  "description": "TODO: describe breadcrumb. Generated placeholder.",
+  "description": "A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/BreadcrumbBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: BreadcrumbBlock, getThemeStyles. `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js.",
+  "categories": [
+    "navigation"
+  ],
   "type": "registry:component"
 }

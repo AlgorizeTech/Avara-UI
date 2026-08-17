@@ -3,7 +3,7 @@
   "name": "accordion",
   "title": "Accordion",
   "author": "AlgorizeTech",
-  "description": "TODO: describe accordion. Generated placeholder.",
+  "description": "A data-driven accordion taking an array of items, with single or multiple open sections. Use it for FAQs and any list of collapsible sections.",
   "dependencies": [
     "lucide-react"
   ],
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/Accordion.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default | bordered | filled | ghost. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
+  "categories": [
+    "layout"
+  ],
   "type": "registry:component"
 }

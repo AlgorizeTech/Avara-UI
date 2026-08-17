@@ -3,7 +3,7 @@
   "name": "navbar",
   "title": "Navbar",
   "author": "AlgorizeTech",
-  "description": "TODO: describe navbar. Generated placeholder.",
+  "description": "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/NavbarBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`.",
+  "categories": [
+    "navigation",
+    "marketing"
+  ],
   "type": "registry:component"
 }

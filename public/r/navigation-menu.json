@@ -3,7 +3,7 @@
   "name": "navigation-menu",
   "title": "Navigation Menu",
   "author": "AlgorizeTech",
-  "description": "TODO: describe navigation-menu. Generated placeholder.",
+  "description": "A horizontal navigation bar with dropdown panels and a sliding active indicator. Use it for primary site navigation with grouped links.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/NavigationMenu.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles. Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass.",
+  "categories": [
+    "navigation"
+  ],
   "type": "registry:component"
 }

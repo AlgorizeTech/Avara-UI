@@ -3,7 +3,7 @@
   "name": "chart",
   "title": "Chart",
   "author": "AlgorizeTech",
-  "description": "TODO: describe chart. Generated placeholder.",
+  "description": "A dependency-free chart rendering bar, line, pie and donut from a single data array. Use it for simple dashboard visuals without pulling in a charting library.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/ChartBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ChartBlock. `data` takes { label, value }; switch presentation with `type` (bar | line | pie | donut) and set `height` in pixels. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes, tooltips or scales beyond what is drawn. Use a real charting library for analytical work.",
+  "categories": [
+    "data-display"
+  ],
   "type": "registry:component"
 }

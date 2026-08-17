@@ -3,7 +3,7 @@
   "name": "support-container",
   "title": "Support Container",
   "author": "AlgorizeTech",
-  "description": "TODO: describe support-container. Generated placeholder.",
+  "description": "A support ticket list with filters, detail view and empty state, configured through one content object. Use it to drop a help-desk view into an existing layout.",
   "dependencies": [
     "lucide-react"
   ],
@@ -16,6 +16,10 @@
       "target": "components/custom/blocks/SupportContainer.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: SupportContainer. Configured via a single nested prop object covering header, filters, tickets, emptyState and detailView — all copy is passed in, so it localises without edits. Installs standalone with no registry dependencies.",
+  "categories": [
+    "communication",
+    "layout"
+  ],
   "type": "registry:component"
 }

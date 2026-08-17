@@ -3,7 +3,7 @@
   "name": "memories-card",
   "title": "Memories Card",
   "author": "AlgorizeTech",
-  "description": "TODO: describe memories-card. Generated placeholder.",
+  "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,10 @@
       "target": "components/custom/blocks/MemoriesCardBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack.",
+  "categories": [
+    "media",
+    "marketing"
+  ],
   "type": "registry:component"
 }

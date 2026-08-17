@@ -3,7 +3,7 @@
   "name": "homepage-hero-typing",
   "title": "Homepage Hero Typing",
   "author": "AlgorizeTech",
-  "description": "TODO: describe homepage-hero-typing. Generated placeholder.",
+  "description": "The homepage hero with a hand-rolled typing effect and no motion library. Use it when you want the same layout without the extra dependency.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/HomepageHeroTypingBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HomepageHeroTypingBlock. Identical prop surface to `homepage-hero`, but the typing runs on timers instead of Motion — lighter, with less entrance animation. Uses next/link, so it needs edits outside Next.js.",
+  "categories": [
+    "marketing"
+  ],
   "type": "registry:component"
 }

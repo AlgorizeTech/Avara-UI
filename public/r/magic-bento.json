@@ -3,7 +3,7 @@
   "name": "magic-bento",
   "title": "Magic Bento",
   "author": "AlgorizeTech",
-  "description": "TODO: describe magic-bento. Generated placeholder.",
+  "description": "A bento grid whose cards light up and follow the pointer on hover. Use it for feature grids on a landing page.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/MagicBentoBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: MagicBento, MagicBentoCard. Compose cards as children and set `highlight` on the ones that should stand out; span cards across columns with your own grid classes. Layout-agnostic — it supplies the effect, you supply the grid.",
+  "categories": [
+    "layout",
+    "marketing"
+  ],
   "type": "registry:component"
 }

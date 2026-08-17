@@ -3,7 +3,7 @@
   "name": "icons",
   "title": "Icons",
   "author": "AlgorizeTech",
-  "description": "TODO: describe icons. Generated placeholder.",
+  "description": "A set of 26 brand SVG icons — Google, GitHub, Apple, Microsoft, Slack, LinkedIn and more — as React components. Use them for social sign-in buttons and provider lists.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [
@@ -14,6 +14,10 @@
       "target": "components/custom/blocks/Icons.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports include GoogleIcon, GitHubIcon, AppleIcon, MicrosoftIcon, SlackIcon, LinkedInIcon, TwitterIcon, FacebookIcon, EmailIcon. Inline SVG with no runtime dependency — not even `cn` — so this item installs standalone. Size via className; brand marks keep their own colours.",
+  "categories": [
+    "media",
+    "utilities"
+  ],
   "type": "registry:component"
 }

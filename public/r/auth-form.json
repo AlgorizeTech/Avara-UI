@@ -3,7 +3,7 @@
   "name": "auth-form",
   "title": "Auth Form",
   "author": "AlgorizeTech",
-  "description": "TODO: describe auth-form. Generated placeholder.",
+  "description": "A sign-in and sign-up form with social buttons, password reveal and four layout variants. Use it as the entry point of an authenticated app.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/AuthForm.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: AuthForm, getThemeStyles. `type` is login | signup; `variant` is default | split | glass | minimal — split renders a gradient side panel. Presentation only: no auth provider is wired in, so connect your own submit handler.",
+  "categories": [
+    "authentication",
+    "forms"
+  ],
   "type": "registry:component"
 }

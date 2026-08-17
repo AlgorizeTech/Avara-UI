@@ -3,7 +3,7 @@
   "name": "ui-fluid-glass-slider",
   "title": "Ui Fluid Glass Slider",
   "author": "AlgorizeTech",
-  "description": "TODO: describe ui-fluid-glass-slider. Generated placeholder.",
+  "description": "A glass-morphism slide viewer with fluid GSAP transitions between panels. Use it for hero galleries with a soft, liquid feel.",
   "dependencies": [
     "gsap"
   ],
@@ -16,6 +16,9 @@
       "target": "components/custom/ui/FluidGlassSlider.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: FluidGlassSlider. Slides take { id, image, title, subtitle }. Installs standalone with no registry dependencies — not even `utils`.",
+  "categories": [
+    "media"
+  ],
   "type": "registry:ui"
 }

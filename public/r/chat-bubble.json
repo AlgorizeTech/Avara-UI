@@ -3,7 +3,7 @@
   "name": "chat-bubble",
   "title": "Chat Bubble",
   "author": "AlgorizeTech",
-  "description": "TODO: describe chat-bubble. Generated placeholder.",
+  "description": "Message bubble primitives with sent/received styling, grouping-aware corners, avatars and read receipts. Use them to build a custom message thread.",
   "dependencies": [
     "gsap",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/ChatBubbleBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: ChatBubble, ChatAvatar, ChatMessage, ChatTimestamp. `layout` is default | group-top | group-middle | group-bottom and adjusts the corner radii so consecutive messages from one sender read as a block. `status` renders sent | delivered | read ticks. These are the pieces `chat` assembles.",
+  "categories": [
+    "communication"
+  ],
   "type": "registry:component"
 }

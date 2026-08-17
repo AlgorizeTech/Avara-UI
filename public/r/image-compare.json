@@ -3,7 +3,7 @@
   "name": "image-compare",
   "title": "Image Compare",
   "author": "AlgorizeTech",
-  "description": "TODO: describe image-compare. Generated placeholder.",
+  "description": "A before/after image slider with five handle styles and drag or click positioning. Use it for retouching, redesign and product comparison sections.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/ImageCompareBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
+  "categories": [
+    "media"
+  ],
   "type": "registry:component"
 }
