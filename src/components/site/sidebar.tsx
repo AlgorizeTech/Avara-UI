@@ -269,7 +269,7 @@ const Sidebar = () => {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:flex flex-col w-[260px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
+    <aside className="hidden md:flex flex-col w-[240px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
       {/* --- STICKY SEARCH INPUT --- */}
       <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0">
         <div className="relative flex items-center w-full">
@@ -279,7 +279,7 @@ const Sidebar = () => {
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-sm [&::-webkit-search-cancel-button]:appearance-none"
+            className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-none [&::-webkit-search-cancel-button]:appearance-none"
             aria-label="Search documentation components"
           />
           {isSearching && (

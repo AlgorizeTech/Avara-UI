@@ -10,7 +10,7 @@ export function H1({
   return (
     <h1
       className={cn(
-        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-zinc-950 dark:text-zinc-50",
+        "scroll-m-20 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight break-words text-zinc-950 dark:text-zinc-50",
         className,
       )}
       {...props}
@@ -25,7 +25,7 @@ export function H2({
   return (
     <h2
       className={cn(
-        "scroll-m-20 border-b border-zinc-200 dark:border-zinc-800 pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-zinc-950 dark:text-zinc-50",
+        "scroll-m-20 border-b border-zinc-200 dark:border-zinc-800 pb-2 text-2xl sm:text-3xl font-semibold tracking-tight first:mt-0 break-words text-zinc-950 dark:text-zinc-50",
         className,
       )}
       {...props}
@@ -40,7 +40,7 @@ export function H3({
   return (
     <h3
       className={cn(
-        "scroll-m-20 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50",
+        "scroll-m-20 text-xl sm:text-2xl font-semibold tracking-tight break-words text-zinc-950 dark:text-zinc-50",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ export function H4({
   return (
     <h4
       className={cn(
-        "scroll-m-20 text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50",
+        "scroll-m-20 text-lg sm:text-xl font-semibold tracking-tight break-words text-zinc-950 dark:text-zinc-50",
         className,
       )}
       {...props}
@@ -70,7 +70,7 @@ export function P({
   return (
     <p
       className={cn(
-        "leading-7 text-zinc-700 dark:text-zinc-300 [&:not(:first-child)]:mt-6",
+        "leading-6 sm:leading-7 break-words text-zinc-700 dark:text-zinc-300 [&:not(:first-child)]:mt-4 sm:[&:not(:first-child)]:mt-6",
         className,
       )}
       {...props}
@@ -85,7 +85,7 @@ export function Blockquote({
   return (
     <blockquote
       className={cn(
-        "mt-6 border-l-2 border-zinc-300 dark:border-zinc-700 pl-6 italic text-zinc-600 dark:text-zinc-400",
+        "mt-4 sm:mt-6 border-l-2 border-zinc-300 dark:border-zinc-700 pl-4 sm:pl-6 italic break-words text-zinc-600 dark:text-zinc-400",
         className,
       )}
       {...props}
@@ -100,7 +100,7 @@ export function List({
   return (
     <ul
       className={cn(
-        "my-6 ml-6 list-disc [&>li]:mt-2 text-zinc-700 dark:text-zinc-300",
+        "my-4 sm:my-6 ml-4 sm:ml-6 list-disc [&>li]:mt-1.5 sm:[&>li]:mt-2 break-words text-zinc-700 dark:text-zinc-300",
         className,
       )}
       {...props}
@@ -115,7 +115,7 @@ export function InlineCode({
   return (
     <code
       className={cn(
-        "relative rounded bg-zinc-100 dark:bg-zinc-800 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-zinc-900 dark:text-zinc-100",
+        "relative rounded bg-zinc-100 dark:bg-zinc-800 px-[0.3rem] py-[0.2rem] font-mono text-xs sm:text-sm font-semibold break-all sm:break-words text-zinc-900 dark:text-zinc-100",
         className,
       )}
       {...props}
@@ -129,7 +129,7 @@ export function Lead({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={cn("text-xl text-zinc-500 dark:text-zinc-400", className)}
+      className={cn("text-lg sm:text-xl break-words text-zinc-500 dark:text-zinc-400", className)}
       {...props}
     />
   );
@@ -142,7 +142,7 @@ export function Large({
   return (
     <div
       className={cn(
-        "text-lg font-semibold text-zinc-950 dark:text-zinc-50",
+        "text-base sm:text-lg font-semibold break-words text-zinc-950 dark:text-zinc-50",
         className,
       )}
       {...props}
@@ -157,7 +157,7 @@ export function Small({
   return (
     <small
       className={cn(
-        "text-sm font-medium leading-none text-zinc-600 dark:text-zinc-400",
+        "text-xs sm:text-sm font-medium leading-none text-zinc-600 dark:text-zinc-400",
         className,
       )}
       {...props}
@@ -171,7 +171,7 @@ export function Muted({
 }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
-      className={cn("text-sm text-zinc-500 dark:text-zinc-400", className)}
+      className={cn("text-xs sm:text-sm text-zinc-500 dark:text-zinc-400", className)}
       {...props}
     />
   );
