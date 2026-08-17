@@ -83,7 +83,7 @@ export const TableOfContents: React.FC = () => {
       : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
 
   return (
-    <aside className="hidden lg:flex flex-col w-[210px] 2xl:w-[260px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
+    <aside className="hidden lg:flex flex-col w-[190px] 2xl:w-[240px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
       <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
         {/* Header: Title + Progress Bar */}
         <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
