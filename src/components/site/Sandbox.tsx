@@ -549,6 +549,39 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
+const toPascalCase = (str: string) =>
+  str
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("");
+
+const generateFallbackUsage = (
+  componentName: string,
+  variantTitle: string,
+  props?: Record<string, unknown>
+): string => {
+  const pascalName = toPascalCase(componentName);
+  const cleanTitle = variantTitle.replace(/[^a-zA-Z0-9]/g, "");
+
+  const propEntries = props
+    ? Object.entries(props)
+        .map(([key, val]) => {
+          if (typeof val === "string") return `${key}="${val}"`;
+          if (typeof val === "boolean") return val ? key : `${key}={false}`;
+          return `${key}={${JSON.stringify(val)}}`;
+        })
+        .join(" ")
+    : "";
+
+  const propString = propEntries ? ` ${propEntries}` : "";
+
+  return `import { ${pascalName} } from "@/components/custom/blocks/${pascalName}Block";
+
+export default function ${cleanTitle}Demo() {
+  return <${pascalName}${propString} className="w-full" />;
+}`;
+};
+
 export function ExampleShowcase({
   name,
   examples,
@@ -606,6 +639,9 @@ export function ExampleShowcase({
     if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
   }, [shared, ownsPicker, defaultColor]);
 
+  // Find component source code fallback from any example that explicitly provides it
+  const fallbackCode = examples.find((ex) => ex.code)?.code;
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
       {ownsPicker && (
@@ -625,24 +661,33 @@ export function ExampleShowcase({
           columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
         )}
       >
-        {examples.map((example) => (
-          <ExampleCard
-            key={example.id ?? slugify(example.title)}
-            name={name}
-            example={
-              colorControl
-                ? {
-                    ...example,
-                    // Explicit per-example props still win.
-                    props: { [colorProp]: color, ...example.props },
-                  }
-                : example
-            }
-            options={example.options ?? options}
-            minHeight={example.minHeight ?? minHeight}
-            maxHeight={example.maxHeight ?? maxHeight}
-          />
-        ))}
+        {examples.map((example) => {
+          const effectiveProps = colorControl
+            ? { [colorProp]: color, ...example.props }
+            : example.props;
+
+          const effectiveUsage =
+            example.usage ??
+            generateFallbackUsage(name, example.title, effectiveProps);
+
+          const effectiveCode = example.code ?? fallbackCode;
+
+          return (
+            <ExampleCard
+              key={example.id ?? slugify(example.title)}
+              name={name}
+              example={{
+                ...example,
+                props: effectiveProps,
+                usage: effectiveUsage,
+                code: effectiveCode,
+              }}
+              options={example.options ?? options}
+              minHeight={example.minHeight ?? minHeight}
+              maxHeight={example.maxHeight ?? maxHeight}
+            />
+          );
+        })}
       </div>
     </div>
   );
