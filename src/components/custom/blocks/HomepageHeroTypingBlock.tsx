@@ -6,10 +6,10 @@ import {
   ArrowRight,
   Check,
   Copy,
-  Github,
   Sparkles,
   Terminal,
 } from "lucide-react";
+import { GitHubIcon } from "./Icons";
 import Link from "next/link";
 
 /* ═══════════════════════════════════════════════
@@ -115,8 +115,8 @@ export const HomepageHeroTypingBlock = forwardRef<
         "Modern",
       ],
       titleSuffix = " Interfaces.",
-      subtitle = "A meticulous library of copy-paste React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
-      cliCommand = "npx docs-ui@latest init",
+      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
+      cliCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",
       secondaryActionLabel = "Star on GitHub",
@@ -306,7 +306,7 @@ export const HomepageHeroTypingBlock = forwardRef<
                   className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{secondaryActionLabel}</span>
-                  <Github className="size-3 sm:size-5 shrink-0" />
+                  <GitHubIcon className="size-3 sm:size-5 shrink-0" />
                 </Link>
               )}
             </div>

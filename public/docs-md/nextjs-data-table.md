@@ -6,7 +6,7 @@ This component is the engine for SaaS dashboards and administrative panels. Unli
 
 ## Examples
 
-Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in. The first example's **Code** tab contains the full component source.
+Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in.
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
@@ -41,12 +41,24 @@ export default function UserManagement() {
   );
 }`;
 
-export const usageNoSearch = `// Drop the global search bar when the dataset is small enough to scan.
-`;
+export const usageNoSearch = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
 
-export const usageNoSelection = `// Without selection there is no checkbox column and no batch toolbar —
-// a purely read-only report table.
-`;
+export default function TableWithoutSearch() {
+  // Drop the global search bar when the dataset is small enough to scan.
+  return (
+    
+  );
+}`;
+
+export const usageNoSelection = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+
+export default function ReadOnlyTable() {
+  // Without selection there is no checkbox column and no batch toolbar —
+  // a purely read-only report table.
+  return (
+    
+  );
+}`;
 
 export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
 
@@ -63,12 +75,6 @@ export default function ExportableTable() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component handles all complex filtering, sorting, and pagination logic purely through React's `useMemo` hooks, ensuring blazing-fast performance without any third-party dependencies like `react-table` or `ag-grid`.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AdvancedTableBlock.tsx`.
 
 ## Features
 Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.
@@ -295,4 +301,4 @@ Learn about the Data Table's robust functionality, featuring built-in sorting, f
 
 **Component Path:** `nextjs\data-table\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

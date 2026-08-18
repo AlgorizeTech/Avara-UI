@@ -6,7 +6,7 @@ This `NavigationMenu` uses a strict context-driven composition pattern to share 
 
 ## Examples
 
-The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact. The first example's **Code** tab contains the full component source.
+The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
 
 export const usageDefault = `import {
   NavigationMenu,
@@ -34,25 +34,36 @@ export default function TopNav() {
   );
 }`;
 
-export const usageMinimal = `// Pill chrome removed; the indicator becomes a thin underline.
+export const usageMinimal = `import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/custom/blocks/NavigationMenu";
 
-  {/* … */}
-`;
+export default function MinimalNav() {
+  // Pill chrome removed; the indicator becomes a thin underline.
+  return (
+    
+      {/* … */}
+    
+  );
+}`;
 
-export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over a colored surface, so
-// give it something to blur.
+export const usageGlass = `import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/custom/blocks/NavigationMenu";
 
-    {/* … */}
-  
-`;
+export default function GlassNav() {
+  return (
+    // Translucent and backdrop-blurred — meant to sit over a colored surface, so
+    // give it something to blur.
+
+        {/* … */}
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-Because this relies on standard React Context and GSAP for the smooth indicator sliding, it fits right into your existing architecture.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NavigationMenu.tsx`.
 
 ## Features
 Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
@@ -132,4 +143,4 @@ Explore the Navigation menu's accessible dropdown features, including hover-dela
 
 **Component Path:** `nextjs\navigation\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

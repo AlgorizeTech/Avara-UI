@@ -9,7 +9,7 @@ This `CustomCodeBlock` provides an elegant interface to display code snippets, c
 
 ## Examples
 
-Every block ships with macOS window controls, a language badge derived from `language`, and a copy button. The first example's **Code** tab contains the full component source.
+Every block ships with macOS window controls, a language badge derived from `language`, and a copy button.
 
 export const usageDefault = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
@@ -24,20 +24,31 @@ export default function Snippet() {
   return <CustomCodeBlock code={html} language="html" fileName="index.html" />;
 }`;
 
-export const usageTypescript = `// \`language\` drives both the highlighter and the icon in the header;
-// \`fileName\` is the label beside it.
-<CustomCodeBlock
-  code={source}
-  language="tsx"
-  fileName="SystemStatus.tsx"
-/>`;
+export const usageTypescript = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+import { source } from "./source";
 
-export const usageBash = `// Shell snippets get a terminal icon and comment-aware highlighting.
-<CustomCodeBlock
-  code={"npm install clsx tailwind-merge\nnpm run dev"}
-  language="bash"
-  fileName="terminal"
-/>`;
+export default function TypeScriptBlock() {
+  // \`language\` drives both the highlighter and the icon in the header;
+  // \`fileName\` is the label beside it.
+  return (
+    <CustomCodeBlock
+      code={source}
+      language="tsx"
+      fileName="SystemStatus.tsx"
+    />
+  );
+}`;
+
+export const usageBash = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+const commands = "npm install clsx tailwind-merge\\nnpm run dev";
+
+export default function ShellBlock() {
+  // Shell snippets get a terminal icon and comment-aware highlighting.
+  return (
+    <CustomCodeBlock code={commands} language="bash" fileName="terminal" />
+  );
+}`;
 
 export const usageTabs = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
@@ -60,26 +71,59 @@ export default function MultiFileSnippet() {
   examples={[
     {
       title: "Code block",
-      subheading: "Pass `code`, `language` and `fileName` — the header, icon and highlighting follow.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "code",
+          effect: "as the raw source string — the block does not read children.",
+        },
+        {
+          prop: "language",
+          effect:
+            "drives both the highlighter and the header icon. Defaults to `typescript`.",
+        },
+        { prop: "fileName", effect: "is the label shown beside that icon." },
+      ],
       props: { activeTab: "HTML" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CustomCodeBlock.tsx"),
     },
     {
       title: "TypeScript",
-      subheading: "Set `language` to `tsx`/`ts` for TypeScript highlighting and the matching badge.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "language",
+          value: '"tsx"',
+          effect: "— or `\"ts\"` — for TypeScript highlighting and the matching badge.",
+        },
+      ],
       props: { activeTab: "TypeScript" },
       usage: usageTypescript,
     },
     {
       title: "Shell commands",
-      subheading: "`language=\"bash\"` swaps the badge for a terminal icon and dims comment lines.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "language",
+          value: '"bash"',
+          effect: "to swap the badge for a terminal icon and dim comment lines.",
+        },
+      ],
       props: { activeTab: "Terminal" },
       usage: usageBash,
     },
     {
       title: "Multiple files",
-      subheading: "Pass `tabs` instead of `code` to group related files behind a switcher in a single block.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "tabs",
+          effect:
+            "instead of `code` to group related files behind a switcher in one block.",
+        },
+      ],
       props: { example: "tabs" },
       usage: usageTabs,
     },
@@ -88,22 +132,7 @@ export default function MultiFileSnippet() {
 
 ## Installation
 
-<Cli command={`add custom-code-block.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-The language badges come from `react-icons`, and the copy affordance from `lucide-react`.
-
-```bash
-npm install react-icons lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/CustomCodeBlock.tsx` and copy the source from the **Code** tab of the first example above.
+<Installation name="custom-code-block" />
 
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
@@ -111,7 +140,7 @@ Explore the Custom Code Block's syntax highlighting features, complete with copy
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No Highlighting Library</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

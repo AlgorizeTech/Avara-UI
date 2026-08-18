@@ -74,62 +74,146 @@ export default function DiagonalSplitDemo() {
   examples={[
     {
       title: "Classic Slider",
-      subheading: "Standard horizontal slider handle with dual arrow icon and smooth drag physics.",
+      propNotes: [
+        {
+          prop: "beforeImage",
+          effect:
+            "and `afterImage` are the two URLs; `beforeLabel` and `afterLabel` caption them.",
+        },
+        {
+          prop: "variant",
+          value: '"classic-slider"',
+          effect:
+            "is the default — a horizontal handle with dual arrows and drag physics.",
+        },
+      ],
       props: { variant: "classic-slider" },
       usage: usageClassic,
       code: extractCode("src/components/custom/blocks/ImageCompareBlock.tsx"),
     },
     {
       title: "Split Handle",
-      subheading: "Pill badge slider handle featuring high-contrast action text.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"split-handle"',
+          effect:
+            "for a pill badge handle carrying high-contrast action text.",
+        },
+      ],
       props: { variant: "split-handle" },
       usage: usageSplitHandle,
     },
     {
       title: "Glowing Divider",
-      subheading: "Continuous ambient glow line emphasizing image transformation edges.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"glowing-divider"',
+          effect:
+            "for a continuous ambient glow along the split edge.",
+        },
+      ],
       props: { variant: "glowing-divider" },
       usage: usageGlowingDivider,
     },
     {
       title: "Badge Overlay Percentage",
-      subheading: "Floating percentage overlay pill displaying active drag slider location.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"badge-overlay"',
+          effect:
+            "to float a pill showing the drag position as a percentage.",
+        },
+      ],
       props: { variant: "badge-overlay" },
       usage: usageBadgeOverlay,
     },
     {
       title: "Minimalist Thin Line",
-      subheading: "Clean ultra-thin divider line with a centered minimal dot handle.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"minimal-line"',
+          effect:
+            "for an ultra-thin divider with a small centred dot handle.",
+        },
+      ],
       props: { variant: "minimal-line" },
       usage: usageMinimalLine,
     },
     {
       title: "Hover Pointer Reveal",
-      subheading: "Follows mouse pointer position dynamically without needing click-and-drag.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"hover-reveal"',
+          effect:
+            "to follow the pointer directly — no click-and-drag needed.",
+        },
+      ],
       props: { variant: "hover-reveal" },
       usage: usageHoverReveal,
     },
     {
       title: "Vertical Slide Compare",
-      subheading: "Top-to-bottom vertical slider orientation for height-focused comparisons.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"vertical-slide"',
+          effect:
+            "to split top-to-bottom instead, for height-focused comparisons.",
+        },
+      ],
       props: { variant: "vertical-slide" },
       usage: usageVerticalSlide,
     },
     {
       title: "Circular Magnifier Lens",
-      subheading: "Circular scope lens clipping mask revealing enhanced image details.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"circle-magnifier"',
+          effect:
+            "for a circular scope that clips the after image to a lens.",
+        },
+      ],
       props: { variant: "circle-magnifier" },
       usage: usageCircleMagnifier,
     },
     {
       title: "Glassmorphic Handle",
-      subheading: "Translucent backdrop-blur glass pill handle with layer icon graphics.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"glass-handle"',
+          effect:
+            "for a translucent backdrop-blur pill with layer icons.",
+        },
+      ],
       props: { variant: "glass-handle" },
       usage: usageGlassHandle,
     },
     {
       title: "Diagonal Diamond Split",
-      subheading: "45-degree diamond handle accent with scanner crosshair iconography.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"diagonal-split"',
+          effect:
+            "for a 45-degree split with a diamond crosshair handle.",
+        },
+      ],
       props: { variant: "diagonal-split" },
       usage: usageDiagonalSplit,
     },
@@ -138,13 +222,7 @@ export default function DiagonalSplitDemo() {
 
 ## Installation
 
-<Cli command={`add image-compare.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-### Manual
-
-Copy the component source into `components/custom/blocks/ImageCompareBlock.tsx`.
+<Installation name="image-compare" />
 
 ## Features
 

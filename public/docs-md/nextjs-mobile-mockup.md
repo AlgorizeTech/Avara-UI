@@ -6,7 +6,7 @@ The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhon
 
 ## Examples
 
-Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The first example's **Code** tab contains the full component source.
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom.
 
 export const usageIphone5 = `import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -41,10 +41,6 @@ export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/c
 `;
 
 ## Installation
-
-### Copy the Component
-
-Every frame is pure CSS and SVG, so there are no dependencies to install. Create a new file at `components/custom/blocks/MobileMockupBlock.tsx` and copy the source from the **Code** tab of the first example above — it exports all six devices.
 
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
@@ -95,4 +91,4 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 
 **Component Path:** `nextjs\mobile-mockup\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

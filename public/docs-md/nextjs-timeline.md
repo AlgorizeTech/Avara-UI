@@ -6,7 +6,7 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 ## Examples
 
-Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades. The first example's **Code** tab contains the full component source.
+Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
 export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
@@ -41,32 +41,48 @@ export default function OrderTracker() {
   return ;
 }`;
 
-export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
-// collapses to a single left rail below that. The breakpoint is a container
-// query, so it tracks the column the timeline sits in — not the window.
-`;
+export const usageCenter = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
-export const usageRight = ``;
+export default function CenterTimeline() {
+  // Zig-zags the cards once the timeline itself is at least 576px wide, and
+  // collapses to a single left rail below that. The breakpoint is a container
+  // query, so it tracks the column the timeline sits in — not the window.
+  return ;
+}`;
 
-export const usageMinimal = `// Drops the card surface; the rail and type carry the structure.
-`;
+export const usageRight = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
-export const usageGlass = `
-  
-`;
+export default function RightTimeline() {
+  return ;
+}`;
 
-export const usageNoAnimation = `// Renders in place — no staggered GSAP entrance.
-`;
+export const usageMinimal = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+export default function MinimalTimeline() {
+  // Drops the card surface; the rail and type carry the structure.
+  return ;
+}`;
+
+export const usageGlass = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+export default function GlassTimeline() {
+  return (
+
+  );
+}`;
+
+export const usageNoAnimation = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+export default function StaticTimeline() {
+  // Renders in place — no staggered GSAP entrance.
+  return ;
+}`;
 
 ## Installation
 
-### Copy the Component
+### Requires Tailwind CSS v4
 
-This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
-
-Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
+The breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. Container queries are built into Tailwind v4; on v3 the rail will not respond.
 
 ## Props Reference
 
@@ -232,4 +248,4 @@ Copy the full engine code from the **Code** tab of the first example above into 
 
 **Component Path:** `nextjs\timeline\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

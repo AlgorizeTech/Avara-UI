@@ -8,7 +8,7 @@ ensuring the volumetric glows remain silky smooth.
 
 ## Examples
 
-Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth. The first example's **Code** tab contains the full component source.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
   MagicBento,
@@ -27,34 +27,42 @@ export default function FeatureGrid() {
   );
 }`;
 
-export const usageHighlight = `// Without \`highlight\`, the border only lights where the cursor is.
-…
+export const usageHighlight = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
 
-// With it, a conic gradient spins behind the mask continuously — use it on
-// the one card you want the eye to land on first.
-…`;
+export default function HighlightedBento() {
+  return (
+    
+      {/* Without \`highlight\`, the border only lights where the cursor is. */}
+      …
 
-export const usageSpans = `// The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-// layout with span utilities on each card.
+      {/* With it, a conic gradient spins behind the mask continuously — use it
+          on the one card you want the eye to land on first. */}
+      …
+    
+  );
+}`;
 
-  …
-  …
-  …
-`;
+export const usageSpans = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
+
+export default function BentoSpans() {
+  // The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
+  // layout with span utilities on each card.
+  return (
+    
+      …
+      …
+      …
+    
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This layout block relies on **Framer Motion** to calculate the radial gradient coordinates dynamically.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MagicBentoBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -148,4 +156,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\magic-bento\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

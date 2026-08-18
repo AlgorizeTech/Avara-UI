@@ -146,7 +146,7 @@ export function SandboxClient({ name }: { name: string }) {
 
   return (
     <div
-      className="w-full flex items-center justify-center pt-4 pb-4 pl-4 pr-[2px]"
+      className="w-full h-full flex flex-col items-center justify-center py-6 px-4"
       style={{ minHeight: SANDBOX_MIN_HEIGHT }}
     >
       <SandboxErrorBoundary name={name}>

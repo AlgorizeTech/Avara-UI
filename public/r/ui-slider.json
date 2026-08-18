@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-slider",
-  "title": "Ui Slider",
+  "title": "UI Slider",
   "author": "AlgorizeTech",
   "description": "The Radix slider primitive used by pricing blocks for usage-based tier selection.",
   "dependencies": [

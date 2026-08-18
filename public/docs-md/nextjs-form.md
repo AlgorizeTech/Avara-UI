@@ -6,7 +6,7 @@ This engine decouples layout from state. It provides a stunning visual wrapper w
 
 ## Examples
 
-`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s. The first example's **Code** tab contains the full component source.
+`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
 export const usageNative = `"use client";
 
@@ -105,22 +105,87 @@ export default function SettingsPanel() {
   );
 }`;
 
+`, otherwise a plain ``.",
+        },
+        {
+          prop: "error",
+          effect:
+            "on `FormField` renders below the input and turns the label red. A falsy value renders nothing.",
+        },
+      ],
+      props: { demoType: "native" },
+      usage: usageNative,
+      code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
+    },
+    {
+      title: "React Hook Form + Zod",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "onSubmit",
+          effect:
+            "the result of RHF's `handleSubmit()` directly — `FormWrapper` never breaks child `ref`s, so `register()` just works.",
+        },
+      ],
+      props: { demoType: "zod" },
+      usage: usageZod,
+    },
+    {
+      title: "Error styles",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "errorVariant",
+          value: '"glitch"',
+          effect:
+            "for the animated RGB-split error text. It is the default; `\"default\"` is the static, quieter one.",
+        },
+      ],
+      props: { showAll: "error-styles" },
+      usage: usageErrorStyles,
+    },
+    {
+      title: "Submitting",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "isSubmitting",
+          effect:
+            "to `FormSubmit` to swap the label for a spinner and disable the button, which is what blocks double submits.",
+        },
+      ],
+      props: { showAll: "submitting" },
+      usage: usageSubmitting,
+    },
+    {
+      title: "Without a header",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "title",
+          effect:
+            "and `description` to drop the header and divider entirely.",
+        },
+        {
+          prop: "color",
+          effect:
+            "still drives the animated border, focus ring and submit button — any named key or hex.",
+        },
+      ],
+      props: { showAll: "bare" },
+      usage: usageBare,
+    },
+  ]}
+/>
+
 ## Installation
 
-### 1. Copy the Component
+### Optional — schema validation
 
-This component exports four modular building blocks: `FormWrapper`, `FormField`, `FormError`, and `FormSubmit`.
-
-The high-fidelity styling (the spinning conic gradient and the CSS glitch animations) are self-contained within this file and require no external animation libraries.
-
-Create a new file at `components/custom/blocks/FormBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 2. (Optional) Install React Hook Form & Zod
-
-If you intend to use the advanced enterprise validation shown in the second example, you will need to install the following packages:
+The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
 
 ```bash
-npm install react-hook-form zod @hookform/resolvers
+npx shadcn@latest install react-hook-form zod @hookform/resolvers
 ```
 
 ## Features
@@ -245,4 +310,4 @@ Explore the Form component's validation integration, accessible error messages, 
 
 **Component Path:** `nextjs\form\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

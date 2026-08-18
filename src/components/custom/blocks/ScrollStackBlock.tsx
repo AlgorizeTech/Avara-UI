@@ -120,21 +120,16 @@ export const ScrollStack = ({
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="flex min-h-screen w-full items-center justify-center sticky -top-25"
-          // style={{
-          //   // Stack offset positioning
-          //   top: `calc(5vh + ${index * cardGap}px)`,
-          //   zIndex: index + 1,
-          // }}
+          className="flex min-h-screen w-full items-center justify-center sticky top-0 sm:top-2"
         >
           <div
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
             className={cn(
-              "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
+              "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-2xl p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
               item.color ||
-                "bg-white dark:bg-zinc-900 border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-white",
+                "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:border-[var(--theme-color,var(--primary))]",
             )}
           >
             {/* Subtle Glass Noise Overlay */}
@@ -142,8 +137,8 @@ export const ScrollStack = ({
 
             <div className="flex-1 flex flex-col justify-center relative z-10">
               {item.icon && (
-                <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-white/10 flex items-center justify-center mb-6 shadow-sm dark:shadow-inner border border-zinc-200/80 dark:border-white/20 transition-colors">
-                  <item.icon className="w-7 h-7 text-zinc-800 dark:text-white" />
+                <div className="w-14 h-14 rounded-2xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center mb-6 shadow-sm text-[var(--theme-color,var(--primary))] transition-colors">
+                  <item.icon className="w-7 h-7 text-[var(--theme-color,var(--primary))]" />
                 </div>
               )}
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">

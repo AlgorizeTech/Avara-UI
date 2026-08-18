@@ -6,7 +6,7 @@ It automatically injects a dynamic, radial glare layer over the content that tra
 
 ## Examples
 
-Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
@@ -18,35 +18,47 @@ export default function AccessKeyCard() {
   );
 }`;
 
-export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
-// card is small — past that the perspective starts to shear.
-{card}`;
+export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
-export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
-{card}`;
+export default function StrongTilt() {
+  // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+  // card is small — past that the perspective starts to shear.
+  return {card};
+}`;
 
-export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
-// pointer. Set it to 0 to drop the reflection entirely.
-{card}`;
+export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
-export const usageNoGlare = `{card}`;
+export default function SubtleTilt() {
+  // A restrained tilt for dense layouts where many cards move at once.
+  return (
+    
+      {card}
+    
+  );
+}`;
 
-export const usageScale = `// How far the card lifts toward the viewer on hover.
-{card}`;
+export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function StrongGlare() {
+  // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+  // pointer. Set it to 0 to drop the reflection entirely.
+  return {card};
+}`;
+
+export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function NoGlare() {
+  return {card};
+}`;
+
+export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+export default function LiftOnHover() {
+  // How far the card lifts toward the viewer on hover.
+  return {card};
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component requires **Framer Motion** for its spring physics and `useTransform` logic.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -138,4 +150,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\tilted-card\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

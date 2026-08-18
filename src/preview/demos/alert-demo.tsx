@@ -18,13 +18,11 @@ const TYPE_ICONS: Record<AlertType, string> = {
   dark: "Bell",
 };
 
-/** Backdrop the glass/glow variants need to read correctly. */
+/** Backdrop the glass variant needs to read correctly. */
 const backdropFor = (variant: AlertVariant) =>
   variant === "glass"
     ? "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100 via-zinc-100 to-zinc-50 dark:from-blue-900/40 dark:via-zinc-950 dark:to-black"
-    : variant === "glow"
-      ? "bg-black"
-      : "bg-transparent";
+    : "bg-transparent";
 
 export default function AlertDemo({
   type = "success",

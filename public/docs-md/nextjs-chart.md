@@ -6,7 +6,7 @@ This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.
 
 ## Examples
 
-One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. The first example's **Code** tab contains the full component source.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
 
 export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
@@ -23,30 +23,50 @@ export default function RevenueChart() {
   );
 }`;
 
-export const usageLine = `// Bezier-smoothed stroke, no fill.
-`;
+export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
-export const usageArea = `// Same line, plus a gradient fill dropped beneath the stroke.
-`;
+export default function RevenueLine() {
+  // Bezier-smoothed stroke, no fill.
+  return (
+    
+  );
+}`;
 
-export const usagePie = `// Pie and donut render in a 1:1 container, so they never stretch into
-// ovals, and shade each slice from a single theme color.
-`;
+export const usageArea = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
-export const usageDonut = ``;
+export default function RevenueArea() {
+  // Same line, plus a gradient fill dropped beneath the stroke.
+  return (
+    
+  );
+}`;
 
-export const usageNoGrid = `// Grid lines only apply to bar/line charts.
-`;
+export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+export default function RevenuePie() {
+  // Pie and donut render in a 1:1 container, so they never stretch into
+  // ovals, and shade each slice from a single theme color.
+  return (
+    
+  );
+}`;
+
+export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+export default function RevenueDonut() {
+  return (
+    
+  );
+}`;
+
+export const usageNoGrid = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+export default function CleanBarChart() {
+  // Grid lines only apply to bar/line charts.
+  return ;
+}`;
 
 ## Installation
-
-### Copy the Component
-
-Because this rewrite drops all external animation libraries, it is **100% dependency-free**.
-
-The engine uses standard Tailwind utility classes and injects its own lightweight `@keyframes` for the bar growth, line drawing, and pie-burst animations.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChartBlock.tsx`.
 
 ## Features
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
@@ -149,4 +169,4 @@ Explore the Chart component's data visualization capabilities, featuring respons
 
 **Component Path:** `nextjs\chart\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -4,7 +4,7 @@ A complete, production-ready Cart component designed for modern e-commerce appli
 
 ## Examples
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance. The first example's **Code** tab contains the full component source.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
 export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
@@ -14,28 +14,22 @@ export default function Layout() {
   );
 }`;
 
-export const usageModal = `// Centred dialog with a blurred backdrop — same trigger, same state.
-`;
+export const usageModal = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
 
-export const usagePage = `// Full-width two-column layout for a dedicated /cart route.
+export default function ModalCart() {
+  // Centred dialog with a blurred backdrop — same trigger, same state.
+  return ;
+}`;
+
+export const usagePage = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+
+// Full-width two-column layout for a dedicated /cart route.
 // No trigger button — the cart is the page.
 export default function CartPage() {
   return ;
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component uses `gsap` for the buttery-smooth slide and scale animations, and `lucide-react` for standard UI icons (Plus, Minus, Trash, ShoppingBag).
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/CartBlock.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
@@ -87,4 +81,4 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
 
 **Component Path:** `nextjs\cart\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

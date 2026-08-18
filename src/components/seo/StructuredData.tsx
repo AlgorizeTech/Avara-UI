@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { SITE_URL, siteConfig, links, socialLinks } from "@/config/site";
 
 // Lazy load structured data after initial render
 export function StructuredData() {
@@ -13,10 +14,10 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            name: "Next.js Documentation",
+            name: siteConfig.name,
             description:
-              "Modern React component library with 500+ animated components built with Tailwind CSS and Framer Motion.",
-            url: "https://seraui.seraprogrammer.com",
+              siteConfig.description,
+            url: SITE_URL,
             applicationCategory: "DeveloperApplication",
             operatingSystem: "Web",
             softwareVersion: "1.0.0",
@@ -30,13 +31,13 @@ export function StructuredData() {
             },
             author: {
               "@type": "Organization",
-              name: "Next.js Documentation Team",
-              url: "https://github.com/sera-ui",
+              name: siteConfig.author,
+              url: links.github,
             },
             keywords:
-              "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, Bangladesh",
+              "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, shadcn registry",
             programmingLanguage: ["TypeScript", "JavaScript", "CSS"],
-            downloadUrl: "https://github.com/seraprogrammer/sera-ui",
+            downloadUrl: links.github,
             license: "https://opensource.org/licenses/MIT",
           },
         },
@@ -45,17 +46,13 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Next.js Documentation",
-            url: "https://seraui.seraprogrammer.com",
-            logo: "https://seraui.seraprogrammer.com/logo.svg",
+            name: siteConfig.name,
+            url: SITE_URL,
+            logo: `${SITE_URL}/logo.svg`,
             description:
-              "Modern React component library for developers. First UI library from Bangladesh.",
+              siteConfig.description,
             foundingDate: "2024",
-            sameAs: [
-              "https://github.com/seraprogrammer/sera-ui",
-              "https://twitter.com/sera_ui",
-              "https://www.npmjs.com/package/sera-ui",
-            ],
+            sameAs: socialLinks,
             address: {
               "@type": "PostalAddress",
               addressCountry: "BD",
@@ -67,20 +64,20 @@ export function StructuredData() {
           data: {
             "@context": "https://schema.org",
             "@type": "WebSite",
-            name: "Next.js Documentation",
-            url: "https://seraui.seraprogrammer.com",
+            name: siteConfig.name,
+            url: SITE_URL,
             description:
-              "Modern React component library with 500+ animated components",
+              siteConfig.tagline,
             publisher: {
               "@type": "Organization",
-              name: "Next.js Documentation",
+              name: siteConfig.name,
             },
             potentialAction: {
               "@type": "SearchAction",
               target: {
                 "@type": "EntryPoint",
                 urlTemplate:
-                  "https://seraui.seraprogrammer.com/docs?search={search_term_string}",
+                  `${SITE_URL}/docs?search={search_term_string}`,
               },
               "query-input": "required name=search_term_string",
             },

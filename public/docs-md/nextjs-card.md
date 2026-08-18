@@ -6,7 +6,7 @@ Building a UI entirely out of raw `div` tags quickly leads to inconsistent paddi
 
 ## Examples
 
-The sub-components handle their own padding, so cards stay balanced whatever you put in them. The first example's **Code** tab contains the full component source.
+The sub-components handle their own padding, so cards stay balanced whatever you put in them.
 
 export const usageDefault = `import {
   Card,
@@ -116,12 +116,6 @@ export default function StatGrid() {
 
 ## Installation
 
-### Copy the Component
-
-This component is dependency-free — a set of composable wrappers over Tailwind classes.
-
-Create a new file at `components/custom/blocks/CardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.
 
@@ -189,4 +183,4 @@ Learn about the Card component's flexible layout options, including headers, foo
 
 **Component Path:** `nextjs\card\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

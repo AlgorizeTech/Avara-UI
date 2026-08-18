@@ -6,7 +6,7 @@ This block is split into two composable pieces: the core `` bar for the visual f
 
 ## Examples
 
-Each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
 
@@ -63,12 +63,6 @@ export default function WizardProgress() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component handles its own internal transition math and relies purely on standard Tailwind utilities.
-
-Create a new file at `components/custom/blocks/ProgressBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
@@ -212,4 +206,4 @@ Explore the Progress bar's features, including smooth value interpolation, indet
 
 **Component Path:** `nextjs\progress\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

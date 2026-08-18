@@ -6,7 +6,7 @@ Along with the classic `solid` and `outline` variations, this component now feat
 
 ## Examples
 
-Each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Alert } from "@/components/custom/blocks/Alerts";
 
@@ -90,12 +90,6 @@ export default function RichAlert() {
 
 ## Installation
 
-### 1. Copy the Component
-
-This component manages its own exit/entrance animations using Tailwind CSS utility classes and basic React state, meaning you don't need any complex external animation libraries to use it.
-
-Create a new file at `components/custom/blocks/Alerts.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Learn about the Alert component's capabilities, including different severity levels, customizable icons, and dismissible actions.
 
@@ -170,4 +164,4 @@ Learn about the Alert component's capabilities, including different severity lev
 
 **Component Path:** `nextjs\alert\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

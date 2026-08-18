@@ -19,6 +19,23 @@ import { SearchModal } from "./search-modal";
 import { SidebarMobile } from "./sidebar-mobile";
 import { ThemeSwitcher } from "./theme";
 
+/**
+ * The guide pages, in sidebar order. "Docs" opens the first of them rather than
+ * the /docs landing page, so clicking it starts the reader at the Introduction
+ * instead of an index they have to click through.
+ */
+const DOCS_ENTRY = "/docs/nextjs/index";
+const GUIDE_PATHS = [
+  "/docs",
+  DOCS_ENTRY,
+  "/docs/nextjs/installation",
+  "/docs/nextjs/first-app",
+  "/docs/nextjs/architecture",
+];
+
+/** True on the guide pages; everything else under /docs/ is a component page. */
+const isGuidePath = (pathname: string) => GUIDE_PATHS.includes(pathname);
+
 // ==========================================
 // PREMIUM HEADER COMPONENT
 // ==========================================
@@ -217,11 +234,11 @@ const Header = () => {
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname === "/docs"
+                isGuidePath(pathname)
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "hover:text-foreground hover:bg-muted/60"
               )}
-              href="/docs"
+              href={DOCS_ENTRY}
               prefetch={false}
             >
               <BookOpen className="h-3.5 w-3.5" />
@@ -230,7 +247,7 @@ const Header = () => {
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname.startsWith("/docs/")
+                pathname.startsWith("/docs/") && !isGuidePath(pathname)
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "hover:text-foreground hover:bg-muted/60"
               )}

@@ -9,7 +9,7 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 ## Examples
 
-Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead. The first example's **Code** tab contains the full component source.
+Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
 export const usageDefault = `import {
   MobileSidebarTrigger,
@@ -155,19 +155,52 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
     {
       title: "Sidebar",
       subheading: "Wrap the shell in `SidebarProvider`, then compose header, groups and footer.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "on the provider themes every active item below it.",
+        },
+        {
+          prop: "active",
+          effect:
+            "on a `SidebarItem` is what highlights it in that colour.",
+        },
+        {
+          prop: "label",
+          effect:
+            "on a `SidebarGroup` is the uppercase cluster header — it hides itself when collapsed.",
+        },
+      ],
       props: { variant: "attached", defaultExpanded: true },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
     },
     {
       title: "Floating",
-      subheading: "`variant=\"floating\"` lifts the panel off the edge and rounds its corners.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"floating"',
+          effect:
+            "to lift the panel off the edge and round its corners. `attached` pins it flat.",
+        },
+      ],
       props: { variant: "floating", defaultExpanded: true },
       usage: usageFloating,
     },
     {
       title: "Collapsed rail",
-      subheading: "`defaultExpanded={false}` boots straight into the icon rail with hover tooltips.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultExpanded",
+          value: '{false}',
+          effect:
+            "to boot straight into the icon rail — item icons centre themselves and labels become hover tooltips.",
+        },
+      ],
       props: { variant: "attached", defaultExpanded: false },
       usage: usageCollapsed,
     },
@@ -176,17 +209,7 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
 
 ## Installation
 
-<Cli command={`add sidebar.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
-
-Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
+<Installation name="sidebar" />
 
 ## Props Reference
 

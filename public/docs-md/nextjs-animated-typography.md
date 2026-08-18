@@ -8,7 +8,7 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 ## Examples
 
-Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it. The first example's **Code** tab contains the full component source.
+Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
 export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
@@ -72,27 +72,37 @@ export default function WholeStringVariants() {
   );
 }`;
 
-export const usageTags = `// \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
-// intact no matter which effect you use.
+export const usageTags = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-`;
+export default function SemanticTags() {
+  // \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
+  // intact no matter which effect you use.
+  return (
 
-export const usageAlign = `
+  );
+}`;
 
-`;
+export const usageAlign = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export const usageSizes = `// \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
-// unaffected either way.
+const copy = "The quick brown fox jumps over the lazy dog.";
 
-`;
+export default function Alignment() {
+  return (
+
+  );
+}`;
+
+export const usageSizes = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function SizeOverride() {
+  // \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
+  // unaffected either way.
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component is completely dependency-free. It uses dynamic CSS keyframe injection for the specialized animations, and optimized `setInterval` logic for the Typewriter variant to ensure it handles dynamic text wrapping gracefully without causing horizontal scrollbars.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTypographyBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -222,4 +232,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\animated-typography\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

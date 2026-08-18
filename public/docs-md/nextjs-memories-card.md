@@ -4,7 +4,7 @@ A premium, interactive card stack component featuring real-time 3D tilt physics,
 
 ## Examples
 
-Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck. The first example's **Code** tab contains the full component source.
+Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck.
 
 export const usageDefault = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
 
@@ -32,14 +32,18 @@ export default function TravelDeck() {
   return ;
 }`;
 
-export const usageMinimal = `// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
+export const usageMinimal = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
+
+// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
 // metadata and the overlay collapses to just the title.
 const memories = [
   { id: "m1", title: "Kyoto Lantern Festival", image: "/photos/kyoto.jpg" },
   { id: "m2", title: "Dolomites Alpine Ridge", image: "/photos/dolomites.jpg" },
 ];
 
-`;
+export default function PhotoDeck() {
+  return ;
+}`;
 
 export const usageOnChange = `import { useState } from "react";
 
@@ -56,18 +60,6 @@ export default function TravelDeck() {
 }`;
 
 ## Installation
-
-### Dependencies
-
-This component relies on **Framer Motion** for 3D spring tilt physics and drag gesture handling, and **Lucide React** for UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/MemoriesCardBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -212,4 +204,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\memories-card\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

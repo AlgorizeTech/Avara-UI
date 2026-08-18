@@ -6,7 +6,7 @@ This engine separates data flow layout orchestration from canvas tracking. By co
 
 ## Examples
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path. The first example's **Code** tab contains the full component source.
+Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
 
 export const usageDefault = `import {
   FlowCanvas,
@@ -25,30 +25,40 @@ export default function AutomationMap() {
   );
 }`;
 
-export const usageLinear = `// The smallest useful chart: one route, three nodes on it.
+export const usageLinear = `import {
+  Flowchart,
+  FlowCanvas,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
 
-`;
+export default function LinearPipeline() {
+  // The smallest useful chart: one route, three nodes on it.
+  return (
 
-export const usageIdle = `// Pass null and nothing streams until the reader picks a node.
-…`;
+  );
+}`;
 
-export const usageColor = `// One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
-// active stream, the node ports and the focus ring together.
-…`;
+export const usageIdle = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+
+export default function IdlePipeline() {
+  // Pass null and nothing streams until the reader picks a node.
+  return (
+
+  );
+}`;
+
+export const usageColor = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+
+export default function AccentedPipeline() {
+  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
+  // active stream, the node ports and the focus ring together.
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This layout block depends explicitly on **GSAP** for the vector draw-in and spring element entrance scaling sequences.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/FlowchartBlock.tsx`.
 
 ## Best Practices & Guidelines
 
@@ -124,4 +134,4 @@ Copy the full engine code from the **Code** tab of the first example above into 
 
 **Component Path:** `nextjs\flowchart\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

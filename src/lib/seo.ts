@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SITE_URL } from "@/config/site";
 
 interface SEOConfig {
   title: string
@@ -26,13 +27,13 @@ export function generateMetadata(config: SEOConfig): Metadata {
     nofollow = false,
     ogImage = '/og-image.png',
     twitterImage,
-    authors = ['Next.js Documentation Team'],
+    authors = ['AlgorizeTech'],
     category = 'technology',
     tags = []
   } = config
 
-  const baseUrl = 'https://seraui.seraprogrammer.com'
-  const fullTitle = title.includes('Next.js Documentation') ? title : `${title} | Next.js Documentation`
+  const baseUrl = SITE_URL
+  const fullTitle = title.includes('Algorize UI') ? title : `${title} | Algorize UI`
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : undefined
 
   return {
@@ -40,8 +41,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
     description,
     keywords: [...keywords, ...tags].join(', '),
     authors: authors.map(name => ({ name })),
-    creator: 'Next.js Documentation Team',
-    publisher: 'Next.js Documentation',
+    creator: 'AlgorizeTech',
+    publisher: 'Algorize UI',
     category,
     
     // Robots
@@ -67,7 +68,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       url: canonicalUrl,
-      siteName: 'Next.js Documentation',
+      siteName: 'Algorize UI',
       locale: 'en_US',
       type: 'website',
       images: [
@@ -86,8 +87,6 @@ export function generateMetadata(config: SEOConfig): Metadata {
       card: 'summary_large_image',
       title: fullTitle,
       description,
-      creator: '@sera_ui',
-      site: '@sera_ui',
       images: [twitterImage || ogImage],
     },
 
@@ -97,8 +96,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
       'color-scheme': 'dark light',
       'mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'default',
-      'apple-mobile-web-app-title': 'Next.js Documentation',
-      'application-name': 'Next.js Documentation',
+      'apple-mobile-web-app-title': 'Algorize UI',
+      'application-name': 'Algorize UI',
       'msapplication-TileColor': '#3b82f6',
       'msapplication-config': '/browserconfig.xml',
     },
@@ -146,7 +145,7 @@ export function generateArticleMetadata(
   description: string, 
   publishedTime: string,
   modifiedTime?: string,
-  authors: string[] = ['Next.js Documentation Team'],
+  authors: string[] = ['AlgorizeTech'],
   tags: string[] = []
 ): Metadata {
   return {
@@ -178,7 +177,7 @@ export function generateArticleMetadata(
 
 // Generate JSON-LD structured data
 export function generateStructuredData(type: 'component' | 'article' | 'faq' | 'howto', data: Record<string, unknown>) {
-  const baseUrl = 'https://seraui.seraprogrammer.com'
+  const baseUrl = SITE_URL
   
   switch (type) {
     case 'component':
@@ -189,15 +188,15 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         description: data.description,
         programmingLanguage: 'TypeScript',
         runtimePlatform: 'React',
-        codeRepository: 'https://github.com/seraprogrammer/sera-ui',
+        codeRepository: 'https://github.com/AlgorizeTech',
         license: 'https://opensource.org/licenses/MIT',
         author: {
           '@type': 'Organization',
-          name: 'Next.js Documentation Team'
+          name: 'AlgorizeTech'
         },
         isPartOf: {
           '@type': 'SoftwareApplication',
-          name: 'Next.js Documentation',
+          name: 'Algorize UI',
           url: baseUrl
         }
       }
@@ -210,11 +209,11 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         description: data.description,
         author: {
           '@type': 'Organization',
-          name: 'Next.js Documentation Team'
+          name: 'AlgorizeTech'
         },
         publisher: {
           '@type': 'Organization',
-          name: 'Next.js Documentation',
+          name: 'Algorize UI',
           logo: {
             '@type': 'ImageObject',
             url: `${baseUrl}/logo.svg`

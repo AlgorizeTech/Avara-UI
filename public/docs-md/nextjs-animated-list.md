@@ -6,7 +6,7 @@ Standard list animations often feel rigid. By wrapping your notification or acti
 
 ## Examples
 
-Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight. The first example's **Code** tab contains the full component source.
+Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
 
 export const usageDefault = `import {
   AnimatedList,
@@ -30,48 +30,72 @@ export default function NotificationFeed() {
   );
 }`;
 
-export const usageFlip = `// The 3D flip is the signature entrance — children rotate in on the X axis.
+export const usageFlip = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
 
-  {items.map((item) => (
-    {/* … */}
-  ))}
-`;
+export default function FlipFeed() {
+  // The 3D flip is the signature entrance — children rotate in on the X axis.
+  return (
+    
+      {items.map((item) => (
+        {item.label}
+      ))}
+    
+  );
+}`;
 
-export const usageSlideUp = `// Slide variants come in from a direction instead of rotating.
+export const usageSlideUp = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
 
-  {items.map((item) => (
-    {/* … */}
-  ))}
-`;
+export default function SlideUpFeed() {
+  // Slide variants come in from a direction instead of rotating.
+  return (
+    
+      {items.map((item) => (
+        {item.label}
+      ))}
+    
+  );
+}`;
 
-export const usagePop = `
-  {items.map((item) => (
-    {/* … */}
-  ))}
-`;
+export const usagePop = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
 
-export const usageTiming = `// \`staggerDelay\` is the gap between children, \`duration\` how long each one
-// takes, \`animationDelay\` how long the whole sequence waits before starting,
-// and \`ease\` is any GSAP easing string.
+export default function PopFeed() {
+  return (
+    
+      {items.map((item) => (
+        {item.label}
+      ))}
+    
+  );
+}`;
 
-  {items.map((item) => (
-    {/* … */}
-  ))}
-`;
+export const usageTiming = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+
+export default function TunedFeed() {
+  // \`staggerDelay\` is the gap between children, \`duration\` how long each one
+  // takes, \`animationDelay\` how long the whole sequence waits before starting,
+  // and \`ease\` is any GSAP easing string.
+  return (
+    
+      {items.map((item) => (
+        {item.label}
+      ))}
+    
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component requires **GSAP** to handle the staggered 3D physics and the rapid coordinate updates for the hover spotlight.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedListBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -164,4 +188,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\animated-list\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

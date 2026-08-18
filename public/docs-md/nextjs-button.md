@@ -4,7 +4,7 @@ A highly customizable, interactive button primitive. Features a built-in radial 
 
 ## Examples
 
-Explore the different variations of the Button component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Button component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
 
@@ -79,125 +79,12 @@ export default function SocialLoginButtons() {
 
 ## Installation
 
-### 1. Copy the Core Primitive
+### Optional — the icon set
 
-The main button component manages its own `ripple` state and injects the necessary CSS keyframes dynamically on mount.
+The showcase uses a set of brand and UI icons that ship as their own registry item. The button does not need them.
 
-Create a new file at `components/custom/button.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 2. Copy the SVG Icons (Optional)
-
-To use the exact social media and UI icons demonstrated in the showcase, you can copy the full icon set into your project.
-
-Create a new file at `components/custom/icons.tsx` and paste the following code:
-
-```tsx
-
-// Social Media Icons
-export const GoogleIcon = () => (
-
-);
-
-export const GitHubIcon = () => (
-
-);
-
-export const TwitterIcon = () => (
-
-);
-
-export const FacebookIcon = () => (
-
-);
-
-export const EmailIcon = () => (
-
-);
-
-export const XIcon2 = () => (
-
-);
-
-export const AppleIcon = () => (
-
-);
-
-export const MicrosoftIcon = () => (
-
-);
-
-export const SlackIcon = () => (
-
-);
-
-export const LinkedInIcon = () => (
-
-);
-
-// Action Icons
-export const DownloadIcon = () => (
-
-);
-
-export const ShoppingCartIcon = () => (
-
-);
-
-export const HeartIcon = () => (
-
-);
-
-export const StarIcon = () => (
-
-);
-
-export const ShareIcon = () => (
-
-);
-
-export const PlusIcon = () => (
-
-);
-
-export const MinusIcon = () => (
-
-);
-
-export const CheckIcon = () => (
-
-);
-
-export const XIcon = () => (
-
-);
-
-export const ArrowRightIcon = () => (
-
-);
-
-export const ArrowLeftIcon = () => (
-
-);
-
-export const SettingsIcon = () => (
-
-);
-
-export const SearchIcon = () => (
-
-);
-
-export const BellIcon = () => (
-
-);
-
-export const MailIcon = () => (
-
-);
-
-export const PhoneIcon = () => (
-
-);
+```bash
+npx shadcn@latest add icons.json
 ```
 
 ## Features
@@ -273,4 +160,4 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
 **Component Path:** `nextjs\button\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

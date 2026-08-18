@@ -6,7 +6,7 @@ Toggles are primarily used to manage interface states (like text formatting in a
 
 ## Examples
 
-Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
@@ -18,17 +18,33 @@ export default function BasicToggle() {
   );
 }`;
 
-export const usageOutline = `
-  
-`;
+export const usageOutline = `"use client";
 
-export const usageGhost = `
-  
-`;
+export default function OutlineToggle() {
+  const [pressed, setPressed] = useState(false);
 
-export const usageSizes = `
+  return (
 
-`;
+  );
+}`;
+
+export const usageGhost = `"use client";
+
+export default function GhostToggle() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+
+  );
+}`;
+
+export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function ToggleSizes() {
+  return (
+
+  );
+}`;
 
 export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
@@ -65,19 +81,15 @@ export default function FormattingToolbar() {
   );
 }`;
 
-export const usageDisabled = `
-  
-`;
+export const usageDisabled = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function DisabledToggle() {
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
-
----
 
 ## Usage
 
@@ -204,4 +216,4 @@ Explore the Toggle button's simple two-state functionality, perfect for on/off s
 
 **Component Path:** `nextjs\toggle\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

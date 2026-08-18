@@ -6,7 +6,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Check, ClipboardCopy, FileCode2, Moon, Sun, SunMoon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
-import { CodeRenderer } from '@/components/site/code-renderer';
+import { CodeRenderer } from '@/components/custom/ui/code-renderer';
 
 export function CSSExportDialog() {
   const { generateCSS } = useThemeCustomizer();

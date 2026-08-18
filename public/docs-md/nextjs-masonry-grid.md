@@ -8,7 +8,7 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ## Examples
 
-The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate. The first example's **Code** tab contains the full component source.
+The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
 export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
@@ -25,33 +25,47 @@ export default function Gallery() {
   );
 }`;
 
-export const usageColumns = `// Column counts are Tailwind classes, so every breakpoint is yours to set.
- }
-/>`;
+export const usageColumns = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-export const usageGap = ` }
-/>`;
+export default function ColumnCounts() {
+  // Column counts are Tailwind classes, so every breakpoint is yours to set.
+  return (
+     }
+    />
+  );
+}`;
 
-export const usageStagger = `// \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
- } />`;
+export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-export const usageNoAnimation = `// Renders immediately — right for content that is already above the fold,
-// or when you want to respect reduced-motion yourself.
- } />`;
+export default function TighterGap() {
+  return (
+     }
+    />
+  );
+}`;
+
+export const usageStagger = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+export default function SlowerStagger() {
+  // \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
+  return (
+     }
+    />
+  );
+}`;
+
+export const usageNoAnimation = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+export default function StaticGrid() {
+  // Renders immediately — right for content that is already above the fold,
+  // or when you want to respect reduced-motion yourself.
+  return (
+     }
+    />
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component uses **Framer Motion** for the staggered spring animations.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MasonryGridBlock.tsx`.
 
 ## Features
 
@@ -99,14 +113,15 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           A function that receives the data item and its index, returning the
           React element to display.
 
-          columns
+          columnsClassName
 
-          number | object
+          string
 
-          {`{ default: 1, sm: 2, lg: 3 }`}
+          "columns-1 sm:columns-2 md:columns-3 lg:columns-4"
 
-          Determines the number of Flexbox columns. Pass a static number or a
-          breakpoint object mapping to Tailwind screens.
+          The Tailwind columns-* utilities, one per breakpoint.
+          It is a raw class string rather than a number, so every breakpoint is
+          yours to set.
 
           gapClassName
 
@@ -156,4 +171,4 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
 
 **Component Path:** `nextjs\masonry-grid\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

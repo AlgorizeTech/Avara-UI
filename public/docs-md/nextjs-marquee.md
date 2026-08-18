@@ -6,7 +6,7 @@ This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the
 
 ## Examples
 
-You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps. The first example's **Code** tab contains the full component source.
+You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
 
 export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
@@ -24,33 +24,78 @@ export default function LogoSection() {
   );
 }`;
 
-export const usageRight = `// Reverses the travel; everything else is identical.
+export const usageRight = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-  {logos.map((logo) => )}
-`;
+const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
 
-export const usageVertical = `// Vertical marquees need a bounded height on the container.
+export default function ReverseLogoWall() {
+  return (
+    // Reverses the travel; everything else is identical.
+    
+      {logos.map((logo) => (
+        
+          {logo}
+        
+      ))}
+    
+  );
+}`;
 
-  {testimonials.map((t) => )}
-`;
+export const usageVertical = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-export const usageSpeed = `// "slow" | "normal" | "fast", or a raw duration in seconds.
+const testimonials = [
+  { name: "Ada", quote: "Shipped our landing page in an afternoon." },
+  { name: "Grace", quote: "The loop is genuinely seamless." },
+  { name: "Alan", quote: "Dropped three dependencies for this one." },
+];
 
-  {images.map((src) => )}
-`;
+export default function TestimonialColumn() {
+  return (
+    // Vertical marquees need a bounded height on the container.
+    
+      {testimonials.map((t) => (
+        
+          {t.quote}
+          {t.name}
+        
+      ))}
+    
+  );
+}`;
 
-export const usageBare = `// No edge mask, and the loop keeps running under the cursor.
+export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-  {logos.map((logo) => )}
-`;
+const images = ["/gallery/01.jpg", "/gallery/02.jpg", "/gallery/03.jpg"];
+
+export default function SlowGallery() {
+  return (
+    // "slow" | "normal" | "fast", or a raw duration in seconds.
+    
+      {images.map((src) => (
+        
+      ))}
+    
+  );
+}`;
+
+export const usageBare = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+
+export default function BareMarquee() {
+  return (
+    // No edge mask, and the loop keeps running under the cursor.
+    
+      {logos.map((logo) => (
+        
+          {logo}
+        
+      ))}
+    
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component relies entirely on injected `@keyframes` and dynamic CSS variables to function, meaning it is **100% dependency-free**.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MarqueeBlock.tsx`.
 
 ## Props Reference
 
@@ -93,4 +138,4 @@ Copy the full engine code from the **Code** tab of the first example above into 
 
 **Component Path:** `nextjs\marquee\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

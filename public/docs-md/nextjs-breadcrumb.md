@@ -6,7 +6,7 @@ This component features four distinct visual variants, seamless color theming, a
 
 ## Examples
 
-You describe the trail as an `items` array; the component handles dividers, the active item and truncation. The first example's **Code** tab contains the full component source.
+You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
 export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
 
@@ -83,18 +83,6 @@ export default function WideBreadcrumb() {
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component utilizes `lucide-react` for standard UI icons like the Home button, Chevron dividers, and the Ellipsis menu.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/BreadcrumbBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
 
@@ -163,4 +151,4 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
 
 **Component Path:** `nextjs\breadcrumb\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

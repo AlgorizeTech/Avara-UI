@@ -9,7 +9,7 @@ This headless-style Toast component handles its own global state via Context, us
 
 ## Examples
 
-Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually. The first example's **Code** tab contains the full component source.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
 
 export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
 
@@ -162,49 +162,105 @@ export function Providers({ children }: { children: React.ReactNode }) {
     {
       title: "Toast",
       subheading: "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "on the provider is global — individual toasts cannot override it.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ToastBlock.tsx"),
     },
     {
       title: "Types",
-      subheading: "`type` picks the icon and accent: success, error, warning, info or default.",
+      propNotes: [
+        {
+          prop: "type",
+          effect:
+            "picks the icon and accent — `success`, `error`, `warning`, `info` or `default`.",
+        },
+      ],
       props: { example: "types" },
       usage: usageTypes,
     },
     {
       title: "With action",
-      subheading: "Pass `action` to add a button — clicking it also dismisses the toast.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "action",
+          effect:
+            "to add a button. Clicking it dismisses the toast as well as running your handler.",
+        },
+      ],
       props: { example: "action" },
       usage: usageAction,
     },
     {
       title: "Duration",
-      subheading: "`duration` sets the auto-dismiss delay in ms; `0` keeps the toast until dismissed.",
+      propNotes: [
+        {
+          prop: "duration",
+          effect:
+            "is the auto-dismiss delay in milliseconds. `0` keeps the toast up until it is dismissed.",
+        },
+      ],
       props: { example: "persistent" },
       usage: usageDuration,
     },
     {
       title: "Glow",
-      subheading: "`variant=\"glow\"` surrounds the card with a colored halo on a dark surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glow"',
+          effect:
+            "to surround the card with a coloured halo — built for dark surfaces.",
+        },
+      ],
       props: { variant: "glow", example: "types" },
       usage: usageGlow,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` uses a heavy backdrop blur — made for photographic backgrounds.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for a heavy backdrop blur, made for photographic backgrounds.",
+        },
+      ],
       props: { variant: "glass", example: "types" },
       usage: usageGlass,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the card down to a thin accent bar and text.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the card down to a thin accent bar and text.",
+        },
+      ],
       props: { variant: "minimal", example: "types" },
       usage: usageMinimal,
     },
     {
       title: "Position",
-      subheading: "`position` on the provider decides where the stack docks on screen.",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "docks the stack to any of six spots — `top-left` through `bottom-center`. Defaults to `bottom-right`.",
+        },
+      ],
       props: { position: "top-center", example: "basic" },
       usage: usagePosition,
     },
@@ -213,28 +269,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ## Installation
 
-<Cli command={`add toast.json`} />
+<Installation name="toast" />
 
-The CLI writes the component into your project and installs anything it depends on.
+### Wrap your app
 
-
-### 1. Install Dependencies
-
-This component relies on `gsap` for the entrance/exit animations and `lucide-react` for standard UI icons (Check, AlertCircle, Info).
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-This component includes the `ToastProvider`, the `useToast` hook, and the individual `ToastItem` renderer all inside a single file.
-
-Create a new file at `components/custom/blocks/ToastBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 3. Wrap your app
-
-You must wrap the highest level of your application (usually `layout.tsx` or `App.tsx`) with `<ToastProvider>`. The global `variant`, `color` and `position` are set there.
+`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
 
 ## Features
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.

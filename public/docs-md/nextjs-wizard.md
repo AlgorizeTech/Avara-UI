@@ -6,7 +6,7 @@ This component relies on the **Compound Component** pattern using React Context.
 
 ## Examples
 
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. The first example's **Code** tab contains the full component source.
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
 
 export const usageDefault = `import {
   Wizard,
@@ -76,18 +76,6 @@ export default function BareWizard() {
 }`;
 
 ## Installation
-
-### Dependencies
-
-This component leverages **GSAP** for the high-performance vertical slide and progress bar animations.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/WizardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
@@ -197,4 +185,4 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
 
 **Component Path:** `nextjs\wizard\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

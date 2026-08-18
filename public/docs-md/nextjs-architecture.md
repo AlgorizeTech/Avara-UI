@@ -19,12 +19,12 @@ This section outlines the architectural foundation of our reusable component lib
 ## Core Design Principles
 
     01. Architecture
-    Copy & Paste Model
-    Zero dependency bloat. Copy component code directly into your repository with 100% ownership.
+    Registry Install Model
+    The shadcn CLI writes each component's source into your repository. There is no wrapper package to depend on, so you own and edit the code outright.
 
     02. Modularity
-    Modular Primitives
-    Built with complete isolation using Tailwind CSS, Framer Motion, and Radix UI primitives.
+    Per-Component Dependencies
+    Each component declares only what it actually imports — usually lucide-react, gsap or framer-motion. Install one and you get its dependencies, not the whole library's.
 
     03. Build
     Static Export Ready
@@ -38,4 +38,4 @@ This section outlines the architectural foundation of our reusable component lib
 
 **Component Path:** `nextjs\architecture\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -7,7 +7,7 @@ An interactive, responsive fleet management dashboard featuring a synchronized s
 
 ## Examples
 
-Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar. The first example's **Code** tab contains the full component source.
+Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
 export const usageDefault = `import dynamic from "next/dynamic";
 
@@ -40,11 +40,21 @@ export default function FleetDashboard() {
   return <FleetTracker fleetData={fleet} />;
 }`;
 
-export const usageMinimal = `// A floating panel over a light map canvas.
-<FleetTracker variant="minimal" fleetData={fleet} />`;
+export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+import { fleet } from "./fleet";
 
-export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
-<FleetTracker variant="modern" fleetData={fleet} />`;
+export default function MinimalFleet() {
+  // A floating panel over a light map canvas.
+  return <FleetTracker variant="minimal" fleetData={fleet} />;
+}`;
+
+export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+import { fleet } from "./fleet";
+
+export default function ModernFleet() {
+  // Backdrop-blurred glass sidebar over a dark map.
+  return <FleetTracker variant="modern" fleetData={fleet} />;
+}`;
 
 <ExampleShowcase
   name="fleet"
@@ -53,20 +63,49 @@ export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
   examples={[
     {
       title: "Fleet tracker",
-      subheading: "The default split view — a fixed sidebar beside the map canvas, synchronized in both directions.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "fleetData",
+          effect:
+            "as `{ id, location, lat, lng }[]` — `status` (`active`, `idle`, `maintenance`) and `speed` are optional.",
+        },
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "is the split view: a fixed sidebar beside the map, synchronised in both directions.",
+        },
+      ],
       props: { variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Fleet-map.tsx"),
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` floats the vehicle list as a panel over a light map.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to float the vehicle list as a panel over a light map.",
+        },
+      ],
       props: { variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Modern",
-      subheading: "`variant=\"modern\"` renders a backdrop-blurred glass panel over a darker canvas.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"modern"',
+          effect:
+            "for a backdrop-blurred glass panel over a darker canvas.",
+        },
+      ],
       props: { variant: "modern" },
       usage: usageModern,
     },
@@ -75,23 +114,7 @@ export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
 
 ## Installation
 
-<Cli command={`add fleet-tracker.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
-
-```bash
-npm install leaflet react-leaflet lucide-react
-npm install -D @types/leaflet
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Fleet-map.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
+<Installation name="fleet-tracker" />
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.

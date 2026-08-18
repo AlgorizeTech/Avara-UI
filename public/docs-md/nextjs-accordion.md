@@ -4,7 +4,7 @@ A powerful, reusable extension of the standard shadcn/ui accordion. This custom 
 
 ## Examples
 
-You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. The first example's **Code** tab contains the full component source.
+You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
 
 export const usageData = `const faqItems = [
   {
@@ -87,19 +87,6 @@ export default function PlusFaq() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on the standard `shadcn/ui` accordion primitives and `lucide-react` for icons. Run the following commands:
-
-```bash
-npx shadcn-ui@latest add accordion
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Accordion.tsx` and copy the wrapper code from the **Code** tab of the first example above.
 
 ## Features
 Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.
@@ -215,4 +202,4 @@ Discover the flexible features of the Accordion, such as single or multiple coll
 
 **Component Path:** `nextjs\accordion\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

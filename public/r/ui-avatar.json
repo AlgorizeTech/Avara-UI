@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-avatar",
-  "title": "Ui Avatar",
+  "title": "UI Avatar",
   "author": "AlgorizeTech",
   "description": "The Radix avatar primitive with image and fallback slots. Used for user representation in the chat, support and dashboard blocks.",
   "dependencies": [

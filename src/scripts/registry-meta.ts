@@ -11,6 +11,12 @@
  */
 
 export type ItemMeta = {
+  /**
+   * Overrides the title derived from the item name. Only needed when
+   * kebab-to-title-case gets it wrong in a way the acronym list in
+   * generate-registry.ts does not already cover.
+   */
+  title?: string;
   /** One sentence, present tense: what it does and when you'd reach for it. */
   description: string;
   /** Controlled vocabulary — see CATEGORIES below. Do not invent new ones ad hoc. */
@@ -482,7 +488,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A compact code surface with syntax colouring and a copy button, used inside the docs site. Install it for a lightweight code display without tabs.",
     categories: ["code"],
-    docs: "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`.",
+    docs: "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`. Installs `ui-code-renderer` alongside it, which brings in Shiki.",
+  },
+  "ui-code-renderer": {
+    description:
+      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+    categories: ["code"],
+    docs: "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
   },
   "custom-code-block": {
     description:
@@ -637,6 +649,12 @@ export const META: Record<string, ItemMeta> = {
       "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
     categories: ["data-display", "forms"],
     docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical.",
+  },
+  carousel: {
+    description:
+      "Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
+    categories: ["media", "navigation"],
+    docs: "Named exports: ImageCarousel, HeroCarousel, CustomCarousel. All three take an images array; HeroCarousel adds autoplay and CustomCarousel adds thumbnail navigation. Built on next/image, so remote hosts must be allowed in next.config.",
   },
   "carousel-3d": {
     description:

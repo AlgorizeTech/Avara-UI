@@ -6,7 +6,7 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 ## Examples
 
-Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it. The first example's **Code** tab contains the full component source.
+Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
 export const usageDefault = `import {
   Command,
@@ -135,12 +135,6 @@ export default function RemoteSearch() {
 
 ## Installation
 
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
-
-Create a new file at `components/custom/blocks/CommandBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
 
@@ -209,4 +203,4 @@ Learn about the Command palette's features, including fuzzy search, keyboard sho
 
 **Component Path:** `nextjs\command\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

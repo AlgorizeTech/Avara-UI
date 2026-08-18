@@ -4,11 +4,12 @@ import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp, ExternalLink, Sparkles } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
 
+  const listRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
@@ -77,6 +78,50 @@ export const TableOfContents: React.FC = () => {
   const activeChapter =
     activeChapterIndex !== -1 ? chapters[activeChapterIndex] : chapters[0];
 
+  // Keep the highlighted entry inside the sidebar's own viewport. Without this
+  // the active item keeps moving down as the page scrolls and eventually sits
+  // below the visible area of the (independently scrollable) list.
+  useEffect(() => {
+    if (!displayActiveId) return;
+
+    const follow = () => {
+      const container = listRef.current;
+      const target = container?.querySelector<HTMLElement>(
+        '[data-toc-active="true"]',
+      );
+      if (!container || !target) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const margin = 40; // breathing room so the item is never flush to an edge
+
+      let delta = 0;
+      if (targetRect.top < containerRect.top + margin) {
+        delta = targetRect.top - containerRect.top - margin;
+      } else if (targetRect.bottom > containerRect.bottom - margin) {
+        delta = targetRect.bottom - containerRect.bottom + margin;
+      }
+
+      if (Math.abs(delta) < 1) return;
+
+      // Scroll only this container — scrollIntoView would also move the page.
+      container.scrollTo({
+        top: container.scrollTop + delta,
+        behavior: "smooth",
+      });
+    };
+
+    const raf = requestAnimationFrame(follow);
+    // Run again once the chapter accordion has finished expanding, since the
+    // item's final position isn't known until the height animation settles.
+    const timer = window.setTimeout(follow, 300);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
+  }, [displayActiveId, chapters]);
+
   const dynamicColor =
     scrollProgress > 50
       ? `rgb(${Math.round(255 - ((scrollProgress - 50) / 50) * 200)}, 180, 100)`
@@ -115,7 +160,10 @@ export const TableOfContents: React.FC = () => {
         <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
 
         {/* Accordion Chapters List (Original Table of Contents) */}
-        <div className="flex-1 overflow-y-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          ref={listRef}
+          className="flex-1 overflow-y-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           <nav
             role="navigation"
             aria-label="Table of contents"
@@ -138,6 +186,7 @@ export const TableOfContents: React.FC = () => {
                   {chapter.root && (
                     <button
                       onClick={() => scrollToHeading(chapter.root!.id)}
+                      data-toc-active={isRootActive || undefined}
                       style={{ paddingLeft: "32px" }}
                       className={cn(
                         "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
@@ -181,6 +230,7 @@ export const TableOfContents: React.FC = () => {
                             <button
                               key={item.id}
                               onClick={() => scrollToHeading(item.id)}
+                              data-toc-active={isActive || undefined}
                               style={{ paddingLeft: `${32 + indent}px` }}
                               className={cn(
                                 "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",

@@ -4,7 +4,7 @@ A highly animated, dynamic Modal component. Built from scratch using `gsap` for 
 
 ## Examples
 
-Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container. The first example's **Code** tab contains the full component source.
+Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
@@ -59,18 +59,6 @@ export default function BorderedModal() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the mounting/unmounting lifecycle perfectly without harsh visual jumping, and `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/ModalBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
@@ -130,4 +118,4 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
 **Component Path:** `nextjs\modal\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

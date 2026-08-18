@@ -6,7 +6,7 @@ This component solves that by using React state and clever absolute positioning 
 
 ## Examples
 
-Explore the different variations of the Select component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 
@@ -24,17 +24,55 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageFilled = ``;
+export const usageFilled = `"use client";
 
-export const usageUnderlined = ``;
+export default function FilledSelect() {
+  const [value, setValue] = useState("");
 
-export const usageGlow = ``;
+  return (
+    
+  );
+}`;
 
-export const usageSizes = `
+export const usageUnderlined = `"use client";
 
-`;
+export default function UnderlinedSelect() {
+  const [value, setValue] = useState("");
 
-export const usageSearchable = ``;
+  return (
+    
+  );
+}`;
+
+export const usageGlow = `"use client";
+
+export default function GlowSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+export default function SelectSizes() {
+  const [value, setValue] = useState("");
+
+  return (
+
+  );
+}`;
+
+export const usageSearchable = `"use client";
+
+export default function SearchableSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    
+  );
+}`;
 
 export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 
@@ -62,19 +100,17 @@ export default function GroupedSelect() {
   );
 }`;
 
-export const usageStates = `
+export const usageStates = `"use client";
 
-`;
+export default function SelectStates() {
+  const [value, setValue] = useState("");
+
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
-
-```bash
-npm install lucide-react
-```
 
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
@@ -221,4 +257,4 @@ Discover the Select component's accessible dropdown features, including keyboard
 
 **Component Path:** `nextjs\select\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

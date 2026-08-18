@@ -65,17 +65,6 @@ export const VideoAccordion = React.forwardRef<
           overwrite: "auto",
         });
       }
-
-      // 3. Manage Video Playback explicitly
-      if (videoEl) {
-        if (isActive) {
-          videoEl.play().catch((err) => {
-            console.warn("Autoplay blocked by browser:", err);
-          });
-        } else {
-          videoEl.pause();
-        }
-      }
     });
   }, [activeId, panels]);
 
@@ -103,17 +92,10 @@ export const VideoAccordion = React.forwardRef<
             onClick={() => setActiveId(panel.id)} // For mobile tap interaction
             className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-900"
           >
-            {/* Background Video Layer */}
-            <video
-              ref={(el) => {
-                videoRefs.current[index] = el;
-              }}
-              src={panel.videoSrc}
-              poster={panel.posterUrl}
-              muted
-              loop
-              playsInline
-              preload="auto"
+            {/* Background Image Layer */}
+            <img
+              src={panel.posterUrl || panel.videoSrc}
+              alt={panel.title}
               className={cn(
                 "absolute inset-0 w-full h-full object-cover transition-transform duration-1000",
                 isActive ? "scale-105" : "scale-100",

@@ -129,6 +129,49 @@ export interface ApiPlaygroundProps
   }) => Promise<ApiResponse>;
 }
 
+// Helper to rebuild URL with query params
+const buildFullUrl = (currentUrl: string, paramsList: KeyValuePair[]) => {
+  const basePath = currentUrl.split("?")[0];
+  const activeParams = paramsList.filter(
+    (p) => p.enabled && p.key.trim() !== "",
+  );
+
+  if (activeParams.length === 0) {
+    return basePath;
+  }
+
+  const queryParts = activeParams.map((p) => {
+    const k = encodeURIComponent(p.key.trim());
+    const v = encodeURIComponent(p.value);
+    return `${k}=${v}`;
+  });
+
+  return `${basePath}?${queryParts.join("&")}`;
+};
+
+// Helper to parse query parameters from URL string
+const parseParamsFromUrl = (fullUrl: string): KeyValuePair[] => {
+  const queryIndex = fullUrl.indexOf("?");
+  if (queryIndex === -1) return [];
+
+  const queryString = fullUrl.slice(queryIndex + 1);
+  if (!queryString) return [];
+
+  const searchParams = new URLSearchParams(queryString);
+  const parsed: KeyValuePair[] = [];
+
+  searchParams.forEach((value, key) => {
+    parsed.push({
+      id: Math.random().toString(36).substring(7),
+      key,
+      value,
+      enabled: true,
+    });
+  });
+
+  return parsed;
+};
+
 // ==========================================
 // COMPONENT
 // ==========================================
@@ -151,14 +194,17 @@ export const ApiPlaygroundBlock = forwardRef<
 
     // State
     const [method, setMethod] = useState<HttpMethod>(defaultMethod);
-    const [url, setUrl] = useState(defaultUrl);
+    const [url, setUrl] = useState(() => defaultUrl);
     const [activeTab, setActiveTab] = useState<"params" | "headers" | "body">(
       "params",
     );
 
-    const [params, setParams] = useState<KeyValuePair[]>([
-      { id: "1", key: "", value: "", enabled: true },
-    ]);
+    const [params, setParams] = useState<KeyValuePair[]>(() => {
+      const initialParsed = parseParamsFromUrl(defaultUrl);
+      return initialParsed.length > 0
+        ? initialParsed
+        : [{ id: "1", key: "", value: "", enabled: true }];
+    });
     const [headers, setHeaders] = useState<KeyValuePair[]>([
       {
         id: "h1",
@@ -178,19 +224,37 @@ export const ApiPlaygroundBlock = forwardRef<
     const [isLoading, setIsLoading] = useState(false);
     const [response, setResponse] = useState<ApiResponse | null>(null);
 
-    // Handlers
+    // Dynamic 2-Way Binding Sync Handlers
+    const syncParamsToUrl = (newParams: KeyValuePair[]) => {
+      setParams(newParams);
+      setUrl((prevUrl) => buildFullUrl(prevUrl, newParams));
+    };
+
     const handleAddPair = (
       setter: React.Dispatch<React.SetStateAction<KeyValuePair[]>>,
     ) => {
-      setter((prev) => [
-        ...prev,
-        {
-          id: Math.random().toString(36).substring(7),
-          key: "",
-          value: "",
-          enabled: true,
-        },
-      ]);
+      if (setter === setParams) {
+        const next = [
+          ...params,
+          {
+            id: Math.random().toString(36).substring(7),
+            key: "",
+            value: "",
+            enabled: true,
+          },
+        ];
+        syncParamsToUrl(next);
+      } else {
+        setter((prev) => [
+          ...prev,
+          {
+            id: Math.random().toString(36).substring(7),
+            key: "",
+            value: "",
+            enabled: true,
+          },
+        ]);
+      }
     };
 
     const handleUpdatePair = (
@@ -199,16 +263,36 @@ export const ApiPlaygroundBlock = forwardRef<
       field: keyof KeyValuePair,
       value: string | boolean,
     ) => {
-      setter((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, [field]: value } : p)),
-      );
+      if (setter === setParams) {
+        const next = params.map((p) =>
+          p.id === id ? { ...p, [field]: value } : p,
+        );
+        syncParamsToUrl(next);
+      } else {
+        setter((prev) =>
+          prev.map((p) => (p.id === id ? { ...p, [field]: value } : p)),
+        );
+      }
     };
 
     const handleRemovePair = (
       setter: React.Dispatch<React.SetStateAction<KeyValuePair[]>>,
       id: string,
     ) => {
-      setter((prev) => prev.filter((p) => p.id !== id));
+      if (setter === setParams) {
+        const next = params.filter((p) => p.id !== id);
+        syncParamsToUrl(next);
+      } else {
+        setter((prev) => prev.filter((p) => p.id !== id));
+      }
+    };
+
+    const handleUrlChange = (newUrl: string) => {
+      setUrl(newUrl);
+      const parsed = parseParamsFromUrl(newUrl);
+      if (parsed.length > 0) {
+        setParams(parsed);
+      }
     };
 
     const handleSend = async () => {
@@ -312,7 +396,7 @@ export const ApiPlaygroundBlock = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl p-3 sm:p-4 bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-none",
+          "w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl bg-transparent border-none shadow-none",
           className,
         )}
         style={style}
@@ -336,7 +420,7 @@ export const ApiPlaygroundBlock = forwardRef<
               <input
                 type="text"
                 value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e) => handleUrlChange(e.target.value)}
                 className="w-full min-w-0 bg-transparent px-2 text-xs sm:text-sm font-mono text-zinc-700 dark:text-zinc-300 outline-none truncate"
                 placeholder="https://api.example.com..."
               />
@@ -417,12 +501,12 @@ export const ApiPlaygroundBlock = forwardRef<
         </div>
 
         {/* RIGHT PANE: RESPONSE VIEWER */}
-        <div className="flex flex-col bg-[#0d1117] rounded-xl overflow-hidden border border-zinc-800 min-h-[300px] min-w-0">
+        <div className="flex flex-col bg-white dark:bg-[#09090b] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 min-h-[300px] min-w-0">
           {/* ── RESPONSIVE TERMINAL HEADER ──────────────────────────────── */}
-          <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-white/5 border-b border-white/5">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-zinc-50/80 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <TerminalSquare className="w-4 h-4 text-zinc-500 shrink-0" />
-              <span className="text-xs font-semibold text-zinc-400">
+              <TerminalSquare className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
                 Response
               </span>
             </div>
@@ -431,8 +515,10 @@ export const ApiPlaygroundBlock = forwardRef<
               <div className="flex items-center gap-3 sm:gap-4 text-[11px] font-mono">
                 <div
                   className={cn(
-                    "flex items-center gap-1 sm:gap-1.5",
-                    response.status < 400 ? "text-emerald-400" : "text-red-400",
+                    "flex items-center gap-1 sm:gap-1.5 font-semibold",
+                    response.status < 400
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-red-600 dark:text-red-400",
                   )}
                 >
                   {response.status < 400 ? (
@@ -442,7 +528,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   )}
                   Status: {response.status}
                 </div>
-                <div className="flex items-center gap-1 sm:gap-1.5 text-zinc-400 border-l border-zinc-700 pl-3 sm:pl-4">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-zinc-500 dark:text-zinc-400 border-l border-zinc-200 dark:border-zinc-800 pl-3 sm:pl-4">
                   <Clock className="w-3 h-3 shrink-0" />
                   {response.timeMs}ms
                 </div>
@@ -453,20 +539,20 @@ export const ApiPlaygroundBlock = forwardRef<
           {/* Terminal Body */}
           <div className="relative flex-1 p-3 sm:p-4 overflow-y-auto overflow-x-auto">
             {isLoading ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/80 dark:bg-zinc-950/80">
                 <Activity className={cn("w-6 h-6 animate-pulse", theme.text)} />
-                <span className="text-xs font-mono text-zinc-500 animate-pulse">
+                <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 animate-pulse">
                   Awaiting response...
                 </span>
               </div>
             ) : response ? (
-              <pre className="text-xs sm:text-[13px] font-mono leading-relaxed text-zinc-300">
+              <pre className="text-xs sm:text-[13px] font-mono leading-relaxed text-zinc-800 dark:text-zinc-200">
                 <code>{JSON.stringify(response.data, null, 2)}</code>
               </pre>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center gap-2 opacity-30 select-none text-center p-4">
-                <TerminalSquare className="w-10 sm:w-12 h-10 sm:h-12 text-zinc-500 mb-2" />
-                <p className="text-xs sm:text-sm font-medium text-zinc-400">
+              <div className="h-full flex flex-col items-center justify-center gap-2 opacity-50 dark:opacity-30 select-none text-center p-4">
+                <TerminalSquare className="w-10 sm:w-12 h-10 sm:h-12 text-zinc-400 dark:text-zinc-500 mb-2" />
+                <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400">
                   Hit Send to get a response
                 </p>
               </div>

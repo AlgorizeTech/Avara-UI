@@ -4,7 +4,7 @@ A collection of highly-converting, responsive pricing sections. Whether you need
 
 ## Examples
 
-`Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons. The first example's **Code** tab contains the full component source.
+`Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const usageCards = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
 
@@ -46,17 +46,33 @@ export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `// Heavier shadows, gradient price text and a scaled-up popular card.
-`;
+export const usagePremium = `import { PricingCards } from "@/components/custom/blocks/Pricing";
 
-export const usageElegant = `// Soft top-border accent on the popular card, lighter type.
-`;
+export default function PremiumPricing() {
+  // Heavier shadows, gradient price text and a scaled-up popular card.
+  return ;
+}`;
 
-export const usageMinimal = `// No card chrome until hover — the popular plan is marked by a ring.
-`;
+export const usageElegant = `import { PricingCards } from "@/components/custom/blocks/Pricing";
 
-export const usageBordered = `// Hard neo-brutalist edges and offset shadows.
-`;
+export default function ElegantPricing() {
+  // Soft top-border accent on the popular card, lighter type.
+  return ;
+}`;
+
+export const usageMinimal = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+
+export default function MinimalPricing() {
+  // No card chrome until hover — the popular plan is marked by a ring.
+  return ;
+}`;
+
+export const usageBordered = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+
+export default function BorderedPricing() {
+  // Hard neo-brutalist edges and offset shadows.
+  return ;
+}`;
 
 export const usageBuilder = `import { PricingBuilder } from "@/components/custom/blocks/Pricing";
 
@@ -146,18 +162,6 @@ export default function PricingMenu() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-These components rely on `lucide-react` for icons, and `gsap` specifically for the smooth animation effects found in the **GSAP Builder** layout. Run the following command:
-
-```bash
-npm install lucide-react gsap
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Pricing.tsx` and copy the source from the **Code** tab of the first example above. All five layouts ship in that one file and share the same color engine, so import only the ones you use.
 
 ## Props Reference: PricingCards
 
@@ -276,4 +280,4 @@ Create `components/custom/blocks/Pricing.tsx` and copy the source from the **Cod
 
 **Component Path:** `nextjs\pricing\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

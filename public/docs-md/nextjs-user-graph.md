@@ -4,7 +4,7 @@ An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Ne
 
 ## Examples
 
-Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge. The first example's **Code** tab contains the full component source.
+Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
 
 export const usageDefault = `import { UserGraph } from "@/components/custom/blocks/UserGraphBlock";
 
@@ -15,18 +15,6 @@ export default function UserGraphPage() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component uses `lucide-react` for the channel and app icons.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/UserGraphBlock.tsx` and copy the source from the **Code** tab of the first example above. The sample orbit tools, sub-agents and orchestrator ship inside it as defaults — replace them with props rather than editing the file.
 
 ## Features
 
@@ -90,4 +78,4 @@ Discover the key capabilities of the User Graph hierarchy tree:
 
 **Component Path:** `nextjs\user-graph\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

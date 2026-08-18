@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-17T07:52:44.294Z",
-  "totalFiles": 113,
+  "generatedAt": "2026-08-18T11:11:05.569Z",
+  "totalFiles": 96,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -51,22 +51,10 @@
       "originalMdx": "nextjs\\api-playground\\page.mdx"
     },
     {
-      "name": "nextjs/api-routes",
-      "path": "/docs/nextjs-api-routes.md",
-      "url": "/docs/nextjs/api-routes",
-      "originalMdx": "nextjs\\api-routes\\page.mdx"
-    },
-    {
       "name": "nextjs/architecture",
       "path": "/docs/nextjs-architecture.md",
       "url": "/docs/nextjs/architecture",
       "originalMdx": "nextjs\\architecture\\page.mdx"
-    },
-    {
-      "name": "nextjs/authentication",
-      "path": "/docs/nextjs-authentication.md",
-      "url": "/docs/nextjs/authentication",
-      "originalMdx": "nextjs\\authentication\\page.mdx"
     },
     {
       "name": "nextjs/breadcrumb",
@@ -165,12 +153,6 @@
       "originalMdx": "nextjs\\custom-code-block\\page.mdx"
     },
     {
-      "name": "nextjs/data-fetching",
-      "path": "/docs/nextjs-data-fetching.md",
-      "url": "/docs/nextjs/data-fetching",
-      "originalMdx": "nextjs\\data-fetching\\page.mdx"
-    },
-    {
       "name": "nextjs/data-grid",
       "path": "/docs/nextjs-data-grid.md",
       "url": "/docs/nextjs/data-grid",
@@ -193,12 +175,6 @@
       "path": "/docs/nextjs-date-picker.md",
       "url": "/docs/nextjs/date-picker",
       "originalMdx": "nextjs\\date-picker\\page.mdx"
-    },
-    {
-      "name": "nextjs/deployment",
-      "path": "/docs/nextjs-deployment.md",
-      "url": "/docs/nextjs/deployment",
-      "originalMdx": "nextjs\\deployment\\page.mdx"
     },
     {
       "name": "nextjs/design-components-folder",
@@ -229,36 +205,6 @@
       "path": "/docs/nextjs-email.md",
       "url": "/docs/nextjs/email",
       "originalMdx": "nextjs\\email\\page.mdx"
-    },
-    {
-      "name": "nextjs/examples",
-      "path": "/docs/nextjs-examples.md",
-      "url": "/docs/nextjs/examples",
-      "originalMdx": "nextjs\\examples\\page.mdx"
-    },
-    {
-      "name": "nextjs/examples/button",
-      "path": "/docs/nextjs-examples-button.md",
-      "url": "/docs/nextjs/examples/button",
-      "originalMdx": "nextjs\\examples\\button\\page.mdx"
-    },
-    {
-      "name": "nextjs/examples/counter",
-      "path": "/docs/nextjs-examples-counter.md",
-      "url": "/docs/nextjs/examples/counter",
-      "originalMdx": "nextjs\\examples\\counter\\page.mdx"
-    },
-    {
-      "name": "nextjs/examples/video-text",
-      "path": "/docs/nextjs-examples-video-text.md",
-      "url": "/docs/nextjs/examples/video-text",
-      "originalMdx": "nextjs\\examples\\video-text\\page.mdx"
-    },
-    {
-      "name": "nextjs/examples/waitlist",
-      "path": "/docs/nextjs-examples-waitlist.md",
-      "url": "/docs/nextjs/examples/waitlist",
-      "originalMdx": "nextjs\\examples\\waitlist\\page.mdx"
     },
     {
       "name": "nextjs/file-upload",
@@ -319,12 +265,6 @@
       "path": "/docs/nextjs-image-compare.md",
       "url": "/docs/nextjs/image-compare",
       "originalMdx": "nextjs\\image-compare\\page.mdx"
-    },
-    {
-      "name": "nextjs/image-optimization",
-      "path": "/docs/nextjs-image-optimization.md",
-      "url": "/docs/nextjs/image-optimization",
-      "originalMdx": "nextjs\\image-optimization\\page.mdx"
     },
     {
       "name": "nextjs/index",
@@ -399,12 +339,6 @@
       "originalMdx": "nextjs\\menubar\\page.mdx"
     },
     {
-      "name": "nextjs/middleware",
-      "path": "/docs/nextjs-middleware.md",
-      "url": "/docs/nextjs/middleware",
-      "originalMdx": "nextjs\\middleware\\page.mdx"
-    },
-    {
       "name": "nextjs/mobile-mockup",
       "path": "/docs/nextjs-mobile-mockup.md",
       "url": "/docs/nextjs/mobile-mockup",
@@ -447,12 +381,6 @@
       "originalMdx": "nextjs\\pagination\\page.mdx"
     },
     {
-      "name": "nextjs/performance",
-      "path": "/docs/nextjs-performance.md",
-      "url": "/docs/nextjs/performance",
-      "originalMdx": "nextjs\\performance\\page.mdx"
-    },
-    {
       "name": "nextjs/popover",
       "path": "/docs/nextjs-popover.md",
       "url": "/docs/nextjs/popover",
@@ -483,12 +411,6 @@
       "originalMdx": "nextjs\\resizable\\page.mdx"
     },
     {
-      "name": "nextjs/routing",
-      "path": "/docs/nextjs-routing.md",
-      "url": "/docs/nextjs/routing",
-      "originalMdx": "nextjs\\routing\\page.mdx"
-    },
-    {
       "name": "nextjs/scroll-area",
       "path": "/docs/nextjs-scroll-area.md",
       "url": "/docs/nextjs/scroll-area",
@@ -505,12 +427,6 @@
       "path": "/docs/nextjs-select.md",
       "url": "/docs/nextjs/select",
       "originalMdx": "nextjs\\select\\page.mdx"
-    },
-    {
-      "name": "nextjs/seo",
-      "path": "/docs/nextjs-seo.md",
-      "url": "/docs/nextjs/seo",
-      "originalMdx": "nextjs\\seo\\page.mdx"
     },
     {
       "name": "nextjs/sidebar",
@@ -555,12 +471,6 @@
       "originalMdx": "nextjs\\stepper\\page.mdx"
     },
     {
-      "name": "nextjs/styling",
-      "path": "/docs/nextjs-styling.md",
-      "url": "/docs/nextjs/styling",
-      "originalMdx": "nextjs\\styling\\page.mdx"
-    },
-    {
       "name": "nextjs/support-dashboard",
       "path": "/docs/nextjs-support-dashboard.md",
       "url": "/docs/nextjs/support-dashboard",
@@ -577,12 +487,6 @@
       "path": "/docs/nextjs-terminal.md",
       "url": "/docs/nextjs/terminal",
       "originalMdx": "nextjs\\terminal\\page.mdx"
-    },
-    {
-      "name": "nextjs/testing",
-      "path": "/docs/nextjs-testing.md",
-      "url": "/docs/nextjs/testing",
-      "originalMdx": "nextjs\\testing\\page.mdx"
     },
     {
       "name": "nextjs/text-animation",
@@ -631,12 +535,6 @@
       "path": "/docs/nextjs-tooltip.md",
       "url": "/docs/nextjs/tooltip",
       "originalMdx": "nextjs\\tooltip\\page.mdx"
-    },
-    {
-      "name": "nextjs/typescript",
-      "path": "/docs/nextjs-typescript.md",
-      "url": "/docs/nextjs/typescript",
-      "originalMdx": "nextjs\\typescript\\page.mdx"
     },
     {
       "name": "nextjs/typography",

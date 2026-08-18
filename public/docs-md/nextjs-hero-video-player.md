@@ -4,7 +4,7 @@ An embeddable, hardware-accelerated video preview component designed for landing
 
 ## Examples
 
-Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button. The first example's **Code** tab contains the full component source.
+Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button.
 
 export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
@@ -14,27 +14,39 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageAspect = `// "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
-// modal, so a cinematic still can still open a 16:9 player.
-`;
+export const usageAspect = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
-export const usageAspect43 = ``;
+export default function CinematicHero() {
+  // "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
+  // modal, so a cinematic still can still open a 16:9 player.
+  return ;
+}`;
 
-export const usageNoGlow = `// Drops the ambient bloom behind the frame — better on busy backgrounds.
-`;
+export const usageAspect43 = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
-export const usageModal = `// "md" | "lg" | "xl" | "full" — how wide the player modal opens.
- track("hero_video_opened")}
-  onClose={() => track("hero_video_closed")}
-/>`;
+export default function ClassicHero() {
+  return ;
+}`;
+
+export const usageNoGlow = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+
+export default function FlatHero() {
+  // Drops the ambient bloom behind the frame — better on busy backgrounds.
+  return ;
+}`;
+
+export const usageModal = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+
+export default function FullWidthHero() {
+  // "md" | "lg" | "xl" | "full" — how wide the player modal opens.
+  return (
+     track("hero_video_opened")}
+      onClose={() => track("hero_video_closed")}
+    />
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component is dependency-free beyond `lucide-react` for the play and close icons — the modal, focus trap and glow are plain React and Tailwind.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/HeroVideoPlayerBlock.tsx`.
 
 ## Features
 
@@ -212,4 +224,4 @@ Discover the Hero Video Player's immersive features, including autoplay, custom 
 
 **Component Path:** `nextjs\hero-video-player\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

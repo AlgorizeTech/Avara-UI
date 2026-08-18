@@ -6,7 +6,7 @@ Traditional toast notifications stack in a massive, screen-blocking vertical lis
 
 ## Examples
 
-Click the trigger buttons to spawn toasts, then hover the floating stack to expand it. The first example's **Code** tab contains the full component source.
+Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
 
 export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
 
@@ -154,43 +154,89 @@ export default function PositionDemo() {
 }`;
 
 ` once, then call `toast()` from anywhere — no provider needed.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `toast()` is the message; everything else about the toast is optional.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
     },
     {
       title: "Types",
-      subheading: "Use `toast.success`, `toast.error` and `toast.info` for the semantic styles.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "toast.success",
+          effect:
+            "`toast.error` and `toast.info` for the semantic icon and colour. They take the same arguments as `toast()`.",
+        },
+      ],
       props: { example: "types" },
       usage: usageTypes,
     },
     {
       title: "With action",
-      subheading: "Pass `action` to add an inline button — perfect for undo.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "action",
+          effect:
+            "as `{ label, onClick }` to add an inline button — the usual home for Undo.",
+        },
+      ],
       props: { example: "action" },
       usage: usageAction,
     },
     {
       title: "Stacking",
-      subheading: "Fire several toasts: newer ones stack on top, older ones recede. Hover to expand.",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "on the Toaster decides where they pile up; newer toasts sit on top and older ones recede until hovered.",
+        },
+      ],
       props: { example: "stack" },
       usage: usageStack,
     },
     {
       title: "Always expanded",
-      subheading: "Set `expand` on the Toaster to keep the stack open instead of collapsing it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "expand",
+          effect:
+            "on the Toaster to keep the stack open instead of collapsing it to a pile.",
+        },
+      ],
       props: { example: "stack", expand: true },
       usage: usageExpand,
     },
     {
       title: "Duration",
-      subheading: "`duration` sets the auto-dismiss delay; `Infinity` keeps the toast up.",
+      propNotes: [
+        {
+          prop: "duration",
+          effect:
+            "is the auto-dismiss delay in milliseconds. Pass `Infinity` and the toast stays up until dismissed.",
+        },
+      ],
       props: { example: "duration" },
       usage: usageDuration,
     },
     {
       title: "Position",
-      subheading: "`position` anchors the stack to any of the six edges — pick one to move the live stack.",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "anchors the stack to any of the six edges — `top-left` through `bottom-right`.",
+        },
+      ],
       props: { example: "position" },
       usage: usagePosition,
     },
@@ -198,12 +244,6 @@ export default function PositionDemo() {
 />
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It doesn't use standard React context; instead, it uses a high-performance custom Observer class. This means you don't have to wrap your app in a bulky context provider just to fire a toast from a random utility file.
-
-Create a new file at `components/custom/blocks/SonnerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
@@ -313,4 +353,4 @@ Explore the Sonner toast notification features, including stacked layouts, swipe
 
 **Component Path:** `nextjs\sonner\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

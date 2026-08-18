@@ -8,7 +8,7 @@ The `DialogBlock` component handles the complex DOM logic required for true acce
 
 ## Examples
 
-Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close. The first example's **Code** tab contains the full component source.
+Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
 export const usageDefault = `import {
   Dialog,
@@ -149,12 +149,6 @@ export default function ControlledDialog() {
 
 ## Installation
 
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
-
-Create a new file at `components/custom/blocks/DialogBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.
 
@@ -242,4 +236,4 @@ Discover the Dialog component's accessible modal features, including focus trapp
 
 **Component Path:** `nextjs\dialog\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

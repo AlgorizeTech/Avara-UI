@@ -4,7 +4,7 @@ A premium 3D carousel with a fanned layout, smooth interactive animations, and a
 
 ## Examples
 
-Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck. The first example's **Code** tab contains the full component source.
+Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck.
 
 export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
@@ -29,29 +29,29 @@ export default function ProductShowcase() {
   return ;
 }`;
 
-export const usageNoAutoplay = `// Manual only — drag, arrow keys and the nav controls still work.
-`;
+export const usageNoAutoplay = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
-export const usageInterval = `// Time between advances, in milliseconds.
-`;
+export default function ManualCarousel() {
+  // Manual only — drag, arrow keys and the nav controls still work.
+  return ;
+}`;
 
-export const usageShortDeck = `// The fan tightens automatically as the deck shrinks — the circular
-// offset is computed from \`items.length\`.
-`;
+export const usageInterval = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+export default function FastCarousel() {
+  // Time between advances, in milliseconds.
+  return ;
+}`;
+
+export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+export default function ShortDeckCarousel() {
+  // The fan tightens automatically as the deck shrinks — the circular
+  // offset is computed from \`items.length\`.
+  return ;
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component requires **Framer Motion** for the 3D spring physics and drag gestures, and **Lucide React** for the UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/ThreeDCarouselBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -184,4 +184,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\3d-carousel\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

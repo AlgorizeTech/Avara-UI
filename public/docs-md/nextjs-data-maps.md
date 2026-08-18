@@ -8,7 +8,7 @@ It features interactive hover tooltips, multiple visual variants (such as solid 
 
 ## Examples
 
-The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card. The first example's **Code** tab contains the full component source.
+The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
 export const usageFill = `import dynamic from "next/dynamic";
 
@@ -30,33 +30,36 @@ export default function AnalyticsDashboard() {
   );
 }`;
 
-export const usageDots = `// \`dots\` places a pulsing marker at each country's centroid instead of
-// filling the polygon — better when the regions are small or crowded.
-`;
+export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
 
-export const usageZoomable = `// Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
-// \`scrollWheelZoom\` also binds the wheel, which you may want off inside a
-// scrolling page.
-`;
+export default function DensityMap() {
+  // \`dots\` places a pulsing marker at each country's centroid instead of
+  // filling the polygon — better when the regions are small or crowded.
+  return ;
+}`;
 
-export const usageColors = `// \`highlightColor\` sets the global accent and \`defaultColor\` paints every
-// country without data. A \`color\` on a single data point overrides both.
-`;
+export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+
+export default function ZoomableMap() {
+  // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
+  // \`scrollWheelZoom\` also binds the wheel, which you may want off inside a
+  // scrolling page.
+  return (
+    
+  );
+}`;
+
+export const usageColors = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+
+export default function ColoredMap() {
+  // \`highlightColor\` sets the global accent and \`defaultColor\` paints every
+  // country without data. A \`color\` on a single data point overrides both.
+  return (
+    
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-Ensure you have `leaflet` and `react-leaflet` installed. If not, install them using:
-
-```bash
-npm install leaflet react-leaflet
-npm install -D @types/leaflet
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/DataMapsBlock.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
@@ -241,4 +244,4 @@ Learn about the Data Maps component's geographic visualization features, mapping
 
 **Component Path:** `nextjs\data-maps\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -319,7 +319,6 @@ export function HorizontalScrollStack({
           : isInsideIframe
             ? "800px"
             : `${dynamicHeightVh}vh`,
-        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
         ...style,
       }}
       className={cn(
@@ -366,7 +365,7 @@ export function HorizontalScrollStack({
         /* =========================================================
            DESKTOP (>= 768px): Native GPU Horizontal Sticky Deck
            ========================================================= */
-        <div className={cn("w-full overflow-hidden flex flex-col justify-center px-4 sm:px-8 lg:px-12", isInsideIframe ? "h-full py-2" : "sticky top-0 h-screen")}>
+        <div className={cn("w-full overflow-hidden flex flex-col justify-start px-4 sm:px-8 lg:px-12", isInsideIframe ? "h-full pt-4 pb-2" : "sticky top-0 h-screen pt-8")}>
           {/* Section Header */}
           <div className="max-w-3xl mb-3 sm:mb-6 shrink-0">
             <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">

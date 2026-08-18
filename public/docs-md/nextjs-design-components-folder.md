@@ -4,7 +4,7 @@ An interactive multi-tab component folder showcasing live AI Chat, Real-time Ana
 
 ## Examples
 
-Two components ship here: `DesignComponentsFolder`, the full hub with animated cards rising out of a frosted folder, and `DesignFolderBox`, the same folder shell with nothing inside it. Each example's **Code** tab contains that component's full source.
+Two components ship here: `DesignComponentsFolder`, the full hub with animated cards rising out of a frosted folder, and `DesignFolderBox`, the same folder shell with nothing inside it.
 
 ### Components hub
 
@@ -24,23 +24,17 @@ export default function Container() {
   return ;
 }`;
 
-export const usageBoxLabels = `// \`title\` and \`subtitle\` are the only text in the box — they default to
-// "Design" / "Components".
-`;
+export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
+
+export default function CustomLabelBox() {
+  // \`title\` and \`subtitle\` are the only text in the box — they default to
+  // "Design" / "Components".
+  return ;
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-Ensure you have `framer-motion` (or `motion`), `lucide-react`, and `@/lib/utils` installed in your Next.js project.
-
-```bash
-npm install motion lucide-react
-```
-
-### 2. Copy the Component
-
-Copy the full Hub source from the **Code** tab of the first example above into `components/custom/blocks/DesignComponentsFolder.tsx`, or the standalone Box from the **Code** tab of the folder-box example into `components/custom/blocks/DesignFolderBox.tsx`. They are independent files — take only the one you need.
+Two independent components ship here — take only the one you need.
 
 ## Props Reference
 
@@ -120,4 +114,4 @@ Copy the full Hub source from the **Code** tab of the first example above into `
 
 **Component Path:** `nextjs\design-components-folder\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

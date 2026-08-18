@@ -61,6 +61,7 @@ import {
 import { motion, useInView, AnimatePresence, useScroll } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { links } from "@/config/site";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -76,14 +77,13 @@ const sampleChartData = [
 	{ label: "Sun", value: 990 },
 ];
 
-const sampleTerminalCode = `$ npx docs-ui@latest init
-✔ Initialized Docs UI configuration in project root.
-✔ Installed dependencies: framer-motion, gsap, lucide-react, clsx.
+/** Copied verbatim by the terminal card's Copy button, so it has to be runnable. */
+const sampleTerminalCode = `$ npx shadcn@latest init
+✔ Created components.json and lib/utils.ts.
 
-$ npx docs-ui@latest add ai-chat chart-block
-✔ Copying Ai-chat.tsx to src/components/custom/blocks/
-✔ Copying ChartBlock.tsx to src/components/custom/blocks/
-✔ All components ready to import!
+$ npx shadcn@latest add https://algorize-ui.vercel.app/r/ai-chat.json
+✔ Installed dependencies: lucide-react
+✔ Created components/custom/blocks/Ai-chat.tsx
 
 $ npm run dev
 ▲ Next.js (Turbopack)
@@ -127,60 +127,60 @@ const sampleDockItems: DockItem[] = [
 const sampleMemories: MemoryItem[] = [
 	{
 		id: "1",
-		title: "Next-Gen Components",
-		location: "Docs UI Library",
+		title: "Alpine Forest Lake",
+		location: "Swiss Alps",
 		date: "Latest Release",
 		image:
-			"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80",
-		description: "Meticulously designed, responsive & production-ready.",
+			"https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80",
+		description: "Serene pine forests reflecting over calm turquoise mountain waters.",
 		tag: "Featured",
 	},
 	{
 		id: "2",
-		title: "3D Motion Cards",
-		location: "Framer Motion",
+		title: "Majestic Mountain Ridge",
+		location: "Dolomites, Italy",
 		date: "Interactive",
 		image:
-			"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80",
-		description: "Drag, tilt, & rotate 3D cards with fluid spring physics.",
-		tag: "Animation",
+			"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80",
+		description: "Towering mountain peaks bathed in golden morning sunlight.",
+		tag: "Landscape",
 	},
 	{
 		id: "3",
-		title: "Dark Mode Studio",
-		location: "Tailwind CSS",
-		date: "Zero Config",
+		title: "Emerald Forest Stream",
+		location: "Pacific Northwest",
+		date: "Wilderness",
 		image:
-			"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80",
-		description: "Tailored themes engineered for stunning visuals.",
-		tag: "Design",
+			"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80",
+		description: "Tranquil river winding through dense ancient rainforests.",
+		tag: "Nature",
 	},
 ];
 
 const sampleCarouselItems: CarouselItem[] = [
 	{
 		id: "1",
-		title: "Glassmorphic Cards",
-		category: "UI Components",
+		title: "Misty Pine Forest",
+		category: "Nature",
 		image:
-			"https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format&fit=crop&q=80",
-		description: "Ultra smooth blur reflections & borders.",
+			"https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80",
+		description: "Early morning fog weaving through dense evergreen trees.",
 	},
 	{
 		id: "2",
-		title: "Magnifying Dock",
-		category: "Interactive",
+		title: "Lush River Valley",
+		category: "Wilderness",
 		image:
-			"https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80",
-		description: "Apple macOS style dock magnification effect.",
+			"https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&auto=format&fit=crop&q=80",
+		description: "Sunbeams streaming through valley clouds onto forest waters.",
 	},
 	{
 		id: "3",
-		title: "3D Interactive Carousel",
-		category: "Animations",
+		title: "Autumn Woodland Path",
+		category: "Landscape",
 		image:
-			"https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80",
-		description: "3D fanned carousel with drag physics.",
+			"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80",
+		description: "Golden foliage covering quiet forest trails in peak autumn.",
 	},
 ];
 
@@ -323,9 +323,9 @@ function HeroInteractiveHub() {
 									<div className="p-2.5 rounded-2xl rounded-tl-none bg-muted/80 text-foreground max-w-[85%] leading-relaxed border border-border/40">
 										Run{" "}
 										<code className="px-1 py-0.5 rounded bg-background font-mono text-[11px] text-primary">
-											npx docs-ui@latest add &lt;component&gt;
+											npx shadcn@latest add &lt;url&gt;
 										</code>{" "}
-										or copy the source code directly. Zero npm lock-in!
+										and the source lands in your project. Zero npm lock-in!
 									</div>
 								</div>
 							</div>
@@ -436,7 +436,7 @@ function HeroInteractiveHub() {
 								<div className="flex items-center gap-1.5">
 									<Terminal className="size-3.5 text-primary" />
 									<span className="text-[11px] font-bold text-zinc-300">
-										docs-ui.sh
+										install.sh
 									</span>
 								</div>
 								<button
@@ -455,26 +455,24 @@ function HeroInteractiveHub() {
 								</button>
 							</div>
 
+							{/* Mirrors sampleTerminalCode, which the Copy button writes. */}
 							<div className="space-y-2 text-[11px] leading-relaxed text-zinc-300">
 								<p>
 									<span className="text-primary font-bold">$</span> npx
-									docs-ui@latest init
+									shadcn@latest init
 								</p>
 								<p className="text-emerald-400">
-									✔ Initialized Docs UI configuration in project root.
+									✔ Created components.json and lib/utils.ts.
 								</p>
-								<p className="text-emerald-400">
-									✔ Installed dependencies: framer-motion, gsap, lucide-react.
-								</p>
-								<p>
+								<p className="break-all">
 									<span className="text-primary font-bold">$</span> npx
-									docs-ui@latest add ai-chat chart-block
+									shadcn@latest add algorize-ui.vercel.app/r/ai-chat.json
 								</p>
 								<p className="text-emerald-400">
-									✔ Copying components to src/components/custom/blocks/
+									✔ Installed dependencies: lucide-react
 								</p>
 								<p className="text-emerald-400 font-bold">
-									✔ All components ready to import!
+									✔ Created components/custom/blocks/Ai-chat.tsx
 								</p>
 							</div>
 
@@ -508,7 +506,16 @@ function HeroInteractiveHub() {
 function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
-			<HomepageHeroBlock />
+			{/* Links are passed explicitly rather than relying on the block's
+			    defaults: HomepageHeroBlock ships in the registry, so its defaults
+			    have to make sense in a consumer's project, where this site's
+			    routes do not exist. */}
+			<HomepageHeroBlock
+				badgeHref="/docs/nextjs/index"
+				primaryActionLabel="Browse Components"
+				primaryActionHref="/docs/nextjs/all-components"
+				secondaryActionHref={links.github}
+			/>
 			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-4 sm:pb-10">
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
@@ -595,9 +602,9 @@ function ComponentShowcase() {
 						</p>
 					</div>
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="group flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors shrink-0">
-						View all 100+ components
+						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 					</Link>
 				</motion.div>
@@ -967,112 +974,6 @@ function WhyChooseUsSection() {
 	);
 }
 
-/* ═══════════════════════════════════════════════
-   SECTION 5: PRODUCTION COMPONENT CATALOG (MATRIX + INSPECTOR)
-   ═══════════════════════════════════════════════ */
-
-interface SystemNode {
-	id: string;
-	title: string;
-	category: string;
-	icon: typeof Bot;
-	tag: string;
-	description: string;
-	cliCommand: string;
-	features: string[];
-	docPath: string;
-}
-
-const matrixNodes: SystemNode[] = [
-	{
-		id: "ai-chat",
-		title: "AI Conversational Block",
-		category: "Ui Components",
-		icon: Bot,
-		tag: "Popular",
-		description:
-			"Production-ready AI chat interface with message streaming, history sidebar, and custom prompts.",
-		cliCommand: "npx docs-ui@latest add ai-chat",
-		features: [
-			"Streaming Message Support",
-			"Multi-Thread Sidebar",
-			"Dynamic Theme Sync",
-		],
-		docPath: "/docs/nextjs/ai-chat",
-	},
-	{
-		id: "3d-motion",
-		title: "3D Spring Motion Cards",
-		category: "Animated Ui Components",
-		icon: Sparkles,
-		tag: "Interactive",
-		description:
-			"Stackable 3D cards with Framer Motion spring physics, drag gestures, and tilt effects.",
-		cliCommand: "npx docs-ui@latest add memories-card",
-		features: ["Drag & Swipe Physics", "3D Gyro Tilt", "Zero Config"],
-		docPath: "/docs/nextjs/memories-card",
-	},
-	{
-		id: "dock",
-		title: "Magnifying macOS Dock",
-		category: "Animated Ui Components",
-		icon: Compass,
-		tag: "macOS",
-		description:
-			"Apple macOS style dock with fluid cursor proximity magnification physics.",
-		cliCommand: "npx docs-ui@latest add dock",
-		features: [
-			"Cursor Proximity Magnification",
-			"Custom Icon Slots",
-			"Smooth Spring Back",
-		],
-		docPath: "/docs/nextjs/dock",
-	},
-	{
-		id: "analytics",
-		title: "Analytics Data Chart",
-		category: "Ui Components",
-		icon: BarChart3,
-		tag: "SVG Engine",
-		description:
-			"Lightweight, responsive SVG bar and line chart component with hover tooltips.",
-		cliCommand: "npx docs-ui@latest add chart-block",
-		features: [
-			"Zero Chart Library Weight",
-			"Auto Theme Gradient",
-			"Hover Value Tooltips",
-		],
-		docPath: "/docs/nextjs/chart-block",
-	},
-	{
-		id: "auth",
-		title: "Security & Auth Form",
-		category: "Ui Components",
-		icon: Lock,
-		tag: "Security",
-		description:
-			"Glassmorphic login and signup forms with social auth buttons and input validation.",
-		cliCommand: "npx docs-ui@latest add auth-form",
-		features: [
-			"Glassmorphic Styling",
-			"Social Login Providers",
-			"Password Visibility Toggle",
-		],
-		docPath: "/docs/nextjs/auth-form",
-	},
-	{
-		id: "cli",
-		title: "Developer CLI Terminal",
-		category: "Ui Components",
-		icon: Terminal,
-		tag: "Dev Tool",
-		description:
-			"Interactive code terminal with syntax highlighting, tabbed output, and instant copy.",
-		cliCommand: "npx docs-ui@latest add terminal",
-		features: ["Copy Code Button", "Multiple Shell Tabs", "Dark Theme Native"],
-		docPath: "/docs/nextjs/terminal",
-	},
-];
 
 /* ═══════════════════════════════════════════════
    SECTION 5.5: COMPONENT PREVIEW CARDS CATALOG
@@ -3070,7 +2971,7 @@ function CTASection() {
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
 	const [typedText, setTypedText] = useState("");
-	const fullCommand = "npx docs-ui@latest init";
+	const fullCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 
 	useEffect(() => {
 		let index = 0;
@@ -3096,7 +2997,7 @@ function CTASection() {
 	}, []);
 
 	const handleCopy = () => {
-		const textToCopy = "npx docs-ui@latest init";
+		const textToCopy = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 		if (navigator.clipboard && navigator.clipboard.writeText) {
 			navigator.clipboard
 				.writeText(textToCopy)
@@ -3159,7 +3060,7 @@ function CTASection() {
 					</h2>
 
 					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
-						Copy-paste fully responsive, accessible, and animated UI components
+						Install fully responsive, accessible, and animated UI components
 						built for Next.js, React, and Tailwind CSS.
 					</p>
 
@@ -3174,7 +3075,7 @@ function CTASection() {
 									&gt;_
 								</span>
 								<span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">
-									npx docs-ui@latest init
+									npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json
 								</span>
 							</div>
 							<div className="flex items-center gap-2 shrink-0">
@@ -3209,13 +3110,13 @@ function CTASection() {
 					{/* Action Buttons */}
 					<div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
 						<Link
-							href="/docs"
+							href="/docs/nextjs/all-components"
 							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
 							Browse All Components
 							<ArrowRight className="size-4" />
 						</Link>
 						<Link
-							href="https://github.com/AlgorizeTech"
+							href={links.github}
 							target="_blank"
 							className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm">
 							<Github className="size-4 text-foreground dark:text-zinc-300" />
@@ -3253,12 +3154,12 @@ function FooterSection() {
 
 				<div className="flex items-center gap-5 text-[12px] font-bold text-muted-foreground">
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="hover:text-foreground transition-colors">
 						Documentation
 					</Link>
 					<Link
-						href="https://github.com/AlgorizeTech"
+						href={links.github}
 						target="_blank"
 						className="hover:text-primary transition-colors">
 						GitHub

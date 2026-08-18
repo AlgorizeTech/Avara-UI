@@ -9,7 +9,7 @@ This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the
 
 ## Examples
 
-You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps. The first example's **Code** tab contains the full component source.
+You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
 
 export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
@@ -223,16 +223,7 @@ export default function BareMarquee() {
 
 ## Installation
 
-<Cli command={`add marquee.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component relies entirely on injected `@keyframes` and dynamic CSS variables to function, meaning it is **100% dependency-free**.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MarqueeBlock.tsx`.
+<Installation name="marquee" />
 
 ## Props Reference
 

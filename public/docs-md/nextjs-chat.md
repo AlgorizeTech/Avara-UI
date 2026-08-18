@@ -4,7 +4,7 @@ A fully interactive, encapsulated chat interface. Features include search filter
 
 ## Examples
 
-Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three. The first example's **Code** tab contains the full component source.
+Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
 export const usageDefault = `import ChatApp from "@/components/custom/blocks/Chat";
 
@@ -40,26 +40,25 @@ export default function Messages() {
   return ;
 }`;
 
-export const usageMinimal = `// Borders and shadows stripped back for embedding inside an existing panel.
-`;
+export const usageMinimal = `import ChatApp from "@/components/custom/blocks/Chat";
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+export default function MinimalChat() {
+  // Borders and shadows stripped back for embedding inside an existing panel.
+  return (
+    
+  );
+}`;
 
-`;
+export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat";
+
+export default function GlassChat() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its interface iconography. Run the following command:
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Chat.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.
@@ -135,4 +134,4 @@ Explore the Chat component's robust features, including message grouping, timest
 
 **Component Path:** `nextjs\chat\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

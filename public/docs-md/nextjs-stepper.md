@@ -6,7 +6,7 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 
 ## Examples
 
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component. The **Code** tab contains the full component source.
+`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
 export const usageFlow = `"use client";
 
@@ -58,18 +58,6 @@ export default function OnboardingWizard() {
 }`;
 
 ## Installation
-
-### Dependencies
-
-This component relies exclusively on **GSAP** for all line scaling, icon scaling, ring pulsing, and layout transitions.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the example above.
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
@@ -257,4 +245,4 @@ Learn about the Stepper component's linear progression features, providing clear
 
 **Component Path:** `nextjs\stepper\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

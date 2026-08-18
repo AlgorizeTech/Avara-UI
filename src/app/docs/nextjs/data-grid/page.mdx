@@ -11,7 +11,7 @@ This `DataGridBlock` is built **100% dependency-free**. It manages focus through
 
 ## Examples
 
-Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row. The first example's **Code** tab contains the full component source.
+Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
 export const usageDefault = `import { useState } from "react";
 import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
@@ -63,19 +63,32 @@ export default function Gradebook() {
   return <DataGridBlock columns={COLUMNS} data={data} onChange={setData} />;
 }`;
 
-export const usageNoRowNumbers = `<DataGridBlock
-  columns={COLUMNS}
-  data={data}
-  onChange={setData}
-  showRowNumbers={false}
-/>`;
+export const usageNoRowNumbers = `"use client";
 
-export const usageReadOnly = `// Keyboard navigation still works — only editing is disabled.
-<DataGridBlock
-  columns={COLUMNS}
-  data={data}
-  readOnly
-/>`;
+import { useState } from "react";
+import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+import { COLUMNS, ROWS } from "./schema";
+
+export default function GridWithoutGutter() {
+  const [data, setData] = useState(ROWS);
+
+  return (
+    <DataGridBlock
+      columns={COLUMNS}
+      data={data}
+      onChange={setData}
+      showRowNumbers={false}
+    />
+  );
+}`;
+
+export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+import { COLUMNS, ROWS } from "./schema";
+
+export default function ReadOnlyGrid() {
+  // Keyboard navigation still works — only editing is disabled.
+  return <DataGridBlock columns={COLUMNS} data={ROWS} readOnly />;
+}`;
 
 <ExampleShowcase
   name="data-grid"
@@ -85,26 +98,65 @@ export const usageReadOnly = `// Keyboard navigation still works — only editin
   examples={[
     {
       title: "Data grid",
-      subheading: "Pass `columns` and `data`; the grid owns the editing state and hands the mutated array back through `onChange`.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "columns",
+          effect:
+            "as `{ field, headerName }[]` — `field` must match a key in your row objects exactly.",
+        },
+        { prop: "data", effect: "is the row array; the grid owns the editing state from there." },
+        {
+          prop: "onChange",
+          effect:
+            "fires with the whole mutated array after a cell is saved via Enter, Tab or click-away.",
+        },
+        {
+          prop: "color",
+          effect: "accents the active cell's focus ring and the drag handle. Hex codes work.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DataGridBlock.tsx"),
     },
     {
       title: "Column schema",
-      subheading: "Swap the `columns` array and the whole grid changes — here a numeric `score` column and a locked `id`.",
+      propNotes: [
+        {
+          lead: "Swap",
+          prop: "columns",
+          effect:
+            "and the whole grid changes — here a numeric `score` column and a locked `id`.",
+        },
+      ],
       props: { dataset: "gradebook" },
       usage: usageSchema,
     },
     {
       title: "Without row numbers",
-      subheading: "Set `showRowNumbers={false}` to drop the spreadsheet-style index gutter.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showRowNumbers",
+          value: "{false}",
+          effect:
+            "to drop the sticky spreadsheet-style index gutter. It is on by default.",
+        },
+      ],
       props: { showRowNumbers: false },
       usage: usageNoRowNumbers,
     },
     {
       title: "Read only",
-      subheading: "Set `readOnly` to lock every cell while keeping arrow-key navigation intact.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "readOnly",
+          effect:
+            "to lock every cell against double-click and keyboard editing, while arrow-key navigation still works.",
+        },
+      ],
       props: { readOnly: true },
       usage: usageReadOnly,
     },
@@ -113,16 +165,7 @@ export const usageReadOnly = `// Keyboard navigation still works — only editin
 
 ## Installation
 
-<Cli command={`add data-grid.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/DataGridBlock.tsx`.
+<Installation name="data-grid" />
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.

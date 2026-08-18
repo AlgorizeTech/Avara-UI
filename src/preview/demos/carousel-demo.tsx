@@ -44,7 +44,7 @@ export default function CarouselDemo({
   return (
     <div className="w-full">
       {carouselType === "image" && (
-        <div className="max-w-4xl mx-auto border dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
           <ImageCarousel
             images={sampleImages}
             autoPlay={true}

@@ -6,7 +6,7 @@ It provides an accurate fractional fill, allowing you to beautifully display use
 
 ## Examples
 
-Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating.
 
 export const usageFull = `"use client";
 
@@ -47,6 +47,8 @@ export default function TenStarRating() {
     
   );
 }`;
+
+## Installation
 
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
@@ -175,4 +177,4 @@ interface HalfStarsProps extends Omit, 'onChange'> {
 
 **Component Path:** `nextjs\half-stars\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -9,7 +9,7 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 ## Examples
 
-Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades. The first example's **Code** tab contains the full component source.
+Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
 export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 import { CheckCircle2, Package, Truck } from "lucide-react";
@@ -45,22 +45,49 @@ export default function OrderTracker() {
   return <TimelineBlock items={events} layout="left" />;
 }`;
 
-export const usageCenter = `// Zig-zags the cards once the timeline itself is at least 576px wide, and
-// collapses to a single left rail below that. The breakpoint is a container
-// query, so it tracks the column the timeline sits in — not the window.
-<TimelineBlock items={events} layout="center" />`;
+export const usageCenter = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { events } from "./events";
 
-export const usageRight = `<TimelineBlock items={events} layout="right" />`;
+export default function CenterTimeline() {
+  // Zig-zags the cards once the timeline itself is at least 576px wide, and
+  // collapses to a single left rail below that. The breakpoint is a container
+  // query, so it tracks the column the timeline sits in — not the window.
+  return <TimelineBlock items={events} layout="center" />;
+}`;
 
-export const usageMinimal = `// Drops the card surface; the rail and type carry the structure.
-<TimelineBlock items={events} layout="left" variant="minimal" />`;
+export const usageRight = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { events } from "./events";
 
-export const usageGlass = `<div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <TimelineBlock items={events} layout="left" variant="glass" />
-</div>`;
+export default function RightTimeline() {
+  return <TimelineBlock items={events} layout="right" />;
+}`;
 
-export const usageNoAnimation = `// Renders in place — no staggered GSAP entrance.
-<TimelineBlock items={events} layout="left" animate={false} />`;
+export const usageMinimal = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { events } from "./events";
+
+export default function MinimalTimeline() {
+  // Drops the card surface; the rail and type carry the structure.
+  return <TimelineBlock items={events} layout="left" variant="minimal" />;
+}`;
+
+export const usageGlass = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { events } from "./events";
+
+export default function GlassTimeline() {
+  return (
+    <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <TimelineBlock items={events} layout="left" variant="glass" />
+    </div>
+  );
+}`;
+
+export const usageNoAnimation = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+import { events } from "./events";
+
+export default function StaticTimeline() {
+  // Renders in place — no staggered GSAP entrance.
+  return <TimelineBlock items={events} layout="left" animate={false} />;
+}`;
 
 <ExampleShowcase
   name="timeline"
@@ -70,38 +97,86 @@ export const usageNoAnimation = `// Renders in place — no staggered GSAP entra
   examples={[
     {
       title: "Timeline",
-      subheading: "Pass `items`; each one can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+      subheading: "Each item can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as the event array — `layout=\"left\"` is the default rail.",
+        },
+      ],
       props: { layout: "left", variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TimelineBlock.tsx"),
     },
     {
       title: "Center layout",
-      subheading: "`layout=\"center\"` alternates cards either side of the rail once the timeline is wide enough, and folds back to a single column below that. Each card's date drops onto its own line while the card is narrow, so the copy keeps the full width.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "to alternate cards either side of the rail. It folds back to one column below 576px — and that is a **container** query, so it tracks the column the timeline sits in, not the window.",
+        },
+      ],
       props: { layout: "center", variant: "default" },
       usage: usageCenter,
     },
     {
       title: "Right layout",
-      subheading: "`layout=\"right\"` mirrors the left rail.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"right"',
+          effect:
+            "to mirror the left rail.",
+        },
+      ],
       props: { layout: "right", variant: "default" },
       usage: usageRight,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` removes the card chrome for a lighter feed.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to remove the card chrome for a lighter feed — the rail and type carry the structure.",
+        },
+      ],
       props: { layout: "left", variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` frosts the cards — put something behind it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the cards; put something behind them.",
+        },
+      ],
       props: { layout: "left", variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Without the entrance",
-      subheading: "Set `animate={false}` to skip the staggered entrance — right for content that is already on screen.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "animate",
+          value: '{false}',
+          effect:
+            "to skip the staggered entrance — right for content that is already on screen.",
+        },
+      ],
       props: { layout: "left", variant: "default", animate: false },
       usage: usageNoAnimation,
     },
@@ -110,18 +185,11 @@ export const usageNoAnimation = `// Renders in place — no staggered GSAP entra
 
 ## Installation
 
-<Cli command={`add timeline.json`} />
+<Installation name="timeline" />
 
-The CLI writes the component into your project and installs anything it depends on.
+### Requires Tailwind CSS v4
 
-
-### Copy the Component
-
-This component dynamically manages absolute positioning and responsive classes natively through Tailwind. It uses a lightweight GSAP implementation strictly for the staggered entry animation.
-
-Its breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. This needs **Tailwind CSS v4**, where container queries are built in.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TimelineBlock.tsx`.
+The breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. Container queries are built into Tailwind v4; on v3 the rail will not respond.
 
 ## Props Reference
 

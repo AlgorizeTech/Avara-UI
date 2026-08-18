@@ -119,8 +119,14 @@ html.dark .shiki span {
   border: none !important;
 }
 
-/* Global inline code styling */
-:not(pre) > code {
+/* Global inline code styling.
+ *
+ * `data-badge` opts out. These declarations are !important, so without an
+ * escape hatch they beat any utility class a component puts on a <code> —
+ * which silently flattened the primary-coloured prop and dependency badges
+ * into plain slate chips. Components that style their own <code> mark it
+ * with data-badge rather than escalating to !important themselves. */
+:not(pre) > code:not([data-badge]) {
   border: 1px solid #cbd5e1 !important;
   background-color: #f1f5f9 !important;
   padding: 0.15rem 0.4rem !important;
@@ -129,7 +135,7 @@ html.dark .shiki span {
   box-shadow: none !important;
 }
 
-.dark :not(pre) > code {
+.dark :not(pre) > code:not([data-badge]) {
   border: 1px solid #334155 !important;
   background-color: #1e293b !important;
   color: #f8fafc !important;

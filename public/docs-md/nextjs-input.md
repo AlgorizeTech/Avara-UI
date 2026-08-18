@@ -6,7 +6,7 @@ By passing `type="file"`, this component transforms from a standard text input i
 
 ## Examples
 
-Explore the different variations of the Input component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
@@ -74,14 +74,6 @@ export default function InputStates() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for standard UI icons and the `next/image` component for optimized file previews.
-
-```bash
-npm install lucide-react
-```
 
 ## Features
 Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.
@@ -223,4 +215,4 @@ This component extends `React.InputHTMLAttributes`, meaning you can pass any sta
 
 **Component Path:** `nextjs\input\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

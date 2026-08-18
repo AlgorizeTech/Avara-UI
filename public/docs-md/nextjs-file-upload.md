@@ -10,7 +10,7 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 ## Examples
 
-The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume. The first example's **Code** tab contains the full component source.
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
 export const usageFlow = `"use client";
 
@@ -120,19 +120,13 @@ export default function AnimatedQueue({ queue, onRetry, onRemove }) {
 
 ## Installation
 
-### Dependencies
+### Optional — animated queue
 
-This component relies heavily on **GSAP** to manage the smooth progress bar fill and the instantaneous dropzone border reactions.
+The animated-queue example additionally uses `framer-motion`. It is optional; `UploadItem` renders fine without it.
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest install framer-motion
 ```
-
-The animated-queue example additionally uses `framer-motion`, which is optional — `UploadItem` renders fine without it.
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/UploadBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -257,4 +251,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `nextjs\file-upload\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

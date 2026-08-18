@@ -4,7 +4,7 @@ A premium, fully interactive email client featuring a modern SaaS aesthetic. It 
 
 ## Examples
 
-The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose. The first example's **Code** tab contains the full component source.
+The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
 export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
 
@@ -38,26 +38,23 @@ export default function Mailbox() {
   return ;
 }`;
 
-export const usageMinimal = `// Flattens the shell — no elevated card, lighter dividers.
-`;
+export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
 
-export const usageGlass = `// The glass variant also frosts absolute overlays like the Compose modal.
+export default function MinimalMailbox() {
+  // Flattens the shell — no elevated card, lighter dividers.
+  return ;
+}`;
 
-`;
+export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
+
+export default function GlassMailbox() {
+  return (
+    // The glass variant also frosts absolute overlays like the Compose modal.
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its interface iconography. Run the following command:
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Email.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
@@ -118,4 +115,4 @@ Discover the Email interface component's layout features, including inbox listin
 
 **Component Path:** `nextjs\email\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

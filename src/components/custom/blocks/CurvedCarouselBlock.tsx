@@ -248,14 +248,14 @@ export function CurvedCarousel({
               }}
               className={cn(
                 "absolute w-[150px] sm:w-[210px] md:w-[280px] h-[210px] sm:h-[300px] md:h-[410px] rounded-xl sm:rounded-2xl overflow-hidden cursor-default shadow-none transition-none",
-                "bg-zinc-900 border-[2px] sm:border-[3px] border-primary"
+                "bg-zinc-900 border border-primary/50"
               )}
             >
               {/* Pure Image Only */}
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rotate-180"
               />
             </div>
           );

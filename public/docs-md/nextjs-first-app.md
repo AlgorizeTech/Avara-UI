@@ -1,6 +1,7 @@
 # Creating Your First App
 
-This guide will walk you through creating your first Next.js application.
+Two guides in one. The first gets an Algorize UI component rendering in a few
+minutes; the rest is a Next.js walkthrough for anyone starting from scratch.
 
 ## Prerequisites
 
@@ -10,7 +11,65 @@ Before you start, make sure you have:
 - A code editor (we recommend Visual Studio Code)
 - A terminal or command prompt
 
-## Step 1: Create a New Next.js App
+## Quick start: your first component
+
+### 1. Create a Next.js app
+
+Skip this if you already have one.
+
+```bash
+npx create-next-app@latest my-app --typescript --tailwind --app
+cd my-app
+```
+
+### 2. Initialize shadcn
+
+Run once per project. It writes `components.json` and the `cn` helper in
+`lib/utils.ts` that every component imports.
+
+```bash
+npx shadcn@latest init
+```
+
+### 3. Add a component
+
+Every component page carries its own command — this one installs the card:
+
+```bash
+npx shadcn@latest add card.json
+```
+
+The CLI writes `components/custom/blocks/CardBlock.tsx` and installs whatever
+that component needs.
+
+### 4. Use it
+
+```tsx
+// app/page.tsx
+
+export default function Home() {
+  return (
+
+          Welcome
+          Your first Algorize UI component.
+
+            Edit the file the CLI just wrote — it is yours now.
+
+  );
+}
+```
+
+Run `npm run dev` and it is on screen. Every component page has a **Usage** tab
+with a full file you can paste the same way.
+
+## Full walkthrough: Next.js from scratch
+
+Everything below is independent of the quick start above and does not use
+Algorize UI. It builds a small Next.js app from an empty directory — start here
+if you are new to Next.js, or skip it entirely if you already have an app
+running.
+
+### Step 1: Create a New Next.js App
 
 Open your terminal and run the following command:
 
@@ -30,7 +89,7 @@ Navigate to your new project directory:
 cd my-first-app
 ```
 
-## Step 2: Run the Development Server
+### Step 2: Run the Development Server
 
 Start the development server:
 
@@ -40,7 +99,7 @@ npm run dev
 
 Visit `http://localhost:3000` in your browser to see your new Next.js app!
 
-## Step 3: Explore the Project Structure
+### Step 3: Explore the Project Structure
 
 Your new Next.js app has the following structure:
 
@@ -62,7 +121,7 @@ my-first-app/
 
 Let's look at the key files:
 
-### app/layout.tsx
+#### app/layout.tsx
 
 This is the root layout that wraps all pages:
 
@@ -88,7 +147,7 @@ export default function RootLayout({
 }
 ```
 
-### app/page.tsx
+#### app/page.tsx
 
 This is the home page of your application:
 
@@ -103,7 +162,7 @@ export default function Home() {
 }
 ```
 
-## Step 4: Create a New Page
+### Step 4: Create a New Page
 
 Let's create a new page for your application:
 
@@ -124,7 +183,7 @@ export default function About() {
 
 Visit `http://localhost:3000/about` to see your new page.
 
-## Step 5: Add Navigation
+### Step 5: Add Navigation
 
 Let's add navigation between your pages. Update your `app/layout.tsx`:
 
@@ -155,9 +214,11 @@ export default function RootLayout({
 }
 ```
 
-## Step 6: Create a Component
+### Step 6: Create a Component
 
-Let's create a reusable component:
+Algorize UI ships a card — see the quick start above to install it, or its
+[component page](/docs/nextjs/card) for every variant. To understand what the
+CLI writes for you, here is the same idea built by hand:
 
 1. Create a new folder called `components` in the root of your project
 2. Create a new file called `Card.tsx` inside the `components` folder:
@@ -195,7 +256,7 @@ export default function Home() {
 }
 ```
 
-## Step 7: Fetch Data
+### Step 7: Fetch Data
 
 Let's fetch some data from an API:
 
@@ -235,7 +296,7 @@ export default async function Home() {
 }
 ```
 
-## Step 8: Add Styling
+### Step 8: Add Styling
 
 Let's add some custom styling to your application:
 
@@ -276,7 +337,7 @@ body {
 }
 ```
 
-## Step 9: Deploy Your App
+### Step 9: Deploy Your App
 
 To deploy your Next.js app, you can use Vercel (the creators of Next.js):
 
@@ -289,13 +350,11 @@ To deploy your Next.js app, you can use Vercel (the creators of Next.js):
 
 Congratulations! You've created your first Next.js application. Here are some next steps:
 
-1. [Learn about routing](/docs/nextjs/routing) in Next.js
-2. [Explore data fetching](/docs/nextjs/data-fetching) methods
-3. [Style your application](/docs/nextjs/styling) with CSS
-4. [Optimize performance](/docs/nextjs/performance) with built-in features
-5. [Add authentication](/docs/nextjs/authentication) to protect routes
-6. [Test your application](/docs/nextjs/testing) with Jest or Cypress
-7. [Deploy your application](/docs/nextjs/deployment) to production
+1. [Browse the components](/docs/nextjs/all-components) — each page has an install command and a full usage file
+2. [Read the Introduction](/docs/nextjs/index) to see how the registry install model works
+3. [Check the Architecture](/docs/nextjs/architecture) for how components are structured
+4. For the framework itself — routing, data fetching, deployment — see the
+   [Next.js documentation](https://nextjs.org/docs)
 
 ## Resources
 
@@ -308,4 +367,4 @@ Congratulations! You've created your first Next.js application. Here are some ne
 
 **Component Path:** `nextjs\first-app\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

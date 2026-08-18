@@ -11,13 +11,13 @@ const sampleMemories: MemoryItem[] = [
   {
     id: "m1",
     tag: "Highlight",
-    title: "Kyoto Lantern Festival",
-    location: "Kyoto, Japan",
+    title: "Alpine Forest Lake",
+    location: "Swiss Alps",
     date: "Oct 2025",
     description:
-      "Walking through thousands of glowing paper lanterns illuminating the historic Gion district at twilight.",
+      "Serene pine forests reflecting over calm turquoise mountain waters at sunrise.",
     image:
-      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "m2",
@@ -33,24 +33,24 @@ const sampleMemories: MemoryItem[] = [
   {
     id: "m3",
     tag: "Sanctuary",
-    title: "Amalfi Coast Drive",
-    location: "Positano, Italy",
+    title: "Emerald Forest Stream",
+    location: "Pacific Northwest",
     date: "Jul 2025",
     description:
-      "Cruising along cliffside roads winding above the turquoise waters of the Mediterranean Sea.",
+      "A tranquil river winding through dense ancient rainforests and mossy rocks.",
     image:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "m4",
     tag: "Wilderness",
-    title: "Banff Glacial Lake",
+    title: "Cascading Mountain Falls",
     location: "Alberta, Canada",
     date: "Jun 2025",
     description:
-      "Canoeing across crystal-clear emerald waters fed directly by ancient mountain glaciers.",
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
     image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 

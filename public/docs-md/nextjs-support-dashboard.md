@@ -9,7 +9,7 @@ It now features a **dual-layout system**:
 
 ## Examples
 
-Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one. The first example's **Code** tab contains the full component source.
+Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
 export const usageChat = `import SupportDashboard, {
   SupportData,
@@ -88,30 +88,31 @@ export default function Helpdesk() {
   return ;
 }`;
 
-export const usageTable = `// Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
-// are derived from \`data.tickets\`, not passed in.
-`;
+export const usageTable = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
 
-export const usageMinimal = `// Borders and shadows pared back for embedding in an existing admin shell.
-`;
+export default function TicketTable() {
+  // Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
+  // are derived from \`data.tickets\`, not passed in.
+  return ;
+}`;
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+export const usageMinimal = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
 
-`;
+export default function EmbeddedDashboard() {
+  // Borders and shadows pared back for embedding in an existing admin shell.
+  return ;
+}`;
+
+export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+
+export default function GlassDashboard() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its standard UI icons.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Props Reference
 
@@ -163,4 +164,4 @@ Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from
 
 **Component Path:** `nextjs\support-dashboard\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

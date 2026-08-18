@@ -6,7 +6,7 @@ This component solves that by using native JavaScript Date math to construct a f
 
 ## Examples
 
-The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required. The first example's **Code** tab contains the full component source.
+The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
 export const usageDefault = `"use client";
 
@@ -59,18 +59,6 @@ export default function DisabledDatePicker() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component only requires standard `lucide-react` icons (Calendar, ChevronLeft, ChevronRight, AlertCircle). It does **not** require heavy date libraries like `date-fns` or `moment`.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/DatePickerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
@@ -187,4 +175,4 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
 
 **Component Path:** `nextjs\date-picker\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

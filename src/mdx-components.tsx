@@ -3,6 +3,7 @@ import { createSlug } from './lib/utils';
 import { CodeBlock } from './components/ui/code-block';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/site/tabs';
 import { Cli } from './components/site/cli';
+import { Installation, InstallGroup } from './components/site/installation';
 import { AIButton } from './components/site/ai-button';
 import {
   PackageManagerTabs as PMTabs,
@@ -294,6 +295,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     TabsTrigger,
     TabsContent,
     Cli,
+    Installation,
+    InstallGroup,
     AI: AIButton,
     PMTabs,
     PMTabContent,

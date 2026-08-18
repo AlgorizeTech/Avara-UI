@@ -41,13 +41,13 @@ export const HeroVideoPlayer = React.forwardRef<
 >(
   (
     {
-      videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
-      thumbnailUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80",
-      thumbnailAlt = "Hero Video Thumbnail",
-      badge = "Next-Gen Architecture",
-      title = "Experience the Platform in Action",
-      subtitle = "Watch how our lightning-fast workflow engine transforms your development cycle in under 3 minutes.",
-      playButtonLabel = "Watch Demo",
+      videoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
+      thumbnailUrl = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+      thumbnailAlt = "Nature Wilderness Video Thumbnail",
+      badge = "Wilderness Exploration",
+      title = "Experience Untouched Nature in 4K",
+      subtitle = "Embark on an immersive journey through serene mountain vistas, ancient forests, and cascading waterfalls.",
+      playButtonLabel = "Watch Nature Documentary",
       aspectRatio = "16/9",
       modalSize = "lg",
       enableGlow = true,
@@ -101,7 +101,6 @@ export const HeroVideoPlayer = React.forwardRef<
 
         {/* Hero Card Container with Fluid Mobile Min-Height */}
         <motion.div
-          whileHover={{ scale: 0.995 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className={cn(
             "relative z-10 w-full min-h-[220px] sm:min-h-[280px] lg:min-h-0 overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-900 shadow-2xl group cursor-pointer flex flex-col justify-between",
@@ -113,7 +112,7 @@ export const HeroVideoPlayer = React.forwardRef<
           <img
             src={thumbnailUrl}
             alt={thumbnailAlt}
-            className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
           />
 
@@ -125,8 +124,8 @@ export const HeroVideoPlayer = React.forwardRef<
             {/* Top Badge */}
             <div className="flex justify-start">
               {badge && (
-                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 rounded-full bg-white/10 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-wider shadow-sm">
-                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-400 animate-pulse shrink-0" />
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 rounded-2xl bg-white/10 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-sm">
+                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 animate-pulse shrink-0" />
                   <span className="truncate max-w-[180px] sm:max-w-none">
                     {badge}
                   </span>
@@ -134,13 +133,15 @@ export const HeroVideoPlayer = React.forwardRef<
               )}
             </div>
 
-            {/* Center Play Button (Glassmorphism scaled for mobile) */}
+            {/* Center Play Button (Glassmorphism rounded-2xl with dynamic theme color) */}
             <div className="flex items-center justify-center my-auto py-2 sm:py-0">
-              <div className="relative group/btn flex items-center gap-2.5 sm:gap-4 bg-white/15 dark:bg-black/30 hover:bg-white/25 dark:hover:bg-black/50 backdrop-blur-xl border border-white/30 dark:border-white/15 px-4 py-2.5 sm:px-6 sm:py-4 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 transform group-hover:scale-105">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/40 group-hover/btn:bg-indigo-500 transition-colors duration-200 shrink-0">
+              <div className="relative group/btn flex items-center gap-2.5 sm:gap-4 bg-white/15 dark:bg-black/30 hover:bg-white/25 dark:hover:bg-black/50 backdrop-blur-xl border border-white/30 dark:border-white/15 px-5 py-3 sm:px-7 sm:py-4 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 transform group-hover:scale-105">
+                <div
+                  className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg transition-colors duration-200 shrink-0 bg-[var(--theme-color,var(--primary))]"
+                >
                   <Play className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white fill-white ml-0.5" />
                 </div>
-                <span className="text-xs sm:text-base md:text-lg font-bold text-white tracking-tight pr-1 sm:pr-2">
+                <span className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight pr-1 sm:pr-2">
                   {playButtonLabel}
                 </span>
               </div>
@@ -170,7 +171,7 @@ export const HeroVideoPlayer = React.forwardRef<
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 bg-black/80 backdrop-blur-md"
+              className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 bg-black/40 backdrop-blur-sm"
               onClick={handleClose}
             >
               {/* Modal Content Box */}

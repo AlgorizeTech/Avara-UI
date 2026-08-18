@@ -4,7 +4,7 @@ A high-impact, scroll-driven interactive section built with full dark/light mode
 
 ## Examples
 
-Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered. The first example's **Code** tab contains the full component source.
+Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
 
 export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
@@ -61,11 +61,9 @@ export default function ShowcaseStartingOnThird() {
 
 ## Installation
 
-### Copy the Component
+### Accent color
 
-Create a new file at `components/custom/blocks/ScrollAccordionShowcaseBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-The accent color is resolved at runtime: the component looks for a hex in `localStorage` (starting with `localStorageKey`), then in the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is found. That is why it adopts your site's primary color automatically.
+The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.
 
 ## Props Reference
 
@@ -242,4 +240,4 @@ The accent color is resolved at runtime: the component looks for a hex in `local
 
 **Component Path:** `nextjs\split-scroll-stepper\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

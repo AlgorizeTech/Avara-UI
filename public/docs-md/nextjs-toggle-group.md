@@ -6,7 +6,7 @@ This component utilizes a React Context Provider to make composition incredibly 
 
 ## Examples
 
-Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
 export const usageSingle = `import {
   ToggleGroup,
@@ -21,19 +21,46 @@ export default function AlignmentGroup() {
   );
 }`;
 
-export const usageOutline = `
+export const usageOutline = `"use client";
 
-`;
+export default function OutlineGroup() {
+  const [value, setValue] = useState("left");
 
-export const usageGhost = `
+  return (
 
-`;
+  );
+}`;
 
-export const usageSizes = `
-  {items}
-  {items}
-  {items}
-`;
+export const usageGhost = `"use client";
+
+export default function GhostGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+const items = (
+  <>
+
+);
+
+export default function GroupSizes() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+        {items}
+
+        {items}
+
+        {items}
+
+  );
+}`;
 
 export const usageMultiple = `import {
   ToggleGroup,
@@ -48,19 +75,17 @@ export default function FormattingGroup() {
   );
 }`;
 
-export const usageDisabled = `
+export const usageDisabled = `"use client";
 
-`;
+export default function DisabledGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component manages its own contextual state internally, requiring zero third-party dependencies while natively supporting dynamic color injections.
-
-You can copy the full engine code directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleGroupBlock.tsx`.
-
----
 
 ## Usage
 
@@ -191,4 +216,4 @@ export default function TextEditor() {
 
 **Component Path:** `nextjs\toggle-group\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

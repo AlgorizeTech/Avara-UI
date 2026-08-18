@@ -6,7 +6,7 @@ Native application menus have complex, unwritten interaction rules. If you click
 
 ## Examples
 
-Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app. The first example's **Code** tab contains the full component source.
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
 export const usageDefault = `import {
   Menubar,
@@ -186,12 +186,6 @@ export default function AppWindow() {
 
 ## Installation
 
-### Copy the Component
-
-This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
-
-Create a new file at `components/custom/blocks/MenubarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
 
@@ -286,4 +280,4 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
 
 **Component Path:** `nextjs\menubar\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

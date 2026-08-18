@@ -1,30 +1,25 @@
 # Documentation
 
-Welcome to the Next.js Documentation documentation! This guide will help you get started with our component library and make the most of its features.
+Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
+into your project by the shadcn CLI — no wrapper package, no lock-in.
 
-## Next.js Documentation
-
-We've migrated our documentation to focus on Next.js, the React framework for production. Explore the following sections to learn how to build modern web applications:
-
-    Getting Started
+    Introduction
     
-      Learn the basics of Next.js, including installation, project structure, and creating your first app.
+      What the library is, how the registry install model works, and what ships in it.
 
-    Core Features
+    Installation
     
-      Explore Next.js core features like routing, data fetching, API routes, and image optimization.
+      Requirements, initializing the CLI, and where installed files land.
 
-    Styling & Performance
+    Quick Start
     
-      Learn about CSS styling options, performance optimization techniques, and SEO best practices.
+      Go from an empty project to a rendered component in four steps.
 
-    Advanced Topics
+    Browse Components
     
-      Dive into advanced topics like authentication, middleware, TypeScript, and testing.
+      All of them, each with live previews, prop notes and an install command.
 
-## Component Library
-
-While we focus on Next.js documentation, Next.js Documentation still provides a rich set of React components:
+## Popular components
 
     UI Components
     React Hooks
@@ -53,26 +48,23 @@ While we focus on Next.js documentation, Next.js Documentation still provides a 
 
 ## Getting Help
 
-If you need help with Next.js Documentation or Next.js:
-
-- Check the [Next.js Documentation](https://nextjs.org/docs)
-- Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
-- Join our [Discord Community](#)
-- Contact our support team at support@seraui.com
+- Visit our GitHub organisation
+- Browse the [component library](/docs/nextjs/all-components)
+- For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 
 ## Contributing
 
-We welcome contributions to Next.js Documentation! If you'd like to contribute:
+We welcome contributions to Algorize UI! If you'd like to contribute:
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-See our [Contributing Guide](/docs/contributing) for more details.
+Open an issue or pull request on GitHub to get started.
 
 ---
 
 **Component Path:** `page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

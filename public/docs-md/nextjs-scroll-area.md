@@ -6,7 +6,7 @@ This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works
 
 ## Examples
 
-Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox. The first example's **Code** tab contains the full component source.
+Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
 
 export const usageDefault = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
@@ -24,37 +24,56 @@ export default function LongList() {
   );
 }`;
 
-export const usageHorizontal = `// Horizontal areas need content wider than the box — \`w-max\` on the inner
-// row is the usual way to get it.
+export const usageHorizontal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
-    {artwork.map((item) => )}
-  
-`;
+export default function HorizontalScroller() {
+  // Horizontal areas need content wider than the box — \`w-max\` on the inner
+  // row is the usual way to get it.
+  return (
 
-export const usageBoth = `
-  
-`;
+        {artwork.map((item) => (
+          
+        ))}
 
-export const usageMinimal = `// Thinner thumb, no track chrome.
+  );
+}`;
 
-`;
+export const usageBoth = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
-export const usageGlass = `
+export default function BothAxes() {
+  return (
 
-`;
+  );
+}`;
 
-export const usageAutoHide = `// \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`
-// removes the groove behind the thumb entirely.
+export const usageMinimal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
-`;
+export default function MinimalScroller() {
+  // Thinner thumb, no track chrome.
+  return (
+
+  );
+}`;
+
+export const usageGlass = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+export default function GlassScroller() {
+  return (
+
+  );
+}`;
+
+export const usageAutoHide = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+export default function AutoHideScroller() {
+  // \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`
+  // removes the groove behind the thumb entirely.
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component dynamically injects standard CSS scrollbar properties via a `style` tag, scoping them securely to unique class names to prevent overriding global scrollbars unless desired.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ScrollAreaBlock.tsx`.
 
 ## Features
 Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
@@ -143,4 +162,4 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
 
 **Component Path:** `nextjs\scroll-area\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
