@@ -7,7 +7,7 @@ A multi-purpose, highly animated Counter component. Whether you need a user-inte
 
 ## Examples
 
-Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
 export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -23,32 +23,50 @@ export default function QuantityStepper() {
   );
 }`;
 
-export const usageOutline = `<CounterBlock
-  type="stepper"
-  variant="outline"
-  label="Select Quantity"
-  initialValue={1}
-  min={1}
-  max={10}
-/>`;
+export const usageOutline = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
-export const usageSoft = `<CounterBlock
-  type="stepper"
-  variant="soft"
-  label="Select Quantity"
-  initialValue={1}
-  min={1}
-  max={10}
-/>`;
+export default function OutlineStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="outline"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
 
-export const usageVertical = `<CounterBlock
-  type="stepper"
-  variant="vertical"
-  label="Select Quantity"
-  initialValue={1}
-  min={1}
-  max={10}
-/>`;
+export const usageSoft = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SoftStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="soft"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
+
+export const usageVertical = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function VerticalStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="vertical"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
 
 export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -89,44 +107,99 @@ export default function LaunchCountdown() {
   examples={[
     {
       title: "Stepper",
-      subheading: "An interactive quantity picker clamped between `min` and `max`.",
+      subheading: "An interactive quantity picker.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"stepper"',
+          effect: "renders the plus/minus quantity control.",
+        },
+        {
+          prop: "min",
+          effect: "and `max` clamp the value — the buttons disable at each end.",
+        },
+        { prop: "initialValue", effect: "is where it starts; state is internal from then on." },
+        { prop: "label", effect: "captions the control above the buttons." },
+      ],
       props: { type: "stepper" },
       usage: usageStepper,
       code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
     },
     {
       title: "Outline stepper",
-      subheading: "Use `variant=\"outline\"` for a bordered, transparent stepper.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"outline"',
+          effect: "for a bordered, transparent stepper.",
+        },
+      ],
       props: { type: "stepper", variant: "outline" },
       usage: usageOutline,
     },
     {
       title: "Soft stepper",
-      subheading: "Use `variant=\"soft\"` for a tinted, low-contrast stepper.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"soft"',
+          effect: "for a tinted, low-contrast stepper.",
+        },
+      ],
       props: { type: "stepper", variant: "soft" },
       usage: usageSoft,
     },
     {
       title: "Vertical stepper",
-      subheading: "Use `variant=\"vertical\"` to stack the controls for tight sidebars.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"vertical"',
+          effect: "to stack the controls for tight sidebars.",
+        },
+      ],
       props: { type: "stepper", variant: "vertical" },
       usage: usageVertical,
     },
     {
       title: "Animated ticker",
-      subheading: "`type=\"animated\"` interpolates from zero up to `targetValue`.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"animated"',
+          effect: "to interpolate from zero up to `targetValue` when it scrolls into view.",
+        },
+      ],
       props: { type: "animated" },
       usage: usageAnimated,
     },
     {
       title: "Circular progress",
-      subheading: "`type=\"circular\"` draws the value as an animated SVG ring.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"circular"',
+          effect: "to draw the value as an animated SVG ring instead of a number alone.",
+        },
+      ],
       props: { type: "circular" },
       usage: usageCircular,
     },
     {
       title: "Countdown",
-      subheading: "`type=\"countdown\"` ticks down to a launch date.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"countdown"',
+          effect: "to tick down to a target date rather than counting up.",
+        },
+      ],
       props: { type: "countdown" },
       usage: usageCountdown,
     },
@@ -135,18 +208,7 @@ export default function LaunchCountdown() {
 
 ## Installation
 
-<Cli command={`add counter.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the rapid number interpolations, bouncy spring animations, and SVG stroke manipulations. It also utilizes `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
+<Installation name="counter" />
 
 ## Features
 Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.

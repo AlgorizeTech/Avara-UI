@@ -9,7 +9,7 @@ This component solves that by using React state and clever absolute positioning 
 
 ## Examples
 
-Explore the different variations of the Select component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
@@ -35,47 +35,107 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageFilled = `<SelectBlock
-  variant="filled"
-  options={options}
-  value={value}
-  onChange={setValue}
-  label="Department"
-  placeholder="Select an option..."
-/>`;
+export const usageFilled = `"use client";
 
-export const usageUnderlined = `<SelectBlock
-  variant="underlined"
-  options={options}
-  value={value}
-  onChange={setValue}
-  label="Department"
-  placeholder="Select an option..."
-/>`;
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
 
-export const usageGlow = `<SelectBlock
-  variant="glow"
-  options={options}
-  value={value}
-  onChange={setValue}
-  label="Department"
-  placeholder="Select an option..."
-/>`;
+export default function FilledSelect() {
+  const [value, setValue] = useState("");
 
-export const usageSizes = `<div className="flex flex-col gap-6">
-  <SelectBlock inputSize="sm" options={options} value={value} onChange={setValue} label="Small" />
-  <SelectBlock inputSize="md" options={options} value={value} onChange={setValue} label="Medium" />
-  <SelectBlock inputSize="lg" options={options} value={value} onChange={setValue} label="Large" />
-</div>`;
+  return (
+    <SelectBlock
+      variant="filled"
+      options={options}
+      value={value}
+      onChange={setValue}
+      label="Department"
+      placeholder="Select an option..."
+    />
+  );
+}`;
 
-export const usageSearchable = `<SelectBlock
-  searchable
-  options={options}
-  value={value}
-  onChange={setValue}
-  label="Department"
-  placeholder="Select an option..."
-/>`;
+export const usageUnderlined = `"use client";
+
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
+
+export default function UnderlinedSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    <SelectBlock
+      variant="underlined"
+      options={options}
+      value={value}
+      onChange={setValue}
+      label="Department"
+      placeholder="Select an option..."
+    />
+  );
+}`;
+
+export const usageGlow = `"use client";
+
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
+
+export default function GlowSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    <SelectBlock
+      variant="glow"
+      options={options}
+      value={value}
+      onChange={setValue}
+      label="Department"
+      placeholder="Select an option..."
+    />
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
+
+export default function SelectSizes() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="flex flex-col gap-6">
+      <SelectBlock inputSize="sm" options={options} value={value} onChange={setValue} label="Small" />
+      <SelectBlock inputSize="md" options={options} value={value} onChange={setValue} label="Medium" />
+      <SelectBlock inputSize="lg" options={options} value={value} onChange={setValue} label="Large" />
+    </div>
+  );
+}`;
+
+export const usageSearchable = `"use client";
+
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
+
+export default function SearchableSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    <SelectBlock
+      searchable
+      options={options}
+      value={value}
+      onChange={setValue}
+      label="Department"
+      placeholder="Select an option..."
+    />
+  );
+}`;
 
 export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
@@ -118,10 +178,34 @@ export default function GroupedSelect() {
   );
 }`;
 
-export const usageStates = `<div className="flex flex-col gap-6">
-  <SelectBlock options={options} value={value} onChange={setValue} label="Department" error="Please select a valid option to proceed." />
-  <SelectBlock options={options} value={value} onChange={setValue} label="Department" disabled />
-</div>`;
+export const usageStates = `"use client";
+
+import { useState } from "react";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { options } from "./options";
+
+export default function SelectStates() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="flex flex-col gap-6">
+      <SelectBlock
+        options={options}
+        value={value}
+        onChange={setValue}
+        label="Department"
+        error="Please select a valid option to proceed."
+      />
+      <SelectBlock
+        options={options}
+        value={value}
+        onChange={setValue}
+        label="Department"
+        disabled
+      />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="select"
@@ -132,55 +216,131 @@ export const usageStates = `<div className="flex flex-col gap-6">
     {
       title: "Select",
       subheading: "A labelled dropdown with helper text.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "options",
+          effect:
+            "as `{ label, value }[]` — `icon` and `group` are optional per option.",
+        },
+        {
+          prop: "value",
+          effect:
+            "and `onChange` are yours to hold; use an array when `multiple` is on.",
+        },
+      ],
       props: { isGrouped: false },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SelectBlock.tsx"),
     },
     {
       title: "Filled",
-      subheading: "Use `variant=\"filled\"` for a solid, low-contrast trigger.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"filled"',
+          effect:
+            "for a solid, low-contrast trigger.",
+        },
+      ],
       props: { isGrouped: false, variant: "filled" },
       usage: usageFilled,
     },
     {
       title: "Underlined",
-      subheading: "Use `variant=\"underlined\"` for a single baseline rule.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"underlined"',
+          effect:
+            "to reduce the trigger to a single baseline rule.",
+        },
+      ],
       props: { isGrouped: false, variant: "underlined" },
       usage: usageUnderlined,
     },
     {
       title: "Glow",
-      subheading: "Use `variant=\"glow\"` to light the trigger up on focus.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"glow"',
+          effect:
+            "to light the trigger up on focus.",
+        },
+      ],
       props: { isGrouped: false, variant: "glow" },
       usage: usageGlow,
     },
     {
       title: "Sizes",
-      subheading: "Use the `inputSize` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "inputSize",
+          effect:
+            "to scale the trigger — `sm`, `md` or `lg`. Note it is `inputSize`, not `size`.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Searchable",
-      subheading: "Set `searchable` to add a sticky filter bar to the dropdown.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "searchable",
+          effect:
+            "to add a sticky filter bar at the top of the dropdown.",
+        },
+      ],
       props: { isGrouped: false, isSearchable: true },
       usage: usageSearchable,
     },
     {
       title: "Multi-select",
-      subheading: "Set `multiple` and pass an array — selections render as removable tags.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "multiple",
+          effect:
+            "and pass an array as `value` — selections render as removable tags in the trigger.",
+        },
+      ],
       props: { isGrouped: false, isMultiple: true },
       usage: usageMultiple,
     },
     {
       title: "Grouped options",
-      subheading: "Give options a `group` string to categorize them under labels.",
+      propNotes: [
+        {
+          prop: "group",
+          effect:
+            "on an option categorises it under a label in the dropdown; options without one stay ungrouped at the top.",
+        },
+      ],
       props: { isGrouped: true },
       usage: usageGrouped,
     },
     {
       title: "Error and disabled",
-      subheading: "Pass `error` for the invalid state, `disabled` to lock the trigger.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "error",
+          effect:
+            "for the invalid state — it replaces the helper text.",
+        },
+        {
+          prop: "disabled",
+          effect:
+            "locks the trigger so the dropdown cannot open.",
+        },
+      ],
       props: { showAll: "states" },
       usage: usageStates,
     },
@@ -189,18 +349,7 @@ export const usageStates = `<div className="flex flex-col gap-6">
 
 ## Installation
 
-<Cli command={`add select.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
-
-```bash
-npm install lucide-react
-```
+<Installation name="select" />
 
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.

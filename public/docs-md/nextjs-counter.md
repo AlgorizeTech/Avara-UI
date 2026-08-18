@@ -4,7 +4,7 @@ A multi-purpose, highly animated Counter component. Whether you need a user-inte
 
 ## Examples
 
-Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
 export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -14,11 +14,29 @@ export default function QuantityStepper() {
   );
 }`;
 
-export const usageOutline = ``;
+export const usageOutline = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
-export const usageSoft = ``;
+export default function OutlineStepper() {
+  return (
+    
+  );
+}`;
 
-export const usageVertical = ``;
+export const usageSoft = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SoftStepper() {
+  return (
+    
+  );
+}`;
+
+export const usageVertical = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function VerticalStepper() {
+  return (
+    
+  );
+}`;
 
 export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -43,14 +61,6 @@ export default function LaunchCountdown() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the rapid number interpolations, bouncy spring animations, and SVG stroke manipulations. It also utilizes `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
 
 ## Features
 Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.

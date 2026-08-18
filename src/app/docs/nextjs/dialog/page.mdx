@@ -11,7 +11,7 @@ The `DialogBlock` component handles the complex DOM logic required for true acce
 
 ## Examples
 
-Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close. The first example's **Code** tab contains the full component source.
+Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
 export const usageDefault = `import {
   Dialog,
@@ -245,31 +245,70 @@ export default function ControlledDialog() {
     {
       title: "Dialog",
       subheading: "Compose `DialogTrigger` and `DialogContent` inside a `Dialog` root.",
+      propNotes: [
+        {
+          prop: "defaultOpen",
+          effect:
+            "starts it open while leaving the state uncontrolled.",
+        },
+      ],
       props: { layout: "standard" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DialogBlock.tsx"),
     },
     {
       title: "Form dialog",
-      subheading: "Drop any form markup into the body and size the modal with `className`.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on `DialogContent` is where you size the modal — drop any form markup into the body.",
+        },
+      ],
       props: { layout: "form" },
       usage: usageForm,
     },
     {
       title: "Destructive confirm",
-      subheading: "A confirmation shape: colored title, clear consequence, two footer actions.",
+      subheading: "A confirmation shape: coloured title, clear consequence, two footer actions.",
+      propNotes: [
+        {
+          prop: "hideCloseButton",
+          effect:
+            "is worth pairing with this so the choice has to be made explicitly.",
+        },
+      ],
       props: { layout: "destructive" },
       usage: usageDestructive,
     },
     {
       title: "Without close button",
-      subheading: "Set `hideCloseButton` when the user must pick one of your own actions.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "hideCloseButton",
+          effect:
+            "on `DialogContent` to remove the built-in X, when the user must pick one of your own actions.",
+        },
+      ],
       props: { layout: "no-close" },
       usage: usageNoClose,
     },
     {
       title: "Controlled",
-      subheading: "Pass `open` and `onOpenChange` to close the dialog yourself after async work.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "open",
+          effect:
+            "and `onOpenChange` to own the state, so you can keep the dialog up until async work finishes.",
+        },
+        {
+          prop: "onOpenChange",
+          effect:
+            "also fires on Escape and on a backdrop click — handle those or the dialog will not close.",
+        },
+      ],
       props: { layout: "controlled" },
       usage: usageControlled,
     },
@@ -278,16 +317,7 @@ export default function ControlledDialog() {
 
 ## Installation
 
-<Cli command={`add dialog.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
-
-Create a new file at `components/custom/blocks/DialogBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="dialog" />
 
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.

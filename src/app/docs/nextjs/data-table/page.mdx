@@ -9,7 +9,7 @@ This component is the engine for SaaS dashboards and administrative panels. Unli
 
 ## Examples
 
-Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in. The first example's **Code** tab contains the full component source.
+Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in.
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
@@ -48,22 +48,36 @@ export default function UserManagement() {
   );
 }`;
 
-export const usageNoSearch = `// Drop the global search bar when the dataset is small enough to scan.
-<AdvancedTableBlock
-  columns={COLUMNS}
-  data={DATA}
-  primaryKey="id"
-  searchable={false}
-/>`;
+export const usageNoSearch = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+import { COLUMNS, DATA } from "./schema";
 
-export const usageNoSelection = `// Without selection there is no checkbox column and no batch toolbar —
-// a purely read-only report table.
-<AdvancedTableBlock
-  columns={COLUMNS}
-  data={DATA}
-  primaryKey="id"
-  selectable={false}
-/>`;
+export default function TableWithoutSearch() {
+  // Drop the global search bar when the dataset is small enough to scan.
+  return (
+    <AdvancedTableBlock
+      columns={COLUMNS}
+      data={DATA}
+      primaryKey="id"
+      searchable={false}
+    />
+  );
+}`;
+
+export const usageNoSelection = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+import { COLUMNS, DATA } from "./schema";
+
+export default function ReadOnlyTable() {
+  // Without selection there is no checkbox column and no batch toolbar —
+  // a purely read-only report table.
+  return (
+    <AdvancedTableBlock
+      columns={COLUMNS}
+      data={DATA}
+      primaryKey="id"
+      selectable={false}
+    />
+  );
+}`;
 
 export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
 
@@ -92,26 +106,62 @@ export default function ExportableTable() {
   examples={[
     {
       title: "Advanced table",
-      subheading: "Declare the schema in `columns`, point `primaryKey` at your unique field, and the search, sort and pagination logic comes for free.",
+      subheading: "Search, sort and pagination come for free once the schema is declared.",
+      propNotes: [
+        {
+          lead: "Declare the schema in",
+          prop: "columns",
+          effect: ", then pass the rows as `data`.",
+        },
+        {
+          prop: "primaryKey",
+          value: '"id"',
+          effect:
+            "names the unique field — it is what selection and batch actions identify rows by.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AdvancedTableBlock.tsx"),
     },
     {
       title: "Without search",
-      subheading: "Set `searchable={false}` to hide the global filter input.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "searchable",
+          value: "{false}",
+          effect:
+            "to hide the global filter input — worth doing when the dataset is small enough to scan.",
+        },
+      ],
       props: { searchable: false },
       usage: usageNoSearch,
     },
     {
       title: "Without selection",
-      subheading: "Set `selectable={false}` for a read-only table — no checkbox column, no batch toolbar.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "selectable",
+          value: "{false}",
+          effect:
+            "for a read-only report table — it removes the checkbox column and the batch toolbar together.",
+        },
+      ],
       props: { selectable: false },
       usage: usageNoSelection,
     },
     {
       title: "Custom batch actions",
-      subheading: "Pass `batchActions` to replace the default Edit/Delete buttons with your own — it receives the selected ids and a `clearSelection` callback.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "batchActions",
+          effect:
+            "to replace the default Edit/Delete buttons — it receives the selected ids and a `clearSelection` callback to reset the toolbar.",
+        },
+      ],
       props: { example: "custom-batch-actions" },
       usage: usageBatchActions,
     },
@@ -120,16 +170,7 @@ export default function ExportableTable() {
 
 ## Installation
 
-<Cli command={`add advanced-table.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component handles all complex filtering, sorting, and pagination logic purely through React's `useMemo` hooks, ensuring blazing-fast performance without any third-party dependencies like `react-table` or `ag-grid`.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AdvancedTableBlock.tsx`.
+<Installation name="advanced-table" />
 
 ## Features
 Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.

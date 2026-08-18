@@ -7,7 +7,7 @@ A complete, production-ready Authentication Block that acts as both a Login and 
 
 ## Examples
 
-One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome. The first example's **Code** tab contains the full component source.
+One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome.
 
 export const usageSignup = `import AuthForm from "@/components/custom/blocks/AuthForm";
 
@@ -54,32 +54,72 @@ export default function MinimalLoginPage() {
   examples={[
     {
       title: "Signup",
-      subheading: "The default form — name fields, a confirm-password field and a terms checkbox, all validated on submit.",
+      subheading: "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"signup"',
+          effect:
+            "is the default, and picks both the layout and the validation rules.",
+        },
+      ],
       props: { type: "signup", variant: "default" },
       usage: usageSignup,
       code: extractCode("src/components/custom/blocks/AuthForm.tsx"),
     },
     {
       title: "Login",
-      subheading: "Set `type=\"login\"` to collapse down to email and password with a forgot-password link.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"login"',
+          effect:
+            "to collapse down to email and password with a forgot-password link.",
+        },
+      ],
       props: { type: "login", variant: "default" },
       usage: usageLogin,
     },
     {
       title: "Split",
-      subheading: "`variant=\"split\"` pairs the form with a full-height marketing panel on large screens.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"split"',
+          effect:
+            "to pair the form with a full-height marketing panel on large screens.",
+        },
+      ],
       props: { type: "signup", variant: "split" },
       usage: usageSplit,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` goes translucent — intended to sit over a photo or gradient background.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit over a photo or gradient.",
+        },
+      ],
       props: { type: "signup", variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` strips the card away and leaves the fields on your own background.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the card away and leave the fields on your own background.",
+        },
+      ],
       props: { type: "login", variant: "minimal" },
       usage: usageMinimal,
     },
@@ -88,22 +128,7 @@ export default function MinimalLoginPage() {
 
 ## Installation
 
-<Cli command={`add signup-form.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its interface iconography (such as the password visibility eye toggle and social icons).
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/AuthForm.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="signup-form" />
 
 ## Props Reference
 

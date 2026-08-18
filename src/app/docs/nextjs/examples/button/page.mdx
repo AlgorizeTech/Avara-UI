@@ -17,7 +17,7 @@ export const metadata = {
         title: 'Button Component - Next.js Documentation',
         description: 'Customizable React button component with ripple effects, multiple variants, and loading states for modern web applications.',
         type: 'article',
-        url: '/docs/button',
+        url: '/docs/nextjs/examples/button',
     },
     twitter: {
         card: 'summary_large_image',
@@ -25,7 +25,7 @@ export const metadata = {
         description: 'Customizable React button component with ripple effects, multiple variants, and loading states for modern web applications.',
     },
     alternates: {
-        canonical: '/docs/button',
+        canonical: '/docs/nextjs/examples/button',
     },
 };
 
@@ -164,35 +164,18 @@ A customizable and interactive button component with a built-in ripple effect.
 </Tabs>
 
 
-# Installation
-
-<Tabs defaultValue="cli" className="">
-  <TabsList>
-    <TabsTrigger value="cli">CLI</TabsTrigger>
-    <TabsTrigger value="manual">Manual</TabsTrigger>
-  </TabsList>
-  <TabsContent value="cli">
-    <Cli command={`add button.json`} />
-  </TabsContent>
-
-  <TabsContent value="manual">
-    <CodeBlock filePath="src/app/docs/nextjs/examples/button/button.tsx" />
-  </TabsContent>
-</Tabs>
-
-
-
-
 # Button Component
 
 A customizable and interactive button component with a built-in ripple effect.
 
 ## Installation & Import
 
-First, make sure the `Button` component file is included in your project. Then, you can import it into your MDX or React files like this:
+<Installation name="button" />
+
+Then import it:
 
 ```tsx
-import Button from './path/to/your/Button';
+import Button from "@/components/custom/blocks/Button";
 ```
 
 ## Basic Usage

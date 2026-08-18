@@ -6,7 +6,7 @@ While Tailwind provides fantastic utility classes for text, manually copying str
 
 ## Examples
 
-Every component is a thin semantic wrapper around a native HTML tag, so you compose them exactly like the tags themselves. The first example's **Code** tab contains the full component source.
+Every component is a thin semantic wrapper around a native HTML tag, so you compose them exactly like the tags themselves.
 
 export const usageArticle = `import {
   Blockquote,
@@ -25,27 +25,27 @@ export const usageArticle = `import {
 export default function BlogPost() {
   return (
     
-      The Elements of UI
+      Crafting High-Performance UI Architecture
       
-        A comprehensive guide to composing beautiful web applications.
+        A modern engineering guide to building scalable, accessible, and resilient design systems.
 
-        Rather than scattering raw classes like{" "}
-        text-4xl font-extrabold across hundreds of
-        files, standardized components keep the rhythm predictable.
+        Typography is the backbone of intuitive user interface design. Rather than hardcoding chaotic inline utilities like{" "}
+        text-4xl font-extrabold tracking-tight across hundreds of files, establishing a unified typography token hierarchy brings rhythmic consistency.
 
-      Why semantic tags matter
+      Semantic Structure & Accessibility
       
-        "Good typography guides the reader without calling attention to itself."
+        "Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs
 
-      Key Benefits
+      Core Engineering Principles
       
-        Consistent margins applied automatically.
-        Perfect dark mode contrast ratios.
+        Automatic vertical rhythm and baseline spacing between components.
+        Native dark mode contrast compliance with HSL color tokens.
+        Fluid typography scaling across mobile, tablet, and desktop displays.
 
-        Written by Nexus
+        Written by Alex Rivers
         
-          Author Status: Verified
-          Published April 2026
+          Author Status: Principal Architect
+          Updated August 2026
 
   );
 }`;
@@ -55,10 +55,10 @@ export const usageHeadings = `import { H1, H2, H3, H4 } from "@/components/custo
 export default function Headings() {
   return (
     <>
-      The Elements of UI
-      Why semantic tags matter
-      Key benefits
-      A minor aside
+      Crafting High-Performance UI
+      Semantic Structure & Accessibility
+      Core Engineering Principles
+      Implementation Details & Guidelines
     
   );
 }`;
@@ -68,29 +68,28 @@ export const usageParagraph = `import { InlineCode, Lead, P } from "@/components
 export default function Body() {
   return (
     <>
-      A comprehensive guide to composing beautiful web apps.
+      A modern engineering guide to building scalable, accessible design systems.
       
-        Standardized components keep the rhythm predictable — no more pasting{" "}
+        Typography is the backbone of intuitive user interface design. Standardized components keep the rhythm predictable — no more pasting{" "}
         text-4xl font-extrabold tracking-tight by hand.
       
-      A following paragraph picks up its own top margin automatically.
+      Subsequent paragraphs automatically maintain predictable top margins.
     
   );
 }`;
 
 export const usageBlockquote = `import { Blockquote } from "@/components/custom/blocks/TypographyBlock";
 
-  "Good typography is like a good map. It guides the reader gracefully from
-  start to finish without calling attention to itself."
+  "Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs
 `;
 
 export const usageList = `import { List } from "@/components/custom/blocks/TypographyBlock";
 
 // \`List\` styles the marker and spacing; the \`li\` children stay yours.
 
-  Consistent top and bottom margins automatically applied.
-  Perfect dark mode contrast ratios.
-  Semantic HTML attributes preserved.
+  Automatic vertical rhythm and baseline spacing between components.
+  Native dark mode contrast compliance with HSL color tokens.
+  Fluid typography scaling across mobile, tablet, and desktop displays.
 `;
 
 export const usageSupporting = `import { Large, Muted, Small } from "@/components/custom/blocks/TypographyBlock";
@@ -98,21 +97,36 @@ export const usageSupporting = `import { Large, Muted, Small } from "@/component
 export default function Byline() {
   return (
     
-      Written by Nexus
+      Written by Alex Rivers
       
-        Author Status: Verified
-        Published April 2026
+        Author Status: Principal Architect
+        Updated August 2026
 
   );
 }`;
 
+` tags — markers, indentation and item spacing are handled for you.",
+        },
+      ],
+      props: { example: "list" },
+      usage: usageList,
+    },
+    {
+      title: "Supporting text",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `Large`, `Small` and `Muted` covers bylines, captions and metadata respectively.",
+        },
+      ],
+      props: { example: "supporting" },
+      usage: usageSupporting,
+    },
+  ]}
+/>
+
 ## Installation
-
-### Copy the Component
-
-This suite of components simply wraps native HTML tags with carefully crafted Tailwind CSS strings. It is completely dependency-free.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TypographyBlock.tsx`.
 
 ## Props Reference
 

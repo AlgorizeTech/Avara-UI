@@ -9,7 +9,7 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 
 ## Examples
 
-Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired. The first example's **Code** tab contains the full component source.
+Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
 export const usageDefault = `import {
   ResizableHandle,
@@ -45,37 +45,95 @@ export default function StudioLayout() {
   );
 }`;
 
-export const usageHorizontal = `<ResizablePanelGroup direction="horizontal">
-  <ResizablePanel defaultSize={40}>
-    <PanelOne />
-  </ResizablePanel>
-  <ResizableHandle withHandle />
-  <ResizablePanel defaultSize={60}>
-    <PanelTwo />
-  </ResizablePanel>
-</ResizablePanelGroup>`;
+export const usageHorizontal = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+import { PanelOne, PanelTwo } from "./panels";
 
-export const usageVertical = `// \`direction\` sets the flex axis of the group and the drag axis of every
-// handle inside it.
-<ResizablePanelGroup direction="vertical">
-  <ResizablePanel defaultSize={40}>
-    <PanelOne />
-  </ResizablePanel>
-  <ResizableHandle withHandle />
-  <ResizablePanel defaultSize={60}>
-    <PanelTwo />
-  </ResizablePanel>
-</ResizablePanelGroup>`;
+export default function HorizontalSplit() {
+  return (
+    <ResizablePanelGroup direction="horizontal">
+      <ResizablePanel defaultSize={40}>
+        <PanelOne />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={60}>
+        <PanelTwo />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}`;
 
-export const usageNoGrip = `// Omit \`withHandle\` for a bare 1px divider — still draggable, still
-// keyboard accessible, just without the visible grip.
-<ResizableHandle />`;
+export const usageVertical = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+import { PanelOne, PanelTwo } from "./panels";
 
-export const usageConstraints = `// Percentages of the group. The engine clamps the drag so a panel can
-// never escape its bounds.
-<ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
-  <Sidebar />
-</ResizablePanel>`;
+export default function VerticalSplit() {
+  // \`direction\` sets the flex axis of the group and the drag axis of every
+  // handle inside it.
+  return (
+    <ResizablePanelGroup direction="vertical">
+      <ResizablePanel defaultSize={40}>
+        <PanelOne />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={60}>
+        <PanelTwo />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}`;
+
+export const usageNoGrip = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+import { PanelOne, PanelTwo } from "./panels";
+
+export default function HairlineDivider() {
+  return (
+    <ResizablePanelGroup direction="horizontal">
+      <ResizablePanel>
+        <PanelOne />
+      </ResizablePanel>
+      {/* Omit \`withHandle\` for a bare 1px divider — still draggable, still
+          keyboard accessible, just without the visible grip. */}
+      <ResizableHandle />
+      <ResizablePanel>
+        <PanelTwo />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}`;
+
+export const usageConstraints = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+import { Sidebar, Editor } from "./panels";
+
+export default function ConstrainedSidebar() {
+  return (
+    <ResizablePanelGroup direction="horizontal">
+      {/* Percentages of the group. The engine clamps the drag so a panel can
+          never escape its bounds. */}
+      <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+        <Sidebar />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel>
+        <Editor />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}`;
 
 <ExampleShowcase
   name="resizable"
@@ -83,32 +141,72 @@ export const usageConstraints = `// Percentages of the group. The engine clamps 
   examples={[
     {
       title: "Resizable layout",
-      subheading: "A `ResizablePanelGroup` sets the axis; `ResizablePanel`s are separated by `ResizableHandle`s. Groups nest, so a full IDE layout is a few lines.",
+      subheading: "Groups nest, so a full IDE layout is a few lines.",
+      propNotes: [
+        {
+          prop: "direction",
+          effect:
+            "on `ResizablePanelGroup` sets the axis for the group and every handle inside it.",
+        },
+      ],
       props: { example: "ide" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ResizableBlock.tsx"),
     },
     {
       title: "Horizontal split",
-      subheading: "The simplest composition — two panels, one handle.",
+      propNotes: [
+        {
+          prop: "defaultSize",
+          effect:
+            "on each panel is a percentage of the group — two panels at 40 and 60 fill it.",
+        },
+        {
+          prop: "withHandle",
+          effect:
+            "on the handle renders the visible grip in the middle of the divider.",
+        },
+      ],
       props: { example: "horizontal" },
       usage: usageHorizontal,
     },
     {
       title: "Vertical split",
-      subheading: "`direction=\"vertical\"` stacks the panels and turns the handle into a horizontal bar.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "direction",
+          value: '"vertical"',
+          effect:
+            "to stack the panels and turn the handle into a horizontal bar.",
+        },
+      ],
       props: { example: "vertical" },
       usage: usageVertical,
     },
     {
       title: "Handle without a grip",
-      subheading: "Leave `withHandle` off for a hairline divider that is still draggable and focusable.",
+      propNotes: [
+        {
+          lead: "Leave",
+          prop: "withHandle",
+          effect:
+            "off for a hairline divider that is still draggable and still keyboard focusable.",
+        },
+      ],
       props: { example: "no-grip" },
       usage: usageNoGrip,
     },
     {
       title: "Size constraints",
-      subheading: "`defaultSize`, `minSize` and `maxSize` are percentages of the group — the drag clamps to them.",
+      propNotes: [
+        {
+          prop: "minSize",
+          value: '{15}',
+          effect:
+            "and `maxSize` are percentages of the group; the drag clamps to them so a panel can never escape its bounds.",
+        },
+      ],
       props: { example: "constraints" },
       usage: usageConstraints,
     },
@@ -117,16 +215,7 @@ export const usageConstraints = `// Percentages of the group. The engine clamps 
 
 ## Installation
 
-<Cli command={`add resizable.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ResizableBlock.tsx`.
+<Installation name="resizable" />
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

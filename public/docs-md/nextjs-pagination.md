@@ -6,7 +6,7 @@ Building pagination logic from scratch is notoriously difficult. If you have 100
 
 ## Examples
 
-Click through the page numbers in each preview to watch the ellipses shift. The first example's **Code** tab contains the full component source.
+Click through the page numbers in each preview to watch the ellipses shift.
 
 export const usageDefault = `import { useState } from "react";
 
@@ -76,12 +76,6 @@ export default function CustomerDirectory() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses standard React `useMemo` hooks to calculate the page ranges and Tailwind CSS for the styling.
-
-Create a new file at `components/custom/blocks/PaginationBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

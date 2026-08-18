@@ -6,7 +6,7 @@ Instead of writing complex Flexbox or Grid classes every time you need to build 
 
 ## Examples
 
-`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed. The first example's **Code** tab contains the full component source.
+`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
 
 export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 
@@ -76,13 +76,21 @@ export default function DenseRow() {
   return ;
 }`;
 
-`.",
+` — so don't nest another interactive element inside it.",
+        },
+      ],
       props: { variant: "bordered", showMedia: true, showDescription: true, showActions: false, isClickable: true },
       usage: usageClickable,
     },
     {
       title: "Title only",
-      subheading: "Drop every optional slot for a dense menu or dropdown row.",
+      propNotes: [
+        {
+          prop: "title",
+          effect:
+            "on its own, with every optional slot dropped, gives the dense row used in menus and dropdowns.",
+        },
+      ],
       props: { variant: "compact", showMedia: false, showDescription: false, showActions: false },
       usage: usageTitleOnly,
     },
@@ -90,12 +98,6 @@ export default function DenseRow() {
 />
 
 ## Installation
-
-### Copy the Component
-
-This component is dependency-free — it is pure layout logic over Tailwind classes.
-
-Create a new file at `components/custom/blocks/ItemBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.

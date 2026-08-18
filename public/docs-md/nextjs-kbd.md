@@ -6,7 +6,7 @@ Displaying keyboard shortcuts to power users is a critical part of modern web de
 
 ## Examples
 
-Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
@@ -14,11 +14,17 @@ export default function BasicKbd() {
   return ⌘;
 }`;
 
-export const usageSizes = `
-  ⌘
-  ⌘
-  ⌘
-`;
+export const usageSizes = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function KbdSizes() {
+  return (
+    
+      ⌘
+      ⌘
+      ⌘
+    
+  );
+}`;
 
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
@@ -46,25 +52,52 @@ export default function InlineShortcut() {
 }`;
 
 ` element.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is the key glyph — the component adds no label text of its own.",
+        },
+      ],
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect:
+            "to set height, padding and font-size — `sm` (the default), `md` or `lg`.",
+        },
+      ],
       props: { example: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Combinations",
-      subheading: "Sequence several keys to spell out a shortcut.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "holds one key each — sequence several `Kbd` elements side by side to spell out a shortcut.",
+        },
+      ],
       props: {},
       usage: usageCombinations,
     },
     {
       title: "Inline in text",
-      subheading: "Keys sit on the text baseline, so they read naturally in prose.",
+      propNotes: [
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "keeps keys on the text baseline so they read naturally inside prose.",
+        },
+      ],
       props: { example: "inline" },
       usage: usageInline,
     },
@@ -72,14 +105,6 @@ export default function InlineShortcut() {
 />
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free** and forwards all standard HTML attributes.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/KbdBlock.tsx`.
-
----
 
 ## Usage
 

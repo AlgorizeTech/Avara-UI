@@ -4,7 +4,7 @@ A high-converting, interactive floating support widget that anchors to any scree
 
 ## Examples
 
-Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`. The first example's **Code** tab contains the full component source.
+Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
 
 export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
@@ -15,32 +15,40 @@ export default function SupportWidget() {
   );
 }`;
 
-export const usageLeft = `// Anchors to the opposite corner; the popup and its origin flip with it.
-`;
+export const usageLeft = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageClosed = `// Start collapsed — the usual behaviour on a real page.
-`;
+export default function LeftAnchoredWidget() {
+  // Anchors to the opposite corner; the popup and its origin flip with it.
+  return ;
+}`;
 
-export const usageBranding = `// \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
-`;
+export const usageClosed = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageAccent = `// \`defaultAccentColor\` takes a token name or any CSS color. Pass
-// \`localStorageKey\` and the widget picks up your app's stored brand color.
-`;
+export default function CollapsedWidget() {
+  // Start collapsed — the usual behaviour on a real page.
+  return ;
+}`;
+
+export const usageBranding = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function BrandedWidget() {
+  // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+  return (
+    
+  );
+}`;
+
+export const usageAccent = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function AccentedWidget() {
+  // \`defaultAccentColor\` takes a token name or any CSS color. Pass
+  // \`localStorageKey\` and the widget picks up your app's stored brand color.
+  return (
+    
+  );
+}`;
 
 ## Installation
-
-### Dependencies
-
-This component relies on **Framer Motion** for spring-physics popup animations and layout transitions, alongside **Lucide React** for UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/FloatingContactButtonBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

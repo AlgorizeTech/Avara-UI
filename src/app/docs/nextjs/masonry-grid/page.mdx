@@ -11,7 +11,7 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ## Examples
 
-The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate. The first example's **Code** tab contains the full component source.
+The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
 export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
@@ -32,25 +32,65 @@ export default function Gallery() {
   );
 }`;
 
-export const usageColumns = `// Column counts are Tailwind classes, so every breakpoint is yours to set.
-<MasonryGrid
-  items={items}
-  columnsClassName="columns-1 sm:columns-2 md:columns-3 lg:columns-4"
-  renderItem={(item) => <Tile {...item} />}
-/>`;
+export const usageColumns = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+import { Tile } from "./tile";
+import { items } from "./items";
 
-export const usageGap = `<MasonryGrid
-  items={items}
-  gapClassName="gap-2"
-  renderItem={(item) => <Tile {...item} />}
-/>`;
+export default function ColumnCounts() {
+  // Column counts are Tailwind classes, so every breakpoint is yours to set.
+  return (
+    <MasonryGrid
+      items={items}
+      columnsClassName="columns-1 sm:columns-2 md:columns-3 lg:columns-4"
+      renderItem={(item) => <Tile {...item} />}
+    />
+  );
+}`;
 
-export const usageStagger = `// \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
-<MasonryGrid items={items} staggerDelay={0.25} renderItem={(item) => <Tile {...item} />} />`;
+export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+import { Tile } from "./tile";
+import { items } from "./items";
 
-export const usageNoAnimation = `// Renders immediately — right for content that is already above the fold,
-// or when you want to respect reduced-motion yourself.
-<MasonryGrid items={items} animateIn={false} renderItem={(item) => <Tile {...item} />} />`;
+export default function TighterGap() {
+  return (
+    <MasonryGrid
+      items={items}
+      gapClassName="gap-2"
+      renderItem={(item) => <Tile {...item} />}
+    />
+  );
+}`;
+
+export const usageStagger = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+import { Tile } from "./tile";
+import { items } from "./items";
+
+export default function SlowerStagger() {
+  // \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
+  return (
+    <MasonryGrid
+      items={items}
+      staggerDelay={0.25}
+      renderItem={(item) => <Tile {...item} />}
+    />
+  );
+}`;
+
+export const usageNoAnimation = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+import { Tile } from "./tile";
+import { items } from "./items";
+
+export default function StaticGrid() {
+  // Renders immediately — right for content that is already above the fold,
+  // or when you want to respect reduced-motion yourself.
+  return (
+    <MasonryGrid
+      items={items}
+      animateIn={false}
+      renderItem={(item) => <Tile {...item} />}
+    />
+  );
+}`;
 
 <ExampleShowcase
   name="masonry-grid"
@@ -58,32 +98,73 @@ export const usageNoAnimation = `// Renders immediately — right for content th
   examples={[
     {
       title: "Masonry grid",
-      subheading: "Pass `items` and a `renderItem` function — the grid never measures anything, it just flows your tiles through CSS columns.",
+      subheading: "The grid never measures anything — it flows your tiles through CSS columns.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as an array where each entry has a unique `id` for layout tracking.",
+        },
+        {
+          prop: "renderItem",
+          effect:
+            "receives `(item, index)` and returns the tile element.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
     },
     {
       title: "Column counts",
-      subheading: "`columnsClassName` takes the raw Tailwind `columns-*` utilities, one per breakpoint.",
+      propNotes: [
+        {
+          prop: "columnsClassName",
+          effect:
+            "takes the raw Tailwind `columns-*` utilities, one per breakpoint — it is a class string, not a number.",
+        },
+      ],
       props: { columnsClassName: "columns-1 sm:columns-2 md:columns-3 lg:columns-4" },
       usage: usageColumns,
     },
     {
       title: "Tighter gap",
-      subheading: "`gapClassName` sets the spacing between tiles — the same class flows to both axes.",
+      propNotes: [
+        {
+          prop: "gapClassName",
+          value: '"gap-2"',
+          effect:
+            "sets the spacing between tiles. The same value is converted to a matching `mb-*` for the vertical axis, so both directions stay in step.",
+        },
+      ],
       props: { gapClassName: "gap-2" },
       usage: usageGap,
     },
     {
       title: "Slower stagger",
-      subheading: "`staggerDelay` spaces out the scroll-triggered blur-fade entrance.",
+      propNotes: [
+        {
+          prop: "staggerDelay",
+          value: '{0.25}',
+          effect:
+            "is the delay in seconds between each tile's blur-fade. Defaults to `0.08`.",
+        },
+      ],
       props: { staggerDelay: 0.25 },
       usage: usageStagger,
     },
     {
       title: "Without the entrance",
-      subheading: "Set `animateIn={false}` to render tiles in place with no motion.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "animateIn",
+          value: '{false}',
+          effect:
+            "to render tiles in place with no motion — right for content already above the fold, or when you handle reduced-motion yourself.",
+        },
+      ],
       props: { animateIn: false },
       usage: usageNoAnimation,
     },
@@ -92,22 +173,7 @@ export const usageNoAnimation = `// Renders immediately — right for content th
 
 ## Installation
 
-<Cli command={`add masonry-grid.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This component uses **Framer Motion** for the staggered spring animations.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MasonryGridBlock.tsx`.
+<Installation name="masonry-grid" />
 
 ## Features
 
@@ -187,17 +253,18 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
       </tr>
       <tr>
         <td>
-          <code>columns</code>
+          <code>columnsClassName</code>
         </td>
         <td>
-          <code>number | object</code>
+          <code>string</code>
         </td>
         <td>
-          <code>{`{ default: 1, sm: 2, lg: 3 }`}</code>
+          <code>"columns-1 sm:columns-2 md:columns-3 lg:columns-4"</code>
         </td>
         <td>
-          Determines the number of Flexbox columns. Pass a static number or a
-          breakpoint object mapping to Tailwind screens.
+          The Tailwind <code>columns-*</code> utilities, one per breakpoint.
+          It is a raw class string rather than a number, so every breakpoint is
+          yours to set.
         </td>
       </tr>
       <tr>

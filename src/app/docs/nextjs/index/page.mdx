@@ -42,23 +42,22 @@ Next.js is a React framework that gives you building blocks to create web applic
 
 ## Component Philosophy
 
-Build software faster with complete code ownership, zero dependency bloat, and total styling freedom.
+Build software faster with complete code ownership, no wrapper package, and total styling freedom.
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-8 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4">
-      ⚡
-    </div>
-    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">Zero NPM Bloat</h3>
+    {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
+        block content, which would wrap it in the custom <p> (mb-4) and push it 8px
+        off-centre, since flex centres the margin box. */}
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">⚡</div>
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">No Wrapper Package</h3>
     <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-      You own the code directly inside your codebase. No black-box bundle bloat or dependency lock-ins.
+      There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
     </p>
   </div>
 
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4">
-      🎨
-    </div>
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">🎨</div>
     <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">100% Customizability</h3>
     <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
       Modify styles, animations, and behaviors directly within your <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">components/custom</code> folder.
@@ -66,12 +65,10 @@ Build software faster with complete code ownership, zero dependency bloat, and t
   </div>
 
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4">
-      🧩
-    </div>
-    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">Minimal Primitives</h3>
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">🧩</div>
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">Dependencies Per Component</h3>
     <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-      Only lightweight primitives like <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">framer-motion</code> and <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">lucide-react</code> are used.
+      Each component declares only what it imports — usually <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">lucide-react</code>, <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">gsap</code> or <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">framer-motion</code>, and often nothing at all. Its page lists them before you install.
     </p>
   </div>
 </div>

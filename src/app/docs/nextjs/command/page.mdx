@@ -9,7 +9,7 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 ## Examples
 
-Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it. The first example's **Code** tab contains the full component source.
+Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
 export const usageDefault = `import {
   Command,
@@ -207,6 +207,18 @@ export default function RemoteSearch() {
     {
       title: "Command",
       subheading: "Compose input, list, groups and items — filtering and keyboard nav come free.",
+      propNotes: [
+        {
+          prop: "onSelect",
+          effect:
+            "on `CommandItem` fires for both a mouse click and Enter during keyboard navigation.",
+        },
+        {
+          prop: "value",
+          effect:
+            "on `CommandItem` is the string searched against; omit it and the item's rendered text is used instead.",
+        },
+      ],
       props: { layout: "simple" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
@@ -214,18 +226,44 @@ export default function RemoteSearch() {
     {
       title: "Groups, separators & shortcuts",
       subheading: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
+      propNotes: [
+        {
+          lead: "Give",
+          prop: "heading",
+          effect:
+            "to a `CommandGroup` to label the cluster — the whole group hides itself when every item filters out.",
+        },
+      ],
       props: { layout: "inline" },
       usage: usageGroups,
     },
     {
       title: "Command dialog",
       subheading: "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
+      propNotes: [
+        {
+          prop: "open",
+          effect: "is required on `CommandDialog`; it has no uncontrolled mode.",
+        },
+        {
+          prop: "onOpenChange",
+          effect: "fires on click-outside and on Escape, so it is where you close it.",
+        },
+      ],
       props: { layout: "dialog" },
       usage: usageDialog,
     },
     {
       title: "External filtering",
-      subheading: "`shouldFilter={false}` turns off the built-in filter for API-backed results.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "shouldFilter",
+          value: "{false}",
+          effect:
+            "to turn off the built-in filter when the results already come back filtered from an API.",
+        },
+      ],
       props: { layout: "simple", shouldFilter: false },
       usage: usageNoFilter,
     },
@@ -234,16 +272,7 @@ export default function RemoteSearch() {
 
 ## Installation
 
-<Cli command={`add command.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses native `createPortal` for the modal rendering and `querySelector` for the lightning-fast filtering logic.
-
-Create a new file at `components/custom/blocks/CommandBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="command" />
 
 ## Features
 Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.

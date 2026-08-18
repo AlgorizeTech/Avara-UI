@@ -25,7 +25,7 @@ It includes distinct customization options to match different areas of your appl
 
 ## Examples
 
-Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
 
 export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -38,14 +38,24 @@ export default function ProfileName() {
   );
 }`;
 
-export const usageSizes = `<div className="flex items-center gap-8">
-  <VerifyBadge size="sm" />
-  <VerifyBadge size="md" />
-  <VerifyBadge size="lg" />
-  <VerifyBadge size="xl" />
-</div>`;
+export const usageSizes = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
-export const usageStatic = `<VerifyBadge size="md" animate={false} />`;
+export default function BadgeSizes() {
+  return (
+    <div className="flex items-center gap-8">
+      <VerifyBadge size="sm" />
+      <VerifyBadge size="md" />
+      <VerifyBadge size="lg" />
+      <VerifyBadge size="xl" />
+    </div>
+  );
+}`;
+
+export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function StaticBadge() {
+  return <VerifyBadge size="md" animate={false} />;
+}`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -67,25 +77,54 @@ export default function NotificationCard() {
     {
       title: "Verify Badge",
       subheading: "A verified marker sitting beside a display name.",
+      propNotes: [
+        {
+          prop: "color",
+          effect:
+            "is the badge fill — any hex or CSS colour. Defaults to the familiar `#1d9bf0`.",
+        },
+      ],
       props: { showAll: "badge" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VerifyBadgeBlock.tsx"),
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect:
+            "to scale the badge and its icon together — `sm`, `md`, `lg` or `xl`.",
+        },
+      ],
       props: { showAll: "sizes" },
       usage: usageSizes,
     },
     {
       title: "Static",
-      subheading: "Set `animate={false}` to drop the pulse for dense lists.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "animate",
+          value: '{false}',
+          effect:
+            "to drop the pulse for dense lists. It is off by default, so a row of badges stays calm unless you opt in.",
+        },
+      ],
       props: { showAll: "badge", animate: false },
       usage: usageStatic,
     },
     {
       title: "In context",
-      subheading: "The badge inside a full notification card.",
+      propNotes: [
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "is usually right inline with a name — the badge should not outweigh the text it verifies.",
+        },
+      ],
       props: {},
       usage: usageInline,
     },
@@ -94,16 +133,7 @@ export default function NotificationCard() {
 
 ## Installation
 
-<Cli command={`add verify-badge.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-This component uses `lucide-react` for the checkmark icon and standard Tailwind utilities.
-
-```bash
-npm install lucide-react clsx tailwind-merge
-```
+<Installation name="verify-badge" />
 
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.

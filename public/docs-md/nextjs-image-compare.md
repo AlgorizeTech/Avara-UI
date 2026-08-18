@@ -64,6 +64,8 @@ export default function DiagonalSplitDemo() {
   return ;
 }`;
 
+## Installation
+
 ## Features
 
     10 Unique Interaction Variants

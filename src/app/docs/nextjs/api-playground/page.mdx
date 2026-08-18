@@ -11,7 +11,7 @@ Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not b
 
 ## Examples
 
-Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response. The first example's **Code** tab contains the full component source.
+Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
 export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
@@ -154,16 +154,7 @@ export default function SketchPlayground() {
 
 ## Installation
 
-<Cli command={`add api-playground.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component handles complex internal state (dynamic key-value pair arrays, active tabs, loading states) using pure React. It is **100% dependency-free** and fully responsive.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ApiPlaygroundBlock.tsx`.
+<Installation name="api-playground" />
 
 ## Features
 Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.

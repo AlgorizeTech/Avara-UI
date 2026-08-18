@@ -6,7 +6,7 @@ Unlike standard static timelines, this `AnimatedTimelineBlock` uses native brows
 
 ## Examples
 
-Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold. The first example's **Code** tab contains the full component source.
+Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
 export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
@@ -27,25 +27,49 @@ export default function CompanyHistory() {
   );
 }`;
 
-export const usageLeft = `// Rail on the left, every card on the same side — the compact layout for
-// narrow columns and sidebars.
-`;
+export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
-export const usageRight = ``;
+export default function LeftTimeline() {
+  // Rail on the left, every card on the same side — the compact layout for
+  // narrow columns and sidebars.
+  return (
 
-export const usageFadeUp = ``;
+  );
+}`;
 
-export const usageZoom = ``;
+export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
-export const usageBlur = ``;
+export default function RightTimeline() {
+  return (
+
+  );
+}`;
+
+export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+export default function FadeUpTimeline() {
+  return (
+
+  );
+}`;
+
+export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+export default function ZoomTimeline() {
+  return (
+
+  );
+}`;
+
+export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+export default function BlurTimeline() {
+  return (
+
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component is completely dependency-free. It uses standard React hooks alongside the native JavaScript `IntersectionObserver` API, meaning it has zero impact on your bundle size compared to heavy animation libraries like Framer Motion or GSAP.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/AnimatedTimelineBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

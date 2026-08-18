@@ -6,7 +6,7 @@ This `CustomCodeBlock` provides an elegant interface to display code snippets, c
 
 ## Examples
 
-Every block ships with macOS window controls, a language badge derived from `language`, and a copy button. The first example's **Code** tab contains the full component source.
+Every block ships with macOS window controls, a language badge derived from `language`, and a copy button.
 
 export const usageDefault = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
@@ -20,12 +20,26 @@ export default function Snippet() {
   return ;
 }`;
 
-export const usageTypescript = `// \`language\` drives both the highlighter and the icon in the header;
-// \`fileName\` is the label beside it.
-`;
+export const usageTypescript = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
-export const usageBash = `// Shell snippets get a terminal icon and comment-aware highlighting.
-`;
+export default function TypeScriptBlock() {
+  // \`language\` drives both the highlighter and the icon in the header;
+  // \`fileName\` is the label beside it.
+  return (
+    
+  );
+}`;
+
+export const usageBash = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+const commands = "npm install clsx tailwind-merge\\nnpm run dev";
+
+export default function ShellBlock() {
+  // Shell snippets get a terminal icon and comment-aware highlighting.
+  return (
+    
+  );
+}`;
 
 export const usageTabs = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
@@ -38,22 +52,10 @@ export default function MultiFileSnippet() {
 
 ## Installation
 
-### Dependencies
-
-The language badges come from `react-icons`, and the copy affordance from `lucide-react`.
-
-```bash
-npm install react-icons lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/CustomCodeBlock.tsx` and copy the source from the **Code** tab of the first example above.
-
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
 
-    Zero Dependencies
+    No Highlighting Library
     Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.
 
     Language Badges

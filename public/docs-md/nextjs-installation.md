@@ -9,7 +9,7 @@ Before installing Next.js, ensure your environment meets the following requireme
       Framework
       Next.js App Router
     
-    Next.js 14 / 15 App Router Architecture
+    Next.js 14 / 15 / 16 App Router Architecture
 
       React Version
       React 18 & React 19
@@ -25,6 +25,13 @@ Before installing Next.js, ensure your environment meets the following requireme
       TypeScript 5+ & JS
     
     Strict type checking or pure JavaScript
+
+### Next.js 16
+
+Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `` props, no `next/amp`, and no runtime config. The only Next.js APIs the components reach for are `next/link`, `next/image` and `next/dynamic`, and the ones that defer a browser-only library with `ssr: false` already carry `"use client"` — so they behave the same under both versions.
+
+    What Next.js 16 asks of your project
+    Next.js 16 itself raises the floor: Node.js 20.9+, TypeScript 5.1+ and React 19.2, with Turbopack as the default bundler for next dev and next build. These are requirements of the framework, not of the components — the library builds cleanly under Turbopack. If your app still has a custom webpack config, either migrate it to turbopack or run next build --webpack.
 
 ## Creating a New Next.js App
 
@@ -51,25 +58,31 @@ You can also combine flags:
 npx create-next-app@latest my-app --typescript --app
 ```
 
-## CLI & Manual Component Setup Guide
+## Adding components
 
-Whether you prefer automated CLI scaffolding or manual copy-paste integration, follow our enterprise-grade architecture for setting up `/src/components/` and `/src/lib/` directories.
+Components are published as a [shadcn registry](https://ui.shadcn.com/docs/registry), so you install them with the `shadcn` CLI — there is nothing to copy and paste.
 
-### Option 1: Automated CLI Scaffolding (Recommended)
+### Step 1: Initialize your project
 
-Quickly initialize the directory structure and copy components using our CLI:
+Run this once per project. It creates `components.json`, sets up the `cn` helper and confirms your path aliases.
 
 ```bash
-# Initialize project configuration & directories
-npx docs-ui@latest init
-
-# Add specific UI component blocks to your project
-npx docs-ui@latest add hero-block avatar cart-block
+npx shadcn@latest init
 ```
 
-### Option 2: Production Manual Setup & Directory Layout
+### Step 2: Add a component
 
-To maintain zero bundle bloat and ensure 100% code ownership, structure your repository using our standardized layout:
+Every component page carries its own command. Point the CLI at the component's URL in the registry:
+
+```bash
+npx shadcn@latest add hero.json
+```
+
+The CLI writes the source into your project, installs its npm dependencies and pulls in any other registry components it needs. You own the file from that point on — edit it freely.
+
+### Where files land
+
+Install targets mirror this repository's layout, so components that import a sibling keep working:
 
 ```bash
 src/
@@ -99,11 +112,7 @@ Ensure your `@/*` path aliases are properly configured so all component imports 
 }
 ```
 
-### Manual Setup Workflow
-
-1. **Base Primitives (`/src/components/ui/`)**: Place underlying Radix UI or base primitives here.
-2. **Custom Blocks (`/src/components/custom/blocks/`)**: Copy-paste high-level UI blocks (e.g. `HeroBlock.tsx`, `Avatar.tsx`, `CartBlock.tsx`).
-3. **Utility Helper (`/src/lib/utils.ts`)**: Keep your class merging `cn` helper in the `lib` folder so all components can import it cleanly via `@/lib/utils`.
+The CLI creates these directories as needed, so you do not have to make them yourself. `shadcn init` also writes `/src/lib/utils.ts` with the `cn` helper that every component imports from `@/lib/utils`.
 
 ## Installation & Peer Dependencies Setup
 

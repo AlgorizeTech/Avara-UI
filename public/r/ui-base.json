@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-base",
-  "title": "Ui Base",
+  "title": "UI Base",
   "author": "AlgorizeTech",
   "description": "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
   "dependencies": [],

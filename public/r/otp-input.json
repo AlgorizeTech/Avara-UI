@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "otp-input",
-  "title": "Otp Input",
+  "title": "OTP Input",
   "author": "AlgorizeTech",
   "description": "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
   "dependencies": [],

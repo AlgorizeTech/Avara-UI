@@ -9,7 +9,7 @@ Building a multi-box input that actually feels good to use is notoriously diffic
 
 ## Examples
 
-Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.** The first example's **Code** tab contains the full component source.
+Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
 export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
 import { useState } from "react";
@@ -27,39 +27,80 @@ export default function BasicOtp() {
   );
 }`;
 
-export const usageFilled = `<OtpInputBlock
-  variant="filled"
-  length={6}
-  value={value}
-  onChange={setValue}
-/>`;
+export const usageFilled = `"use client";
 
-export const usageUnderlined = `<OtpInputBlock
-  variant="underlined"
-  length={6}
-  value={value}
-  onChange={setValue}
-/>`;
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
 
-export const usageLengths = `<div className="flex flex-col items-center gap-8">
-  <OtpInputBlock length={4} value={value} onChange={setValue} />
-  <OtpInputBlock length={6} value={value} onChange={setValue} />
-  <OtpInputBlock length={8} value={value} onChange={setValue} />
-</div>`;
+export default function FilledOtp() {
+  const [value, setValue] = useState("");
 
-export const usageMasked = `<OtpInputBlock
-  mask
-  length={6}
-  value={value}
-  onChange={setValue}
-/>`;
+  return (
+    <OtpInputBlock
+      variant="filled"
+      length={6}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}`;
 
-export const usageDisabled = `<OtpInputBlock
-  disabled
-  length={6}
-  value={value}
-  onChange={setValue}
-/>`;
+export const usageUnderlined = `"use client";
+
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function UnderlinedOtp() {
+  const [value, setValue] = useState("");
+
+  return (
+    <OtpInputBlock
+      variant="underlined"
+      length={6}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}`;
+
+export const usageLengths = `"use client";
+
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function OtpLengths() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="flex flex-col items-center gap-8">
+      <OtpInputBlock length={4} value={value} onChange={setValue} />
+      <OtpInputBlock length={6} value={value} onChange={setValue} />
+      <OtpInputBlock length={8} value={value} onChange={setValue} />
+    </div>
+  );
+}`;
+
+export const usageMasked = `"use client";
+
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function MaskedOtp() {
+  const [value, setValue] = useState("");
+
+  return <OtpInputBlock mask length={6} value={value} onChange={setValue} />;
+}`;
+
+export const usageDisabled = `"use client";
+
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function DisabledOtp() {
+  const [value, setValue] = useState("123456");
+
+  return <OtpInputBlock disabled length={6} value={value} onChange={setValue} />;
+}`;
 
 <ExampleShowcase
   name="otp-input"
@@ -69,38 +110,88 @@ export const usageDisabled = `<OtpInputBlock
   examples={[
     {
       title: "OTP Input",
-      subheading: "Six boxes with paste, arrow-key and backspace handling built in.",
+      subheading: "Paste, arrow-key and backspace handling are built in.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "and `onChange` work with the assembled string, not an array — the internal per-box state syncs to it.",
+        },
+        {
+          prop: "onComplete",
+          effect:
+            "fires once every box is filled, which saves you comparing lengths yourself.",
+        },
+      ],
       props: { length: 6 },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/OtpInputBlock.tsx"),
     },
     {
       title: "Filled",
-      subheading: "Use `variant=\"filled\"` for solid, low-contrast boxes.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"filled"',
+          effect:
+            "for solid, low-contrast boxes.",
+        },
+      ],
       props: { variant: "filled" },
       usage: usageFilled,
     },
     {
       title: "Underlined",
-      subheading: "Use `variant=\"underlined\"` to reduce each box to a baseline rule.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"underlined"',
+          effect:
+            "to reduce each box to a baseline rule.",
+        },
+      ],
       props: { variant: "underlined" },
       usage: usageUnderlined,
     },
     {
       title: "Lengths",
-      subheading: "Use the `length` prop to change how many digits are collected.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "length",
+          value: '{6}',
+          effect:
+            "to set how many digits are collected. It is also what `onComplete` measures against.",
+        },
+      ],
       props: { showAll: "lengths" },
       usage: usageLengths,
     },
     {
       title: "Masked",
-      subheading: "Set `mask` to hide the entered digits, like a password field.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "mask",
+          effect:
+            "to hide the entered digits behind dots, like a password field. `value` is unaffected.",
+        },
+      ],
       props: { isMasked: true },
       usage: usageMasked,
     },
     {
       title: "Disabled",
-      subheading: "Set `disabled` to lock every box — useful while verifying.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "to lock every box — the state to use while the code is being verified.",
+        },
+      ],
       props: { isDisabled: true },
       usage: usageDisabled,
     },
@@ -109,18 +200,7 @@ export const usageDisabled = `<OtpInputBlock
 
 ## Installation
 
-<Cli command={`add otp-input.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component handles all of the complex array-mapping and React Ref logic internally without relying on heavy third-party form libraries.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
-
----
+<Installation name="otp-input" />
 
 ## Usage
 

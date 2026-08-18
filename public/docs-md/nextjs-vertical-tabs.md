@@ -4,7 +4,7 @@ A sleek, responsive tab navigation component. By default the rail is a sidebar m
 
 ## Examples
 
-Switch tabs in any preview to see the GSAP crossfade. The first example's **Code** tab contains the full component source.
+Switch tabs in any preview to see the GSAP crossfade.
 
 export const usageTabsData = `const tabs = [
   {
@@ -52,9 +52,13 @@ export default function HorizontalTabs() {
   return ;
 }`;
 
-export const usageHorizontalBordered = `// Every variant works in both orientations — \`bordered\` just moves its
-// divider from the right edge of the rail to the bottom.
-`;
+export const usageHorizontalBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+
+export default function HorizontalRail() {
+  // Every variant works in both orientations — \`bordered\` just moves its
+  // divider from the right edge of the rail to the bottom.
+  return ;
+}`;
 
 export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 
@@ -94,18 +98,6 @@ export default function SettingsFirst() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component uses `gsap` for the smooth opacity and sliding transitions between tab content, and `lucide-react` for the icons.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

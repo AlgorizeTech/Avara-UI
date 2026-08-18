@@ -6,7 +6,7 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 ## Examples
 
-Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead. The first example's **Code** tab contains the full component source.
+Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
 export const usageDefault = `import {
   MobileSidebarTrigger,
@@ -104,12 +104,6 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
-
-Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

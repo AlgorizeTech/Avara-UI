@@ -66,18 +66,6 @@ export default function SonarCursorDemo() {
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `lucide-react` for icons and utility helper functions.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/CursorAnimationBlock.tsx` and copy the wrapper code from the **Code** tab of the first example above.
-
 ## Features
 
 Discover the key interactive capabilities of the `CursorAnimation` block:

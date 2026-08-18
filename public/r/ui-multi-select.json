@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-multi-select",
-  "title": "Ui Multi Select",
+  "title": "UI Multi Select",
   "author": "AlgorizeTech",
   "description": "A multi-select combobox with search, clearable chips, hierarchical options and optional portal rendering. Use it when users pick several values from a long list.",
   "dependencies": [

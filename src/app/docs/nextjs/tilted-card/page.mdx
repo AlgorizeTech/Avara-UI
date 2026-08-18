@@ -10,7 +10,7 @@ It automatically injects a dynamic, radial glare layer over the content that tra
 
 ## Examples
 
-Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
@@ -26,21 +26,50 @@ export default function AccessKeyCard() {
   );
 }`;
 
-export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
-// card is small — past that the perspective starts to shear.
-<TiltedCard tiltIntensity={35}>{card}</TiltedCard>`;
+export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { card } from "./card";
 
-export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
-<TiltedCard tiltIntensity={6} scaleOnHover={1.01}>{card}</TiltedCard>`;
+export default function StrongTilt() {
+  // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+  // card is small — past that the perspective starts to shear.
+  return <TiltedCard tiltIntensity={35}>{card}</TiltedCard>;
+}`;
 
-export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
-// pointer. Set it to 0 to drop the reflection entirely.
-<TiltedCard glareOpacity={0.55}>{card}</TiltedCard>`;
+export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { card } from "./card";
 
-export const usageNoGlare = `<TiltedCard glareOpacity={0}>{card}</TiltedCard>`;
+export default function SubtleTilt() {
+  // A restrained tilt for dense layouts where many cards move at once.
+  return (
+    <TiltedCard tiltIntensity={6} scaleOnHover={1.01}>
+      {card}
+    </TiltedCard>
+  );
+}`;
 
-export const usageScale = `// How far the card lifts toward the viewer on hover.
-<TiltedCard scaleOnHover={1.12}>{card}</TiltedCard>`;
+export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { card } from "./card";
+
+export default function StrongGlare() {
+  // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+  // pointer. Set it to 0 to drop the reflection entirely.
+  return <TiltedCard glareOpacity={0.55}>{card}</TiltedCard>;
+}`;
+
+export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { card } from "./card";
+
+export default function NoGlare() {
+  return <TiltedCard glareOpacity={0}>{card}</TiltedCard>;
+}`;
+
+export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { card } from "./card";
+
+export default function LiftOnHover() {
+  // How far the card lifts toward the viewer on hover.
+  return <TiltedCard scaleOnHover={1.12}>{card}</TiltedCard>;
+}`;
 
 <ExampleShowcase
   name="tilted-card"
@@ -50,38 +79,81 @@ export const usageScale = `// How far the card lifts toward the viewer on hover.
   examples={[
     {
       title: "Tilted card",
-      subheading: "Wrap any content — the block adds the 3D transform, the spring physics and the glare layer without touching your markup.",
+      subheading: "Wrap any content — the 3D transform, spring physics and glare layer are added without touching your markup.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is mapped into the 3D space as-is; the block adds no styling of its own.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
     },
     {
       title: "Stronger tilt",
-      subheading: "`tiltIntensity` is the maximum rotation in degrees on each axis.",
+      propNotes: [
+        {
+          prop: "tiltIntensity",
+          value: '{35}',
+          effect:
+            "is the maximum rotation in degrees on each axis, reached at the edge of the box. Defaults to `15`; past ~25 the perspective starts to shear.",
+        },
+      ],
       props: { tiltIntensity: 35 },
       usage: usageIntensity,
     },
     {
       title: "Subtle tilt",
-      subheading: "Dial it right down when several cards share a viewport.",
+      propNotes: [
+        {
+          prop: "tiltIntensity",
+          value: '{6}',
+          effect:
+            "keeps the motion restrained for dense layouts where many cards move at once.",
+        },
+      ],
       props: { tiltIntensity: 6, scaleOnHover: 1.01 },
       usage: usageSubtle,
     },
     {
       title: "Stronger glare",
-      subheading: "`glareOpacity` sets the peak alpha of the pointer-tracked highlight.",
+      propNotes: [
+        {
+          prop: "glareOpacity",
+          value: '{0.55}',
+          effect:
+            "is the peak alpha of the radial highlight that tracks the pointer.",
+        },
+      ],
       props: { glareOpacity: 0.55 },
       usage: usageGlare,
     },
     {
       title: "Without glare",
-      subheading: "Set `glareOpacity={0}` when the card already carries its own lighting.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "glareOpacity",
+          value: '{0}',
+          effect:
+            "to drop the reflection entirely — right when the card already carries its own lighting.",
+        },
+      ],
       props: { glareOpacity: 0 },
       usage: usageNoGlare,
     },
     {
       title: "Lift on hover",
-      subheading: "`scaleOnHover` controls how far the card comes toward the viewer.",
+      propNotes: [
+        {
+          prop: "scaleOnHover",
+          value: '{1.12}',
+          effect:
+            "is how far the card comes toward the viewer on hover.",
+        },
+      ],
       props: { scaleOnHover: 1.12 },
       usage: usageScale,
     },
@@ -90,22 +162,7 @@ export const usageScale = `// How far the card lifts toward the viewer on hover.
 
 ## Installation
 
-<Cli command={`add tilted-card.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This component requires **Framer Motion** for its spring physics and `useTransform` logic.
-
-```bash
-npm install framer-motion
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
+<Installation name="tilted-card" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -8,7 +8,7 @@ A premium, interactive card stack component featuring real-time 3D tilt physics,
 
 ## Examples
 
-Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck. The first example's **Code** tab contains the full component source.
+Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck.
 
 export const usageDefault = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
 
@@ -36,14 +36,18 @@ export default function TravelDeck() {
   return <MemoriesCard items={memories} />;
 }`;
 
-export const usageMinimal = `// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
+export const usageMinimal = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
+
+// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
 // metadata and the overlay collapses to just the title.
 const memories = [
   { id: "m1", title: "Kyoto Lantern Festival", image: "/photos/kyoto.jpg" },
   { id: "m2", title: "Dolomites Alpine Ridge", image: "/photos/dolomites.jpg" },
 ];
 
-<MemoriesCard items={memories} />`;
+export default function PhotoDeck() {
+  return <MemoriesCard items={memories} />;
+}`;
 
 export const usageOnChange = `import { useState } from "react";
 import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
@@ -67,20 +71,40 @@ export default function TravelDeck() {
   examples={[
     {
       title: "Memories card",
-      subheading: "Pass `items`; the deck handles the fan spread behind the front card, the pointer tilt and the swipe-to-cycle gesture.",
+      subheading: "The deck handles the fan spread, the pointer tilt and the swipe-to-cycle gesture.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `MemoryItem[]` — `tag`, `location`, `date` and `description` are all optional overlay slots.",
+        },
+      ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MemoriesCardBlock.tsx"),
     },
     {
       title: "Image only",
-      subheading: "Only `id`, `title` and `image` are required — omit the rest for a plain photo deck.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "needs only `id`, `title` and `image` per entry — omit the rest and the overlay collapses to just the title.",
+        },
+      ],
       props: { itemSet: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Tracking the active card",
-      subheading: "`onCardChange` fires with the new front index on every swipe — wire it to a caption, counter or analytics call.",
+      propNotes: [
+        {
+          prop: "onCardChange",
+          effect:
+            "fires with the new front index on every swipe — wire it to a caption, counter or analytics call.",
+        },
+      ],
       props: { showIndex: true },
       usage: usageOnChange,
     },
@@ -89,22 +113,7 @@ export default function TravelDeck() {
 
 ## Installation
 
-<Cli command={`add memories-card.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This component relies on **Framer Motion** for 3D spring tilt physics and drag gesture handling, and **Lucide React** for UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/MemoriesCardBlock.tsx`.
+<Installation name="memories-card" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

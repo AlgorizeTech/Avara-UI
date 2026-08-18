@@ -1,12 +1,12 @@
 # QR Code Suite
 
-A premium, dual-purpose QR Code component suite built for Next.js applications. 
+A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
 ## Examples
 
-Everything below runs client-side — type a new value and the SVG regenerates instantly. The first example's **Code** tab holds the generator source; the reader example's holds the reader source.
+Everything below runs client-side — type a new value and the SVG regenerates instantly.
 
 export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
@@ -33,23 +33,7 @@ export default function ReaderExample() {
 
 ## Installation
 
-### 1. Install Dependencies
-
-The QR Code Generator relies on the lightweight, industry-standard package `qrcode.react` for generating SVG QR Codes.
-
-```bash
-npm install qrcode.react
-```
-
-The QR Code Reader relies on the `jsqr` package for reading and extracting data from uploaded images, and `lucide-react` for the UI icons.
-
-```bash
-npm install jsqr lucide-react
-```
-
-### 2. Copy the Components
-
-Create `components/custom/blocks/QrCodeGeneratorBlock.tsx` and copy the source from the **Code** tab of the first example above. For the scanner, create `components/custom/blocks/QrCodeReaderBlock.tsx` and copy the source from the **Code** tab of the **QR reader** example.
+The generator and the reader are separate components with separate dependencies.
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

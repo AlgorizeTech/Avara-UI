@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-sheet",
-  "title": "Ui Sheet",
+  "title": "UI Sheet",
   "author": "AlgorizeTech",
   "description": "The Radix dialog-based sheet primitive that slides in from a screen edge. Used for drawers and mobile navigation panels.",
   "dependencies": [

@@ -9,7 +9,7 @@ Building pagination logic from scratch is notoriously difficult. If you have 100
 
 ## Examples
 
-Click through the page numbers in each preview to watch the ellipses shift. The first example's **Code** tab contains the full component source.
+Click through the page numbers in each preview to watch the ellipses shift.
 
 export const usageDefault = `import { useState } from "react";
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
@@ -120,31 +120,70 @@ export default function CustomerDirectory() {
     {
       title: "Pagination",
       subheading: "Hold `currentPage` yourself and update it from `onPageChange`.",
+      propNotes: [
+        {
+          prop: "currentPage",
+          effect:
+            "and `totalPages` are both required — the component holds no state of its own.",
+        },
+        {
+          prop: "onPageChange",
+          effect:
+            "returns the target page number from a number click or the prev/next buttons.",
+        },
+      ],
       props: { example: "bare", totalPages: 10, currentPage: 1 },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
     },
     {
       title: "Many pages",
-      subheading: "The window stays centred on the active page and collapses the rest into `…`.",
+      propNotes: [
+        {
+          prop: "totalPages",
+          effect:
+            "drives the ellipsis maths — the window stays centred on the active page and collapses the rest into `…`.",
+        },
+      ],
       props: { example: "bare", totalPages: 100, currentPage: 50 },
       usage: usageManyPages,
     },
     {
       title: "Sibling count",
-      subheading: "`siblingCount` sets how many numbers flank the active page (default `2`).",
+      propNotes: [
+        {
+          prop: "siblingCount",
+          value: '{2}',
+          effect:
+            "is how many numbers flank the active page before an ellipsis. Raise it for wide desktop layouts.",
+        },
+      ],
       props: { example: "bare", totalPages: 100, currentPage: 50, siblingCount: 1 },
       usage: usageSiblingCount,
     },
     {
       title: "Without edge controls",
-      subheading: "Set `showEdges={false}` to drop the Previous / Next buttons.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showEdges",
+          value: '{false}',
+          effect:
+            "to drop the Previous and Next buttons, leaving the numbers alone.",
+        },
+      ],
       props: { example: "bare", totalPages: 10, currentPage: 1, showEdges: false },
       usage: usageNoEdges,
     },
     {
       title: "In a data table",
-      subheading: "Derive `totalPages` from your row count and pair it with a range readout.",
+      propNotes: [
+        {
+          prop: "totalPages",
+          effect:
+            "is yours to derive — `Math.ceil(rows.length / pageSize)` — and pairs naturally with a range readout.",
+        },
+      ],
       props: { example: "table", totalPages: 10, currentPage: 1 },
       usage: usageTable,
     },
@@ -153,16 +192,7 @@ export default function CustomerDirectory() {
 
 ## Installation
 
-<Cli command={`add pagination.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is **100% dependency-free**. It uses standard React `useMemo` hooks to calculate the page ranges and Tailwind CSS for the styling.
-
-Create a new file at `components/custom/blocks/PaginationBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="pagination" />
 
 ## Props Reference
 

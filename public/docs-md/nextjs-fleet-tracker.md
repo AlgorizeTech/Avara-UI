@@ -4,7 +4,7 @@ An interactive, responsive fleet management dashboard featuring a synchronized s
 
 ## Examples
 
-Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar. The first example's **Code** tab contains the full component source.
+Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
 export const usageDefault = `import dynamic from "next/dynamic";
 
@@ -37,26 +37,21 @@ export default function FleetDashboard() {
   return ;
 }`;
 
-export const usageMinimal = `// A floating panel over a light map canvas.
-`;
+export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
 
-export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
-`;
+export default function MinimalFleet() {
+  // A floating panel over a light map canvas.
+  return ;
+}`;
+
+export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+
+export default function ModernFleet() {
+  // Backdrop-blurred glass sidebar over a dark map.
+  return ;
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
-
-```bash
-npm install leaflet react-leaflet lucide-react
-npm install -D @types/leaflet
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Fleet-map.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.

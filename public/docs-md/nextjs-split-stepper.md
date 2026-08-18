@@ -6,7 +6,7 @@ Unlike basic tab replacements, this engine applies dynamic mathematical depth tw
 
 ## Examples
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack. The first example's **Code** tab contains the full component source.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
 
@@ -64,18 +64,6 @@ export default function BrandedSplitStepper() {
 }`;
 
 ## Installation
-
-### Dependencies
-
-This component relies exclusively on **GSAP** for all 3D card depth scaling, stacking translations, and indicator animations.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

@@ -4,7 +4,7 @@ A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdo
 
 ## Examples
 
-Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer. The first example's **Code** tab contains the full component source.
+Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer.
 
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
@@ -48,18 +48,6 @@ export default function BrandedHeader() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component uses `gsap` for the buttery-smooth mobile menu slide animations, and `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/NavbarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

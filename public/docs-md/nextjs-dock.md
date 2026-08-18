@@ -4,7 +4,7 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 
 ## Examples
 
-Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator. The first example's **Code** tab contains the full component source.
+Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
 export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
 
@@ -59,18 +59,6 @@ export default function DramaticDock({ items }) {
 }`;
 
 ## Installation
-
-### Dependencies
-
-This component requires **Framer Motion** for real-time cursor tracking and spring physics, and **Lucide React** for UI icons.
-
-```bash
-npm install framer-motion lucide-react
-```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/DockBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

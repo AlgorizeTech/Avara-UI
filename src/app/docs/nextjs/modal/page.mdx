@@ -7,7 +7,7 @@ A highly animated, dynamic Modal component. Built from scratch using `gsap` for 
 
 ## Examples
 
-Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container. The first example's **Code** tab contains the full component source.
+Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
@@ -71,43 +71,99 @@ export default function BorderedModal() {
     {
       title: "Modal",
       subheading: "The default layout: icon, title, body copy and a pair of actions.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"standard"',
+          effect:
+            "is the default structure; `variant` is a separate axis controlling the surface.",
+        },
+      ],
       props: { type: "standard", variant: "default" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
     },
     {
       title: "Form",
-      subheading: "`type=\"form\"` swaps the body for labelled fields and a submit action.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"form"',
+          effect:
+            "to swap the body for labelled fields and a submit action.",
+        },
+      ],
       props: { type: "form", variant: "default" },
       usage: usageForm,
     },
     {
       title: "Confirmation",
-      subheading: "`type=\"confirmation\"` is the compact are-you-sure shape.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"confirmation"',
+          effect:
+            "for the compact are-you-sure shape.",
+        },
+      ],
       props: { type: "confirmation", variant: "default" },
       usage: usageConfirmation,
     },
     {
       title: "Fullscreen",
-      subheading: "`type=\"fullscreen\"` fills the viewport for editors and media views.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"fullscreen"',
+          effect:
+            "to fill the viewport, for editors and media views.",
+        },
+      ],
       props: { type: "fullscreen", variant: "default" },
       usage: usageFullscreen,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` blurs whatever sits behind the modal.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to deep-blur whatever sits behind the modal.",
+        },
+      ],
       props: { type: "standard", variant: "glass" },
       usage: usageGlass,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` drops the border for a softer, flatter card.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the border and harsh shadow for a softer, flatter card.",
+        },
+      ],
       props: { type: "standard", variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Bordered",
-      subheading: "`variant=\"bordered\"` gives square corners and a hard offset shadow.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"bordered"',
+          effect:
+            "for square corners and a hard offset shadow.",
+        },
+      ],
       props: { type: "standard", variant: "bordered" },
       usage: usageBordered,
     },
@@ -116,22 +172,7 @@ export default function BorderedModal() {
 
 ## Installation
 
-<Cli command={`add modal.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the mounting/unmounting lifecycle perfectly without harsh visual jumping, and `lucide-react` for standard UI icons.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/ModalBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="modal" />
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
