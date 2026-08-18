@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 export const DEFAULT_SHOWCASE_COLOR = "primary";
 
@@ -27,16 +27,11 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [color, setColor] = useState(DEFAULT_SHOWCASE_COLOR);
   const pickerOwnerRef = useRef<string | null>(null);
-  const pathnameRef = useRef(pathname);
 
-  // The provider lives in the docs layout, which survives client-side
-  // navigation between pages — reset so the next page starts clean and its own
-  // top showcase claims the picker.
-  if (pathnameRef.current !== pathname) {
-    pathnameRef.current = pathname;
+  useEffect(() => {
     pickerOwnerRef.current = null;
     setColor(DEFAULT_SHOWCASE_COLOR);
-  }
+  }, [pathname]);
 
   const claimPicker = useCallback((id: string) => {
     if (pickerOwnerRef.current === null) pickerOwnerRef.current = id;

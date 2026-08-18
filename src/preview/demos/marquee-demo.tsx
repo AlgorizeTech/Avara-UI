@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import {
   Box,
@@ -51,11 +52,11 @@ const testimonials = [
 ];
 
 const images = [
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop", // Mountain sunset
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop", // Lush forest trees
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop", // Tropical beach ocean
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop", // Snowy mountain night star sky
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop", // Foggy green valley mountain
 ];
 
 export default function MarqueeDemo({
@@ -114,16 +115,21 @@ export default function MarqueeDemo({
       return images.map((src, i) => (
         <div
           key={i}
-          className="w-[200px] h-[200px] shrink-0 rounded-2xl overflow-hidden shadow-sm"
+          className="w-[220px] h-[160px] shrink-0 rounded-2xl overflow-hidden shadow-md border border-zinc-200/60 dark:border-zinc-800"
         >
-          <img src={src} alt="Gallery" className="w-full h-full object-cover" />
+          <img src={src} alt="Nature landscape" className="w-full h-full object-cover" />
         </div>
       ));
     }
   };
 
   return (
-    <div className="w-full flex items-center justify-center relative z-10 overflow-hidden">
+    <div
+      className={cn(
+        "w-full flex flex-col items-center justify-center relative z-10 overflow-hidden py-16 sm:py-24 px-4 my-auto",
+        isVertical ? "min-h-[480px]" : "min-h-[260px]",
+      )}
+    >
       <MarqueeBlock
         key={`${contentType}-${direction}-${speed}-${pauseOnHover}-${fade}`} // Force re-render on drastic changes to ensure clean animation resets
         direction={direction}
@@ -131,7 +137,7 @@ export default function MarqueeDemo({
         pauseOnHover={pauseOnHover}
         fade={fade}
         gap={gap}
-        className={isVertical ? "h-[400px] w-full max-w-[300px]" : "w-full py-4"}
+        className={isVertical ? "h-[380px] w-full max-w-[300px]" : "w-full py-2"}
       >
         {renderContent()}
       </MarqueeBlock>

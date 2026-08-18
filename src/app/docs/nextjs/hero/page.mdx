@@ -185,26 +185,6 @@ export default function GlitchHero() {
   columns={1}
   examples={[
     {
-      title: "Split right",
-      subheading: "The default marketing layout, collapsing to a single column on mobile.",
-      propNotes: [
-        {
-          prop: "layout",
-          value: '"split-right"',
-          effect:
-            "puts the copy left and `HeroVisual` right.",
-        },
-        {
-          prop: "color",
-          effect:
-            "accents the badge, primary action and glow — a named key or any hex, resolved through CSS variables.",
-        },
-      ],
-      props: { layout: "split-right", variant: "default", pattern: "grid", titleAnimation: "blur-in" },
-      usage: usageSplitRight,
-      code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
-    },
-    {
       title: "Split left",
       propNotes: [
         {
@@ -217,6 +197,7 @@ export default function GlitchHero() {
       ],
       props: { layout: "split-left", variant: "default", pattern: "grid", titleAnimation: "blur-in" },
       usage: usageSplitLeft,
+      code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
     },
     {
       title: "Centered",
@@ -259,50 +240,6 @@ export default function GlitchHero() {
       ],
       props: { layout: "split-right", variant: "glass", pattern: "grid", titleAnimation: "blur-in" },
       usage: usageGlass,
-    },
-    {
-      title: "Glow",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"glow"',
-          effect:
-            "to bloom the accent colour behind the content.",
-        },
-        {
-          prop: "variant",
-          value: '"glow"',
-          effect:
-            "on `HeroAction` too, for the matching button.",
-        },
-      ],
-      props: { layout: "split-right", variant: "glow", pattern: "grid", titleAnimation: "blur-in", glowAction: true },
-      usage: usageGlow,
-    },
-    {
-      title: "Background pattern",
-      propNotes: [
-        {
-          prop: "pattern",
-          effect:
-            "takes `none`, `grid` or `dots`, and masks itself toward the edges so it never fights the copy.",
-        },
-      ],
-      props: { layout: "center", variant: "default", pattern: "dots", titleAnimation: "fade-up" },
-      usage: usagePattern,
-    },
-    {
-      title: "Glitch title",
-      propNotes: [
-        {
-          prop: "animation",
-          effect:
-            "lives on `HeroTitle`, not the root — `fade-up`, `blur-in`, `glitch` or `none`. The other children keep their own entrances.",
-        },
-      ],
-      props: { layout: "center", variant: "default", pattern: "none", titleAnimation: "glitch" },
-      usage: usageGlitch,
     },
   ]}
 />
@@ -391,207 +328,7 @@ export default function Page() {
 
 ### Recipes
 
-Three finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
-
-export const usageSaaS = `import {
-  Hero,
-  HeroBadge,
-  HeroBadgeText,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function SaaSHero() {
-  // Centred, grid backdrop, badge + framework chips instead of buttons.
-  return (
-    <Hero layout="center" color="primary" pattern="grid">
-      <HeroContent>
-        <HeroBadge href="#">
-          <HeroBadgeText>SETUP_EASY-PEASY!</HeroBadgeText>
-        </HeroBadge>
-        <HeroTitle animation="blur-in" className="max-w-4xl">
-          Hassle-free setup with
-          <br />
-          all major development frameworks
-        </HeroTitle>
-        <HeroDescription className="max-w-3xl">
-          Collecting submissions is super easy, with no dependency needed by
-          default.
-        </HeroDescription>
-
-        <div className="flex flex-wrap justify-center gap-3 mt-8">
-          <span className="px-4 py-2 text-sm font-medium bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg">HTML</span>
-          <span className="px-4 py-2 text-sm font-medium bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg">React</span>
-          <span className="px-4 py-2 text-sm font-medium bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg">Vue</span>
-          <span className="px-4 py-2 text-sm font-medium bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg">Svelte</span>
-        </div>
-      </HeroContent>
-
-      <HeroVisual>
-        <div className="w-full max-w-4xl mx-auto h-[400px] bg-zinc-950 rounded-2xl border border-zinc-800 shadow-2xl overflow-hidden mt-8">
-          <img src="/app-preview.jpg" alt="App Preview" className="w-full h-full object-cover opacity-80" />
-        </div>
-      </HeroVisual>
-    </Hero>
-  );
-}`;
-
-<ExampleShowcase
-  name="hero-saas"
-  columns={1}
-  examples={[
-    {
-      title: "SaaS hero",
-      subheading: "A centred launch section with framework chips standing in for the usual button pair.",
-      propNotes: [
-        {
-          prop: "animation",
-          value: '"blur-in"',
-          effect:
-            "on `HeroTitle` softens the headline entrance to suit a launch page.",
-        },
-        {
-          prop: "pattern",
-          value: '"grid"',
-          effect:
-            "sets the backdrop behind the centred stack.",
-        },
-      ],
-      usage: usageSaaS,
-    },
-  ]}
-/>
-
-export const usageData = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-import { PlayCircle } from "lucide-react";
-
-export default function DataHero() {
-  // Split-left with a single video CTA — good for data tools and dashboards.
-  return (
-    <Hero layout="split-left" color="primary">
-      <HeroContent>
-        <HeroTitle>Where your data turns into software with a click</HeroTitle>
-        <HeroDescription>
-          Build custom portals, CRMs, and tools effortlessly. From concept to
-          launch in minutes, not months.
-        </HeroDescription>
-        <HeroActions>
-          <HeroAction variant="primary">
-            <PlayCircle className="w-5 h-5 mr-2 -ml-1" /> Watch Demo
-          </HeroAction>
-        </HeroActions>
-      </HeroContent>
-      <HeroVisual>
-        <div className="w-full h-[450px] rounded-2xl border border-zinc-200 dark:border-zinc-700 overflow-hidden shadow-xl">
-          <img src="/data-interface.jpg" alt="Data interface" className="w-full h-full object-cover" />
-        </div>
-      </HeroVisual>
-    </Hero>
-  );
-}`;
-
-<ExampleShowcase
-  name="hero-data"
-  columns={1}
-  examples={[
-    {
-      title: "Product hero with video action",
-      subheading: "A single strong CTA usually converts better than a pair when the product needs a demo first.",
-      propNotes: [
-        {
-          prop: "layout",
-          value: '"split-left"',
-          effect:
-            "leads with the interface shot, which suits data tools and dashboards.",
-        },
-      ],
-      usage: usageData,
-    },
-  ]}
-/>
-
-export const usageMinimal = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-} from "@/components/custom/blocks/HeroBlock";
-import { ArrowRight, Check } from "lucide-react";
-
-export default function MinimalHero() {
-  // No accent, no pattern — type and whitespace only, with a stats footer.
-  return (
-    <Hero layout="center" color="primary">
-      <HeroContent>
-        <HeroTitle className="text-5xl md:text-7xl font-black">
-          Simple. Clean.
-          <br />
-          <span className="text-zinc-400 dark:text-zinc-500">Effective.</span>
-        </HeroTitle>
-
-        <HeroDescription className="max-w-xl mx-auto mt-6">
-          The minimalist approach to building great products.
-        </HeroDescription>
-
-        <div className="flex flex-wrap justify-center gap-6 mt-6 mb-8">
-          <span className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400">
-            <Check className="w-4 h-4 mr-2" /> No credit card required
-          </span>
-          <span className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400">
-            <Check className="w-4 h-4 mr-2" /> Free 14-day trial
-          </span>
-          <span className="flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400">
-            <Check className="w-4 h-4 mr-2" /> Cancel anytime
-          </span>
-        </div>
-
-        <HeroActions>
-          <HeroAction variant="primary">
-            Get Started Free <ArrowRight className="w-4 h-4 ml-2 -mr-1" />
-          </HeroAction>
-          <HeroAction variant="outline">View Demo</HeroAction>
-        </HeroActions>
-      </HeroContent>
-    </Hero>
-  );
-}`;
-
-<ExampleShowcase
-  name="hero-minimal"
-  columns={1}
-  examples={[
-    {
-      title: "Minimalist black & white hero",
-      subheading: "Typography carries the whole section.",
-      propNotes: [
-        {
-          prop: "color",
-          value: '"primary"',
-          effect:
-            "keeps the accent neutral so the type does the work.",
-        },
-        {
-          prop: "pattern",
-          effect:
-            "left off — no backdrop at all, which is the point of this one.",
-        },
-      ],
-      usage: usageMinimal,
-    },
-  ]}
-/>
+Two finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
 
 ## Installation
 
