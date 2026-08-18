@@ -211,6 +211,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -1080,6 +1081,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -1104,6 +1106,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -2661,6 +2664,28 @@
       "docs": "NOTE: installs to components/ui/card.tsx and will overwrite a shadcn `card` already present. Review before installing into an existing project."
     },
     {
+      "name": "ui-code-renderer",
+      "type": "registry:ui",
+      "title": "UI Code Renderer",
+      "author": "AlgorizeTech",
+      "description": "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+      "categories": [
+        "code"
+      ],
+      "dependencies": [
+        "shiki"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/ui/code-renderer.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/code-renderer.tsx"
+        }
+      ],
+      "docs": "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface."
+    },
+    {
       "name": "ui-codeblocks",
       "type": "registry:ui",
       "title": "UI Codeblocks",
@@ -2673,6 +2698,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-code-renderer.json",
         "utils"
       ],
       "files": [
@@ -2682,7 +2708,7 @@
           "target": "components/custom/ui/codeblocks.tsx"
         }
       ],
-      "docs": "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`."
+      "docs": "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`. Installs `ui-code-renderer` alongside it, which brings in Shiki."
     },
     {
       "name": "ui-fluid-glass-slider",
@@ -2820,6 +2846,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
