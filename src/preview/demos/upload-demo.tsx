@@ -203,14 +203,48 @@ export default function UploadDemo({
 
   if (layout === "dropzone") {
     return (
-      <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[400px]">
+      <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[450px]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-        <div className="w-full max-w-md relative z-10 px-4">
+        <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-4 perspective-[1000px]">
           <Dropzone
-            onFilesDrop={() => {}}
-            accept="image/png,image/jpeg"
+            onFilesDrop={handleFilesDrop}
+            accept="image/*,application/pdf,video/mp4"
             maxSize={5}
           />
+
+          {files.length > 0 && (
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2 px-1">
+                <span>Uploading {totalCount} files</span>
+                <span>
+                  {doneCount} of {totalCount} done
+                </span>
+              </div>
+
+              <AnimatePresence mode="popLayout">
+                {files.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={getVariants().initial}
+                    animate={getVariants().animate}
+                    exit={getVariants().exit}
+                    transition={{
+                      duration: 0.4,
+                      type: "spring",
+                      bounce: 0.25,
+                    }}
+                  >
+                    <UploadItem
+                      item={item}
+                      onRetry={handleRetry}
+                      onRemove={handleRemove}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </div>
     );
