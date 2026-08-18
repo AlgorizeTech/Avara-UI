@@ -8,43 +8,43 @@ import {
 const samplePanels: AccordionPanel[] = [
   {
     id: "ocean",
-    title: "Ocean Life",
+    title: "Alpine Sanctuary",
     description:
-      "Dive deep into the abyss and discover the serene, mysterious world beneath the waves.",
+      "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
     videoSrc:
-      "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/sea-turtle.mp4",
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "wildlife",
-    title: "Majestic Wildlife",
+    title: "Emerald Rainforest",
     description:
-      "Experience the power and scale of untamed nature across the world's most remote habitats.",
+      "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
     videoSrc:
-      "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/elephants.mp4",
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1551009175-8a68da93d5f9?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "soaring",
-    title: "Aerial Perspectives",
+    title: "Highland Ridge",
     description:
-      "Take to the skies and see the world from a completely new vantage point.",
+      "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
     videoSrc:
-      "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/eagle.mp4",
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "nature",
-    title: "Rolling Pastures",
+    title: "Cascading Waterfalls",
     description:
-      "Peaceful, quiet, and completely natural. A breath of fresh air for your landing pages.",
+      "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
     videoSrc:
-      "https://res.cloudinary.com/demo/video/upload/q_auto,f_auto/v1/samples/cows.mp4",
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 

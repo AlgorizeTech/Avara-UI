@@ -8,7 +8,7 @@ export default function TiltedCardDemo({
   tiltIntensity = 20,
   glareOpacity = 0.2,
   scaleOnHover = 1.04,
-  color = "#FFAB1D",
+  color = "primary",
 }: {
   tiltIntensity?: number;
   glareOpacity?: number;
@@ -27,9 +27,8 @@ export default function TiltedCardDemo({
   return (
     <div
       style={accentStyle(color)}
-      className="w-full flex items-center justify-center bg-zinc-100/70 dark:bg-[#050505] py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]"
+      className="w-full flex items-center justify-center bg-zinc-50/50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.06)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="w-full max-w-[340px] aspect-[3/4] relative z-10">
         <TiltedCard
@@ -39,7 +38,6 @@ export default function TiltedCardDemo({
         >
           {/* Back to the cleaner white surface for light mode! */}
           <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/80 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:12px_12px] pointer-events-none" />
 
             <div
               className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"

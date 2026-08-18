@@ -51,11 +51,11 @@ export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks
 import { Tile } from "./tile";
 import { items } from "./items";
 
-export default function TighterGap() {
+export default function CustomGap() {
   return (
     <MasonryGrid
       items={items}
-      gapClassName="gap-2"
+      gapClassName="gap-6"
       renderItem={(item) => <Tile {...item} />}
     />
   );
@@ -129,16 +129,16 @@ export default function StaticGrid() {
       usage: usageColumns,
     },
     {
-      title: "Tighter gap",
+      title: "Custom gap spacing",
       propNotes: [
         {
           prop: "gapClassName",
-          value: '"gap-2"',
+          value: '"gap-6"',
           effect:
-            "sets the spacing between tiles. The same value is converted to a matching `mb-*` for the vertical axis, so both directions stay in step.",
+            "sets uniform spacing between tiles. The same value is converted to a matching `mb-*` for the vertical axis, so both directions stay in step.",
         },
       ],
-      props: { gapClassName: "gap-2" },
+      props: { gapClassName: "gap-6", triggerKey: 3 },
       usage: usageGap,
     },
     {

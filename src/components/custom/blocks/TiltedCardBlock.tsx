@@ -54,9 +54,8 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
     const glareX = useTransform(smoothX, [-1, 1], [0, 100]);
     const glareY = useTransform(smoothY, [-1, 1], [0, 100]);
 
-    // THE FIX: Two separate glares - Black for light mode, White for dark mode
-    const glareBackgroundLight = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(0,0,0,${glareOpacity}), transparent 60%)`;
-    const glareBackgroundDark = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`;
+    // Dynamic glare overlay using theme-color variable
+    const glareBackgroundTheme = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, var(--theme-color,var(--primary)), transparent 65%)`;
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
@@ -88,7 +87,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           }}
           whileHover={{ scale: scaleOnHover }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group"
+          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group cursor-pointer"
         >
           <div
             className="relative w-full h-full z-10"
@@ -96,16 +95,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           >
             {children}
 
-            {/* Light Mode Glare (Dark) */}
+            {/* Dynamic Theme Color Glare Overlay */}
             <motion.div
-              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl dark:hidden"
-              style={{ background: glareBackgroundLight }}
-            />
-
-            {/* Dark Mode Glare (White) */}
-            <motion.div
-              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl hidden dark:block"
-              style={{ background: glareBackgroundDark }}
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl"
+              style={{ background: glareBackgroundTheme }}
             />
           </div>
         </motion.div>

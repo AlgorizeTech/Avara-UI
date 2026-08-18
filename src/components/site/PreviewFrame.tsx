@@ -15,8 +15,8 @@ const CLONE_MARK = "data-preview-frame-clone";
  */
 export function PreviewFrame({
   children,
-  minHeight = 400,
-  maxHeight = 820,
+  minHeight = 550,
+  maxHeight = 1400,
   className,
   title = "Component preview",
   frameWidth,

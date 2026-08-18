@@ -16,71 +16,63 @@ type GridItem = {
   theme?: "blue" | "purple" | "emerald" | "rose";
 };
 
-const demoItems: GridItem[] = [
-  {
-    id: "1",
-    type: "card",
-    height: "h-56",
-    title: "Design Engineering",
-    desc: "Bridging the gap between pixels and code.",
-    icon: <Layers className="w-5 h-5" />,
-    theme: "blue",
-  },
-  {
-    id: "2",
-    type: "image",
-    height: "h-[28rem]",
-    imageId: "1618005182384-a83a8bd57fbe",
-  },
-  {
-    id: "3",
-    type: "gradient",
-    height: "h-40",
-    title: "Fluid Animations",
-    desc: "Orchestrated via Framer Motion.",
-    icon: <Wand2 className="w-5 h-5" />,
-    theme: "purple",
-  },
-  {
-    id: "4",
-    type: "card",
-    height: "h-72",
-    title: "Neural Processing",
-    desc: "On-device AI integration for instant feedback.",
-    icon: <Cpu className="w-5 h-5" />,
-    theme: "emerald",
-  },
-  {
-    id: "5",
-    type: "image",
-    height: "h-52",
-    imageId: "1550684848-fac1c5b4e853",
-  },
-  {
-    id: "6",
-    type: "card",
-    height: "h-60",
-    title: "Generative UI",
-    desc: "Interfaces that adapt to user intent.",
-    icon: <Sparkles className="w-5 h-5" />,
-    theme: "rose",
-  },
-  {
-    id: "7",
-    type: "image",
-    height: "h-[22rem]",
-    imageId: "1620121692029-d088224ddc74",
-  },
-  {
-    id: "8",
-    type: "gradient",
-    height: "h-48",
-    title: "Serverless Edge",
-    desc: "Deployed globally in milliseconds.",
-    icon: <Layers className="w-5 h-5" />,
-    theme: "blue",
-  },
+const naturePhotos = [
+  "1448375240586-882707db888b", // Alpine lake
+  "1464822759023-fed622ff2c3b", // Mountain peak
+  "1506744038136-46273834b3fb", // Emerald stream
+  "1470071459604-3b5ec3a7fe05", // Misty forest
+  "1426604966848-d7adac402bff", // River valley
+  "1441974231531-c6227db76b6e", // Autumn path
+  "1469474968028-56623f02e42e", // Waterfall
+  "1507525428034-b723cf961d3e", // Beach sunset
 ];
+
+const variantItems: Record<string, GridItem[]> = {
+  default: [
+    { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
+    { id: "2", type: "image", height: "h-[28rem]", imageId: naturePhotos[0] },
+    { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: <Wand2 className="w-5 h-5" />, theme: "purple" },
+    { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
+    { id: "5", type: "image", height: "h-52", imageId: naturePhotos[1] },
+    { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
+    { id: "7", type: "image", height: "h-[22rem]", imageId: naturePhotos[2] },
+    { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
+  ],
+  columns: [
+    { id: "c1", type: "image", height: "h-[22rem]", imageId: naturePhotos[3] },
+    { id: "c2", type: "card", height: "h-64", title: "Glacial Expedition", desc: "Tracking ice melt patterns across polar terrain.", icon: <Sparkles className="w-5 h-5" />, theme: "emerald" },
+    { id: "c3", type: "image", height: "h-[30rem]", imageId: naturePhotos[4] },
+    { id: "c4", type: "gradient", height: "h-52", title: "Sunset Horizon", desc: "Coastal light refraction studies.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
+    { id: "c5", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
+    { id: "c6", type: "card", height: "h-56", title: "Pine Forest Canopy", desc: "High resolution aerial drone mapping.", icon: <Cpu className="w-5 h-5" />, theme: "blue" },
+    { id: "c7", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
+    { id: "c8", type: "gradient", height: "h-48", title: "Lush River Flow", desc: "Freshwater aquatic ecosystem analytics.", icon: <Wand2 className="w-5 h-5" />, theme: "rose" },
+  ],
+  gap: [
+    { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: <Sparkles className="w-5 h-5" />, theme: "purple" },
+    { id: "g2", type: "image", height: "h-[26rem]", imageId: naturePhotos[6] },
+    { id: "g3", type: "gradient", height: "h-48", title: "Forest Mist Stream", desc: "Hydrological condensation research.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
+    { id: "g4", type: "image", height: "h-[22rem]", imageId: naturePhotos[7] },
+    { id: "g5", type: "card", height: "h-52", title: "Volcanic Ridge", desc: "Thermal geological formations.", icon: <Cpu className="w-5 h-5" />, theme: "rose" },
+    { id: "g6", type: "image", height: "h-[28rem]", imageId: naturePhotos[1] },
+  ],
+  stagger: [
+    { id: "s1", type: "image", height: "h-[28rem]", imageId: naturePhotos[2] },
+    { id: "s2", type: "gradient", height: "h-52", title: "Aurora Skyward", desc: "Staggered particle illumination.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
+    { id: "s3", type: "card", height: "h-64", title: "Deep Woodland", desc: "Ancient oak and redwood groves.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
+    { id: "s4", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
+    { id: "s5", type: "card", height: "h-56", title: "Coastal Breeze", desc: "Oceanic climate metrics.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
+    { id: "s6", type: "image", height: "h-[30rem]", imageId: naturePhotos[0] },
+  ],
+  static: [
+    { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
+    { id: "st2", type: "image", height: "h-[26rem]", imageId: naturePhotos[4] },
+    { id: "st3", type: "gradient", height: "h-48", title: "Timberland Grove", desc: "Pure CSS column layout flow.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
+    { id: "st4", type: "image", height: "h-[24rem]", imageId: naturePhotos[3] },
+    { id: "st5", type: "card", height: "h-60", title: "Glacial Basin", desc: "Sub-zero ice shelf monitoring.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
+    { id: "st6", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
+  ],
+};
 
 const themeColors = {
   blue: "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20",
@@ -104,14 +96,23 @@ export default function MasonryGridDemo({
   animateIn?: boolean;
   staggerDelay?: number;
 }) {
+  // Determine variant type based on props passed from Sandbox/page.mdx
+  let items = variantItems.default;
+  if (columnsClassName.includes("lg:columns-4")) {
+    items = variantItems.columns;
+  } else if (staggerDelay === 0.25) {
+    items = variantItems.stagger;
+  } else if (animateIn === false) {
+    items = variantItems.static;
+  } else if (triggerKey === 3) {
+    items = variantItems.gap;
+  }
   return (
-    <div className="w-full relative p-4 sm:p-8 md:p-12 bg-[#f8f9fa] dark:bg-[#0a0a0a] rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-[40rem] h-[40rem] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
-      <div className="absolute bottom-0 right-1/4 w-[30rem] h-[30rem] bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
+    <div className="w-full relative p-4 sm:p-8 md:p-12 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
 
       <MasonryGrid
         key={`${triggerKey}-${columnsClassName}-${gapClassName}-${animateIn}-${staggerDelay}`}
-        items={demoItems}
+        items={items}
         columnsClassName={columnsClassName}
         gapClassName={gapClassName}
         animateIn={animateIn}
@@ -122,7 +123,7 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full rounded-[2rem] overflow-hidden relative group cursor-pointer border border-black/[0.04] dark:border-white/[0.04] shadow-sm",
+                  "w-full rounded-2xl overflow-hidden relative group cursor-pointer border border-black/[0.04] dark:border-white/[0.04] shadow-sm",
                   item.height,
                 )}
               >
@@ -146,32 +147,25 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full p-8 rounded-[2rem] relative group cursor-pointer overflow-hidden border border-black/5 dark:border-white/5",
+                  "w-full p-5 sm:p-6 md:p-8 rounded-2xl relative group cursor-pointer overflow-hidden border border-zinc-200/80 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm",
                   item.height,
                 )}
               >
-                <div
-                  className={cn(
-                    "absolute inset-0 opacity-20 dark:opacity-40 transition-opacity duration-500 group-hover:opacity-30 dark:group-hover:opacity-60",
-                    themeColors[item.theme || "blue"].split(" ")[2],
-                  )}
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-white/10 dark:from-zinc-900/60 dark:to-zinc-900/10 backdrop-blur-sm" />
-                <div className="relative z-10 flex flex-col items-start justify-between h-full">
+                <div className="relative z-10 flex flex-col items-start justify-between h-full w-full overflow-hidden">
                   <div
                     className={cn(
-                      "p-3 rounded-2xl bg-white/50 dark:bg-black/20 backdrop-blur-md shadow-sm border border-black/5 dark:border-white/5",
+                      "p-3 rounded-2xl bg-zinc-100 dark:bg-black/20 shadow-sm border border-zinc-200/80 dark:border-white/5 shrink-0",
                       themeColors[item.theme || "blue"].split(" ")[0],
                       themeColors[item.theme || "blue"].split(" ")[1],
                     )}
                   >
                     {item.icon}
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-2">
+                  <div className="w-full">
+                    <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-1 leading-snug">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-normal">
                       {item.desc}
                     </p>
                   </div>
@@ -183,27 +177,27 @@ export default function MasonryGridDemo({
           return (
             <div
               className={cn(
-                "w-full p-8 rounded-[2rem] bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-black/[0.04] dark:border-white/[0.04] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group",
+                "w-full p-5 sm:p-6 md:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-white/10 shadow-sm transition-all duration-500 hover:shadow-md hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group relative overflow-hidden",
                 item.height,
               )}
             >
               <div
                 className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-300",
+                  "w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 shrink-0",
                   themeColors[item.theme || "blue"],
                 )}
               >
                 {item.icon}
               </div>
-              <div className="w-full">
-                <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-2">
+              <div className="w-full pr-6">
+                <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-1.5 leading-snug">
                   {item.title}
                 </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-[90%]">
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
-              <div className="absolute top-8 right-8 w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/80 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-zinc-900 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
+              <div className="absolute top-5 right-5 sm:top-8 sm:right-8 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/80 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-zinc-900 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>
