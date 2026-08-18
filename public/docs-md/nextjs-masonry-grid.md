@@ -37,7 +37,7 @@ export default function ColumnCounts() {
 
 export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-export default function TighterGap() {
+export default function CustomGap() {
   return (
      }
     />

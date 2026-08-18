@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-18T11:11:05.589Z
-**Total files:** 96
+**Generated at:** 2026-08-18T13:43:25.931Z
+**Total files:** 101
 
 ## Available Files
 
@@ -41,6 +41,11 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/dock](/docs/nextjs-dock.md) - Source: `nextjs\dock\page.mdx`
 - [nextjs/drawer](/docs/nextjs-drawer.md) - Source: `nextjs\drawer\page.mdx`
 - [nextjs/email](/docs/nextjs-email.md) - Source: `nextjs\email\page.mdx`
+- [nextjs/examples](/docs/nextjs-examples.md) - Source: `nextjs\examples\page.mdx`
+- [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `nextjs\examples\button\page.mdx`
+- [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `nextjs\examples\counter\page.mdx`
+- [nextjs/examples/video-text](/docs/nextjs-examples-video-text.md) - Source: `nextjs\examples\video-text\page.mdx`
+- [nextjs/examples/waitlist](/docs/nextjs-examples-waitlist.md) - Source: `nextjs\examples\waitlist\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `nextjs\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `nextjs\first-app\page.mdx`
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `nextjs\fleet-tracker\page.mdx`

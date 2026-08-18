@@ -118,7 +118,6 @@ const DockIcon: React.FC<DockIconProps> = ({
   baseSize,
   magnification,
   distance,
-  isMobile,
 }) => {
   const iconRef = useRef<HTMLButtonElement>(null);
   const [isHovered, setIsHovered] = useState(false);

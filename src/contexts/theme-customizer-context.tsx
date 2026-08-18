@@ -161,7 +161,7 @@ export function ThemeCustomizerProvider({
 }) {
   const [state, setState] = useState<ThemeCustomizerState>(getInitialState);
   const [hydrated, setHydrated] = useState(false);
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [activeMode, setActiveMode] = useState<"light" | "dark">(getInitialMode);
 
   // Keep activeMode strictly synced with resolvedTheme

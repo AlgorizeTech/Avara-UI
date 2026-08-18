@@ -105,7 +105,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 break;
               }
             }
-          } catch (e) {}
+          } catch {}
         }
 
         if (!foundColor && typeof localStorage !== "undefined") {
@@ -128,7 +128,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 }
               }
             }
-          } catch (e) {}
+          } catch {}
         }
 
         if (!foundColor && typeof document !== "undefined") {
@@ -147,7 +147,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 foundColor = trimmed;
               }
             }
-          } catch (e) {}
+          } catch {}
         }
 
         const targetColor = foundColor || defaultAccentColor;

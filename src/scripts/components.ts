@@ -1,6 +1,6 @@
 import { RegistryItemSchema, RegistryType } from "./types";
 
-type ComponentType = Omit<
+export type ComponentType = Omit<
   RegistryItemSchema,
   "$schema" | "files" | "type" | "author"
 > &

@@ -28,7 +28,7 @@ export interface ScrollStackProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ScrollStack = ({
   items,
   depthScale = 0.05,
-  cardGap = 24,
+  cardGap: _cardGap = 24,
   scroller,
   className,
   ...props

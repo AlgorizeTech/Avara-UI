@@ -29,7 +29,6 @@ export const VideoAccordion = React.forwardRef<
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
@@ -41,7 +40,6 @@ export const VideoAccordion = React.forwardRef<
       const panelEl = panelRefs.current[index];
       const titleEl = titleRefs.current[index];
       const descEl = descRefs.current[index];
-      const videoEl = videoRefs.current[index];
       const isActive = activeId === panel.id;
 
       // 1. Animate the Flexbox Layout (Expansion)

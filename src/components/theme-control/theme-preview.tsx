@@ -7,9 +7,6 @@
  */
 
 import { cn } from "@/lib/utils";
-import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
-import { oklchToHex } from "@/lib/color-utils";
-
 import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
 import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
@@ -39,12 +36,6 @@ function PreviewSection({
 // ─── Main Preview Component ──────────────────────────────────────
 
 export function ThemePreview() {
-  const { getColorToken, currentMode } = useThemeCustomizer();
-
-  // Get primary color hex for components that require hex instead of classes
-  const primaryOklch = getColorToken(currentMode, "primary");
-  const primaryHex = primaryOklch ? oklchToHex(primaryOklch) : "#000000";
-
   // Data for Chart
   const chartData = [
     { label: "Jan", value: 120 },

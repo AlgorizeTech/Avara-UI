@@ -134,7 +134,6 @@ const ItemRow = ({
   item,
   updateQty,
   removeItem,
-  theme,
 }: {
   item: CartItem;
   updateQty: (id: string, delta: number) => void;

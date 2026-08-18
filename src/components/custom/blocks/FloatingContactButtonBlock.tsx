@@ -135,7 +135,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 break;
               }
             }
-          } catch (e) {}
+          } catch {}
         }
 
         const targetColor = foundColor || defaultAccentColor;

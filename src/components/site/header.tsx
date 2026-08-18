@@ -3,7 +3,6 @@
 import { GitHubIcon } from "@/assets/icons/github";
 import { cn } from "@/lib/utils";
 import {
-  BarChart3,
   BookOpen,
   LayoutGrid,
   Linkedin,

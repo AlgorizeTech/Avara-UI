@@ -49,14 +49,12 @@ export default function ChatBubbleDemo({
 
         <ChatBubble variant="sent" layout="group-top">
           <ChatAvatar fallback="ME" />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ChatMessage color={color as any}>
             The same logic mirrors for sent messages.
           </ChatMessage>
         </ChatBubble>
         <ChatBubble variant="sent" layout="group-bottom">
           <ChatAvatar fallback="ME" />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ChatMessage color={color as any}>
             No manual border-radius maths required.
           </ChatMessage>
@@ -80,7 +78,6 @@ export default function ChatBubbleDemo({
 
         <ChatBubble variant="sent">
           <ChatAvatar fallback="ME" />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ChatMessage color={color as any}>
             Sent — a single tick.
             <ChatTimestamp time="10:25 AM" status="sent" />
@@ -88,7 +85,6 @@ export default function ChatBubbleDemo({
         </ChatBubble>
         <ChatBubble variant="sent">
           <ChatAvatar fallback="ME" />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ChatMessage color={color as any}>
             Delivered — double tick.
             <ChatTimestamp time="10:25 AM" status="delivered" />
@@ -96,7 +92,6 @@ export default function ChatBubbleDemo({
         </ChatBubble>
         <ChatBubble variant="sent">
           <ChatAvatar fallback="ME" />
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ChatMessage color={color as any}>
             Read — double tick, accented.
             <ChatTimestamp time="10:26 AM" status="read" />
