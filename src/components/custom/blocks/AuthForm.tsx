@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Check, Chrome, Eye, EyeOff, Github } from "lucide-react";
+import { Check, Eye, EyeOff } from "lucide-react";
+import { GitHubIcon, GoogleIcon } from "./Icons";
 import { useState } from "react";
 
 // ==========================================
@@ -322,14 +323,14 @@ export default function AuthForm({
           type="button"
           className="w-full flex items-center gap-2"
         >
-          <Github size={18} /> <span className="hidden sm:inline">GitHub</span>
+          <GitHubIcon size={18} /> <span className="hidden sm:inline">GitHub</span>
         </Button>
         <Button
           variant="outline"
           type="button"
           className="w-full flex items-center gap-2"
         >
-          <Chrome size={18} /> <span className="hidden sm:inline">Google</span>
+          <GoogleIcon size={18} /> <span className="hidden sm:inline">Google</span>
         </Button>
       </div>
 
