@@ -150,7 +150,6 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
       multiple = false,
       searchable = false,
     },
-    ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropUp, setDropUp] = useState(false);

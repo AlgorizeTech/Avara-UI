@@ -33,7 +33,6 @@ function StackCard({
   cardWidth,
   gap,
   stackOffset,
-  scrollEndThreshold,
   isMobile = false,
 }: {
   item: ScrollStackItem;

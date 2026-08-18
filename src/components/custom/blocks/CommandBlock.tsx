@@ -38,7 +38,7 @@ export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Command({
   className,
-  shouldFilter = true,
+  shouldFilter: _shouldFilter = true,
   children,
   ...props
 }: CommandProps) {

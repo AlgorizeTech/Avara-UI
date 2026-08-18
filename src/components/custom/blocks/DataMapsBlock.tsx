@@ -8,7 +8,6 @@ import { useMap } from "react-leaflet";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
-const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
 
 const ZoomControl = dynamic(() => import("react-leaflet").then((mod) => mod.ZoomControl), { ssr: false });
 
@@ -88,7 +87,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       zoomable = false,
       scrollWheelZoom = false,
       highlightColor = "var(--primary, #2563eb)",
-      defaultColor = "#cbd5e1",
+      defaultColor: _defaultColor = "#cbd5e1",
       mapGeoJsonUrl = "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
       className,
       ...props
@@ -181,7 +180,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
              
              try {
                leafletLib.marker([c.lat, c.lng], { icon, interactive: false }).addTo(markersGroupRef.current);
-             } catch (e) {
+             } catch {
                // Silently ignore if map is unmounting during HMR
              }
           }

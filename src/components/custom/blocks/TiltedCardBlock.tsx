@@ -23,7 +23,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       children,
       className,
       tiltIntensity = 15,
-      glareOpacity = 0.2, // Back to a balanced default
+      glareOpacity: _glareOpacity = 0.2, // Back to a balanced default
       scaleOnHover = 1.02,
       ...props
     },

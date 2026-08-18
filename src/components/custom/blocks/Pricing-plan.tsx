@@ -98,7 +98,6 @@ export function BasicPricingPlan({
   data,
   variant = "default",
   tabStyle = "default",
-  className,
   tabClassName,
   cardClassName,
   popularBadgeClassName,

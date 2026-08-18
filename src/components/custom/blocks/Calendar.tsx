@@ -391,7 +391,7 @@ function CalendarDashboard({
   variant?: CalendarVariant;
   color?: CalendarColor;
 }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark] = useState(false);
   const styles = dashboardVariants[variant];
 
   // Custom hex injection logic

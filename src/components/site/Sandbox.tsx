@@ -804,7 +804,7 @@ function ExampleCard({
   minHeight: number;
   maxHeight: number;
 }) {
-  const { title, subheading, propNotes, props, usage, code } = example;
+  const { title, subheading, propNotes, props, usage } = example;
   const anchor = example.id ?? slugify(title);
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.

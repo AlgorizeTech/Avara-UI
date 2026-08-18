@@ -5,8 +5,6 @@ import { useThemeCustomizer } from '@/contexts/theme-customizer-context';
 import { THEME_PRESETS } from '@/lib/theme-presets';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
-import { motion } from 'motion/react';
-
 export function ThemePresetSelector() {
   const { activePreset, applyPreset, currentMode } = useThemeCustomizer();
 

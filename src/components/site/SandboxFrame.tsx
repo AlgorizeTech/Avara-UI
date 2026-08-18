@@ -16,7 +16,6 @@ export function SandboxFrame({
   scale = 1,
   resetKey = 0,
   minHeight = 0,
-  maxHeight = 2000,
   className,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
@@ -66,7 +65,6 @@ export function SandboxFrame({
 
   useEffect(() => {
     postProps();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sandboxProps]);
 
   // Auto-height reported from inside the sandbox document.

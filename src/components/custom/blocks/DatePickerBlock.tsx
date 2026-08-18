@@ -148,7 +148,6 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       disabled = false,
       className,
     },
-    ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [viewDate, setViewDate] = useState(value || new Date());

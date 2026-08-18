@@ -36,7 +36,6 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
 
   useEffect(() => {
-    const storedPrimaryColor = localStorage.getItem("primaryColor");
     const storedFontSize = localStorage.getItem("fontSize");
     const storedFontFamily = localStorage.getItem("fontFamily");
     const storedDir = localStorage.getItem("dir") as "ltr" | "rtl" | null;

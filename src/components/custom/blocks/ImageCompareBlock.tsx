@@ -6,13 +6,9 @@ import {
   ChevronsLeftRight,
   Sparkles,
   Sliders,
-  Eye,
   Layers,
   Split,
-  Maximize2,
   Scan,
-  RefreshCw,
-  SunMedium,
 } from "lucide-react";
 
 export type ImageCompareVariant =

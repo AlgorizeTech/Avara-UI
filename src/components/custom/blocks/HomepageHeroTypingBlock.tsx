@@ -105,7 +105,7 @@ export const HomepageHeroTypingBlock = forwardRef<
   (
     {
       badgeText = "Next-Gen React Components",
-      badgeHref = "/docs",
+      badgeHref: _badgeHref = "/docs",
       titlePrefix = "Build ",
       typingWords = [
         "Exceptional",

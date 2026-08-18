@@ -171,7 +171,6 @@ export function Toaster({
 // ==========================================
 function ToastCard({
   toast,
-  isTop,
   onDismiss,
 }: {
   toast: ToastProps;

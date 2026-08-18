@@ -1,9 +1,5 @@
 "use client";
 
-import AIChat, {
-	ChatThread,
-	Message,
-} from "@/components/custom/blocks/Ai-chat";
 import AuthForm from "@/components/custom/blocks/AuthForm";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
@@ -15,50 +11,35 @@ import {
 	ThreeDCarousel,
 	CarouselItem,
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
-import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
-import { navigation } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
 	ArrowUpRight,
 	Bot,
 	Check,
-	ChevronRight,
 	Code2,
 	Copy,
 	Github,
 	Layers,
-	Linkedin,
 	Lock,
-	Moon,
-	Package,
 	Paintbrush,
-	SlidersHorizontal,
 	Sparkles,
 	Terminal,
 	Zap,
 	Boxes,
-	LayoutTemplate,
 	BarChart3,
-	Globe,
 	Share2,
-	Users,
 	Compass,
 	Cpu,
-	Search,
 	CheckCircle2,
-	Activity,
-	ShieldCheck,
 	LayoutGrid,
 	Send,
-	Mic,
 	GitPullRequest,
-	GitBranch,
 } from "lucide-react";
-import { motion, useInView, AnimatePresence, useScroll } from "motion/react";
+import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { links } from "@/config/site";
@@ -2970,7 +2951,7 @@ function CTASection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
-	const [typedText, setTypedText] = useState("");
+	const [, setTypedText] = useState("");
 	const fullCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 
 	useEffect(() => {

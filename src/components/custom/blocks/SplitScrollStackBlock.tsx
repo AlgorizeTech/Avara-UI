@@ -62,7 +62,6 @@ export const SplitScrollStack = React.forwardRef<
     const containerRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const isHex = color.startsWith("#");
 
     // Keep callback fresh without triggering useEffect re-runs
     const onActiveIndexChangeRef = useRef(onActiveIndexChange);
