@@ -7,9 +7,6 @@
  */
 
 import { cn } from "@/lib/utils";
-import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
-import { oklchToHex } from "@/lib/color-utils";
-
 import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
 import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";

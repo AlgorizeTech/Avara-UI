@@ -29,7 +29,6 @@ export const VideoAccordion = React.forwardRef<
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
