@@ -144,6 +144,6 @@ Discover the key interactive capabilities of the `CursorAnimation` block:
 
 ---
 
-**Component Path:** `nextjs\cursor-animation\page.mdx`
+**Component Path:** `[framework]\cursor-animation\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

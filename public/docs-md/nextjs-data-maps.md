@@ -242,6 +242,6 @@ Learn about the Data Maps component's geographic visualization features, mapping
 
 ---
 
-**Component Path:** `nextjs\data-maps\page.mdx`
+**Component Path:** `[framework]\data-maps\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

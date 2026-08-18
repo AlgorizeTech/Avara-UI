@@ -53,7 +53,7 @@ This example demonstrates a simple counter component using React's useState hook
     <ComponentRenderer component={<Counter />} />
   </TabsContent>
   <TabsContent value="code">
-    <CodeBlock filePath="src/app/docs/nextjs/examples/counter/counter.tsx" />
+    <CodeBlock filePath="src/app/docs/[framework]/examples/counter/counter.tsx" />
   </TabsContent>
 </Tabs>
 
@@ -77,13 +77,13 @@ Here's a more complex example with multiple files:
         <TabsTrigger value="button">components/Button.tsx</TabsTrigger>
       </TabsList>
       <TabsContent value="app">
-        <CodeBlock filePath="src/app/docs/nextjs/examples/counter/app-page.tsx" />
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/app-page.tsx" />
       </TabsContent>
       <TabsContent value="counter">
-        <CodeBlock filePath="src/app/docs/nextjs/examples/counter/counter-component.tsx" />
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/counter-component.tsx" />
       </TabsContent>
       <TabsContent value="button">
-        <CodeBlock filePath="src/app/docs/nextjs/examples/counter/button-component.tsx" />
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/button-component.tsx" />
       </TabsContent>
     </Tabs>
   </TabsContent>
@@ -94,7 +94,7 @@ Here's a more complex example with multiple files:
 ### Simple Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter.tsx
+// src/app/docs/[framework]/examples/counter/counter.tsx
 'use client'
 
 import { useState } from 'react'
@@ -130,7 +130,7 @@ export default function Counter() {
 #### Main App Page
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/app-page.tsx
+// src/app/docs/[framework]/examples/counter/app-page.tsx
 import Counter from './counter-component'
 import { Button } from '@/components/ui/button'
 
@@ -150,7 +150,7 @@ export default function CounterApp() {
 #### Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter-component.tsx
+// src/app/docs/[framework]/examples/counter/counter-component.tsx
 'use client'
 
 import { useState } from 'react'
@@ -179,7 +179,7 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
 #### Button Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/button-component.tsx
+// src/app/docs/[framework]/examples/counter/button-component.tsx
 'use client'
 
 import { ButtonHTMLAttributes } from 'react'

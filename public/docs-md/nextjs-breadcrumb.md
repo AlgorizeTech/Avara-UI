@@ -149,6 +149,6 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
 
 ---
 
-**Component Path:** `nextjs\breadcrumb\page.mdx`
+**Component Path:** `[framework]\breadcrumb\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

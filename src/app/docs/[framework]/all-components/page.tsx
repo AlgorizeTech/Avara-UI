@@ -2,6 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { docsHref, frameworkFromPathname } from "@/lib/framework";
 import {
   Boxes,
   Sparkles,
@@ -16,7 +18,8 @@ import {
 type PreviewCardItem = {
   title: string;
   countText: string;
-  href: string;
+  /** Path below the framework segment; composed into an href at render time. */
+  slug: string;
   badge?: string;
   illustrationType: string;
 };
@@ -34,70 +37,70 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     categorySubtitle: "Essential primitive building blocks for clean, high-performance web applications.",
     icon: Boxes,
     items: [
-      { title: "Accordion", countText: "Expandable Panels", href: "/docs/nextjs/accordion", illustrationType: "accordion" },
-      { title: "Alert", countText: "Notification Banners", href: "/docs/nextjs/alert", illustrationType: "modal" },
-      { title: "Ai-Chat", countText: "Streaming Interface", href: "/docs/nextjs/ai-chat", illustrationType: "chat" },
-      { title: "Api Playground", countText: "API Tester", href: "/docs/nextjs/api-playground", badge: "New", illustrationType: "api-playground" },
-      { title: "Breadcrumb", countText: "Path Navigation", href: "/docs/nextjs/breadcrumb", illustrationType: "breadcrumb" },
-      { title: "Modern Buttons", countText: "5+ Action Styles", href: "/docs/nextjs/button", illustrationType: "button" },
-      { title: "Card", countText: "Content Containers", href: "/docs/nextjs/card", illustrationType: "card" },
-      { title: "Chart", countText: "SVG Data Viz", href: "/docs/nextjs/chart", illustrationType: "chart" },
-      { title: "Carousel", countText: "Slide Showcase", href: "/docs/nextjs/carousel", illustrationType: "carousel" },
-      { title: "Counter", countText: "Animated Numbers", href: "/docs/nextjs/counter", illustrationType: "counter" },
-      { title: "Command", countText: "Cmd+K Palette", href: "/docs/nextjs/command", illustrationType: "command" },
-      { title: "Calendar", countText: "Date Picker Grid", href: "/docs/nextjs/calendar", illustrationType: "calendar" },
-      { title: "Chat", countText: "Messaging Feed", href: "/docs/nextjs/chat", illustrationType: "chat" },
-      { title: "Cart", countText: "E-commerce Drawer", href: "/docs/nextjs/cart", illustrationType: "cart" },
-      { title: "Collapsible", countText: "Toggle Content", href: "/docs/nextjs/collapsible", illustrationType: "collapsible" },
-      { title: "ContextMenu", countText: "Right Click Menu", href: "/docs/nextjs/context-menu", illustrationType: "context-menu" },
-      { title: "Drawer", countText: "Slideover Sheet", href: "/docs/nextjs/drawer", illustrationType: "drawer" },
-      { title: "Dialog", countText: "Modal Dialog", href: "/docs/nextjs/dialog", illustrationType: "dialog" },
-      { title: "Data Grid", countText: "Advanced Grid", href: "/docs/nextjs/data-grid", badge: "New", illustrationType: "data-grid" },
-      { title: "Data Table", countText: "Sortable Table", href: "/docs/nextjs/data-table", badge: "New", illustrationType: "data-table" },
-      { title: "Date Picker", countText: "Calendar Input", href: "/docs/nextjs/date-picker", illustrationType: "date-picker" },
-      { title: "Form", countText: "Validated Forms", href: "/docs/nextjs/form", illustrationType: "form" },
-      { title: "Input", countText: "Text & Fields", href: "/docs/nextjs/input", illustrationType: "input" },
-      { title: "Item", countText: "List Items", href: "/docs/nextjs/item", illustrationType: "item" },
-      { title: "Invoice", countText: "Billing Paper", href: "/docs/nextjs/invoice", illustrationType: "invoice" },
-      { title: "Kbd", countText: "Key Badges", href: "/docs/nextjs/kbd", illustrationType: "kbd" },
-      { title: "Mails", countText: "Inbox Feed", href: "/docs/nextjs/email", illustrationType: "mails" },
-      { title: "User Graph", countText: "User Hierarchy Tree", href: "/docs/nextjs/user-graph", badge: "New", illustrationType: "user-graph" },
-      { title: "Network Graph", countText: "Concentric User Rings", href: "/docs/nextjs/network-graph", illustrationType: "network-graph" },
-      { title: "Map", countText: "Fleet Tracker Map", href: "/docs/nextjs/fleet-tracker", illustrationType: "map" },
-      { title: "Menubar", countText: "Top App Navigation", href: "/docs/nextjs/menubar", illustrationType: "menubar" },
-      { title: "Modal", countText: "Overlays & Popups", href: "/docs/nextjs/modal", illustrationType: "modal" },
-      { title: "Navigation", countText: "Responsive Header", href: "/docs/nextjs/navigation", illustrationType: "navbar" },
-      { title: "OTP Input", countText: "Verification Code", href: "/docs/nextjs/otp-input", illustrationType: "otp-input" },
-      { title: "Popover", countText: "Context Popup", href: "/docs/nextjs/popover", illustrationType: "popover" },
-      { title: "Progress", countText: "Loading Bars", href: "/docs/nextjs/progress", illustrationType: "progress" },
-      { title: "Resizable", countText: "Split Panels", href: "/docs/nextjs/resizable", illustrationType: "resizable" },
-      { title: "Loader", countText: "Spinners & Pulse", href: "/docs/nextjs/loader", illustrationType: "loader" },
-      { title: "Sonner", countText: "Toast Stream", href: "/docs/nextjs/sonner", illustrationType: "sonner" },
-      { title: "Stepper", countText: "Wizard Flow", href: "/docs/nextjs/stepper", illustrationType: "stepper" },
-      { title: "Select", countText: "Dropdown Menu", href: "/docs/nextjs/select", illustrationType: "select" },
-      { title: "Scroll Area", countText: "Custom Scrollbar", href: "/docs/nextjs/scroll-area", illustrationType: "scroll-area" },
-      { title: "Skeleton", countText: "Shimmer States", href: "/docs/nextjs/skeleton", illustrationType: "skeleton" },
-      { title: "Toast", countText: "Popup Alert", href: "/docs/nextjs/toast", illustrationType: "toast" },
-      { title: "Toggle", countText: "Switch Button", href: "/docs/nextjs/toggle", illustrationType: "toggle" },
-      { title: "Table", countText: "Data Layout", href: "/docs/nextjs/table", illustrationType: "table" },
-      { title: "Tooltip", countText: "Hover Labels", href: "/docs/nextjs/tooltip", illustrationType: "tooltip" },
-      { title: "Toggle Group", countText: "Segmented Control", href: "/docs/nextjs/toggle-group", illustrationType: "toggle-group" },
-      { title: "Timeline", countText: "History Feed", href: "/docs/nextjs/timeline", illustrationType: "timeline" },
-      { title: "Terminal", countText: "Dev Console", href: "/docs/nextjs/terminal", illustrationType: "terminal" },
-      { title: "Typography", countText: "Headings & Text", href: "/docs/nextjs/typography", illustrationType: "typography" },
-      { title: "Pagination", countText: "Page Controls", href: "/docs/nextjs/pagination", illustrationType: "pagination" },
-      { title: "Tabs", countText: "Vertical & Horizontal", href: "/docs/nextjs/vertical-tabs", illustrationType: "tabs" },
-      { title: "Theme Switcher", countText: "Light/Dark Toggle", href: "/docs/nextjs/theme-switcher", badge: "New", illustrationType: "theme-switcher" },
-      { title: "Wizard", countText: "Multi-Step Form", href: "/docs/nextjs/wizard", badge: "New", illustrationType: "wizard" },
-      { title: "Masonry Grid", countText: "Staggered Layout", href: "/docs/nextjs/masonry-grid", badge: "New", illustrationType: "masonry" },
-      { title: "QR Code", countText: "QR Generator", href: "/docs/nextjs/qr-code-generator", badge: "New", illustrationType: "qr" },
-      { title: "Data Maps", countText: "Vector Map Analytics", href: "/docs/nextjs/data-maps", badge: "New", illustrationType: "data-maps" },
-      { title: "Hero VideoPlayer", countText: "Action Video Hero", href: "/docs/nextjs/hero-video-player", badge: "New", illustrationType: "hero-videoplayer" },
-      { title: "Verify Badge", countText: "Trust Badge", href: "/docs/nextjs/verify-badge", badge: "New", illustrationType: "verify-badge" },
-      { title: "Mobile Mockups", countText: "Device Frame", href: "/docs/nextjs/mobile-mockup", badge: "New", illustrationType: "mobile-mockup" },
-      { title: "Half Stars", countText: "Rating Stars", href: "/docs/nextjs/half-stars", badge: "New", illustrationType: "half-stars" },
-      { title: "Custom Code Block", countText: "Code Highlighter", href: "/docs/nextjs/custom-code-block", badge: "New", illustrationType: "code-block" },
-      { title: "Image Compare", countText: "Before & After Slider", href: "/docs/nextjs/image-compare", badge: "New", illustrationType: "image-compare" },
+      { title: "Accordion", countText: "Expandable Panels", slug: "accordion", illustrationType: "accordion" },
+      { title: "Alert", countText: "Notification Banners", slug: "alert", illustrationType: "modal" },
+      { title: "Ai-Chat", countText: "Streaming Interface", slug: "ai-chat", illustrationType: "chat" },
+      { title: "Api Playground", countText: "API Tester", slug: "api-playground", badge: "New", illustrationType: "api-playground" },
+      { title: "Breadcrumb", countText: "Path Navigation", slug: "breadcrumb", illustrationType: "breadcrumb" },
+      { title: "Modern Buttons", countText: "5+ Action Styles", slug: "button", illustrationType: "button" },
+      { title: "Card", countText: "Content Containers", slug: "card", illustrationType: "card" },
+      { title: "Chart", countText: "SVG Data Viz", slug: "chart", illustrationType: "chart" },
+      { title: "Carousel", countText: "Slide Showcase", slug: "carousel", illustrationType: "carousel" },
+      { title: "Counter", countText: "Animated Numbers", slug: "counter", illustrationType: "counter" },
+      { title: "Command", countText: "Cmd+K Palette", slug: "command", illustrationType: "command" },
+      { title: "Calendar", countText: "Date Picker Grid", slug: "calendar", illustrationType: "calendar" },
+      { title: "Chat", countText: "Messaging Feed", slug: "chat", illustrationType: "chat" },
+      { title: "Cart", countText: "E-commerce Drawer", slug: "cart", illustrationType: "cart" },
+      { title: "Collapsible", countText: "Toggle Content", slug: "collapsible", illustrationType: "collapsible" },
+      { title: "ContextMenu", countText: "Right Click Menu", slug: "context-menu", illustrationType: "context-menu" },
+      { title: "Drawer", countText: "Slideover Sheet", slug: "drawer", illustrationType: "drawer" },
+      { title: "Dialog", countText: "Modal Dialog", slug: "dialog", illustrationType: "dialog" },
+      { title: "Data Grid", countText: "Advanced Grid", slug: "data-grid", badge: "New", illustrationType: "data-grid" },
+      { title: "Data Table", countText: "Sortable Table", slug: "data-table", badge: "New", illustrationType: "data-table" },
+      { title: "Date Picker", countText: "Calendar Input", slug: "date-picker", illustrationType: "date-picker" },
+      { title: "Form", countText: "Validated Forms", slug: "form", illustrationType: "form" },
+      { title: "Input", countText: "Text & Fields", slug: "input", illustrationType: "input" },
+      { title: "Item", countText: "List Items", slug: "item", illustrationType: "item" },
+      { title: "Invoice", countText: "Billing Paper", slug: "invoice", illustrationType: "invoice" },
+      { title: "Kbd", countText: "Key Badges", slug: "kbd", illustrationType: "kbd" },
+      { title: "Mails", countText: "Inbox Feed", slug: "email", illustrationType: "mails" },
+      { title: "User Graph", countText: "User Hierarchy Tree", slug: "user-graph", badge: "New", illustrationType: "user-graph" },
+      { title: "Network Graph", countText: "Concentric User Rings", slug: "network-graph", illustrationType: "network-graph" },
+      { title: "Map", countText: "Fleet Tracker Map", slug: "fleet-tracker", illustrationType: "map" },
+      { title: "Menubar", countText: "Top App Navigation", slug: "menubar", illustrationType: "menubar" },
+      { title: "Modal", countText: "Overlays & Popups", slug: "modal", illustrationType: "modal" },
+      { title: "Navigation", countText: "Responsive Header", slug: "navigation", illustrationType: "navbar" },
+      { title: "OTP Input", countText: "Verification Code", slug: "otp-input", illustrationType: "otp-input" },
+      { title: "Popover", countText: "Context Popup", slug: "popover", illustrationType: "popover" },
+      { title: "Progress", countText: "Loading Bars", slug: "progress", illustrationType: "progress" },
+      { title: "Resizable", countText: "Split Panels", slug: "resizable", illustrationType: "resizable" },
+      { title: "Loader", countText: "Spinners & Pulse", slug: "loader", illustrationType: "loader" },
+      { title: "Sonner", countText: "Toast Stream", slug: "sonner", illustrationType: "sonner" },
+      { title: "Stepper", countText: "Wizard Flow", slug: "stepper", illustrationType: "stepper" },
+      { title: "Select", countText: "Dropdown Menu", slug: "select", illustrationType: "select" },
+      { title: "Scroll Area", countText: "Custom Scrollbar", slug: "scroll-area", illustrationType: "scroll-area" },
+      { title: "Skeleton", countText: "Shimmer States", slug: "skeleton", illustrationType: "skeleton" },
+      { title: "Toast", countText: "Popup Alert", slug: "toast", illustrationType: "toast" },
+      { title: "Toggle", countText: "Switch Button", slug: "toggle", illustrationType: "toggle" },
+      { title: "Table", countText: "Data Layout", slug: "table", illustrationType: "table" },
+      { title: "Tooltip", countText: "Hover Labels", slug: "tooltip", illustrationType: "tooltip" },
+      { title: "Toggle Group", countText: "Segmented Control", slug: "toggle-group", illustrationType: "toggle-group" },
+      { title: "Timeline", countText: "History Feed", slug: "timeline", illustrationType: "timeline" },
+      { title: "Terminal", countText: "Dev Console", slug: "terminal", illustrationType: "terminal" },
+      { title: "Typography", countText: "Headings & Text", slug: "typography", illustrationType: "typography" },
+      { title: "Pagination", countText: "Page Controls", slug: "pagination", illustrationType: "pagination" },
+      { title: "Tabs", countText: "Vertical & Horizontal", slug: "vertical-tabs", illustrationType: "tabs" },
+      { title: "Theme Switcher", countText: "Light/Dark Toggle", slug: "theme-switcher", badge: "New", illustrationType: "theme-switcher" },
+      { title: "Wizard", countText: "Multi-Step Form", slug: "wizard", badge: "New", illustrationType: "wizard" },
+      { title: "Masonry Grid", countText: "Staggered Layout", slug: "masonry-grid", badge: "New", illustrationType: "masonry" },
+      { title: "QR Code", countText: "QR Generator", slug: "qr-code-generator", badge: "New", illustrationType: "qr" },
+      { title: "Data Maps", countText: "Vector Map Analytics", slug: "data-maps", badge: "New", illustrationType: "data-maps" },
+      { title: "Hero VideoPlayer", countText: "Action Video Hero", slug: "hero-video-player", badge: "New", illustrationType: "hero-videoplayer" },
+      { title: "Verify Badge", countText: "Trust Badge", slug: "verify-badge", badge: "New", illustrationType: "verify-badge" },
+      { title: "Mobile Mockups", countText: "Device Frame", slug: "mobile-mockup", badge: "New", illustrationType: "mobile-mockup" },
+      { title: "Half Stars", countText: "Rating Stars", slug: "half-stars", badge: "New", illustrationType: "half-stars" },
+      { title: "Custom Code Block", countText: "Code Highlighter", slug: "custom-code-block", badge: "New", illustrationType: "code-block" },
+      { title: "Image Compare", countText: "Before & After Slider", slug: "image-compare", badge: "New", illustrationType: "image-compare" },
     ],
   },
   {
@@ -105,22 +108,22 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     categorySubtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
     icon: Sparkles,
     items: [
-      { title: "Cursor Animation", countText: "10 Fluid Variants", href: "/docs/nextjs/cursor-animation", badge: "New", illustrationType: "cursor-animation" },
-      { title: "Curved Carousel", countText: "3D Arc Sway Deck", href: "/docs/nextjs/curved-carousel", badge: "New", illustrationType: "curved-carousel" },
-      { title: "Chat Bubble", countText: "Spring Motion Feed", href: "/docs/nextjs/chat-bubble", illustrationType: "chat" },
-      { title: "Dock", countText: "macOS Magnification", href: "/docs/nextjs/dock", badge: "New", illustrationType: "dock" },
-      { title: "Typography", countText: "Animated Text", href: "/docs/nextjs/animated-typography", illustrationType: "typography" },
-      { title: "File Upload", countText: "Drag & Drop Motion", href: "/docs/nextjs/file-upload", illustrationType: "file-upload" },
-      { title: "3D Carousel", countText: "3D Physics Spring", href: "/docs/nextjs/3d-carousel", illustrationType: "carousel" },
-      { title: "Memories Card", countText: "Stackable Cards", href: "/docs/nextjs/memories-card", illustrationType: "memories-card" },
-      { title: "Timeline", countText: "Animated History", href: "/docs/nextjs/animated-timeline", illustrationType: "timeline" },
-      { title: "Tilted Card", countText: "3D Parallax Tilt", href: "/docs/nextjs/tilted-card", illustrationType: "tilted-card" },
-      { title: "Animated List", countText: "Staggered Entrance", href: "/docs/nextjs/animated-list", illustrationType: "animated-list" },
-      { title: "Scroll Stack", countText: "Stacking Cards", href: "/docs/nextjs/scroll-stack", illustrationType: "scroll-stack" },
-      { title: "Magic Bento", countText: "Glow & Tilt Grid", href: "/docs/nextjs/magic-bento", illustrationType: "magic-bento" },
-      { title: "Video Accordion", countText: "Interactive Media", href: "/docs/nextjs/video-accordion", illustrationType: "video-accordion" },
-      { title: "Network Graph", countText: "Node Graph Canvas", href: "/docs/nextjs/network-graph", badge: "New", illustrationType: "network-graph" },
-      { title: "Floating ContactButton", countText: "Animated Action", href: "/docs/nextjs/floating-contact-button", badge: "New", illustrationType: "floating-contact" },
+      { title: "Cursor Animation", countText: "10 Fluid Variants", slug: "cursor-animation", badge: "New", illustrationType: "cursor-animation" },
+      { title: "Curved Carousel", countText: "3D Arc Sway Deck", slug: "curved-carousel", badge: "New", illustrationType: "curved-carousel" },
+      { title: "Chat Bubble", countText: "Spring Motion Feed", slug: "chat-bubble", illustrationType: "chat" },
+      { title: "Dock", countText: "macOS Magnification", slug: "dock", badge: "New", illustrationType: "dock" },
+      { title: "Typography", countText: "Animated Text", slug: "animated-typography", illustrationType: "typography" },
+      { title: "File Upload", countText: "Drag & Drop Motion", slug: "file-upload", illustrationType: "file-upload" },
+      { title: "3D Carousel", countText: "3D Physics Spring", slug: "3d-carousel", illustrationType: "carousel" },
+      { title: "Memories Card", countText: "Stackable Cards", slug: "memories-card", illustrationType: "memories-card" },
+      { title: "Timeline", countText: "Animated History", slug: "animated-timeline", illustrationType: "timeline" },
+      { title: "Tilted Card", countText: "3D Parallax Tilt", slug: "tilted-card", illustrationType: "tilted-card" },
+      { title: "Animated List", countText: "Staggered Entrance", slug: "animated-list", illustrationType: "animated-list" },
+      { title: "Scroll Stack", countText: "Stacking Cards", slug: "scroll-stack", illustrationType: "scroll-stack" },
+      { title: "Magic Bento", countText: "Glow & Tilt Grid", slug: "magic-bento", illustrationType: "magic-bento" },
+      { title: "Video Accordion", countText: "Interactive Media", slug: "video-accordion", illustrationType: "video-accordion" },
+      { title: "Network Graph", countText: "Node Graph Canvas", slug: "network-graph", badge: "New", illustrationType: "network-graph" },
+      { title: "Floating ContactButton", countText: "Animated Action", slug: "floating-contact-button", badge: "New", illustrationType: "floating-contact" },
     ],
   },
   {
@@ -128,13 +131,13 @@ const componentPreviewData: PreviewCategoryGroup[] = [
     categorySubtitle: "Production-ready full section blocks for landing pages and SaaS platforms.",
     icon: LayoutTemplate,
     items: [
-      { title: "Navbar", countText: "Responsive Header", href: "/docs/nextjs/navbar", badge: "Core", illustrationType: "navbar" },
-      { title: "Sign-Up", countText: "Glassmorphic Form", href: "/docs/nextjs/signup-form", badge: "Core", illustrationType: "auth" },
-      { title: "Hero", countText: "Landing Page Showcase", href: "/docs/nextjs/hero", badge: "New", illustrationType: "hero" },
-      { title: "Marquee", countText: "Infinite Logo Ticker", href: "/docs/nextjs/marquee", badge: "New", illustrationType: "marquee" },
-      { title: "Pricing Section", countText: "Tier & Feature Matrix", href: "/docs/nextjs/pricing", badge: "Core", illustrationType: "pricing" },
-      { title: "Sidebar Section", countText: "App Shell Layout", href: "/docs/nextjs/sidebar", badge: "New", illustrationType: "sidebar" },
-      { title: "Support Dashboard", countText: "Full SaaS Dashboard", href: "/docs/nextjs/support-dashboard", badge: "Core", illustrationType: "dashboard" },
+      { title: "Navbar", countText: "Responsive Header", slug: "navbar", badge: "Core", illustrationType: "navbar" },
+      { title: "Sign-Up", countText: "Glassmorphic Form", slug: "signup-form", badge: "Core", illustrationType: "auth" },
+      { title: "Hero", countText: "Landing Page Showcase", slug: "hero", badge: "New", illustrationType: "hero" },
+      { title: "Marquee", countText: "Infinite Logo Ticker", slug: "marquee", badge: "New", illustrationType: "marquee" },
+      { title: "Pricing Section", countText: "Tier & Feature Matrix", slug: "pricing", badge: "Core", illustrationType: "pricing" },
+      { title: "Sidebar Section", countText: "App Shell Layout", slug: "sidebar", badge: "New", illustrationType: "sidebar" },
+      { title: "Support Dashboard", countText: "Full SaaS Dashboard", slug: "support-dashboard", badge: "Core", illustrationType: "dashboard" },
     ],
   },
 ];
@@ -1611,6 +1614,10 @@ function MiniatureIllustration({ title, type }: { title: string; type: string })
 }
 
 export default function AllComponentsDocsPage() {
+  // Cards link within the reader's current framework rather than pinning them
+  // back to the default.
+  const framework = frameworkFromPathname(usePathname() ?? "");
+
   return (
     <div className="not-prose w-full py-4 text-foreground">
       <div className="w-full space-y-12">
@@ -1656,7 +1663,11 @@ export default function AllComponentsDocsPage() {
               {/* Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {group.items.map((item) => (
-                  <Link key={item.title} href={item.href} className="group block rounded-2xl">
+                  <Link
+                    key={item.title}
+                    href={docsHref(framework, item.slug)}
+                    className="group block rounded-2xl"
+                  >
                     <div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
                       {/* Card Thumbnail / Illustration */}
                       <div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">

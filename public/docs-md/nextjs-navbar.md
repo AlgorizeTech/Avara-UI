@@ -84,6 +84,6 @@ export default function BrandedHeader() {
 
 ---
 
-**Component Path:** `nextjs\navbar\page.mdx`
+**Component Path:** `[framework]\navbar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -158,6 +158,6 @@ export default function DiagonalSplitDemo() {
 
 ---
 
-**Component Path:** `nextjs\image-compare\page.mdx`
+**Component Path:** `[framework]\image-compare\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

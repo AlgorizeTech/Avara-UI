@@ -206,6 +206,6 @@ Learn about the OTP Input's seamless user experience, featuring automatic focus 
 
 ---
 
-**Component Path:** `nextjs\otp-input\page.mdx`
+**Component Path:** `[framework]\otp-input\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

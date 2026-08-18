@@ -289,6 +289,6 @@ After setting up your project, consider:
 
 ---
 
-**Component Path:** `nextjs\installation\page.mdx`
+**Component Path:** `[framework]\installation\_content\nextjs.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

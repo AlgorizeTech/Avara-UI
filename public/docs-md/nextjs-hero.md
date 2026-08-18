@@ -307,6 +307,6 @@ Three independent blocks live on this page. Install whichever you need — they 
 
 ---
 
-**Component Path:** `nextjs\hero\page.mdx`
+**Component Path:** `[framework]\hero\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

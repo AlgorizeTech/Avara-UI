@@ -7,7 +7,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/video-text/video-text.tsx`
+See implementation in: `src/app/docs/[framework]/examples/video-text/video-text.tsx`
 
 # Usage
 ```tsx
@@ -22,6 +22,6 @@ See implementation in: `src/app/docs/nextjs/examples/video-text/video-text.tsx`
 
 ---
 
-**Component Path:** `nextjs\examples\video-text\page.mdx`
+**Component Path:** `[framework]\examples\video-text\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

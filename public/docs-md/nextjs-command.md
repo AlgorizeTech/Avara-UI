@@ -201,6 +201,6 @@ Learn about the Command palette's features, including fuzzy search, keyboard sho
 
 ---
 
-**Component Path:** `nextjs\command\page.mdx`
+**Component Path:** `[framework]\command\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -154,6 +154,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\magic-bento\page.mdx`
+**Component Path:** `[framework]\magic-bento\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

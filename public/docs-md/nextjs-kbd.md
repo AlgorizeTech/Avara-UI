@@ -180,6 +180,6 @@ Learn about the Kbd component's typography styles for displaying keyboard shortc
 
 ---
 
-**Component Path:** `nextjs\kbd\page.mdx`
+**Component Path:** `[framework]\kbd\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -224,6 +224,6 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
 
 ---
 
-**Component Path:** `nextjs\context-menu\page.mdx`
+**Component Path:** `[framework]\context-menu\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

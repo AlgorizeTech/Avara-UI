@@ -10,7 +10,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/counter/counter.tsx`
+See implementation in: `src/app/docs/[framework]/examples/counter/counter.tsx`
 
 ## Multi-file Example
 
@@ -22,14 +22,14 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/counter/app-page.tsx`
+See implementation in: `src/app/docs/[framework]/examples/counter/app-page.tsx`
 
 ## Implementation
 
 ### Simple Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter.tsx
+// src/app/docs/[framework]/examples/counter/counter.tsx
 'use client'
 
 export default function Counter() {
@@ -57,7 +57,7 @@ export default function Counter() {
 #### Main App Page
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/app-page.tsx
+// src/app/docs/[framework]/examples/counter/app-page.tsx
 
 export default function CounterApp() {
   return (
@@ -73,7 +73,7 @@ export default function CounterApp() {
 #### Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter-component.tsx
+// src/app/docs/[framework]/examples/counter/counter-component.tsx
 'use client'
 
 interface CounterProps {
@@ -98,7 +98,7 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
 #### Button Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/button-component.tsx
+// src/app/docs/[framework]/examples/counter/button-component.tsx
 'use client'
 
 interface ButtonProps extends ButtonHTMLAttributes {
@@ -147,6 +147,6 @@ export function Button({
 
 ---
 
-**Component Path:** `nextjs\examples\counter\page.mdx`
+**Component Path:** `[framework]\examples\counter\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -110,6 +110,6 @@ Explore the Custom Code Block's syntax highlighting features, complete with copy
 
 ---
 
-**Component Path:** `nextjs\custom-code-block\page.mdx`
+**Component Path:** `[framework]\custom-code-block\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

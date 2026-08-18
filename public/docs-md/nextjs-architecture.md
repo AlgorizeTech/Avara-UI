@@ -6,7 +6,7 @@ This section outlines the architectural foundation of our reusable component lib
 
 ```bash
 ├── src/
-│   ├── app/                # Next.js App Router pages and routes
+│   ├── app/                # Application pages and routes
 │   ├── components/         # Reusable UI components & showcases
 │   │   ├── site/           # Navigation, header, sidebar & layout elements
 │   │   ├── ui/             # Core UI components
@@ -28,14 +28,14 @@ This section outlines the architectural foundation of our reusable component lib
 
     03. Build
     Static Export Ready
-    Fully optimized for Next.js static HTML exports, SSG, and ultra-fast hosting deployments.
+    Ships as plain source with no build step of its own — bundles cleanly under Vite, a Next.js static export, or any modern bundler.
 
     04. Theming
     Dynamic Dark Mode
-    Built-in theme engine with custom color tokens powered by next-themes.
+    Built-in theme engine with custom color tokens powered by next-themes, which despite the name works in any React app.
 
 ---
 
-**Component Path:** `nextjs\architecture\page.mdx`
+**Component Path:** `[framework]\architecture\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

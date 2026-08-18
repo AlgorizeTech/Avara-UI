@@ -7,7 +7,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/waitlist/waitlist3.tsx`
+See implementation in: `src/app/docs/[framework]/examples/waitlist/waitlist3.tsx`
 
 # Waitlist Components
 
@@ -23,7 +23,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/waitlist/waitlist.tsx`
+See implementation in: `src/app/docs/[framework]/examples/waitlist/waitlist.tsx`
 
 ## Simple Waitlist
 
@@ -35,10 +35,10 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/waitlist/waitlist2.tsx`
+See implementation in: `src/app/docs/[framework]/examples/waitlist/waitlist2.tsx`
 
 ---
 
-**Component Path:** `nextjs\examples\waitlist\page.mdx`
+**Component Path:** `[framework]\examples\waitlist\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

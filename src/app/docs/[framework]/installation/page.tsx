@@ -1,0 +1,54 @@
+import { notFound } from "next/navigation";
+
+import { buildDocsMetadata } from "@/lib/docs-metadata";
+import { isFramework } from "@/lib/framework";
+
+import NextjsContent from "./_content/nextjs.mdx";
+import ReactjsContent from "./_content/reactjs.mdx";
+
+/**
+ * Installation is one of two pages that fork rather than vary.
+ *
+ * The variant-snippet mechanism used elsewhere resolves *code strings*; this
+ * page differs in prose, at length — a different scaffolder, a different bundler,
+ * a different config file. Forcing that into one document with conditionals
+ * would make both versions harder to read than either is apart.
+ *
+ * A server component picks the module, so only the chosen version ships in the
+ * HTML, and `generateMetadata` can vary the title — which matters here, because
+ * this page and the Quick Start are where a reader arriving from search decides
+ * whether the library fits their stack.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ framework: string }>;
+}) {
+  const { framework } = await params;
+  if (!isFramework(framework)) notFound();
+
+  return buildDocsMetadata({
+    framework,
+    slug: "installation",
+    title: "Installation Guide",
+    description:
+      framework === "reactjs"
+        ? "Install Algorize UI in a React + Vite project — Tailwind setup, path aliases, and the shadcn registry."
+        : "Complete installation guide for Next.js with step-by-step instructions, setup requirements, and configuration options.",
+    keywords:
+      framework === "reactjs"
+        ? ["React installation", "Vite setup", "React component library", "shadcn registry Vite", "Tailwind Vite"]
+        : ["Next.js installation", "React framework setup", "Next.js setup", "Next.js components"],
+  });
+}
+
+export default async function InstallationPage({
+  params,
+}: {
+  params: Promise<{ framework: string }>;
+}) {
+  const { framework } = await params;
+  if (!isFramework(framework)) notFound();
+
+  return framework === "reactjs" ? <ReactjsContent /> : <NextjsContent />;
+}

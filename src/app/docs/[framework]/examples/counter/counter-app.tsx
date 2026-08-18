@@ -1,7 +1,7 @@
 'use client'
 
 import Counter from './counter-component'
-import Button from '@/app/docs/nextjs/examples/button/button'
+import Button from '@/app/docs/[framework]/examples/button/button'
 
 export default function CounterApp() {
   return (

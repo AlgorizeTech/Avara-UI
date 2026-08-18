@@ -127,6 +127,6 @@ export default function HeadlineAnimation() {
 
 ---
 
-**Component Path:** `nextjs\text-animation\page.mdx`
+**Component Path:** `[framework]\text-animation\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

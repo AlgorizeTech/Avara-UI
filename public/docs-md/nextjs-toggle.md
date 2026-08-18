@@ -214,6 +214,6 @@ Explore the Toggle button's simple two-state functionality, perfect for on/off s
 
 ---
 
-**Component Path:** `nextjs\toggle\page.mdx`
+**Component Path:** `[framework]\toggle\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

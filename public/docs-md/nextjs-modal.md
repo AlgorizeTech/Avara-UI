@@ -116,6 +116,6 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
 ---
 
-**Component Path:** `nextjs\modal\page.mdx`
+**Component Path:** `[framework]\modal\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

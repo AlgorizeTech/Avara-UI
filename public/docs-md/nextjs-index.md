@@ -70,8 +70,11 @@ blocks and typography. [Browse everything](/docs/nextjs/all-components).
         React
         18 or 19
 
-        Next.js
-        14, 15 or 16 — App Router
+          Next.js
+          14, 15 or 16 — App Router
+
+          Vite
+          5 or 6 — also works with CRA and React Router
 
         Tailwind CSS
         v3.4+ or v4
@@ -82,6 +85,11 @@ blocks and typography. [Browse everything](/docs/nextjs/all-components).
 Components are plain React. Most work in any React setup, though 13 of them
 import `next/image` or `next/link` and need edits outside Next.js — each page
 says so.
+
+Components are plain React and drop straight into a Vite app. 85 of the 98 are
+already framework-neutral — same imports, same `@/` alias. The 13 that reach for
+`next/image`, `next/link` or `next/dynamic` show the React version on their own
+page.
 
 ## How a component reaches your project
 
@@ -116,6 +124,6 @@ the whole library before committing to it.
 
 ---
 
-**Component Path:** `nextjs\index\page.mdx`
+**Component Path:** `[framework]\index\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
