@@ -126,60 +126,60 @@ const sampleDockItems: DockItem[] = [
 const sampleMemories: MemoryItem[] = [
 	{
 		id: "1",
-		title: "Next-Gen Components",
-		location: "Docs UI Library",
+		title: "Alpine Forest Lake",
+		location: "Swiss Alps",
 		date: "Latest Release",
 		image:
-			"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80",
-		description: "Meticulously designed, responsive & production-ready.",
+			"https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80",
+		description: "Serene pine forests reflecting over calm turquoise mountain waters.",
 		tag: "Featured",
 	},
 	{
 		id: "2",
-		title: "3D Motion Cards",
-		location: "Framer Motion",
+		title: "Majestic Mountain Ridge",
+		location: "Dolomites, Italy",
 		date: "Interactive",
 		image:
-			"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80",
-		description: "Drag, tilt, & rotate 3D cards with fluid spring physics.",
-		tag: "Animation",
+			"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80",
+		description: "Towering mountain peaks bathed in golden morning sunlight.",
+		tag: "Landscape",
 	},
 	{
 		id: "3",
-		title: "Dark Mode Studio",
-		location: "Tailwind CSS",
-		date: "Zero Config",
+		title: "Emerald Forest Stream",
+		location: "Pacific Northwest",
+		date: "Wilderness",
 		image:
-			"https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80",
-		description: "Tailored themes engineered for stunning visuals.",
-		tag: "Design",
+			"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80",
+		description: "Tranquil river winding through dense ancient rainforests.",
+		tag: "Nature",
 	},
 ];
 
 const sampleCarouselItems: CarouselItem[] = [
 	{
 		id: "1",
-		title: "Glassmorphic Cards",
-		category: "UI Components",
+		title: "Misty Pine Forest",
+		category: "Nature",
 		image:
-			"https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format&fit=crop&q=80",
-		description: "Ultra smooth blur reflections & borders.",
+			"https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80",
+		description: "Early morning fog weaving through dense evergreen trees.",
 	},
 	{
 		id: "2",
-		title: "Magnifying Dock",
-		category: "Interactive",
+		title: "Lush River Valley",
+		category: "Wilderness",
 		image:
-			"https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80",
-		description: "Apple macOS style dock magnification effect.",
+			"https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&auto=format&fit=crop&q=80",
+		description: "Sunbeams streaming through valley clouds onto forest waters.",
 	},
 	{
 		id: "3",
-		title: "3D Interactive Carousel",
-		category: "Animations",
+		title: "Autumn Woodland Path",
+		category: "Landscape",
 		image:
-			"https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80",
-		description: "3D fanned carousel with drag physics.",
+			"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80",
+		description: "Golden foliage covering quiet forest trails in peak autumn.",
 	},
 ];
 

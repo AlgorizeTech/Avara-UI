@@ -100,7 +100,7 @@ export function Sandbox({
   sandboxProps,
   tabs,
   options = {},
-  minHeight = 400,
+  minHeight = 550,
   maxHeight = 820,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
@@ -485,7 +485,7 @@ export function Sandbox({
               />
             </div>
           ) : (
-            <div className="relative w-full max-h-[600px] overflow-y-auto overflow-x-hidden rounded-b-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="relative w-full rounded-b-xl">
               {currentTab?.content}
             </div>
           ))}
@@ -685,8 +685,8 @@ export function ExampleShowcase({
   examples,
   columns = 1,
   options,
-  minHeight = 400,
-  maxHeight = 820,
+  minHeight = 550,
+  maxHeight = 1400,
   className,
   colorControl = false,
   defaultColor = DEFAULT_SHOWCASE_COLOR,

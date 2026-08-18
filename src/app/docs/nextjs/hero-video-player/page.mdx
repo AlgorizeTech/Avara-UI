@@ -66,82 +66,22 @@ export default function FullWidthHero() {
   examples={[
     {
       title: "Hero video player",
-      subheading: "A thumbnail, a glass CTA and a modal player.",
+      subheading: "A full-width 4K nature video preview, glass CTA button and modal player.",
       propNotes: [
         {
           prop: "thumbnailUrl",
           effect:
-            "is the preview image and `videoUrl` the embed that opens in the modal.",
+            "is the preview nature background image and `videoUrl` the nature documentary embed that opens in the modal.",
         },
         {
           prop: "badge",
           effect:
-            "`title`, `subtitle` and `playButtonLabel` are every string on the card — all optional, all with defaults.",
+            "`title`, `subtitle` and `playButtonLabel` customize the hero narrative overlay.",
         },
       ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/HeroVideoPlayerBlock.tsx"),
-    },
-    {
-      title: "Cinematic frame",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "aspectRatio",
-          value: '"21/9"',
-          effect:
-            "to crop the preview to an ultrawide letterbox. It frames the thumbnail only — the modal player is unaffected.",
-        },
-      ],
-      props: { aspectRatio: "21/9" },
-      usage: usageAspect,
-    },
-    {
-      title: "Classic frame",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "aspectRatio",
-          value: '"4/3"',
-          effect:
-            "for product screenshots, which suit it better than film stills.",
-        },
-      ],
-      props: { aspectRatio: "4/3" },
-      usage: usageAspect43,
-    },
-    {
-      title: "Without the glow",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "enableGlow",
-          value: '{false}',
-          effect:
-            "to remove the ambient bloom behind the frame — better on busy backgrounds. It is on by default.",
-        },
-      ],
-      props: { enableGlow: false },
-      usage: usageNoGlow,
-    },
-    {
-      title: "Full-width modal",
-      propNotes: [
-        {
-          prop: "modalSize",
-          value: '"full"',
-          effect:
-            "controls how large the player opens — `md`, `lg`, `xl` or `full`.",
-        },
-        {
-          prop: "onPlay",
-          effect:
-            "and `onClose` fire on open and dismiss, which is where analytics hooks go.",
-        },
-      ],
-      props: { modalSize: "full" },
-      usage: usageModal,
     },
   ]}
 />

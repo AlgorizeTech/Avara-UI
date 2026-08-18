@@ -71,8 +71,8 @@ export default function HeroDemo({
 
         <HeroVisual>
           <img
-            src="https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop"
-            alt="Abstract gradient interface"
+            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2000&auto=format&fit=crop"
+            alt="Golden sunset canyon mountain wilderness"
             className="w-full h-full object-cover"
           />
           {/* Optional overlay for glass variant to ensure text readability */}

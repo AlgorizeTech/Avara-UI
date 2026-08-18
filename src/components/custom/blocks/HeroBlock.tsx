@@ -144,7 +144,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
           className={cn(
             "relative w-full overflow-hidden transition-all duration-700",
             variant === "glass" &&
-              "flex items-center justify-center py-4 sm:py-8 md:py-12",
+              "flex items-center justify-center p-0 min-h-[500px] sm:min-h-[600px]",
             variant === "glow" && "bg-[#fafafa] dark:bg-[#050505]",
             className,
           )}
@@ -187,7 +187,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
               "relative z-10 w-full",
               variant !== "glass" && layoutStyles[layout],
               variant === "glass" &&
-                "flex items-center justify-center w-full max-w-7xl mx-auto px-3 sm:px-6",
+                "flex items-center justify-center w-full py-10 sm:py-16 px-4 sm:px-8",
             )}
           >
             {children}
@@ -222,7 +222,7 @@ export const HeroContent = forwardRef<
         contentStyles[layout],
         `hero-stagger-${uniqueId}`,
         variant === "glass" &&
-          "p-6 sm:p-12 my-6 sm:my-12 rounded-[1.5rem] sm:rounded-[2.5rem] backdrop-blur-xl bg-white/70 dark:bg-zinc-950/70 border border-white/40 dark:border-zinc-800/80 shadow-2xl z-10 max-w-3xl mx-auto text-center items-center justify-center ring-1 ring-black/5 dark:ring-white/10",
+          "p-8 sm:p-12 md:p-16 my-8 sm:my-10 mx-auto rounded-2xl backdrop-blur-2xl bg-white/70 dark:bg-zinc-950/70 border border-white/60 dark:border-zinc-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 max-w-5xl w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] text-center items-center justify-center ring-1 ring-black/5 dark:ring-white/10 relative overflow-hidden group transition-all duration-500",
         className,
       )}
       {...props}
@@ -243,7 +243,7 @@ export const HeroBadge = forwardRef<
       ref={ref}
       href={href}
       className={cn(
-        "inline-flex items-center gap-2 px-3 py-1 mb-4 sm:mb-8 rounded-full text-xs sm:text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
+        "inline-flex items-center gap-2 px-3 py-1 mb-4 sm:mb-8 rounded-2xl text-xs sm:text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
         variant === "glass"
           ? "bg-zinc-900/10 dark:bg-white/10 border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white shadow-sm"
           : cn(theme.bgSoft, theme.border, "shadow-sm"),
@@ -269,7 +269,7 @@ export const HeroBadgeText = ({
   return (
     <span
       className={cn(
-        "text-[10px] uppercase tracking-wider rounded-full px-2 py-0.5 mr-1 font-bold",
+        "text-[10px] uppercase tracking-wider rounded-2xl px-2 py-0.5 mr-1 font-bold",
         variant === "glass" ? "bg-zinc-900/20 dark:bg-white/20 text-zinc-900 dark:text-white" : theme.bg,
         className,
       )}
@@ -387,9 +387,12 @@ export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
     const getActionStyles = () => {
       if (heroVariant === "glass") {
         if (actionVariant === "primary")
-          return "bg-white text-zinc-900 hover:bg-zinc-200 border border-white shadow-lg";
+          return cn(
+            theme.bg,
+            "text-white shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
+          );
         if (actionVariant === "outline")
-          return "bg-transparent border border-white/50 text-white hover:bg-white/10";
+          return "bg-zinc-900/10 dark:bg-white/10 border border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white hover:bg-zinc-900/20 dark:hover:bg-white/20 backdrop-blur-md hover:scale-[1.03] active:scale-95 shadow-sm transition-all duration-300";
       }
 
       switch (actionVariant) {
@@ -414,7 +417,7 @@ export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center gap-2 h-[46px] px-7 rounded-full font-bold text-[14px] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+          "inline-flex items-center justify-center gap-2 h-[46px] px-7 rounded-2xl font-bold text-[14px] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
           getActionStyles(),
           className,
         )}
@@ -440,12 +443,12 @@ export const HeroVisual = forwardRef<
 
   const visualStyles = {
     center:
-      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-right":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-left":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
   };
 
   return (
