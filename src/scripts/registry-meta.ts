@@ -488,7 +488,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A compact code surface with syntax colouring and a copy button, used inside the docs site. Install it for a lightweight code display without tabs.",
     categories: ["code"],
-    docs: "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`.",
+    docs: "Named export: CodeBlocks. The minimal internal code viewer — for multi-file tabs and filename headers, use `custom-code-block`; for CLI commands, use `terminal`. Installs `ui-code-renderer` alongside it, which brings in Shiki.",
+  },
+  "ui-code-renderer": {
+    description:
+      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+    categories: ["code"],
+    docs: "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
   },
   "custom-code-block": {
     description:

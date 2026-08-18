@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ui-code-renderer",
+  "title": "UI Code Renderer",
+  "author": "AlgorizeTech",
+  "description": "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+  "dependencies": [
+    "shiki"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/custom/ui/code-renderer.tsx",
+      "content": "\"use client\";\nimport { codeToHtml } from \"shiki\";\nimport type { BuiltinLanguage } from \"shiki\";\nimport { useEffect, useState } from \"react\";\n\ninterface CodeRendererProps {\n  code: string;\n  lang: BuiltinLanguage;\n}\n\nexport const CodeRenderer = ({\n  code,\n  lang = \"tsx\",\n}: CodeRendererProps) => {\n  const [html, setHtml] = useState<string>(\"\");\n  const [isLoading, setIsLoading] = useState(true);\n\n  useEffect(() => {\n    const highlightCode = async () => {\n      setIsLoading(true);\n      try {\n        const highlightedHtml = await codeToHtml(code, {\n          lang,\n          themes: {\n            light: \"github-light\",\n            dark: \"github-dark-default\",\n          },\n          defaultColor: false,\n          transformers: [\n            {\n              name: 'remove-pre-bg',\n              pre(node) {\n                // Remove background from pre to let our CSS handle it\n                delete node.properties.style;\n              }\n            }\n          ]\n        });\n        setHtml(highlightedHtml);\n      } catch (error) {\n        console.error('Error highlighting code:', error);\n        // Fallback to plain text\n        setHtml(`<pre><code>${code}</code></pre>`);\n      } finally {\n        setIsLoading(false);\n      }\n    };\n\n    highlightCode();\n  }, [code, lang]);\n\n  if (isLoading) {\n    return (\n      <div className=\"font-normal text-sm\">\n        <pre><code>{code}</code></pre>\n      </div>\n    );\n  }\n\n  return (\n    <div className=\"font-normal text-sm\">\n      <div\n        dangerouslySetInnerHTML={{ __html: html }}\n      />\n    </div>\n  );\n};\n",
+      "type": "registry:ui",
+      "target": "components/custom/ui/code-renderer.tsx"
+    }
+  ],
+  "docs": "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
+  "categories": [
+    "code"
+  ],
+  "type": "registry:ui"
+}
