@@ -9,7 +9,7 @@ Toggles are primarily used to manage interface states (like text formatting in a
 
 ## Examples
 
-Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 import { Bold } from "lucide-react";
@@ -25,19 +25,66 @@ export default function BasicToggle() {
   );
 }`;
 
-export const usageOutline = `<Toggle variant="outline" pressed={pressed} onPressedChange={setPressed} aria-label="Toggle bold">
-  <Bold className="w-4 h-4" />
-</Toggle>`;
+export const usageOutline = `"use client";
 
-export const usageGhost = `<Toggle variant="ghost" pressed={pressed} onPressedChange={setPressed} aria-label="Toggle bold">
-  <Bold className="w-4 h-4" />
-</Toggle>`;
+import { useState } from "react";
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
 
-export const usageSizes = `<div className="flex items-center gap-4">
-  <Toggle size="sm" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
-  <Toggle size="md" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
-  <Toggle size="lg" aria-label="Toggle bold"><Bold className="w-4 h-4" /></Toggle>
-</div>`;
+export default function OutlineToggle() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Toggle
+      variant="outline"
+      pressed={pressed}
+      onPressedChange={setPressed}
+      aria-label="Toggle bold"
+    >
+      <Bold className="w-4 h-4" />
+    </Toggle>
+  );
+}`;
+
+export const usageGhost = `"use client";
+
+import { useState } from "react";
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
+
+export default function GhostToggle() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Toggle
+      variant="ghost"
+      pressed={pressed}
+      onPressedChange={setPressed}
+      aria-label="Toggle bold"
+    >
+      <Bold className="w-4 h-4" />
+    </Toggle>
+  );
+}`;
+
+export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
+
+export default function ToggleSizes() {
+  return (
+    <div className="flex items-center gap-4">
+      <Toggle size="sm" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle size="md" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle size="lg" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+    </div>
+  );
+}`;
 
 export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 import { Mic, MicOff } from "lucide-react";
@@ -88,9 +135,16 @@ export default function FormattingToolbar() {
   );
 }`;
 
-export const usageDisabled = `<Toggle disabled pressed aria-label="Toggle bold">
-  <Bold className="w-4 h-4" />
-</Toggle>`;
+export const usageDisabled = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
+
+export default function DisabledToggle() {
+  return (
+    <Toggle disabled pressed aria-label="Toggle bold">
+      <Bold className="w-4 h-4" />
+    </Toggle>
+  );
+}`;
 
 <ExampleShowcase
   name="toggle"
@@ -99,43 +153,97 @@ export const usageDisabled = `<Toggle disabled pressed aria-label="Toggle bold">
     {
       title: "Toggle",
       subheading: "An icon-only two-state button — `aria-pressed` stays in sync for you.",
+      propNotes: [
+        {
+          prop: "pressed",
+          effect:
+            "makes it controlled; supply `onPressedChange` alongside it or the toggle will never move.",
+        },
+        {
+          prop: "defaultPressed",
+          effect:
+            "is the uncontrolled alternative — set the starting state and forget it.",
+        },
+      ],
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ToggleBlock.tsx"),
     },
     {
       title: "Outline",
-      subheading: "Use `variant=\"outline\"` to give the toggle a persistent border.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"outline"',
+          effect:
+            "to give the toggle a persistent border, so it reads as a control even at rest.",
+        },
+      ],
       props: { example: "single", variant: "outline" },
       usage: usageOutline,
     },
     {
       title: "Ghost",
-      subheading: "Use `variant=\"ghost\"` for a toggle that only paints when pressed.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"ghost"',
+          effect:
+            "for a toggle that only paints when pressed — the recommended choice when clustering several in a toolbar.",
+        },
+      ],
       props: { example: "single", variant: "ghost" },
       usage: usageGhost,
     },
     {
       title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "size",
+          effect:
+            "to change the hit area and icon scale.",
+        },
+      ],
       props: { example: "sizes" },
       usage: usageSizes,
     },
     {
       title: "With text",
-      subheading: "Pair an icon with a label when the toggle drives a named action.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "can hold an icon and a label together when the toggle drives a named action.",
+        },
+      ],
       props: { example: "text" },
       usage: usageText,
     },
     {
       title: "Toolbar",
-      subheading: "Independent toggles grouped into a formatting toolbar.",
+      propNotes: [
+        {
+          prop: "pressed",
+          effect:
+            "is per-toggle — a toolbar is just independent toggles side by side, not a group component.",
+        },
+      ],
       props: { example: "toolbar" },
       usage: usageToolbar,
     },
     {
       title: "Disabled",
-      subheading: "Set `disabled` to lock the toggle in its current state.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "to lock the toggle in whatever state it is currently in.",
+        },
+      ],
       props: { example: "disabled" },
       usage: usageDisabled,
     },
@@ -144,18 +252,7 @@ export const usageDisabled = `<Toggle disabled pressed aria-label="Toggle bold">
 
 ## Installation
 
-<Cli command={`add toggle.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
-
----
+<Installation name="toggle" />
 
 ## Usage
 

@@ -51,7 +51,7 @@ Before installing Next.js, ensure your environment meets the following requireme
       <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Framework</div>
       <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Next.js App Router</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Next.js 14 / 15 App Router Architecture</p>
+    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Next.js 14 / 15 / 16 App Router Architecture</p>
   </div>
 
   <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
@@ -76,6 +76,17 @@ Before installing Next.js, ensure your environment meets the following requireme
       <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">TypeScript 5+ & JS</h4>
     </div>
     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Strict type checking or pure JavaScript</p>
+  </div>
+</div>
+
+### Next.js 16
+
+Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `<Image>` props, no `next/amp`, and no runtime config. The only Next.js APIs the components reach for are `next/link`, `next/image` and `next/dynamic`, and the ones that defer a browser-only library with `ssr: false` already carry `"use client"` — so they behave the same under both versions.
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">What Next.js 16 asks of your project</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Next.js 16 itself raises the floor: <strong>Node.js 20.9+</strong>, <strong>TypeScript 5.1+</strong> and <strong>React 19.2</strong>, with Turbopack as the default bundler for <code>next dev</code> and <code>next build</code>. These are requirements of the framework, not of the components — the library builds cleanly under Turbopack. If your app still has a custom <code>webpack</code> config, either migrate it to <code>turbopack</code> or run <code>next build --webpack</code>.</p>
   </div>
 </div>
 
@@ -104,25 +115,27 @@ You can also combine flags:
 npx create-next-app@latest my-app --typescript --app
 ```
 
-## CLI & Manual Component Setup Guide
+## Adding components
 
-Whether you prefer automated CLI scaffolding or manual copy-paste integration, follow our enterprise-grade architecture for setting up `/src/components/` and `/src/lib/` directories.
+Components are published as a [shadcn registry](https://ui.shadcn.com/docs/registry), so you install them with the `shadcn` CLI — there is nothing to copy and paste.
 
-### Option 1: Automated CLI Scaffolding (Recommended)
+### Step 1: Initialize your project
 
-Quickly initialize the directory structure and copy components using our CLI:
+Run this once per project. It creates `components.json`, sets up the `cn` helper and confirms your path aliases.
 
-```bash
-# Initialize project configuration & directories
-npx docs-ui@latest init
+<Cli command={`init`} />
 
-# Add specific UI component blocks to your project
-npx docs-ui@latest add hero-block avatar cart-block
-```
+### Step 2: Add a component
 
-### Option 2: Production Manual Setup & Directory Layout
+Every component page carries its own command. Point the CLI at the component's URL in the registry:
 
-To maintain zero bundle bloat and ensure 100% code ownership, structure your repository using our standardized layout:
+<Cli command={`add hero.json`} />
+
+The CLI writes the source into your project, installs its npm dependencies and pulls in any other registry components it needs. You own the file from that point on — edit it freely.
+
+### Where files land
+
+Install targets mirror this repository's layout, so components that import a sibling keep working:
 
 ```bash
 src/
@@ -152,11 +165,7 @@ Ensure your `@/*` path aliases are properly configured so all component imports 
 }
 ```
 
-### Manual Setup Workflow
-
-1. **Base Primitives (`/src/components/ui/`)**: Place underlying Radix UI or base primitives here.
-2. **Custom Blocks (`/src/components/custom/blocks/`)**: Copy-paste high-level UI blocks (e.g. `HeroBlock.tsx`, `Avatar.tsx`, `CartBlock.tsx`).
-3. **Utility Helper (`/src/lib/utils.ts`)**: Keep your class merging `cn` helper in the `lib` folder so all components can import it cleanly via `@/lib/utils`.
+The CLI creates these directories as needed, so you do not have to make them yourself. `shadcn init` also writes `/src/lib/utils.ts` with the `cn` helper that every component imports from `@/lib/utils`.
 
 ## Installation & Peer Dependencies Setup
 

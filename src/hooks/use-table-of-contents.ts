@@ -23,10 +23,14 @@ export function useTableOfContents() {
 
       headings.forEach((heading, index) => {
         // ── EXCLUSION FILTER ──────────────────────────────────────────────────
+        // `data-toc-skip` opts a subtree out explicitly. Headings that are
+        // steps within a section — "1. Install X", "2. Install dependencies" —
+        // are structure, not destinations, and a page documenting several
+        // components would otherwise list the same step name four times.
         if (
           heading.id === "features" ||
           heading.closest(
-            ".props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
+            "[data-toc-skip], .props-reference, .props-section, [data-preview], [data-showcase], [role='dialog'], [role='alert'], table, aside, nav, footer, header, [class*='showcase' i], [class*='card' i]"
           )
         ) {
           return;

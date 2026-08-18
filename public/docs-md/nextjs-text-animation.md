@@ -6,7 +6,7 @@ It is perfect for hero sections, landing page headers, and grabbing user attenti
 
 ## Examples
 
-Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay. The first example's **Code** tab contains the full component source.
+Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
@@ -16,31 +16,36 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageVariants = `// Seven effects behind one prop.
+export const usageVariants = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
-`;
+export default function AnimationVariants() {
+  // Seven effects behind one prop.
+  return (
 
-export const usageTiming = `// \`duration\` stretches each character's transition, \`delay\` holds the whole
-// sequence back — useful for staging a headline against a subheadline.
-`;
+  );
+}`;
 
-export const usageAs = `// \`as\` swaps the rendered element so the headline keeps its document
-// meaning; \`style\` and \`className\` pass straight through.
-`;
+export const usageTiming = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function TimedAnimation() {
+  // \`duration\` stretches each character's transition, \`delay\` holds the whole
+  // sequence back — useful for staging a headline against a subheadline.
+  return (
+    
+  );
+}`;
+
+export const usageAs = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeadlineAnimation() {
+  // \`as\` swaps the rendered element so the headline keeps its document
+  // meaning; \`style\` and \`className\` pass straight through.
+  return (
+    
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component uses `framer-motion` for smooth animations and standard Tailwind utilities for styling.
-
-```bash
-npm install framer-motion clsx tailwind-merge
-```
-
-### 2. Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TextAnimationBlock.tsx`.
 
 ## Props Reference
 

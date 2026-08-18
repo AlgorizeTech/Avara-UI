@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "qr-code-reader",
-  "title": "Qr Code Reader",
+  "title": "QR Code Reader",
   "author": "AlgorizeTech",
   "description": "A camera-based QR scanner that decodes frames in the browser and reports matches. Use it for check-in and pairing flows.",
   "dependencies": [

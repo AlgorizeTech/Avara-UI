@@ -4,7 +4,7 @@ A complete, fully functional, and editable Invoice dashboard component. Includes
 
 ## Examples
 
-The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON. The first example's **Code** tab contains the full component source.
+The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
 export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
 
@@ -47,26 +47,23 @@ export default function InvoicePage() {
   return ;
 }`;
 
-export const usageMinimal = `// Strips the card chrome down to type and rules — the print-friendly layout.
-`;
+export const usageMinimal = `import { Invoice } from "@/components/custom/blocks/Invoice";
 
-export const usageGlass = `// Glass needs something behind it to refract.
+export default function MinimalInvoice() {
+  // Strips the card chrome down to type and rules — the print-friendly layout.
+  return ;
+}`;
 
-`;
+export const usageGlass = `import { Invoice } from "@/components/custom/blocks/Invoice";
+
+export default function GlassInvoice() {
+  return (
+    // Glass needs something behind it to refract.
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component utilizes `lucide-react` for its interface iconography. Run the following command:
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Invoice.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.

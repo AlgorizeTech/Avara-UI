@@ -4,7 +4,7 @@ A premium, interactive LLM chat interface featuring conversation history managem
 
 ## Examples
 
-Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three. The first example's **Code** tab contains the full component source.
+Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
 export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
 
@@ -35,26 +35,26 @@ export default function Assistant() {
   );
 }`;
 
-export const usageMinimal = `// Card chrome and dividers removed — drops cleanly into an existing panel.
-`;
+export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+export default function MinimalAssistant() {
+  return (
+    
+      {/* Card chrome and dividers removed — drops cleanly into an existing panel. */}
 
-`;
+  );
+}`;
+
+export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+export default function GlassAssistant() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+
+  );
+}`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for its beautiful, lightweight iconography. Run the following command:
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Ai-chat.tsx` and copy the source from the **Code** tab of the first example above.
 
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.

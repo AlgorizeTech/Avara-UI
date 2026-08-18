@@ -4,7 +4,7 @@ A collection of modern, highly composable Hero components for marketing websites
 
 ## Examples
 
-Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections. Each gallery's first example carries its own **Code** tab with the full source.
+Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections.
 
 ### Composable hero
 
@@ -38,66 +38,109 @@ export default function LandingPage() {
   );
 }`;
 
-export const usageSplitLeft = `// The visual moves to the left column; the markup order never changes.
+export const usageSplitLeft = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
 
-  {/* … */}
-  {/* … */}
-`;
+export default function SplitLeftHero() {
+  // The visual moves to the left column; the markup order never changes.
+  return (
+    
+      {/* … */}
+      {/* … */}
+    
+  );
+}`;
 
-export const usageCenter = `// Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
+export const usageCenter = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
 
-  {/* … */}
-  {/* … */}
-`;
+export default function CenteredHero() {
+  // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
+  return (
+    
+      {/* … */}
+      {/* … */}
+    
+  );
+}`;
 
-export const usageLeft = `// Single column, left aligned — no visual column at all.
+export const usageLeft = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
 
-  {/* … */}
-`;
+export default function LeftAlignedHero() {
+  // Single column, left aligned — no visual column at all.
+  return (
+    
+      {/* … */}
+    
+  );
+}`;
 
-export const usageGlass = `// \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
-// \`HeroAction\` picks that up from context — no extra props on the buttons.
+export const usageGlass = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
 
-  {/* … */}
-  {/* … */}
-`;
+export default function GlassHero() {
+  // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
+  // \`HeroAction\` picks that up from context — no extra props on the buttons.
+  return (
+    
+      {/* … */}
+      {/* … */}
+    
+  );
+}`;
 
-export const usageGlow = `// \`glow\` adds the ambient accent bloom behind the content. Pair it with
-// the matching action so the button glows too.
+export const usageGlow = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroContent,
+} from "@/components/custom/blocks/HeroBlock";
 
-      Start Building
+export default function GlowHero() {
+  // \`glow\` adds the ambient accent bloom behind the content. Pair it with
+  // the matching action so the button glows too.
+  return (
 
-`;
+          Start Building
 
-export const usagePattern = `// \`pattern\` paints the backdrop: "none", "grid" or "dots".
+  );
+}`;
 
-  {/* … */}
-`;
+export const usagePattern = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
 
-export const usageGlitch = `// \`animation\` lives on the title, not the root — the other children keep
-// their own entrances.
+export default function PatternedHero() {
+  // \`pattern\` paints the backdrop: "none", "grid" or "dots".
+  return (
+    
+      {/* … */}
+    
+  );
+}`;
 
-  Build stunning interfaces with flawless code.
-`;
+export const usageGlitch = `import {
+  Hero,
+  HeroContent,
+  HeroTitle,
+} from "@/components/custom/blocks/HeroBlock";
 
-` for the matching button.",
-      props: { layout: "split-right", variant: "glow", pattern: "grid", titleAnimation: "blur-in", glowAction: true },
-      usage: usageGlow,
-    },
-    {
-      title: "Background pattern",
-      subheading: "`pattern` takes `\"none\"`, `\"grid\"` or `\"dots\"` and masks itself toward the edges so it never fights the copy.",
-      props: { layout: "center", variant: "default", pattern: "dots", titleAnimation: "fade-up" },
-      usage: usagePattern,
-    },
-    {
-      title: "Glitch title",
-      subheading: "`HeroTitle` carries its own `animation`: `\"fade-up\"`, `\"blur-in\"`, `\"glitch\"` or `\"none\"`.",
-      props: { layout: "center", variant: "default", pattern: "none", titleAnimation: "glitch" },
-      usage: usageGlitch,
-    },
-  ]}
-/>
+export default function GlitchHero() {
+  // \`animation\` lives on the title, not the root — the other children keep
+  // their own entrances.
+  return (
+
+          Build stunning interfaces with flawless code.
+
+  );
+}`;
 
 ### Homepage hero — word bounce
 
@@ -127,70 +170,96 @@ export default function Page() {
 
 Three finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
 
-export const usageSaaS = `// Centred, grid backdrop, badge + framework chips instead of buttons.
+export const usageSaaS = `import {
+  Hero,
+  HeroBadge,
+  HeroBadgeText,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
 
-      SETUP_EASY-PEASY!
+export default function SaaSHero() {
+  // Centred, grid backdrop, badge + framework chips instead of buttons.
+  return (
 
-      Hassle-free setup with
-      
-      all major development frameworks
+          SETUP_EASY-PEASY!
 
-      Collecting submissions is super easy, with no dependency needed by
-      default.
+          Hassle-free setup with
+          
+          all major development frameworks
 
-      HTML
-      React
-      Vue
-      Svelte
+          Collecting submissions is super easy, with no dependency needed by
+          default.
 
-`;
+          HTML
+          React
+          Vue
+          Svelte
 
-export const usageData = `// Split-left with a single video CTA — good for data tools and dashboards.
+  );
+}`;
 
-    Where your data turns into software with a click
-    
-      Build custom portals, CRMs, and tools effortlessly. From concept to
-      launch in minutes, not months.
+export const usageData = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
 
-         Watch Demo
+export default function DataHero() {
+  // Split-left with a single video CTA — good for data tools and dashboards.
+  return (
 
-`;
+        Where your data turns into software with a click
+        
+          Build custom portals, CRMs, and tools effortlessly. From concept to
+          launch in minutes, not months.
 
-export const usageMinimal = `// No accent, no pattern — type and whitespace only, with a stats footer.
+             Watch Demo
 
-      Simple. Clean.
-      
-      Effective.
+  );
+}`;
 
-      The minimalist approach to building great products.
+export const usageMinimal = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+} from "@/components/custom/blocks/HeroBlock";
 
-         No credit card required
+export default function MinimalHero() {
+  // No accent, no pattern — type and whitespace only, with a stats footer.
+  return (
 
-         Free 14-day trial
+          Simple. Clean.
+          
+          Effective.
 
-         Cancel anytime
+          The minimalist approach to building great products.
 
-        Get Started Free 
-      
-      View Demo
+             No credit card required
 
-`;
+             Free 14-day trial
+
+             Cancel anytime
+
+            Get Started Free 
+          
+          View Demo
+
+  );
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-The composable block uses `motion` (Framer Motion) for the title entrances and `lucide-react` for icons.
-
-```bash
-npm install motion lucide-react
-```
-
-### 2. Copy the Component
-
-The composable system handles every layout shift through Tailwind grid utilities — copy `HeroBlock.tsx` once and build all four layouts from it. Take the source from the **Code** tab of the first example above and place it in `components/custom/blocks/HeroBlock.tsx`.
-
-The two homepage heroes are separate, self-contained files: copy them from the **Code** tab of their own examples into `components/custom/blocks/HomepageHeroBlock.tsx` and `components/custom/blocks/HomepageHeroTypingBlock.tsx`.
+Three independent blocks live on this page. Install whichever you need — they share no files.
 
 ## Props Reference
 

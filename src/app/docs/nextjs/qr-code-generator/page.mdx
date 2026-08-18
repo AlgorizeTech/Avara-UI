@@ -19,13 +19,13 @@ export const metadata = {
 
 # QR Code Suite
 
-A premium, dual-purpose QR Code component suite built for Next.js applications. 
+A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
 ## Examples
 
-Everything below runs client-side — type a new value and the SVG regenerates instantly. The first example's **Code** tab holds the generator source; the reader example's holds the reader source.
+Everything below runs client-side — type a new value and the SVG regenerates instantly.
 
 export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
@@ -69,20 +69,50 @@ export default function ReaderExample() {
   examples={[
     {
       title: "QR generator",
-      subheading: "Type a value, pick an error-correction level, and export the result as PNG or PDF.",
+      subheading: "Type a value, pick an error-correction level, and export as PNG or PDF.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "is the data or URL encoded into the code — required, despite defaulting to an empty string.",
+        },
+      ],
       props: { activeTab: "generator" },
       usage: usageGenerator,
       code: extractCode("src/components/custom/blocks/QrCodeGeneratorBlock.tsx"),
     },
     {
       title: "Sizes & levels",
-      subheading: "The bare `QrCodeGenerator` renders scalable SVG — `size` sets the box, `fgColor` the pattern, and `level` the redundancy.",
+      propNotes: [
+        {
+          prop: "size",
+          value: '{128}',
+          effect:
+            "is the box in pixels; the output is SVG, so it stays crisp at any of them.",
+        },
+        {
+          prop: "fgColor",
+          effect:
+            "colours the pattern and `bgColor` the backing — keep the contrast high or scanners fail.",
+        },
+        {
+          prop: "level",
+          effect:
+            "sets redundancy: `L`, `M`, `Q` or `H`. Higher survives more damage but packs the pattern denser.",
+        },
+      ],
       props: { example: "gallery" },
       usage: usageGallery,
     },
     {
       title: "QR reader",
-      subheading: "`QrCodeReader` decodes an uploaded or dropped image in the browser and hands the payload to `onRead`.",
+      propNotes: [
+        {
+          prop: "onRead",
+          effect:
+            "on `QrCodeReader` receives the decoded payload — the decode happens in the browser, nothing is uploaded.",
+        },
+      ],
       props: { activeTab: "reader" },
       usage: usageReader,
       code: extractCode("src/components/custom/blocks/QrCodeReaderBlock.tsx"),
@@ -92,36 +122,12 @@ export default function ReaderExample() {
 
 ## Installation
 
-<Cli command={`add qr-code-generator.json`} />
+The generator and the reader are separate components with separate dependencies.
 
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-<div id="generator-docs-install">
-
-The QR Code Generator relies on the lightweight, industry-standard package `qrcode.react` for generating SVG QR Codes.
-
-```bash
-npm install qrcode.react
-```
-
-</div>
-
-<div id="reader-docs-install">
-
-The QR Code Reader relies on the `jsqr` package for reading and extracting data from uploaded images, and `lucide-react` for the UI icons.
-
-```bash
-npm install jsqr lucide-react
-```
-
-</div>
-
-### 2. Copy the Components
-
-Create `components/custom/blocks/QrCodeGeneratorBlock.tsx` and copy the source from the **Code** tab of the first example above. For the scanner, create `components/custom/blocks/QrCodeReaderBlock.tsx` and copy the source from the **Code** tab of the **QR reader** example.
+<InstallGroup>
+  <Installation name="qr-code-generator" />
+  <Installation name="qr-code-reader" />
+</InstallGroup>
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

@@ -25,7 +25,7 @@ The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhon
 
 ## Examples
 
-Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The first example's **Code** tab contains the full component source.
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom.
 
 export const usageIphone5 = `import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -89,6 +89,13 @@ export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/c
     {
       title: "iPhone 5",
       subheading: "The retro frame — thick bezels, a home button and a 16:9 screen.",
+      propNotes: [
+        {
+          prop: "src",
+          effect:
+            "fills the screen with an image; `videoSrc` auto-plays a muted, looping video instead.",
+        },
+      ],
       props: { activeDevice: "iphone5" },
       usage: usageIphone5,
       code: extractCode("src/components/custom/blocks/MobileMockupBlock.tsx"),
@@ -96,30 +103,65 @@ export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/c
     {
       title: "iPhone 12 Pro Max",
       subheading: "Flat edges and a notch, at a 19.5:9 aspect ratio.",
+      propNotes: [
+        {
+          prop: "src",
+          effect:
+            "should match that ratio or the screenshot will letterbox inside the frame.",
+        },
+      ],
       props: { activeDevice: "iphone12" },
       usage: usageIphone12,
     },
     {
       title: "iPhone 14 Pro Max",
-      subheading: "Dynamic island and edge-to-edge glass — also the best frame for video.",
+      subheading: "Dynamic island and edge-to-edge glass.",
+      propNotes: [
+        {
+          prop: "videoSrc",
+          effect:
+            "suits this frame best — it has the least bezel to distract from motion.",
+        },
+      ],
       props: { activeDevice: "iphone14" },
       usage: usageIphone14,
     },
     {
       title: "Samsung S24 Ultra",
-      subheading: "Squared-off corners and a centered punch-hole camera.",
+      subheading: "Squared-off corners and a centred punch-hole camera.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "sizes the outer wrapper, which is how you scale the whole mockup.",
+        },
+      ],
       props: { activeDevice: "samsung" },
       usage: usageSamsung,
     },
     {
       title: "Google Pixel 8",
       subheading: "Heavily rounded corners and a 20:9 screen.",
+      propNotes: [
+        {
+          prop: "src",
+          effect:
+            "is cropped by those corner radii, so keep anything important away from the edges.",
+        },
+      ],
       props: { activeDevice: "pixel8" },
       usage: usagePixel8,
     },
     {
       title: "Google Pixel 10",
-      subheading: "The newest frame — pass a scrollable wrapper to embed a live app instead of a screenshot.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "children",
+          effect:
+            "instead of `src` to embed a live, scrollable app rather than a screenshot.",
+        },
+      ],
       props: { activeDevice: "pixel10" },
       usage: usagePixel10,
     },
@@ -128,14 +170,7 @@ export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/c
 
 ## Installation
 
-<Cli command={`add mobile-mockup.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-Every frame is pure CSS and SVG, so there are no dependencies to install. Create a new file at `components/custom/blocks/MobileMockupBlock.tsx` and copy the source from the **Code** tab of the first example above — it exports all six devices.
+<Installation name="mobile-mockup" />
 
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.

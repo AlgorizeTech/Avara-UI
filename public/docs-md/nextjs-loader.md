@@ -6,7 +6,7 @@ Different parts of your UI require different types of loading states. A full-pag
 
 ## Examples
 
-Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
 
 export const usageSpinner = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
@@ -14,29 +14,45 @@ export default function BasicLoader() {
   return ;
 }`;
 
-export const usageDots = ``;
+export const usageDots = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-export const usagePulse = ``;
+export default function DotsLoader() {
+  return ;
+}`;
 
-export const usageRing = ``;
+export const usagePulse = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-export const usageBar = ``;
+export default function PulseLoader() {
+  return ;
+}`;
 
-export const usageSizes = `
+export const usageRing = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
-`;
+export default function RingLoader() {
+  return ;
+}`;
 
-export const usageText = ``;
+export const usageBar = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function BarLoader() {
+  return ;
+}`;
+
+export const usageSizes = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function LoaderSizes() {
+  return (
+
+  );
+}`;
+
+export const usageText = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function LoaderWithText() {
+  return ;
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component is **100% dependency-free** and relies exclusively on standard Tailwind CSS classes alongside a few lightweight custom `@keyframes` for the specialized staggered animations (like the bouncing dots and the indeterminate bar).
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/LoaderBlock.tsx`.
-
----
 
 ## Usage
 
@@ -97,12 +113,15 @@ Discover the Loader component's animated states, offering various spinner styles
 
           color
 
-            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+            "primary" | "indigo" | "rose" | "emerald" | "amber" | "blue" |
+            "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies the active color theme to the SVG strokes, dots, and borders.
-          Accepts custom hex codes.
+          Accepts custom hex codes. Unrecognised values fall back to{" "}
+          "primary", which follows your theme's{" "}
+          --primary token.
 
           text
 

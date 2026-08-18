@@ -74,62 +74,85 @@ export default function SonarCursorDemo() {
   examples={[
     {
       title: "Glow Cursor",
-      subheading: "Fluid background blur glow that follows mouse pointer with smooth physics.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"glow"', effect: "for a blurred background glow that trails the pointer on smooth physics. It is the default." },
+        { prop: "color", effect: "themes every variant — a named key (`primary`, `indigo`, `rose`, `emerald`, `zinc`) or a hex string." },
+      ],
       props: { variant: "glow" },
       usage: usageGlow,
       code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
     },
     {
       title: "Magnetic Target Cursor",
-      subheading: "Dashed target ring with physics rotation that tracks pointer movement.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"magnetic"', effect: "for a dashed target ring that rotates as the pointer moves." },
+      ],
       props: { variant: "magnetic" },
       usage: usageMagnetic,
     },
     {
       title: "Particle Trail Cursor",
-      subheading: "Fading particle trail following cursor movement with customizable count.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"trail"', effect: "for a trail of particles that fade out behind the cursor." },
+        { prop: "trailCount", value: "{6}", effect: "sets how many particles trail — only read by this variant." },
+      ],
       props: { variant: "trail" },
       usage: usageTrail,
     },
     {
       title: "Badge Label Cursor",
-      subheading: "Floating custom action pill label that smoothly tags pointer location.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"badge"', effect: "to float a pill label beside the pointer." },
+        { prop: "label", value: '"View Project"', effect: "is the pill text, defaulting to `Explore`. Only read by this variant." },
+      ],
       props: { variant: "badge", label: "View Project" },
       usage: usageBadge,
     },
     {
       title: "Spotlight Mask Cursor",
-      subheading: "Dynamic radial spotlight mask focusing ambient light on cursor position.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"spotlight"', effect: "to mask the area in a radial spotlight, darkening everything the cursor is not on." },
+      ],
       props: { variant: "spotlight" },
       usage: usageSpotlight,
     },
     {
       title: "Expand Scaling Cursor",
-      subheading: "Inverted backdrop circle scaling on click and hover interactions.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"expand"', effect: "for an inverted backdrop circle that scales up on hover and click." },
+      ],
       props: { variant: "expand" },
       usage: usageExpand,
     },
     {
       title: "Precision Crosshair Cursor",
-      subheading: "Full viewport crosshair grid lines for high precision UI alignment.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"crosshair"', effect: "to draw full-width and full-height guide lines through the pointer." },
+      ],
       props: { variant: "crosshair" },
       usage: usageCrosshair,
     },
     {
       title: "Smooth Ring Cursor",
-      subheading: "Minimalist lerp ring contracting tightly when clicked.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"ring"', effect: "for a minimal lerped ring that contracts on click." },
+      ],
       props: { variant: "ring" },
       usage: usageRing,
     },
     {
       title: "Radial Pulse Cursor",
-      subheading: "Pulsing radial energy aura around active pointer location.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"pulse"', effect: "for a radial aura that pulses around the pointer." },
+      ],
       props: { variant: "pulse" },
       usage: usagePulse,
     },
     {
       title: "Sonar Wave Cursor",
-      subheading: "Dual concentric sonar rings sweeping in synchronization with movement.",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"sonar"', effect: "for two concentric rings sweeping outward in sync with movement." },
+      ],
       props: { variant: "sonar" },
       usage: usageSonar,
     },
@@ -138,22 +161,7 @@ export default function SonarCursorDemo() {
 
 ## Installation
 
-<Cli command={`add cursor-animation.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component uses `lucide-react` for icons and utility helper functions.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/CursorAnimationBlock.tsx` and copy the wrapper code from the **Code** tab of the first example above.
+<Installation name="cursor-animation" />
 
 ## Features
 

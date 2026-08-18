@@ -28,6 +28,8 @@ export default function GlowingOrbitDemo() {
   return ;
 }`;
 
+## Installation
+
 ## Features
 
     Oscillating Auto-Sway

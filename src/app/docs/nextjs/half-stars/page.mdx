@@ -9,7 +9,7 @@ It provides an accurate fractional fill, allowing you to beautifully display use
 
 ## Examples
 
-Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating.
 
 export const usageFull = `"use client";
 
@@ -98,26 +98,70 @@ export default function TenStarRating() {
   examples={[
     {
       title: "Full stars",
-      subheading: "Whole numbers only — set `allowHalf={false}`.",
+      propNotes: [
+        {
+          prop: "rating",
+          effect:
+            "is the value shown, and the only required prop.",
+        },
+        {
+          prop: "allowHalf",
+          value: '{false}',
+          effect:
+            "restricts interactive picking to whole numbers.",
+        },
+      ],
       props: { activeVariant: "full", hideLabel: true },
       usage: usageFull,
       code: extractCode("src/components/custom/blocks/HalfStarsBlock.tsx"),
     },
     {
       title: "Half stars",
-      subheading: "Set `allowHalf` for 0.5 precision increments.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "allowHalf",
+          effect:
+            "— the default — for 0.5 precision while `interactive` is on.",
+        },
+      ],
       props: { activeVariant: "half", hideLabel: true },
       usage: usageHalf,
     },
     {
       title: "Continuous fractions",
-      subheading: "Pass `step={0.1}` for fine-grained ratings like 2.3 or 4.6.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "step",
+          value: '{0.1}',
+          effect:
+            "for fine-grained ratings like 2.3 or 4.6. It overrides `allowHalf` entirely.",
+        },
+      ],
       props: { activeVariant: "continuous", hideLabel: true },
       usage: usageContinuous,
     },
     {
       title: "Custom scale and colors",
-      subheading: "`maxStars`, `activeColor` and `inactiveColor` reshape the scale.",
+      propNotes: [
+        {
+          prop: "maxStars",
+          effect:
+            "changes how many stars make up the scale, 5 by default.",
+        },
+        {
+          prop: "activeColor",
+          effect:
+            "and `inactiveColor` take Tailwind **text colour classes**, not raw hex — e.g. `text-yellow-400`.",
+        },
+        {
+          prop: "size",
+          value: '{24}',
+          effect:
+            "is each star's width and height in pixels.",
+        },
+      ],
       props: { activeVariant: "custom", hideLabel: true },
       usage: usageCustom,
     },
@@ -126,13 +170,7 @@ export default function TenStarRating() {
 
 ## Installation
 
-<Cli command={`add half-stars.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-### Manual
-
-Copy the component source into `components/custom/blocks/HalfStarsBlock.tsx`.
+<Installation name="half-stars" />
 
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.

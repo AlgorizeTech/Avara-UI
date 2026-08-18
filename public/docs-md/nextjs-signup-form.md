@@ -4,7 +4,7 @@ A complete, production-ready Authentication Block that acts as both a Login and 
 
 ## Examples
 
-One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome. The first example's **Code** tab contains the full component source.
+One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome.
 
 export const usageSignup = `import AuthForm from "@/components/custom/blocks/AuthForm";
 
@@ -43,18 +43,6 @@ export default function MinimalLoginPage() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its interface iconography (such as the password visibility eye toggle and social icons).
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/AuthForm.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Props Reference
 

@@ -8,7 +8,7 @@ Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not b
 
 ## Examples
 
-Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response. The first example's **Code** tab contains the full component source.
+Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
 export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
@@ -29,10 +29,18 @@ export default function UsersEndpointDocs() {
   );
 }`;
 
-export const usageGet = `// \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
-`;
+export const usageGet = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
-export const usageError = `// Any non-2xx status you return is formatted as an error response.
+export default function GetPlayground() {
+  // \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
+  return (
+    
+  );
+}`;
+
+export const usageError = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+// Any non-2xx status you return is formatted as an error response.
 const handleApiMock = async () => ({
   status: 401,
   timeMs: 45,
@@ -42,19 +50,23 @@ const handleApiMock = async () => ({
   },
 });
 
-`;
+export default function ErrorPlayground() {
+  return (
+    
+  );
+}`;
 
-export const usageNoMock = `// Omit \`mockHandler\` and the block answers with its own canned response —
-// handy while you are still sketching the endpoint.
-`;
+export const usageNoMock = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+export default function SketchPlayground() {
+  // Omit \`mockHandler\` and the block answers with its own canned response —
+  // handy while you are still sketching the endpoint.
+  return (
+    
+  );
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component handles complex internal state (dynamic key-value pair arrays, active tabs, loading states) using pure React. It is **100% dependency-free** and fully responsive.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ApiPlaygroundBlock.tsx`.
 
 ## Features
 Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.

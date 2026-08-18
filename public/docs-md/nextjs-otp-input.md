@@ -6,7 +6,7 @@ Building a multi-box input that actually feels good to use is notoriously diffic
 
 ## Examples
 
-Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.** The first example's **Code** tab contains the full component source.
+Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
 export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
 
@@ -19,27 +19,53 @@ export default function BasicOtp() {
   );
 }`;
 
-export const usageFilled = ``;
+export const usageFilled = `"use client";
 
-export const usageUnderlined = ``;
+export default function FilledOtp() {
+  const [value, setValue] = useState("");
 
-export const usageLengths = `
+  return (
+    
+  );
+}`;
 
-`;
+export const usageUnderlined = `"use client";
 
-export const usageMasked = ``;
+export default function UnderlinedOtp() {
+  const [value, setValue] = useState("");
 
-export const usageDisabled = ``;
+  return (
+    
+  );
+}`;
+
+export const usageLengths = `"use client";
+
+export default function OtpLengths() {
+  const [value, setValue] = useState("");
+
+  return (
+
+  );
+}`;
+
+export const usageMasked = `"use client";
+
+export default function MaskedOtp() {
+  const [value, setValue] = useState("");
+
+  return ;
+}`;
+
+export const usageDisabled = `"use client";
+
+export default function DisabledOtp() {
+  const [value, setValue] = useState("123456");
+
+  return ;
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component handles all of the complex array-mapping and React Ref logic internally without relying on heavy third-party form libraries.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/OtpInputBlock.tsx`.
-
----
 
 ## Usage
 

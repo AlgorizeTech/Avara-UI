@@ -12,7 +12,7 @@ It now features a **dual-layout system**:
 
 ## Examples
 
-Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one. The first example's **Code** tab contains the full component source.
+Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
 export const usageChat = `import SupportDashboard, {
   SupportData,
@@ -91,17 +91,34 @@ export default function Helpdesk() {
   return <SupportDashboard data={data} />;
 }`;
 
-export const usageTable = `// Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
-// are derived from \`data.tickets\`, not passed in.
-<SupportDashboard layout="table" data={data} />`;
+export const usageTable = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+import { data } from "./support-data";
 
-export const usageMinimal = `// Borders and shadows pared back for embedding in an existing admin shell.
-<SupportDashboard variant="minimal" data={data} />`;
+export default function TicketTable() {
+  // Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
+  // are derived from \`data.tickets\`, not passed in.
+  return <SupportDashboard layout="table" data={data} />;
+}`;
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
-<div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-  <SupportDashboard variant="glass" color="rose" data={data} />
-</div>`;
+export const usageMinimal = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+import { data } from "./support-data";
+
+export default function EmbeddedDashboard() {
+  // Borders and shadows pared back for embedding in an existing admin shell.
+  return <SupportDashboard variant="minimal" data={data} />;
+}`;
+
+export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+import { data } from "./support-data";
+
+export default function GlassDashboard() {
+  return (
+    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <SupportDashboard variant="glass" color="rose" data={data} />
+    </div>
+  );
+}`;
 
 <ExampleShowcase
   name="support"
@@ -111,26 +128,69 @@ export const usageGlass = `// \`glass\` is translucent by design — give it a c
   examples={[
     {
       title: "Ticket workspace",
-      subheading: "The default `layout=\"chat\"` — a 3-pane drill-down: inbox, conversation thread, and a collapsible properties pane.",
+      subheading: "A 3-pane drill-down: inbox, conversation thread and a collapsible properties pane.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "data",
+          effect:
+            "holding the tickets, SLA limits, filters and header strings.",
+        },
+        {
+          prop: "layout",
+          value: '"chat"',
+          effect:
+            "is the default drill-down view.",
+        },
+      ],
       props: { layout: "chat", variant: "default" },
       usage: usageChat,
       code: extractCode("src/components/custom/blocks/Support-dashboard.tsx"),
     },
     {
       title: "Table view",
-      subheading: "`layout=\"table\"` re-presents the same tickets as a sortable list under metric cards it computes from `data.tickets`.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"table"',
+          effect:
+            "to re-present the same tickets as a sortable list under metric cards — those are computed from `data.tickets`, not passed in.",
+        },
+      ],
       props: { layout: "table", variant: "default" },
       usage: usageTable,
     },
     {
       title: "Minimal",
-      subheading: "`variant=\"minimal\"` flattens the borders and shadows so the dashboard sits inside an existing admin shell.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to flatten the borders and shadows for embedding in an existing admin shell.",
+        },
+      ],
       props: { layout: "chat", variant: "minimal" },
       usage: usageMinimal,
     },
     {
       title: "Glass",
-      subheading: "`variant=\"glass\"` renders translucent panes with backdrop blur — the preview supplies the gradient behind it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for translucent panes with backdrop blur.",
+        },
+        {
+          prop: "color",
+          effect:
+            "here is a **fixed set** — unlike the other blocks it takes no hex, and unrecognised values fall back to `indigo`.",
+        },
+      ],
       props: { layout: "chat", variant: "glass" },
       usage: usageGlass,
     },
@@ -139,22 +199,7 @@ export const usageGlass = `// \`glass\` is translucent by design — give it a c
 
 ## Installation
 
-<Cli command={`add support-dashboard.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its standard UI icons.
-
-```bash
-npm install lucide-react
-```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from the **Code** tab of the first example above.
+<Installation name="support-dashboard" />
 
 ## Props Reference
 

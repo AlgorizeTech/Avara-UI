@@ -601,7 +601,11 @@ function renderInline(text: string): React.ReactNode {
   });
 }
 
-/** Badge used for both halves of a prop reference — name and value alike. */
+/**
+ * Badge used for both halves of a prop reference — name and value alike.
+ * Rendered with `data-badge`, which opts out of the global !important inline
+ * <code> styling in globals.css; without it these classes never take effect.
+ */
 const PROP_BADGE =
   "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
 
@@ -622,13 +626,17 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
         >
           <dt className="mr-1.5 inline-flex items-center gap-1 align-middle">
             {note.lead && <span className="mr-0.5">{note.lead}</span>}
-            <code className={PROP_BADGE}>{note.prop}</code>
+            <code data-badge className={PROP_BADGE}>
+              {note.prop}
+            </code>
             {note.value !== undefined && (
               <>
                 <span aria-hidden className="font-mono text-xs text-zinc-400">
                   =
                 </span>
-                <code className={PROP_BADGE}>{note.value}</code>
+                <code data-badge className={PROP_BADGE}>
+                  {note.value}
+                </code>
               </>
             )}
           </dt>

@@ -11,7 +11,7 @@ The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS gri
 
 ## Examples
 
-From a bare disclosure to a nested file tree — the same three parts every time. The first example's **Code** tab contains the full component source.
+From a bare disclosure to a nested file tree — the same three parts every time.
 
 export const usageDefault = `import {
   Collapsible,
@@ -194,31 +194,69 @@ export default function LockedSection() {
     {
       title: "Collapsible",
       subheading: "Three parts: `Collapsible`, `CollapsibleTrigger` and `CollapsibleContent`.",
+      propNotes: [
+        {
+          prop: "open",
+          effect:
+            "makes it controlled — pair it with `onOpenChange` or it will never move.",
+        },
+        {
+          prop: "onOpenChange",
+          effect: "fires with the new boolean whenever the section toggles.",
+        },
+      ],
       props: { layout: "minimal" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CollapsibleBlock.tsx"),
     },
     {
       title: "FAQ list",
-      subheading: "`defaultOpen` expands one on load; `group-data-[state=open]` rotates the chevron.",
+      subheading: "`group-data-[state=open]` on the trigger is what rotates the chevron.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultOpen",
+          effect:
+            "to expand one on load and leave the state uncontrolled — the opposite end from `open`.",
+        },
+      ],
       props: { layout: "basic" },
       usage: usageFaq,
     },
     {
       title: "Settings panel",
-      subheading: "The trigger takes any markup — icons, subtitles, or a swapping affordance label.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `CollapsibleTrigger` can be any markup — icons, subtitles, or a label that swaps with the open state.",
+        },
+      ],
       props: { layout: "settings" },
       usage: usageSettings,
     },
     {
       title: "File tree",
       subheading: "Collapsibles nest freely; each level keeps its own open state.",
+      propNotes: [
+        {
+          prop: "defaultOpen",
+          effect: "is per-level, so you can expand a branch without expanding its parent.",
+        },
+      ],
       props: { layout: "filetree" },
       usage: usageFileTree,
     },
     {
       title: "Disabled",
-      subheading: "Set `disabled` to lock a section — the trigger stops responding to clicks.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "to lock a section — the trigger stops responding to clicks, keeping whatever state it is in.",
+        },
+      ],
       props: { layout: "disabled" },
       usage: usageDisabled,
     },
@@ -227,16 +265,7 @@ export default function LockedSection() {
 
 ## Installation
 
-<Cli command={`add collapsible.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is completely dependency-free.
-
-Create a new file at `components/custom/blocks/CollapsibleBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="collapsible" />
 
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.

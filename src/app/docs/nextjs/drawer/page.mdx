@@ -7,7 +7,7 @@ A highly animated, responsive drawer component. Built entirely from scratch usin
 
 ## Examples
 
-The drawer is always controlled — you own `open` and pass `onOpenChange`. The first example's **Code** tab contains the full component source.
+The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
 export const usageDefault = `import { useState } from "react";
 import {
@@ -181,26 +181,58 @@ export default function OnboardingDrawer() {
   examples={[
     {
       title: "Drawer",
-      subheading: "Own the `open` state and pass `onOpenChange` — the overlay and Escape key use it.",
+      propNotes: [
+        {
+          prop: "open",
+          effect:
+            "is required — the drawer has no uncontrolled mode.",
+        },
+        {
+          prop: "onOpenChange",
+          effect:
+            "is also required, and fires on the overlay click, Escape and the close button alike.",
+        },
+      ],
       props: { side: "right" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Drawer.tsx"),
     },
     {
       title: "Sides",
-      subheading: "Use the `side` prop to slide in from any edge of the screen.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "side",
+          effect:
+            "to slide in from any edge — `top`, `bottom`, `left` or `right`. It also sets the matching width or height.",
+        },
+      ],
       props: { showAll: "sides" },
       usage: usageSides,
     },
     {
       title: "Bottom sheet",
-      subheading: "`side=\"bottom\"` gives you the familiar full-width mobile sheet.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "side",
+          value: '"bottom"',
+          effect:
+            "for the familiar full-width mobile sheet.",
+        },
+      ],
       props: { side: "bottom" },
       usage: usageBottom,
     },
     {
       title: "Open on mount",
-      subheading: "Because `open` is yours, you can start it open or trigger it from any effect.",
+      propNotes: [
+        {
+          prop: "open",
+          effect:
+            "being yours means you can start it `true`, or flip it from any effect, with no trigger element at all.",
+        },
+      ],
       props: { side: "left", open: true },
       usage: usageControlled,
     },
@@ -209,22 +241,7 @@ export default function OnboardingDrawer() {
 
 ## Installation
 
-<Cli command={`add drawer.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### 1. Install Dependencies
-
-This component relies on `gsap` to handle the fluid animations and manage the enter/exit lifecycle without relying on complex third-party layout libraries.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Drawer.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="drawer" />
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.

@@ -28,6 +28,12 @@ const ROOT = path.resolve(__dirname, "../..");
 const BLOCKS_DIR = path.join(ROOT, "src/components/custom/blocks");
 const PRIMITIVES_DIR = path.join(ROOT, "src/components/custom/ui");
 const SITE_UI_DIR = path.join(ROOT, "src/components/ui");
+/**
+ * Components that sit directly in custom/ rather than in blocks/ or ui/.
+ * Only carousel.tsx lives here today, and it was invisible to the registry —
+ * and so uninstallable — until this directory was scanned too.
+ */
+const CUSTOM_DIR = path.join(ROOT, "src/components/custom");
 
 const REGISTRY_NAME = "algorize-ui";
 /**
@@ -76,7 +82,7 @@ type Source = {
   /** Generated kebab-case registry item name. */
   name: string;
   /** "block" | "primitive" | "site-ui" */
-  kind: "block" | "primitive" | "site-ui";
+  kind: "block" | "primitive" | "site-ui" | "custom";
 };
 
 // ---------------------------------------------------------------------------
@@ -159,6 +165,8 @@ const sources: Source[] = [
   ...collect(BLOCKS_DIR, "block"),
   ...collect(PRIMITIVES_DIR, "primitive"),
   ...collect(SITE_UI_DIR, "site-ui", SITE_UI_ITEMS),
+  // Non-recursive, so blocks/ and ui/ underneath are not collected twice.
+  ...collect(CUSTOM_DIR, "custom"),
 ];
 
 /** Resolve an import specifier to another item in this registry, if any. */
@@ -205,11 +213,22 @@ const nextCoupled: string[] = [];
 const nameSeen = new Map<string, string>();
 const collisions: string[] = [];
 
+/**
+ * Segments that are acronyms, not words. Without these, kebab-to-title gives
+ * "Ui Fluid Glass Slider" and "Qr Code Reader" — which the CLI prints on
+ * install and the docs print as a step heading.
+ */
+const ACRONYMS = new Set(["ui", "qr", "api", "ai", "otp", "svg", "css", "3d"]);
+
 function titleFor(name: string, meta?: ItemMeta): string {
-  void meta;
+  if (meta?.title) return meta.title;
   return name
     .split("-")
-    .map((w) => (/^\d/.test(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)))
+    .map((w) => {
+      if (ACRONYMS.has(w)) return w.toUpperCase();
+      if (/^\d/.test(w)) return w.toUpperCase();
+      return w[0].toUpperCase() + w.slice(1);
+    })
     .join(" ");
 }
 
@@ -254,7 +273,10 @@ const items: BuiltItem[] = sources.map((s) => {
     }
   }
 
-  const fileType = s.kind === "block" ? "registry:component" : "registry:ui";
+  const fileType =
+    s.kind === "block" || s.kind === "custom"
+      ? "registry:component"
+      : "registry:ui";
 
   const item: BuiltItem = {
     name: s.name,
@@ -294,6 +316,7 @@ console.log(`\nregistry.json written: ${items.length} items`);
 console.log(`  blocks:     ${sources.filter((s) => s.kind === "block").length}`);
 console.log(`  primitives: ${sources.filter((s) => s.kind === "primitive").length}`);
 console.log(`  site-ui:    ${sources.filter((s) => s.kind === "site-ui").length}`);
+console.log(`  custom:     ${sources.filter((s) => s.kind === "custom").length}`);
 
 if (collisions.length) {
   console.error(`\nFATAL — duplicate item names (${collisions.length}):`);

@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ai-chat",
-  "title": "Ai Chat",
+  "title": "AI Chat",
   "author": "AlgorizeTech",
   "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
   "dependencies": [

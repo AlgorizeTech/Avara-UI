@@ -4,25 +4,25 @@ Next.js is a React framework that gives you building blocks to create web applic
 
 ## Component Philosophy
 
-Build software faster with complete code ownership, zero dependency bloat, and total styling freedom.
+Build software faster with complete code ownership, no wrapper package, and total styling freedom.
 
-      ⚡
+    {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
+        block content, which would wrap it in the custom  (mb-4) and push it 8px
+        off-centre, since flex centres the margin box. */}
+    ⚡
+    No Wrapper Package
     
-    Zero NPM Bloat
-    
-      You own the code directly inside your codebase. No black-box bundle bloat or dependency lock-ins.
+      There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
 
-      🎨
-    
+    🎨
     100% Customizability
     
       Modify styles, animations, and behaviors directly within your components/custom folder.
 
-      🧩
+    🧩
+    Dependencies Per Component
     
-    Minimal Primitives
-    
-      Only lightweight primitives like framer-motion and lucide-react are used.
+      Each component declares only what it imports — usually lucide-react, gsap or framer-motion, and often nothing at all. Its page lists them before you install.
 
 ## What is Next.js?
 

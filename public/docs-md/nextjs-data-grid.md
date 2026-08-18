@@ -8,7 +8,7 @@ This `DataGridBlock` is built **100% dependency-free**. It manages focus through
 
 ## Examples
 
-Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row. The first example's **Code** tab contains the full component source.
+Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
 export const usageDefault = `import { useState } from "react";
 
@@ -54,18 +54,24 @@ export default function Gradebook() {
   return ;
 }`;
 
-export const usageNoRowNumbers = ``;
+export const usageNoRowNumbers = `"use client";
 
-export const usageReadOnly = `// Keyboard navigation still works — only editing is disabled.
-`;
+export default function GridWithoutGutter() {
+  const [data, setData] = useState(ROWS);
+
+  return (
+    
+  );
+}`;
+
+export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+
+export default function ReadOnlyGrid() {
+  // Keyboard navigation still works — only editing is disabled.
+  return ;
+}`;
 
 ## Installation
-
-### Copy the Component
-
-This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/DataGridBlock.tsx`.
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ui-fluid-glass-slider",
-  "title": "Ui Fluid Glass Slider",
+  "title": "UI Fluid Glass Slider",
   "author": "AlgorizeTech",
   "description": "A glass-morphism slide viewer with fluid GSAP transitions between panels. Use it for hero galleries with a soft, liquid feel.",
   "dependencies": [

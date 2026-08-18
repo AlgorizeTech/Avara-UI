@@ -8,7 +8,7 @@ The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS gri
 
 ## Examples
 
-From a bare disclosure to a nested file tree — the same three parts every time. The first example's **Code** tab contains the full component source.
+From a bare disclosure to a nested file tree — the same three parts every time.
 
 export const usageDefault = `import {
   Collapsible,
@@ -115,12 +115,6 @@ export default function LockedSection() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component is completely dependency-free.
-
-Create a new file at `components/custom/blocks/CollapsibleBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.

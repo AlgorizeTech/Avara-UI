@@ -9,7 +9,7 @@ Native application menus have complex, unwritten interaction rules. If you click
 
 ## Examples
 
-Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app. The first example's **Code** tab contains the full component source.
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
 export const usageDefault = `import {
   Menubar,
@@ -264,32 +264,73 @@ export default function AppWindow() {
   examples={[
     {
       title: "Menubar",
-      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`; each menu needs a `value`.",
+      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "on each `MenubarMenu` is required — it is how the context tracks which dropdown is open.",
+        },
+        {
+          prop: "align",
+          effect:
+            "on `MenubarContent` anchors the dropdown to its trigger: `start` (the default), `center` or `end`.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MenubarBlock.tsx"),
     },
     {
       title: "Shortcuts & separators",
-      subheading: "`MenubarShortcut` right-aligns a hint; `MenubarSeparator` groups the rows.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `MenubarShortcut` right-aligns a hint inside the row; `MenubarSeparator` takes none and just rules off a group.",
+        },
+      ],
       props: { example: "shortcuts" },
       usage: usageShortcuts,
     },
     {
       title: "Icons & labels",
-      subheading: "`MenubarLabel` titles a group. Give every row an icon and the label sits flush left — nothing reserves an empty gutter.",
+      propNotes: [
+        {
+          prop: "inset",
+          effect:
+            "pads a row to line up with icon-bearing neighbours. Give every row an icon instead and nothing reserves an empty gutter.",
+        },
+      ],
       props: { example: "icons" },
       usage: usageIcons,
     },
     {
       title: "Disabled & destructive",
-      subheading: "`disabled` blocks the row entirely; `className` restyles a single item.",
+      propNotes: [
+        {
+          prop: "disabled",
+          effect:
+            "dims the row and kills its pointer events and `onClick` entirely.",
+        },
+        {
+          prop: "onClick",
+          effect:
+            "fires your action and the menu closes itself afterwards.",
+        },
+      ],
       props: { example: "disabled" },
       usage: usageDisabled,
     },
     {
       title: "Application menubar",
-      subheading: "Strip the bar's chrome with `className` to fuse it into a window title bar.",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on the bar is how you strip its chrome to fuse it into a window title bar.",
+        },
+      ],
       props: { example: "app" },
       usage: usageApp,
     },
@@ -298,16 +339,7 @@ export default function AppWindow() {
 
 ## Installation
 
-<Cli command={`add menubar.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
-
-Create a new file at `components/custom/blocks/MenubarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="menubar" />
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.

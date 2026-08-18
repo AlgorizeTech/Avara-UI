@@ -12,7 +12,7 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 ## Examples
 
-These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice. The first example's **Code** tab contains the full component source.
+These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
 export const usageConversation = `import {
   ChatAvatar,
@@ -294,22 +294,7 @@ export default function TypingIndicator() {
 
 ## Installation
 
-<Cli command={`add chat-bubble.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This component relies on **GSAP** for the high-performance entrance and typing indicator animations, and **Lucide React** for the read receipt ticks.
-
-```bash
-npm install gsap lucide-react
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChatBubbleBlock.tsx`.
+<Installation name="chat-bubble" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

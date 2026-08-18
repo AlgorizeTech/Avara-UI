@@ -9,7 +9,7 @@ While standard Tailwind gives you the `animate-pulse` class, modern applications
 
 ## Examples
 
-Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
 
 export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -17,17 +17,41 @@ export default function CardSkeleton() {
   return <SkeletonBlock variant="card" />;
 }`;
 
-export const usageProfile = `<SkeletonBlock variant="profile" />`;
+export const usageProfile = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageText = `<SkeletonBlock variant="text" />`;
+export default function ProfileSkeleton() {
+  return <SkeletonBlock variant="profile" />;
+}`;
 
-export const usageRect = `<SkeletonBlock variant="rect" className="max-w-md w-full h-48" />`;
+export const usageText = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageCircle = `<SkeletonBlock variant="circle" />`;
+export default function TextSkeleton() {
+  return <SkeletonBlock variant="text" />;
+}`;
 
-export const usagePulse = `<SkeletonBlock variant="card" animation="pulse" />`;
+export const usageRect = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageNone = `<SkeletonBlock variant="card" animation="none" />`;
+export default function RectSkeleton() {
+  return <SkeletonBlock variant="rect" className="max-w-md w-full h-48" />;
+}`;
+
+export const usageCircle = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CircleSkeleton() {
+  return <SkeletonBlock variant="circle" />;
+}`;
+
+export const usagePulse = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function PulseSkeleton() {
+  return <SkeletonBlock variant="card" animation="pulse" />;
+}`;
+
+export const usageNone = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function StaticSkeleton() {
+  return <SkeletonBlock variant="card" animation="none" />;
+}`;
 
 export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -51,49 +75,124 @@ export default function CustomSkeleton() {
     {
       title: "Card",
       subheading: "A composite placeholder that mirrors a media card layout.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"card"',
+          effect:
+            "outputs a pre-arranged composite rather than a single shape.",
+        },
+        {
+          prop: "animation",
+          value: '"shimmer"',
+          effect:
+            "is the default — a gradient sliding across the placeholder.",
+        },
+      ],
       props: { variant: "card" },
       usage: usageCard,
       code: extractCode("src/components/custom/blocks/SkeletonBlock.tsx"),
     },
     {
       title: "Profile",
-      subheading: "Use `variant=\"profile\"` for an avatar with two text lines.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"profile"',
+          effect:
+            "for an avatar with two text lines beside it.",
+        },
+      ],
       props: { variant: "profile" },
       usage: usageProfile,
     },
     {
       title: "Text",
-      subheading: "Use `variant=\"text\"` for stacked paragraph lines.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"text"',
+          effect:
+            "for stacked paragraph lines.",
+        },
+      ],
       props: { variant: "text" },
       usage: usageText,
     },
     {
       title: "Rectangle",
-      subheading: "Use `variant=\"rect\"` as a block placeholder for images and charts.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"rect"',
+          effect:
+            "as a block placeholder for images and charts. It is the default.",
+        },
+      ],
       props: { variant: "rect" },
       usage: usageRect,
     },
     {
       title: "Circle",
-      subheading: "Use `variant=\"circle\"` for avatars and round icon slots.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"circle"',
+          effect:
+            "for avatars and round icon slots.",
+        },
+      ],
       props: { variant: "circle" },
       usage: usageCircle,
     },
     {
       title: "Pulse animation",
-      subheading: "Use `animation=\"pulse\"` for the classic fading placeholder.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animation",
+          value: '"pulse"',
+          effect:
+            "for the classic fading placeholder instead of the sliding shimmer.",
+        },
+      ],
       props: { variant: "card", animation: "pulse" },
       usage: usagePulse,
     },
     {
       title: "No animation",
-      subheading: "Use `animation=\"none\"` for a static placeholder.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animation",
+          value: '"none"',
+          effect:
+            "for a static placeholder — the right choice under `prefers-reduced-motion`.",
+        },
+      ],
       props: { variant: "card", animation: "none" },
       usage: usageNone,
     },
     {
       title: "Custom composition",
-      subheading: "`variant=\"custom\"` exposes `width`, `height` and `radius` for atomic pieces.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"custom"',
+          effect:
+            "to build atomic pieces yourself.",
+        },
+        {
+          prop: "width",
+          effect:
+            "`height` and `radius` take a number or a CSS string, and are set inline so they override Tailwind classes.",
+        },
+      ],
       props: { variant: "custom" },
       usage: usageCustom,
     },
@@ -102,18 +201,7 @@ export default function CustomSkeleton() {
 
 ## Installation
 
-<Cli command={`add skeleton.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is completely dependency-free. It uses standard Tailwind classes and automatically injects the lightweight CSS required for the shimmer effect.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SkeletonBlock.tsx`.
-
----
+<Installation name="skeleton" />
 
 ## Usage
 

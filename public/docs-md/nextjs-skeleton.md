@@ -6,7 +6,7 @@ While standard Tailwind gives you the `animate-pulse` class, modern applications
 
 ## Examples
 
-Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
 
 export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -14,17 +14,41 @@ export default function CardSkeleton() {
   return ;
 }`;
 
-export const usageProfile = ``;
+export const usageProfile = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageText = ``;
+export default function ProfileSkeleton() {
+  return ;
+}`;
 
-export const usageRect = ``;
+export const usageText = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageCircle = ``;
+export default function TextSkeleton() {
+  return ;
+}`;
 
-export const usagePulse = ``;
+export const usageRect = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageNone = ``;
+export default function RectSkeleton() {
+  return ;
+}`;
+
+export const usageCircle = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CircleSkeleton() {
+  return ;
+}`;
+
+export const usagePulse = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function PulseSkeleton() {
+  return ;
+}`;
+
+export const usageNone = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function StaticSkeleton() {
+  return ;
+}`;
 
 export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -35,14 +59,6 @@ export default function CustomSkeleton() {
 }`;
 
 ## Installation
-
-### Copy the Component
-
-This component is completely dependency-free. It uses standard Tailwind classes and automatically injects the lightweight CSS required for the shimmer effect.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SkeletonBlock.tsx`.
-
----
 
 ## Usage
 

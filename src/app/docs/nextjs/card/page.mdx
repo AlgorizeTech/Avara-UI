@@ -9,7 +9,7 @@ Building a UI entirely out of raw `div` tags quickly leads to inconsistent paddi
 
 ## Examples
 
-The sub-components handle their own padding, so cards stay balanced whatever you put in them. The first example's **Code** tab contains the full component source.
+The sub-components handle their own padding, so cards stay balanced whatever you put in them.
 
 export const usageDefault = `import {
   Card,
@@ -193,31 +193,67 @@ export default function StatGrid() {
     {
       title: "Card",
       subheading: "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect: "is the default — a subtle stroke around the surface.",
+        },
+      ],
       props: { variant: "bordered", layout: "standard" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
     },
     {
       title: "Default variant",
-      subheading: "`variant=\"default\"` drops the border and relies on the shadow alone.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"default"',
+          effect: "to drop the border and rely on the shadow alone.",
+        },
+      ],
       props: { variant: "default", layout: "grid" },
       usage: usageDefaultVariant,
     },
     {
       title: "Flat",
-      subheading: "`variant=\"flat\"` tints the surface instead of raising it — ideal when nested.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"flat"',
+          effect:
+            "to tint the surface instead of raising it — no shadow, so it reads correctly when nested inside another card.",
+        },
+      ],
       props: { variant: "flat", layout: "grid" },
       usage: usageFlat,
     },
     {
       title: "Interactive",
-      subheading: "Set `interactive` for hover elevation, a slight lift and an active press state.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "interactive",
+          effect:
+            "for hover elevation, a border-colour change and a slight scale — the affordance that says the whole card is clickable.",
+        },
+      ],
       props: { variant: "bordered", layout: "grid", interactive: true },
       usage: usageInteractive,
     },
     {
       title: "Stat grid",
-      subheading: "Override `CardHeader`'s stack with `className` to line a title up against an icon.",
+      subheading: "`CardHeader` stacks its children by default; override that to line a title up against an icon.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect: "keeps each tile separated in a dense grid.",
+        },
+      ],
       props: { variant: "bordered", layout: "stats" },
       usage: usageStats,
     },
@@ -226,16 +262,7 @@ export default function StatGrid() {
 
 ## Installation
 
-<Cli command={`add card.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This component is dependency-free — a set of composable wrappers over Tailwind classes.
-
-Create a new file at `components/custom/blocks/CardBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="card" />
 
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.

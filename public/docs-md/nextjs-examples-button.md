@@ -70,24 +70,13 @@ Interactive component preview available in the web version.
 
 See implementation in: `src/app/docs/nextjs/examples/button/commerce.tsx`
 
-# Installation
-
-    CLI
-    Manual
-
-    ```bash
-npx shadcn@latest add button.json
-```
-
-    Code available at: `src/app/docs/nextjs/examples/button/button.tsx`
-
 # Button Component
 
 A customizable and interactive button component with a built-in ripple effect.
 
 ## Installation & Import
 
-First, make sure the `Button` component file is included in your project. Then, you can import it into your MDX or React files like this:
+Then import it:
 
 ```tsx
 

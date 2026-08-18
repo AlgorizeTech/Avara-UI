@@ -56,7 +56,7 @@
     {
       "name": "ai-chat",
       "type": "registry:component",
-      "title": "Ai Chat",
+      "title": "AI Chat",
       "author": "AlgorizeTech",
       "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
@@ -174,7 +174,7 @@
     {
       "name": "api-playground",
       "type": "registry:component",
-      "title": "Api Playground",
+      "title": "API Playground",
       "author": "AlgorizeTech",
       "description": "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
       "categories": [
@@ -317,6 +317,27 @@
         }
       ],
       "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
+    },
+    {
+      "name": "carousel",
+      "type": "registry:component",
+      "title": "Carousel",
+      "author": "AlgorizeTech",
+      "description": "Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
+      "categories": [
+        "media",
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/components/custom/carousel.tsx",
+          "type": "registry:component",
+          "target": "components/custom/carousel.tsx"
+        }
+      ],
+      "docs": "Named exports: ImageCarousel, HeroCarousel, CustomCarousel. All three take an images array; HeroCarousel adds autoplay and CustomCarousel adds thumbnail navigation. Built on next/image, so remote hosts must be allowed in next.config."
     },
     {
       "name": "carousel-3d",
@@ -1527,7 +1548,7 @@
     {
       "name": "otp-input",
       "type": "registry:component",
-      "title": "Otp Input",
+      "title": "OTP Input",
       "author": "AlgorizeTech",
       "description": "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
       "categories": [
@@ -1768,7 +1789,7 @@
     {
       "name": "qr-code-generator",
       "type": "registry:component",
-      "title": "Qr Code Generator",
+      "title": "QR Code Generator",
       "author": "AlgorizeTech",
       "description": "A QR code renderer with size, colour and error-correction options. Use it for sharing links, tickets and pairing codes.",
       "categories": [
@@ -1792,7 +1813,7 @@
     {
       "name": "qr-code-reader",
       "type": "registry:component",
-      "title": "Qr Code Reader",
+      "title": "QR Code Reader",
       "author": "AlgorizeTech",
       "description": "A camera-based QR scanner that decodes frames in the browser and reports matches. Use it for check-in and pairing flows.",
       "categories": [
@@ -2501,7 +2522,7 @@
     {
       "name": "ui-accordion",
       "type": "registry:ui",
-      "title": "Ui Accordion",
+      "title": "UI Accordion",
       "author": "AlgorizeTech",
       "description": "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",
       "categories": [
@@ -2526,7 +2547,7 @@
     {
       "name": "ui-avatar",
       "type": "registry:ui",
-      "title": "Ui Avatar",
+      "title": "UI Avatar",
       "author": "AlgorizeTech",
       "description": "The Radix avatar primitive with image and fallback slots. Used for user representation in the chat, support and dashboard blocks.",
       "categories": [
@@ -2550,7 +2571,7 @@
     {
       "name": "ui-badge",
       "type": "registry:ui",
-      "title": "Ui Badge",
+      "title": "UI Badge",
       "author": "AlgorizeTech",
       "description": "A small status label primitive with CVA-driven variants. Used internally by pricing blocks.",
       "categories": [
@@ -2575,7 +2596,7 @@
     {
       "name": "ui-base",
       "type": "registry:ui",
-      "title": "Ui Base",
+      "title": "UI Base",
       "author": "AlgorizeTech",
       "description": "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
       "categories": [
@@ -2595,7 +2616,7 @@
     {
       "name": "ui-button",
       "type": "registry:ui",
-      "title": "Ui Button",
+      "title": "UI Button",
       "author": "AlgorizeTech",
       "description": "A minimal CVA button primitive with Radix Slot support for `asChild`. Used internally by the Calendar and pricing blocks.",
       "categories": [
@@ -2620,7 +2641,7 @@
     {
       "name": "ui-card",
       "type": "registry:ui",
-      "title": "Ui Card",
+      "title": "UI Card",
       "author": "AlgorizeTech",
       "description": "The card surface primitive that the pricing-plan block composes.",
       "categories": [
@@ -2642,7 +2663,7 @@
     {
       "name": "ui-codeblocks",
       "type": "registry:ui",
-      "title": "Ui Codeblocks",
+      "title": "UI Codeblocks",
       "author": "AlgorizeTech",
       "description": "A compact code surface with syntax colouring and a copy button, used inside the docs site. Install it for a lightweight code display without tabs.",
       "categories": [
@@ -2666,7 +2687,7 @@
     {
       "name": "ui-fluid-glass-slider",
       "type": "registry:ui",
-      "title": "Ui Fluid Glass Slider",
+      "title": "UI Fluid Glass Slider",
       "author": "AlgorizeTech",
       "description": "A glass-morphism slide viewer with fluid GSAP transitions between panels. Use it for hero galleries with a soft, liquid feel.",
       "categories": [
@@ -2688,7 +2709,7 @@
     {
       "name": "ui-multi-select",
       "type": "registry:ui",
-      "title": "Ui Multi Select",
+      "title": "UI Multi Select",
       "author": "AlgorizeTech",
       "description": "A multi-select combobox with search, clearable chips, hierarchical options and optional portal rendering. Use it when users pick several values from a long list.",
       "categories": [
@@ -2713,7 +2734,7 @@
     {
       "name": "ui-sheet",
       "type": "registry:ui",
-      "title": "Ui Sheet",
+      "title": "UI Sheet",
       "author": "AlgorizeTech",
       "description": "The Radix dialog-based sheet primitive that slides in from a screen edge. Used for drawers and mobile navigation panels.",
       "categories": [
@@ -2738,7 +2759,7 @@
     {
       "name": "ui-slider",
       "type": "registry:ui",
-      "title": "Ui Slider",
+      "title": "UI Slider",
       "author": "AlgorizeTech",
       "description": "The Radix slider primitive used by pricing blocks for usage-based tier selection.",
       "categories": [

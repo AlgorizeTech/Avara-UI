@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "api-playground",
-  "title": "Api Playground",
+  "title": "API Playground",
   "author": "AlgorizeTech",
   "description": "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
   "dependencies": [

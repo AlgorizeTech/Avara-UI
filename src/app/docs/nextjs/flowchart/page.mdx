@@ -9,7 +9,7 @@ This engine separates data flow layout orchestration from canvas tracking. By co
 
 ## Examples
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path. The first example's **Code** tab contains the full component source.
+Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
 
 export const usageDefault = `import {
   FlowCanvas,
@@ -71,27 +71,57 @@ export default function AutomationMap() {
   );
 }`;
 
-export const usageLinear = `// The smallest useful chart: one route, three nodes on it.
-<Flowchart initialActivePath="main-route">
-  <FlowCanvas>
-    <FlowConnection id="main-route" path="M 280 200 L 340 200" />
-    <FlowConnection id="main-route" path="M 580 200 L 640 200" />
-  </FlowCanvas>
+export const usageLinear = `import {
+  Flowchart,
+  FlowCanvas,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { CheckCircle2, Cpu, Webhook } from "lucide-react";
 
-  <FlowNode id="trigger" title="Webhook Trigger" icon={Webhook}
-    connectedPaths={["main-route"]} className="left-[40px] top-[166px]" />
-  <FlowNode id="compute" title="Compute Cluster" icon={Cpu}
-    connectedPaths={["main-route"]} className="left-[340px] top-[166px]" />
-  <FlowNode id="commit" title="Sync Database" icon={CheckCircle2}
-    connectedPaths={["main-route"]} className="left-[640px] top-[166px]" />
-</Flowchart>`;
+export default function LinearPipeline() {
+  // The smallest useful chart: one route, three nodes on it.
+  return (
+    <Flowchart initialActivePath="main-route">
+      <FlowCanvas>
+        <FlowConnection id="main-route" path="M 280 200 L 340 200" />
+        <FlowConnection id="main-route" path="M 580 200 L 640 200" />
+      </FlowCanvas>
 
-export const usageIdle = `// Pass null and nothing streams until the reader picks a node.
-<Flowchart initialActivePath={null}>…</Flowchart>`;
+      <FlowNode id="trigger" title="Webhook Trigger" icon={Webhook}
+        connectedPaths={["main-route"]} className="left-[40px] top-[166px]" />
+      <FlowNode id="compute" title="Compute Cluster" icon={Cpu}
+        connectedPaths={["main-route"]} className="left-[340px] top-[166px]" />
+      <FlowNode id="commit" title="Sync Database" icon={CheckCircle2}
+        connectedPaths={["main-route"]} className="left-[640px] top-[166px]" />
+    </Flowchart>
+  );
+}`;
 
-export const usageColor = `// One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
-// active stream, the node ports and the focus ring together.
-<Flowchart initialActivePath="success-path" color="emerald">…</Flowchart>`;
+export const usageIdle = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+import { PipelineNodes } from "./nodes";
+
+export default function IdlePipeline() {
+  // Pass null and nothing streams until the reader picks a node.
+  return (
+    <Flowchart initialActivePath={null}>
+      <PipelineNodes />
+    </Flowchart>
+  );
+}`;
+
+export const usageColor = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+import { PipelineNodes } from "./nodes";
+
+export default function AccentedPipeline() {
+  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
+  // active stream, the node ports and the focus ring together.
+  return (
+    <Flowchart initialActivePath="success-path" color="emerald">
+      <PipelineNodes />
+    </Flowchart>
+  );
+}`;
 
 <ExampleShowcase
   name="flowchart"
@@ -99,26 +129,60 @@ export const usageColor = `// One of "blue" | "indigo" | "rose" | "emerald" | "z
   examples={[
     {
       title: "Flowchart",
-      subheading: "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it and declare which routes they sit on via `connectedPaths`.",
+      subheading: "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it.",
+      propNotes: [
+        {
+          prop: "connectedPaths",
+          effect:
+            "on a `FlowNode` lists the route ids it sits on. Clicking activates the first; a node on two routes becomes a branch point.",
+        },
+        {
+          prop: "path",
+          effect:
+            "on `FlowConnection` is raw SVG path data — M/L for right angles, C for curves. Several segments may share one `id`.",
+        },
+      ],
       props: { example: "branching" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/FlowchartBlock.tsx"),
     },
     {
       title: "Linear pipeline",
-      subheading: "The minimum composition — a single route threaded through three nodes.",
+      propNotes: [
+        {
+          prop: "initialActivePath",
+          value: '"main-route"',
+          effect:
+            "streams that route on mount — the minimum composition is one route threaded through three nodes.",
+        },
+      ],
       props: { example: "linear" },
       usage: usageLinear,
     },
     {
       title: "No active route",
-      subheading: "Set `initialActivePath={null}` to start idle and let the reader activate a branch by clicking a node.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "initialActivePath",
+          value: '{null}',
+          effect:
+            "to start every route idle and let the reader activate a branch by clicking a node.",
+        },
+      ],
       props: { example: "branching", initialActivePath: null },
       usage: usageIdle,
     },
     {
       title: "Accent color",
-      subheading: "`color` tints the active stream and the node ports.",
+      propNotes: [
+        {
+          prop: "color",
+          value: '"emerald"',
+          effect:
+            "tints the active stream, the node ports and the focus ring together. One of `blue`, `indigo`, `rose`, `emerald`, `zinc`.",
+        },
+      ],
       props: { example: "branching", color: "emerald" },
       usage: usageColor,
     },
@@ -127,22 +191,7 @@ export const usageColor = `// One of "blue" | "indigo" | "rose" | "emerald" | "z
 
 ## Installation
 
-<Cli command={`add flowchart.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Dependencies
-
-This layout block depends explicitly on **GSAP** for the vector draw-in and spring element entrance scaling sequences.
-
-```bash
-npm install gsap
-```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/FlowchartBlock.tsx`.
+<Installation name="flowchart" />
 
 ## Best Practices & Guidelines
 

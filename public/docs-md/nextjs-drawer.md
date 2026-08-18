@@ -4,7 +4,7 @@ A highly animated, responsive drawer component. Built entirely from scratch usin
 
 ## Examples
 
-The drawer is always controlled — you own `open` and pass `onOpenChange`. The first example's **Code** tab contains the full component source.
+The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
 export const usageDefault = `import { useState } from "react";
 
@@ -95,18 +95,6 @@ export default function OnboardingDrawer() {
 }`;
 
 ## Installation
-
-### 1. Install Dependencies
-
-This component relies on `gsap` to handle the fluid animations and manage the enter/exit lifecycle without relying on complex third-party layout libraries.
-
-```bash
-npm install gsap lucide-react
-```
-
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Drawer.tsx` and copy the engine code from the **Code** tab of the first example above.
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.

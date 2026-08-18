@@ -9,7 +9,7 @@ Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden i
 
 ## Examples
 
-Hover or tab to each trigger to open its tooltip. The first example's **Code** tab contains the full component source.
+Hover or tab to each trigger to open its tooltip.
 
 export const usageDefault = `import {
   Tooltip,
@@ -233,37 +233,77 @@ export default function OffsetTooltip() {
     {
       title: "Tooltip",
       subheading: "Compose `Tooltip`, `TooltipTrigger` and `TooltipContent` inside a `TooltipProvider`.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `TooltipTrigger` is your element — the trigger does not render one of its own.",
+        },
+      ],
       props: { example: "single", side: "top", align: "center" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TooltipBlock.tsx"),
     },
     {
       title: "Sides",
-      subheading: "Use the `side` prop to place the bubble above, below or beside the trigger.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "side",
+          effect:
+            "to place the bubble — `top` (the default), `bottom`, `left` or `right`.",
+        },
+      ],
       props: { example: "sides" },
       usage: usageSides,
     },
     {
       title: "Alignment",
-      subheading: "`align` shifts the bubble along the chosen side — start, center or end.",
+      propNotes: [
+        {
+          prop: "align",
+          effect:
+            "shifts the bubble along that side: `start`, `center` (the default) or `end`. With `side=\"top\" align=\"end\"` the right edges line up.",
+        },
+      ],
       props: { example: "align" },
       usage: usageAlign,
     },
     {
       title: "Delay",
-      subheading: "`delayDuration` controls how long a hover must last before the tooltip opens.",
+      propNotes: [
+        {
+          prop: "delayDuration",
+          value: '{200}',
+          effect:
+            "is how long a hover must last before the tooltip opens. Set it on `Tooltip`, not on the content.",
+        },
+      ],
       props: { example: "delay" },
       usage: usageDelay,
     },
     {
       title: "Rich content",
-      subheading: "`TooltipContent` takes any children plus a `className` for width and padding.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `TooltipContent` takes any markup; `className` is where width and padding go.",
+        },
+      ],
       props: { example: "rich" },
       usage: usageRich,
     },
     {
       title: "Offset",
-      subheading: "`sideOffset` sets the gap in pixels between the trigger and the bubble.",
+      propNotes: [
+        {
+          prop: "sideOffset",
+          value: '{6}',
+          effect:
+            "is the gap in pixels between the trigger edge and the bubble.",
+        },
+      ],
       props: { example: "single", side: "right", align: "center", sideOffset: 16 },
       usage: usageOffset,
     },
@@ -272,16 +312,7 @@ export default function OffsetTooltip() {
 
 ## Installation
 
-<Cli command={`add tooltip.json`} />
-
-The CLI writes the component into your project and installs anything it depends on.
-
-
-### Copy the Component
-
-This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
-
-Create a new file at `components/custom/blocks/TooltipBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+<Installation name="tooltip" />
 
 ## Props Reference
 
