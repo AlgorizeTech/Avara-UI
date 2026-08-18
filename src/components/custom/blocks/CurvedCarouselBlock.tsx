@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { motion, useMotionValue, useSpring, PanInfo } from "framer-motion";
-
 export interface CurvedCarouselCard {
   id: string;
   title: string;
@@ -165,8 +163,8 @@ const CAROUSEL_ITEMS: CurvedCarouselCard[] = [
 ];
 
 export function CurvedCarousel({
-  autoPlay = true,
-  speed = 1,
+  autoPlay: _autoPlay = true,
+  speed: _speed = 1,
   className,
   ...props
 }: CurvedCarouselProps) {

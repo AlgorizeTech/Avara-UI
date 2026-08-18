@@ -4,14 +4,6 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
-  Bot,
-  Sparkles,
-  BarChart2,
-  Terminal,
-  LayoutGrid,
-  Search,
-  Lock,
-  Layers,
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";

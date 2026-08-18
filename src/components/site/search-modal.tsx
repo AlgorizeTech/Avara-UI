@@ -178,7 +178,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [allItems] = useState(() => getAllSearchableItems());
   const [filteredItems, setFilteredItems] = useState<SearchableItem[]>([]);
-  const [isAIMode, setIsAIMode] = useState(false);
+  const [isAIMode] = useState(false);
   const [isAILoading, setIsAILoading] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [aiConversation, setAiConversation] = useState<Array<{type: 'user' | 'ai', content: string}>>([]);

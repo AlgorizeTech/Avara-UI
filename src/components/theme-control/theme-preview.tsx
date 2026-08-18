@@ -39,12 +39,6 @@ function PreviewSection({
 // ─── Main Preview Component ──────────────────────────────────────
 
 export function ThemePreview() {
-  const { getColorToken, currentMode } = useThemeCustomizer();
-
-  // Get primary color hex for components that require hex instead of classes
-  const primaryOklch = getColorToken(currentMode, "primary");
-  const primaryHex = primaryOklch ? oklchToHex(primaryOklch) : "#000000";
-
   // Data for Chart
   const chartData = [
     { label: "Jan", value: 120 },

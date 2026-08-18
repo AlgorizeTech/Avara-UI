@@ -46,7 +46,7 @@ export default function ApiPlaygroundDemo({
     if (req.method !== "GET" && req.body) {
       try {
         parsedBody = JSON.parse(req.body);
-      } catch (e) {
+      } catch {
         return {
           status: 400,
           timeMs: 12,

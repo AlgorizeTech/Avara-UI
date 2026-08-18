@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useThemeCustomizer } from '@/contexts/theme-customizer-context';
 import { oklchToHex, hexToOklch, isValidHex } from '@/lib/color-utils';
 import type { ColorToken } from '@/lib/theme-presets';
-import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { Palette } from 'lucide-react';
 import { createPortal } from 'react-dom';

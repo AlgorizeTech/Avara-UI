@@ -17,7 +17,6 @@ import {
 import {
   DEFAULT_FONT_FAMILY,
   DEFAULT_FONT_SIZE,
-  DEFAULT_PRIMARY_COLOR,
   useThemeContext,
 } from "@/contexts/theme-context";
 

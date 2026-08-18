@@ -9,8 +9,6 @@ import {
   ArrowRight,
   LayoutGrid,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-
 /* ═══════════════════════════════════════════════
    PREVIEW CARD DATA MODEL & ITEMS (EXACT HOMEPAGE DATA)
    ═══════════════════════════════════════════════ */

@@ -27,7 +27,7 @@ export default function OtpInputDemo({
   const [isComplete, setIsComplete] = useState(false);
   const [lengthValues, setLengthValues] = useState<Record<number, string>>({});
 
-  const handleComplete = (val: string) => {
+  const handleComplete = () => {
     setIsComplete(true);
     // Simulate a fake verify load
     setTimeout(() => {

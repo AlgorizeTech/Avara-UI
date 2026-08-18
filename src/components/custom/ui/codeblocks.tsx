@@ -3,8 +3,6 @@
 import { CodeRenderer } from "./code-renderer";
 import { useState, useMemo, useRef } from "react";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-
 /** Initial lines shown before reader asks for more. */
 const INITIAL_LINES = 30;
 /** Additional lines added on each "Show More" click. */
