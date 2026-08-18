@@ -13,7 +13,7 @@ const getThemeColorHex = (c: string) => {
 };
 
 export default function StickyScrollStackDemo({
-  enableGlow = true,
+  enableGlow = false,
   scaleStep = 0.04,
   stackOffsetStep = 16,
   headerMode = "text-button",
@@ -90,8 +90,7 @@ export default function StickyScrollStackDemo({
   ];
 
   return (
-    <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80" style={{ "--theme-color": getThemeColorHex(color), backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)" } as React.CSSProperties}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+    <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
 
       <div className="relative z-10 max-h-[750px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">
         <StickyScrollStack

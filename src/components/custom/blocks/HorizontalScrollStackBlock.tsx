@@ -319,7 +319,6 @@ export function HorizontalScrollStack({
           : isInsideIframe
             ? "800px"
             : `${dynamicHeightVh}vh`,
-        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
         ...style,
       }}
       className={cn(

@@ -69,7 +69,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-blue-500 shadow-xl shadow-blue-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-blue-500/10 dark:bg-blue-500/15 backdrop-blur-xl border border-blue-500/20 text-blue-800 dark:text-blue-300 shadow-lg",
-      glow: "bg-zinc-950 border border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)] text-blue-400",
+      glow: "bg-white dark:bg-zinc-950 border border-blue-500/40 dark:border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.2)] dark:shadow-[0_0_20px_rgba(59,130,246,0.35)] text-blue-900 dark:text-blue-400",
     },
     secondary: {
       solid:
@@ -80,7 +80,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-zinc-500 shadow-xl shadow-zinc-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-zinc-500/10 dark:bg-zinc-500/15 backdrop-blur-xl border border-zinc-500/20 text-zinc-800 dark:text-zinc-300 shadow-lg",
-      glow: "bg-zinc-950 border border-zinc-500/50 shadow-[0_0_20px_rgba(113,113,122,0.3)] text-zinc-400",
+      glow: "bg-white dark:bg-zinc-950 border border-zinc-400/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-zinc-900 dark:text-zinc-300",
     },
     success: {
       solid:
@@ -91,7 +91,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-green-500 shadow-xl shadow-green-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-green-500/10 dark:bg-green-500/15 backdrop-blur-xl border border-green-500/20 text-green-800 dark:text-green-300 shadow-lg",
-      glow: "bg-zinc-950 border border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.3)] text-green-400",
+      glow: "bg-white dark:bg-zinc-950 border border-green-500/40 dark:border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)] dark:shadow-[0_0_20px_rgba(34,197,94,0.35)] text-green-900 dark:text-green-400",
     },
     danger: {
       solid:
@@ -102,7 +102,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-red-500 shadow-xl shadow-red-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-red-500/10 dark:bg-red-500/15 backdrop-blur-xl border border-red-500/20 text-red-800 dark:text-red-300 shadow-lg",
-      glow: "bg-zinc-950 border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.3)] text-red-400",
+      glow: "bg-white dark:bg-zinc-950 border border-red-500/40 dark:border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] dark:shadow-[0_0_20px_rgba(239,68,68,0.35)] text-red-900 dark:text-red-400",
     },
     warning: {
       solid:
@@ -113,7 +113,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-yellow-500 shadow-xl shadow-yellow-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-yellow-500/10 dark:bg-yellow-500/15 backdrop-blur-xl border border-yellow-500/20 text-yellow-800 dark:text-yellow-300 shadow-lg",
-      glow: "bg-zinc-950 border border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.3)] text-yellow-400",
+      glow: "bg-white dark:bg-zinc-950 border border-yellow-500/50 dark:border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.2)] dark:shadow-[0_0_20px_rgba(234,179,8,0.35)] text-yellow-950 dark:text-yellow-400",
     },
     info: {
       solid:
@@ -124,7 +124,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-cyan-500 shadow-xl shadow-cyan-500/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-cyan-500/10 dark:bg-cyan-500/15 backdrop-blur-xl border border-cyan-500/20 text-cyan-800 dark:text-cyan-300 shadow-lg",
-      glow: "bg-zinc-950 border border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] text-cyan-400",
+      glow: "bg-white dark:bg-zinc-950 border border-cyan-500/40 dark:border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)] dark:shadow-[0_0_20px_rgba(6,182,212,0.35)] text-cyan-900 dark:text-cyan-400",
     },
     dark: {
       solid:
@@ -135,7 +135,7 @@ export const Alert: React.FC<AlertProps> = ({
         "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-zinc-800 dark:border-l-zinc-100 shadow-xl shadow-zinc-900/10 text-zinc-800 dark:text-zinc-200",
       glass:
         "bg-zinc-800/10 dark:bg-zinc-100/10 backdrop-blur-xl border border-zinc-800/20 dark:border-zinc-100/20 text-zinc-800 dark:text-zinc-300 shadow-lg",
-      glow: "bg-zinc-950 border border-zinc-500/50 shadow-[0_0_20px_rgba(255,255,255,0.1)] text-zinc-300",
+      glow: "bg-white dark:bg-zinc-950 border border-zinc-800/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-zinc-900 dark:text-zinc-200",
     },
   };
 
