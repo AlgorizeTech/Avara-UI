@@ -23,23 +23,10 @@ export const navigation: NavigationItem[] = [
       { label: "Architecture", href: "/docs/nextjs/architecture" },
     ],
   },
-  // {
-  //   label: "Core Features",
-  //   children: [
-  //     { label: "Pages & Routing", href: "/docs/nextjs/routing", badge: "Core" },
-  //     { label: "Data Fetching", href: "/docs/nextjs/data-fetching", badge: "Core" },
-  //     { label: "API Routes", href: "/docs/nextjs/api-routes", badge: "Core" },
-  //     { label: "Image Optimization", href: "/docs/nextjs/image-optimization", badge: "Core" },
-  //     { label: "CSS & Styling", href: "/docs/nextjs/styling", badge: "Core" },
-  //     { label: "Performance", href: "/docs/nextjs/performance", badge: "Core" },
-  //     { label: "SEO & Meta", href: "/docs/nextjs/seo", badge: "Core" },
-  //     { label: "Authentication", href: "/docs/nextjs/authentication", badge: "Core" },
-  //     { label: "Deployment", href: "/docs/nextjs/deployment", badge: "Core" },
-  //     { label: "Middleware", href: "/docs/nextjs/middleware", badge: "Core" },
-  //     { label: "TypeScript Support", href: "/docs/nextjs/typescript", badge: "Core" },
-  //     { label: "Testing", href: "/docs/nextjs/testing", badge: "Core" },
-  //   ],
-  // },
+  // A "Core Features" group used to sit here, linking to 13 inherited Next.js
+  // tutorial pages (routing, data fetching, deployment, …). Those documented the
+  // framework rather than this library and have been removed, so the commented
+  // block went with them — see PRODUCTION-READINESS.md.
   {
     label: "Components",
     children: [

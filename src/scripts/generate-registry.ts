@@ -209,6 +209,13 @@ type BuiltItem = {
 
 const missingMeta: string[] = [];
 const badCategories: string[] = [];
+/**
+ * Local imports that point at a file this registry does not publish. Left
+ * unchecked these vanish silently — the item ships, the CLI writes it, and the
+ * consumer's build fails on a module that only ever existed in this repo.
+ * `ui-codeblocks` shipped that way against `@/components/site/code-renderer`.
+ */
+const unresolvedLocal: string[] = [];
 const nextCoupled: string[] = [];
 const nameSeen = new Map<string, string>();
 const collisions: string[] = [];
@@ -248,7 +255,11 @@ const items: BuiltItem[] = sources.map((s) => {
         continue;
       }
       const local = resolveLocal(spec, s.abs);
-      if (local && local.name !== s.name) {
+      if (!local) {
+        unresolvedLocal.push(`${s.basename} imports ${spec}`);
+        continue;
+      }
+      if (local.name !== s.name) {
         registryDependencies.add(local.name);
       }
       continue;
@@ -328,6 +339,20 @@ if (collisions.length) {
 if (badCategories.length) {
   console.error(`\nFATAL — categories outside the controlled vocabulary:`);
   for (const c of badCategories) console.error(`  ${c}`);
+  process.exit(1);
+}
+
+if (unresolvedLocal.length) {
+  console.error(
+    `\nFATAL — local imports pointing outside the registry (${unresolvedLocal.length}):`
+  );
+  for (const u of unresolvedLocal) console.error(`  ${u}`);
+  console.error(
+    "The importing file ships, the imported one does not, so `shadcn add` writes a project that will not compile."
+  );
+  console.error(
+    "Move the imported file into a scanned directory (blocks/, custom/, custom/ui/), add it to SITE_UI_ITEMS, or inline it."
+  );
   process.exit(1);
 }
 

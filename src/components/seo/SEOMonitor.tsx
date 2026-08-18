@@ -19,7 +19,7 @@ export function SEOMonitor() {
   useEffect(() => {
     // Only show in development or for admin users
     const shouldShow = process.env.NODE_ENV === 'development' || 
-                      localStorage.getItem('sera-ui-admin') === 'true'
+                      localStorage.getItem('algorize-ui-admin') === 'true'
     setIsVisible(shouldShow)
 
     if (!shouldShow) return

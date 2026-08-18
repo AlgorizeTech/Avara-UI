@@ -202,4 +202,4 @@ Discover the flexible features of the Accordion, such as single or multiple coll
 
 **Component Path:** `nextjs\accordion\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

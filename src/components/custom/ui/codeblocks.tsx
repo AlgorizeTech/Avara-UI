@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeRenderer } from "@/components/site/code-renderer";
+import { CodeRenderer } from "./code-renderer";
 import { useState, useMemo, useRef } from "react";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";

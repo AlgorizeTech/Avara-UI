@@ -227,4 +227,4 @@ Discover the Popover's intelligent positioning engine that prevents collision wi
 
 **Component Path:** `nextjs\popover\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

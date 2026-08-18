@@ -1,20 +1,30 @@
+import { integrations } from "@/config/site";
+
 export function MetaTags() {
   return (
     <>
-      {/* Essential Meta Tags */}
-      <meta
-        name="google-site-verification"
-        content="y3qEBdgYG32ZoXRsNqWxh6QgyxhQ337zoKpLwmb_dic"
-      />
-      <meta name="yandex-verification" content="1b0095f6bfc08171" />
+      {/* Site ownership. Rendered only when configured — these were previously
+          hardcoded to tokens belonging to the template this site was built
+          from, which claimed ownership of this domain in someone else's Search
+          Console. Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION / _YANDEX_ to your
+          own tokens. */}
+      {integrations.googleSiteVerification && (
+        <meta
+          name="google-site-verification"
+          content={integrations.googleSiteVerification}
+        />
+      )}
+      {integrations.yandexVerification && (
+        <meta name="yandex-verification" content={integrations.yandexVerification} />
+      )}
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="theme-color" content="#000000" />
 
       {/* PWA Meta Tags */}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content="Next.js Documentation" />
-      <meta name="application-name" content="Next.js Documentation" />
+      <meta name="apple-mobile-web-app-title" content="Algorize UI" />
+      <meta name="application-name" content="Algorize UI" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
 

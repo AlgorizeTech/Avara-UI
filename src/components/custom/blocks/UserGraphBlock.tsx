@@ -14,12 +14,12 @@ import {
   BarChart3,
   BookOpen,
   Database,
-  Github,
   CreditCard,
   MessageCircle,
   Network,
   Share2,
 } from "lucide-react";
+import { GitHubIcon } from "./Icons";
 import { cn } from "@/lib/utils";
 
 // --- Types ---
@@ -195,7 +195,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     apps: [
       { id: "drive", name: "Google Drive", icon: Database, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700" },
       { id: "sheets", name: "Sheets", icon: BarChart3, bgColor: "bg-emerald-50 dark:bg-emerald-950/80", textColor: "text-emerald-600 dark:text-emerald-400", borderColor: "border-emerald-300 dark:border-emerald-700" },
-      { id: "github", name: "GitHub", icon: Github, bgColor: "bg-slate-100 dark:bg-blue-950/80", textColor: "text-slate-800 dark:text-blue-400", borderColor: "border-slate-300 dark:border-blue-700" },
+      { id: "github", name: "GitHub", icon: GitHubIcon, bgColor: "bg-slate-100 dark:bg-blue-950/80", textColor: "text-slate-800 dark:text-blue-400", borderColor: "border-slate-300 dark:border-blue-700" },
     ],
   },
 ];

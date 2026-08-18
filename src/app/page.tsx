@@ -61,6 +61,7 @@ import {
 import { motion, useInView, AnimatePresence, useScroll } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { links } from "@/config/site";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -594,7 +595,7 @@ function ComponentShowcase() {
 					<Link
 						href="/docs"
 						className="group flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors shrink-0">
-						View all 100+ components
+						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 					</Link>
 				</motion.div>
@@ -964,112 +965,6 @@ function WhyChooseUsSection() {
 	);
 }
 
-/* ═══════════════════════════════════════════════
-   SECTION 5: PRODUCTION COMPONENT CATALOG (MATRIX + INSPECTOR)
-   ═══════════════════════════════════════════════ */
-
-interface SystemNode {
-	id: string;
-	title: string;
-	category: string;
-	icon: typeof Bot;
-	tag: string;
-	description: string;
-	cliCommand: string;
-	features: string[];
-	docPath: string;
-}
-
-const matrixNodes: SystemNode[] = [
-	{
-		id: "ai-chat",
-		title: "AI Conversational Block",
-		category: "Ui Components",
-		icon: Bot,
-		tag: "Popular",
-		description:
-			"Production-ready AI chat interface with message streaming, history sidebar, and custom prompts.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/ai-chat.json",
-		features: [
-			"Streaming Message Support",
-			"Multi-Thread Sidebar",
-			"Dynamic Theme Sync",
-		],
-		docPath: "/docs/nextjs/ai-chat",
-	},
-	{
-		id: "3d-motion",
-		title: "3D Spring Motion Cards",
-		category: "Animated Ui Components",
-		icon: Sparkles,
-		tag: "Interactive",
-		description:
-			"Stackable 3D cards with Framer Motion spring physics, drag gestures, and tilt effects.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/memories-card.json",
-		features: ["Drag & Swipe Physics", "3D Gyro Tilt", "Zero Config"],
-		docPath: "/docs/nextjs/memories-card",
-	},
-	{
-		id: "dock",
-		title: "Magnifying macOS Dock",
-		category: "Animated Ui Components",
-		icon: Compass,
-		tag: "macOS",
-		description:
-			"Apple macOS style dock with fluid cursor proximity magnification physics.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/dock.json",
-		features: [
-			"Cursor Proximity Magnification",
-			"Custom Icon Slots",
-			"Smooth Spring Back",
-		],
-		docPath: "/docs/nextjs/dock",
-	},
-	{
-		id: "analytics",
-		title: "Analytics Data Chart",
-		category: "Ui Components",
-		icon: BarChart3,
-		tag: "SVG Engine",
-		description:
-			"Lightweight, responsive SVG bar and line chart component with hover tooltips.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/chart.json",
-		features: [
-			"Zero Chart Library Weight",
-			"Auto Theme Gradient",
-			"Hover Value Tooltips",
-		],
-		docPath: "/docs/nextjs/chart",
-	},
-	{
-		id: "auth",
-		title: "Security & Auth Form",
-		category: "Ui Components",
-		icon: Lock,
-		tag: "Security",
-		description:
-			"Glassmorphic login and signup forms with social auth buttons and input validation.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/auth-form.json",
-		features: [
-			"Glassmorphic Styling",
-			"Social Login Providers",
-			"Password Visibility Toggle",
-		],
-		docPath: "/docs/nextjs/signup-form",
-	},
-	{
-		id: "cli",
-		title: "Developer CLI Terminal",
-		category: "Ui Components",
-		icon: Terminal,
-		tag: "Dev Tool",
-		description:
-			"Interactive code terminal with syntax highlighting, tabbed output, and instant copy.",
-		cliCommand: "npx shadcn@latest add https://algorize-ui.vercel.app/r/terminal.json",
-		features: ["Copy Code Button", "Multiple Shell Tabs", "Dark Theme Native"],
-		docPath: "/docs/nextjs/terminal",
-	},
-];
 
 /* ═══════════════════════════════════════════════
    SECTION 5.5: COMPONENT PREVIEW CARDS CATALOG
@@ -3212,7 +3107,7 @@ function CTASection() {
 							<ArrowRight className="size-4" />
 						</Link>
 						<Link
-							href="https://github.com/AlgorizeTech"
+							href={links.github}
 							target="_blank"
 							className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm">
 							<Github className="size-4 text-foreground dark:text-zinc-300" />
@@ -3255,7 +3150,7 @@ function FooterSection() {
 						Documentation
 					</Link>
 					<Link
-						href="https://github.com/AlgorizeTech"
+						href={links.github}
 						target="_blank"
 						className="hover:text-primary transition-colors">
 						GitHub
