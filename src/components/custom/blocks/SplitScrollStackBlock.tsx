@@ -314,9 +314,9 @@ export const SplitScrollStack = React.forwardRef<
                       cardRefs.current[index] = el;
                     }}
                     className={cn(
-                      "absolute inset-0 w-full h-full rounded-[2.5rem] p-6 sm:p-8 border overflow-hidden shadow-2xl flex flex-col justify-between origin-top transition-shadow",
+                      "absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 border overflow-hidden shadow-xl dark:shadow-2xl flex flex-col justify-between origin-top transition-colors",
                       item.color ||
-                        "bg-zinc-900 text-white border-white/10 dark:border-zinc-800",
+                        "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border-zinc-200 dark:border-zinc-800",
                     )}
                     style={{
                       opacity: index === 0 ? 1 : 0,
@@ -328,7 +328,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     {/* Card Header */}
                     <div className="flex items-center justify-between relative z-10 mb-4">
-                      <span className="px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-mono font-bold tracking-widest uppercase border border-white/15 flex items-center gap-2">
+                      <span className="px-3.5 py-1 rounded-full bg-zinc-100 dark:bg-white/10 text-[11px] font-mono font-bold tracking-widest uppercase border border-zinc-200 dark:border-white/15 flex items-center gap-2 text-zinc-700 dark:text-white">
                         <Layers className="w-3.5 h-3.5" /> DECK //{" "}
                         {item.stepNumber}
                       </span>
@@ -344,11 +344,11 @@ export const SplitScrollStack = React.forwardRef<
                     </div>
 
                     {/* Card Footer */}
-                    <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/60 font-medium">
-                      <span className="truncate pr-2 font-bold text-white/90">
+                    <div className="relative z-10 pt-4 border-t border-zinc-200 dark:border-white/10 flex items-center justify-between text-xs text-zinc-500 dark:text-white/60 font-medium">
+                      <span className="truncate pr-2 font-bold text-zinc-900 dark:text-white/90">
                         {item.title}
                       </span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/40 flex-shrink-0">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400 dark:text-white/40 flex-shrink-0">
                         SCROLL DRIVEN
                       </span>
                     </div>

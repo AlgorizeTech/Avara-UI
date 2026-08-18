@@ -319,7 +319,7 @@ export const StickyScrollStack = React.forwardRef<
       items = defaultStackItems,
       stackOffsetStep = 12,
       scaleStep = 0.03,
-      enableGlow = true,
+      enableGlow = false,
       className,
       ...props
     },
