@@ -329,7 +329,9 @@
         "media",
         "navigation"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -616,9 +618,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2698,8 +2698,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-code-renderer.json",
-        "utils"
+        "https://algorize-ui.vercel.app/r/ui-code-renderer.json"
       ],
       "files": [
         {

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T11:11:05.569Z",
-  "totalFiles": 96,
+  "generatedAt": "2026-08-18T13:38:48.089Z",
+  "totalFiles": 101,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -205,6 +205,36 @@
       "path": "/docs/nextjs-email.md",
       "url": "/docs/nextjs/email",
       "originalMdx": "nextjs\\email\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples",
+      "path": "/docs/nextjs-examples.md",
+      "url": "/docs/nextjs/examples",
+      "originalMdx": "nextjs\\examples\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/button",
+      "path": "/docs/nextjs-examples-button.md",
+      "url": "/docs/nextjs/examples/button",
+      "originalMdx": "nextjs\\examples\\button\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/counter",
+      "path": "/docs/nextjs-examples-counter.md",
+      "url": "/docs/nextjs/examples/counter",
+      "originalMdx": "nextjs\\examples\\counter\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/video-text",
+      "path": "/docs/nextjs-examples-video-text.md",
+      "url": "/docs/nextjs/examples/video-text",
+      "originalMdx": "nextjs\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/examples/waitlist",
+      "path": "/docs/nextjs-examples-waitlist.md",
+      "url": "/docs/nextjs/examples/waitlist",
+      "originalMdx": "nextjs\\examples\\waitlist\\page.mdx"
     },
     {
       "name": "nextjs/file-upload",
