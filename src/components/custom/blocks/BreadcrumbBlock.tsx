@@ -180,9 +180,9 @@ export function BreadcrumbBlock({
     <nav
       aria-label="Breadcrumb"
       style={style}
-      className="flex w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      className="flex w-full justify-center overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
-      <ol className="flex items-center whitespace-nowrap min-w-max p-1">
+      <ol className="flex items-center justify-center whitespace-nowrap min-w-max p-1">
         {visibleItems.map((item, index) => {
           const isLast = index === visibleItems.length - 1;
           const isEllipsis = "isEllipsis" in item;
