@@ -189,14 +189,14 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
           <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center">
               {/* Active indicator dot for Getting Started Guide - inline */}
-              {currentPath === '/docs' && (
+              {currentPath === '/docs/nextjs/index' && (
                 <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
               )}
               <Link
-                href="/docs"
+                href="/docs/nextjs/index"
                 className={cn(
                   'block py-1.5 text-sm',
-                  currentPath === '/docs'
+                  currentPath === '/docs/nextjs/index'
                     ? 'text-blue-600 dark:text-blue-400 font-medium'
                     : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300'
                 )}
