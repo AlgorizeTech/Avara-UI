@@ -55,7 +55,7 @@
       "name": "Documentation",
       "short_name": "Docs",
       "description": "Browse component documentation",
-      "url": "/docs",
+      "url": "/docs/nextjs/index",
       "icons": [
         {
           "src": "/icon-docs.png",

@@ -506,7 +506,16 @@ function HeroInteractiveHub() {
 function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
-			<HomepageHeroBlock />
+			{/* Links are passed explicitly rather than relying on the block's
+			    defaults: HomepageHeroBlock ships in the registry, so its defaults
+			    have to make sense in a consumer's project, where this site's
+			    routes do not exist. */}
+			<HomepageHeroBlock
+				badgeHref="/docs/nextjs/index"
+				primaryActionLabel="Browse Components"
+				primaryActionHref="/docs/nextjs/all-components"
+				secondaryActionHref={links.github}
+			/>
 			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-4 sm:pb-10">
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
@@ -593,7 +602,7 @@ function ComponentShowcase() {
 						</p>
 					</div>
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="group flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors shrink-0">
 						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -3101,7 +3110,7 @@ function CTASection() {
 					{/* Action Buttons */}
 					<div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
 						<Link
-							href="/docs"
+							href="/docs/nextjs/all-components"
 							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
 							Browse All Components
 							<ArrowRight className="size-4" />
@@ -3145,7 +3154,7 @@ function FooterSection() {
 
 				<div className="flex items-center gap-5 text-[12px] font-bold text-muted-foreground">
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="hover:text-foreground transition-colors">
 						Documentation
 					</Link>
