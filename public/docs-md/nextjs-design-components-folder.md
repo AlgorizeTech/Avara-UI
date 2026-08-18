@@ -112,6 +112,6 @@ Two independent components ship here — take only the one you need.
 
 ---
 
-**Component Path:** `nextjs\design-components-folder\page.mdx`
+**Component Path:** `[framework]\design-components-folder\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

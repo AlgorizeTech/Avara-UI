@@ -123,6 +123,6 @@ export default function BareTerminal() {
 
 ---
 
-**Component Path:** `nextjs\terminal\page.mdx`
+**Component Path:** `[framework]\terminal\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

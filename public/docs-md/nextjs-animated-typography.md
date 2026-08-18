@@ -230,6 +230,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\animated-typography\page.mdx`
+**Component Path:** `[framework]\animated-typography\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

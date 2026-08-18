@@ -278,6 +278,6 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
 
 ---
 
-**Component Path:** `nextjs\menubar\page.mdx`
+**Component Path:** `[framework]\menubar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

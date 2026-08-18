@@ -114,6 +114,6 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
 
 ---
 
-**Component Path:** `nextjs\calendar\page.mdx`
+**Component Path:** `[framework]\calendar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

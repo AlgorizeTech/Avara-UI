@@ -132,6 +132,6 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
 
 ---
 
-**Component Path:** `nextjs\carousel\page.mdx`
+**Component Path:** `[framework]\carousel\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

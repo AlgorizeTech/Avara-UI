@@ -308,6 +308,6 @@ Explore the Form component's validation integration, accessible error messages, 
 
 ---
 
-**Component Path:** `nextjs\form\page.mdx`
+**Component Path:** `[framework]\form\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

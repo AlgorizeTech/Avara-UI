@@ -238,6 +238,6 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
 
 ---
 
-**Component Path:** `nextjs\split-scroll-stepper\page.mdx`
+**Component Path:** `[framework]\split-scroll-stepper\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

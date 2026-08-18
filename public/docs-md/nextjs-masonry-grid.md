@@ -169,6 +169,6 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
 
 ---
 
-**Component Path:** `nextjs\masonry-grid\page.mdx`
+**Component Path:** `[framework]\masonry-grid\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

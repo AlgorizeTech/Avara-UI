@@ -256,6 +256,6 @@ Column Definition (TableColumn&lt;T&gt;)
 
 ---
 
-**Component Path:** `nextjs\table\page.mdx`
+**Component Path:** `[framework]\table\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -160,6 +160,6 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
 
 ---
 
-**Component Path:** `nextjs\scroll-area\page.mdx`
+**Component Path:** `[framework]\scroll-area\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

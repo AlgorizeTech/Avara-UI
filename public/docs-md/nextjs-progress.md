@@ -204,6 +204,6 @@ Explore the Progress bar's features, including smooth value interpolation, indet
 
 ---
 
-**Component Path:** `nextjs\progress\page.mdx`
+**Component Path:** `[framework]\progress\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

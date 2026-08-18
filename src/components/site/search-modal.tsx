@@ -4,7 +4,9 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Command, FileText, Home, Settings, Sparkles, User, Bot, X } from "lucide-react";
 import { getAllSearchableItems, searchItems, SearchableItem } from "@/lib/search-registry";
+import { docsHref, frameworkFromPathname } from "@/lib/framework";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 /**
  * Where AI search sends the user's query, from `NEXT_PUBLIC_AI_SEARCH_ENDPOINT`.
@@ -174,6 +176,9 @@ const getItemIcon = (item: SearchableItem) => {
 };
 
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
+  // Results resolve against the framework the reader is already in, so searching
+  // from /docs/reactjs/... never drops them back into the Next.js tree.
+  const framework = frameworkFromPathname(usePathname() ?? "");
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [allItems] = useState(() => getAllSearchableItems());
@@ -230,7 +235,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     try {
       const currentUrl = window.location.origin;
       const componentsWithLinks = allItems.map(item =>
-        `${item.title}: ${item.description} - Link: ${currentUrl}${item.href}`
+        `${item.title}: ${item.description} - Link: ${currentUrl}${docsHref(framework, item.slug)}`
       ).join('\n');
 
      const enhancedPrompt = `You are "Algorize UI Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
@@ -348,7 +353,7 @@ User question: ${prompt}`;
             fetchAIResponse(query);
             setQuery("");
           } else if (filteredItems[selectedIndex]) {
-            window.location.href = filteredItems[selectedIndex].href;
+            window.location.href = docsHref(framework, filteredItems[selectedIndex].slug);
             handleSelectAndClose();
           }
           break;
@@ -685,7 +690,7 @@ User question: ${prompt}`;
                     {filteredItems.map((item, index) => (
                       <Link
                         key={item.id}
-                        href={item.href}
+                        href={docsHref(framework, item.slug)}
                         onClick={handleSelectAndClose}
                         className={`flex items-center gap-3 px-4 py-3 hover:bg-white/50 dark:hover:bg-zinc-900/50 transition-colors ${
                           index === selectedIndex

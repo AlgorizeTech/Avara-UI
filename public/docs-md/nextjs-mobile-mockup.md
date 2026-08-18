@@ -89,6 +89,6 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 
 ---
 
-**Component Path:** `nextjs\mobile-mockup\page.mdx`
+**Component Path:** `[framework]\mobile-mockup\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

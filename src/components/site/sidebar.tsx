@@ -1,7 +1,13 @@
 "use client";
 
+import { FrameworkSwitcher } from "@/components/site/framework-switcher";
 import { ScrollArea } from "@/components/site/scroll-area";
 import { navigation } from "@/constants/navigation";
+import {
+  docsHref,
+  frameworkFromPathname,
+  slugFromPathname,
+} from "@/lib/framework";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronRight, PlayCircle, Search, X } from "lucide-react";
@@ -32,7 +38,8 @@ const useCurrentPath = () => {
 
 export interface MenuItemType {
   label: string;
-  href: string;
+  /** Path below the framework segment. Composed into an href at render time. */
+  slug: string;
   badge?: string;
   badges?: string[];
   children?: MenuItemType[];
@@ -41,7 +48,7 @@ export interface MenuItemType {
 // 1. Recursive transformation: cleanly maps unlimited nesting depths
 const transformItem = (item: any): MenuItemType => ({
   label: item.label,
-  href: item.href || (item.children?.[0]?.href ?? "#"),
+  slug: item.slug ?? item.children?.[0]?.slug ?? "",
   badge: item.badge,
   children: item.children ? item.children.map(transformItem) : undefined,
 });
@@ -49,11 +56,14 @@ const transformItem = (item: any): MenuItemType => ({
 const transformNavigation = (): MenuItemType[] => {
   return navigation.map((section) => ({
     label: section.label,
-    href: section.children[0]?.href || "#",
+    slug: section.children[0]?.slug ?? "",
     children: section.children.map(transformItem),
   }));
 };
 
+// Safe at module scope only because this tree is now framework-independent: it
+// holds slugs, and the href is composed per render. Storing hrefs here would
+// pin the whole sidebar to whichever framework happened to build first.
 const menuData = transformNavigation();
 
 // Premium Badge Styling
@@ -73,13 +83,16 @@ const getBadgeStyle = (badge: string) => {
 };
 
 // 2. Recursive active checker: returns true if THIS item or ANY descendant is active
+// Matches on slug, never on a composed href. An href comparison still typechecks
+// once the framework segment is dynamic — it just returns false forever, which
+// silently kills active state and prev/next with a perfectly green build.
 const checkActiveRecursive = (
   item: MenuItemType,
-  currentPath: string,
+  currentSlug: string,
 ): boolean => {
-  if (item.href === currentPath) return true;
+  if (item.slug === currentSlug) return true;
   return (
-    item.children?.some((child) => checkActiveRecursive(child, currentPath)) ??
+    item.children?.some((child) => checkActiveRecursive(child, currentSlug)) ??
     false
   );
 };
@@ -92,12 +105,14 @@ const MenuItem: React.FC<{
   isSearching?: boolean;
 }> = ({ item, level = 0, defaultOpen = false, isSearching = false }) => {
   const pathName = useCurrentPath();
+  const framework = frameworkFromPathname(pathName);
+  const currentSlug = slugFromPathname(pathName);
   const hasChildren = Boolean(item.children && item.children.length > 0);
 
   // Auto-expand folder if any child or descendant is currently active
   const hasActiveDescendant =
     hasChildren &&
-    item.children!.some((child) => checkActiveRecursive(child, pathName));
+    item.children!.some((child) => checkActiveRecursive(child, currentSlug));
 
   const [isOpen, setIsOpen] = useState(defaultOpen || hasActiveDescendant);
 
@@ -106,7 +121,7 @@ const MenuItem: React.FC<{
 
   // --- UPDATED ACTIVE LOGIC ---
   // isExactActive: True ONLY when you are on this exact link (for leaf items & indicator bar)
-  const isExactActive = pathName === item.href && !hasChildren;
+  const isExactActive = currentSlug === item.slug && !hasChildren;
 
   // isParentActive: True if this is a folder AND one of its children is active
   const isParentActive = hasChildren && hasActiveDescendant;
@@ -191,7 +206,7 @@ const MenuItem: React.FC<{
           {triggerContent}
         </button>
       ) : (
-        <Link href={item.href} className={baseClasses}>
+        <Link href={docsHref(framework, item.slug)} className={baseClasses}>
           {/* Active indicator pill ONLY renders on the exact active child leaf */}
           {isExactActive && (
             <motion.div
@@ -259,6 +274,8 @@ const filterMenuData = (
 
 const Sidebar = () => {
   const currentPath = useCurrentPath();
+  const framework = frameworkFromPathname(currentPath);
+  const currentSlug = slugFromPathname(currentPath);
   const [searchQuery, setSearchQuery] = useState("");
 
   // Memoize filtered data to prevent unnecessary deep-tree recalculations
@@ -270,8 +287,11 @@ const Sidebar = () => {
 
   return (
     <aside className="hidden md:flex flex-col w-[240px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
-      {/* --- STICKY SEARCH INPUT --- */}
-      <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0">
+      {/* --- STICKY FRAMEWORK SWITCHER + SEARCH INPUT ---
+          One control group: the switcher scopes the tree, search filters within
+          that scope, and neither may scroll away from the reader. */}
+      <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0 space-y-2.5">
+        <FrameworkSwitcher />
         <div className="relative flex items-center w-full">
           <Search className="absolute left-3 w-4 h-4 text-zinc-400 pointer-events-none" />
           <input
@@ -331,10 +351,10 @@ const Sidebar = () => {
           {/* Quick Links Section */}
           <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800/50 pl-4">
             <Link
-              href="/docs/nextjs/index"
+              href={docsHref(framework, "index")}
               className={cn(
                 "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all cursor-pointer",
-                currentPath === "/docs/nextjs/index"
+                currentSlug === "index"
                   ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50 font-medium"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
               )}

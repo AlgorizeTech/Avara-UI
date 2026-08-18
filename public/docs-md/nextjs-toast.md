@@ -257,6 +257,6 @@ When calling the `toast()` function from the `useToast` hook, you can pass the f
 
 ---
 
-**Component Path:** `nextjs\toast\page.mdx`
+**Component Path:** `[framework]\toast\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

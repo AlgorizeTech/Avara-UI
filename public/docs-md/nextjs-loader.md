@@ -142,6 +142,6 @@ Discover the Loader component's animated states, offering various spinner styles
 
 ---
 
-**Component Path:** `nextjs\loader\page.mdx`
+**Component Path:** `[framework]\loader\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
