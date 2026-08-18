@@ -6,6 +6,16 @@ import { Search, Command, FileText, Home, Settings, Sparkles, User, Bot, X } fro
 import { getAllSearchableItems, searchItems, SearchableItem } from "@/lib/search-registry";
 import Link from "next/link";
 
+/**
+ * Where AI search sends the user's query, from `NEXT_PUBLIC_AI_SEARCH_ENDPOINT`.
+ *
+ * This was hardcoded to a service belonging to the template this site was built
+ * from, which means every query left for a third party. Point it at your own
+ * endpoint; when unset, the AI tab reports that search is unavailable rather
+ * than sending anything anywhere.
+ */
+const AI_SEARCH_ENDPOINT = process.env.NEXT_PUBLIC_AI_SEARCH_ENDPOINT;
+
 // AI Logo Component with fallback
 const AILogo: React.FC<{ className?: string; size?: 'sm' | 'md' | 'lg'; loading?: boolean }> = ({
   className = "",
@@ -199,11 +209,23 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   const fetchAIResponse = useCallback(async (prompt: string) => {
     if (!prompt.trim()) return;
 
-    setIsAILoading(true);
-    setAiResponse("");
-
     // Add user message to conversation
     setAiConversation(prev => [...prev, { type: 'user', content: prompt }]);
+
+    // Say so rather than failing silently — and never fall back to a default
+    // endpoint, since that would send the query to someone else's service.
+    if (!AI_SEARCH_ENDPOINT) {
+      setAiConversation(prev => [...prev, {
+        type: 'ai',
+        content:
+          'AI search is not configured. Set `NEXT_PUBLIC_AI_SEARCH_ENDPOINT` to enable it — ' +
+          'the component list above still works.',
+      }]);
+      return;
+    }
+
+    setIsAILoading(true);
+    setAiResponse("");
 
     try {
       const currentUrl = window.location.origin;
@@ -211,13 +233,16 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         `${item.title}: ${item.description} - Link: ${currentUrl}${item.href}`
       ).join('\n');
 
-     const enhancedPrompt = `You are "Next.js Documentation Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
+     const enhancedPrompt = `You are "Algorize UI Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
+
+
+
 
 ${componentsWithLinks}
 
 When recommending components, follow these guidelines:
 1. Understand the user's intent, even if their keywords are unclear or imperfect.
-2. Suggest the most relevant SeraUI components based on reasoning, context, and functionality—not just keyword matching.
+2. Suggest the most relevant Algorize UI components based on reasoning, context, and functionality—not just keyword matching.
 3. Always include the direct link to the component documentation. Format links as: [Component Name](${currentUrl}/docs/component-name)
 4. Use markdown formatting consistently:
    - **Bold** for key terms or important points
@@ -230,7 +255,9 @@ Respond clearly and helpfully. Explain why each component is suitable for the us
 
 User question: ${prompt}`;
 
-      const res = await fetch(`https://studio.seraprogrammer.com/api/ai?model=gpt-4o-mini&prompt=${encodeURIComponent(enhancedPrompt)}`);
+      const res = await fetch(
+        `${AI_SEARCH_ENDPOINT}?model=gpt-4o-mini&prompt=${encodeURIComponent(enhancedPrompt)}`,
+      );
 
       if (!res.body) {
         console.error("No response body");
@@ -625,7 +652,7 @@ User question: ${prompt}`;
                       </div>
                       <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">AI Assistant Ready</h3>
                       <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
-                        Ask me anything about the SeraUI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
+                        Ask me anything about the Algorize UI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2 justify-center">
                         {[

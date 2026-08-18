@@ -1,6 +1,6 @@
 // Service Worker for caching and performance optimization
-const CACHE_NAME = "sera-ui-v1.0.0";
-const STATIC_CACHE_NAME = "sera-ui-static-v1.0.0";
+const CACHE_NAME = "algorize-ui-v1.0.0";
+const STATIC_CACHE_NAME = "algorize-ui-static-v1.0.0";
 
 // Resources to cache immediately
 const STATIC_RESOURCES = [
@@ -17,7 +17,6 @@ const STATIC_RESOURCES = [
 // API endpoints to cache
 const API_CACHE_PATTERNS = [
   /^https:\/\/api\.github\.com\/repos\//,
-  /^https:\/\/seraui\.seraprogrammer\.com\/api\//,
 ];
 
 // Install event - cache static resources

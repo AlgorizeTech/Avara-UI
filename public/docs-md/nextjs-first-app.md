@@ -351,13 +351,10 @@ To deploy your Next.js app, you can use Vercel (the creators of Next.js):
 Congratulations! You've created your first Next.js application. Here are some next steps:
 
 1. [Browse the components](/docs/nextjs/all-components) — each page has an install command and a full usage file
-2. [Learn about routing](/docs/nextjs/routing) in Next.js
-3. [Explore data fetching](/docs/nextjs/data-fetching) methods
-4. [Style your application](/docs/nextjs/styling) with CSS
-5. [Optimize performance](/docs/nextjs/performance) with built-in features
-6. [Add authentication](/docs/nextjs/authentication) to protect routes
-7. [Test your application](/docs/nextjs/testing) with Jest or Cypress
-8. [Deploy your application](/docs/nextjs/deployment) to production
+2. [Read the Introduction](/docs/nextjs/index) to see how the registry install model works
+3. [Check the Architecture](/docs/nextjs/architecture) for how components are structured
+4. For the framework itself — routing, data fetching, deployment — see the
+   [Next.js documentation](https://nextjs.org/docs)
 
 ## Resources
 
@@ -370,4 +367,4 @@ Congratulations! You've created your first Next.js application. Here are some ne
 
 **Component Path:** `nextjs\first-app\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

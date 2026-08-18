@@ -1,8 +1,8 @@
 export const metadata = {
-  title: 'Documentation - Next.js Documentation Component Library',
-  description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
+  title: 'Documentation - Algorize UI',
+  description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
   keywords: [
-    'Next.js Documentation documentation',
+    'Algorize UI documentation',
     'React components',
     'UI library',
     'component library',
@@ -12,15 +12,15 @@ export const metadata = {
     'design system'
   ],
   openGraph: {
-    title: 'Documentation - Next.js Documentation',
-    description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
+    title: 'Documentation - Algorize UI',
+    description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
     type: 'article',
     url: '/docs',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Documentation - Next.js Documentation',
-    description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
+    title: 'Documentation - Algorize UI',
+    description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
   },
   alternates: {
     canonical: '/docs',
@@ -37,48 +37,44 @@ import {
   TabsContent,
 } from "@/components/site/tabs.tsx";
 import Link from 'next/link';
+import { COMPONENT_COUNT, links } from "@/config/site";
 
 # Documentation
 
-Welcome to the Next.js Documentation documentation! This guide will help you get started with our component library and make the most of its features.
-
-## Next.js Documentation
-
-We've migrated our documentation to focus on Next.js, the React framework for production. Explore the following sections to learn how to build modern web applications:
+Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
+into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
   <Link href="/docs/nextjs/index" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Getting Started</h3>
+    <h3 className="text-xl font-semibold mb-2">Introduction</h3>
     <span className="block text-zinc-600 dark:text-zinc-400">
-      Learn the basics of Next.js, including installation, project structure, and creating your first app.
+      What the library is, how the registry install model works, and what ships in it.
     </span>
   </Link>
-  
-  <Link href="/docs/nextjs/routing" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Core Features</h3>
+
+  <Link href="/docs/nextjs/installation" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
+    <h3 className="text-xl font-semibold mb-2">Installation</h3>
     <span className="block text-zinc-600 dark:text-zinc-400">
-      Explore Next.js core features like routing, data fetching, API routes, and image optimization.
+      Requirements, initializing the CLI, and where installed files land.
     </span>
   </Link>
-  
-  <Link href="/docs/nextjs/styling" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Styling & Performance</h3>
+
+  <Link href="/docs/nextjs/first-app" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
+    <h3 className="text-xl font-semibold mb-2">Quick Start</h3>
     <span className="block text-zinc-600 dark:text-zinc-400">
-      Learn about CSS styling options, performance optimization techniques, and SEO best practices.
+      Go from an empty project to a rendered component in four steps.
     </span>
   </Link>
-  
-  <Link href="/docs/nextjs/authentication" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Advanced Topics</h3>
+
+  <Link href="/docs/nextjs/all-components" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
+    <h3 className="text-xl font-semibold mb-2">Browse Components</h3>
     <span className="block text-zinc-600 dark:text-zinc-400">
-      Dive into advanced topics like authentication, middleware, TypeScript, and testing.
+      All of them, each with live previews, prop notes and an install command.
     </span>
   </Link>
 </div>
 
-## Component Library
-
-While we focus on Next.js documentation, Next.js Documentation still provides a rich set of React components:
+## Popular components
 
 <Tabs defaultValue="components" className="mt-8">
   <TabsList>
@@ -137,19 +133,17 @@ While we focus on Next.js documentation, Next.js Documentation still provides a 
 
 ## Getting Help
 
-If you need help with Next.js Documentation or Next.js:
-
-- Check the [Next.js Documentation](https://nextjs.org/docs)
-- Visit our [GitHub organisation](https://github.com/AlgorizeTech)
+- Visit our <a href={links.github}>GitHub organisation</a>
 - Browse the [component library](/docs/nextjs/all-components)
+- For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 
 ## Contributing
 
-We welcome contributions to Next.js Documentation! If you'd like to contribute:
+We welcome contributions to Algorize UI! If you'd like to contribute:
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-Open an issue or pull request on [GitHub](https://github.com/AlgorizeTech) to get started.
+Open an issue or pull request on <a href={links.issues}>GitHub</a> to get started.
