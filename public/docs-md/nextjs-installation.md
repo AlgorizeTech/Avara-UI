@@ -281,16 +281,14 @@ After installation, try these first steps:
 
 After setting up your project, consider:
 
-1. [Learning the basics](/docs/nextjs/routing) of Next.js routing
-2. [Adding data fetching](/docs/nextjs/data-fetching) to your pages
-3. [Styling your application](/docs/nextjs/styling) with CSS
-4. [Optimizing performance](/docs/nextjs/performance) with built-in features
-5. [Adding authentication](/docs/nextjs/authentication) to protect routes
-6. [Testing your application](/docs/nextjs/testing) with Jest or Cypress
-7. [Deploying your application](/docs/nextjs/deployment) to production
+1. [Adding your first component](/docs/nextjs/first-app) in four steps
+2. [Browsing the component library](/docs/nextjs/all-components)
+3. [Reading the Architecture](/docs/nextjs/architecture) to see how components are structured
+4. For the framework itself — routing, data fetching, deployment — see the
+   [Next.js documentation](https://nextjs.org/docs)
 
 ---
 
 **Component Path:** `nextjs\installation\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { SITE_URL } from "@/config/site";
 
 // Lazy load Open Graph meta tags after initial render
 export function LazyOpenGraph() {
@@ -8,53 +9,51 @@ export function LazyOpenGraph() {
     const addOpenGraphTags = () => {
       const ogTags = [
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "Next.js Documentation" },
+        { property: "og:site_name", content: "Algorize UI" },
         {
           property: "og:title",
           content:
-            "Next.js Documentation | Comprehensive Guide",
+            "Algorize UI | React Component Library",
         },
         {
           property: "og:description",
           content:
-            "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
+            "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
         },
-        { property: "og:url", content: "https://seraui.seraprogrammer.com" },
+        { property: "og:url", content: SITE_URL },
         {
           property: "og:image",
-          content: "https://seraui.seraprogrammer.com/og-image.png",
+          content: `${SITE_URL}/og-image.png`,
         },
         { property: "og:image:width", content: "1200" },
         { property: "og:image:height", content: "630" },
         {
           property: "og:image:alt",
           content:
-            "Next.js Documentation | Comprehensive Guide",
+            "Algorize UI | React Component Library",
         },
         { property: "og:image:type", content: "image/png" },
         { property: "og:locale", content: "en_US" },
 
         // Twitter Card Tags
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: "@sera_ui" },
-        { name: "twitter:creator", content: "@sera_ui" },
         {
           name: "twitter:title",
-          content: "Next.js Documentation | Comprehensive Guide",
+          content: "Algorize UI | React Component Library",
         },
         {
           name: "twitter:description",
           content:
-            "500+ animated React components built with Tailwind CSS & Framer Motion. Free, open-source, and production-ready.",
+            "120+ React components you install into your own codebase.",
         },
         {
           name: "twitter:image",
-          content: "https://seraui.seraprogrammer.com/og-image.png",
+          content: `${SITE_URL}/og-image.png`,
         },
         {
           name: "twitter:image:alt",
           content:
-            "Next.js Documentation | Comprehensive Guide",
+            "Algorize UI | React Component Library",
         },
       ];
 

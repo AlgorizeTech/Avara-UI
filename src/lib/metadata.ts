@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, integrations } from "@/config/site";
 
 // Split keywords into chunks for better performance
 const coreKeywords = [
@@ -16,7 +17,6 @@ const coreKeywords = [
 
 const bangladeshiKeywords = [
   "Bangladeshi UI library",
-  "First UI library from Bangladesh",
   "Made in Bangladesh UI library",
   "Bangla UI library",
   "React UI library for Bangladesh",
@@ -26,7 +26,7 @@ const bangladeshiKeywords = [
 
 const shadcnKeywords = [
   "shadcn ui alternative",
-  "shadcn ui vs Next.js Documentation",
+  "shadcn ui vs Algorize UI",
   "Free shadcn ui alternative",
   "Lighter than shadcn ui",
   "Easier shadcn ui",
@@ -126,35 +126,35 @@ export const allKeywords = [
 
 export const metadata: Metadata = {
   title:
-    "Next.js Documentation | Comprehensive Guide",
+    "Algorize UI | React Component Library",
   description:
-    "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
+    "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
   keywords: allKeywords,
-  authors: [{ name: "Next.js Documentation Team", url: "https://github.com/sera-ui" }],
-  creator: "Next.js Documentation",
-  publisher: "Next.js Documentation",
+  authors: [{ name: "AlgorizeTech", url: "https://github.com/AlgorizeTech" }],
+  creator: "Algorize UI",
+  publisher: "Algorize UI",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://seraui.seraprogrammer.com"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title:
-      "Next.js Documentation | Comprehensive Guide",
+      "Algorize UI | React Component Library",
     description:
-      "Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.",
-    url: "https://seraui.seraprogrammer.com",
-    siteName: "Next.js Documentation",
+      "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+    url: SITE_URL,
+    siteName: "Algorize UI",
     images: [
       {
-        url: "https://seraui.seraprogrammer.com/og-image.png",
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Next.js Documentation | Comprehensive Guide",
+        alt: "Algorize UI | React Component Library",
         type: "image/png",
       },
     ],
@@ -163,12 +163,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Next.js Documentation | Comprehensive Guide",
+    title: "Algorize UI | React Component Library",
     description:
-      "500+ animated React components built with Tailwind CSS & Framer Motion. Free, open-source, and production-ready.",
-    images: ["https://seraui.seraprogrammer.com/og-image.png"],
-    creator: "@sera_ui",
-    site: "@sera_ui",
+      "120+ React components you install into your own codebase.",
+    images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
     index: true,
@@ -181,9 +179,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "y3qEBdgYG32ZoXRsNqWxh6QgyxhQ337zoKpLwmb_dic",
-  },
+  // Ownership tokens come from the environment. The value here previously
+  // belonged to the template this site was built from, which claimed this
+  // domain in someone else's Search Console.
+  ...(integrations.googleSiteVerification
+    ? { verification: { google: integrations.googleSiteVerification } }
+    : {}),
   category: "technology",
   classification: "React Component Library",
 };

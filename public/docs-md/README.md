@@ -1,9 +1,9 @@
-# Next.js Documentation - Markdown Files
+# Algorize UI - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-17T15:35:18.013Z
-**Total files:** 113
+**Generated at:** 2026-08-18T11:11:05.589Z
+**Total files:** 96
 
 ## Available Files
 
@@ -15,9 +15,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/animated-timeline](/docs/nextjs-animated-timeline.md) - Source: `nextjs\animated-timeline\page.mdx`
 - [nextjs/animated-typography](/docs/nextjs-animated-typography.md) - Source: `nextjs\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs/nextjs-api-playground.md) - Source: `nextjs\api-playground\page.mdx`
-- [nextjs/api-routes](/docs/nextjs-api-routes.md) - Source: `nextjs\api-routes\page.mdx`
 - [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `nextjs\architecture\page.mdx`
-- [nextjs/authentication](/docs/nextjs-authentication.md) - Source: `nextjs\authentication\page.mdx`
 - [nextjs/breadcrumb](/docs/nextjs-breadcrumb.md) - Source: `nextjs\breadcrumb\page.mdx`
 - [nextjs/button](/docs/nextjs-button.md) - Source: `nextjs\button\page.mdx`
 - [nextjs/calendar](/docs/nextjs-calendar.md) - Source: `nextjs\calendar\page.mdx`
@@ -34,22 +32,15 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `nextjs\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `nextjs\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `nextjs\custom-code-block\page.mdx`
-- [nextjs/data-fetching](/docs/nextjs-data-fetching.md) - Source: `nextjs\data-fetching\page.mdx`
 - [nextjs/data-grid](/docs/nextjs-data-grid.md) - Source: `nextjs\data-grid\page.mdx`
 - [nextjs/data-maps](/docs/nextjs-data-maps.md) - Source: `nextjs\data-maps\page.mdx`
 - [nextjs/data-table](/docs/nextjs-data-table.md) - Source: `nextjs\data-table\page.mdx`
 - [nextjs/date-picker](/docs/nextjs-date-picker.md) - Source: `nextjs\date-picker\page.mdx`
-- [nextjs/deployment](/docs/nextjs-deployment.md) - Source: `nextjs\deployment\page.mdx`
 - [nextjs/design-components-folder](/docs/nextjs-design-components-folder.md) - Source: `nextjs\design-components-folder\page.mdx`
 - [nextjs/dialog](/docs/nextjs-dialog.md) - Source: `nextjs\dialog\page.mdx`
 - [nextjs/dock](/docs/nextjs-dock.md) - Source: `nextjs\dock\page.mdx`
 - [nextjs/drawer](/docs/nextjs-drawer.md) - Source: `nextjs\drawer\page.mdx`
 - [nextjs/email](/docs/nextjs-email.md) - Source: `nextjs\email\page.mdx`
-- [nextjs/examples](/docs/nextjs-examples.md) - Source: `nextjs\examples\page.mdx`
-- [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `nextjs\examples\button\page.mdx`
-- [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `nextjs\examples\counter\page.mdx`
-- [nextjs/examples/video-text](/docs/nextjs-examples-video-text.md) - Source: `nextjs\examples\video-text\page.mdx`
-- [nextjs/examples/waitlist](/docs/nextjs-examples-waitlist.md) - Source: `nextjs\examples\waitlist\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `nextjs\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `nextjs\first-app\page.mdx`
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `nextjs\fleet-tracker\page.mdx`
@@ -60,7 +51,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `nextjs\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `nextjs\hero-video-player\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `nextjs\image-compare\page.mdx`
-- [nextjs/image-optimization](/docs/nextjs-image-optimization.md) - Source: `nextjs\image-optimization\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `nextjs\index\page.mdx`
 - [nextjs/input](/docs/nextjs-input.md) - Source: `nextjs\input\page.mdx`
 - [nextjs/installation](/docs/nextjs-installation.md) - Source: `nextjs\installation\page.mdx`
@@ -73,7 +63,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/masonry-grid](/docs/nextjs-masonry-grid.md) - Source: `nextjs\masonry-grid\page.mdx`
 - [nextjs/memories-card](/docs/nextjs-memories-card.md) - Source: `nextjs\memories-card\page.mdx`
 - [nextjs/menubar](/docs/nextjs-menubar.md) - Source: `nextjs\menubar\page.mdx`
-- [nextjs/middleware](/docs/nextjs-middleware.md) - Source: `nextjs\middleware\page.mdx`
 - [nextjs/mobile-mockup](/docs/nextjs-mobile-mockup.md) - Source: `nextjs\mobile-mockup\page.mdx`
 - [nextjs/modal](/docs/nextjs-modal.md) - Source: `nextjs\modal\page.mdx`
 - [nextjs/navbar](/docs/nextjs-navbar.md) - Source: `nextjs\navbar\page.mdx`
@@ -81,17 +70,14 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `nextjs\network-graph\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `nextjs\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `nextjs\pagination\page.mdx`
-- [nextjs/performance](/docs/nextjs-performance.md) - Source: `nextjs\performance\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `nextjs\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `nextjs\pricing\page.mdx`
 - [nextjs/progress](/docs/nextjs-progress.md) - Source: `nextjs\progress\page.mdx`
 - [nextjs/qr-code-generator](/docs/nextjs-qr-code-generator.md) - Source: `nextjs\qr-code-generator\page.mdx`
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `nextjs\resizable\page.mdx`
-- [nextjs/routing](/docs/nextjs-routing.md) - Source: `nextjs\routing\page.mdx`
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `nextjs\scroll-area\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `nextjs\scroll-stack\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `nextjs\select\page.mdx`
-- [nextjs/seo](/docs/nextjs-seo.md) - Source: `nextjs\seo\page.mdx`
 - [nextjs/sidebar](/docs/nextjs-sidebar.md) - Source: `nextjs\sidebar\page.mdx`
 - [nextjs/signup-form](/docs/nextjs-signup-form.md) - Source: `nextjs\signup-form\page.mdx`
 - [nextjs/skeleton](/docs/nextjs-skeleton.md) - Source: `nextjs\skeleton\page.mdx`
@@ -99,11 +85,9 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/split-scroll-stepper](/docs/nextjs-split-scroll-stepper.md) - Source: `nextjs\split-scroll-stepper\page.mdx`
 - [nextjs/split-stepper](/docs/nextjs-split-stepper.md) - Source: `nextjs\split-stepper\page.mdx`
 - [nextjs/stepper](/docs/nextjs-stepper.md) - Source: `nextjs\stepper\page.mdx`
-- [nextjs/styling](/docs/nextjs-styling.md) - Source: `nextjs\styling\page.mdx`
 - [nextjs/support-dashboard](/docs/nextjs-support-dashboard.md) - Source: `nextjs\support-dashboard\page.mdx`
 - [nextjs/table](/docs/nextjs-table.md) - Source: `nextjs\table\page.mdx`
 - [nextjs/terminal](/docs/nextjs-terminal.md) - Source: `nextjs\terminal\page.mdx`
-- [nextjs/testing](/docs/nextjs-testing.md) - Source: `nextjs\testing\page.mdx`
 - [nextjs/text-animation](/docs/nextjs-text-animation.md) - Source: `nextjs\text-animation\page.mdx`
 - [nextjs/theme-switcher](/docs/nextjs-theme-switcher.md) - Source: `nextjs\theme-switcher\page.mdx`
 - [nextjs/tilted-card](/docs/nextjs-tilted-card.md) - Source: `nextjs\tilted-card\page.mdx`
@@ -112,7 +96,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/toggle](/docs/nextjs-toggle.md) - Source: `nextjs\toggle\page.mdx`
 - [nextjs/toggle-group](/docs/nextjs-toggle-group.md) - Source: `nextjs\toggle-group\page.mdx`
 - [nextjs/tooltip](/docs/nextjs-tooltip.md) - Source: `nextjs\tooltip\page.mdx`
-- [nextjs/typescript](/docs/nextjs-typescript.md) - Source: `nextjs\typescript\page.mdx`
 - [nextjs/typography](/docs/nextjs-typography.md) - Source: `nextjs\typography\page.mdx`
 - [nextjs/user-graph](/docs/nextjs-user-graph.md) - Source: `nextjs\user-graph\page.mdx`
 - [nextjs/verify-badge](/docs/nextjs-verify-badge.md) - Source: `nextjs\verify-badge\page.mdx`

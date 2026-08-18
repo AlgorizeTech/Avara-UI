@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
-console.log("🚀 Running Next.js Documentation Performance Optimizations...\n");
+console.log("🚀 Running Algorize UI Performance Optimizations...\n");
 
 // Check if .next directory exists
 const nextDir = path.join(process.cwd(), ".next");

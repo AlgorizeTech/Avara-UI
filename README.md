@@ -1,4 +1,4 @@
-# Next.js Documentation Platform
+# Algorize UI Platform
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://reactjs.org/)
@@ -98,7 +98,7 @@ This is a comprehensive Next.js documentation platform built with Next.js 15 and
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd seraui
+cd algorize-ui
 
 # Install dependencies
 npm install
@@ -330,4 +330,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*Built with ❤️ by Next.js Documentation Team*
+*Built with ❤️ by Algorize UI Team*

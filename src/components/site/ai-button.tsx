@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { SITE_URL } from "@/config/site";
 
 interface AIButtonProps {
   dir?: 'left' | 'right';
@@ -28,27 +29,39 @@ export function AIButton({ dir = 'right' }: AIButtonProps) {
   }, []);
 
   // Construct URLs
-  const baseUrl = 'https://seraui.seraprogrammer.com';
+  const baseUrl = SITE_URL;
   const currentUrl = `${baseUrl}${pathname}`;
   
-  // Extract component name from pathname
-  const componentMatch = pathname.match(/\/docs\/([^\/]+)/);
-  const componentName = componentMatch ? componentMatch[1] : 'index';
-  const markdownUrl = `${baseUrl}/docs-md/${componentName}.md`;
+  // Component name is the LAST segment of the docs path. Matching the first
+  // segment instead captured the "nextjs" in /docs/nextjs/button, so every
+  // component pointed at docs-md/nextjs.md and asked the assistant about a
+  // component called "nextjs".
+  const componentMatch = pathname.match(/^\/docs\/(?:nextjs\/)?(.+?)\/?$/);
+  const componentName = componentMatch ? componentMatch[1].split('/').pop()! : 'index';
+
+  // build-md-files.ts flattens the docs tree into `<segments joined by ->.md`,
+  // so /docs/nextjs/button is published as nextjs-button.md — not button.md.
+  const markdownSlug = pathname
+    .replace(/^\/docs\/?/, '')
+    .replace(/\/$/, '')
+    .split('/')
+    .filter(Boolean)
+    .join('-') || 'index';
+  const markdownUrl = `${baseUrl}/docs-md/${markdownSlug}.md`;
 
   // Create specific prompts for different AI assistants
   const getChatGPTPrompt = (url: string) => {
     if (componentName === 'index') {
-      return `I need help understanding the SeraUI component library documentation at ${url}. Please explain the overall architecture and available components.`;
+      return `I need help understanding the Algorize UI component library documentation at ${url}. Please explain the overall architecture and available components.`;
     }
-    return `I need help understanding the SeraUI ${componentName} component documentation at ${url}. Please explain the available props, styling options, and provide usage examples.`;
+    return `I need help understanding the Algorize UI ${componentName} component documentation at ${url}. Please explain the available props, styling options, and provide usage examples.`;
   };
 
   const getClaudePrompt = (url: string) => {
     if (componentName === 'index') {
-      return `I'm exploring the SeraUI component library from ${url}. Can you help me understand the component system and how to get started?`;
+      return `I'm exploring the Algorize UI component library from ${url}. Can you help me understand the component system and how to get started?`;
     }
-    return `I'm implementing SeraUI ${componentName} from ${url} but need clarification on the component API, customization options, and best practices. Can you help me understand this documentation?`;
+    return `I'm implementing Algorize UI ${componentName} from ${url} but need clarification on the component API, customization options, and best practices. Can you help me understand this documentation?`;
   };
 
   const chatGptUrl = `https://chatgpt.com/?model=gpt-4&q=${encodeURIComponent(getChatGPTPrompt(currentUrl))}`;
@@ -58,10 +71,10 @@ export function AIButton({ dir = 'right' }: AIButtonProps) {
     try {
       // Create a ChatGPT prompt with the markdown URL
       const chatGPTPrompt = componentName === 'index' 
-        ? `I need help understanding the SeraUI component library documentation. Please analyze this markdown documentation: ${markdownUrl}
+        ? `I need help understanding the Algorize UI component library documentation. Please analyze this markdown documentation: ${markdownUrl}
 
 Can you explain the overall architecture and available components?`
-        : `I need help understanding the SeraUI ${componentName} component. Please analyze this markdown documentation: ${markdownUrl}
+        : `I need help understanding the Algorize UI ${componentName} component. Please analyze this markdown documentation: ${markdownUrl}
 
 Can you explain the available props, styling options, and provide usage examples?`;
       

@@ -120,7 +120,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   mdContent = mdContent.trim();
   
   // Add component path reference
-  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.\n`;
+  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.\n`;
   
   return mdContent + pathReference;
 }
@@ -218,7 +218,7 @@ async function buildMdFiles(): Promise<void> {
     );
     
     // Create a README for the MD directory
-    const readmeContent = `# Next.js Documentation - Markdown Files
+    const readmeContent = `# Algorize UI - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
