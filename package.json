@@ -20,7 +20,8 @@
     "generate:registry": "tsx ./src/scripts/generate-registry.ts",
     "check:registry": "tsx ./src/scripts/check-registry.ts",
     "check:frameworks": "tsx ./src/scripts/check-frameworks.ts",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "verify:registry": "node scripts/verify-registry.mjs"
   },
   "dependencies": {
     "@babel/generator": "^7.28.0",
