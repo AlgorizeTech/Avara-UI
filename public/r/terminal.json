@@ -3,7 +3,7 @@
   "name": "terminal",
   "title": "Terminal",
   "author": "AlgorizeTech",
-  "description": "TODO: describe terminal. Generated placeholder.",
+  "description": "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,9 @@
       "target": "components/custom/blocks/TerminalBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
+  "categories": [
+    "code"
+  ],
   "type": "registry:component"
 }

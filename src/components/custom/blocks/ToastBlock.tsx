@@ -88,6 +88,19 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   const isTop = position.includes("top");
   const yOffset = isTop ? -30 : 30;
 
+  // Handle Exit
+  const handleClose = useCallback(() => {
+    if (!toastRef.current) return;
+    gsap.to(toastRef.current, {
+      opacity: 0,
+      scale: 0.9,
+      y: yOffset,
+      duration: 0.3,
+      ease: "power2.in",
+      onComplete: () => onRemove(id)
+    });
+  }, [id, onRemove, yOffset]);
+
   // Handle Entrance & Auto-dismiss
   useEffect(() => {
     const el = toastRef.current;
@@ -104,20 +117,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
       timer = setTimeout(() => handleClose(), duration);
     }
     return () => clearTimeout(timer);
-  }, []);
-
-  // Handle Exit
-  const handleClose = useCallback(() => {
-    if (!toastRef.current) return;
-    gsap.to(toastRef.current, {
-      opacity: 0,
-      scale: 0.9,
-      y: yOffset,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => onRemove(id)
-    });
-  }, [id, onRemove, yOffset]);
+  }, [duration, yOffset, handleClose]);
 
   // Styling logic
   const typeStyles = {

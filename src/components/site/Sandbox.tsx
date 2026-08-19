@@ -23,6 +23,7 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
+import { prefetchHighlight, warmHighlighter } from "@/lib/shiki-highlight";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
   DEFAULT_SHOWCASE_COLOR,
@@ -138,6 +139,16 @@ export function Sandbox({
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
+
+  // Highlight every code tab while the reader is still on the preview, so
+  // opening Usage or Code paints coloured on its first frame instead of
+  // flashing raw text and reflowing when Shiki lands. Runs during idle time.
+  useEffect(() => {
+    warmHighlighter();
+    for (const tab of tabs) {
+      if (tab.code) prefetchHighlight(tab.code, tab.lang ?? "tsx");
+    }
+  }, [tabs]);
 
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
