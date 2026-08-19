@@ -23,7 +23,10 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
-import { prefetchHighlight, warmHighlighter } from "@/lib/shiki-highlight";
+import {
+  prefetchHighlight,
+  warmHighlighter,
+} from "@/components/custom/ui/code-renderer";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
   DEFAULT_SHOWCASE_COLOR,
