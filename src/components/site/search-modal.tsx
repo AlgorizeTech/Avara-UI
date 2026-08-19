@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Command, FileText, Home, Settings, Sparkles, User, Bot, X } from "lucide-react";
 import { getAllSearchableItems, searchItems, SearchableItem } from "@/lib/search-registry";
-import { docsHref, frameworkFromPathname } from "@/lib/framework";
+import { frameworkFromPathname } from "@/lib/framework";
+import { navHref } from "@/constants/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -235,7 +236,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     try {
       const currentUrl = window.location.origin;
       const componentsWithLinks = allItems.map(item =>
-        `${item.title}: ${item.description} - Link: ${currentUrl}${docsHref(framework, item.slug)}`
+        `${item.title}: ${item.description} - Link: ${currentUrl}${navHref(item, framework)}`
       ).join('\n');
 
      const enhancedPrompt = `You are "Algorize UI Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
@@ -353,7 +354,7 @@ User question: ${prompt}`;
             fetchAIResponse(query);
             setQuery("");
           } else if (filteredItems[selectedIndex]) {
-            window.location.href = docsHref(framework, filteredItems[selectedIndex].slug);
+            window.location.href = navHref(filteredItems[selectedIndex], framework);
             handleSelectAndClose();
           }
           break;
@@ -690,7 +691,7 @@ User question: ${prompt}`;
                     {filteredItems.map((item, index) => (
                       <Link
                         key={item.id}
-                        href={docsHref(framework, item.slug)}
+                        href={navHref(item, framework)}
                         onClick={handleSelectAndClose}
                         className={`flex items-center gap-3 px-4 py-3 hover:bg-white/50 dark:hover:bg-zinc-900/50 transition-colors ${
                           index === selectedIndex

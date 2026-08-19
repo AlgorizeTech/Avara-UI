@@ -11,7 +11,6 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import Link from "next/link";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const ICON_POOL = [Zap, TrendingUp, Sparkles, Star, Shield];
@@ -26,7 +25,7 @@ const FeatureItem = ({ text }: { text: string }) => (
   </li>
 );
 
-const PricingSection = ({ packages }: any) => {
+const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
   const [pricingMode, setPricingMode] = useState("subscription");
   const containerRef = useRef(null);
 

@@ -1,10 +1,18 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
-type ImgSrc = string | StaticImageData;
+/**
+ * An image source.
+ *
+ * A plain URL string in any React app. Next.js users importing a static asset
+ * get a `StaticImageData` object instead, which `next/image` accepts — hence the
+ * structural second branch rather than a `next/image` type import, which would
+ * make this file Next-only.
+ */
+type StaticImageLike = { src: string; height?: number; width?: number; blurDataURL?: string };
+type ImgSrc = string | StaticImageLike;
 
 type ImageCarouselProps = {
   images?: ImgSrc[];
@@ -23,6 +31,12 @@ type ImageCarouselProps = {
   imageHeight?: number;
   showArrows?: boolean;
   showDots?: boolean;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function ImageCarousel({
@@ -42,6 +56,7 @@ export function ImageCarousel({
   imageHeight = 540,
   showArrows = true,
   showDots = true,
+  imageComponent: Image = "img",
 }: ImageCarouselProps) {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
 
@@ -140,6 +155,12 @@ type HeroCarouselProps = {
   slideTransform?: number;
   imageWidth?: number;
   imageHeight?: number;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function HeroCarousel({
@@ -159,6 +180,7 @@ export function HeroCarousel({
   slideTransform = 200,
   imageWidth = 1200,
   imageHeight = 540,
+  imageComponent: Image = "img",
 }: HeroCarouselProps) {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
 
@@ -260,6 +282,12 @@ type CustomCarouselProps = {
   autoPlay?: boolean;
   interval?: number;
   imageButtonPosition?: "bottom" | "left" | "right";
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function CustomCarousel({
@@ -273,6 +301,7 @@ export function CustomCarousel({
   autoPlay = true,
   interval = 5000,
   imageButtonPosition = "bottom",
+  imageComponent: Image = "img",
 }: CustomCarouselProps) {
   const [current, setCurrent] = useState<number>(0);
 

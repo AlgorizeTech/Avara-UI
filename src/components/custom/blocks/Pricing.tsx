@@ -15,7 +15,6 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import Link from "next/link";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 // ==========================================
@@ -480,7 +479,7 @@ export function PricingCards({
               </button>
               <div className="space-y-4 text-left">
                 <h4 className={getVariantStyles().featuresTitle}>
-                  What's included:
+                  What&apos;s included:
                 </h4>
                 <ul className="space-y-3">
                   {plan.features.map((feature, idx) => (
@@ -602,7 +601,18 @@ const getBuilderData = (activePlans: string[]) => {
   return { title, tag, price, features };
 };
 
-export function PricingBuilder({ color = "indigo" }: { color?: PricingColor }) {
+export function PricingBuilder({
+  color = "indigo",
+  linkComponent: Link = "a",
+}: {
+  color?: PricingColor;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+}) {
   const [activePlans, setActivePlans] = useState<string[]>([]);
   const cardData = getBuilderData(activePlans);
   const cardContentRef = useRef<HTMLDivElement>(null);
@@ -885,9 +895,16 @@ export interface PricingTableData {
 export function PricingTable({
   data,
   color = "indigo",
+  linkComponent: Link = "a",
 }: {
   data: PricingTableData;
   color?: PricingColor;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
 }) {
   const { theme, style } = getThemeStyles(color);
   const renderFeatureValue = (value: string | boolean) => {
@@ -1166,15 +1183,24 @@ export interface PricingTypographicPlan {
 export function PricingTypographic({
   packages,
   color = "indigo",
+  linkComponent: Link = "a",
 }: {
   packages: any;
   color?: PricingColor;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
 }) {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
     "monthly",
   );
-  const [isMounted, setIsMounted] = useState(false);
-  const [activePlanId, setActivePlanId] = useState<string | number | null>(
+  // null means "no explicit pick yet" — the featured plan is resolved below
+  // rather than written back in an effect, which rendered once with nothing
+  // selected before correcting itself.
+  const [selectedPlanId, setSelectedPlanId] = useState<string | number | null>(
     null,
   );
   const { theme, style } = getThemeStyles(color);
@@ -1205,14 +1231,10 @@ export function PricingTypographic({
   const activePlans = billingCycle === "monthly" ? monthlyPlans : yearlyPlans;
   const hasYearlyPlans = yearlyPlans.length > 0;
 
-  useEffect(() => {
-    setIsMounted(true);
-    if (activePlans.length > 0 && activePlanId === null) {
-      const defaultPlan =
-        activePlans.find((p) => p.isFeatured) || activePlans[0];
-      setActivePlanId(defaultPlan.id);
-    }
-  }, [activePlans, activePlanId]);
+  const defaultPlan =
+    activePlans.find((p) => p.isFeatured) ?? activePlans[0] ?? null;
+  const activePlanId =
+    selectedPlanId ?? (defaultPlan ? defaultPlan.id : null);
 
   const activePlan =
     activePlans.find((p) => p.id === activePlanId) || activePlans[0];
@@ -1222,11 +1244,11 @@ export function PricingTypographic({
     const newPlans = cycle === "monthly" ? monthlyPlans : yearlyPlans;
     if (newPlans.length > 0) {
       const newFeatured = newPlans.find((p) => p.isFeatured) || newPlans[0];
-      setActivePlanId(newFeatured.id);
+      setSelectedPlanId(newFeatured.id);
     }
   };
 
-  if (!isMounted || !packages) {
+  if (!packages) {
     return (
       <section className="py-16 sm:py-32 bg-white dark:bg-zinc-950 flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-3xl border border-zinc-200 dark:border-zinc-800">
         <div
@@ -1328,8 +1350,8 @@ export function PricingTypographic({
               return (
                 <button
                   key={plan.id}
-                  onMouseEnter={() => setActivePlanId(plan.id)}
-                  onClick={() => setActivePlanId(plan.id)}
+                  onMouseEnter={() => setSelectedPlanId(plan.id)}
+                  onClick={() => setSelectedPlanId(plan.id)}
                   className="group flex flex-col items-start text-left w-full py-4 pr-4 cursor-pointer"
                 >
                   {plan.isFeatured && (
@@ -1488,7 +1510,7 @@ export function PricingTypographic({
                 className="border-b border-zinc-200 dark:border-white/10 transition-colors duration-300"
               >
                 <button
-                  onClick={() => setActivePlanId(isActive ? null : plan.id)}
+                  onClick={() => setSelectedPlanId(isActive ? null : plan.id)}
                   className="w-full py-6 md:py-8 flex justify-between items-center text-left"
                 >
                   <div className="flex flex-col pr-4">

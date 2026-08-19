@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
 export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
@@ -105,74 +104,26 @@ const NAV_LINKS = [
   { name: "Pricing", href: "#", hasDropdown: false },
 ];
 
-export function NavbarBlock({
-  variant = "default",
-  color = "indigo",
-  logoText = "Nexus",
+/**
+ * These three are defined at module scope on purpose. Declaring them inside
+ * NavbarBlock would make each a new component type on every render, remounting
+ * the header and dropping any open dropdown or focus.
+ */
+function Logo({
+  themeBg,
+  logoText,
+  linkComponent: Link,
 }: {
-  variant?: NavbarVariant;
-  color?: NavbarColor;
-  logoText?: string;
+  themeBg: string;
+  logoText: string;
+  linkComponent: React.ElementType;
 }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [renderLayer, setRenderLayer] = useState(false);
-  const { theme, style } = getThemeStyles(color);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  const isGlass = variant === "glass";
-
-  useEffect(() => {
-    if (mobileMenuOpen) setRenderLayer(true);
-    else {
-      const t = setTimeout(() => setRenderLayer(false), 400);
-      return () => clearTimeout(t);
-    }
-  }, [mobileMenuOpen]);
-
-  useEffect(() => {
-    if (!renderLayer) return;
-    const menu = mobileMenuRef.current;
-    const overlay = overlayRef.current;
-    if (!menu || !overlay) return;
-    if (mobileMenuOpen) {
-      gsap.fromTo(
-        overlay,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        menu,
-        { x: "100%" },
-        { x: "0%", duration: 0.4, ease: "power3.out" },
-      );
-    } else {
-      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-      gsap.to(menu, { x: "100%", duration: 0.3, ease: "power3.in" });
-    }
-  }, [mobileMenuOpen, renderLayer]);
-
-  const getContainerStyles = () => {
-    switch (variant) {
-      case "floating":
-        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
-      case "glass":
-        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
-      case "minimal":
-        return "w-full bg-transparent px-6 lg:px-12 pt-6";
-      case "centered":
-      case "default":
-      default:
-        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 lg:px-12";
-    }
-  };
-
-  const Logo = () => (
+  return (
     <Link href="#" className="flex items-center gap-2 group">
       <div
         className={cn(
           "w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105",
-          theme.bg,
+          themeBg,
         )}
       >
         {/* No hardcoded colour: theme.bg above already carries the correct
@@ -185,7 +136,16 @@ export function NavbarBlock({
     </Link>
   );
 
-  const DesktopLinks = () => (
+}
+
+function DesktopLinks({
+  isGlass,
+  linkComponent: Link,
+}: {
+  isGlass: boolean;
+  linkComponent: React.ElementType;
+}) {
+  return (
     <ul className="hidden lg:flex items-center gap-1">
       {NAV_LINKS.map((link) => (
         <li key={link.name} className="relative group">
@@ -235,7 +195,16 @@ export function NavbarBlock({
     </ul>
   );
 
-  const DesktopActions = () => (
+}
+
+function DesktopActions({
+  themeBg,
+  linkComponent: Link,
+}: {
+  themeBg: string;
+  linkComponent: React.ElementType;
+}) {
+  return (
     <div className="hidden lg:flex items-center gap-3">
       <Link
         href="#"
@@ -247,13 +216,91 @@ export function NavbarBlock({
         href="#"
         className={cn(
           "px-5 py-2 text-sm font-bold rounded-full transition-transform active:scale-95 shadow-sm",
-          theme.bg,
+          themeBg,
         )}
       >
         Get Started
       </Link>
     </div>
   );
+}
+
+export function NavbarBlock({
+  variant = "default",
+  color = "indigo",
+  logoText = "Nexus",
+  linkComponent: Link = "a",
+}: {
+  variant?: NavbarVariant;
+  color?: NavbarColor;
+  logoText?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+}) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [renderLayer, setRenderLayer] = useState(false);
+  const { theme, style } = getThemeStyles(color);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  const isGlass = variant === "glass";
+
+  // Opening must show the layer immediately. Adjusting state during render on a
+  // state change is React's documented alternative to an effect here, and avoids
+  // the extra render an effect would cost on every open.
+  const [prevMenuOpen, setPrevMenuOpen] = useState(mobileMenuOpen);
+  if (prevMenuOpen !== mobileMenuOpen) {
+    setPrevMenuOpen(mobileMenuOpen);
+    if (mobileMenuOpen) setRenderLayer(true);
+  }
+
+  useEffect(() => {
+    if (mobileMenuOpen) return;
+    const t = setTimeout(() => setRenderLayer(false), 400);
+    return () => clearTimeout(t);
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!renderLayer) return;
+    const menu = mobileMenuRef.current;
+    const overlay = overlayRef.current;
+    if (!menu || !overlay) return;
+    if (mobileMenuOpen) {
+      gsap.fromTo(
+        overlay,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, ease: "power2.out" },
+      );
+      gsap.fromTo(
+        menu,
+        { x: "100%" },
+        { x: "0%", duration: 0.4, ease: "power3.out" },
+      );
+    } else {
+      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
+      gsap.to(menu, { x: "100%", duration: 0.3, ease: "power3.in" });
+    }
+  }, [mobileMenuOpen, renderLayer]);
+
+  const getContainerStyles = () => {
+    switch (variant) {
+      case "floating":
+        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
+      case "glass":
+        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
+      case "minimal":
+        return "w-full bg-transparent px-6 lg:px-12 pt-6";
+      case "centered":
+      case "default":
+      default:
+        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 lg:px-12";
+    }
+  };
+
 
   return (
     <div className="relative w-full z-50" style={style}>
@@ -270,13 +317,13 @@ export function NavbarBlock({
           // remainder keeps it centred while giving the links real room.
           <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center gap-4">
             <div className="flex justify-start">
-              <DesktopLinks />
+              <DesktopLinks isGlass={isGlass} linkComponent={Link} />
             </div>
             <div className="flex justify-center">
-              <Logo />
+              <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
             </div>
             <div className="flex justify-end gap-4">
-              <DesktopActions />
+              <DesktopActions themeBg={theme.bg} linkComponent={Link} />
               <button
                 className="lg:hidden"
                 onClick={() => setMobileMenuOpen(true)}
@@ -288,11 +335,11 @@ export function NavbarBlock({
         ) : (
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <Logo />
-              <DesktopLinks />
+              <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
+              <DesktopLinks isGlass={isGlass} linkComponent={Link} />
             </div>
             <div className="flex items-center gap-4">
-              <DesktopActions />
+              <DesktopActions themeBg={theme.bg} linkComponent={Link} />
               <button
                 className="lg:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-300"
                 onClick={() => setMobileMenuOpen(true)}
@@ -331,7 +378,7 @@ export function NavbarBlock({
                 : "border-zinc-100 dark:border-zinc-800/50",
             )}
           >
-            <Logo />
+            <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
             <button
               onClick={() => setMobileMenuOpen(false)}
               className={cn(

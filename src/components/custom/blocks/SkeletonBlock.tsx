@@ -28,6 +28,28 @@ export interface SkeletonBlockProps
 // ==========================================
 // MAIN COMPONENT
 // ==========================================
+/**
+ * Defined at module scope on purpose. Declaring it inside SkeletonBlock would
+ * make it a new component type on every render, restarting the shimmer
+ * animation each time the parent re-renders.
+ */
+function ShimmerLayer({ animation }: { animation: SkeletonAnimation }) {
+  if (animation !== "shimmer") return null;
+  return (
+    <>
+      <style>{`
+          @keyframes shimmer-slide {
+            100% { transform: translateX(100%); }
+          }
+          .animate-shimmer-slide {
+            animation: shimmer-slide 1.5s infinite linear;
+          }
+        `}</style>
+      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer-slide z-10" />
+    </>
+  );
+}
+
 export function SkeletonBlock({
   variant = "rect",
   animation = "shimmer",
@@ -44,23 +66,6 @@ export function SkeletonBlock({
     animation === "pulse" && "animate-pulse",
   );
 
-  // The Shimmer Effect Layer
-  const ShimmerLayer = () => {
-    if (animation !== "shimmer") return null;
-    return (
-      <>
-        <style>{`
-          @keyframes shimmer-slide {
-            100% { transform: translateX(100%); }
-          }
-          .animate-shimmer-slide {
-            animation: shimmer-slide 1.5s infinite linear;
-          }
-        `}</style>
-        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent animate-shimmer-slide z-10" />
-      </>
-    );
-  };
 
   // --- COMPOSITE VARIANTS ---
 
@@ -72,14 +77,14 @@ export function SkeletonBlock({
         {...props}
       >
         <div className={cn(baseClasses, "w-12 h-12 rounded-full shrink-0")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
         <div className="flex flex-col gap-2 w-full max-w-[200px]">
           <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
-            <ShimmerLayer />
+            <ShimmerLayer animation={animation} />
           </div>
           <div className={cn(baseClasses, "h-3 w-2/3 rounded-md")}>
-            <ShimmerLayer />
+            <ShimmerLayer animation={animation} />
           </div>
         </div>
       </div>
@@ -97,10 +102,10 @@ export function SkeletonBlock({
         {...props}
       >
         <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
         <div className={cn(baseClasses, "h-4 w-3/4 rounded-md")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
       </div>
     );
@@ -117,16 +122,16 @@ export function SkeletonBlock({
         {...props}
       >
         <div className={cn(baseClasses, "w-full h-40 rounded-xl mb-2")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
         <div className={cn(baseClasses, "h-5 w-3/4 rounded-md")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
         <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
         <div className={cn(baseClasses, "h-4 w-5/6 rounded-md")}>
-          <ShimmerLayer />
+          <ShimmerLayer animation={animation} />
         </div>
       </div>
     );
@@ -152,7 +157,7 @@ export function SkeletonBlock({
 
   return (
     <div className={atomicClasses} style={customStyles} {...props}>
-      <ShimmerLayer />
+      <ShimmerLayer animation={animation} />
     </div>
   );
 }

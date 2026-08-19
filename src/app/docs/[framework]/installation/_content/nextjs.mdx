@@ -12,6 +12,8 @@ import { MdxTable } from "@/components/site/mdx-table.tsx";
 
 # Installation & Setup Guide
 
+<OtherFrameworkGuide slug="installation" label="installation guide" />
+
 Get started with Next.js by creating a new project or adding it to an existing application.
 
 ## System Requirements & Compatibility
@@ -54,7 +56,7 @@ Before installing Next.js, ensure your environment meets the following requireme
 
 ### Next.js 16
 
-Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `<Image>` props, no `next/amp`, and no runtime config. The only Next.js APIs the components reach for are `next/link`, `next/image` and `next/dynamic`, and the ones that defer a browser-only library with `ssr: false` already carry `"use client"` — so they behave the same under both versions.
+Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `<Image>` props, no `next/amp`, and no runtime config. The components import no Next.js API at all: those that render links or images take a `linkComponent` / `imageComponent` prop instead, and the ones wrapping a browser-only library defer it themselves after mount. Pass `next/link` and `next/image` into those props to keep prefetching and image optimisation — each of their pages shows the line.
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">

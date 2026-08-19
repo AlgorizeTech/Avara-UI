@@ -40,13 +40,6 @@ export default function GlassHeader() {
   return ;
 }`;
 
-export const usageLogo = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
-
-export default function BrandedHeader() {
-  // logoText replaces the wordmark without touching the component.
-  return ;
-}`;
-
 ## Installation
 
 ## Props Reference

@@ -1,3 +1,5 @@
+import { docsHref, type Framework } from "@/lib/framework";
+
 /**
  * Navigation stores the page slug, never a full href.
  *
@@ -19,6 +21,22 @@ export type NavigationItem = {
   label: string;
   children: NavigationChild[];
 };
+
+/**
+ * The link for a navigation entry.
+ *
+ * `slug` is the normal case and follows the reader's framework. `href` is the
+ * escape hatch for anything that is not a framework-scoped docs page — an
+ * external link, or a path outside `/docs/<framework>/`. An entry carrying
+ * neither is inert rather than a broken link.
+ */
+export const navHref = (
+  // Structural on purpose: the search registry carries the same two link fields
+  // under a different shape, and there is no reason for it to grow a `label`
+  // just to reuse this.
+  item: { slug?: string; href?: string },
+  framework: Framework,
+) => (item.slug ? docsHref(framework, item.slug) : (item.href ?? "#"));
 
 export const navigation: NavigationItem[] = [
   {

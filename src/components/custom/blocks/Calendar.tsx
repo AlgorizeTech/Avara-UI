@@ -382,6 +382,36 @@ const formatDateForInput = (dateKey: string) => {
 
 const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {};
 
+type CalendarEvent = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  type: string;
+  platform: string;
+};
+
+// Ids are derived from the date key and position so they stay stable across
+// re-seeds -- an open popup keeps pointing at the same event.
+function buildEventsFromMock(
+  mockEvents: Record<string, string[]>,
+): CalendarEvent[] {
+  const list: CalendarEvent[] = [];
+  Object.entries(mockEvents).forEach(([dateKey, types]) => {
+    types.forEach((type, index) => {
+      list.push({
+        id: `${dateKey}-${index}`,
+        title: type === "pentest" ? "Pentest" : "Kick-Off",
+        date: dateKey,
+        time: "12:00",
+        type: type,
+        platform: type === "pentest" ? "slack" : "meet",
+      });
+    });
+  });
+  return list;
+}
+
 function CalendarDashboard({
   mockEvents = DEFAULT_MOCK_EVENTS,
   variant = "default",
@@ -415,25 +445,18 @@ function CalendarDashboard({
       }
     : colorThemes[color] || colorThemes["primary"];
 
-  // Convert dict prop to rich array state
-  const [events, setEvents] = useState<any[]>([]);
+  // Convert dict prop to rich array state. Seeded during render rather than in
+  // an effect: an effect would render once with an empty calendar, then again
+  // with the events, and re-seeding on a prop change would flash the same way.
+  const [events, setEvents] = useState<CalendarEvent[]>(() =>
+    buildEventsFromMock(mockEvents),
+  );
+  const [seededFrom, setSeededFrom] = useState(mockEvents);
 
-  useEffect(() => {
-    const initialEventsList: any[] = [];
-    Object.entries(mockEvents).forEach(([dateKey, types]) => {
-      types.forEach((type, index) => {
-        initialEventsList.push({
-          id: `${dateKey}-${index}-${Math.random()}`,
-          title: type === "pentest" ? "Pentest" : "Kick-Off",
-          date: dateKey,
-          time: "12:00",
-          type: type,
-          platform: type === "pentest" ? "slack" : "meet",
-        });
-      });
-    });
-    setEvents(initialEventsList);
-  }, [mockEvents]);
+  if (mockEvents !== seededFrom) {
+    setSeededFrom(mockEvents);
+    setEvents(buildEventsFromMock(mockEvents));
+  }
 
   // View & Date State
   const [view, setView] = useState("month");
@@ -565,13 +588,13 @@ function CalendarDashboard({
     const [y, m, d] = rawDate.split("-");
     const formattedDateKey = `${parseInt(y)}-${parseInt(m)}-${parseInt(d)}`;
 
-    const eventData = {
+    const eventData: CalendarEvent = {
       id: editingEvent ? editingEvent.id : Date.now().toString(),
-      title: formData.get("title"),
+      title: String(formData.get("title") ?? ""),
       date: formattedDateKey,
-      time: formData.get("time"),
-      type: formData.get("type"),
-      platform: formData.get("platform"),
+      time: String(formData.get("time") ?? ""),
+      type: String(formData.get("type") ?? ""),
+      platform: String(formData.get("platform") ?? ""),
     };
 
     if (editingEvent) {

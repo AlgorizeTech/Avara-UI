@@ -119,6 +119,51 @@ html.dark .shiki span {
   border: none !important;
 }
 
+/* Placeholder painted for the instant before Shiki answers a cold snippet.
+ * It mirrors every metric of `.shiki` above — padding, font, size,
+ * line-height, wrapping — so swapping in the highlighted markup fills in
+ * colour without shifting a single line. It deliberately avoids the `.shiki`
+ * class itself: those rules paint from --shiki-* variables that only exist on
+ * real Shiki output, and an unresolved var() there wins the cascade and then
+ * computes to nothing. */
+.shiki-pending {
+  overflow-x: auto;
+  margin: 0;
+  padding: 1rem;
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre;
+  word-break: normal;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  /* github-light / github-dark-default plain-text foreground, so the only
+     visible change on swap is keywords and strings gaining colour. */
+  color: #24292e;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.dark .shiki-pending {
+  color: #e6edf3;
+}
+
+.shiki-pending code {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+}
+
+.shiki-pending::-webkit-scrollbar {
+  display: none;
+}
+
 /* Global inline code styling.
  *
  * `data-badge` opts out. These declarations are !important, so without an

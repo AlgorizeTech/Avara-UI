@@ -10,7 +10,6 @@ import {
   UploadCloud,
   X,
 } from "lucide-react";
-import Image from "next/image";
 import React, { forwardRef, useCallback, useRef, useState } from "react";
 
 // ==========================================
@@ -400,11 +399,13 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                   <div className="flex items-center gap-3 overflow-hidden">
                     {previews[file.name] ? (
                       <div className="w-10 h-10 shrink-0 rounded-md overflow-hidden bg-zinc-100 dark:bg-zinc-900 relative border border-zinc-200 dark:border-zinc-800">
-                        <Image
+                        {/* A FileReader data URL — next/image cannot optimise
+                            it and would need `unoptimized`, so a plain img is
+                            both simpler and framework-neutral. */}
+                        <img
                           src={previews[file.name]}
                           alt="preview"
-                          fill
-                          className="object-cover"
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
                       </div>
                     ) : (

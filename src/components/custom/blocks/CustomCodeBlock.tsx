@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
-import { SiJavascript, SiTypescript, SiHtml5, SiCss3, SiReact } from "react-icons/si";
+import { SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact } from "react-icons/si";
 import { FaTerminal } from "react-icons/fa";
 
 export interface CodeTab {
@@ -26,7 +26,7 @@ const LanguageIcon = ({ language }: { language: string }) => {
   if (lang === "typescript" || lang === "ts" || lang === "tsx") return <SiTypescript className={cn(iconClass, "text-blue-500")} />;
   if (lang === "react") return <SiReact className={cn(iconClass, "text-sky-400")} />;
   if (lang === "html" || lang === "xml") return <SiHtml5 className={cn(iconClass, "text-orange-500")} />;
-  if (lang === "css") return <SiCss3 className={cn(iconClass, "text-blue-400")} />;
+  if (lang === "css") return <SiCss className={cn(iconClass, "text-blue-400")} />;
   if (lang === "bash" || lang === "sh") return <FaTerminal className={cn(iconClass, "text-slate-400")} />;
   return <SiReact className={cn(iconClass, "text-slate-400")} />;
 };
@@ -63,60 +63,54 @@ const highlightCode = (code: string, language: string) => {
     stringContent: "text-[#50A14F] dark:text-[#98C379]",
   };
 
+  // Each branch below is a SINGLE pass over the escaped source. Chaining
+  // separate .replace() calls does not work here: a later rule matches the
+  // markup an earlier rule injected -- the attribute rule, for one, matched
+  // the class="..." of an already-emitted <span> and nested another <span>
+  // inside it, which the browser then rendered as visible text.
+
   if (language === "html" || language === "xml") {
-    html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, `<span class="${colors.comment}">$1</span>`);
-    
-    // attributes like class="text-xl"
-    html = html.replace(
-      /([a-zA-Z0-9-]+)(=)(["'])(.*?)\3/g,
-      (match, attr, eq, quote, content) => {
-        return `<span class="${colors.property}">${attr}</span><span class="${colors.operator}">${eq}</span><span class="${colors.property}">${quote}</span><span class="${colors.stringContent}">${content}</span><span class="${colors.property}">${quote}</span>`;
+    return html.replace(
+      /(&lt;!--[\s\S]*?--&gt;)|(&lt;\/?)([a-zA-Z0-9-]+)|([a-zA-Z0-9-]+)(=)(["'])(.*?)\6|(\/&gt;|&gt;)/g,
+      (match, comment, brackets, tagName, attr, eq, quote, content, closer) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (brackets !== undefined)
+          return `<span class="${colors.punctuation}">${brackets}</span><span class="${colors.tag}">${tagName}</span>`;
+        if (attr !== undefined)
+          return `<span class="${colors.property}">${attr}</span><span class="${colors.operator}">${eq}</span><span class="${colors.property}">${quote}</span><span class="${colors.stringContent}">${content}</span><span class="${colors.property}">${quote}</span>`;
+        if (closer) return `<span class="${colors.punctuation}">${closer}</span>`;
+        return match;
       }
     );
-    
-    html = html.replace(
-      /(&lt;\/?)([a-zA-Z0-9-]+)/g,
-      (match, brackets, tagName) => {
-        return `<span class="${colors.punctuation}">${brackets}</span><span class="${colors.tag}">${tagName}</span>`;
-      }
-    );
-    html = html.replace(/(\/&gt;|&gt;)/g, `<span class="${colors.punctuation}">$1</span>`);
-    return html;
   }
 
   if (language === "css") {
-    html = html.replace(/(\/\*[\s\S]*?\*\/)/g, `<span class="${colors.comment}">$1</span>`);
-    
-    // Properties and values: e.g. display: flex;
-    html = html.replace(
-      /([a-zA-Z-]+)(\s*:)([^;\}]+)(;?)/g,
-      (match, prop, colon, val, semi) => {
-        return `<span class="${colors.property}">${prop}</span><span class="${colors.punctuation}">${colon}</span><span class="${colors.stringContent}">${val}</span><span class="${colors.punctuation}">${semi}</span>`;
+    return html.replace(
+      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}\/;][^{}\/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
+      (match, comment, atRule, selector, prop, colon, val, semi, brace) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (atRule) return `<span class="${colors.keyword}">${atRule}</span>`;
+        if (selector !== undefined)
+          return `<span class="${colors.tag}">${selector}</span>`;
+        if (prop !== undefined)
+          return `<span class="${colors.property}">${prop}</span><span class="${colors.punctuation}">${colon}</span><span class="${colors.stringContent}">${val}</span><span class="${colors.punctuation}">${semi}</span>`;
+        if (brace) return `<span class="${colors.punctuation}">${brace}</span>`;
+        return match;
       }
     );
-    
-    // Selectors: e.g. .class-name, #id, tag
-    html = html.replace(
-      /([\.#a-zA-Z0-9_:-]+)(\s*\{)/g,
-      (match, sel, brace) => {
-        return `<span class="${colors.tag}">${sel}</span><span class="${colors.punctuation}">${brace}</span>`;
-      }
-    );
-    
-    // Braces
-    html = html.replace(/(\}|\{)/g, `<span class="${colors.punctuation}">$1</span>`);
-    
-    // @media, @keyframes
-    html = html.replace(/(@[a-zA-Z-]+)/g, `<span class="${colors.keyword}">$1</span>`);
-    
-    return html;
   }
 
   if (language === "bash" || language === "sh") {
-    html = html.replace(/(#.*)/g, `<span class="${colors.comment}">$1</span>`);
-    html = html.replace(/(\b(?:npm|yarn|pnpm|npx|node|git|cd|ls|rm|mkdir|echo|cat|sudo|apt|brew)\b)/g, `<span class="${colors.function}">$1</span>`);
-    html = html.replace(/(\s-[a-zA-Z0-9]+|\s--[a-zA-Z0-9-]+)/g, `<span class="${colors.property}">$1</span>`);
-    return html;
+    return html.replace(
+      /(#[^\n]*)|("[^"\n]*"|'[^'\n]*')|(\b(?:npm|yarn|pnpm|npx|node|git|cd|ls|rm|mkdir|echo|cat|sudo|apt|brew)\b)|(\s--?[a-zA-Z0-9][a-zA-Z0-9-]*)/g,
+      (match, comment, str, command, flag) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (str) return `<span class="${colors.stringContent}">${str}</span>`;
+        if (command) return `<span class="${colors.function}">${command}</span>`;
+        if (flag) return `<span class="${colors.property}">${flag}</span>`;
+        return match;
+      }
+    );
   }
 
   // JS/TS/JSX
@@ -169,16 +163,18 @@ export function CustomCodeBlock({
   ...props
 }: CustomCodeBlockProps) {
   const [isCopied, setIsCopied] = useState(false);
-  const [highlightedCode, setHighlightedCode] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const activeCode = tabs && tabs.length > 0 ? tabs[activeTabIndex].code : code || "";
   const activeLanguage = tabs && tabs.length > 0 ? tabs[activeTabIndex].language : language;
   const activeFileName = tabs && tabs.length > 0 ? tabs[activeTabIndex].fileName : fileName;
 
-  useEffect(() => {
-    setHighlightedCode(highlightCode(activeCode, activeLanguage));
-  }, [activeCode, activeLanguage]);
+  // Pure derivation of the props: computing it in an effect rendered the raw
+  // code once, then re-rendered with the highlighted copy.
+  const highlightedCode = useMemo(
+    () => highlightCode(activeCode, activeLanguage),
+    [activeCode, activeLanguage],
+  );
 
   const copyToClipboard = async () => {
     try {

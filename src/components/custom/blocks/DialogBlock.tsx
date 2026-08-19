@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -138,19 +139,23 @@ export function DialogContent({
   ...props
 }: DialogContentProps) {
   const { open, setOpen } = useDialog();
-  const [mounted, setMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
 
-  // SSR Safety
-  useEffect(() => setMounted(true), []);
+  // Resolves the document this dialog actually lives in, which is not always
+  // the global one — previews portal components into an iframe. Resolving in a
+  // callback ref rather than reading a ref during render keeps render pure, and
+  // a null target doubles as the "not mounted yet" signal that guards SSR.
+  const setAnchor = useCallback((node: HTMLSpanElement | null) => {
+    setPortalTarget(node ? node.ownerDocument.body : null);
+  }, []);
 
   // Handle Escape Key & Body Scroll Lock
   useEffect(() => {
     if (!open) return;
 
     // Resolve the document/window the dialog actually lives in (supports iframe rendering).
-    const doc = anchorRef.current?.ownerDocument ?? document;
+    const doc = contentRef.current?.ownerDocument ?? document;
     const win = doc.defaultView ?? window;
 
     // Lock body scroll
@@ -167,16 +172,13 @@ export function DialogContent({
       doc.body.style.overflow = originalStyle;
       doc.removeEventListener("keydown", handleEscape);
     };
-  }, [open, setOpen]);
+  }, [open, setOpen, portalTarget]);
 
-  if (!mounted || !open) return <span ref={anchorRef} hidden />;
-
-  // Portal into the anchor's own document (supports iframe rendering).
-  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+  if (!portalTarget || !open) return <span ref={setAnchor} hidden />;
 
   return (
     <>
-      <span ref={anchorRef} hidden />
+      <span ref={setAnchor} hidden />
       {createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
