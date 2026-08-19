@@ -43,13 +43,6 @@ export default function GlassHeader() {
   return <NavbarBlock variant="glass" />;
 }`;
 
-export const usageLogo = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
-
-export default function BrandedHeader() {
-  // logoText replaces the wordmark without touching the component.
-  return <NavbarBlock variant="floating" logoText="Acme" />;
-}`;
-
 <ExampleShowcase
   name="navbar"
   colorControl
@@ -70,20 +63,6 @@ export default function BrandedHeader() {
       code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
     },
     {
-      title: "Floating",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"floating"',
-          effect:
-            "for a pill-shaped glass bar that hovers over the hero.",
-        },
-      ],
-      props: { variant: "floating" },
-      usage: usageFloating,
-    },
-    {
       title: "Centered",
       propNotes: [
         {
@@ -96,6 +75,20 @@ export default function BrandedHeader() {
       ],
       props: { variant: "centered" },
       usage: usageCentered,
+    },
+    {
+      title: "Floating",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"floating"',
+          effect:
+            "for a pill-shaped glass bar that hovers over the hero.",
+        },
+      ],
+      props: { variant: "floating" },
+      usage: usageFloating,
     },
     {
       title: "Minimal",
@@ -124,19 +117,6 @@ export default function BrandedHeader() {
       ],
       props: { variant: "glass" },
       usage: usageGlass,
-    },
-    {
-      title: "Custom wordmark",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "logoText",
-          effect:
-            "to swap the brand name beside the mark. Defaults to `Nexus`.",
-        },
-      ],
-      props: { variant: "floating", logoText: "Acme" },
-      usage: usageLogo,
     },
   ]}
 />

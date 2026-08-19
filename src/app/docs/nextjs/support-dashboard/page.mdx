@@ -100,14 +100,6 @@ export default function TicketTable() {
   return <SupportDashboard layout="table" data={data} />;
 }`;
 
-export const usageMinimal = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
-import { data } from "./support-data";
-
-export default function EmbeddedDashboard() {
-  // Borders and shadows pared back for embedding in an existing admin shell.
-  return <SupportDashboard variant="minimal" data={data} />;
-}`;
-
 export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
 import { data } from "./support-data";
 
@@ -160,20 +152,6 @@ export default function GlassDashboard() {
       ],
       props: { layout: "table", variant: "default" },
       usage: usageTable,
-    },
-    {
-      title: "Minimal",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"minimal"',
-          effect:
-            "to flatten the borders and shadows for embedding in an existing admin shell.",
-        },
-      ],
-      props: { layout: "chat", variant: "minimal" },
-      usage: usageMinimal,
     },
     {
       title: "Glass",

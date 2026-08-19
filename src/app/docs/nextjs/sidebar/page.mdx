@@ -83,34 +83,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }`;
 
-export const usageFloating = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-} from "@/components/custom/blocks/SidebarBlock";
-import { LayoutDashboard } from "lucide-react";
-
-export default function FloatingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <SidebarProvider defaultExpanded>
-      {/* "floating" detaches the panel from the edge and rounds it */}
-      <Sidebar variant="floating">
-        <SidebarContent>
-          <SidebarGroup label="Platform">
-            <SidebarItem icon={<LayoutDashboard className="w-5 h-5" />} active>
-              Dashboard
-            </SidebarItem>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-
-      <div className="flex-1">{children}</div>
-    </SidebarProvider>
-  );
-}`;
-
 export const usageCollapsed = `import {
   Sidebar,
   SidebarContent,
@@ -175,20 +147,6 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
       props: { variant: "attached", defaultExpanded: true },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
-    },
-    {
-      title: "Floating",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"floating"',
-          effect:
-            "to lift the panel off the edge and round its corners. `attached` pins it flat.",
-        },
-      ],
-      props: { variant: "floating", defaultExpanded: true },
-      usage: usageFloating,
     },
     {
       title: "Collapsed rail",

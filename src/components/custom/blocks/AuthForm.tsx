@@ -131,7 +131,7 @@ const Input = ({
     <div className="flex flex-col gap-1.5 w-full">
       <label
         htmlFor={id}
-        className="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+        className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
       >
         {label} {props.required && <span className="text-red-500">*</span>}
       </label>
@@ -140,10 +140,10 @@ const Input = ({
           id={id}
           type={inputType}
           className={cn(
-            "flex h-11 w-full rounded-lg border bg-zinc-50/50 dark:bg-zinc-900/50 px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all",
+            "flex h-11 w-full rounded-lg border bg-white/80 dark:bg-zinc-950/70 backdrop-blur-md px-3 py-2 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all shadow-sm",
             error
               ? "border-red-500 focus:ring-red-500"
-              : "border-zinc-200 dark:border-zinc-800",
+              : "border-zinc-300 dark:border-zinc-700",
             isPassword && "pr-10",
             className,
           )}
@@ -153,7 +153,7 @@ const Input = ({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
@@ -231,7 +231,7 @@ const Button = ({
       "inline-flex items-center justify-center rounded-lg text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
       variant === "default" && theme.bg,
       variant === "outline" &&
-        "border-2 border-zinc-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white",
+        "border-2 border-zinc-300/80 dark:border-zinc-700/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-white dark:hover:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs",
       size === "default" && "h-11 px-4 py-2",
       className,
     )}
@@ -317,34 +317,34 @@ export default function AuthForm({
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 mb-5 sm:mb-6">
         <Button
           variant="outline"
           type="button"
-          className="w-full flex items-center gap-2"
+          className="w-full flex items-center justify-center gap-2"
         >
-          <GitHubIcon size={18} /> <span className="hidden sm:inline">GitHub</span>
+          <GitHubIcon size={18} /> <span>GitHub</span>
         </Button>
         <Button
           variant="outline"
           type="button"
-          className="w-full flex items-center gap-2"
+          className="w-full flex items-center justify-center gap-2"
         >
-          <GoogleIcon size={18} /> <span className="hidden sm:inline">Google</span>
+          <GoogleIcon size={18} /> <span>Google</span>
         </Button>
       </div>
 
-      <div className="relative flex items-center mb-6">
+      <div className="relative flex items-center mb-5 sm:mb-6">
         <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
-        <span className="flex-shrink-0 mx-4 text-zinc-400 text-xs font-bold uppercase tracking-widest">
+        <span className="flex-shrink-0 mx-3 sm:mx-4 text-zinc-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
           Or continue with
         </span>
         <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
         {!isLogin && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <Input
               label="First Name"
               id="firstName"
@@ -689,7 +689,7 @@ export default function AuthForm({
             </p>
           </div>
         </div>
-        <div className="w-full lg:w-1/2 p-6 sm:p-12 xl:p-16 flex items-center justify-center">
+        <div className="w-full lg:w-1/2 p-4 xs:p-6 sm:p-12 xl:p-16 flex items-center justify-center">
           {FormContent}
         </div>
       </div>
@@ -697,13 +697,13 @@ export default function AuthForm({
   }
 
   const baseWrapper =
-    "w-full max-w-[480px] mx-auto p-8 sm:p-10 transition-colors duration-300";
+    "w-full max-w-[480px] mx-auto p-4 xs:p-6 sm:p-8 md:p-10 transition-colors duration-300";
   const wrapperClass = cn(
     baseWrapper,
     variant === "default" &&
       "bg-white dark:bg-zinc-950 rounded-3xl shadow-xl border border-zinc-200 dark:border-zinc-800",
     variant === "glass" &&
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10",
+      "bg-white/65 dark:bg-zinc-950/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-zinc-700/50",
     variant === "minimal" && "bg-transparent",
   );
 
