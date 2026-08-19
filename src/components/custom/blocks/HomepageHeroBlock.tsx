@@ -120,7 +120,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     {
       badgeText = "Next-Gen React Components",
       badgeHref = "/docs",
-      titlePrefix = "Build Interactive ",
+      titlePrefix = "Build ",
       typingWords = [
         "Interfaces",
         "Components",

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
-import { SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact } from "react-icons/si";
+import { SiJavascript, SiTypescript, SiHtml5, SiCss3, SiReact } from "react-icons/si";
 import { FaTerminal } from "react-icons/fa";
 
 export interface CodeTab {
@@ -26,7 +26,7 @@ const LanguageIcon = ({ language }: { language: string }) => {
   if (lang === "typescript" || lang === "ts" || lang === "tsx") return <SiTypescript className={cn(iconClass, "text-blue-500")} />;
   if (lang === "react") return <SiReact className={cn(iconClass, "text-sky-400")} />;
   if (lang === "html" || lang === "xml") return <SiHtml5 className={cn(iconClass, "text-orange-500")} />;
-  if (lang === "css") return <SiCss className={cn(iconClass, "text-blue-400")} />;
+  if (lang === "css") return <SiCss3 className={cn(iconClass, "text-blue-400")} />;
   if (lang === "bash" || lang === "sh") return <FaTerminal className={cn(iconClass, "text-slate-400")} />;
   return <SiReact className={cn(iconClass, "text-slate-400")} />;
 };

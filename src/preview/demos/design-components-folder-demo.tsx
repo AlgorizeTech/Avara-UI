@@ -9,7 +9,7 @@ export default function DesignComponentsFolderDemo({
 }) {
   return (
     <div className="w-full p-2 sm:p-6 overflow-hidden flex flex-col justify-center items-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]">
-      <DesignComponentsFolder color={color} />
+      <DesignComponentsFolder color={color} disableLinks={true} />
     </div>
   );
 }

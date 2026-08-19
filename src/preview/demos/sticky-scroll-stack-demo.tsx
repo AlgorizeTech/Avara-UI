@@ -41,7 +41,6 @@ export default function StickyScrollStackDemo({
         "Comprehensive Design Systems",
       ],
       buttonText: "View UI Showcase",
-      onButtonClick: () => alert("Navigating to UI Showcase..."),
     },
     {
       id: "branding",
@@ -107,7 +106,6 @@ export default function StickyScrollStackDemo({
           headerTitle="We can help you with"
           headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
           headerButtonText="Request free audit"
-          onHeaderButtonClick={() => alert("Free audit requested!")}
           className="py-10 sm:py-14"
         />
       </div>
