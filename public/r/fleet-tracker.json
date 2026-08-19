@@ -7,7 +7,9 @@
   "dependencies": [
     "lucide-react"
   ],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/fleet-map.json"
+  ],
   "files": [
     {
       "path": "src/components/custom/blocks/Fleet-tracker.tsx",

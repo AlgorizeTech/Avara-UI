@@ -5,6 +5,7 @@
   "author": "AlgorizeTech",
   "description": "A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
   "dependencies": [
+    "leaflet",
     "react-leaflet"
   ],
   "registryDependencies": [
