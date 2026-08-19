@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRight, Star } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AnimatedPrice = ({ value }: any) => {
@@ -38,7 +37,7 @@ const AnimatedPrice = ({ value }: any) => {
   return <span>{formatted}</span>;
 };
 
-export default function PricingSectionV4({ packages }: any) {
+export default function PricingSectionV4({ packages, linkComponent: Link = "a" }: any) {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [isMounted, setIsMounted] = useState(false);
   const [activePlanId, setActivePlanId] = useState<any>(null);

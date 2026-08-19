@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronRight, MoreHorizontal, Slash } from "lucide-react";
-import Link from "next/link";
 import React, { useState } from "react";
 
 // ==========================================
@@ -93,6 +92,15 @@ export interface BreadcrumbProps {
   variant?: BreadcrumbVariant;
   color?: BreadcrumbColor;
   maxItems?: number;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching:
+   *
+   *   import Link from "next/link";
+   *   <BreadcrumbBlock items={items} linkComponent={Link} />
+   */
+  linkComponent?: React.ElementType;
 }
 
 export function BreadcrumbBlock({
@@ -100,6 +108,7 @@ export function BreadcrumbBlock({
   variant = "classic",
   color = "primary",
   maxItems = 4,
+  linkComponent: Link = "a",
 }: BreadcrumbProps) {
   const { theme, style } = getThemeStyles(color);
   const [isExpanded, setIsExpanded] = useState(false);

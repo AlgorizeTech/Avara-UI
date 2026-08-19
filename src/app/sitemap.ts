@@ -2,7 +2,12 @@ import type { MetadataRoute } from "next";
 import fs from "node:fs";
 import path from "node:path";
 import { SITE_URL } from "@/config/site";
-import { DEFAULT_FRAMEWORK } from "@/lib/framework";
+import {
+  BUILT_FRAMEWORKS,
+  DEFAULT_FRAMEWORK,
+  FORKED_SLUGS,
+  docsHref,
+} from "@/lib/framework";
 
 export const dynamic = "force-static";
 
@@ -22,10 +27,12 @@ const EXCLUDED = new Set<string>();
  * and the entire docs tree — every component page — would silently drop out of
  * the sitemap on a green build.
  *
- * Only the canonical framework is advertised: every `/docs/reactjs/*` page names
- * its `/docs/nextjs/*` twin as canonical, and sitemapping a URL you have already
- * pointed away from is noise. Widen this to BUILT_FRAMEWORKS at the same time
- * the canonical policy changes — not before.
+ * Only the canonical framework is expanded here: those pages serve identical
+ * bytes in every framework, and each React twin names its Next.js counterpart as
+ * canonical, so advertising both would ask a crawler to fetch a URL we have
+ * already pointed it away from. The self-canonical exceptions are appended
+ * explicitly below rather than by widening this — they are two pages, not a
+ * policy change.
  */
 const SEGMENT_EXPANSIONS: Record<string, readonly string[]> = {
   "[framework]": [DEFAULT_FRAMEWORK],
@@ -94,6 +101,19 @@ function collectRoutes(): string[] {
   if (hasPage(appDir)) routes.push("/");
   walk(appDir, []);
 
+  // The expansion above advertises only the canonical framework, because every
+  // other page's React twin declares that framework's URL as its canonical and
+  // there is no sense asking a crawler to fetch a URL you have pointed away
+  // from. The forked guides are the exception: they are self-canonical, so
+  // leaving them out would make the only genuinely React-specific pages on the
+  // site undiscoverable.
+  for (const framework of BUILT_FRAMEWORKS) {
+    if (framework === DEFAULT_FRAMEWORK) continue;
+    for (const slug of FORKED_SLUGS) {
+      routes.push(docsHref(framework, slug));
+    }
+  }
+
   const unique = [...new Set(routes)].sort();
 
   const docsRoutes = unique.filter((route) => route.startsWith("/docs/"));
@@ -112,7 +132,7 @@ function collectRoutes(): string[] {
 function priorityFor(route: string): number {
   if (route === "/") return 1;
   if (route === "/docs") return 0.9;
-  if (/^\/docs\/(?:nextjs|reactjs)\/(index|installation|first-app|architecture)$/.test(route))
+  if (/^\/docs\/[^/]+\/(index|installation|first-app|architecture)$/.test(route))
     return 0.8;
   if (route.startsWith("/docs/")) return 0.7;
   return 0.5;

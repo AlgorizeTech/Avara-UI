@@ -148,11 +148,16 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       disabled = false,
       className,
     },
+    ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [viewDate, setViewDate] = useState(value || new Date());
     const containerRef = useRef<HTMLDivElement>(null);
     const { theme, style } = getThemeStyles(color);
+
+    // containerRef drives the click-outside handler, so the forwarded ref is
+    // mirrored onto it rather than replacing it.
+    React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
     const hasError = Boolean(error);
 

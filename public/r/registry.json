@@ -2286,11 +2286,8 @@
       "type": "registry:component",
       "title": "Terminal",
       "author": "AlgorizeTech",
-      "description": "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
-      "categories": [
-        "code",
-        "marketing"
-      ],
+      "description": "TODO: describe terminal. Generated placeholder.",
+      "categories": [],
       "dependencies": [
         "lucide-react"
       ],
@@ -2303,8 +2300,7 @@
           "type": "registry:component",
           "target": "components/custom/blocks/TerminalBlock.tsx"
         }
-      ],
-      "docs": "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost)."
+      ]
     },
     {
       "name": "text-animation",
@@ -2499,28 +2495,6 @@
         }
       ],
       "docs": "Named exports: TooltipProvider, Tooltip, TooltipTrigger, TooltipContent. Requires the `animate-in`, `fade-in` and `zoom-in-95` utilities — on Tailwind v4 add `@import \"tw-animate-css\";` to your global stylesheet, on v3 use the `tailwindcss-animate` plugin. Content renders through a React portal at z-index 9999."
-    },
-    {
-      "name": "typography",
-      "type": "registry:component",
-      "title": "Typography",
-      "author": "AlgorizeTech",
-      "description": "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/TypographyBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/TypographyBlock.tsx"
-        }
-      ],
-      "docs": "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers."
     },
     {
       "name": "ui-accordion",

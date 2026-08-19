@@ -28,7 +28,7 @@ Before installing Next.js, ensure your environment meets the following requireme
 
 ### Next.js 16
 
-Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `` props, no `next/amp`, and no runtime config. The only Next.js APIs the components reach for are `next/link`, `next/image` and `next/dynamic`, and the ones that defer a browser-only library with `ssr: false` already carry `"use client"` — so they behave the same under both versions.
+Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `` props, no `next/amp`, and no runtime config. The components import no Next.js API at all: those that render links or images take a `linkComponent` / `imageComponent` prop instead, and the ones wrapping a browser-only library defer it themselves after mount. Pass `next/link` and `next/image` into those props to keep prefetching and image optimisation — each of their pages shows the line.
 
     What Next.js 16 asks of your project
     Next.js 16 itself raises the floor: Node.js 20.9+, TypeScript 5.1+ and React 19.2, with Turbopack as the default bundler for next dev and next build. These are requirements of the framework, not of the components — the library builds cleanly under Turbopack. If your app still has a custom webpack config, either migrate it to turbopack or run next build --webpack.

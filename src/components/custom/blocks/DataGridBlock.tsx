@@ -135,10 +135,15 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
       className,
       ...props
     },
+    ref,
   ) => {
     const { theme, style } = getThemeStyles(color as string);
     const containerRef = useRef<HTMLDivElement>(null);
     const editInputRef = useRef<HTMLInputElement>(null);
+
+    // containerRef drives keyboard navigation, so the forwarded ref is
+    // mirrored onto it rather than replacing it.
+    React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
     // State
     const [data, setData] = useState(initialData);

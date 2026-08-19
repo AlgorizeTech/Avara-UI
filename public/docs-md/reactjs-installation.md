@@ -26,21 +26,23 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
 
 ### What the components actually need
 
-The components are plain React. Of the 123 files this registry ships, 110 import nothing beyond React, `lucide-react` and the `cn` helper — they run identically under Vite and Next.js.
+The components are plain React. **None of the 123 files this registry ships imports from `next/*`** — what the CLI writes into your project compiles in a Vite app as-is, with no edits.
 
-Thirteen reach for a Next.js API, and each of those pages shows the React version of its code alongside the Next.js one. The substitutions are small and mechanical:
+The dozen components that render links or images take an injectable element instead of importing one:
 
-        Next.js
-        React (Vite)
+        Prop
+        Default
+        Pass your own when…
 
-        next/link → &lt;Link href&gt;
-        &lt;a href&gt;, or &lt;Link to&gt; from React Router
+        linkComponent
+        &lt;a&gt;
+        You use React Router — pass its Link. It takes to rather than href, so wrap it if your data uses href.
 
-        next/image
-        &lt;img&gt; — the same width, height, src and alt attributes
+        imageComponent
+        &lt;img&gt;
+        You have your own image component. Rarely needed under Vite.
 
-        dynamic(…, &#123; ssr: false &#125;)
-        A plain import — a Vite SPA has no SSR to opt out of
+Components that depend on a browser-only library — the maps, which use Leaflet — defer that import until after mount on their own, so there is nothing for you to wrap.
 
     About the "use client" directive
     Most components start with "use client". Under Vite that line is inert — it is just a string expression, and nothing reads it. Rollup may warn "Module level directives cause errors when bundled" during a production build; the warning is harmless and can be silenced in your Rollup config if it bothers you. Leaving the directive in place keeps the file identical to the one the registry publishes, so future updates apply cleanly.
@@ -200,8 +202,8 @@ Nothing else about your app has to change. The registry writes source files into
     "Module level directives cause errors when bundled"
     A Rollup warning about "use client". Harmless — the build succeeds and the component works. See the note above.
 
-    A component imports next/link or next/image
-    One of the thirteen. Its documentation page shows the React version of the code — copy that one, or apply the substitutions from the table above.
+    Links do not navigate the way you expect
+    Components render a plain &lt;a&gt;, which does a full page load. If you use React Router, pass its Link as linkComponent to get client-side navigation.
 
 ## Next steps
 

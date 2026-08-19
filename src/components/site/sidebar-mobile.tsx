@@ -32,7 +32,8 @@ const useCurrentPath = () => {
 interface MenuItem {
   label: string;
   /** Path below the framework segment. Composed into an href at render time. */
-  slug: string;
+  slug?: string;
+  href?: string;
   badge?: string;
   children?: MenuItem[];
 }

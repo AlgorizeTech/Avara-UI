@@ -139,9 +139,17 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: "/",
-  },
+  // No `alternates.canonical` here, deliberately.
+  //
+  // Next.js inherits this object into every page that does not override it, so a
+  // canonical set at the root is not a homepage canonical — it is a site-wide
+  // claim that every page is a duplicate of "/". Only 11 of the 97 documentation
+  // pages export their own metadata, so the other 86 were each telling search
+  // engines to index the homepage instead of themselves.
+  //
+  // Omitting it lets every URL self-canonicalise, which is the right default.
+  // Pages that must point elsewhere say so themselves — see buildDocsMetadata
+  // for the forked guides.
   openGraph: {
     title:
       "Algorize UI | React Component Library",

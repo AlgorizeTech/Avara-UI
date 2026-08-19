@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 
-import {
-  DEFAULT_FRAMEWORK,
-  type Framework,
-  FRAMEWORK_META,
-  docsHref,
-} from "@/lib/framework";
+import { type Framework, FRAMEWORK_META, docsHref } from "@/lib/framework";
 
 /**
  * Builds page metadata for a forked guide page.
@@ -15,11 +10,14 @@ import {
  * impossible to get wrong. A page may export `metadata` or `generateMetadata`,
  * never both, so this exists for the handful that must vary the title.
  *
- * Canonical stays pinned to the Next.js twin. The project is a Next.js project
- * and its docs rank as such; the React pages are a second address for closely
- * related content, which is exactly the case `rel=canonical` is for. Revisit
- * only if the two versions diverge far enough to be genuinely different
- * documents competing for different queries.
+ * These pages are **self-canonical**, unlike the rest of the docs.
+ *
+ * Everywhere else, the two framework URLs serve identical bytes and every React
+ * page names its Next.js twin as canonical — correct, because there is only one
+ * document. This factory is used only by the forked guides (see `FORKED_SLUGS`),
+ * where that stops being true: they describe different scaffolders and answer a
+ * query the other cannot. Pointing them at each other would tell Google to drop
+ * the only pages a Vite reader is searching for.
  */
 export function buildDocsMetadata({
   framework,
@@ -54,7 +52,11 @@ export function buildDocsMetadata({
       description,
     },
     alternates: {
-      canonical: docsHref(DEFAULT_FRAMEWORK, slug),
+      canonical: url,
     },
+    // Overrides the noindex the [framework] layout applies to non-default
+    // frameworks. These pages are the reason that exception exists: they are
+    // genuinely different documents answering a query the other cannot.
+    robots: { index: true, follow: true },
   };
 }

@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
 import { useMap } from "react-leaflet";
 
-const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
-const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
-
-const ZoomControl = dynamic(() => import("react-leaflet").then((mod) => mod.ZoomControl), { ssr: false });
+/**
+ * Leaflet reads `window` at import time, so these must never load on a server.
+ *
+ * `React.lazy` rather than `next/dynamic` because this component ships to Vite
+ * apps too, and `next/dynamic` would not resolve there. It is equally safe: lazy
+ * defers the import to first render, and the `isMounted` gate further down keeps
+ * that first render in the browser under both frameworks.
+ */
+const MapContainer = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.MapContainer })));
+const GeoJSON = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.GeoJSON })));
+const ZoomControl = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.ZoomControl })));
 
 function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number; zoomable?: boolean }) {
   const map = useMap();
@@ -278,6 +284,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           }
         `}} />
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
+          <Suspense fallback={null}>
           <MapContainer
             ref={mapRef}
             center={center}
@@ -382,6 +389,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
               }}
             />
           </MapContainer>
+          </Suspense>
         </div>
         
         {variant === "dots" && (
