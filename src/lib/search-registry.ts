@@ -10,7 +10,9 @@ export interface SearchableItem {
    * result opened from /docs/reactjs/... keeps the reader in reactjs instead of
    * silently teleporting them into the Next.js tree.
    */
-  slug: string;
+  slug?: string;
+  /** Escape hatch for entries that are not framework-scoped docs pages. */
+  href?: string;
   category: string;
   keywords?: string[];
 }
@@ -26,6 +28,7 @@ function getNavigationItems(): SearchableItem[] {
         title: child.label,
         description: `${section.label} - ${child.label}`,
         slug: child.slug,
+        href: child.href,
         category: section.label,
         keywords: [child.label.toLowerCase(), section.label.toLowerCase()]
       });
