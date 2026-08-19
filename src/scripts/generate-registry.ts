@@ -157,6 +157,40 @@ function packageOf(spec: string): string {
     : spec.split("/")[0];
 }
 
+/**
+ * The `@types/x` companion for a package that ships no types of its own.
+ *
+ * shadcn installs exactly what `dependencies` lists and has no devDependencies
+ * channel, so a TypeScript consumer installing an item that imports `leaflet`
+ * gets "Could not find a declaration file for module 'leaflet'" — and, worse,
+ * cascading errors in packages whose own types depend on it. Shipping the
+ * @types package alongside costs a JavaScript consumer nothing.
+ *
+ * Resolved from this repo's own node_modules so the list cannot go stale: if we
+ * need the types to compile, so does everyone installing the component.
+ */
+function typesPackageFor(pkg: string): string | null {
+  if (pkg.startsWith("@types/")) return null;
+  try {
+    const meta = JSON.parse(
+      fs.readFileSync(
+        path.join(ROOT, "node_modules", pkg, "package.json"),
+        "utf8"
+      )
+    );
+    if (meta.types || meta.typings) return null;
+  } catch {
+    return null; // not installed here — nothing to assert
+  }
+  const scoped = pkg.startsWith("@")
+    ? pkg.slice(1).replace("/", "__")
+    : pkg;
+  const typesPkg = `@types/${scoped}`;
+  return fs.existsSync(path.join(ROOT, "node_modules", typesPkg))
+    ? typesPkg
+    : null;
+}
+
 // ---------------------------------------------------------------------------
 // Source discovery
 // ---------------------------------------------------------------------------
@@ -290,6 +324,8 @@ const items: BuiltItem[] = sources.map((s) => {
     if (pkg === "next") usesNext = true;
     if (AMBIENT_PACKAGES.has(pkg)) continue;
     dependencies.add(pkg);
+    const types = typesPackageFor(pkg);
+    if (types) dependencies.add(types);
   }
 
   if (usesNext) nextCoupled.push(s.name);

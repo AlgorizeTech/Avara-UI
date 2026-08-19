@@ -80,7 +80,7 @@ export function TooltipTrigger({
   if (!context) throw new Error("TooltipTrigger must be used within a Tooltip");
 
   const { open, setOpen, delayDuration, setTrigger } = context;
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleOpen = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

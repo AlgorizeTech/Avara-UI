@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import React, { ReactNode } from "react";
+import React from "react";
+import type { ReactNode } from "react";
 
 // ==========================================
 // BENTO GRID CONTAINER

@@ -53,7 +53,7 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
   if (!context) throw new Error("ContextMenuTrigger must be used within a ContextMenu");
 
   const { setOpen, setCoords } = context;
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openMenuAt = (x: number, y: number) => {
     setCoords({ x, y });
