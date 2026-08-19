@@ -5,27 +5,23 @@ import { extractCode } from "@/lib/code";
 
 {/* A beautiful map component to visualize your geographic data points */}
 
-A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind, it leverages Next.js dynamic imports to load Leaflet entirely client-side — no hydration mismatches, no broken renders, just a smooth map experience every time.
+A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind: the component defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders on a server — no hydration mismatches, no broken renders, and nothing for you to wrap.
 
-It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations right inside your Next.js application.
+It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
 
 ## Examples
 
 The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
-export const usageFill = `import dynamic from "next/dynamic";
-
-// Leaflet touches \`window\` on import, so the map must be client-only.
-const DataMaps = dynamic(
-  () => import("@/components/custom/blocks/DataMapsBlock").then((m) => m.DataMaps),
-  { ssr: false },
-);
-
-const mapData = [
+export const mapDataSource = `const mapData = [
   { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
   { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
   { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
-];
+];`;
+
+export const usageFill = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function AnalyticsDashboard() {
   return (
@@ -199,7 +195,7 @@ Learn about the Data Maps component's geographic visualization features, mapping
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
     <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Dynamic Imports</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Always ensure that any component relying on <code>react-leaflet</code> is dynamically imported with <code>{"{ ssr: false }"}</code>. Leaflet relies on the browser's <code>window</code> object and will crash your Next.js app if executed on the server.</p>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
   </div>
   <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
     <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">GeoJSON Caching</h4>

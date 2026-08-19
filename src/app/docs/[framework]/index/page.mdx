@@ -159,16 +159,18 @@ blocks and typography. [Browse everything](/docs/nextjs/all-components).
 </div>
 
 <ForFramework only="nextjs">
-Components are plain React. Most work in any React setup, though 13 of them
-import `next/image` or `next/link` and need edits outside Next.js — each page
-says so.
+Every component is plain React — none of them import from `next/*`. The dozen that
+render links or images take a `linkComponent` / `imageComponent` prop instead, so
+pass `next/link` or `next/image` to keep prefetching and image optimisation. Each
+of those pages shows the one line.
 </ForFramework>
 
 <ForFramework only="reactjs">
-Components are plain React and drop straight into a Vite app. 85 of the 98 are
-already framework-neutral — same imports, same `@/` alias. The 13 that reach for
-`next/image`, `next/link` or `next/dynamic` show the React version on their own
-page.
+Every component is plain React and drops straight into a Vite app — none of them
+import from `next/*`, so what the CLI writes compiles as-is. The dozen that render
+links or images default to plain `<a>` and `<img>`, and take a `linkComponent` /
+`imageComponent` prop if you would rather supply your own — React Router's `Link`,
+for instance.
 </ForFramework>
 
 ## How a component reaches your project

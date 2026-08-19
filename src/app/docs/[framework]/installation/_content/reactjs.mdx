@@ -42,34 +42,35 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
 
 ### What the components actually need
 
-The components are plain React. Of the 123 files this registry ships, 110 import nothing beyond React, `lucide-react` and the `cn` helper — they run identically under Vite and Next.js.
+The components are plain React. **None of the 123 files this registry ships imports from `next/*`** — what the CLI writes into your project compiles in a Vite app as-is, with no edits.
 
-Thirteen reach for a Next.js API, and each of those pages shows the React version of its code alongside the Next.js one. The substitutions are small and mechanical:
+The dozen components that render links or images take an injectable element instead of importing one:
 
 <div className="not-prose my-6 overflow-x-auto">
   <table className="w-full min-w-[32rem] border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm overflow-hidden">
     <thead className="border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-bold uppercase tracking-wider">
       <tr>
-        <th className="px-5 py-3">Next.js</th>
-        <th className="px-5 py-3">React (Vite)</th>
+        <th className="px-5 py-3">Prop</th>
+        <th className="px-5 py-3">Default</th>
+        <th className="px-5 py-3">Pass your own when…</th>
       </tr>
     </thead>
     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
       <tr>
-        <td className="px-5 py-3"><code>next/link</code> → <code>&lt;Link href&gt;</code></td>
-        <td className="px-5 py-3"><code>&lt;a href&gt;</code>, or <code>&lt;Link to&gt;</code> from React Router</td>
+        <td className="px-5 py-3"><code>linkComponent</code></td>
+        <td className="px-5 py-3"><code>&lt;a&gt;</code></td>
+        <td className="px-5 py-3">You use React Router — pass its <code>Link</code>. It takes <code>to</code> rather than <code>href</code>, so wrap it if your data uses <code>href</code>.</td>
       </tr>
       <tr>
-        <td className="px-5 py-3"><code>next/image</code></td>
-        <td className="px-5 py-3"><code>&lt;img&gt;</code> — the same <code>width</code>, <code>height</code>, <code>src</code> and <code>alt</code> attributes</td>
-      </tr>
-      <tr>
-        <td className="px-5 py-3"><code>dynamic(…, &#123; ssr: false &#125;)</code></td>
-        <td className="px-5 py-3">A plain import — a Vite SPA has no SSR to opt out of</td>
+        <td className="px-5 py-3"><code>imageComponent</code></td>
+        <td className="px-5 py-3"><code>&lt;img&gt;</code></td>
+        <td className="px-5 py-3">You have your own image component. Rarely needed under Vite.</td>
       </tr>
     </tbody>
   </table>
 </div>
+
+Components that depend on a browser-only library — the maps, which use Leaflet — defer that import until after mount on their own, so there is nothing for you to wrap.
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
@@ -244,8 +245,8 @@ Nothing else about your app has to change. The registry writes source files into
   </div>
 
   <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
-    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">A component imports <code>next/link</code> or <code>next/image</code></h4>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">One of the thirteen. Its documentation page shows the React version of the code — copy that one, or apply the substitutions from the table above.</p>
+    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">Links do not navigate the way you expect</h4>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Components render a plain <code>&lt;a&gt;</code>, which does a full page load. If you use React Router, pass its <code>Link</code> as <code>linkComponent</code> to get client-side navigation.</p>
   </div>
 </div>
 
