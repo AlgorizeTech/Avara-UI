@@ -55,66 +55,6 @@ export default function NotificationCard() {
   );
 }`;
 
-export const usageDefaultVariant = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-import { Download, Upload } from "lucide-react";
-
-export default function ActionCards() {
-  // "default" drops the border and leans on the shadow alone.
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Card variant="default">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Download className="w-5 h-5 text-emerald-500" /> Download Report
-          </CardTitle>
-          <CardDescription>
-            Export your analytics data as a CSV file for external processing.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card variant="default">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5 text-indigo-500" /> Import Data
-          </CardTitle>
-          <CardDescription>
-            Upload legacy customer profiles to merge into your active CRM.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    </div>
-  );
-}`;
-
-export const usageFlat = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-import { Download, Upload } from "lucide-react";
-
-export default function FlatCards() {
-  // "flat" tints the surface instead of raising it — good for nested panels.
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Card variant="flat">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Download className="w-5 h-5 text-emerald-500" /> Download Report
-          </CardTitle>
-          <CardDescription>Export your analytics data as a CSV file.</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card variant="flat">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5 text-indigo-500" /> Import Data
-          </CardTitle>
-          <CardDescription>Upload legacy customer profiles into your CRM.</CardDescription>
-        </CardHeader>
-      </Card>
-    </div>
-  );
-}`;
-
 export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
 import { Download, Upload } from "lucide-react";
 
@@ -203,33 +143,6 @@ export default function StatGrid() {
       props: { variant: "bordered", layout: "standard" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
-    },
-    {
-      title: "Default variant",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"default"',
-          effect: "to drop the border and rely on the shadow alone.",
-        },
-      ],
-      props: { variant: "default", layout: "grid" },
-      usage: usageDefaultVariant,
-    },
-    {
-      title: "Flat",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"flat"',
-          effect:
-            "to tint the surface instead of raising it — no shadow, so it reads correctly when nested inside another card.",
-        },
-      ],
-      props: { variant: "flat", layout: "grid" },
-      usage: usageFlat,
     },
     {
       title: "Interactive",

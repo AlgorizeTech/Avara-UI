@@ -35,27 +35,6 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageFilled = `"use client";
-
-import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
-
-export default function FilledSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    <SelectBlock
-      variant="filled"
-      options={options}
-      value={value}
-      onChange={setValue}
-      label="Department"
-      placeholder="Select an option..."
-    />
-  );
-}`;
-
 export const usageUnderlined = `"use client";
 
 import { useState } from "react";
@@ -74,45 +53,6 @@ export default function UnderlinedSelect() {
       label="Department"
       placeholder="Select an option..."
     />
-  );
-}`;
-
-export const usageGlow = `"use client";
-
-import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
-
-export default function GlowSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    <SelectBlock
-      variant="glow"
-      options={options}
-      value={value}
-      onChange={setValue}
-      label="Department"
-      placeholder="Select an option..."
-    />
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
-
-export default function SelectSizes() {
-  const [value, setValue] = useState("");
-
-  return (
-    <div className="flex flex-col gap-6">
-      <SelectBlock inputSize="sm" options={options} value={value} onChange={setValue} label="Small" />
-      <SelectBlock inputSize="md" options={options} value={value} onChange={setValue} label="Medium" />
-      <SelectBlock inputSize="lg" options={options} value={value} onChange={setValue} label="Large" />
-    </div>
   );
 }`;
 
@@ -155,63 +95,12 @@ export default function MultiSelect() {
   );
 }`;
 
-export const usageGrouped = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { Code, Database } from "lucide-react";
-
-const options = [
-  { label: "React", value: "react", icon: Code, group: "Frontend" },
-  { label: "Vue", value: "vue", icon: Code, group: "Frontend" },
-  { label: "Node.js", value: "node", icon: Database, group: "Backend" },
-];
-
-export default function GroupedSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    <SelectBlock
-      options={options}
-      value={value}
-      onChange={setValue}
-      label="Technologies"
-      placeholder="Select an option..."
-    />
-  );
-}`;
-
-export const usageStates = `"use client";
-
-import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
-
-export default function SelectStates() {
-  const [value, setValue] = useState("");
-
-  return (
-    <div className="flex flex-col gap-6">
-      <SelectBlock
-        options={options}
-        value={value}
-        onChange={setValue}
-        label="Department"
-        error="Please select a valid option to proceed."
-      />
-      <SelectBlock
-        options={options}
-        value={value}
-        onChange={setValue}
-        label="Department"
-        disabled
-      />
-    </div>
-  );
-}`;
-
 <ExampleShowcase
   name="select"
   colorControl
   colorLabel="Active Color"
   columns={1}
+  minHeight={450}
   examples={[
     {
       title: "Select",
@@ -234,20 +123,6 @@ export default function SelectStates() {
       code: extractCode("src/components/custom/blocks/SelectBlock.tsx"),
     },
     {
-      title: "Filled",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          value: '"filled"',
-          effect:
-            "for a solid, low-contrast trigger.",
-        },
-      ],
-      props: { isGrouped: false, variant: "filled" },
-      usage: usageFilled,
-    },
-    {
       title: "Underlined",
       propNotes: [
         {
@@ -260,33 +135,6 @@ export default function SelectStates() {
       ],
       props: { isGrouped: false, variant: "underlined" },
       usage: usageUnderlined,
-    },
-    {
-      title: "Glow",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          value: '"glow"',
-          effect:
-            "to light the trigger up on focus.",
-        },
-      ],
-      props: { isGrouped: false, variant: "glow" },
-      usage: usageGlow,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "inputSize",
-          effect:
-            "to scale the trigger — `sm`, `md` or `lg`. Note it is `inputSize`, not `size`.",
-        },
-      ],
-      props: { showAll: "sizes" },
-      usage: usageSizes,
     },
     {
       title: "Searchable",
@@ -313,36 +161,6 @@ export default function SelectStates() {
       ],
       props: { isGrouped: false, isMultiple: true },
       usage: usageMultiple,
-    },
-    {
-      title: "Grouped options",
-      propNotes: [
-        {
-          prop: "group",
-          effect:
-            "on an option categorises it under a label in the dropdown; options without one stay ungrouped at the top.",
-        },
-      ],
-      props: { isGrouped: true },
-      usage: usageGrouped,
-    },
-    {
-      title: "Error and disabled",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "error",
-          effect:
-            "for the invalid state — it replaces the helper text.",
-        },
-        {
-          prop: "disabled",
-          effect:
-            "locks the trigger so the dropdown cannot open.",
-        },
-      ],
-      props: { showAll: "states" },
-      usage: usageStates,
     },
   ]}
 />

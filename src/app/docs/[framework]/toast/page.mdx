@@ -133,25 +133,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 }`;
 
-export const usageGlass = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  // Glass leans on a backdrop blur — best over photos or rich backgrounds.
-  return <ToastProvider variant="glass">{children}</ToastProvider>;
-}`;
-
 export const usageMinimal = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return <ToastProvider variant="minimal">{children}</ToastProvider>;
-}`;
-
-export const usagePosition = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  // "top-right" | "top-left" | "top-center"
-  // "bottom-right" | "bottom-left" | "bottom-center"
-  return <ToastProvider position="top-center">{children}</ToastProvider>;
 }`;
 
 <ExampleShowcase
@@ -225,20 +210,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       usage: usageGlow,
     },
     {
-      title: "Glass",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"glass"',
-          effect:
-            "for a heavy backdrop blur, made for photographic backgrounds.",
-        },
-      ],
-      props: { variant: "glass", example: "types" },
-      usage: usageGlass,
-    },
-    {
       title: "Minimal",
       propNotes: [
         {
@@ -251,18 +222,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       ],
       props: { variant: "minimal", example: "types" },
       usage: usageMinimal,
-    },
-    {
-      title: "Position",
-      propNotes: [
-        {
-          prop: "position",
-          effect:
-            "docks the stack to any of six spots — `top-left` through `bottom-center`. Defaults to `bottom-right`.",
-        },
-      ],
-      props: { position: "top-center", example: "basic" },
-      usage: usagePosition,
     },
   ]}
 />

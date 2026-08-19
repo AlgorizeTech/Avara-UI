@@ -41,47 +41,6 @@ export default function Ledger() {
   );
 }`;
 
-export const usageSchema = `import { useState } from "react";
-import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
-
-// The grid is entirely column-driven: \`type\` picks the editor, \`width\`
-// pins the column, and \`readOnly\` locks it against edits.
-const COLUMNS = [
-  { field: "id", headerName: "User ID", width: 100, readOnly: true },
-  { field: "name", headerName: "Full Name", width: 250 },
-  { field: "score", headerName: "Test Score", type: "number", width: 150 },
-];
-
-const INITIAL_DATA = [
-  { id: "U-01", name: "Alice Smith", score: 95 },
-  { id: "U-02", name: "Bob Jones", score: 82 },
-];
-
-export default function Gradebook() {
-  const [data, setData] = useState(INITIAL_DATA);
-
-  return <DataGridBlock columns={COLUMNS} data={data} onChange={setData} />;
-}`;
-
-export const usageNoRowNumbers = `"use client";
-
-import { useState } from "react";
-import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
-import { COLUMNS, ROWS } from "./schema";
-
-export default function GridWithoutGutter() {
-  const [data, setData] = useState(ROWS);
-
-  return (
-    <DataGridBlock
-      columns={COLUMNS}
-      data={data}
-      onChange={setData}
-      showRowNumbers={false}
-    />
-  );
-}`;
-
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 import { COLUMNS, ROWS } from "./schema";
 
@@ -119,33 +78,6 @@ export default function ReadOnlyGrid() {
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DataGridBlock.tsx"),
-    },
-    {
-      title: "Column schema",
-      propNotes: [
-        {
-          lead: "Swap",
-          prop: "columns",
-          effect:
-            "and the whole grid changes — here a numeric `score` column and a locked `id`.",
-        },
-      ],
-      props: { dataset: "gradebook" },
-      usage: usageSchema,
-    },
-    {
-      title: "Without row numbers",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "showRowNumbers",
-          value: "{false}",
-          effect:
-            "to drop the sticky spreadsheet-style index gutter. It is on by default.",
-        },
-      ],
-      props: { showRowNumbers: false },
-      usage: usageNoRowNumbers,
     },
     {
       title: "Read only",

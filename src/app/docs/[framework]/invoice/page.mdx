@@ -63,12 +63,19 @@ import { invoiceData } from "./invoice-data";
 
 export default function GlassInvoice() {
   return (
-    // Glass needs something behind it to refract.
-    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+    // Nature wallpaper backdrop for glass refraction
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
       <Invoice variant="glass" invoiceData={invoiceData} />
     </div>
   );
-}`;
+};`;
 
 <ExampleShowcase
   name="invoice"

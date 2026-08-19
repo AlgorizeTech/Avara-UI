@@ -13,66 +13,6 @@ The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS gri
 
 From a bare disclosure to a nested file tree — the same three parts every time.
 
-export const usageDefault = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function BasicUsage() {
-  return (
-    <Collapsible>
-      <CollapsibleTrigger className="p-2 border rounded font-medium">
-        Click to Expand
-      </CollapsibleTrigger>
-
-      <CollapsibleContent>
-        <div className="p-4 border mt-2 rounded">This content was hidden!</div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-}`;
-
-export const usageFaq = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-import { ChevronDown } from "lucide-react";
-
-export default function Faq() {
-  return (
-    <div className="space-y-4">
-      {/* defaultOpen renders this one expanded on first paint */}
-      <Collapsible defaultOpen className="border rounded-xl p-4">
-        {/* "group" + group-data-[state=open] rotates the chevron for free */}
-        <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold group">
-          Can I use this UI kit in open source?
-          <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <p className="text-sm text-zinc-500 pt-3">
-            Absolutely! This code is completely dependency-free and yours to own.
-          </p>
-        </CollapsibleContent>
-      </Collapsible>
-
-      <Collapsible className="border rounded-xl p-4">
-        <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold group">
-          How does the animation work?
-          <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <p className="text-sm text-zinc-500 pt-3">
-            It transitions grid-template-rows from 0fr to 1fr — smooth height
-            animation with no JavaScript measuring.
-          </p>
-        </CollapsibleContent>
-      </Collapsible>
-    </div>
-  );
-}`;
-
 export const usageSettings = `import {
   Collapsible,
   CollapsibleContent,
@@ -163,66 +103,10 @@ export default function FileTree() {
   );
 }`;
 
-export const usageDisabled = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-import { ChevronDown } from "lucide-react";
-
-export default function LockedSection() {
-  return (
-    // disabled makes the trigger ignore clicks and sets data-disabled.
-    <Collapsible disabled className="border rounded-xl p-4 opacity-60">
-      <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold group cursor-not-allowed">
-        Billing history (locked on the free plan)
-        <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <p className="text-sm text-zinc-500 pt-3">
-          You will never see this — the trigger ignores clicks.
-        </p>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-}`;
-
 <ExampleShowcase
   name="collapsible"
   columns={1}
   examples={[
-    {
-      title: "Collapsible",
-      subheading: "Three parts: `Collapsible`, `CollapsibleTrigger` and `CollapsibleContent`.",
-      propNotes: [
-        {
-          prop: "open",
-          effect:
-            "makes it controlled — pair it with `onOpenChange` or it will never move.",
-        },
-        {
-          prop: "onOpenChange",
-          effect: "fires with the new boolean whenever the section toggles.",
-        },
-      ],
-      props: { layout: "minimal" },
-      usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/CollapsibleBlock.tsx"),
-    },
-    {
-      title: "FAQ list",
-      subheading: "`group-data-[state=open]` on the trigger is what rotates the chevron.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "defaultOpen",
-          effect:
-            "to expand one on load and leave the state uncontrolled — the opposite end from `open`.",
-        },
-      ],
-      props: { layout: "basic" },
-      usage: usageFaq,
-    },
     {
       title: "Settings panel",
       propNotes: [
@@ -234,6 +118,7 @@ export default function LockedSection() {
       ],
       props: { layout: "settings" },
       usage: usageSettings,
+      code: extractCode("src/components/custom/blocks/CollapsibleBlock.tsx"),
     },
     {
       title: "File tree",
@@ -246,19 +131,6 @@ export default function LockedSection() {
       ],
       props: { layout: "filetree" },
       usage: usageFileTree,
-    },
-    {
-      title: "Disabled",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "disabled",
-          effect:
-            "to lock a section — the trigger stops responding to clicks, keeping whatever state it is in.",
-        },
-      ],
-      props: { layout: "disabled" },
-      usage: usageDisabled,
     },
   ]}
 />

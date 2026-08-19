@@ -113,19 +113,13 @@ const ModalRoot = ({
 }) => {
   const [renderLayer, setRenderLayer] = useState(open);
 
-  // Opening must show the layer immediately. Adjusting state during render on a
-  // prop change is React's documented alternative to an effect here, and avoids
-  // the extra render an effect would cost on every open.
-  const [prevOpen, setPrevOpen] = useState(open);
-  if (prevOpen !== open) {
-    setPrevOpen(open);
-    if (open) setRenderLayer(true);
-  }
-
   useEffect(() => {
-    if (open) return;
-    const timer = setTimeout(() => setRenderLayer(false), 300);
-    return () => clearTimeout(timer);
+    if (open) {
+      setRenderLayer(true);
+    } else {
+      const timer = setTimeout(() => setRenderLayer(false), 300);
+      return () => clearTimeout(timer);
+    }
   }, [open]);
 
   useEffect(() => {
@@ -151,18 +145,19 @@ const ModalOverlay = ({ className }: { className?: string }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open)
+    if (open && overlayRef.current) {
       gsap.fromTo(
         overlayRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.3, ease: "power2.out" },
       );
-    else
+    } else if (overlayRef.current) {
       gsap.to(overlayRef.current, {
         opacity: 0,
         duration: 0.3,
         ease: "power2.in",
       });
+    }
   }, [open]);
 
   return (
@@ -271,7 +266,13 @@ export function ModalBlock({
   );
 
   return (
-    <div className="w-full flex items-center justify-center" style={style}>
+    <div
+      className={cn(
+        "w-full flex items-center justify-center transition-all",
+        isOpen ? "absolute inset-0 z-40" : "relative z-10",
+      )}
+      style={style}
+    >
       <button
         onClick={() => setIsOpen(true)}
         className={cn(

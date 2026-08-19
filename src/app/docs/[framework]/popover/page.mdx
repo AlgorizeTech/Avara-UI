@@ -13,146 +13,6 @@ The same goes for the screen edge. `side` and `align` are *preferences*: the pan
 
 Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
 
-export const usageDefault = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-import { Settings2 } from "lucide-react";
-
-export default function PopoverDemo() {
-  return (
-    <Popover>
-      <PopoverTrigger>
-        <div className="flex items-center gap-2 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
-          <Settings2 className="w-4 h-4" />
-          Configure Settings
-        </div>
-      </PopoverTrigger>
-
-      <PopoverContent side="bottom" align="center">
-        <div className="space-y-4">
-          <div className="space-y-1 text-sm border-b pb-3">
-            <h4 className="font-bold">Dimensions</h4>
-            <p className="text-zinc-500 text-xs">Set the dimensions for the layer.</p>
-          </div>
-          <div className="grid gap-3">
-            <div className="grid grid-cols-3 items-center gap-4 text-sm">
-              <label htmlFor="width">Width</label>
-              <input id="width" defaultValue="100%" className="col-span-2 h-8 rounded-md border bg-transparent px-3" />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4 text-sm">
-              <label htmlFor="height">Height</label>
-              <input id="height" defaultValue="25px" className="col-span-2 h-8 rounded-md border bg-transparent px-3" />
-            </div>
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}`;
-
-export const usageSides = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverSides() {
-  return (
-    <div className="flex flex-wrap gap-4">
-      <Popover>
-        <PopoverTrigger>
-          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
-            top
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="top" className="w-48">
-          <p className="text-sm">Rendered on the top side of the trigger.</p>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger>
-          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
-            right
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="right" className="w-48">
-          <p className="text-sm">Rendered on the right side of the trigger.</p>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger>
-          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
-            bottom
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="bottom" className="w-48">
-          <p className="text-sm">Rendered on the bottom side of the trigger.</p>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger>
-          <div className="px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
-            left
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="left" className="w-48">
-          <p className="text-sm">Rendered on the left side of the trigger.</p>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-}`;
-
-export const usageAlign = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverAlign() {
-  return (
-    <div className="flex flex-col gap-4">
-      <Popover>
-        <PopoverTrigger>
-          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
-            align="start"
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="bottom" align="start" className="w-48">
-          <p className="text-sm">Aligned to the start edge.</p>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger>
-          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
-            align="center"
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="bottom" align="center" className="w-48">
-          <p className="text-sm">Aligned to the center edge.</p>
-        </PopoverContent>
-      </Popover>
-
-      <Popover>
-        <PopoverTrigger>
-          <div className="w-56 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold text-center">
-            align="end"
-          </div>
-        </PopoverTrigger>
-        <PopoverContent side="bottom" align="end" className="w-48">
-          <p className="text-sm">Aligned to the end edge.</p>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-}`;
-
 export const usageMenu = `import {
   Popover,
   PopoverContent,
@@ -219,45 +79,6 @@ export default function OffsetPopover() {
   columns={1}
   examples={[
     {
-      title: "Popover",
-      subheading: "Compose `Popover`, `PopoverTrigger` and `PopoverContent` — no provider needed.",
-      propNotes: [
-        {
-          prop: "avoidCollisions",
-          effect:
-            "is on by default: the panel flips and shifts to stay in the viewport, which is what stops it being cropped on phones.",
-        },
-      ],
-      props: { example: "settings", side: "bottom", align: "center" },
-      usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/PopoverBlock.tsx"),
-    },
-    {
-      title: "Sides",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "side",
-          effect:
-            "to open above, below or beside the trigger — `top`, `bottom` (the default), `left` or `right`.",
-        },
-      ],
-      props: { example: "sides" },
-      usage: usageSides,
-    },
-    {
-      title: "Alignment",
-      propNotes: [
-        {
-          prop: "align",
-          effect:
-            "shifts the panel along the chosen side — `start`, `center` (the default) or `end`. With `side=\"bottom\" align=\"start\"` the left edges line up.",
-        },
-      ],
-      props: { example: "align" },
-      usage: usageAlign,
-    },
-    {
       title: "Account menu",
       propNotes: [
         {
@@ -268,6 +89,7 @@ export default function OffsetPopover() {
       ],
       props: { example: "menu", align: "end" },
       usage: usageMenu,
+      code: extractCode("src/components/custom/blocks/PopoverBlock.tsx"),
     },
     {
       title: "Offset",
