@@ -84,7 +84,6 @@ export const navigation: NavigationItem[] = [
       { label: "Tooltip", href: "/docs/nextjs/tooltip",  },
       { label: "Toggle Group", href: "/docs/nextjs/toggle-group",  },
       { label: "Timeline", href: "/docs/nextjs/timeline",  },
-      { label: "Terminal", href: "/docs/nextjs/terminal",  },
       { label: "Typography", href: "/docs/nextjs/typography",  },
       { label: "Pagination", href: "/docs/nextjs/pagination",  },
       { label: "Tabs", href: "/docs/nextjs/vertical-tabs",  },

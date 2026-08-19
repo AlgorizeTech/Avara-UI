@@ -93,7 +93,6 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "sticky-scroll-stack": lazyRetry(() => import("./demos/sticky-scroll-stack-demo")),
   "support": lazyRetry(() => import("./demos/support-demo")),
   "table": lazyRetry(() => import("./demos/table-demo")),
-  "terminal": lazyRetry(() => import("./demos/terminal-demo")),
   "text-animation": lazyRetry(() => import("./demos/text-animation-demo")),
   "theme-switcher": lazyRetry(() => import("./demos/theme-switcher-demo")),
   "tilted-card": lazyRetry(() => import("./demos/tilted-card-demo")),

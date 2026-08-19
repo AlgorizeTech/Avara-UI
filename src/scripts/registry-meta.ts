@@ -128,12 +128,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display"],
     docs: "Duplicate the children set to keep the loop seamless; supports reverse and vertical orientations.",
   },
-  terminal: {
-    description:
-      "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
-    categories: ["code", "marketing"],
-    docs: "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost).",
-  },
 
   // ---- Phase 4A: forms & input controls ----
   input: {

@@ -11,11 +11,7 @@ import {
 	MemoriesCard,
 	MemoryItem,
 } from "@/components/custom/blocks/MemoriesCardBlock";
-import {
-	ThreeDCarousel,
-	CarouselItem,
-} from "@/components/custom/blocks/ThreeDCarouselBlock";
-import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { ThreeDCarousel, CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";

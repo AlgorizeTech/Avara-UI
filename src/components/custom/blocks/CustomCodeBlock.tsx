@@ -217,8 +217,8 @@ export function CustomCodeBlock({
       {/* Main Code Block */}
       <div className="w-full rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#09090b]">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800/80 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800/80">
+          <div className="flex items-center gap-4 min-w-0">
             {/* Mac Dots */}
             <div className="flex items-center gap-1.5 shrink-0">
               <div className="w-3 h-3 rounded-full bg-rose-500" />
@@ -227,9 +227,9 @@ export function CustomCodeBlock({
             </div>
             
             {/* File Name / Language Badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-800 rounded-md shrink-0 shadow-none">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-800 rounded-md shrink-0 shadow-none max-w-full overflow-hidden">
               <LanguageIcon language={activeLanguage} />
-              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate">
                 {activeFileName || formatLanguageName(activeLanguage)}
               </span>
             </div>

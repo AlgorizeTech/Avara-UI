@@ -87,7 +87,6 @@ export const sandboxNames = [
   "sticky-scroll-stack",
   "support",
   "table",
-  "terminal",
   "text-animation",
   "theme-switcher",
   "tilted-card",
