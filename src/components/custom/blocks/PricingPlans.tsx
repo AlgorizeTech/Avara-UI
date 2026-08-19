@@ -2,7 +2,6 @@
 
 import gsap from "gsap";
 import { Check, Code2, PenTool, Zap } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const getCardData = (activePlans: string[]) => {
@@ -101,7 +100,16 @@ const getCardData = (activePlans: string[]) => {
   return { title, tag, price, features };
 };
 
-export default function PricingPlans() {
+export default function PricingPlans({
+  linkComponent: Link = "a",
+}: {
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+} = {}) {
   const [activePlans, setActivePlans] = useState<string[]>([]);
   const cardData = getCardData(activePlans);
 

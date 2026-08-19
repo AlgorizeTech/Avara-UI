@@ -1,5 +1,7 @@
 "use client";
 
+import { useFramework } from "@/hooks/use-framework";
+import { resolveSnippet, type Snippet } from "@/lib/snippet";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
@@ -555,15 +557,32 @@ export interface ShowcaseExample {
   id?: string;
   /** JSON-serializable props bridged into the sandbox demo for this preview. */
   props?: Record<string, unknown>;
-  /** Authored usage snippet — adds a Usage tab (TSX; JS toggle built in). */
-  usage?: string;
-  /** Optional source snippet — adds a Code tab. */
-  code?: string;
+  /**
+   * Authored usage snippet — adds a Usage tab (TSX; JS toggle built in).
+   *
+   * A plain string is identical in every framework. Pass `{ nextjs, reactjs }`
+   * only when the code genuinely differs — see src/lib/snippet.ts.
+   */
+  usage?: Snippet;
+  /** Optional source snippet — adds a Code tab. Same string-or-map rule. */
+  code?: Snippet;
   /** Per-example overrides for the Sandbox. */
   options?: SandboxOptions;
   minHeight?: number;
   maxHeight?: number;
 }
+
+/**
+ * A ShowcaseExample whose snippets have already been resolved to one framework.
+ *
+ * This type is the seam: ExampleShowcase resolves `usage` and `code` once, and
+ * everything below it — the cards, the code tabs, the TSX→JS transform — deals
+ * only in plain strings and never has to know a framework exists.
+ */
+export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & {
+  usage?: string;
+  code?: string;
+};
 
 const slugify = (value: string) =>
   value
@@ -737,8 +756,16 @@ export function ExampleShowcase({
     if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
   }, [shared, ownsPicker, defaultColor]);
 
+  // Snippets resolve once, here, against the framework in the URL. Everything
+  // below this point works with plain strings, so the sandbox, the code tabs and
+  // the TSX→JS transform needed no changes at all.
+  const framework = useFramework();
+
   // Find component source code fallback from any example that explicitly provides it
-  const fallbackCode = examples.find((ex) => ex.code)?.code;
+  const fallbackCode = resolveSnippet(
+    examples.find((ex) => ex.code)?.code,
+    framework,
+  );
 
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
@@ -765,10 +792,10 @@ export function ExampleShowcase({
             : example.props;
 
           const effectiveUsage =
-            example.usage ??
+            resolveSnippet(example.usage, framework) ??
             generateFallbackUsage(name, example.title, effectiveProps);
 
-          const effectiveCode = example.code ?? fallbackCode;
+          const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;
 
           return (
             <ExampleCard
@@ -799,7 +826,7 @@ function ExampleCard({
   maxHeight,
 }: {
   name: string;
-  example: ShowcaseExample;
+  example: ResolvedShowcaseExample;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;

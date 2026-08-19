@@ -4,7 +4,6 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
 import { GitHubIcon } from "./Icons";
-import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 
 /* ═══════════════════════════════════════════════
@@ -27,6 +26,12 @@ export interface HomepageHeroBlockProps
 	subtitle?: string;
 	/** CLI copy command */
 	cliCommand?: string;
+	/**
+	 * The element used for links. Defaults to a plain `a`, so this component works
+	 * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+	 * client-side navigation and prefetching: `linkComponent={Link}`.
+	 */
+	linkComponent?: React.ElementType;
 	/** Primary action button label */
 	primaryActionLabel?: string;
 	/** Primary action button URL */
@@ -111,6 +116,7 @@ export const HomepageHeroBlock = forwardRef<
 >(
 	(
 		{
+			linkComponent: Link = "a",
 			badgeText = "Next-Gen React Components",
 			badgeHref = "/docs",
 			titlePrefix = "Build ",

@@ -10,7 +10,6 @@ import {
   Terminal,
 } from "lucide-react";
 import { GitHubIcon } from "./Icons";
-import Link from "next/link";
 
 /* ═══════════════════════════════════════════════
    TYPES & INTERFACES
@@ -30,6 +29,12 @@ export interface HomepageHeroTypingBlockProps
   secondaryActionLabel?: string;
   secondaryActionHref?: string;
   color?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
 }
 
 /* ═══════════════════════════════════════════════
@@ -104,6 +109,7 @@ export const HomepageHeroTypingBlock = forwardRef<
 >(
   (
     {
+      linkComponent: Link = "a",
       badgeText = "Next-Gen React Components",
       badgeHref: _badgeHref = "/docs",
       titlePrefix = "Build ",

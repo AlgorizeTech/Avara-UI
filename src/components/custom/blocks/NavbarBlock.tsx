@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
 export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
@@ -109,10 +108,17 @@ export function NavbarBlock({
   variant = "default",
   color = "indigo",
   logoText = "Nexus",
+  linkComponent: Link = "a",
 }: {
   variant?: NavbarVariant;
   color?: NavbarColor;
   logoText?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [renderLayer, setRenderLayer] = useState(false);
