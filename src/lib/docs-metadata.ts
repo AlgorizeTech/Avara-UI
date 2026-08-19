@@ -54,5 +54,9 @@ export function buildDocsMetadata({
     alternates: {
       canonical: url,
     },
+    // Overrides the noindex the [framework] layout applies to non-default
+    // frameworks. These pages are the reason that exception exists: they are
+    // genuinely different documents answering a query the other cannot.
+    robots: { index: true, follow: true },
   };
 }
