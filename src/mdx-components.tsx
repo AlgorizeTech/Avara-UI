@@ -8,6 +8,7 @@ import { AIButton } from './components/site/ai-button';
 import { DocLink, MdxLink } from './components/site/doc-link';
 import { ForFramework } from './components/site/for-framework';
 import { InjectablePropNote } from './components/site/injectable-prop-note';
+import { OtherFrameworkGuide } from './components/site/other-framework-guide';
 import {
   PackageManagerTabs as PMTabs,
   PMTabContent,
@@ -297,6 +298,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     DocLink,
     ForFramework,
     InjectablePropNote,
+    OtherFrameworkGuide,
     PMTabs,
     PMTabContent,
     NPMTabContent,
