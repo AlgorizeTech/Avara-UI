@@ -375,17 +375,24 @@ function CircularChart({
   const strokeWidth = type === "pie" ? 50 : 20;
   const circumference = 2 * Math.PI * radius;
 
-  let currentOffset = 0;
+  // Each slice starts where the previous one ended. Precomputed rather than
+  // accumulated in a mutable variable inside map(), so the mapper stays pure.
+  const sliceRatios = data.map((d) => d.value / (total || 1));
+  const startRatios: number[] = [];
+  sliceRatios.reduce((acc, ratio) => {
+    startRatios.push(acc);
+    return acc + ratio;
+  }, 0);
 
   // Map data to stroke dashes
   const slices = data.map((d, i) => {
-    const sliceRatio = d.value / (total || 1);
+    const sliceRatio = sliceRatios[i];
     const strokeDasharray = `${sliceRatio * circumference} ${circumference}`;
-    const strokeDashoffset = -currentOffset;
-    currentOffset += sliceRatio * circumference;
+    const strokeDashoffset = -(startRatios[i] * circumference);
+    const endOffset = (startRatios[i] + sliceRatio) * circumference;
 
     const midAngle =
-      ((currentOffset - (sliceRatio * circumference) / 2) / circumference) *
+      ((endOffset - (sliceRatio * circumference) / 2) / circumference) *
         Math.PI *
         2 -
       Math.PI / 2;

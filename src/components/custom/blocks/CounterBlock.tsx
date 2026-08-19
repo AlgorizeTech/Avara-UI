@@ -421,23 +421,6 @@ const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
     return () => clearInterval(interval);
   }, [targetDate]);
 
-  const TimeUnit = ({ value, unit }: { value: number; unit: string }) => (
-    <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg mb-3">
-        <span
-          className={cn(
-            "text-2xl sm:text-3xl font-black tracking-tighter",
-            theme.text,
-          )}
-        >
-          {value.toString().padStart(2, "0")}
-        </span>
-      </div>
-      <span className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest">
-        {unit}
-      </span>
-    </div>
-  );
 
   return (
     <div className="flex flex-col items-center gap-8" style={style}>
@@ -447,10 +430,10 @@ const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
         </div>
       )}
       <div className="flex gap-3 sm:gap-4">
-        <TimeUnit value={timeLeft.d} unit="Days" />
-        <TimeUnit value={timeLeft.h} unit="Hours" />
-        <TimeUnit value={timeLeft.m} unit="Mins" />
-        <TimeUnit value={timeLeft.s} unit="Secs" />
+        <TimeUnit themeText={theme.text} value={timeLeft.d} unit="Days" />
+        <TimeUnit themeText={theme.text} value={timeLeft.h} unit="Hours" />
+        <TimeUnit themeText={theme.text} value={timeLeft.m} unit="Mins" />
+        <TimeUnit themeText={theme.text} value={timeLeft.s} unit="Secs" />
       </div>
     </div>
   );
@@ -472,6 +455,38 @@ export interface CounterProps {
   prefix?: string;
   suffix?: string;
   targetDate?: Date;
+}
+
+/**
+ * Defined at module scope on purpose: declared inside CounterBlock it would be
+ * a new component type on every tick, remounting all four digits each second.
+ */
+function TimeUnit({
+  value,
+  unit,
+  themeText,
+}: {
+  value: number;
+  unit: string;
+  themeText: string;
+}) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg mb-3">
+        <span
+          className={cn(
+            "text-2xl sm:text-3xl font-black tracking-tighter",
+            themeText,
+          )}
+        >
+          {value.toString().padStart(2, "0")}
+        </span>
+      </div>
+      <span className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest">
+        {unit}
+      </span>
+    </div>
+  );
 }
 
 export function CounterBlock({

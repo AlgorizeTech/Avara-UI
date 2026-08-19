@@ -11,7 +11,7 @@ import {
   Search,
   Truck,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
 // ==========================================
@@ -199,6 +199,30 @@ function MapResizeHandler() {
 }
 
 // --- MAIN COMPONENT ---
+/**
+ * Dark mode is an external system (a class on <html>), so it is read through
+ * useSyncExternalStore rather than mirrored into state from an effect. The
+ * server snapshot doubles as the "not mounted yet" signal.
+ */
+const subscribeToTheme = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
+};
+const getIsDark = () => document.documentElement.classList.contains("dark");
+const getIsDarkOnServer = () => null;
+
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 export default function FleetTracker({
   fleetData = [],
   variant = "default",
@@ -229,8 +253,10 @@ export default function FleetTracker({
 
   const styles = fleetVariants[variant];
 
-  const [mounted, setMounted] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const mounted = useIsMounted();
+  const isDarkMode =
+    useSyncExternalStore(subscribeToTheme, getIsDark, getIsDarkOnServer) ??
+    false;
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
@@ -238,21 +264,6 @@ export default function FleetTracker({
   // Below md the list and the map share the same box, so only one is shown at a
   // time. The list is the landing view; the header/floating buttons swap them.
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(true);
-
-  useEffect(() => {
-    setMounted(true);
-    const checkDark = () => {
-      setIsDarkMode(document.documentElement.classList.contains("dark"));
-    };
-    checkDark();
-
-    const observer = new MutationObserver(checkDark);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   const filteredVehicles = fleetData.filter(
     (v) =>

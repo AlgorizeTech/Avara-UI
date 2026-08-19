@@ -1,7 +1,12 @@
 "use client";
 
 import { Car, ChevronRight, Menu, Search, X } from "lucide-react";
-import { Suspense, lazy, useEffect, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 export type Vehicle = {
   id: string;
@@ -33,23 +38,35 @@ const MapFallback = () => (
   </div>
 );
 
+/**
+ * True only after hydration. useSyncExternalStore reports a different snapshot
+ * on the server than on the client, so this needs no state update in an effect
+ * and costs no extra render.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 export default function FleetTracker({
   fleetData = [],
 }: {
   fleetData: Vehicle[];
 }) {
-  const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // Gates the lazy map import to the browser — see the note on DynamicMap.
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => setIsMounted(true), []);
+  const isMounted = useIsMounted();
 
-  useEffect(() => {
-    if (!activeVehicle && fleetData.length > 0) setActiveVehicle(fleetData[0]);
-  }, [fleetData, activeVehicle]);
+  // Falling back to the first vehicle here rather than writing it back in an
+  // effect: the effect rendered once with nothing selected before correcting.
+  const activeVehicle = selectedVehicle ?? fleetData[0] ?? null;
 
   const filteredFleet = fleetData.filter(
     (vehicle) =>
@@ -58,7 +75,7 @@ export default function FleetTracker({
   );
 
   const handleVehicleClick = (vehicle: Vehicle) => {
-    setActiveVehicle(vehicle);
+    setSelectedVehicle(vehicle);
     if (typeof window !== "undefined" && window.innerWidth < 768)
       setIsSidebarOpen(false);
   };
@@ -168,7 +185,7 @@ export default function FleetTracker({
               <DynamicMap
                 fleetData={filteredFleet}
                 activeVehicle={activeVehicle}
-                setActiveVehicle={setActiveVehicle}
+                setActiveVehicle={setSelectedVehicle}
               />
             </Suspense>
           ) : (

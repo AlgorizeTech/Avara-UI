@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
 import { SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact } from "react-icons/si";
@@ -163,16 +163,18 @@ export function CustomCodeBlock({
   ...props
 }: CustomCodeBlockProps) {
   const [isCopied, setIsCopied] = useState(false);
-  const [highlightedCode, setHighlightedCode] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const activeCode = tabs && tabs.length > 0 ? tabs[activeTabIndex].code : code || "";
   const activeLanguage = tabs && tabs.length > 0 ? tabs[activeTabIndex].language : language;
   const activeFileName = tabs && tabs.length > 0 ? tabs[activeTabIndex].fileName : fileName;
 
-  useEffect(() => {
-    setHighlightedCode(highlightCode(activeCode, activeLanguage));
-  }, [activeCode, activeLanguage]);
+  // Pure derivation of the props: computing it in an effect rendered the raw
+  // code once, then re-rendered with the highlighted copy.
+  const highlightedCode = useMemo(
+    () => highlightCode(activeCode, activeLanguage),
+    [activeCode, activeLanguage],
+  );
 
   const copyToClipboard = async () => {
     try {

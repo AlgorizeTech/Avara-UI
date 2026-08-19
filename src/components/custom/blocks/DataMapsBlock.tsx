@@ -1,6 +1,13 @@
 "use client";
 
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, {
+  Suspense,
+  lazy,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 import { useMap } from "react-leaflet";
@@ -81,6 +88,18 @@ function getFlagHtml(alpha3: string) {
   return `<img src="https://flagcdn.com/w40/${alpha2.toLowerCase()}.png" width="20" alt="${alpha2}" class="inline-block object-cover rounded-[2px]" />`;
 }
 
+/**
+ * True only after hydration. useSyncExternalStore reports a different snapshot
+ * on the server than on the client, so this needs no state update in an effect.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   (
     {
@@ -100,7 +119,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     },
     ref
   ) => {
-    const [isMounted, setIsMounted] = useState(false);
+    const isMounted = useIsMounted();
     const [geoData, setGeoData] = useState<any>(null);
     const mapRef = useRef<any>(null);
     const mapWrapperRef = useRef<HTMLDivElement>(null);
@@ -203,7 +222,6 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     }, [highlightColor, dataPoints, variant, geoData, leafletLib]);
 
     useEffect(() => {
-      setIsMounted(true);
       fetch(mapGeoJsonUrl)
         .then((res) => res.json())
         .then((data) => setGeoData(data))

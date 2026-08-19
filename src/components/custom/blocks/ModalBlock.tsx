@@ -111,18 +111,21 @@ const ModalRoot = ({
   type: ModalType;
   children: React.ReactNode;
 }) => {
-  const [mounted, setMounted] = useState(false);
   const [renderLayer, setRenderLayer] = useState(open);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  useEffect(() => {
+  // Opening must show the layer immediately. Adjusting state during render on a
+  // prop change is React's documented alternative to an effect here, and avoids
+  // the extra render an effect would cost on every open.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
     if (open) setRenderLayer(true);
-    else {
-      const timer = setTimeout(() => setRenderLayer(false), 300);
-      return () => clearTimeout(timer);
-    }
+  }
+
+  useEffect(() => {
+    if (open) return;
+    const timer = setTimeout(() => setRenderLayer(false), 300);
+    return () => clearTimeout(timer);
   }, [open]);
 
   useEffect(() => {
@@ -133,7 +136,7 @@ const ModalRoot = ({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [open, onOpenChange]);
 
-  if (!mounted || !renderLayer) return null;
+  if (!renderLayer) return null;
   return (
     <ModalContext.Provider value={{ open, onOpenChange, type }}>
       <div className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none">

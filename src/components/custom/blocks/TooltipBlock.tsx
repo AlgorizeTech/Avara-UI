@@ -3,8 +3,10 @@
 import { cn } from "@/lib/utils";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -15,9 +17,15 @@ import { createPortal } from "react-dom";
 // ==========================================
 interface TooltipContextType {
   open: boolean;
-  handleOpen: () => void;
-  handleClose: () => void;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  delayDuration: number;
+  /**
+   * The trigger node itself, held in state rather than a ref. A ref shared
+   * through context makes every read of this context a ref read during render;
+   * a plain node lets the content position and portal itself without one.
+   */
+  trigger: HTMLDivElement | null;
+  setTrigger: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>;
 }
 const TooltipContext = createContext<TooltipContextType | undefined>(undefined);
 
@@ -38,23 +46,18 @@ export interface TooltipProps {
 
 export function Tooltip({ children, delayDuration = 200 }: TooltipProps) {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [trigger, setTrigger] = useState<HTMLDivElement | null>(null);
 
-  const handleOpen = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
-  };
-
-  const handleClose = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setOpen(false);
-  };
+  // The open/close delay is owned by the trigger, not shared through context:
+  // a timeout ref captured by a context handler would make every read of this
+  // context look like a ref read during render.
+  const value = useMemo(
+    () => ({ open, setOpen, delayDuration, trigger, setTrigger }),
+    [open, delayDuration, trigger],
+  );
 
   return (
-    <TooltipContext.Provider
-      value={{ open, handleOpen, handleClose, triggerRef }}
-    >
+    <TooltipContext.Provider value={value}>
       {children}
     </TooltipContext.Provider>
   );
@@ -76,17 +79,37 @@ export function TooltipTrigger({
   const context = useContext(TooltipContext);
   if (!context) throw new Error("TooltipTrigger must be used within a Tooltip");
 
+  const { open, setOpen, delayDuration, setTrigger } = context;
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleOpen = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
+  }, [setOpen, delayDuration]);
+
+  const handleClose = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(false);
+  }, [setOpen]);
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    },
+    [],
+  );
+
   return (
     <div
-      ref={context.triggerRef}
-      onMouseEnter={context.handleOpen}
-      onMouseLeave={context.handleClose}
-      onFocus={context.handleOpen}
-      onBlur={context.handleClose}
+      ref={setTrigger}
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
+      onFocus={handleOpen}
+      onBlur={handleClose}
       className={cn("inline-block", className)}
       tabIndex={0}
       aria-haspopup="dialog"
-      aria-expanded={context.open}
+      aria-expanded={open}
       {...props}
     >
       {children}
@@ -115,26 +138,20 @@ export function TooltipContent({
   const context = useContext(TooltipContext);
   if (!context) throw new Error("TooltipContent must be used within a Tooltip");
 
-  const { open, triggerRef } = context;
+  const { open, trigger: triggerEl } = context;
   const [coords, setCoords] = useState({ top: -9999, left: -9999 });
   const contentRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // SSR safety for Portals
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
-    if (!open || !triggerRef.current || !contentRef.current) return;
+    if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
     // tooltip works when rendered inside an iframe (e.g. docs device preview).
-    const doc = triggerRef.current.ownerDocument;
+    const doc = triggerEl.ownerDocument;
     const win = doc.defaultView ?? window;
 
     const updatePosition = () => {
-      const trigger = triggerRef.current!.getBoundingClientRect();
+      const trigger = triggerEl.getBoundingClientRect();
       const content = contentRef.current!.getBoundingClientRect();
       let top = 0;
       let left = 0;
@@ -169,12 +186,14 @@ export function TooltipContent({
       win.removeEventListener("scroll", updatePosition, true);
       win.removeEventListener("resize", updatePosition);
     };
-  }, [open, side, align, sideOffset]);
+  }, [open, side, align, sideOffset, triggerEl]);
 
-  if (!mounted || !open) return null;
+  // triggerEl is null until the trigger commits, which also covers SSR: there
+  // is no document to portal into on the server.
+  if (!triggerEl || !open) return null;
 
   // Portal into the trigger's own document (supports iframe rendering).
-  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
+  const portalTarget = triggerEl.ownerDocument.body;
 
   return createPortal(
     <div

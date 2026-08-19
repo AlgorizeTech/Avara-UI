@@ -245,14 +245,6 @@ export default function EmailApp({
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
 
-  useEffect(() => {
-    if (activeEmailId) {
-      setEmails((prev) =>
-        prev.map((e) => (e.id === activeEmailId ? { ...e, isRead: true } : e)),
-      );
-    }
-  }, [activeEmailId]);
-
   const filteredEmails = useMemo(() => {
     return emails.filter((email) => {
       const matchesSearch =
@@ -276,13 +268,23 @@ export default function EmailApp({
     (e) => e.id === activeEmailId,
   );
 
+  // Opening an email marks it read. This belongs to the act of opening, not to
+  // an effect watching the id: an effect also re-fired on unrelated re-renders
+  // and cost an extra render every time a message was opened.
+  const openEmail = (id: string | number) => {
+    setActiveEmailId(id);
+    setEmails((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, isRead: true } : e)),
+    );
+  };
+
   const handlePrevEmail = () => {
     if (activeEmailIndex > 0)
-      setActiveEmailId(filteredEmails[activeEmailIndex - 1].id);
+      openEmail(filteredEmails[activeEmailIndex - 1].id);
   };
   const handleNextEmail = () => {
     if (activeEmailIndex >= 0 && activeEmailIndex < filteredEmails.length - 1)
-      setActiveEmailId(filteredEmails[activeEmailIndex + 1].id);
+      openEmail(filteredEmails[activeEmailIndex + 1].id);
   };
 
   const handleNavClick = (folder: string, label: string | null = null) => {
@@ -599,7 +601,7 @@ export default function EmailApp({
                   {filteredEmails.map((email) => (
                     <div
                       key={email.id}
-                      onClick={() => setActiveEmailId(email.id)}
+                      onClick={() => openEmail(email.id)}
                       className={cn(
                         `group flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-4 sm:px-6 py-3.5 sm:py-4 relative transition-all cursor-pointer border-l-[3px]`,
                         styles.emailItem,
