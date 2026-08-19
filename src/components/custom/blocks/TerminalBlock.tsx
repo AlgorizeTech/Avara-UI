@@ -102,48 +102,54 @@ const highlightCode = (code: string, language: string) => {
 
   const lang = language.toLowerCase();
 
+  // Each branch below is a SINGLE pass over the escaped source. Chaining
+  // separate .replace() calls does not work here: a later rule matches the
+  // markup an earlier rule injected. The quote rule, for one, matched the
+  // quotes of an already-emitted class="..." attribute and nested a <span>
+  // inside it, which the browser then rendered as visible text.
+
   if (lang === "html" || lang === "xml") {
-    html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, `<span class="${colors.comment}">$1</span>`);
-    html = html.replace(
-      /([a-zA-Z0-9-]+)(=)(["'])(.*?)\3/g,
-      (_, attr, eq, quote, content) =>
-        `<span class="${colors.property}">${attr}</span><span class="${colors.operator}">${eq}</span><span class="${colors.property}">${quote}</span><span class="${colors.stringContent}">${content}</span><span class="${colors.property}">${quote}</span>`
+    return html.replace(
+      /(&lt;!--[\s\S]*?--&gt;)|(&lt;\/?)([a-zA-Z0-9-]+)|([a-zA-Z0-9-]+)(=)(["'])(.*?)\6|(\/&gt;|&gt;)/g,
+      (match, comment, brackets, tagName, attr, eq, quote, content, closer) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (brackets !== undefined)
+          return `<span class="${colors.punctuation}">${brackets}</span><span class="${colors.tag}">${tagName}</span>`;
+        if (attr !== undefined)
+          return `<span class="${colors.property}">${attr}</span><span class="${colors.operator}">${eq}</span><span class="${colors.property}">${quote}</span><span class="${colors.stringContent}">${content}</span><span class="${colors.property}">${quote}</span>`;
+        if (closer) return `<span class="${colors.punctuation}">${closer}</span>`;
+        return match;
+      }
     );
-    html = html.replace(
-      /(&lt;\/?)([a-zA-Z0-9-]+)/g,
-      (_, brackets, tagName) =>
-        `<span class="${colors.punctuation}">${brackets}</span><span class="${colors.tag}">${tagName}</span>`
-    );
-    html = html.replace(/(\/&gt;|&gt;)/g, `<span class="${colors.punctuation}">$1</span>`);
-    return html;
   }
 
   if (lang === "css") {
-    html = html.replace(/(\/\*[\s\S]*?\*\/)/g, `<span class="${colors.comment}">$1</span>`);
-    html = html.replace(
-      /([a-zA-Z-]+)(\s*:)([^;\}]+)(;?)/g,
-      (_, prop, colon, val, semi) =>
-        `<span class="${colors.property}">${prop}</span><span class="${colors.punctuation}">${colon}</span><span class="${colors.stringContent}">${val}</span><span class="${colors.punctuation}">${semi}</span>`
+    return html.replace(
+      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}\/;][^{}\/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
+      (match, comment, atRule, selector, prop, colon, val, semi, brace) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (atRule) return `<span class="${colors.keyword}">${atRule}</span>`;
+        if (selector !== undefined)
+          return `<span class="${colors.tag}">${selector}</span>`;
+        if (prop !== undefined)
+          return `<span class="${colors.property}">${prop}</span><span class="${colors.punctuation}">${colon}</span><span class="${colors.stringContent}">${val}</span><span class="${colors.punctuation}">${semi}</span>`;
+        if (brace) return `<span class="${colors.punctuation}">${brace}</span>`;
+        return match;
+      }
     );
-    html = html.replace(
-      /([\.#a-zA-Z0-9_:-]+)(\s*\{)/g,
-      (_, sel, brace) =>
-        `<span class="${colors.tag}">${sel}</span><span class="${colors.punctuation}">${brace}</span>`
-    );
-    html = html.replace(/(\}|\{)/g, `<span class="${colors.punctuation}">$1</span>`);
-    html = html.replace(/(@[a-zA-Z-]+)/g, `<span class="${colors.keyword}">$1</span>`);
-    return html;
   }
 
   if (lang === "bash" || lang === "sh" || lang === "shell" || lang === "terminal") {
-    html = html.replace(/(#.*)/g, `<span class="${colors.comment}">$1</span>`);
-    html = html.replace(
-      /(\b(?:npm|yarn|pnpm|npx|node|git|cd|ls|rm|mkdir|echo|cat|sudo|apt|brew|bun|docker)\b)/g,
-      `<span class="${colors.command}">$1</span>`
+    return html.replace(
+      /(#[^\n]*)|("[^"\n]*"|'[^'\n]*')|(\b(?:npm|yarn|pnpm|npx|node|git|cd|ls|rm|mkdir|echo|cat|sudo|apt|brew|bun|docker)\b)|(\s--?[a-zA-Z0-9][a-zA-Z0-9-]*)/g,
+      (match, comment, str, command, flag) => {
+        if (comment) return `<span class="${colors.comment}">${comment}</span>`;
+        if (str) return `<span class="${colors.string}">${str}</span>`;
+        if (command) return `<span class="${colors.command}">${command}</span>`;
+        if (flag) return `<span class="${colors.flag}">${flag}</span>`;
+        return match;
+      }
     );
-    html = html.replace(/(\s-[a-zA-Z0-9]+|\s--[a-zA-Z0-9-]+)/g, `<span class="${colors.flag}">$1</span>`);
-    html = html.replace(/(["'])(.*?)\1/g, `<span class="${colors.string}">$1$2$1</span>`);
-    return html;
   }
 
   // JS / TS / Generic Code

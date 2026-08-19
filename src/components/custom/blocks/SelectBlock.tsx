@@ -150,6 +150,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
       multiple = false,
       searchable = false,
     },
+    ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropUp, setDropUp] = useState(false);
@@ -158,6 +159,10 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const { theme, style } = getThemeStyles(color);
+
+    // selectRef drives the click-outside and drop-direction logic, so the
+    // forwarded ref is mirrored onto it rather than replacing it.
+    React.useImperativeHandle(ref, () => selectRef.current as HTMLDivElement);
 
     const hasError = Boolean(error);
 
