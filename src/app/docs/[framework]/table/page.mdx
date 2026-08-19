@@ -11,75 +11,11 @@ We've removed the rigid, static feeling of standard HTML tables by injecting **m
 
 Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
-export const usageDefault = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-const columns = [
-  { key: "id", label: "Invoice", sortable: true },
-  { key: "user", label: "Customer", sortable: true },
-  { key: "amount", label: "Amount", sortable: true, align: "right" },
-  { key: "date", label: "Date", sortable: true, align: "right" },
-  { key: "actions", label: "", align: "right" },
-];
-
-const data = [
-  { id: "INV-3021", user: "Alice Freeman", amount: "$3,200.00", date: "Oct 24, 2023" },
-  { id: "INV-3022", user: "Bob Smith", amount: "$850.50", date: "Oct 24, 2023" },
-];
-
-export default function TransactionsTable() {
-  return (
-    <TableBlock
-      data={data}
-      columns={columns}
-      onEdit={(row) => console.log("Edit", row)}
-      onDelete={(row) => console.log("Delete", row)}
-    />
-  );
-}`;
-
 export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 import { columns, data } from "./table-data";
 
 export default function MinimalTable() {
   return <TableBlock variant="minimal" data={data} columns={columns} />;
-}`;
-
-export const usageGlass = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-import { columns, data } from "./table-data";
-
-export default function GlassTable() {
-  return (
-    // Pair the glass variant with a colored backdrop so the blur has
-    // something to refract.
-    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-      <TableBlock variant="glass" data={data} columns={columns} />
-    </div>
-  );
-}`;
-
-export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function TableSizes() {
-  return (
-    <div className="flex flex-col gap-8">
-      <TableBlock tableSize="sm" data={data} columns={columns} />
-      <TableBlock tableSize="md" data={data} columns={columns} />
-      <TableBlock tableSize="lg" data={data} columns={columns} />
-    </div>
-  );
-}`;
-
-export const usageSelectable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function SelectableTable() {
-  return (
-    <TableBlock
-      data={data}
-      columns={columns}
-      selectable
-      onSelectionChange={(rows) => console.log(rows.length, "selected")}
-    />
-  );
 }`;
 
 export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
@@ -117,26 +53,6 @@ export default function PaginatedTable() {
   columns={1}
   examples={[
     {
-      title: "Table",
-      subheading: "Every row needs a unique `id`.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "data",
-          effect:
-            "and `columns` — the column definitions map headers to row keys.",
-        },
-        {
-          prop: "sortable",
-          effect:
-            "on a column makes its header handle the sorting for you.",
-        },
-      ],
-      props: { isSelectable: false, isPaginated: false, isExpandable: false },
-      usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
-    },
-    {
       title: "Minimal",
       propNotes: [
         {
@@ -149,51 +65,7 @@ export default function PaginatedTable() {
       ],
       props: { variant: "minimal", isSelectable: false, isPaginated: false, isExpandable: false },
       usage: usageMinimal,
-    },
-    {
-      title: "Glass",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"glass"',
-          effect:
-            "for a frosted, backdrop-blurred surface — it needs imagery behind it to read.",
-        },
-      ],
-      props: { variant: "glass", isSelectable: false, isPaginated: false, isExpandable: false },
-      usage: usageGlass,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "tableSize",
-          effect:
-            "to change row density. Note it is `tableSize`, not `size`.",
-        },
-      ],
-      props: { showAll: "sizes" },
-      usage: usageSizes,
-    },
-    {
-      title: "Selectable rows",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "selectable",
-          effect:
-            "to inject a checkbox column.",
-        },
-        {
-          prop: "onSelectionChange",
-          effect:
-            "is where the current picks arrive.",
-        },
-      ],
-      props: { isSelectable: true, isPaginated: false, isExpandable: false },
-      usage: usageSelectable,
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
     },
     {
       title: "Expandable rows",

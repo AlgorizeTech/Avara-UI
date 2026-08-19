@@ -48,56 +48,6 @@ export default function UserManagement() {
   );
 }`;
 
-export const usageNoSearch = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-import { COLUMNS, DATA } from "./schema";
-
-export default function TableWithoutSearch() {
-  // Drop the global search bar when the dataset is small enough to scan.
-  return (
-    <AdvancedTableBlock
-      columns={COLUMNS}
-      data={DATA}
-      primaryKey="id"
-      searchable={false}
-    />
-  );
-}`;
-
-export const usageNoSelection = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-import { COLUMNS, DATA } from "./schema";
-
-export default function ReadOnlyTable() {
-  // Without selection there is no checkbox column and no batch toolbar —
-  // a purely read-only report table.
-  return (
-    <AdvancedTableBlock
-      columns={COLUMNS}
-      data={DATA}
-      primaryKey="id"
-      selectable={false}
-    />
-  );
-}`;
-
-export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-
-export default function ExportableTable() {
-  return (
-    <AdvancedTableBlock
-      columns={COLUMNS}
-      data={DATA}
-      primaryKey="id"
-      // Replaces the built-in Edit/Delete buttons inside the floating pill.
-      batchActions={(selectedIds, clearSelection) => (
-        <>
-          <button onClick={() => exportCsv(selectedIds)}>Export CSV</button>
-          <button onClick={clearSelection}>Clear</button>
-        </>
-      )}
-    />
-  );
-}`;
-
 <ExampleShowcase
   name="advanced-table"
   colorControl
@@ -123,47 +73,6 @@ export default function ExportableTable() {
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AdvancedTableBlock.tsx"),
-    },
-    {
-      title: "Without search",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "searchable",
-          value: "{false}",
-          effect:
-            "to hide the global filter input — worth doing when the dataset is small enough to scan.",
-        },
-      ],
-      props: { searchable: false },
-      usage: usageNoSearch,
-    },
-    {
-      title: "Without selection",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "selectable",
-          value: "{false}",
-          effect:
-            "for a read-only report table — it removes the checkbox column and the batch toolbar together.",
-        },
-      ],
-      props: { selectable: false },
-      usage: usageNoSelection,
-    },
-    {
-      title: "Custom batch actions",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "batchActions",
-          effect:
-            "to replace the default Edit/Delete buttons — it receives the selected ids and a `clearSelection` callback to reset the toolbar.",
-        },
-      ],
-      props: { example: "custom-batch-actions" },
-      usage: usageBatchActions,
     },
   ]}
 />

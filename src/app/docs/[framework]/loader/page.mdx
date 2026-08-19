@@ -29,35 +29,10 @@ export default function PulseLoader() {
   return <LoaderBlock variant="pulse" />;
 }`;
 
-export const usageRing = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function RingLoader() {
-  return <LoaderBlock variant="ring" />;
-}`;
-
 export const usageBar = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
 export default function BarLoader() {
   return <LoaderBlock variant="bar" />;
-}`;
-
-export const usageSizes = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function LoaderSizes() {
-  return (
-    <div className="flex items-center gap-10">
-      <LoaderBlock size="sm" />
-      <LoaderBlock size="md" />
-      <LoaderBlock size="lg" />
-      <LoaderBlock size="xl" />
-    </div>
-  );
-}`;
-
-export const usageText = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function LoaderWithText() {
-  return <LoaderBlock variant="spinner" text="Processing data..." />;
 }`;
 
 <ExampleShowcase
@@ -113,20 +88,6 @@ export default function LoaderWithText() {
       usage: usagePulse,
     },
     {
-      title: "Ring",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          value: '"ring"',
-          effect:
-            "for a full track with a moving head — two counter-rotating arcs (3s clockwise, 2s anticlockwise) around a solid core. The most detailed variant, so it needs room to read.",
-        },
-      ],
-      props: { variant: "ring" },
-      usage: usageRing,
-    },
-    {
       title: "Bar",
       propNotes: [
         {
@@ -139,37 +100,6 @@ export default function LoaderWithText() {
       ],
       props: { variant: "bar" },
       usage: usageBar,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          value: '"sm"',
-          effect: "for a 16px box with a `text-xs` label — button scale.",
-        },
-        { prop: "size", value: '"md"', effect: "is the default: 32px box, `text-sm` label." },
-        { prop: "size", value: '"lg"', effect: "gives a 48px box, `text-base` label — panel scale." },
-        { prop: "size", value: '"xl"', effect: "gives a 64px box, `text-lg` label — full-page scale." },
-      ],
-      props: { showAll: "sizes" },
-      usage: usageSizes,
-    },
-    {
-      title: "With text",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "text",
-          value: '"Processing data..."',
-          effect:
-            "to label what the user is waiting for — it adds a pulsing caption below the indicator, sized by `size`.",
-        },
-        { prop: "text", effect: "left off renders no caption at all." },
-      ],
-      props: { variant: "spinner", showText: true },
-      usage: usageText,
     },
   ]}
 />

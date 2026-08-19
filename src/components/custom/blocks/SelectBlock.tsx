@@ -8,7 +8,7 @@ import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type SelectColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type SelectVariant = "default" | "filled" | "underlined" | "glow";
+export type SelectVariant = "default" | "filled" | "underlined" | "glow" | "glass";
 export type SelectSize = "sm" | "md" | "lg";
 
 const colorThemes: Record<string, Record<string, string>> = {
@@ -332,6 +332,14 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             ),
             active: theme.glow,
           };
+        case "glass":
+          return {
+            wrapper: cn(
+              baseWrapper,
+              "bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20 rounded-xl text-white shadow-sm hover:bg-white/30 transition-colors",
+            ),
+            active: "ring-2 ring-white/40 border-white/50 bg-white/30",
+          };
         case "default":
         default:
           return {
@@ -383,8 +391,8 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             "truncate pr-6",
             s.text,
             !singleOption
-              ? "text-zinc-400 dark:text-zinc-600"
-              : "text-zinc-900 dark:text-zinc-100",
+              ? variant === "glass" ? "text-white/60" : "text-zinc-400 dark:text-zinc-600"
+              : variant === "glass" ? "text-white font-medium" : "text-zinc-900 dark:text-zinc-100",
           )}
         >
           {singleOption ? singleOption.label : placeholder}
@@ -402,7 +410,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           <label
             className={cn(
               "text-sm font-bold",
-              hasError ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+              hasError ? "text-red-500" : variant === "glass" ? "text-white/90" : "text-zinc-700 dark:text-zinc-300",
               disabled && "opacity-50",
             )}
           >
@@ -440,7 +448,8 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             <ChevronDown
               className={cn(
                 s.icon,
-                "text-zinc-400 dark:text-zinc-500 transition-transform duration-300",
+                variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500",
+                "transition-transform duration-300",
                 isOpen && "rotate-180",
                 isOpen && theme.text,
               )}
@@ -452,7 +461,10 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         <div
           ref={dropdownRef}
           className={cn(
-            "absolute left-0 right-0 z-50 overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-all duration-200 ease-out",
+            "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
+            variant === "glass"
+              ? "bg-white/40 dark:bg-black/50 backdrop-blur-2xl border-white/30 text-white shadow-2xl"
+              : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800",
             dropUp
               ? cn(
                   "origin-bottom",
@@ -520,9 +532,13 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                         className={cn(
                           "w-full flex items-center justify-between rounded-lg transition-colors font-medium text-left cursor-pointer active:scale-[0.98]",
                           s.option,
-                          isSelected
-                            ? theme.bgSoft
-                            : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                          variant === "glass"
+                            ? isSelected
+                              ? cn("bg-white/30 font-bold shadow-sm", theme.text)
+                              : "text-white/90 hover:bg-white/20"
+                            : isSelected
+                              ? theme.bgSoft
+                              : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900",
                         )}
                       >
                         <div className="flex items-center gap-2">

@@ -92,21 +92,17 @@ ${usageTabsData}
 
 export default function GlassTabs() {
   return (
-    // Glass needs a rich surface behind it to blur.
-    <div className="p-8 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black rounded-2xl">
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
       <VerticalTabs tabs={tabs} variant="glass" />
     </div>
   );
-}`;
-
-export const usageDefaultActive = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-import { Camera, Clapperboard, Music, Settings } from "lucide-react";
-
-${usageTabsData}
-
-export default function SettingsFirst() {
-  // defaultActiveId opens a specific tab instead of the first one.
-  return <VerticalTabs tabs={tabs} defaultActiveId="settings" />;
 }`;
 
 <ExampleShowcase
@@ -158,26 +154,6 @@ export default function SettingsFirst() {
       ],
       props: { variant: "glass", orientation: "vertical" },
       usage: usageGlass,
-    },
-    {
-      title: "Horizontal rail",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "orientation",
-          value: '"horizontal"',
-          effect:
-            "to run the rail across the top as a pill bar, which scrolls sideways once the tabs outgrow the width.",
-        },
-        {
-          prop: "variant",
-          value: '"bordered"',
-          effect:
-            "works in either orientation — it just moves its divider from the right edge of the rail to the bottom.",
-        },
-      ],
-      props: { variant: "bordered", orientation: "horizontal" },
-      usage: usageHorizontalBordered,
     },
   ]}
 />

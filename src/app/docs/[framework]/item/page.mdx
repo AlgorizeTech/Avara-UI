@@ -29,59 +29,6 @@ export default function SettingsRow() {
   );
 }`;
 
-export const usageVariants = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ItemVariants() {
-  return (
-    <div className="flex flex-col gap-5">
-      <ItemBlock
-        variant="default"
-        title="System Configuration"
-        description="Manage environment variables, build settings and deployment hooks."
-      />
-      <ItemBlock
-        variant="bordered"
-        title="System Configuration"
-        description="Manage environment variables, build settings and deployment hooks."
-      />
-      <ItemBlock
-        variant="compact"
-        title="System Configuration"
-        description="Manage environment variables, build settings and deployment hooks."
-      />
-      <ItemBlock
-        variant="card"
-        title="System Configuration"
-        description="Manage environment variables, build settings and deployment hooks."
-      />
-    </div>
-  );
-}`;
-
-export const usageActions = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-import { MoreVertical, Settings } from "lucide-react";
-
-export default function ActionRow() {
-  return (
-    <ItemBlock
-      variant="bordered"
-      title="System Configuration"
-      description="Manage your environment variables, build settings, and deployment hooks."
-      media={
-        <div className="w-10 h-10 flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-full">
-          <Settings className="w-5 h-5" />
-        </div>
-      }
-      // actions sit on the trailing edge and never squash the text
-      actions={
-        <button className="p-2 text-zinc-400 hover:text-zinc-900 rounded-md">
-          <MoreVertical className="w-4 h-4" />
-        </button>
-      }
-    />
-  );
-}`;
-
 export const usageCard = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 import { Settings } from "lucide-react";
 
@@ -107,33 +54,6 @@ export default function FeatureCard() {
   );
 }`;
 
-export const usageClickable = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-import { Settings } from "lucide-react";
-
-export default function ClickableRow() {
-  return (
-    // Passing onClick renders a real <button> and adds hover/active states.
-    <ItemBlock
-      variant="bordered"
-      title="System Configuration"
-      description="Manage your environment variables, build settings, and deployment hooks."
-      media={
-        <div className="w-10 h-10 flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-full">
-          <Settings className="w-5 h-5" />
-        </div>
-      }
-      onClick={() => console.log("Item clicked")}
-    />
-  );
-}`;
-
-export const usageTitleOnly = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function DenseRow() {
-  // Everything but title is optional — compact + title alone is a menu row.
-  return <ItemBlock variant="compact" title="System Configuration" />;
-}`;
-
 <ExampleShowcase
   name="item"
   columns={1}
@@ -153,32 +73,6 @@ export default function DenseRow() {
       code: extractCode("src/components/custom/blocks/ItemBlock.tsx"),
     },
     {
-      title: "Variants",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to switch between the row densities and the card layout.",
-        },
-      ],
-      props: { showAll: "variants" },
-      usage: usageVariants,
-    },
-    {
-      title: "With actions",
-      propNotes: [
-        {
-          lead: "Use the",
-          prop: "actions",
-          effect:
-            "slot to pin controls to the trailing edge — the text column shrinks around them rather than being squashed.",
-        },
-      ],
-      props: { variant: "bordered", showMedia: true, showDescription: true, showActions: true },
-      usage: usageActions,
-    },
-    {
       title: "Card",
       propNotes: [
         {
@@ -191,31 +85,6 @@ export default function DenseRow() {
       ],
       props: { variant: "card", showMedia: true, showDescription: true, showActions: true },
       usage: usageCard,
-    },
-    {
-      title: "Clickable",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "onClick",
-          effect:
-            "and the whole row becomes an accessible `<button>` — so don't nest another interactive element inside it.",
-        },
-      ],
-      props: { variant: "bordered", showMedia: true, showDescription: true, showActions: false, isClickable: true },
-      usage: usageClickable,
-    },
-    {
-      title: "Title only",
-      propNotes: [
-        {
-          prop: "title",
-          effect:
-            "on its own, with every optional slot dropped, gives the dense row used in menus and dropdowns.",
-        },
-      ],
-      props: { variant: "compact", showMedia: false, showDescription: false, showActions: false },
-      usage: usageTitleOnly,
     },
   ]}
 />

@@ -41,26 +41,19 @@ export default function FullscreenModal() {
 export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
 export default function GlassModal() {
-  // Glass leans on a heavy backdrop blur — best over a colorful page.
+  // Nature wallpaper backdrop for glass refraction
   return (
-    <div className="p-8 bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50">
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
       <ModalBlock type="standard" variant="glass" />
     </div>
   );
-}`;
-
-export const usageMinimal = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function MinimalModal() {
-  // No border, softer shadow, tighter radius.
-  return <ModalBlock type="standard" variant="minimal" />;
-}`;
-
-export const usageBordered = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function BorderedModal() {
-  // Square corners, 2px border and a hard offset shadow.
-  return <ModalBlock type="standard" variant="bordered" />;
 }`;
 
 <ExampleShowcase
@@ -138,34 +131,6 @@ export default function BorderedModal() {
       ],
       props: { type: "standard", variant: "glass" },
       usage: usageGlass,
-    },
-    {
-      title: "Minimal",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"minimal"',
-          effect:
-            "to drop the border and harsh shadow for a softer, flatter card.",
-        },
-      ],
-      props: { type: "standard", variant: "minimal" },
-      usage: usageMinimal,
-    },
-    {
-      title: "Bordered",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"bordered"',
-          effect:
-            "for square corners and a hard offset shadow.",
-        },
-      ],
-      props: { type: "standard", variant: "bordered" },
-      usage: usageBordered,
     },
   ]}
 />

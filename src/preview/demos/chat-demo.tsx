@@ -57,11 +57,17 @@ export default function ChatDemo({
 }) {
   return (
     <div
-      className={`w-full transition-all duration-500 ${
-        variant === "glass"
-          ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl"
-          : ""
+      className={`w-full transition-all duration-500 rounded-2xl ${
+        variant === "glass" ? "p-4 sm:p-8 bg-cover bg-center" : ""
       }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop')",
+            }
+          : undefined
+      }
     >
       <ChatApp
         key={`${variant}-${color}`}

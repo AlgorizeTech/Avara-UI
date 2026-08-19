@@ -11,43 +11,6 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
-export const usageDefault = `import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/custom/blocks/CommandBlock";
-import { Calculator, Calendar, Smile } from "lucide-react";
-
-export default function ActionSearch() {
-  return (
-    <Command>
-      <CommandInput placeholder="Search actions..." />
-      <CommandList>
-        {/* Shown automatically when every item is filtered out */}
-        <CommandEmpty>No matching records found.</CommandEmpty>
-
-        <CommandGroup heading="Suggestions">
-          <CommandItem onSelect={(value) => console.log(value)}>
-            <Calendar className="mr-2 h-4 w-4" />
-            <span>Calendar</span>
-          </CommandItem>
-          <CommandItem onSelect={(value) => console.log(value)}>
-            <Smile className="mr-2 h-4 w-4" />
-            <span>Search Emoji</span>
-          </CommandItem>
-          <CommandItem onSelect={(value) => console.log(value)}>
-            <Calculator className="mr-2 h-4 w-4" />
-            <span>Calculator</span>
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
-    </Command>
-  );
-}`;
-
 export const usageGroups = `import {
   Command,
   CommandEmpty,
@@ -205,25 +168,6 @@ export default function RemoteSearch() {
   columns={1}
   examples={[
     {
-      title: "Command",
-      subheading: "Compose input, list, groups and items — filtering and keyboard nav come free.",
-      propNotes: [
-        {
-          prop: "onSelect",
-          effect:
-            "on `CommandItem` fires for both a mouse click and Enter during keyboard navigation.",
-        },
-        {
-          prop: "value",
-          effect:
-            "on `CommandItem` is the string searched against; omit it and the item's rendered text is used instead.",
-        },
-      ],
-      props: { layout: "simple" },
-      usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
-    },
-    {
       title: "Groups, separators & shortcuts",
       subheading: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
       propNotes: [
@@ -236,6 +180,7 @@ export default function RemoteSearch() {
       ],
       props: { layout: "inline" },
       usage: usageGroups,
+      code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
     },
     {
       title: "Command dialog",
