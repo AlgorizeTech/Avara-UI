@@ -118,14 +118,36 @@ function deriveName(basename: string, kind: Source["kind"]): string {
 // Import parsing
 // ---------------------------------------------------------------------------
 
+/** Anchored to the start of a line so a JSDoc body cannot look like an import. */
 const IMPORT_RE =
-  /import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/g;
+  /^[ \t]*import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/gm;
+
+/**
+ * `lazy(() => import("./Fleet-map"))` and friends. These resolve at runtime but
+ * still have to ship: an item whose dynamic import is not counted installs
+ * without the file it reaches for, and the consumer's build fails on a module
+ * it never wrote.
+ */
+const DYNAMIC_IMPORT_RE = /\bimport\s*\(\s*["']([^"']+)["']\s*\)/g;
+
+/** JSDoc bodies and commented-out code — documentation, not dependencies. */
+const COMMENT_LINE_RE = /^[ \t]*(?:\/\/|\/\*|\*)/;
 
 function parseImports(src: string): string[] {
+  // Comment-only lines go first. A JSDoc example showing `import Link from
+  // "next/link"` is instructions for the consumer, not a dependency, and
+  // counting it reported a framework-agnostic component as Next-coupled.
+  const code = src
+    .split("\n")
+    .map((line) => (COMMENT_LINE_RE.test(line) ? "" : line))
+    .join("\n");
+
   const specs: string[] = [];
-  IMPORT_RE.lastIndex = 0;
-  let m: RegExpExecArray | null;
-  while ((m = IMPORT_RE.exec(src))) specs.push(m[1]);
+  for (const re of [IMPORT_RE, DYNAMIC_IMPORT_RE]) {
+    re.lastIndex = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(code))) specs.push(m[1]);
+  }
   return specs;
 }
 
@@ -361,7 +383,7 @@ console.log(`\nnpm dependencies across registry: ${[...allDeps].sort().join(", "
 
 if (nextCoupled.length) {
   console.log(
-    `\nNext.js-coupled (import next/image or next/link) — ${nextCoupled.length} items:`
+    `\nNext.js-coupled (any next/* import) — ${nextCoupled.length} items:`
   );
   console.log(`  ${nextCoupled.sort().join(", ")}`);
   console.log("  These will not work in Vite/Remix without edits.");
