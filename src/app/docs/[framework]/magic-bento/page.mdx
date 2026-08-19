@@ -56,30 +56,13 @@ export default function HighlightedBento() {
   );
 }`;
 
-export const usageSpans = `import {
-  MagicBento,
-  MagicBentoCard,
-} from "@/components/custom/blocks/MagicBentoBlock";
-
-export default function BentoSpans() {
-  // The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-  // layout with span utilities on each card.
-  return (
-    <MagicBento className="auto-rows-[160px]">
-      <MagicBentoCard className="md:col-span-2">…</MagicBentoCard>
-      <MagicBentoCard className="row-span-2">…</MagicBentoCard>
-      <MagicBentoCard>…</MagicBentoCard>
-    </MagicBento>
-  );
-}`;
-
 <ExampleShowcase
   name="magic-bento"
   colorControl
   columns={1}
   examples={[
     {
-      title: "Magic bento",
+      title: "Glow Spotlight Grid",
       subheading: "`MagicBento` lays out the grid; each card owns its own pointer-tracked border and glow.",
       propNotes: [
         {
@@ -109,18 +92,6 @@ export default function BentoSpans() {
       ],
       props: { example: "highlight" },
       usage: usageHighlight,
-    },
-    {
-      title: "Grid spans",
-      propNotes: [
-        {
-          prop: "className",
-          effect:
-            "on a card carries the `col-span-*` and `row-span-*` utilities. Sizing is ordinary Tailwind — there is no span prop.",
-        },
-      ],
-      props: { example: "spans" },
-      usage: usageSpans,
     },
   ]}
 />

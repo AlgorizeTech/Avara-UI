@@ -14,134 +14,62 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
-export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function LandingHeader() {
+export default function FlipUpShowcase() {
   return (
-    <div className="flex flex-col max-w-3xl">
-      {/* 3D flip reveal */}
-      <AnimatedTypographyBlock
-        as="h1"
-        variant="flip-up"
-        align="center"
-        size="6xl"
-        text="The Future of User Interfaces."
-      />
-
-      {/* Staggered subheadline, started after the headline */}
-      <AnimatedTypographyBlock
-        as="p"
-        variant="reveal"
-        align="center"
-        size="1.25rem"
-        delay={400}
-        speed={1.5}
-        text="Build faster, accessible, and stunning applications."
-      />
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageFadeUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function MaskReveals() {
+export default function FadeUpShowcase() {
   return (
-    <div className="flex flex-col gap-8">
-      {/* Words slide up out of a clipping mask, fading as they go. */}
-      <AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
-
-      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
-      <AnimatedTypographyBlock as="h3" variant="reveal" text="The quick brown fox." />
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usagePopIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function TransformEntrances() {
+export default function PopInShowcase() {
   return (
-    <div className="flex flex-col gap-8">
-      {/* 3D rotateX around each word's bottom edge. */}
-      <AnimatedTypographyBlock as="h3" variant="flip-up" text="The quick brown fox." />
-
-      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
-      <AnimatedTypographyBlock as="h3" variant="pop-in" text="The quick brown fox." />
-
-      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
-      <AnimatedTypographyBlock as="h3" variant="blur-in" text="The quick brown fox." />
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageBlurIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function ContinuousEffects() {
+export default function BlurInShowcase() {
   return (
-    <div className="flex flex-col gap-8">
-      {/* Red/blue clipped copies drift behind the text, forever. */}
-      <AnimatedTypographyBlock as="h3" variant="glitch" text="The quick brown fox." />
-
-      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
-      <AnimatedTypographyBlock as="h3" variant="glow" text="The quick brown fox." />
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WholeStringVariants() {
+export default function TypewriterShowcase() {
   return (
-    <div className="flex flex-col gap-8">
-      {/* The one character-by-character effect — types out, then blinks. */}
-      <AnimatedTypographyBlock as="h3" variant="typewriter" speed={1} text="The quick brown fox." />
-
-      {/* No motion at all: the block's sizing and semantics, nothing else. */}
-      <AnimatedTypographyBlock as="h3" variant="none" text="The quick brown fox." />
-    </div>
-  );
-}`;
-
-export const usageTags = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function SemanticTags() {
-  // \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
-  // intact no matter which effect you use.
-  return (
-    <div className="flex flex-col gap-4">
-      <AnimatedTypographyBlock as="h1" variant="fade-up" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="h2" variant="fade-up" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="h3" variant="fade-up" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="p" variant="fade-up" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="blockquote" variant="fade-up" text="The quick brown fox." />
-    </div>
-  );
-}`;
-
-export const usageAlign = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const copy = "The quick brown fox jumps over the lazy dog.";
-
-export default function Alignment() {
-  return (
-    <div className="flex flex-col gap-4">
-      <AnimatedTypographyBlock as="p" align="left" text={copy} />
-      <AnimatedTypographyBlock as="p" align="center" text={copy} />
-      <AnimatedTypographyBlock as="p" align="right" text={copy} />
-      <AnimatedTypographyBlock as="p" align="justify" text={copy} />
-    </div>
-  );
-}`;
-
-export const usageSizes = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function SizeOverride() {
-  // \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
-  // unaffected either way.
-  return (
-    <div className="flex flex-col gap-4">
-      <AnimatedTypographyBlock as="h2" size="5xl" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="h2" size="24px" text="The quick brown fox." />
-      <AnimatedTypographyBlock as="h2" size="2rem" text="The quick brown fox." />
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
@@ -153,127 +81,55 @@ export default function SizeOverride() {
   columns={1}
   examples={[
     {
-      title: "Animated typography",
-      subheading: "The component mirrors your string into an `sr-only` node so screen readers never spell it out character by character.",
+      title: "Flip Up Entrance",
+      subheading: "3D rotateX word-by-word entrance animation across h3, h4, and p tags.",
       propNotes: [
-        {
-          lead: "Pass",
-          prop: "text",
-          effect: "rather than children — the split-and-animate pass needs the raw string.",
-        },
-        {
-          prop: "variant",
-          value: '"flip-up"',
-          effect: "chooses the entrance; see the next four examples for the full set.",
-        },
+        { prop: "variant", value: '"flip-up"', effect: "rotates each word in 3D around its bottom edge." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { tag: "h1", variant: "flip-up", align: "center" },
-      usage: usageDefault,
+      props: { singleVariant: "flip-up" },
+      usage: usageFlipUp,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
     {
-      title: "Masked reveals",
-      subheading: "Both slide each word up out of a clipping mask.",
+      title: "Fade Up Mask",
+      subheading: "Words slide up out of a clipping mask while fading into view.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"fade-up"',
-          effect: "fades each word as it rises.",
-        },
-        {
-          prop: "variant",
-          value: '"reveal"',
-          effect: "keeps it solid on a sharper curve.",
-        },
+        { prop: "variant", value: '"fade-up"', effect: "slides words upward while fading opacity." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { variants: ["fade-up", "reveal"] },
-      usage: usageMaskReveals,
+      props: { singleVariant: "fade-up" },
+      usage: usageFadeUp,
     },
     {
-      title: "Transform entrances",
-      subheading: "Word-by-word entrances that transform rather than slide.",
+      title: "Pop In Spring",
+      subheading: "Words scale up on a springy curve with overshoot.",
       propNotes: [
-        { prop: "variant", value: '"flip-up"', effect: "rotates each word in 3D." },
-        { prop: "variant", value: '"pop-in"', effect: "scales it up with a spring." },
-        {
-          prop: "variant",
-          value: '"blur-in"',
-          effect: "resolves it from 12px of blur.",
-        },
+        { prop: "variant", value: '"pop-in"', effect: "scales words from 0.8 to 1 with overshoot." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { variants: ["flip-up", "pop-in", "blur-in"] },
-      usage: usageTransformEntrances,
+      props: { singleVariant: "pop-in" },
+      usage: usagePopIn,
     },
     {
-      title: "Continuous effects",
-      subheading: "These two never settle — reserve them for short display text.",
+      title: "Blur In Reveal",
+      subheading: "Words resolve into focus out of a soft 12px blur filter.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"glitch"',
-          effect: "drifts red and blue copies behind the text, forever.",
-        },
-        { prop: "variant", value: '"glow"', effect: "pulses a halo behind it, forever." },
+        { prop: "variant", value: '"blur-in"', effect: "resolves words out of a 12px backdrop blur." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { variants: ["glitch", "glow"] },
-      usage: usageContinuous,
+      props: { singleVariant: "blur-in" },
+      usage: usageBlurIn,
     },
     {
-      title: "Typewriter & no animation",
-      subheading: "The two that leave the string whole instead of splitting it into words.",
+      title: "Typewriter Effect",
+      subheading: "Character-by-character typewriter reveal with a blinking cursor.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"typewriter"',
-          effect: "types the string out character by character.",
-        },
-        {
-          prop: "variant",
-          value: '"none"',
-          effect: "renders it plainly — the escape hatch when you only want the tag and size handling.",
-        },
+        { prop: "variant", value: '"typewriter"', effect: "types text out character by character." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { variants: ["typewriter", "none"] },
-      usage: usageWholeString,
-    },
-    {
-      title: "Semantic tags",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "as",
-          effect:
-            "to choose the rendered element — `h1`…`h3`, `p`, `blockquote`. The real tag ships, so heading levels keep their document meaning whatever the effect.",
-        },
-      ],
-      props: { showAll: "tags" },
-      usage: usageTags,
-    },
-    {
-      title: "Alignment",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "align",
-          effect: "to set the text alignment — `left`, `center`, `right` or `justify`.",
-        },
-      ],
-      props: { showAll: "align" },
-      usage: usageAlign,
-    },
-    {
-      title: "Size override",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          value: '"5xl"',
-          effect:
-            "to override the visual size without changing the tag. A Tailwind step or a raw CSS length such as `24px` or `2rem` both work.",
-        },
-      ],
-      props: { showAll: "sizes" },
-      usage: usageSizes,
+      props: { singleVariant: "typewriter" },
+      usage: usageTypewriter,
     },
   ]}
 />

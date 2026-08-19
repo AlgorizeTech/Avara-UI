@@ -12,38 +12,6 @@ Four independent scroll-driven layouts share this page, each with its own block 
 
 ### Simple stack
 
-export const usageSimple = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-import { Layers, Zap } from "lucide-react";
-
-const items = [
-  {
-    id: "1",
-    title: "Real-time Synchronization",
-    description: "Instantly sync state across clients.",
-    icon: Zap,
-  },
-  {
-    id: "2",
-    title: "Layered Architecture",
-    description: "Swap databases or auth providers without a rewrite.",
-    icon: Layers,
-    content: <Diagram />,
-  },
-];
-
-export default function FeaturesSection() {
-  return <ScrollStack items={items} />;
-}`;
-
-export const usageSimpleDepth = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-import { items } from "./items";
-
-export default function DeepStack() {
-  // Each card behind the active one shrinks by this fraction — 0.12 gives a
-  // pronounced deck, 0.02 keeps the stack nearly flat.
-  return <ScrollStack items={items} depthScale={0.12} />;
-}`;
-
 export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 import { items } from "./items";
 
@@ -58,34 +26,6 @@ export default function GappedStack() {
   columns={1}
   examples={[
     {
-      title: "Scroll stack",
-      subheading: "Cards pin to the viewport and the next one slides up to cover them.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "items",
-          effect:
-            "where each takes a `title`, `description`, optional `icon` and arbitrary `content`.",
-        },
-      ],
-      props: {},
-      usage: usageSimple,
-      code: extractCode("src/components/custom/blocks/ScrollStackBlock.tsx"),
-    },
-    {
-      title: "Depth scale",
-      propNotes: [
-        {
-          prop: "depthScale",
-          value: '{0.12}',
-          effect:
-            "is the fraction each covered card shrinks by — `0.12` is a pronounced deck, `0.02` stays nearly flat.",
-        },
-      ],
-      props: { depthScale: 0.12 },
-      usage: usageSimpleDepth,
-    },
-    {
       title: "Card gap",
       propNotes: [
         {
@@ -97,6 +37,7 @@ export default function GappedStack() {
       ],
       props: { cardGap: 64 },
       usage: usageSimpleGap,
+      code: extractCode("src/components/custom/blocks/ScrollStackBlock.tsx"),
     },
   ]}
 />
@@ -125,14 +66,6 @@ export default function ServicesSection() {
       headerButtonText="Book a call"
     />
   );
-}`;
-
-export const usageStickyNoGlow = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
-import { items } from "./items";
-
-export default function FlatStickyStack() {
-  // Turns off the ambient glow behind the active card.
-  return <StickyScrollStack items={items} enableGlow={false} />;
 }`;
 
 export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
@@ -164,20 +97,6 @@ export default function TunedStickyStack() {
       code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
     },
     {
-      title: "Without the glow",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "enableGlow",
-          value: '{false}',
-          effect:
-            "for a flatter, quieter section with no ambient bloom behind the active card.",
-        },
-      ],
-      props: { headerMode: "text-only", enableGlow: false },
-      usage: usageStickyNoGlow,
-    },
-    {
       title: "Stack geometry",
       propNotes: [
         {
@@ -201,10 +120,10 @@ export default function TunedStickyStack() {
 
 ### Split stack
 
-export const usageSplit = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+import { items } from "./items";
 
-// One column pins while the other scrolls its stack past it.
-export default function ProcessSection() {
+export default function PinnedRightStack() {
   return <SplitScrollStack items={items} stickySide="right" />;
 }`;
 
@@ -228,17 +147,18 @@ export default function PinnedLeftStack() {
   columns={1}
   examples={[
     {
-      title: "Split stack",
-      subheading: "A two-column layout: one side pins while the other scrolls its deck past it.",
+      title: "Pinned right",
+      subheading: "A two-column layout: the right column pins while the left scrolls its deck past it.",
       propNotes: [
         {
           prop: "stickySide",
+          value: '"right"',
           effect:
-            "picks which column pins — `left` or `right`.",
+            "pins the right-hand column so cards stack on the right.",
         },
       ],
       props: { stickySide: "right" },
-      usage: usageSplit,
+      usage: usageSplitRight,
       code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
     },
     {
@@ -249,7 +169,7 @@ export default function PinnedLeftStack() {
           prop: "stickySide",
           value: '"left"',
           effect:
-            "and the deck moves to the other side.",
+            "and the deck moves to the left side.",
         },
         {
           prop: "cardDepthScale",

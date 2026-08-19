@@ -1,15 +1,11 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Design Components
+# Components Folder
 
 An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Framer Motion and Tailwind CSS.
 
 ## Examples
-
-Two components ship here: `DesignComponentsFolder`, the full hub with animated cards rising out of a frosted folder, and `DesignFolderBox`, the same folder shell with nothing inside it.
-
-### Components hub
 
 export const usageFolder = `import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 
@@ -39,22 +35,12 @@ export default function Showcase() {
   ]}
 />
 
-### Standalone folder box
-
-A pure frosted glass folder container without the animated cards inside — useful as a showcase box of your own.
-
-export const usageBox = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
-
-export default function Container() {
-  return <DesignFolderBox />;
-}`;
-
 export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
 
 export default function CustomLabelBox() {
   // \`title\` and \`subtitle\` are the only text in the box — they default to
   // "Design" / "Components".
-  return <DesignFolderBox title="Motion" subtitle="Primitives" />;
+  return <DesignFolderBox title="Design" subtitle="Components" />;
 }`;
 
 <ExampleShowcase
@@ -63,34 +49,22 @@ export default function CustomLabelBox() {
   columns={1}
   examples={[
     {
-      title: "Folder box",
-      subheading: "The frosted shell on its own.",
-      propNotes: [
-        {
-          prop: "children",
-          effect:
-            "and every other `div` prop pass straight through — handlers and `className` included.",
-        },
-      ],
-      usage: usageBox,
-      code: extractCode("src/components/custom/blocks/DesignFolderBox.tsx"),
-    },
-    {
       title: "Custom labels",
       propNotes: [
         {
           prop: "title",
-          value: '"Motion"',
+          value: '"Design"',
           effect: "is the first line of the wordmark on the folder tab, defaulting to `Design`.",
         },
         {
           prop: "subtitle",
-          value: '"Primitives"',
+          value: '"Components"',
           effect: "is the second line, defaulting to `Components`.",
         },
       ],
-      props: { title: "Motion", subtitle: "Primitives" },
+      props: { title: "Design", subtitle: "Components" },
       usage: usageBoxLabels,
+      code: extractCode("src/components/custom/blocks/DesignFolderBox.tsx"),
     },
   ]}
 />

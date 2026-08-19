@@ -47,39 +47,6 @@ export default function CompactNav() {
   return <Dock items={items} />;
 }`;
 
-export const usageCompact = `import { Dock } from "@/components/custom/blocks/DockBlock";
-
-export default function SmallDock({ items }) {
-  // Smaller resting icons and a gentler peak — good for dense toolbars.
-  return (
-    <Dock
-      items={items}
-      baseSize={36}
-      magnification={56}
-      distance={100}
-      containerHeight={60}
-      gap={8}
-    />
-  );
-}`;
-
-export const usagePhysics = `import { Dock } from "@/components/custom/blocks/DockBlock";
-
-export default function DramaticDock({ items }) {
-  // A tall peak with a wide reach: neighbours lift long before the cursor
-  // arrives, which is what makes it feel like macOS.
-  return (
-    <Dock
-      items={items}
-      baseSize={46}
-      magnification={120}
-      distance={200}
-      containerHeight={100}
-      gap={16}
-    />
-  );
-}`;
-
 <ExampleShowcase
   name="dock"
   columns={1}
@@ -120,57 +87,6 @@ export default function DramaticDock({ items }) {
       ],
       props: { itemSet: "compact", activeTab: "home" },
       usage: usageBadges,
-    },
-    {
-      title: "Compact",
-      propNotes: [
-        {
-          lead: "Drop",
-          prop: "baseSize",
-          effect:
-            "— the resting icon size, 48 by default — for a toolbar-sized dock.",
-        },
-        {
-          prop: "magnification",
-          effect:
-            "and `gap` come down with it to keep the proportions.",
-        },
-      ],
-      props: {
-        itemSet: "compact",
-        baseSize: 36,
-        magnification: 56,
-        distance: 100,
-        containerHeight: 60,
-        gap: 8,
-      },
-      usage: usageCompact,
-    },
-    {
-      title: "Magnification physics",
-      propNotes: [
-        {
-          prop: "magnification",
-          value: '{80}',
-          effect:
-            "is the peak size an icon reaches when the cursor is over its centre.",
-        },
-        {
-          prop: "distance",
-          value: '{140}',
-          effect:
-            "is the radius around the cursor within which neighbours start to grow — raise it for a softer, wider wave.",
-        },
-      ],
-      props: {
-        itemSet: "full",
-        baseSize: 46,
-        magnification: 120,
-        distance: 200,
-        containerHeight: 100,
-        gap: 16,
-      },
-      usage: usagePhysics,
     },
   ]}
 />
