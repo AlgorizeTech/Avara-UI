@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-18T15:03:01.386Z",
-  "totalFiles": 201,
+  "generatedAt": "2026-08-19T06:07:23.913Z",
+  "totalFiles": 199,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -565,12 +565,6 @@
       "path": "/docs/nextjs-tooltip.md",
       "url": "/docs/nextjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
-    },
-    {
-      "name": "nextjs/typography",
-      "path": "/docs/nextjs-typography.md",
-      "url": "/docs/nextjs/typography",
-      "originalMdx": "[framework]\\typography\\page.mdx"
     },
     {
       "name": "nextjs/user-graph",
@@ -1171,12 +1165,6 @@
       "path": "/docs/reactjs-tooltip.md",
       "url": "/docs/reactjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
-    },
-    {
-      "name": "reactjs/typography",
-      "path": "/docs/reactjs-typography.md",
-      "url": "/docs/reactjs/typography",
-      "originalMdx": "[framework]\\typography\\page.mdx"
     },
     {
       "name": "reactjs/user-graph",
