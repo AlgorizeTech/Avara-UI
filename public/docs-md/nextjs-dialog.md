@@ -234,6 +234,6 @@ Discover the Dialog component's accessible modal features, including focus trapp
 
 ---
 
-**Component Path:** `nextjs\dialog\page.mdx`
+**Component Path:** `[framework]\dialog\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

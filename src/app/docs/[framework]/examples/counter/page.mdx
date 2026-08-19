@@ -1,0 +1,233 @@
+export const metadata = {
+    title: 'Interactive Counter Example - Next.js',
+    description: 'An interactive counter component example demonstrating Next.js features.',
+    keywords: [
+        'Next.js example',
+        'interactive component',
+        'client component',
+        'useState',
+        'useEffect'
+    ],
+    openGraph: {
+        title: 'Interactive Counter Example - Next.js',
+        description: 'An interactive counter component example demonstrating Next.js features.',
+        type: 'article',
+        url: '/docs/nextjs/examples/counter',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Interactive Counter Example - Next.js',
+        description: 'An interactive counter component example demonstrating Next.js features.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/examples/counter',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+import Counter from "./counter";
+import CounterApp from "./counter-app";
+
+# Interactive Counter Example
+
+This example demonstrates a simple counter component using React's useState hook in a Next.js application.
+
+## Preview
+
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <ComponentRenderer component={<Counter />} />
+  </TabsContent>
+  <TabsContent value="code">
+    <CodeBlock filePath="src/app/docs/[framework]/examples/counter/counter.tsx" />
+  </TabsContent>
+</Tabs>
+
+## Multi-file Example
+
+Here's a more complex example with multiple files:
+
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <ComponentRenderer component={<CounterApp />} />
+  </TabsContent>
+  <TabsContent value="code">
+    <Tabs defaultValue="app">
+      <TabsList>
+        <TabsTrigger value="app">app/page.tsx</TabsTrigger>
+        <TabsTrigger value="counter">components/Counter.tsx</TabsTrigger>
+        <TabsTrigger value="button">components/Button.tsx</TabsTrigger>
+      </TabsList>
+      <TabsContent value="app">
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/app-page.tsx" />
+      </TabsContent>
+      <TabsContent value="counter">
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/counter-component.tsx" />
+      </TabsContent>
+      <TabsContent value="button">
+        <CodeBlock filePath="src/app/docs/[framework]/examples/counter/button-component.tsx" />
+      </TabsContent>
+    </Tabs>
+  </TabsContent>
+</Tabs>
+
+## Implementation
+
+### Simple Counter Component
+
+```tsx
+// src/app/docs/[framework]/examples/counter/counter.tsx
+'use client'
+
+import { useState } from 'react'
+
+export default function Counter() {
+  const [count, setCount] = useState(0)
+  
+  return (
+    <div className="p-6 rounded-lg border border-gray-200 dark:border-gray-800 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Simple Counter</h2>
+      <p className="text-4xl font-bold text-center my-6">{count}</p>
+      <div className="flex justify-center gap-4">
+        <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          onClick={() => setCount(count + 1)}
+        >
+          Increment
+        </button>
+        <button 
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+          onClick={() => setCount(0)}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  )
+}
+```
+
+### Multi-file Implementation
+
+#### Main App Page
+
+```tsx
+// src/app/docs/[framework]/examples/counter/app-page.tsx
+import Counter from './counter-component'
+import { Button } from '@/components/ui/button'
+
+export default function CounterApp() {
+  return (
+    <div className="p-6 rounded-lg border border-gray-200 dark:border-gray-800 max-w-md mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">Counter App</h1>
+      <Counter />
+      <div className="mt-6 text-center">
+        <Button variant="primary">Get Started</Button>
+      </div>
+    </div>
+  )
+}
+```
+
+#### Counter Component
+
+```tsx
+// src/app/docs/[framework]/examples/counter/counter-component.tsx
+'use client'
+
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+
+interface CounterProps {
+  initialCount?: number
+}
+
+export default function Counter({ initialCount = 0 }: CounterProps) {
+  const [count, setCount] = useState(initialCount)
+  
+  return (
+    <div className="text-center">
+      <p className="text-5xl font-bold my-6">{count}</p>
+      <div className="flex justify-center gap-3">
+        <Button onClick={() => setCount(count + 1)}>Increment</Button>
+        <Button variant="secondary" onClick={() => setCount(count - 1)}>Decrement</Button>
+        <Button variant="outline" onClick={() => setCount(initialCount)}>Reset</Button>
+      </div>
+    </div>
+  )
+}
+```
+
+#### Button Component
+
+```tsx
+// src/app/docs/[framework]/examples/counter/button-component.tsx
+'use client'
+
+import { ButtonHTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline'
+}
+
+export function Button({
+  children,
+  variant = 'primary',
+  className,
+  ...props
+}: ButtonProps) {
+  const baseClasses = 'px-4 py-2 rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
+  
+  const variantClasses = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+    secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
+    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800'
+  }
+  
+  return (
+    <button
+      className={cn(baseClasses, variantClasses[variant], className)}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+```
+
+## Key Concepts
+
+1. **Client Components**: The counter uses the `'use client'` directive to enable React hooks
+2. **State Management**: useState hook manages the counter state
+3. **Component Composition**: Multiple components work together in the multi-file example
+4. **TypeScript**: Strong typing with interfaces and props
+5. **Styling**: Tailwind CSS for consistent styling
+6. **Accessibility**: Proper button semantics and focus states
+
+## Best Practices
+
+1. **Use Client Components** only when necessary (state, effects, event handlers)
+2. **Type Props** with TypeScript interfaces
+3. **Extract Components** for reusability
+4. **Use Utility Classes** for consistent styling
+5. **Handle Edge Cases** like resetting to initial values
+6. **Provide Good UX** with visual feedback and clear actions

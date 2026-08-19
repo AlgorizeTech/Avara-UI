@@ -312,12 +312,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout", "data-display"],
     docs: "Named export: ItemBlock. `media` and `actions` take arbitrary nodes, so an avatar and a button drop straight in. Variants: default | compact | card | bordered. Passing `onClick` makes the whole row interactive.",
   },
-  typography: {
-    description:
-      "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
-    categories: ["typography"],
-    docs: "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers.",
-  },
   icons: {
     description:
       "A set of 26 brand SVG icons — Google, GitHub, Apple, Microsoft, Slack, LinkedIn and more — as React components. Use them for social sign-in buttons and provider lists.",

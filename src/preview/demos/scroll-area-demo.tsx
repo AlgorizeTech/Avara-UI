@@ -4,15 +4,6 @@ import {
   ScrollAreaBlock,
   ScrollAreaVariant,
 } from "@/components/custom/blocks/ScrollAreaBlock";
-import {
-  CheckCircle2,
-  Database,
-  FileText,
-  GitPullRequest,
-  ShieldCheck,
-  UserPlus,
-  Zap,
-} from "lucide-react";
 
 const getDynamicColorClasses = (color: string) => {
   switch (color) {

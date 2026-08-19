@@ -185,6 +185,6 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
-**Component Path:** `nextjs\sidebar\page.mdx`
+**Component Path:** `[framework]\sidebar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

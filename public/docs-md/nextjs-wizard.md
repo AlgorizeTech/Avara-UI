@@ -183,6 +183,6 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
 
 ---
 
-**Component Path:** `nextjs\wizard\page.mdx`
+**Component Path:** `[framework]\wizard\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

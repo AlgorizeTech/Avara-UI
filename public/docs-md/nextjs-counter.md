@@ -171,6 +171,6 @@ Explore the Counter component's number animation features, including customizabl
 
 ---
 
-**Component Path:** `nextjs\counter\page.mdx`
+**Component Path:** `[framework]\counter\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

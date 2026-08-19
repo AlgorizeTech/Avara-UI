@@ -123,6 +123,6 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
 
 ---
 
-**Component Path:** `nextjs\ai-chat\page.mdx`
+**Component Path:** `[framework]\ai-chat\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

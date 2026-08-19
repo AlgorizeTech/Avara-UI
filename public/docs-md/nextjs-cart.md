@@ -79,6 +79,6 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
 
 ---
 
-**Component Path:** `nextjs\cart\page.mdx`
+**Component Path:** `[framework]\cart\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

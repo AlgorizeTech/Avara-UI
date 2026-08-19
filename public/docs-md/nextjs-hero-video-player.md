@@ -222,6 +222,6 @@ Discover the Hero Video Player's immersive features, including autoplay, custom 
 
 ---
 
-**Component Path:** `nextjs\hero-video-player\page.mdx`
+**Component Path:** `[framework]\hero-video-player\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

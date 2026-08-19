@@ -95,7 +95,6 @@ export const sandboxNames = [
   "toggle",
   "toggle-group",
   "tooltip",
-  "typography",
   "upload",
   "user-graph",
   "verify-badge",

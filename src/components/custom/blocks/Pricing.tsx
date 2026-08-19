@@ -19,67 +19,6 @@ import Link from "next/link";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 // ==========================================
-// INLINE UI PRIMITIVES
-// ==========================================
-const Badge = ({ children, className }: any) => (
-  <span
-    className={cn(
-      "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-      className,
-    )}
-  >
-    {children}
-  </span>
-);
-const Card = ({ children, className }: any) => (
-  <div
-    className={cn(
-      "rounded-xl border bg-white text-zinc-950 shadow dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-50",
-      className,
-    )}
-  >
-    {children}
-  </div>
-);
-const CardHeader = ({ children, className }: any) => (
-  <div className={cn("flex flex-col space-y-1.5 p-6", className)}>
-    {children}
-  </div>
-);
-const CardTitle = ({ children, className }: any) => (
-  <h3 className={cn("font-semibold leading-none tracking-tight", className)}>
-    {children}
-  </h3>
-);
-const CardDescription = ({ children, className }: any) => (
-  <p className={cn("text-sm text-zinc-500 dark:text-zinc-400", className)}>
-    {children}
-  </p>
-);
-const CardContent = ({ children, className }: any) => (
-  <div className={cn("p-6 pt-0", className)}>{children}</div>
-);
-const Button = ({
-  children,
-  className,
-  variant = "default",
-  ...props
-}: any) => (
-  <button
-    className={cn(
-      "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50",
-      variant === "default"
-        ? "bg-zinc-900 text-zinc-50 hover:bg-zinc-900/90 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-50/90"
-        : "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
-      className,
-    )}
-    {...props}
-  >
-    {children}
-  </button>
-);
-
-// ==========================================
 // SHARED TYPES & THEMES
 // ==========================================
 export type PricingColor = "indigo" | "rose" | "emerald" | "zinc" | string;

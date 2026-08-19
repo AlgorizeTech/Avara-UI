@@ -1,0 +1,282 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Terminal Snippet
+
+A beautiful, dependency-free code display block inspired by Mac OS windows.
+
+If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
+
+## Examples
+
+Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button.
+
+export const usageDefault = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const installCommand = \`npx create-next-app@latest my-app --typescript --tailwind
+cd my-app
+npm run dev\`;
+
+export default function Docs() {
+  return (
+    <TerminalBlock
+      code={installCommand}
+      language="bash"
+      filename="terminal"
+    />
+  );
+}`;
+
+export const usageLanguages = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function PythonTerminal() {
+  // \`language\` drives the badge; the block never ships a heavyweight
+  // highlighter, so any language string is safe to pass.
+  return <TerminalBlock code={source} language="python" filename="main.py" />;
+}`;
+
+export const usageGlass = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function GlassTerminal() {
+  return (
+    // Backdrop-blurred chrome — put it over a gradient.
+    <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <TerminalBlock
+        code={source}
+        language="tsx"
+        filename="Button.tsx"
+        variant="glass"
+      />
+    </div>
+  );
+}`;
+
+export const usageMinimal = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function MinimalTerminal() {
+  // Drops the window controls and the border for inline snippets.
+  return <TerminalBlock code={source} language="tsx" variant="minimal" />;
+}`;
+
+export const usageBare = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+import { source } from "./source";
+
+export default function BareTerminal() {
+  // No filename header, no copy button — just the code.
+  return <TerminalBlock code={source} language="tsx" copyable={false} />;
+}`;
+
+<ExampleShowcase
+  name="terminal"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Terminal",
+      subheading: "Mac-style window controls, a language badge and a copy button, all from one string.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "code",
+          effect:
+            "as the whole snippet — newlines in the string become terminal lines.",
+        },
+        {
+          prop: "copyable",
+          effect:
+            "is on by default and renders the copy button.",
+        },
+      ],
+      props: { activeTab: "Bash" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TerminalBlock.tsx"),
+    },
+    {
+      title: "Any language",
+      propNotes: [
+        {
+          prop: "language",
+          value: '"python"',
+          effect:
+            "sets the badge and highlighting. Defaults to `bash`; the block ships no heavyweight highlighter, so any string is safe.",
+        },
+        {
+          prop: "filename",
+          effect:
+            "is the label beside the badge.",
+        },
+      ],
+      props: { activeTab: "Python" },
+      usage: usageLanguages,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to blur whatever sits behind the window — ideal over imagery.",
+        },
+      ],
+      props: { variant: "glass", activeTab: "React" },
+      usage: usageGlass,
+    },
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the chrome down to the code itself.",
+        },
+      ],
+      props: { variant: "minimal", activeTab: "React" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Without header controls",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "filename",
+          effect:
+            "and set `copyable={false}` for a bare, read-only block.",
+        },
+      ],
+      props: { activeTab: "React", showFilename: false, isCopyable: false },
+      usage: usageBare,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="terminal" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+<tbody>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>code</code>
+        </td>
+        <td>
+          <code>{`string`}</code>
+        </td>
+        <td>
+          <code>{`Required`}</code>
+        </td>
+        <td>
+          The snippet rendered inside the window. Newlines in the string become terminal lines.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>language</code>
+        </td>
+        <td>
+          <code>{`string`}</code>
+        </td>
+        <td>
+          <code>{`"bash"`}</code>
+        </td>
+        <td>
+          Drives the syntax highlighting and the badge shown in the header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>filename</code>
+        </td>
+        <td>
+          <code>{`string`}</code>
+        </td>
+        <td>
+          <code>{`undefined`}</code>
+        </td>
+        <td>
+          Label beside the badge. Omit it and the header keeps only the window controls.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>copyable</code>
+        </td>
+        <td>
+          <code>{`boolean`}</code>
+        </td>
+        <td>
+          <code>{`true`}</code>
+        </td>
+        <td>
+          Renders the copy button. Set it false for a read-only block.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>{`"default" | "glass" | "minimal"`}</code>
+        </td>
+        <td>
+          <code>{`"default"`}</code>
+        </td>
+        <td>
+          Surface treatment of the window chrome.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TerminalBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>{`"primary" | "indigo" | "rose" | "emerald" | "zinc" | string`}</code>
+        </td>
+        <td>
+          <code>{`"primary"`}</code>
+        </td>
+        <td>
+          Accent for the language badge and border. Unrecognised values fall back to <code>"primary"</code>.
+        </td>
+      </tr>
+      </tbody>
+  </table>
+</div>

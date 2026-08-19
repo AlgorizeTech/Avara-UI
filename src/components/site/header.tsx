@@ -3,7 +3,11 @@
 import { GitHubIcon } from "@/assets/icons/github";
 import { cn } from "@/lib/utils";
 import {
-  BarChart3,
+  docsHref,
+  frameworkFromPathname,
+  slugFromPathname,
+} from "@/lib/framework";
+import {
   BookOpen,
   LayoutGrid,
   Linkedin,
@@ -18,6 +22,31 @@ import { useEffect, useState } from "react";
 import { SearchModal } from "./search-modal";
 import { SidebarMobile } from "./sidebar-mobile";
 import { ThemeSwitcher } from "./theme";
+
+/**
+ * The guide pages, in sidebar order. "Docs" opens the first of them rather than
+ * the /docs landing page, so clicking it starts the reader at the Introduction
+ * instead of an index they have to click through.
+ */
+/**
+ * The header renders inside the docs as well as outside them, so its docs links
+ * must follow the reader's current framework rather than pin to the default.
+ * `frameworkFromPathname` does both: the active framework within /docs/..., and
+ * the default anywhere else — which is the right answer for a marketing page.
+ */
+const docsEntryFor = (pathname: string) =>
+  docsHref(frameworkFromPathname(pathname), "index");
+
+/**
+ * Matched on slug rather than full path: the framework segment is dynamic, so a
+ * path list would stop matching the moment a reader is on /docs/reactjs/... and
+ * the wrong header item would highlight.
+ */
+const GUIDE_SLUGS = new Set(["index", "installation", "first-app", "architecture"]);
+
+/** True on the guide pages; everything else under /docs/ is a component page. */
+const isGuidePath = (pathname: string) =>
+  pathname === "/docs" || GUIDE_SLUGS.has(slugFromPathname(pathname));
 
 // ==========================================
 // PREMIUM HEADER COMPONENT
@@ -217,11 +246,11 @@ const Header = () => {
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname === "/docs"
+                isGuidePath(pathname)
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "hover:text-foreground hover:bg-muted/60"
               )}
-              href="/docs"
+              href={docsEntryFor(pathname)}
               prefetch={false}
             >
               <BookOpen className="h-3.5 w-3.5" />
@@ -230,11 +259,11 @@ const Header = () => {
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname.startsWith("/docs/")
+                pathname.startsWith("/docs/") && !isGuidePath(pathname)
                   ? "text-primary-foreground bg-primary shadow-sm"
                   : "hover:text-foreground hover:bg-muted/60"
               )}
-              href="/docs/nextjs/all-components"
+              href={docsHref(frameworkFromPathname(pathname), "all-components")}
               prefetch={false}
             >
               <LayoutGrid className="h-3.5 w-3.5" />

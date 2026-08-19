@@ -351,6 +351,6 @@ Explore the Sonner toast notification features, including stacked layouts, swipe
 
 ---
 
-**Component Path:** `nextjs\sonner\page.mdx`
+**Component Path:** `[framework]\sonner\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -112,6 +112,6 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
 
 ---
 
-**Component Path:** `nextjs\fleet-tracker\page.mdx`
+**Component Path:** `[framework]\fleet-tracker\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

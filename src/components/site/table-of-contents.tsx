@@ -3,7 +3,7 @@
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUp, ExternalLink, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUp, ExternalLink } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export const TableOfContents: React.FC = () => {

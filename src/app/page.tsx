@@ -1,9 +1,5 @@
 "use client";
 
-import AIChat, {
-	ChatThread,
-	Message,
-} from "@/components/custom/blocks/Ai-chat";
 import AuthForm from "@/components/custom/blocks/AuthForm";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
@@ -11,50 +7,39 @@ import {
 	MemoriesCard,
 	MemoryItem,
 } from "@/components/custom/blocks/MemoriesCardBlock";
-import { ThreeDCarousel, CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
+import {
+	ThreeDCarousel,
+	CarouselItem,
+} from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
-import { navigation } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
 	ArrowUpRight,
 	Bot,
 	Check,
-	ChevronRight,
 	Code2,
 	Copy,
 	Github,
 	Layers,
-	Linkedin,
 	Lock,
-	Moon,
-	Package,
 	Paintbrush,
-	SlidersHorizontal,
 	Sparkles,
 	Terminal,
 	Zap,
 	Boxes,
-	LayoutTemplate,
 	BarChart3,
-	Globe,
 	Share2,
-	Users,
 	Compass,
 	Cpu,
-	Search,
 	CheckCircle2,
-	Activity,
-	ShieldCheck,
 	LayoutGrid,
 	Send,
-	Mic,
 	GitPullRequest,
-	GitBranch,
 } from "lucide-react";
-import { motion, useInView, AnimatePresence, useScroll } from "motion/react";
+import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { links } from "@/config/site";
@@ -128,7 +113,8 @@ const sampleMemories: MemoryItem[] = [
 		date: "Latest Release",
 		image:
 			"https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80",
-		description: "Serene pine forests reflecting over calm turquoise mountain waters.",
+		description:
+			"Serene pine forests reflecting over calm turquoise mountain waters.",
 		tag: "Featured",
 	},
 	{
@@ -502,7 +488,16 @@ function HeroInteractiveHub() {
 function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
-			<HomepageHeroBlock />
+			{/* Links are passed explicitly rather than relying on the block's
+			    defaults: HomepageHeroBlock ships in the registry, so its defaults
+			    have to make sense in a consumer's project, where this site's
+			    routes do not exist. */}
+			<HomepageHeroBlock
+				badgeHref="/docs/nextjs/index"
+				primaryActionLabel="Browse Components"
+				primaryActionHref="/docs/nextjs/all-components"
+				secondaryActionHref={links.github}
+			/>
 			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-4 sm:pb-10">
 				{/* ═══════════════════════════════════════════════
            REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
@@ -589,7 +584,7 @@ function ComponentShowcase() {
 						</p>
 					</div>
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="group flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors shrink-0">
 						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -960,7 +955,6 @@ function WhyChooseUsSection() {
 		</section>
 	);
 }
-
 
 /* ═══════════════════════════════════════════════
    SECTION 5.5: COMPONENT PREVIEW CARDS CATALOG
@@ -2308,7 +2302,12 @@ function MiniatureIllustration({
 							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
 								<div className="flex items-center gap-1.5 min-w-0">
 									<div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
-										<svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+										<svg
+											className="size-2.5"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											strokeWidth={2.5}>
 											<rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
 											<line x1="16" y1="2" x2="16" y2="6" />
 											<line x1="8" y1="2" x2="8" y2="6" />
@@ -2316,8 +2315,12 @@ function MiniatureIllustration({
 										</svg>
 									</div>
 									<div className="flex flex-col text-left leading-none truncate">
-										<span className="text-[5px] text-primary font-bold uppercase tracking-wider">Picking Date...</span>
-										<span className="text-[6.5px] font-extrabold text-foreground truncate">Aug 18, 2026</span>
+										<span className="text-[5px] text-primary font-bold uppercase tracking-wider">
+											Picking Date...
+										</span>
+										<span className="text-[6.5px] font-extrabold text-foreground truncate">
+											Aug 18, 2026
+										</span>
 									</div>
 								</div>
 								<span className="text-[5.5px] text-primary font-bold">▲</span>
@@ -2327,21 +2330,37 @@ function MiniatureIllustration({
 							<div className="w-full p-1.5 rounded-lg bg-card/95 backdrop-blur-xs border border-border shadow-xl space-y-1 relative">
 								{/* Preset Quick Chips */}
 								<div className="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none text-[4.5px]">
-									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Today</span>
-									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">Tomorrow</span>
-									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">Pick Date Range</span>
+									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">
+										Today
+									</span>
+									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">
+										Tomorrow
+									</span>
+									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">
+										Pick Date Range
+									</span>
 								</div>
 
 								{/* Month Header Navigation */}
 								<div className="flex items-center justify-between px-1 py-0.5 rounded bg-muted/40 text-[6px]">
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">‹</span>
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+										‹
+									</span>
 									<span className="font-bold text-foreground">August 2026</span>
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">›</span>
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+										›
+									</span>
 								</div>
 
 								{/* Weekday Grid Labels */}
 								<div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground/70 text-center text-[4.5px] uppercase">
-									<span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+									<span>Su</span>
+									<span>Mo</span>
+									<span>Tu</span>
+									<span>We</span>
+									<span>Th</span>
+									<span>Fr</span>
+									<span>Sa</span>
 								</div>
 
 								{/* Days Matrix with Cursor Picking Date 18 */}
@@ -2352,28 +2371,62 @@ function MiniatureIllustration({
 									<span className="text-muted-foreground/30 py-0.5">29</span>
 									<span className="text-muted-foreground/30 py-0.5">30</span>
 									<span className="text-muted-foreground/30 py-0.5">31</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">1</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										1
+									</span>
 
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">2</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">3</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">4</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">5</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">6</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">7</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">8</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										2
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										3
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										4
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										5
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										6
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										7
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										8
+									</span>
 
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">9</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">10</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">11</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">12</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">13</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										9
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										10
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										11
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										12
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										13
+									</span>
 
 									{/* Start Date Selected */}
-									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">14</span>
-									<span className="py-0.5 bg-primary/20 text-primary font-semibold">15</span>
+									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">
+										14
+									</span>
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">
+										15
+									</span>
 
-									<span className="py-0.5 bg-primary/20 text-primary font-semibold">16</span>
-									<span className="py-0.5 bg-primary/20 text-primary font-semibold">17</span>
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">
+										16
+									</span>
+									<span className="py-0.5 bg-primary/20 text-primary font-semibold">
+										17
+									</span>
 
 									{/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
 									<div className="relative flex items-center justify-center">
@@ -2381,24 +2434,44 @@ function MiniatureIllustration({
 											18
 										</span>
 										{/* Cursor Pointer Graphic */}
-										<svg className="size-3 text-foreground drop-shadow-md absolute -bottom-1 -right-1 z-20 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
-											<path d="M4.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L4.5 3.5Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+										<svg
+											className="size-3 text-foreground drop-shadow-md absolute -bottom-1 -right-1 z-20 pointer-events-none"
+											viewBox="0 0 24 24"
+											fill="currentColor">
+											<path
+												d="M4.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L4.5 3.5Z"
+												stroke="white"
+												strokeWidth="1.5"
+												strokeLinejoin="round"
+											/>
 										</svg>
 									</div>
 
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">19</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">20</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">21</span>
-									<span className="py-0.5 rounded hover:bg-muted text-foreground">22</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										19
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										20
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										21
+									</span>
+									<span className="py-0.5 rounded hover:bg-muted text-foreground">
+										22
+									</span>
 								</div>
 
 								{/* Active Picking Status Bar */}
 								<div className="flex items-center justify-between pt-1 border-t border-border/50 text-[5px]">
 									<div className="flex items-center gap-1">
 										<span className="size-1.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
-										<span className="font-semibold text-foreground truncate">Selected: Aug 14 - Aug 18</span>
+										<span className="font-semibold text-foreground truncate">
+											Selected: Aug 14 - Aug 18
+										</span>
 									</div>
-									<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-extrabold shadow-2xs shrink-0">Confirm</span>
+									<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-extrabold shadow-2xs shrink-0">
+										Confirm
+									</span>
 								</div>
 							</div>
 						</div>
@@ -2957,8 +3030,9 @@ function CTASection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
-	const [typedText, setTypedText] = useState("");
-	const fullCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
+	const [, setTypedText] = useState("");
+	const fullCommand =
+		"npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 
 	useEffect(() => {
 		let index = 0;
@@ -2984,7 +3058,8 @@ function CTASection() {
 	}, []);
 
 	const handleCopy = () => {
-		const textToCopy = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
+		const textToCopy =
+			"npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
 		if (navigator.clipboard && navigator.clipboard.writeText) {
 			navigator.clipboard
 				.writeText(textToCopy)
@@ -3062,7 +3137,8 @@ function CTASection() {
 									&gt;_
 								</span>
 								<span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">
-									npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json
+									npx shadcn@latest add
+									https://algorize-ui.vercel.app/r/button.json
 								</span>
 							</div>
 							<div className="flex items-center gap-2 shrink-0">
@@ -3097,7 +3173,7 @@ function CTASection() {
 					{/* Action Buttons */}
 					<div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
 						<Link
-							href="/docs"
+							href="/docs/nextjs/all-components"
 							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
 							Browse All Components
 							<ArrowRight className="size-4" />
@@ -3141,7 +3217,7 @@ function FooterSection() {
 
 				<div className="flex items-center gap-5 text-[12px] font-bold text-muted-foreground">
 					<Link
-						href="/docs"
+						href="/docs/nextjs/index"
 						className="hover:text-foreground transition-colors">
 						Documentation
 					</Link>

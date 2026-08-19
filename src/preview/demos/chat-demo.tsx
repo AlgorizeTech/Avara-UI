@@ -46,7 +46,6 @@ const sampleContactsData = [
     status: "online",
     avatar: "https://i.pravatar.cc/150?u=4",
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ] as any;
 
 export default function ChatDemo({
@@ -66,9 +65,7 @@ export default function ChatDemo({
     >
       <ChatApp
         key={`${variant}-${color}`}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         variant={variant as any}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         color={color as any}
         currentUser={sampleCurrentUser}
         contactsData={sampleContactsData}

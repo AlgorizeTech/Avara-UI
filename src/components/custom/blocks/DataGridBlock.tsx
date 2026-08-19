@@ -135,7 +135,6 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
       className,
       ...props
     },
-    ref,
   ) => {
     const { theme, style } = getThemeStyles(color as string);
     const containerRef = useRef<HTMLDivElement>(null);

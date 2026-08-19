@@ -120,6 +120,6 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
 ---
 
-**Component Path:** `nextjs\verify-badge\page.mdx`
+**Component Path:** `[framework]\verify-badge\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

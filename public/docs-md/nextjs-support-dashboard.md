@@ -162,6 +162,6 @@ export default function GlassDashboard() {
 
 ---
 
-**Component Path:** `nextjs\support-dashboard\page.mdx`
+**Component Path:** `[framework]\support-dashboard\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

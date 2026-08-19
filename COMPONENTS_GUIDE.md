@@ -1,10 +1,10 @@
-# Next.js Documentation Component System - Professional Guide
+# Algorize UI Component System - Professional Guide
 
-This guide explains the complete component system architecture, including how to add, edit, and delete components in the Next.js Documentation platform.
+This guide explains the complete component system architecture, including how to add, edit, and delete components in the Algorize UI platform.
 
 ## 📁 Component Structure Overview
 
-The Next.js Documentation component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
+The Algorize UI component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
 
 ### Directory Structure
 ```
@@ -74,7 +74,7 @@ export default NewComponent;
 Create `page.mdx` in your component directory:
 ```mdx
 export const metadata = {
-  title: 'New Component - Next.js Documentation',
+  title: 'New Component - Algorize UI',
   description: 'Description of your new component',
 };
 
@@ -425,4 +425,4 @@ Deploy the `out` directory to your hosting provider.
 - Update package.json version
 - Create changelog entries
 
-This comprehensive guide provides everything needed to work with the Next.js Documentation component system professionally, from adding new components to maintaining existing ones.
+This comprehensive guide provides everything needed to work with the Algorize UI component system professionally, from adding new components to maintaining existing ones.

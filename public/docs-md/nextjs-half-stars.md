@@ -175,6 +175,6 @@ interface HalfStarsProps extends Omit, 'onChange'> {
 
 ---
 
-**Component Path:** `nextjs\half-stars\page.mdx`
+**Component Path:** `[framework]\half-stars\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

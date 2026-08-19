@@ -1,6 +1,26 @@
 import fs from "fs";
 import path from "path";
 import { glob } from "glob";
+import { BUILT_FRAMEWORKS } from "../lib/framework";
+
+/** The dynamic route segment, as it appears on disk. */
+const FRAMEWORK_SEGMENT = "[framework]";
+
+/**
+ * Expands one MDX file into the URL paths it is actually published at.
+ *
+ * The docs tree lives under a dynamic `[framework]` segment, so the on-disk path
+ * is `[framework]/accordion` while the real URLs are `nextjs/accordion` and
+ * `reactjs/accordion`. Without this, the flattening below produced a file named
+ * literally `[framework]-accordion.md` — the right *number* of files, so a count
+ * check passes, but under names no route ever requests.
+ */
+function urlPathsFor(urlPath: string): string[] {
+  if (!urlPath.includes(FRAMEWORK_SEGMENT)) return [urlPath];
+  return BUILT_FRAMEWORKS.map((framework) =>
+    urlPath.replace(FRAMEWORK_SEGMENT, framework),
+  );
+}
 
 const docsPath = path.join(__dirname, "../app/docs");
 const publicPath = path.join(__dirname, "../../public");
@@ -129,15 +149,40 @@ function convertMdxToMd(content: string, componentPath: string): string {
  * Finds all MDX files in the docs directory
  */
 async function findMdxFiles(): Promise<MdxFile[]> {
-  const pattern = path.join(docsPath, "**/page.mdx").replace(/\\/g, '/');
-  const files = await glob(pattern);
-  
-  return files.map(filePath => {
+  // `page.mdx` covers the 99 pages that are a single document. The forked guides
+  // — installation and first-app — instead keep one MDX per framework under a
+  // private `_content/` folder, chosen by a sibling `page.tsx`. Without the
+  // second pattern their markdown mirrors would silently go stale.
+  const patterns = [
+    path.join(docsPath, "**/page.mdx").replace(/\\/g, '/'),
+    path.join(docsPath, "**/_content/*.mdx").replace(/\\/g, '/'),
+  ];
+  const files = (await Promise.all(patterns.map((p) => glob(p)))).flat();
+
+  return files.filter(filePath => {
+    // A forked guide names its framework in the filename, so it must be dropped
+    // when that framework is switched off — otherwise turning React off would
+    // still publish reactjs-installation.md for a URL that now 404s.
+    const forked = filePath.replace(/\\/g, '/').match(/\/_content\/([^/]+)\.mdx$/);
+    return !forked || (BUILT_FRAMEWORKS as readonly string[]).includes(forked[1]);
+  }).map(filePath => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const relativePath = path.relative(docsPath, filePath);
     // Extract component name from path (remove \page.mdx and normalize slashes)
-    const urlPath = relativePath.replace(/\\page\.mdx$/, '').replace(/\/page\.mdx$/, '').replace(/\\/g, '/');
-    
+    let urlPath = relativePath.replace(/\\page\.mdx$/, '').replace(/\/page\.mdx$/, '').replace(/\\/g, '/');
+
+    // `[framework]/installation/_content/reactjs.mdx` publishes at
+    // `reactjs/installation`: the private folder drops out and the filename is
+    // itself the framework, so it replaces the dynamic segment rather than
+    // expanding into every framework the way a shared page does.
+    // The `.mdx` has to be stripped explicitly here: the two replaces above only
+    // strip it as part of `page.mdx`, so a `_content` file keeps its extension
+    // and would flatten into `nextjs.mdx-installation.md`.
+    const forked = urlPath.match(/^(.*)\/_content\/([^/]+)\.mdx$/);
+    if (forked) {
+      urlPath = forked[1].replace(FRAMEWORK_SEGMENT, forked[2]);
+    }
+
     return {
       path: filePath,
       content,
@@ -156,6 +201,16 @@ async function buildMdFiles(): Promise<void> {
   try {
     const mdxFiles = await findMdxFiles();
     console.log(`📁 Found ${mdxFiles.length} MDX files to convert`);
+
+    // Clear previous output first. The script only ever wrote files, never
+    // removed them, so a page that was renamed or a framework that was switched
+    // off left its mirror behind indefinitely — served, stale, and looking
+    // exactly like a current one.
+    if (fs.existsSync(mdOutputPath)) {
+      for (const stale of fs.readdirSync(mdOutputPath)) {
+        if (stale.endsWith('.md')) fs.unlinkSync(path.join(mdOutputPath, stale));
+      }
+    }
     
     // Create index of all generated MD files
     const mdIndex: Array<{
@@ -168,42 +223,59 @@ async function buildMdFiles(): Promise<void> {
     for (const mdxFile of mdxFiles) {
       try {
         const mdContent = convertMdxToMd(mdxFile.content, mdxFile.relativePath);
-        
-        // Create the output path with clean naming that matches the URL structure
-        let cleanName;
-        if (mdxFile.urlPath === '') {
-          cleanName = 'index';
-        } else {
-          // Use the direct component name from URL path, replace slashes with dashes for flat structure
-          cleanName = mdxFile.urlPath.replace(/\//g, '-');
-        }
-        
-        const outputFileName = `${cleanName}.md`;
-        
+
         // Ensure output directory exists
         if (!fs.existsSync(mdOutputPath)) {
           fs.mkdirSync(mdOutputPath, { recursive: true });
         }
-        
-        const outputPath = path.join(mdOutputPath, outputFileName);
-        
-        // Write the MD file
-        fs.writeFileSync(outputPath, mdContent, 'utf-8');
-        
-        // Add to index
-        mdIndex.push({
-          name: mdxFile.urlPath || 'docs',
-          path: `/docs/${outputFileName}`,
-          url: `/docs/${mdxFile.urlPath}`,
-          originalMdx: mdxFile.relativePath
-        });
-        
-        console.log(`✅ Generated: ${outputFileName} (from ${mdxFile.relativePath})`);
+
+        // One source file publishes at one URL per built framework. The content
+        // is identical until snippets resolve per framework; emitting both now
+        // means ai-button — which derives the filename straight from the current
+        // pathname — resolves on either route with no special-casing.
+        for (const urlPath of urlPathsFor(mdxFile.urlPath)) {
+          // Create the output path with clean naming that matches the URL structure
+          const cleanName = urlPath === '' ? 'index' : urlPath.replace(/\//g, '-');
+          const outputFileName = `${cleanName}.md`;
+          const outputPath = path.join(mdOutputPath, outputFileName);
+
+          // Write the MD file
+          fs.writeFileSync(outputPath, mdContent, 'utf-8');
+
+          // Add to index
+          mdIndex.push({
+            name: urlPath || 'docs',
+            path: `/docs/${outputFileName}`,
+            url: `/docs/${urlPath}`,
+            originalMdx: mdxFile.relativePath
+          });
+
+          console.log(`✅ Generated: ${outputFileName} (from ${mdxFile.relativePath})`);
+        }
       } catch (error) {
         console.error(`❌ Error processing ${mdxFile.relativePath}:`, error);
       }
     }
     
+    // Both of these are green-build failures otherwise: the per-file catch above
+    // logs and continues, so a docs-tree rename that stops the glob matching, or
+    // a dynamic segment that never got expanded, would leave the script
+    // "succeeding" with nothing usable on disk.
+    if (mdIndex.length === 0) {
+      throw new Error(
+        'build-md-files: produced 0 files — the docs glob matched nothing. Did the ' +
+        'docs tree move?'
+      );
+    }
+
+    const malformed = mdIndex.filter((file) => /[[\]]/.test(file.path));
+    if (malformed.length > 0) {
+      throw new Error(
+        `build-md-files: ${malformed.length} output name(s) contain an unexpanded ` +
+        `dynamic segment, e.g. ${malformed[0].path}. Add it to urlPathsFor().`
+      );
+    }
+
     // Write the index file
     const indexContent = {
       generatedAt: new Date().toISOString(),
