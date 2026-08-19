@@ -121,7 +121,8 @@ const MenuItem: React.FC<{
 
   // --- UPDATED ACTIVE LOGIC ---
   // isExactActive: True ONLY when you are on this exact link (for leaf items & indicator bar)
-  const isExactActive = currentSlug === item.slug && !hasChildren;
+  const itemSlug = item.slug || (item.href ? item.href.split("/").slice(3).join("/") : "");
+  const isExactActive = currentSlug === itemSlug && !hasChildren;
 
   // isParentActive: True if this is a folder AND one of its children is active
   const isParentActive = hasChildren && hasActiveDescendant;
@@ -206,7 +207,7 @@ const MenuItem: React.FC<{
           {triggerContent}
         </button>
       ) : (
-        <Link href={docsHref(framework, item.slug)} className={baseClasses}>
+        <Link href={item.href || docsHref(framework, item.slug || "")} className={baseClasses}>
           {/* Active indicator pill ONLY renders on the exact active child leaf */}
           {isExactActive && (
             <motion.div

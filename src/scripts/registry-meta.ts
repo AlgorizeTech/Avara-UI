@@ -128,12 +128,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display"],
     docs: "Duplicate the children set to keep the loop seamless; supports reverse and vertical orientations.",
   },
-  terminal: {
-    description:
-      "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
-    categories: ["code", "marketing"],
-    docs: "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost).",
-  },
 
   // ---- Phase 4A: forms & input controls ----
   input: {
@@ -317,12 +311,6 @@ export const META: Record<string, ItemMeta> = {
       "A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
     categories: ["layout", "data-display"],
     docs: "Named export: ItemBlock. `media` and `actions` take arbitrary nodes, so an avatar and a button drop straight in. Variants: default | compact | card | bordered. Passing `onClick` makes the whole row interactive.",
-  },
-  typography: {
-    description:
-      "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
-    categories: ["typography"],
-    docs: "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers.",
   },
   icons: {
     description:

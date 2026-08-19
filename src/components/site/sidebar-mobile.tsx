@@ -141,7 +141,7 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
                     <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
                   )}
                   <Link
-                    href={docsHref(framework, child.slug)}
+                    href={child.href || docsHref(framework, child.slug || "")}
                     onClick={onClose}
                     className={cn(
                       'block py-1 text-sm',

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
-import { SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact } from "react-icons/si";
+import { SiJavascript, SiTypescript, SiHtml5, SiCss3, SiReact } from "react-icons/si";
 import { FaTerminal } from "react-icons/fa";
 
 export interface CodeTab {
@@ -26,7 +26,7 @@ const LanguageIcon = ({ language }: { language: string }) => {
   if (lang === "typescript" || lang === "ts" || lang === "tsx") return <SiTypescript className={cn(iconClass, "text-blue-500")} />;
   if (lang === "react") return <SiReact className={cn(iconClass, "text-sky-400")} />;
   if (lang === "html" || lang === "xml") return <SiHtml5 className={cn(iconClass, "text-orange-500")} />;
-  if (lang === "css") return <SiCss className={cn(iconClass, "text-blue-400")} />;
+  if (lang === "css") return <SiCss3 className={cn(iconClass, "text-blue-400")} />;
   if (lang === "bash" || lang === "sh") return <FaTerminal className={cn(iconClass, "text-slate-400")} />;
   return <SiReact className={cn(iconClass, "text-slate-400")} />;
 };
@@ -217,8 +217,8 @@ export function CustomCodeBlock({
       {/* Main Code Block */}
       <div className="w-full rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#09090b]">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800/80 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-100/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800/80">
+          <div className="flex items-center gap-4 min-w-0">
             {/* Mac Dots */}
             <div className="flex items-center gap-1.5 shrink-0">
               <div className="w-3 h-3 rounded-full bg-rose-500" />
@@ -227,9 +227,9 @@ export function CustomCodeBlock({
             </div>
             
             {/* File Name / Language Badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-800 rounded-md shrink-0 shadow-none">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-200/60 dark:bg-zinc-800/80 border border-zinc-300/60 dark:border-zinc-800 rounded-md shrink-0 shadow-none max-w-full overflow-hidden">
               <LanguageIcon language={activeLanguage} />
-              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate">
                 {activeFileName || formatLanguageName(activeLanguage)}
               </span>
             </div>
