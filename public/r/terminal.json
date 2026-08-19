@@ -3,7 +3,7 @@
   "name": "terminal",
   "title": "Terminal",
   "author": "AlgorizeTech",
-  "description": "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
+  "description": "TODO: describe terminal. Generated placeholder.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,10 +18,6 @@
       "target": "components/custom/blocks/TerminalBlock.tsx"
     }
   ],
-  "docs": "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost).",
-  "categories": [
-    "code",
-    "marketing"
-  ],
+  "categories": [],
   "type": "registry:component"
 }
