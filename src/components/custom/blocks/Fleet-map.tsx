@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type * as LeafletTypes from "leaflet";
+import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import {
   Map as MapIcon,
@@ -120,27 +120,30 @@ const colorThemes: Record<string, Record<string, string>> = {
   },
 };
 
-// --- LEAFLET SSR SAFE LOADING ---
-let L: typeof LeafletTypes | null = null;
+// --- LEAFLET DEFAULT ICON PATCH ---
+// This module is client-only: it imports leaflet's stylesheet at the top level,
+// which only a bundler can resolve. Load it with React.lazy (see `fleet-tracker`)
+// rather than importing it into a server-rendered tree.
+//
+// leaflet is imported statically rather than with require(): `require` does not
+// exist in an ESM bundle, so a Vite or Rollup consumer hit
+// "ReferenceError: require is not defined" the moment this component mounted.
 if (typeof window !== "undefined") {
-  L = require("leaflet");
-  if (L) {
-    // Suppress default icon issues in Next.js
-    delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })
-      ._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-      iconUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-      shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-    });
-  }
+  // Suppress leaflet's default icon URL resolution, which assumes the images
+  // sit next to the stylesheet — bundlers rewrite that path.
+  delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })
+    ._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    iconUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  });
 }
 
-const getIcon = (colorName: string): LeafletTypes.Icon | undefined => {
-  if (!L) return undefined;
+const getIcon = (colorName: string): L.Icon => {
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${colorName}.png`,
     shadowUrl:

@@ -64,7 +64,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
     const stickyCardRef = useRef<HTMLDivElement>(null);
     const activeIndexRef = useRef(defaultIndex);
     const isClickScrolling = useRef(false);
-    const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
       activeIndexRef.current = activeIndex;

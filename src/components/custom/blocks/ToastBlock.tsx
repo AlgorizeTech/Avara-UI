@@ -112,7 +112,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
       { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }
     );
 
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (duration > 0) {
       timer = setTimeout(() => handleClose(), duration);
     }

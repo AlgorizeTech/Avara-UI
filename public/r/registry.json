@@ -689,6 +689,7 @@
         "data-display"
       ],
       "dependencies": [
+        "@types/leaflet",
         "leaflet",
         "react-leaflet"
       ],
@@ -886,6 +887,7 @@
         "data-display"
       ],
       "dependencies": [
+        "@types/leaflet",
         "leaflet",
         "lucide-react",
         "react-leaflet"

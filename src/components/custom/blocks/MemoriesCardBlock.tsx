@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
-  PanInfo,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import { Calendar, MapPin, RotateCcw, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 
