@@ -42,6 +42,25 @@ export const BUILT_FRAMEWORKS: readonly Framework[] = ["nextjs", "reactjs"];
  */
 export const LISTED_FRAMEWORKS: readonly Framework[] = ["nextjs", "reactjs"];
 
+/**
+ * Slugs whose per-framework versions are genuinely different documents.
+ *
+ * Everything else in the docs is byte-identical across frameworks — the
+ * components import nothing from `next/*`, so an accordion page is one document
+ * with one right answer, and consolidating it onto a single canonical URL is
+ * correct rather than a compromise.
+ *
+ * These two are not that. They describe different scaffolders, different config
+ * files and different failure modes, and they answer a search intent the Next.js
+ * page does not ("vite setup", "without next.js"). So they get self-canonical
+ * URLs and their own sitemap entries — which is only meaningful because they are
+ * also the pages a reader lands on first.
+ *
+ * Adding a slug here is a claim that its two versions deserve to rank
+ * separately. If they would compete for the same query, leave it out.
+ */
+export const FORKED_SLUGS: readonly string[] = ["installation", "first-app"];
+
 export const FRAMEWORK_META: Record<Framework, { label: string; hint: string }> = {
   nextjs: { label: "Next.js", hint: "App Router" },
   reactjs: { label: "React", hint: "Vite" },
