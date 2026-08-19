@@ -103,7 +103,7 @@ export default function StickyScrollStackDemo({
               ? "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
               : undefined
           }
-          headerTitle="We can help you with"
+          headerTitle="Our Core Capabilities"
           headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
           headerButtonText="Request free audit"
           className="py-10 sm:py-14"

@@ -13,32 +13,6 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-export const usageDefault = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
-
-export default function CommunityMap() {
-  const users = [
-    // Inner ring — spaced evenly by count, so 3 nodes sit 120° apart
-    { id: "1", ring: 1, image: "/avatars/user1.jpg", label: "Sarah" },
-    { id: "2", ring: 1, image: "/avatars/user2.jpg", label: "David" },
-    { id: "3", ring: 1, fallback: "JW", label: "James" },
-
-    // Outer ring
-    { id: "4", ring: 2, image: "/avatars/user4.jpg", size: "sm" },
-    { id: "5", ring: 2, fallback: "MK", size: "sm" },
-    { id: "6", ring: 2, image: "/avatars/user6.jpg", size: "sm" },
-  ];
-
-  return (
-    <NetworkGraph
-      nodes={users}
-      centerNode={{ image: "/brand-logo.png", label: "Core Community" }}
-      ringCount={3}
-      baseRadius={18}
-      ringGap={16}
-    />
-  );
-}`;
-
 export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 import { users } from "./users";
 
@@ -73,36 +47,23 @@ export default function FastGraph() {
   return <NetworkGraph nodes={users} orbitSpeed={3} />;
 }`;
 
-export const usageNoCenter = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
-import { users } from "./users";
-
-export default function HublessGraph() {
-  // Omit \`centerNode\` and the rings orbit an empty hub.
-  return <NetworkGraph nodes={users} />;
-}`;
-
 <ExampleShowcase
   name="network-graph"
   columns={1}
   examples={[
     {
-      title: "Network graph",
-      subheading: "Three orbiting rings around a centre avatar.",
+      title: "Static rings",
       propNotes: [
         {
-          lead: "Pass",
-          prop: "nodes",
+          lead: "Set",
+          prop: "animateOrbit",
+          value: '{false}',
           effect:
-            "where each entry needs only an `id` and a `ring` — nodes are spaced evenly around the orbit they name.",
-        },
-        {
-          prop: "centerNode",
-          effect:
-            "is the optional hub avatar at the middle of every ring.",
+            "to stop the planetary motion. `animateIn` is separate, so the entrance still plays.",
         },
       ],
-      props: {},
-      usage: usageDefault,
+      props: { animateOrbit: false },
+      usage: usageStatic,
       code: extractCode("src/components/custom/blocks/NetworkGraphBlock.tsx"),
     },
     {
@@ -131,20 +92,6 @@ export default function HublessGraph() {
       usage: usageRings,
     },
     {
-      title: "Static rings",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "animateOrbit",
-          value: '{false}',
-          effect:
-            "to stop the planetary motion. `animateIn` is separate, so the entrance still plays.",
-        },
-      ],
-      props: { animateOrbit: false },
-      usage: usageStatic,
-    },
-    {
       title: "Orbit speed",
       propNotes: [
         {
@@ -156,19 +103,6 @@ export default function HublessGraph() {
       ],
       props: { orbitSpeed: 3 },
       usage: usageSpeed,
-    },
-    {
-      title: "Without a center node",
-      propNotes: [
-        {
-          lead: "Leave",
-          prop: "centerNode",
-          effect:
-            "off for a hub-less constellation — the rings orbit an empty middle.",
-        },
-      ],
-      props: { showCenter: false },
-      usage: usageNoCenter,
     },
   ]}
 />
