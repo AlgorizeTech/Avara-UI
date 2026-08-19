@@ -480,9 +480,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "ui-code-renderer": {
     description:
-      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes, a shared cached highlighter and a non-shifting fallback while a cold snippet resolves.",
     categories: ["code"],
-    docs: "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
+    docs: "Named export: CodeRenderer, plus `warmHighlighter` and `prefetchHighlight` for callers that know a snippet before it is shown — prefetching one makes its first paint already highlighted, with no unstyled flash. Takes `code` and a Shiki `lang`. One Shiki instance and one markup cache are shared by every block on the page. A snippet that is still cold renders inside `pre.shiki-pending`; style that class to match your `.shiki` metrics so the swap does not shift the page. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
   },
   "custom-code-block": {
     description:
