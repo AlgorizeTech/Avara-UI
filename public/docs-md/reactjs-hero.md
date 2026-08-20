@@ -48,8 +48,8 @@ export default function SplitLeftHero() {
   // The visual moves to the left column; the markup order never changes.
   return (
     
-      {/* … */}
-      {/* … */}
+      {/* your headline, copy and CTAs */}
+      {/* an , video or mockup */}
     
   );
 }`;
@@ -64,8 +64,8 @@ export default function CenteredHero() {
   // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
   return (
     
-      {/* … */}
-      {/* … */}
+      {/* your headline, copy and CTAs */}
+      {/* an , video or mockup */}
     
   );
 }`;
@@ -76,7 +76,7 @@ export default function LeftAlignedHero() {
   // Single column, left aligned — no visual column at all.
   return (
     
-      {/* … */}
+      {/* your headline, copy and CTAs */}
     
   );
 }`;
@@ -84,17 +84,26 @@ export default function LeftAlignedHero() {
 export const usageGlass = `import {
   Hero,
   HeroContent,
+  HeroDescription,
+  HeroTitle,
   HeroVisual,
 } from "@/components/custom/blocks/HeroBlock";
 
 export default function GlassHero() {
   // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
   // \`HeroAction\` picks that up from context — no extra props on the buttons.
+  //
+  // Under \`glass\`, \`HeroVisual\` is not a side panel — it becomes the full-bleed
+  // background layer behind the frosted card. Leave it empty and the hero renders
+  // blank, so give it an image.
   return (
-    
-      {/* … */}
-      {/* … */}
-    
+
+        Build stunning interfaces
+        
+          Ship faster with production-ready blocks.
+
+        {/* Keeps the frosted text readable over a bright photo. */}
+
   );
 }`;
 
@@ -121,7 +130,7 @@ export default function PatternedHero() {
   // \`pattern\` paints the backdrop: "none", "grid" or "dots".
   return (
     
-      {/* … */}
+      {/* your headline, copy and CTAs */}
     
   );
 }`;

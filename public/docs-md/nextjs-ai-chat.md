@@ -49,10 +49,10 @@ export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-cha
 
 export default function GlassAssistant() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    // \`glass\` is translucent by design — placed over a high-resolution nature backdrop.
 
   );
-}`;
+};`;
 
 ## Installation
 

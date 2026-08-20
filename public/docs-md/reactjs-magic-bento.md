@@ -45,23 +45,6 @@ export default function HighlightedBento() {
   );
 }`;
 
-export const usageSpans = `import {
-  MagicBento,
-  MagicBentoCard,
-} from "@/components/custom/blocks/MagicBentoBlock";
-
-export default function BentoSpans() {
-  // The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-  // layout with span utilities on each card.
-  return (
-    
-      …
-      …
-      …
-    
-  );
-}`;
-
 ## Installation
 
 ## Features

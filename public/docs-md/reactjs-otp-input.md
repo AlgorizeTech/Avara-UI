@@ -19,16 +19,6 @@ export default function BasicOtp() {
   );
 }`;
 
-export const usageFilled = `"use client";
-
-export default function FilledOtp() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
 export const usageUnderlined = `"use client";
 
 export default function UnderlinedOtp() {
@@ -37,32 +27,6 @@ export default function UnderlinedOtp() {
   return (
     
   );
-}`;
-
-export const usageLengths = `"use client";
-
-export default function OtpLengths() {
-  const [value, setValue] = useState("");
-
-  return (
-
-  );
-}`;
-
-export const usageMasked = `"use client";
-
-export default function MaskedOtp() {
-  const [value, setValue] = useState("");
-
-  return ;
-}`;
-
-export const usageDisabled = `"use client";
-
-export default function DisabledOtp() {
-  const [value, setValue] = useState("123456");
-
-  return ;
 }`;
 
 ## Installation

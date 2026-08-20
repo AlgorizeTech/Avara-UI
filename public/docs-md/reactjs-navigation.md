@@ -8,32 +8,6 @@ This `NavigationMenu` uses a strict context-driven composition pattern to share 
 
 The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
 
-export const usageDefault = `import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/custom/blocks/NavigationMenu";
-
-export default function TopNav() {
-  return (
-
-          Features
-
-                Security
-
-                Developers
-
-            Pricing
-
-        {/* Sits last in the list — it measures its siblings. */}
-
-  );
-}`;
-
 export const usageMinimal = `import {
   NavigationMenu,
   NavigationMenuList,
@@ -43,23 +17,8 @@ export default function MinimalNav() {
   // Pill chrome removed; the indicator becomes a thin underline.
   return (
     
-      {/* … */}
+      {/* your NavigationMenuItem children */}
     
-  );
-}`;
-
-export const usageGlass = `import {
-  NavigationMenu,
-  NavigationMenuList,
-} from "@/components/custom/blocks/NavigationMenu";
-
-export default function GlassNav() {
-  return (
-    // Translucent and backdrop-blurred — meant to sit over a colored surface, so
-    // give it something to blur.
-
-        {/* … */}
-
   );
 }`;
 

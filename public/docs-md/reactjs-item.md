@@ -18,28 +18,6 @@ export default function SettingsRow() {
   );
 }`;
 
-export const usageVariants = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ItemVariants() {
-  return (
-
-  );
-}`;
-
-export const usageActions = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ActionRow() {
-  return (
-
-      }
-      // actions sit on the trailing edge and never squash the text
-      actions={
-
-      }
-    />
-  );
-}`;
-
 export const usageCard = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 
 export default function FeatureCard() {
@@ -56,46 +34,6 @@ export default function FeatureCard() {
     />
   );
 }`;
-
-export const usageClickable = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ClickableRow() {
-  return (
-    // Passing onClick renders a real  and adds hover/active states.
-
-      }
-      onClick={() => console.log("Item clicked")}
-    />
-  );
-}`;
-
-export const usageTitleOnly = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function DenseRow() {
-  // Everything but title is optional — compact + title alone is a menu row.
-  return ;
-}`;
-
-` — so don't nest another interactive element inside it.",
-        },
-      ],
-      props: { variant: "bordered", showMedia: true, showDescription: true, showActions: false, isClickable: true },
-      usage: usageClickable,
-    },
-    {
-      title: "Title only",
-      propNotes: [
-        {
-          prop: "title",
-          effect:
-            "on its own, with every optional slot dropped, gives the dense row used in menus and dropdowns.",
-        },
-      ],
-      props: { variant: "compact", showMedia: false, showDescription: false, showActions: false },
-      usage: usageTitleOnly,
-    },
-  ]}
-/>
 
 ## Installation
 

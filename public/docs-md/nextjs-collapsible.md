@@ -10,47 +10,6 @@ The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS gri
 
 From a bare disclosure to a nested file tree — the same three parts every time.
 
-export const usageDefault = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function BasicUsage() {
-  return (
-
-        Click to Expand
-
-        This content was hidden!
-
-  );
-}`;
-
-export const usageFaq = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function Faq() {
-  return (
-    
-      {/* defaultOpen renders this one expanded on first paint */}
-      
-        {/* "group" + group-data-[state=open] rotates the chevron for free */}
-        
-          Can I use this UI kit in open source?
-
-            Absolutely! This code is completely dependency-free and yours to own.
-
-          How does the animation work?
-
-            It transitions grid-template-rows from 0fr to 1fr — smooth height
-            animation with no JavaScript measuring.
-
-  );
-}`;
-
 export const usageSettings = `import {
   Collapsible,
   CollapsibleContent,
@@ -93,23 +52,6 @@ export default function FileTree() {
                      layout.tsx
 
                      page.tsx
-
-  );
-}`;
-
-export const usageDisabled = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function LockedSection() {
-  return (
-    // disabled makes the trigger ignore clicks and sets data-disabled.
-
-        Billing history (locked on the free plan)
-
-          You will never see this — the trigger ignores clicks.
 
   );
 }`;

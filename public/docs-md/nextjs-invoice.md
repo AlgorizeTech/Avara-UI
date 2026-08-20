@@ -58,10 +58,10 @@ export const usageGlass = `import { Invoice } from "@/components/custom/blocks/I
 
 export default function GlassInvoice() {
   return (
-    // Glass needs something behind it to refract.
+    // Nature wallpaper backdrop for glass refraction
 
   );
-}`;
+};`;
 
 ## Installation
 

@@ -53,10 +53,10 @@ export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat"
 
 export default function GlassChat() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    // \`glass\` is translucent by design — give it a background image or rich pattern to sit on.
 
   );
-}`;
+};`;
 
 ## Installation
 

@@ -43,14 +43,6 @@ export default function Faq() {
   );
 }`;
 
-export const usageVariants = `import { Accordion } from "@/components/custom/blocks/Accordion";
-
-export default function AccordionVariants() {
-  return (
-
-  );
-}`;
-
 export const usageMultiple = `import { Accordion } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
@@ -70,17 +62,6 @@ ${usageData}
 export default function AlwaysOpenFaq() {
   // collapsible={false} stops the user closing the last open panel,
   // so exactly one is always showing.
-  return (
-    
-  );
-}`;
-
-export const usageIcon = `import { Accordion } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PlusFaq() {
-  // expandIcon swaps the chevron — pass a lucide name from ICON_MAP.
   return (
     
   );

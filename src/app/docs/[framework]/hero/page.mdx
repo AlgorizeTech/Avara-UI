@@ -78,8 +78,8 @@ export default function SplitLeftHero() {
   // The visual moves to the left column; the markup order never changes.
   return (
     <Hero layout="split-left" pattern="grid">
-      <HeroContent>{/* … */}</HeroContent>
-      <HeroVisual>{/* … */}</HeroVisual>
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+      <HeroVisual>{/* an <img>, video or mockup */}</HeroVisual>
     </Hero>
   );
 }`;
@@ -94,8 +94,8 @@ export default function CenteredHero() {
   // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
   return (
     <Hero layout="center" pattern="grid">
-      <HeroContent>{/* … */}</HeroContent>
-      <HeroVisual>{/* … */}</HeroVisual>
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+      <HeroVisual>{/* an <img>, video or mockup */}</HeroVisual>
     </Hero>
   );
 }`;
@@ -106,7 +106,7 @@ export default function LeftAlignedHero() {
   // Single column, left aligned — no visual column at all.
   return (
     <Hero layout="left" pattern="none">
-      <HeroContent>{/* … */}</HeroContent>
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
     </Hero>
   );
 }`;
@@ -114,16 +114,35 @@ export default function LeftAlignedHero() {
 export const usageGlass = `import {
   Hero,
   HeroContent,
+  HeroDescription,
+  HeroTitle,
   HeroVisual,
 } from "@/components/custom/blocks/HeroBlock";
 
 export default function GlassHero() {
   // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
   // \`HeroAction\` picks that up from context — no extra props on the buttons.
+  //
+  // Under \`glass\`, \`HeroVisual\` is not a side panel — it becomes the full-bleed
+  // background layer behind the frosted card. Leave it empty and the hero renders
+  // blank, so give it an image.
   return (
     <Hero layout="split-right" variant="glass" color="indigo">
-      <HeroContent>{/* … */}</HeroContent>
-      <HeroVisual>{/* … */}</HeroVisual>
+      <HeroContent>
+        <HeroTitle>Build stunning interfaces</HeroTitle>
+        <HeroDescription>
+          Ship faster with production-ready blocks.
+        </HeroDescription>
+      </HeroContent>
+      <HeroVisual>
+        <img
+          src="/hero.jpg"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        {/* Keeps the frosted text readable over a bright photo. */}
+        <div className="absolute inset-0 bg-black/20 z-0" />
+      </HeroVisual>
     </Hero>
   );
 }`;
@@ -155,7 +174,7 @@ export default function PatternedHero() {
   // \`pattern\` paints the backdrop: "none", "grid" or "dots".
   return (
     <Hero layout="center" pattern="dots">
-      <HeroContent>{/* … */}</HeroContent>
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
     </Hero>
   );
 }`;

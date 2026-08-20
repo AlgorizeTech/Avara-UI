@@ -49,7 +49,7 @@ export const usageGlass = `import EmailApp from "@/components/custom/blocks/Emai
 
 export default function GlassMailbox() {
   return (
-    // The glass variant also frosts absolute overlays like the Compose modal.
+    // Nature wallpaper backdrop for glass refraction
 
   );
 }`;
