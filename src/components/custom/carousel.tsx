@@ -165,14 +165,14 @@ type HeroCarouselProps = {
 
 export function HeroCarousel({
   slides = [],
-  rootClassName = "relative z-50 flex h-60 w-full transform flex-col items-center justify-center gap-5 overflow-hidden bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] lg:gap-10 xl:flex-row",
-  textContainerClassName = "absolute left-0 w-1/2 rounded-lg px-4 text-white drop-shadow-lg",
-  titleClassName = "mb-3 lg:text-3xl",
-  descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg",
-  arrowContainerClassName = "absolute bottom-1/4 z-50 flex gap-3 px-5",
+  rootClassName = "relative z-50 flex h-60 max-lg:h-[360px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] lg:gap-10 xl:flex-row",
+  textContainerClassName = "absolute max-lg:top-12 max-lg:pl-[15px] left-0 w-full lg:w-1/2 rounded-lg px-4 text-white drop-shadow-lg z-40",
+  titleClassName = "mb-3 text-xl font-bold sm:text-2xl lg:text-3xl",
+  descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg max-lg:line-clamp-2",
+  arrowContainerClassName = "absolute bottom-1/4 max-lg:translate-y-0 max-lg:left-14 z-50 flex gap-3 px-0 lg:px-5",
   arrowClassName = "flex h-8 w-8 items-center justify-center rounded-full bg-white/25 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 backdrop-blur-md border border-white/20 text-white shadow-md md:h-10 md:w-10 transition-all cursor-pointer",
-  slideContainerClassName = "absolute -right-5 z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
-  slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg bg-black/50 shadow-lg shadow-black drop-shadow-lg duration-300",
+  slideContainerClassName = "absolute -right-5 max-lg:translate-y-[80px] z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
+  slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg duration-300",
   autoPlay = false,
   autoPlayInterval = 3000,
   transitionDuration = 1000,
@@ -183,12 +183,16 @@ export function HeroCarousel({
   imageComponent: Image = "img",
 }: HeroCarouselProps) {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
+  const [animatingKey, setAnimatingKey] = useState<number>(0);
 
-  const prevSlider = () =>
-    setCurrentSlider((s) => (s > 0 ? s - 1 : 0));
+  const prevSlider = useCallback(() => {
+    setCurrentSlider((s) => s - 1);
+    setAnimatingKey((k) => k + 1);
+  }, []);
 
   const nextSlider = useCallback(() => {
     setCurrentSlider((s) => s + 1);
+    setAnimatingKey((k) => k + 1);
   }, []);
 
   useEffect(() => {
@@ -196,18 +200,42 @@ export function HeroCarousel({
       const interval = setInterval(nextSlider, autoPlayInterval);
       return () => clearInterval(interval);
     }
-  }, [autoPlay, autoPlayInterval, nextSlider, slides.length]);
+  }, [autoPlay, autoPlayInterval, nextSlider, slides.length, currentSlider]);
 
   if (!slides.length) return null;
 
-  const activeIndex = currentSlider % slides.length;
+  // Modulo math that supports negative numbers correctly
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const activeIndex = positiveModulo(currentSlider, slides.length);
   const currentSlide = slides[activeIndex];
-  const bgSlideIndex =
-    activeIndex === 0 ? slides.length - 1 : activeIndex - 1;
+  const bgSlideIndex = positiveModulo(activeIndex - 1, slides.length);
   const backgroundImage = slides[bgSlideIndex].img;
 
-  // Infinite repeated track so items always enter from right to left
-  const infiniteSlides = Array.from({ length: 20 }, () => slides).flat();
+  // Center offset base so negative indexing shifts track seamlessly in both directions
+  const baseOffsetIndex = 100 * slides.length;
+  // Exact offset so the 1st preview card aligns at the left edge of container (showing 2 full cards + 3rd cut off on right)
+  const virtualSliderIndex = baseOffsetIndex + currentSlider;
+
+  // Large infinite repeated slides array centered around base offset
+  const infiniteSlides = Array.from({ length: 200 }, () => slides).flat();
+
+  const [slideWidth, setSlideWidth] = useState<number>(200);
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      // 16px is the gap-4 distance between cards
+      setSlideWidth(cardRef.current.offsetWidth + 16);
+    }
+    const handleResize = () => {
+      if (cardRef.current) {
+        setSlideWidth(cardRef.current.offsetWidth + 16);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div
@@ -218,6 +246,12 @@ export function HeroCarousel({
         transitionTimingFunction: transitionEasing,
       }}
     >
+      <div className={textContainerClassName}>
+        <div key={animatingKey} className="animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards">
+          <h1 className={titleClassName}>{currentSlide.title}</h1>
+          <p className={descriptionClassName}>{currentSlide.des}</p>
+        </div>
+      </div>
       <div className={arrowContainerClassName}>
         <button
           onClick={prevSlider}
@@ -234,21 +268,18 @@ export function HeroCarousel({
           <ArrowRight className="h-4 w-4 text-white md:h-5 md:w-5" />
         </button>
       </div>
-      <div className={textContainerClassName}>
-        <h1 className={titleClassName}>{currentSlide.title}</h1>
-        <p className={descriptionClassName}>{currentSlide.des}</p>
-      </div>
       <div className={slideContainerClassName}>
         <div
-          className="flex items-center gap-4 duration-300 ease-linear"
+          className="flex items-center gap-4 duration-500 ease-in-out transition-transform"
           style={{
-            transform: `translateX(-${currentSlider * slideTransform}px)`,
+            transform: `translateX(-${virtualSliderIndex * slideWidth}px)`,
           }}
         >
           {infiniteSlides.map((slide, inx) => (
             <div
               key={inx}
-              className={`${slideClassName} ${currentSlider - 1 === inx ? "scale-0" : "scale-100 delay-500"}`}
+              ref={inx === 0 ? cardRef : undefined}
+              className={slideClassName}
             >
               <Image
                 width={imageWidth}
