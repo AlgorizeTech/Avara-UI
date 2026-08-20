@@ -64,11 +64,19 @@ Components are published as a [shadcn registry](https://ui.shadcn.com/docs/regis
 
 ### Step 1: Initialize your project
 
-Run this once per project. It creates `components.json`, sets up the `cn` helper and confirms your path aliases.
+Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
+`cn` helper, and confirms your path aliases.
+
+Algorize UI components are built on Radix primitives, so select the Radix base. Passing it on
+the command line also keeps the command usable in CI:
 
 ```bash
-npx shadcn@latest init
+npx shadcn@latest init --base radix --preset nova
 ```
+
+Running it without flags is fine too — the CLI will ask which component library to use
+(**choose Radix UI**, not the recommended default) and which preset. Any preset works; it only
+sets the starting theme.
 
 ### Step 2: Add a component
 
@@ -99,18 +107,23 @@ src/
 
 ### TypeScript Path Alias Setup (`tsconfig.json`)
 
-Ensure your `@/*` path aliases are properly configured so all component imports resolve cleanly across your application:
+`create-next-app` already configures this, so there is normally nothing to do — just confirm
+your `tsconfig.json` contains the `paths` entry. **Add** it to the existing `compilerOptions`
+rather than replacing the file; the generated config also carries `strict`, `noEmit`,
+`moduleResolution` and the Next plugin, and losing those breaks the build:
 
 ```json
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   }
 }
 ```
+
+Do not add `baseUrl`. It is deprecated in TypeScript 6 and reported as an error (`TS5101`),
+and `paths` has resolved relative to its own config file since TypeScript 4.4.
 
 The CLI creates these directories as needed, so you do not have to make them yourself. `shadcn init` also writes `/src/lib/utils.ts` with the `cn` helper that every component imports from `@/lib/utils`.
 
@@ -120,10 +133,10 @@ Follow this step-by-step guide to install common peer dependencies, configure Ta
 
 ### Step 1: Install Common Peer Dependencies
 
-Install the core peer dependencies used across our UI components for animations, icons, themes, and interactive resizable layouts:
+Install the core peer dependencies used across our UI components for animations, icons and themes:
 
 ```bash
-npm install framer-motion lucide-react next-themes re-resizable clsx tailwind-merge
+npm install framer-motion lucide-react next-themes clsx tailwind-merge
 ```
 
       Animation Engine
@@ -141,14 +154,11 @@ npm install framer-motion lucide-react next-themes re-resizable clsx tailwind-me
     
     Seamless Light / Dark mode switching & system sync
 
-      Layout Handling
-      re-resizable
-    
-    Drag-to-resize split containers & preview panels
+### Step 2: Verify the `cn` Helper
 
-### Step 2: Create the `cn` Helper Function
-
-Create a file at `src/lib/utils.ts` (or `lib/utils.js`) and paste the following helper implementation:
+`shadcn init` already created `src/lib/utils.ts` for you in the previous step. Open it and confirm
+it matches the following — every component imports `cn` from `@/lib/utils`, so this file has to
+exist before any component will compile:
 
 ```typescript
 
@@ -160,45 +170,26 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-### Step 3: Install & Configure Container Queries (`@container`)
+### Step 3: Confirm your Tailwind v4 theme
 
-To enable native container queries for responsive component boundaries, install the official plugin:
+Tailwind v4 is CSS-first — there is no `tailwind.config.ts` to create, and `create-next-app` no
+longer emits one. `shadcn init` already wrote the theme tokens into your global stylesheet. Open
+`src/app/globals.css` and confirm it starts with something like:
 
-```bash
-npm install -D @tailwindcss/container-queries
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 ```
 
-### Step 4: Configure `tailwind.config.ts`
+Content paths are detected automatically, so there is no `content` array to maintain. Container
+queries (`@container`, `@sm:`, `@lg:`) are built into v4 — no plugin required; several components
+use them to respond to their parent's width rather than the viewport.
 
-Ensure your Tailwind CSS configuration file is set up with plugins and content paths:
-
-```typescript
-
-const config: Config = {
-  darkMode: ["class"],
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-      },
-    },
-  },
-  plugins: [containerQueries],
-};
-
-export default config;
-```
+Migrating an existing v3 config? Run `npx @tailwindcss/upgrade` rather than porting it by hand.
+Do not hand-write a `tailwind.config.ts` with `darkMode: ["class"]` — v4 types that field as
+`"class"` or `["class", string]`, so the mismatch fails `next build` type checking.
 
 ## Development Server
 
