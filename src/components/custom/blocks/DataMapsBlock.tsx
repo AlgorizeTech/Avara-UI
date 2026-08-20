@@ -328,25 +328,11 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0; }
           }
         `}} />
-<<<<<<< HEAD
-        <div 
-          ref={(node) => {
-            if (!node && mapWrapperRef.current) {
-              mapWrapperRef.current.innerHTML = "";
-            }
-            mapWrapperRef.current = node;
-          }} 
-          className="absolute inset-0 z-0"
-        >
-          <Suspense fallback={null}>
-          <MapContainer
-            key={mapId ?? `${instanceId}-${variant}-${center.join(",")}-${zoom}`}
-=======
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
           {rl && (
-          <rl.MapContainer
->>>>>>> 68e29ef83549c9af4a5f7804bb27d275e89b39c4
-            ref={mapRef}
+            <rl.MapContainer
+              key={mapId ?? `${instanceId}-${variant}-${center.join(",")}-${zoom}`}
+              ref={mapRef}
             center={center}
             zoom={zoom}
             minZoom={minZoom}

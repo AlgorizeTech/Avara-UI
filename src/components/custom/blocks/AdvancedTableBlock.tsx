@@ -420,7 +420,7 @@ export const AdvancedTableBlock = forwardRef<
                           <Check
                             className={cn(
                               "w-2.5 h-2.5",
-                              theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                              (theme as any).iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
                             )}
                             strokeWidth={3}
                           />
@@ -429,7 +429,7 @@ export const AdvancedTableBlock = forwardRef<
                           <Minus
                             className={cn(
                               "w-2.5 h-2.5",
-                              theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                              (theme as any).iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
                             )}
                             strokeWidth={3}
                           />
@@ -537,7 +537,7 @@ export const AdvancedTableBlock = forwardRef<
                                 <Check
                                   className={cn(
                                     "w-2.5 h-2.5",
-                                    theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                                    (theme as any).iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
                                   )}
                                   strokeWidth={3}
                                 />
