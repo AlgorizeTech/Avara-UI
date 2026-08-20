@@ -4,7 +4,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
 import { GitHubIcon } from "./Icons";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
    TYPES & INTERFACES

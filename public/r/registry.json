@@ -689,9 +689,11 @@
         "data-display"
       ],
       "dependencies": [
-        "@types/leaflet",
         "leaflet",
         "react-leaflet"
+      ],
+      "devDependencies": [
+        "@types/leaflet"
       ],
       "registryDependencies": [
         "utils"
@@ -887,10 +889,12 @@
         "data-display"
       ],
       "dependencies": [
-        "@types/leaflet",
         "leaflet",
         "lucide-react",
         "react-leaflet"
+      ],
+      "devDependencies": [
+        "@types/leaflet"
       ],
       "registryDependencies": [
         "utils"
@@ -1082,8 +1086,8 @@
         "marketing"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "framer-motion",
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/icons.json",

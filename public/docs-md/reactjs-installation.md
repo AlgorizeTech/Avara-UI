@@ -5,7 +5,7 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
 ## System Requirements & Compatibility
 
       Build Tool
-      Vite 5 / 6
+      Vite 5 &ndash; 8
     
     Also works with Create React App and React Router
 
@@ -15,12 +15,12 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
     No server components required
 
       Styling
-      Tailwind CSS v3.4+ / v4
+      Tailwind CSS v4
     
     Utility-first CSS styling & design tokens
 
       Language
-      TypeScript 5+ & JS
+      TypeScript 5 & 6
     
     Strict type checking or pure JavaScript
 
@@ -86,18 +86,29 @@ Then import Tailwind at the top of `src/index.css`:
 
 Every component imports through `@/`, so the alias has to resolve in **two** places: TypeScript, for editor and type checking, and Vite, for the actual bundle. Configuring only one is the single most common setup failure, and it fails confusingly — types resolve but the build cannot find the module, or the reverse.
 
-`tsconfig.json`:
+`tsconfig.json` — the Vite React template uses project references, so **add** the
+`compilerOptions` block and keep `files` and `references` exactly as they are. Replacing
+the whole file drops the references, and with them the `noEmit` that lives in
+`tsconfig.app.json`, which makes `tsc -b` emit stray `.js` files next to your sources:
 
 ```json
 {
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   }
 }
 ```
+
+Do not add `baseUrl`. It is deprecated in TypeScript 6 and reported as an error
+(`TS5101`), which fails the build — and it has been unnecessary since TypeScript 4.4,
+because `paths` resolve relative to the config file that declares them.
 
 `vite.config.ts`:
 
@@ -113,7 +124,7 @@ export default defineConfig({
 });
 ```
 
-If your project splits TypeScript config across `tsconfig.app.json` and `tsconfig.node.json` — which the Vite React template does — put the `paths` block in `tsconfig.app.json`, and mirror `baseUrl` and `paths` into the root `tsconfig.json` so the shadcn CLI can read them.
+If your project splits TypeScript config across `tsconfig.app.json` and `tsconfig.node.json` — which the Vite React template does — put the `paths` block in `tsconfig.app.json`, and mirror `paths` into the root `tsconfig.json` so the shadcn CLI can read them.
 
 ## Adding components
 
@@ -121,18 +132,27 @@ Components are published as a [shadcn registry](https://ui.shadcn.com/docs/regis
 
 ### Step 1: Initialize your project
 
-Run this once per project. It creates `components.json`, sets up the `cn` helper and confirms your path aliases.
+Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
+`cn` helper, and confirms your path aliases.
+
+Algorize UI components are built on Radix primitives, so select the Radix base. Passing it
+on the command line also keeps the command usable in CI:
 
 ```bash
-npx shadcn@latest init
+npx shadcn@latest init --base radix --preset nova
 ```
 
-When it asks, answer **no** to React Server Components — a Vite app has none. The resulting `components.json` should read:
+Running it without flags is fine too — the CLI will ask which component library to use
+(**choose Radix UI**, not the recommended default) and which preset. Any preset works;
+it only sets the starting theme.
+
+The CLI detects Vite and sets `rsc` to `false` for you. The resulting `components.json`
+should read:
 
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "radix-nova",
   "rsc": false,
   "tsx": true,
   "tailwind": {
@@ -185,7 +205,7 @@ src/
 
 If you already have a React project, only three things need to be true before the CLI will work:
 
-1. **Tailwind is installed and imported.** v4 via `@tailwindcss/vite`, or v3.4+ with a `tailwind.config.js`.
+1. **Tailwind v4 is installed and imported.** Via `@tailwindcss/vite`, with `@import "tailwindcss";` in your entry CSS.
 2. **The `@/` alias resolves in both TypeScript and your bundler.** See above.
 3. **`components.json` exists** — run `init` and answer `no` to RSC.
 

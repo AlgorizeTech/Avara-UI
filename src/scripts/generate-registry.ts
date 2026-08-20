@@ -160,11 +160,14 @@ function packageOf(spec: string): string {
 /**
  * The `@types/x` companion for a package that ships no types of its own.
  *
- * shadcn installs exactly what `dependencies` lists and has no devDependencies
- * channel, so a TypeScript consumer installing an item that imports `leaflet`
- * gets "Could not find a declaration file for module 'leaflet'" — and, worse,
- * cascading errors in packages whose own types depend on it. Shipping the
- * @types package alongside costs a JavaScript consumer nothing.
+ * A TypeScript consumer installing an item that imports `leaflet` otherwise gets
+ * "Could not find a declaration file for module 'leaflet'" — and, worse, cascading
+ * errors in packages whose own types depend on it.
+ *
+ * These go in `devDependencies`, not `dependencies`: the shadcn registry-item schema
+ * supports both channels and the CLI installs them separately. Emitting `@types/*` as
+ * a runtime dependency inflates production installs and misstates what the component
+ * needs at run time.
  *
  * Resolved from this repo's own node_modules so the list cannot go stale: if we
  * need the types to compile, so does everyone installing the component.
@@ -258,6 +261,7 @@ type BuiltItem = {
   description: string;
   categories: string[];
   dependencies: string[];
+  devDependencies?: string[];
   registryDependencies: string[];
   files: { path: string; type: string; target: string }[];
   docs?: string;
@@ -300,6 +304,7 @@ const items: BuiltItem[] = sources.map((s) => {
   const specs = parseImports(src);
 
   const dependencies = new Set<string>();
+  const devDependencies = new Set<string>();
   const registryDependencies = new Set<string>();
   let usesNext = false;
 
@@ -325,7 +330,7 @@ const items: BuiltItem[] = sources.map((s) => {
     if (AMBIENT_PACKAGES.has(pkg)) continue;
     dependencies.add(pkg);
     const types = typesPackageFor(pkg);
-    if (types) dependencies.add(types);
+    if (types) devDependencies.add(types);
   }
 
   if (usesNext) nextCoupled.push(s.name);
@@ -356,6 +361,9 @@ const items: BuiltItem[] = sources.map((s) => {
       meta?.description ?? `TODO: describe ${s.name}. Generated placeholder.`,
     categories: meta?.categories ?? [],
     dependencies: [...dependencies].sort(),
+    ...(devDependencies.size
+      ? { devDependencies: [...devDependencies].sort() }
+      : {}),
     registryDependencies: [...registryDependencies].sort().map(depRef),
     files: [{ path: s.rel, type: fileType, target: s.target }],
   };

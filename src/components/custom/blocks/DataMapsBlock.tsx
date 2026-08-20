@@ -1,8 +1,6 @@
 "use client";
 
 import React, {
-  Suspense,
-  lazy,
   useEffect,
   useRef,
   useState,
@@ -13,16 +11,17 @@ import "leaflet/dist/leaflet.css";
 import { useMap } from "react-leaflet";
 
 /**
- * Leaflet reads `window` at import time, so these must never load on a server.
+ * Leaflet reads `window` at import time, so it must never load on a server.
  *
- * `React.lazy` rather than `next/dynamic` because this component ships to Vite
- * apps too, and `next/dynamic` would not resolve there. It is equally safe: lazy
- * defers the import to first render, and the `isMounted` gate further down keeps
- * that first render in the browser under both frameworks.
+ * The map components are pulled in at runtime and held in state, NOT as React.lazy
+ * components. Lazy children (GeoJSON, ZoomControl) suspend *after* MapContainer has
+ * mounted, and the resulting unmount/remount tears down the leaflet instance mid-flight
+ * -- "Map container is being reused by another instance". One import, one gate, one mount.
+ *
+ * Held in state rather than next/dynamic because this component ships to Vite apps too,
+ * where next/dynamic does not resolve.
  */
-const MapContainer = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.MapContainer })));
-const GeoJSON = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.GeoJSON })));
-const ZoomControl = lazy(() => import("react-leaflet").then((mod) => ({ default: mod.ZoomControl })));
+type ReactLeaflet = typeof import("react-leaflet");
 
 function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number; zoomable?: boolean }) {
   const map = useMap();
@@ -128,11 +127,20 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const highlightColorRef = useRef(highlightColor);
     const variantRef = useRef(variant);
     const [leafletLib, setLeafletLib] = useState<any>(null);
+    const [rl, setRl] = useState<ReactLeaflet | null>(null);
     const [dotCount, setDotCount] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      import("leaflet").then((L) => setLeafletLib(L));
+      let cancelled = false;
+      Promise.all([import("leaflet"), import("react-leaflet")]).then(([L, RL]) => {
+        if (cancelled) return;
+        setLeafletLib(L);
+        setRl(RL);
+      });
+      return () => {
+        cancelled = true;
+      };
     }, []);
 
     useEffect(() => {
@@ -302,8 +310,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           }
         `}} />
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
-          <Suspense fallback={null}>
-          <MapContainer
+          {rl && (
+          <rl.MapContainer
             ref={mapRef}
             center={center}
             zoom={zoom}
@@ -318,8 +326,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             attributionControl={false}
           >
             <ResizeHandler wrapperRef={wrapperRef} initialZoom={zoom} zoomable={zoomable} />
-            {zoomable && <ZoomControl position="bottomright" />}
-            <GeoJSON
+            {zoomable && <rl.ZoomControl position="bottomright" />}
+            <rl.GeoJSON
               ref={geoJsonRef}
               data={geoData}
               style={(feature) => {
@@ -406,8 +414,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                 });
               }}
             />
-          </MapContainer>
-          </Suspense>
+          </rl.MapContainer>
+          )}
         </div>
         
         {variant === "dots" && (
