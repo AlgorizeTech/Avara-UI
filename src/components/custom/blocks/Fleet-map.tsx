@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import * as L from "leaflet";
+import type * as LeafletNS from "leaflet";
 import "leaflet/dist/leaflet.css";
 import {
   Map as MapIcon,
@@ -12,7 +12,17 @@ import {
   Truck,
 } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { useMap } from "react-leaflet";
+
+// `useMap` is a hook and is safe to import statically -- react-leaflet's module body does
+// not touch the DOM. Leaflet itself does, so the map components are pulled in at runtime
+// (see the effect below) rather than at module scope.
+//
+// They are loaded as one namespace held in state, NOT as four separate React.lazy
+// components: lazy children suspend *after* MapContainer has mounted, which unmounts and
+// remounts the leaflet instance mid-flight and throws "Map container is being reused by
+// another instance". One gate, one mount.
+type ReactLeaflet = typeof import("react-leaflet");
 
 // ==========================================
 // TYPES & INTERFACES
@@ -128,11 +138,17 @@ const colorThemes: Record<string, Record<string, string>> = {
 // leaflet is imported statically rather than with require(): `require` does not
 // exist in an ESM bundle, so a Vite or Rollup consumer hit
 // "ReferenceError: require is not defined" the moment this component mounted.
-if (typeof window !== "undefined") {
-  // Suppress leaflet's default icon URL resolution, which assumes the images
-  // sit next to the stylesheet — bundlers rewrite that path.
-  delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })
-    ._getIconUrl;
+let iconDefaultsPatched = false;
+
+/**
+ * Suppress leaflet's default icon URL resolution, which assumes the images sit next to
+ * the stylesheet -- bundlers rewrite that path. Runs once, after leaflet has loaded in
+ * the browser, so nothing touches `window` during server prerender.
+ */
+function patchIconDefaults(L: typeof LeafletNS) {
+  if (iconDefaultsPatched) return;
+  iconDefaultsPatched = true;
+  delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })._getIconUrl;
   L.Icon.Default.mergeOptions({
     iconRetinaUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
@@ -143,7 +159,7 @@ if (typeof window !== "undefined") {
   });
 }
 
-const getIcon = (colorName: string): L.Icon => {
+const getIcon = (L: typeof LeafletNS, colorName: string): LeafletNS.Icon => {
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${colorName}.png`,
     shadowUrl:
@@ -267,6 +283,24 @@ export default function FleetTracker({
   // Below md the list and the map share the same box, so only one is shown at a
   // time. The list is the landing view; the header/floating buttons swap them.
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(true);
+
+  // leaflet reaches for `window` as soon as its module body runs, so it is imported
+  // here rather than at the top of the file. On the server this stays null and the
+  // map subtree is skipped, which is what keeps `next build` prerender working.
+  const [leaflet, setLeaflet] = useState<typeof LeafletNS | null>(null);
+  const [rl, setRl] = useState<ReactLeaflet | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([import("leaflet"), import("react-leaflet")]).then(([L, RL]) => {
+      if (cancelled) return;
+      patchIconDefaults(L);
+      setLeaflet(L);
+      setRl(RL);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredVehicles = fleetData.filter(
     (v) =>
@@ -455,15 +489,15 @@ export default function FleetTracker({
           isMobileSidebarOpen ? "hidden md:block" : "block",
         )}
       >
-        {L && (
-          <MapContainer
+        {leaflet && rl && (
+          <rl.MapContainer
             center={[40.75, -74.0]}
             zoom={13}
             className="w-full h-full z-0"
             zoomControl={false}
             attributionControl={false}
           >
-            <TileLayer
+            <rl.TileLayer
               key={isDarkMode ? "dark" : "light"}
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
               url={
@@ -475,17 +509,17 @@ export default function FleetTracker({
             <MapController activeVehicle={activeVehicle} />
             <MapResizeHandler />
             {fleetData.map((vehicle) => (
-              <Marker
+              <rl.Marker
                 key={vehicle.id}
                 position={[vehicle.lat, vehicle.lng]}
                 icon={
                   activeVehicle?.id === vehicle.id
-                    ? getIcon(theme.marker)
-                    : getIcon("grey")
+                    ? getIcon(leaflet, theme.marker)
+                    : getIcon(leaflet, "grey")
                 }
                 eventHandlers={{ click: () => setActiveVehicle(vehicle) }}
               >
-                <Popup className="font-sans">
+                <rl.Popup className="font-sans">
                   <div className="text-center">
                     <h3 className="font-bold text-sm text-zinc-900 m-0 leading-tight">
                       {vehicle.id}
@@ -494,10 +528,10 @@ export default function FleetTracker({
                       {vehicle.location}
                     </p>
                   </div>
-                </Popup>
-              </Marker>
+                </rl.Popup>
+              </rl.Marker>
             ))}
-          </MapContainer>
+          </rl.MapContainer>
         )}
       </main>
     </div>
