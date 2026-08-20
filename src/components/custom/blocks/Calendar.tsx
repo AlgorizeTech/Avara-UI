@@ -1424,6 +1424,7 @@ function CalendarCell({
   onClickCell,
   cellClass,
   theme,
+  variant
 }: any) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";

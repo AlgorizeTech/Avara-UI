@@ -9,14 +9,14 @@ import { DocsPagination } from "@/components/site/DocsPagination";
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
   return (
     <div className="w-full min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 relative">
-      <div className="mx-auto max-w-[1800px] flex px-4 md:px-5 w-full min-w-0">
+      <div className="mx-auto max-w-[1800px] flex px-2.5 sm:px-4 md:px-5 w-full min-w-0">
         {/* Left Navigation */}
         <Sidebar />
 
         {/* Center Main Content */}
         <main
           className={cn(
-            "flex-1 min-w-0 w-full max-w-full px-4 py-6 lg:px-6 lg:py-8 xl:px-8 xl:py-12 transition-all duration-300 ease-in-out max-w-7xl",
+            "flex-1 min-w-0 w-full max-w-full px-2 sm:px-4 py-6 lg:px-6 lg:py-8 xl:px-8 xl:py-12 transition-all duration-300 ease-in-out sm:max-w-[1440px]",
           )}
         >
           {/* Premium Typography Prose overrides */}

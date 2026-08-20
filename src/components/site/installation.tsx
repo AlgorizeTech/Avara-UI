@@ -38,6 +38,34 @@ function label(dependency: string): string {
 }
 
 /**
+ * Every npm package an item pulls in, including the ones it inherits through its
+ * registry dependencies.
+ *
+ * Listing only `item.dependencies` under-reports the real dependency surface: a page
+ * for `fleet-tracker` would name `lucide-react` and never mention `leaflet` or
+ * `react-leaflet`, which arrive with the `fleet-map` component it depends on. The CLI
+ * installs them either way, so nothing breaks -- but the reader has no way to see that
+ * adding one component brings a mapping library with it, which matters for bundle size,
+ * licence review, and deciding whether to use the component at all.
+ *
+ * Walks the registry graph and unions the npm packages. `seen` guards the cycle;
+ * bare upstream names like `utils` are not in our registry and are skipped.
+ */
+function transitivePackages(name: string, seen = new Set<string>()): string[] {
+  if (seen.has(name)) return [];
+  seen.add(name);
+
+  const entry = ITEMS.find((candidate) => candidate.name === name);
+  if (!entry) return [];
+
+  const collected = [...(entry.dependencies ?? [])];
+  for (const dependency of entry.registryDependencies ?? []) {
+    collected.push(...transitivePackages(label(dependency), seen));
+  }
+  return collected;
+}
+
+/**
  * Matches the prop badges in Sandbox.tsx. Carries `data-badge`, which opts out
  * of the global inline-<code> styling in globals.css and docs-layout-content;
  * without it those rules win and the badge renders as a plain slate chip.
@@ -143,8 +171,11 @@ export function Installation({ name }: InstallationProps) {
 
   const title = item.title ?? name;
   const target = item.files?.[0]?.target;
-  const packages = item.dependencies ?? [];
+  const direct = item.dependencies ?? [];
   const components = item.registryDependencies ?? [];
+  // Includes packages inherited through `components`; see transitivePackages.
+  const packages = [...new Set(transitivePackages(name))].sort();
+  const inherited = packages.filter((pkg) => !direct.includes(pkg));
   const total = packages.length + components.length;
 
   return (
@@ -183,6 +214,14 @@ export function Installation({ name }: InstallationProps) {
               Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
               {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
               {title} to an existing project by hand.
+              {inherited.length > 0 && (
+                <>
+                  {" "}
+                  <BadgeList items={inherited} /> come{inherited.length > 1 ? "" : "s"} in
+                  with the component{components.length > 1 ? "s" : ""} above rather than
+                  from {title} directly.
+                </>
+              )}
             </p>
 
             {components.length > 0 && (

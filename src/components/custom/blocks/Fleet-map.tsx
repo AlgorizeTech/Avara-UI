@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import * as L from "leaflet";
+import type * as LeafletNS from "leaflet";
 import "leaflet/dist/leaflet.css";
 import {
   Map as MapIcon,
@@ -11,8 +11,18 @@ import {
   Search,
   Truck,
 } from "lucide-react";
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useMap } from "react-leaflet";
+
+// `useMap` is a hook and is safe to import statically -- react-leaflet's module body does
+// not touch the DOM. Leaflet itself does, so the map components are pulled in at runtime
+// (see the effect below) rather than at module scope.
+//
+// They are loaded as one namespace held in state, NOT as four separate React.lazy
+// components: lazy children suspend *after* MapContainer has mounted, which unmounts and
+// remounts the leaflet instance mid-flight and throws "Map container is being reused by
+// another instance". One gate, one mount.
+type ReactLeaflet = typeof import("react-leaflet");
 
 // ==========================================
 // TYPES & INTERFACES
@@ -83,6 +93,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus-within:ring-primary/20 focus-within:border-primary/50",
     marker: "violet",
+    glow: "rgba(139, 92, 246, 0.75)",
   },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
@@ -92,6 +103,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus-within:ring-indigo-500/20 focus-within:border-indigo-500/50",
     marker: "violet",
+    glow: "rgba(129, 140, 248, 0.75)",
   },
   rose: {
     text: "text-rose-600 dark:text-rose-400",
@@ -100,6 +112,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     lightBg: "bg-rose-50 dark:bg-rose-500/10",
     focusRing: "focus-within:ring-rose-500/20 focus-within:border-rose-500/50",
     marker: "red",
+    glow: "rgba(244, 63, 94, 0.75)",
   },
   emerald: {
     text: "text-emerald-600 dark:text-emerald-400",
@@ -109,6 +122,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus-within:ring-emerald-500/20 focus-within:border-emerald-500/50",
     marker: "green",
+    glow: "rgba(16, 185, 129, 0.75)",
   },
   zinc: {
     text: "text-zinc-900 dark:text-zinc-100",
@@ -117,8 +131,124 @@ const colorThemes: Record<string, Record<string, string>> = {
     lightBg: "bg-zinc-100 dark:bg-zinc-800/50",
     focusRing: "focus-within:ring-zinc-500/20 focus-within:border-zinc-500/50",
     marker: "black",
+    glow: "rgba(250, 250, 250, 0.85)",
   },
 };
+
+// ==========================================
+// TILE SOURCES
+// ==========================================
+// Dark mode pulls the basemap as two layers rather than the combined
+// `dark_all` sheet. Carto renders geometry and labels as separate rasters, and
+// the two need opposite corrections (see MAP_STYLES) -- one flattened sheet
+// cannot be graded so that the ground reads dark and the type reads bright.
+const TILES = {
+  light:
+    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+  darkBase:
+    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}{r}.png",
+  darkLabels:
+    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_only_labels/{z}/{x}/{y}{r}.png",
+} as const;
+
+const TILE_ATTRIBUTION = '&copy; <a href="https://carto.com/">CartoDB</a>';
+
+// ==========================================
+// DARK MAP GRADING
+// ==========================================
+// Carto's dark basemap is drawn almost entirely between #020202 and #262626:
+// land, water and roads all sit in the bottom 15% of the range, so against a
+// #09090b panel the map reads as an empty box -- land measured 1.31:1 against
+// the shell it sits in. The two rasters are therefore re-graded in the browser,
+// in opposite directions. Geometry is lifted off black and tinted slate
+// (land -> #3e4453, water -> #191b21, so land now separates from the panel at
+// 2.04:1 and from water at 1.77:1); labels are pushed the other way and land at
+// #bcc0cf, 5.37:1 against the ground they sit on, with their dark halo left
+// below the land tone so type keeps its outline.
+//
+// Leaflet's own chrome -- loading backdrop, pin art, popups -- ships light-only
+// and is restyled here as well. Everything is scoped to `.fleet-map-root` and
+// switched by the same `isDarkMode` value that picks the tiles, so the component
+// stays self-contained wherever it is dropped in.
+const MAP_STYLES = `
+.fleet-map-root .leaflet-container {
+  background: #e8eaed;
+  font-family: inherit;
+}
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-container {
+  background: #12151b;
+}
+
+.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-base {
+  filter: brightness(1.28) contrast(0.82) sepia(0.38) hue-rotate(186deg)
+    saturate(2.2);
+}
+.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-labels {
+  filter: brightness(1.6) contrast(1.1) sepia(0.2) hue-rotate(190deg)
+    saturate(1.3);
+}
+
+/* The pin art bakes in a black drop shadow that vanishes on a dark ground.
+   Fade the shadow layer and give every pin a light rim instead. */
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-shadow-pane {
+  opacity: 0.35;
+}
+.fleet-map-root .leaflet-marker-icon {
+  filter: drop-shadow(0 2px 3px rgba(9, 9, 11, 0.3));
+}
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-marker-icon {
+  filter: drop-shadow(0 0 1px rgba(228, 228, 231, 0.6))
+    drop-shadow(0 3px 5px rgba(0, 0, 0, 0.7));
+}
+
+/* Only filter and opacity are safe to animate on a marker -- leaflet owns the
+   element's transform and positions every pin through it. */
+.fleet-map-root .leaflet-marker-icon.fleet-pin-active,
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-marker-icon.fleet-pin-active {
+  animation: fleet-pin-pulse 2.6s ease-in-out infinite;
+}
+@keyframes fleet-pin-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 1px rgba(228, 228, 231, 0.7))
+      drop-shadow(0 0 5px var(--fleet-pin-glow))
+      drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55));
+  }
+  50% {
+    filter: drop-shadow(0 0 1px rgba(228, 228, 231, 0.9))
+      drop-shadow(0 0 14px var(--fleet-pin-glow))
+      drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fleet-map-root .leaflet-marker-icon.fleet-pin-active {
+    animation: none;
+    filter: drop-shadow(0 0 1px rgba(228, 228, 231, 0.8))
+      drop-shadow(0 0 10px var(--fleet-pin-glow))
+      drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55));
+  }
+}
+
+/* Popups are hard-coded white, down to the tip. */
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-content-wrapper {
+  background: #17181d;
+  color: #e4e4e7;
+  border: 1px solid #2c2e36;
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.85);
+}
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-tip {
+  background: #17181d;
+  border: 1px solid #2c2e36;
+  box-shadow: none;
+}
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button,
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button span {
+  color: #71717a;
+}
+.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button:hover {
+  color: #e4e4e7;
+}
+`;
 
 // --- LEAFLET DEFAULT ICON PATCH ---
 // This module is client-only: it imports leaflet's stylesheet at the top level,
@@ -128,11 +258,17 @@ const colorThemes: Record<string, Record<string, string>> = {
 // leaflet is imported statically rather than with require(): `require` does not
 // exist in an ESM bundle, so a Vite or Rollup consumer hit
 // "ReferenceError: require is not defined" the moment this component mounted.
-if (typeof window !== "undefined") {
-  // Suppress leaflet's default icon URL resolution, which assumes the images
-  // sit next to the stylesheet — bundlers rewrite that path.
-  delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })
-    ._getIconUrl;
+let iconDefaultsPatched = false;
+
+/**
+ * Suppress leaflet's default icon URL resolution, which assumes the images sit next to
+ * the stylesheet -- bundlers rewrite that path. Runs once, after leaflet has loaded in
+ * the browser, so nothing touches `window` during server prerender.
+ */
+function patchIconDefaults(L: typeof LeafletNS) {
+  if (iconDefaultsPatched) return;
+  iconDefaultsPatched = true;
+  delete (L.Icon.Default.prototype as unknown as { _getIconUrl: unknown })._getIconUrl;
   L.Icon.Default.mergeOptions({
     iconRetinaUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
@@ -143,7 +279,11 @@ if (typeof window !== "undefined") {
   });
 }
 
-const getIcon = (colorName: string): L.Icon => {
+const getIcon = (
+  L: typeof LeafletNS,
+  colorName: string,
+  className: string,
+): LeafletNS.Icon => {
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${colorName}.png`,
     shadowUrl:
@@ -152,6 +292,7 @@ const getIcon = (colorName: string): L.Icon => {
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
+    className,
   });
 };
 
@@ -256,6 +397,13 @@ export default function FleetTracker({
 
   const styles = fleetVariants[variant];
 
+  // The pin halo is the only thing separating a marker from a dark basemap, so
+  // it tracks the active colour rather than sitting on a fixed neutral.
+  const rootVars = {
+    ...customVars,
+    "--fleet-pin-glow": isCustomHex ? `${color}bf` : theme.glow,
+  } as React.CSSProperties;
+
   const mounted = useIsMounted();
   const isDarkMode =
     useSyncExternalStore(subscribeToTheme, getIsDark, getIsDarkOnServer) ??
@@ -267,6 +415,34 @@ export default function FleetTracker({
   // Below md the list and the map share the same box, so only one is shown at a
   // time. The list is the landing view; the header/floating buttons swap them.
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(true);
+
+  // leaflet reaches for `window` as soon as its module body runs, so it is imported
+  // here rather than at the top of the file. On the server this stays null and the
+  // map subtree is skipped, which is what keeps `next build` prerender working.
+  const [leaflet, setLeaflet] = useState<typeof LeafletNS | null>(null);
+  const [rl, setRl] = useState<ReactLeaflet | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([import("leaflet"), import("react-leaflet")]).then(([L, RL]) => {
+      if (cancelled) return;
+      patchIconDefaults(L);
+      setLeaflet(L);
+      setRl(RL);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Rebuilding an Icon swaps the underlying <img>, which restarts the active
+  // pin's animation -- so they are built once per colour, not once per render.
+  const icons = useMemo(() => {
+    if (!leaflet) return null;
+    return {
+      active: getIcon(leaflet, theme.marker, "fleet-pin fleet-pin-active"),
+      inactive: getIcon(leaflet, "grey", "fleet-pin"),
+    };
+  }, [leaflet, theme.marker]);
 
   const filteredVehicles = fleetData.filter(
     (v) =>
@@ -294,12 +470,15 @@ export default function FleetTracker({
 
   return (
     <div
-      style={customVars}
+      style={rootVars}
+      data-fleet-theme={isDarkMode ? "dark" : "light"}
       className={cn(
-        "w-full h-[600px] md:h-[700px] font-sans transition-all duration-300",
+        "fleet-map-root w-full h-[600px] md:h-[700px] font-sans transition-all duration-300",
         styles.wrapper,
       )}
     >
+      <style>{MAP_STYLES}</style>
+
       {/* Mobile: jump back to the vehicle list while the map is showing */}
       {!isMobileSidebarOpen && (
         <button
@@ -455,49 +634,67 @@ export default function FleetTracker({
           isMobileSidebarOpen ? "hidden md:block" : "block",
         )}
       >
-        {L && (
-          <MapContainer
+        {leaflet && rl && icons && (
+          <rl.MapContainer
             center={[40.75, -74.0]}
             zoom={13}
             className="w-full h-full z-0"
             zoomControl={false}
             attributionControl={false}
           >
-            <TileLayer
-              key={isDarkMode ? "dark" : "light"}
-              attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
-              url={
-                isDarkMode
-                  ? "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"
-                  : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-              }
-            />
+            {isDarkMode ? (
+              <>
+                <rl.TileLayer
+                  key="dark-base"
+                  className="fleet-tiles-base"
+                  attribution={TILE_ATTRIBUTION}
+                  url={TILES.darkBase}
+                  zIndex={1}
+                />
+                <rl.TileLayer
+                  key="dark-labels"
+                  className="fleet-tiles-labels"
+                  url={TILES.darkLabels}
+                  zIndex={2}
+                />
+              </>
+            ) : (
+              <rl.TileLayer
+                key="light"
+                className="fleet-tiles-base"
+                attribution={TILE_ATTRIBUTION}
+                url={TILES.light}
+                zIndex={1}
+              />
+            )}
             <MapController activeVehicle={activeVehicle} />
             <MapResizeHandler />
-            {fleetData.map((vehicle) => (
-              <Marker
-                key={vehicle.id}
-                position={[vehicle.lat, vehicle.lng]}
-                icon={
-                  activeVehicle?.id === vehicle.id
-                    ? getIcon(theme.marker)
-                    : getIcon("grey")
-                }
-                eventHandlers={{ click: () => setActiveVehicle(vehicle) }}
-              >
-                <Popup className="font-sans">
-                  <div className="text-center">
-                    <h3 className="font-bold text-sm text-zinc-900 m-0 leading-tight">
-                      {vehicle.id}
-                    </h3>
-                    <p className="text-xs text-zinc-500 mt-1 m-0">
-                      {vehicle.location}
-                    </p>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+            {fleetData.map((vehicle) => {
+              const isActive = activeVehicle?.id === vehicle.id;
+              return (
+                <rl.Marker
+                  key={vehicle.id}
+                  position={[vehicle.lat, vehicle.lng]}
+                  icon={isActive ? icons.active : icons.inactive}
+                  // Lift the selected pin so its halo is not clipped by a
+                  // neighbouring marker drawn after it.
+                  zIndexOffset={isActive ? 1000 : 0}
+                  eventHandlers={{ click: () => setActiveVehicle(vehicle) }}
+                >
+                  <rl.Popup className="font-sans">
+                    <div className="text-center">
+                      <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50 m-0 leading-tight">
+                        {vehicle.id}
+                      </h3>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 m-0">
+                        {vehicle.location}
+                      </p>
+                    </div>
+                  </rl.Popup>
+                </rl.Marker>
+              );
+            })}
+          </rl.MapContainer>
         )}
       </main>
     </div>
