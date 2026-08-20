@@ -8,60 +8,10 @@ We've removed the rigid, static feeling of standard HTML tables by injecting **m
 
 Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
-export const usageDefault = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-const columns = [
-  { key: "id", label: "Invoice", sortable: true },
-  { key: "user", label: "Customer", sortable: true },
-  { key: "amount", label: "Amount", sortable: true, align: "right" },
-  { key: "date", label: "Date", sortable: true, align: "right" },
-  { key: "actions", label: "", align: "right" },
-];
-
-const data = [
-  { id: "INV-3021", user: "Alice Freeman", amount: "$3,200.00", date: "Oct 24, 2023" },
-  { id: "INV-3022", user: "Bob Smith", amount: "$850.50", date: "Oct 24, 2023" },
-];
-
-export default function TransactionsTable() {
-  return (
-     console.log("Edit", row)}
-      onDelete={(row) => console.log("Delete", row)}
-    />
-  );
-}`;
-
 export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
 export default function MinimalTable() {
   return ;
-}`;
-
-export const usageGlass = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function GlassTable() {
-  return (
-    // Pair the glass variant with a colored backdrop so the blur has
-    // something to refract.
-
-  );
-}`;
-
-export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function TableSizes() {
-  return (
-
-  );
-}`;
-
-export const usageSelectable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function SelectableTable() {
-  return (
-     console.log(rows.length, "selected")}
-    />
-  );
 }`;
 
 export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";

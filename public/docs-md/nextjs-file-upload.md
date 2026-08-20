@@ -12,47 +12,6 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-export const usageFlow = `"use client";
-
-export default function DocumentUploader() {
-  const [queue, setQueue] = useState([]);
-
-  const handleFilesAdded = (nativeFiles) => {
-    // 1. Turn raw files into your own state objects
-    const newItems = nativeFiles.map((file) => ({
-      id: crypto.randomUUID(),
-      file,
-      progress: 0,
-      status: "idle",
-      // Instant client-side thumbnail for images
-      previewUrl: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : undefined,
-    }));
-
-    setQueue((prev) => [...newItems, ...prev]);
-
-    // 2. Kick off your real POST per file and update each item's
-    //    progress/status from the XHR upload-progress listener.
-  };
-
-  return (
-
-      {queue.length > 0 && (
-        
-          {queue.map((item) => (
-             console.log("Retry upload for", id)}
-              onRemove={(id) =>
-                setQueue((prev) => prev.filter((q) => q.id !== id))
-              }
-            />
-          ))}
-        
-      )}
-    
-  );
-}`;
-
 export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
 
 export default function AvatarDropzone() {
@@ -100,19 +59,6 @@ export default function UploadStates() {
     
       {queue.map((item) => (
          {}} onRemove={() => {}} />
-      ))}
-    
-  );
-}`;
-
-export const usageAnimated = `"use client";
-
-// UploadItem is layout-agnostic, so wrap each row to animate the queue.
-export default function AnimatedQueue({ queue, onRetry, onRemove }) {
-  return (
-    
-      {queue.map((item) => (
-
       ))}
     
   );

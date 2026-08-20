@@ -49,21 +49,6 @@ export default function VerticalSplit() {
   );
 }`;
 
-export const usageNoGrip = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-export default function HairlineDivider() {
-  return (
-
-      {/* Omit \`withHandle\` for a bare 1px divider — still draggable, still
-          keyboard accessible, just without the visible grip. */}
-
-  );
-}`;
-
 export const usageConstraints = `import {
   ResizableHandle,
   ResizablePanel,

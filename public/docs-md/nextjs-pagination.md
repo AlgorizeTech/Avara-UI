@@ -19,18 +19,6 @@ export default function BasicPagination() {
   );
 }`;
 
-export const usageManyPages = `import { useState } from "react";
-
-export default function DeepPagination() {
-  const [currentPage, setCurrentPage] = useState(50);
-
-  // With 100 pages the block renders 1 … 48 49 [50] 51 52 … 100 and keeps
-  // the window centred as you move.
-  return (
-    
-  );
-}`;
-
 export const usageSiblingCount = `import { useState } from "react";
 
 export default function TightPagination() {
@@ -38,17 +26,6 @@ export default function TightPagination() {
 
   // siblingCount is how many numbers sit either side of the active page.
   // 1 keeps the control narrow on mobile; the default is 2.
-  return (
-    
-  );
-}`;
-
-export const usageNoEdges = `import { useState } from "react";
-
-export default function NumbersOnlyPagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // showEdges={false} drops the Previous / Next controls.
   return (
     
   );

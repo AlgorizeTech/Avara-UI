@@ -29,64 +29,27 @@ export default function UsersEndpointDocs() {
   );
 }`;
 
-export const usageGet = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-export default function GetPlayground() {
-  // \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
-  return (
-    
-  );
-}`;
-
-export const usageError = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-// Any non-2xx status you return is formatted as an error response.
-const handleApiMock = async () => ({
-  status: 401,
-  timeMs: 45,
-  data: {
-    error: "unauthorized",
-    message: "Invalid API key provided in Authorization header.",
-  },
-});
-
-export default function ErrorPlayground() {
-  return (
-    
-  );
-}`;
-
-export const usageNoMock = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-export default function SketchPlayground() {
-  // Omit \`mockHandler\` and the block answers with its own canned response —
-  // handy while you are still sketching the endpoint.
-  return (
-    
-  );
-}`;
-
 ## Installation
 
-## Features
-Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
+## Features & Core Capabilities
+Explore the interactive API Playground component capabilities designed to elevate API documentation:
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    Split-Pane Architecture
+    Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    CORS-Safe Mock Handler
+    Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Full Header & Query Params Editor
+    Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    JSON Body Payload & Syntax Highlighting
+    Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.
 
 ## Best Practices & Guidelines
 
     Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+    Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
 
 ## Props Reference
 

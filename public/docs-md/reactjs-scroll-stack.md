@@ -8,36 +8,6 @@ Four independent scroll-driven layouts share this page, each with its own block 
 
 ### Simple stack
 
-export const usageSimple = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-
-const items = [
-  {
-    id: "1",
-    title: "Real-time Synchronization",
-    description: "Instantly sync state across clients.",
-    icon: Zap,
-  },
-  {
-    id: "2",
-    title: "Layered Architecture",
-    description: "Swap databases or auth providers without a rewrite.",
-    icon: Layers,
-    content: ,
-  },
-];
-
-export default function FeaturesSection() {
-  return ;
-}`;
-
-export const usageSimpleDepth = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-
-export default function DeepStack() {
-  // Each card behind the active one shrinks by this fraction — 0.12 gives a
-  // pronounced deck, 0.02 keeps the stack nearly flat.
-  return ;
-}`;
-
 export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
 
 export default function GappedStack() {
@@ -66,13 +36,6 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyNoGlow = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
-
-export default function FlatStickyStack() {
-  // Turns off the ambient glow behind the active card.
-  return ;
-}`;
-
 export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
 
 export default function TunedStickyStack() {
@@ -83,10 +46,9 @@ export default function TunedStickyStack() {
 
 ### Split stack
 
-export const usageSplit = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
 
-// One column pins while the other scrolls its stack past it.
-export default function ProcessSection() {
+export default function PinnedRightStack() {
   return ;
 }`;
 

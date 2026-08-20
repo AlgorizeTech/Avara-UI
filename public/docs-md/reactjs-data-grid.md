@@ -33,37 +33,6 @@ export default function Ledger() {
   );
 }`;
 
-export const usageSchema = `import { useState } from "react";
-
-// The grid is entirely column-driven: \`type\` picks the editor, \`width\`
-// pins the column, and \`readOnly\` locks it against edits.
-const COLUMNS = [
-  { field: "id", headerName: "User ID", width: 100, readOnly: true },
-  { field: "name", headerName: "Full Name", width: 250 },
-  { field: "score", headerName: "Test Score", type: "number", width: 150 },
-];
-
-const INITIAL_DATA = [
-  { id: "U-01", name: "Alice Smith", score: 95 },
-  { id: "U-02", name: "Bob Jones", score: 82 },
-];
-
-export default function Gradebook() {
-  const [data, setData] = useState(INITIAL_DATA);
-
-  return ;
-}`;
-
-export const usageNoRowNumbers = `"use client";
-
-export default function GridWithoutGutter() {
-  const [data, setData] = useState(ROWS);
-
-  return (
-    
-  );
-}`;
-
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 
 export default function ReadOnlyGrid() {

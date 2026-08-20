@@ -29,20 +29,6 @@ export default function ProductShowcase() {
   return ;
 }`;
 
-export const usageNoAutoplay = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-
-export default function ManualCarousel() {
-  // Manual only — drag, arrow keys and the nav controls still work.
-  return ;
-}`;
-
-export const usageInterval = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-
-export default function FastCarousel() {
-  // Time between advances, in milliseconds.
-  return ;
-}`;
-
 export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
 export default function ShortDeckCarousel() {

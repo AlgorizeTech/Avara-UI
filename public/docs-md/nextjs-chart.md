@@ -32,15 +32,6 @@ export default function RevenueLine() {
   );
 }`;
 
-export const usageArea = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-
-export default function RevenueArea() {
-  // Same line, plus a gradient fill dropped beneath the stroke.
-  return (
-    
-  );
-}`;
-
 export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
 export default function RevenuePie() {
@@ -57,13 +48,6 @@ export default function RevenueDonut() {
   return (
     
   );
-}`;
-
-export const usageNoGrid = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-
-export default function CleanBarChart() {
-  // Grid lines only apply to bar/line charts.
-  return ;
 }`;
 
 ## Installation

@@ -10,29 +10,6 @@ This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's 
 
 Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
 
-export const usageDefault = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
-
-export default function RightClickArea() {
-  return (
-    
-      {/* This whole element intercepts the right-click */}
-      
-        Right-click anywhere inside this box
-
-      {/* Rendered in a portal at the cursor position */}
-      
-         console.log("Edit")}>Edit File
-         console.log("Duplicate")}>Duplicate
-         console.log("Rename")}>Rename
-
-  );
-}`;
-
 export const usageFull = `import {
   ContextMenu,
   ContextMenuContent,
@@ -83,34 +60,6 @@ export default function DocumentMenu() {
           
           Delete
           ⌘⌫
-
-  );
-}`;
-
-export const usageInset = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
-
-export default function ViewMenu() {
-  const run = (action: string) => console.log(action);
-
-  return (
-
-        Right-click anywhere inside this box
-
-        {/* inset pads the left edge so text-only rows line up with icon rows */}
-        View
-         run("List")}>List
-         run("Grid")}>Grid
-
-         run("Download")}>
-          
-          Download PDF
 
   );
 }`;

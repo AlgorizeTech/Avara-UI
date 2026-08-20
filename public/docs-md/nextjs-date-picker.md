@@ -18,26 +18,6 @@ export default function LaunchDatePicker() {
   );
 }`;
 
-export const usageVariants = `"use client";
-
-export default function DatePickerVariants() {
-  const [date, setDate] = useState(null);
-
-  return (
-
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-export default function DatePickerSizes() {
-  const [date, setDate] = useState(null);
-
-  return (
-
-  );
-}`;
-
 export const usageError = `"use client";
 
 export default function ValidatedDatePicker() {
@@ -45,14 +25,6 @@ export default function ValidatedDatePicker() {
 
   // Passing \`error\` turns the trigger red, swaps in an alert icon and
   // replaces the helper text with your message.
-  return (
-    
-  );
-}`;
-
-export const usageDisabled = `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
-
-export default function DisabledDatePicker() {
   return (
     
   );

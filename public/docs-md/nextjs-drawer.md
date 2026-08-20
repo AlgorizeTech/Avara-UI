@@ -29,33 +29,6 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageSides = `import { useState } from "react";
-
-type Side = "top" | "bottom" | "left" | "right";
-
-function DrawerTile({ side }: { side: Side }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-       setOpen(true)}>
-        {side}
-
-            side="{side}"
-            
-              The drawer slides in from the {side} edge and sizes itself to match.
-
-             setOpen(false)}>Close
-
-  );
-}
-
-export default function DrawerSides() {
-  return (
-
-  );
-}`;
-
 export const usageBottom = `import { useState } from "react";
 
 export default function BottomSheet() {

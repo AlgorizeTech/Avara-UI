@@ -39,25 +39,6 @@ export default function CompactNav() {
   return ;
 }`;
 
-export const usageCompact = `import { Dock } from "@/components/custom/blocks/DockBlock";
-
-export default function SmallDock({ items }) {
-  // Smaller resting icons and a gentler peak — good for dense toolbars.
-  return (
-    
-  );
-}`;
-
-export const usagePhysics = `import { Dock } from "@/components/custom/blocks/DockBlock";
-
-export default function DramaticDock({ items }) {
-  // A tall peak with a wide reach: neighbours lift long before the cursor
-  // arrives, which is what makes it feel like macOS.
-  return (
-    
-  );
-}`;
-
 ## Installation
 
 ## Features

@@ -38,24 +38,10 @@ export default function FullscreenModal() {
 export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
 export default function GlassModal() {
-  // Glass leans on a heavy backdrop blur — best over a colorful page.
+  // Nature wallpaper backdrop for glass refraction
   return (
 
   );
-}`;
-
-export const usageMinimal = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function MinimalModal() {
-  // No border, softer shadow, tighter radius.
-  return ;
-}`;
-
-export const usageBordered = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function BorderedModal() {
-  // Square corners, 2px border and a hard offset shadow.
-  return ;
 }`;
 
 ## Installation

@@ -10,26 +10,6 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-export const usageDefault = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
-
-export default function CommunityMap() {
-  const users = [
-    // Inner ring — spaced evenly by count, so 3 nodes sit 120° apart
-    { id: "1", ring: 1, image: "/avatars/user1.jpg", label: "Sarah" },
-    { id: "2", ring: 1, image: "/avatars/user2.jpg", label: "David" },
-    { id: "3", ring: 1, fallback: "JW", label: "James" },
-
-    // Outer ring
-    { id: "4", ring: 2, image: "/avatars/user4.jpg", size: "sm" },
-    { id: "5", ring: 2, fallback: "MK", size: "sm" },
-    { id: "6", ring: 2, image: "/avatars/user6.jpg", size: "sm" },
-  ];
-
-  return (
-    
-  );
-}`;
-
 export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
 export default function RingLayout() {
@@ -52,13 +32,6 @@ export const usageSpeed = `import { NetworkGraph } from "@/components/custom/blo
 
 export default function FastGraph() {
   // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-  return ;
-}`;
-
-export const usageNoCenter = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
-
-export default function HublessGraph() {
-  // Omit \`centerNode\` and the rings orbit an empty hub.
   return ;
 }`;
 

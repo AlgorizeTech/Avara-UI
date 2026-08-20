@@ -10,93 +10,41 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
-export const usageDefault = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function LandingHeader() {
-  return (
-    
-      {/* 3D flip reveal */}
-
-      {/* Staggered subheadline, started after the headline */}
-
-  );
-}`;
-
-export const usageMaskReveals = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function MaskReveals() {
-  return (
-    
-      {/* Words slide up out of a clipping mask, fading as they go. */}
-
-      {/* Same mask, no fade and a sharper curve — a curtain lift. */}
-
-  );
-}`;
-
-export const usageTransformEntrances = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function TransformEntrances() {
-  return (
-    
-      {/* 3D rotateX around each word's bottom edge. */}
-
-      {/* Scales 0.8 → 1 on a springy curve that overshoots. */}
-
-      {/* Resolves out of a 12px blur while scaling up from 0.95. */}
-
-  );
-}`;
-
-export const usageContinuous = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function ContinuousEffects() {
-  return (
-    
-      {/* Red/blue clipped copies drift behind the text, forever. */}
-
-      {/* Brightness and text-shadow pulse; the halo picks up \`color\`. */}
-
-  );
-}`;
-
-export const usageWholeString = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function WholeStringVariants() {
-  return (
-    
-      {/* The one character-by-character effect — types out, then blinks. */}
-
-      {/* No motion at all: the block's sizing and semantics, nothing else. */}
-
-  );
-}`;
-
-export const usageTags = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function SemanticTags() {
-  // \`as\` picks the real HTML tag, so SEO and screen-reader structure stay
-  // intact no matter which effect you use.
+export default function FlipUpShowcase() {
   return (
 
   );
 }`;
 
-export const usageAlign = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageFadeUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-const copy = "The quick brown fox jumps over the lazy dog.";
-
-export default function Alignment() {
+export default function FadeUpShowcase() {
   return (
 
   );
 }`;
 
-export const usageSizes = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usagePopIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function SizeOverride() {
-  // \`size\` takes a Tailwind step OR a raw CSS length — the semantic tag is
-  // unaffected either way.
+export default function PopInShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageBlurIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function BlurInShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function TypewriterShowcase() {
   return (
 
   );
