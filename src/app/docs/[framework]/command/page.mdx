@@ -1,0 +1,312 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Command
+
+A powerful, composable command menu palette for searching data and triggering quick actions.
+
+Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
+
+## Examples
+
+Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
+
+export const usageGroups = `import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, CreditCard, LogOut, Settings, Smile, User } from "lucide-react";
+
+export default function CommandPalette() {
+  const run = (value: string) => console.log("Selected:", value);
+
+  return (
+    <Command>
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No matching records found.</CommandEmpty>
+
+        <CommandGroup heading="Suggestions">
+          <CommandItem onSelect={run}>
+            <Calendar className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Smile className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Calculator className="mr-2 h-4 w-4" />
+            <span>Calculator</span>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Settings">
+          {/* CommandShortcut right-aligns the hotkey hint */}
+          <CommandItem onSelect={run}>
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+            <CommandShortcut>⌘P</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <CreditCard className="mr-2 h-4 w-4" />
+            <span>Billing</span>
+            <CommandShortcut>⌘B</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={run}>
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+            <CommandShortcut>⌘S</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Danger Zone">
+          {/* data-[selected=true] styles the row while it is highlighted */}
+          <CommandItem
+            className="text-red-500 data-[selected=true]:text-red-600 data-[selected=true]:bg-red-50"
+            onSelect={run}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+            <CommandShortcut>⇧⌘Q</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}`;
+
+export const usageDialog = `import { useEffect, useState } from "react";
+import {
+  CommandDialog,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+
+export default function QuickActions() {
+  const [open, setOpen] = useState(false);
+
+  // The classic ⌘K / Ctrl+K binding
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open Command Dialog</button>
+
+      {/* Same children as the inline <Command>, rendered in a portal */}
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandGroup heading="Suggestions">
+            <CommandItem onSelect={() => setOpen(false)}>Calendar</CommandItem>
+            <CommandItem onSelect={() => setOpen(false)}>Calculator</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </>
+  );
+}`;
+
+export const usageNoFilter = `import { useState } from "react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+
+export default function RemoteSearch() {
+  const [results, setResults] = useState<string[]>([]);
+
+  // shouldFilter={false} hands filtering back to you — required when the
+  // results come from an API instead of the DOM.
+  return (
+    <Command shouldFilter={false}>
+      <CommandInput
+        placeholder="Search the server..."
+        onChange={(e) => fetchResults(e.target.value).then(setResults)}
+      />
+      <CommandList>
+        <CommandEmpty>No matching records found.</CommandEmpty>
+        <CommandGroup heading="Results">
+          {results.map((result) => (
+            <CommandItem key={result} onSelect={() => console.log(result)}>
+              {result}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}`;
+
+<ExampleShowcase
+  name="command"
+  columns={1}
+  examples={[
+    {
+      title: "Groups, separators & shortcuts",
+      subheading: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
+      propNotes: [
+        {
+          lead: "Give",
+          prop: "heading",
+          effect:
+            "to a `CommandGroup` to label the cluster — the whole group hides itself when every item filters out.",
+        },
+      ],
+      props: { layout: "inline" },
+      usage: usageGroups,
+      code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
+    },
+    {
+      title: "Command dialog",
+      subheading: "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
+      propNotes: [
+        {
+          prop: "open",
+          effect: "is required on `CommandDialog`; it has no uncontrolled mode.",
+        },
+        {
+          prop: "onOpenChange",
+          effect: "fires on click-outside and on Escape, so it is where you close it.",
+        },
+      ],
+      props: { layout: "dialog" },
+      usage: usageDialog,
+    },
+    {
+      title: "External filtering",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "shouldFilter",
+          value: "{false}",
+          effect:
+            "to turn off the built-in filter when the results already come back filtered from an API.",
+        },
+      ],
+      props: { layout: "simple", shouldFilter: false },
+      usage: usageNoFilter,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="command" />
+
+## Features
+Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>open</code></td>
+        <td><code>boolean</code></td>
+        <td><strong>Required</strong></td>
+        <td>Controls the visibility of the modal dialog overlay.</td>
+      </tr>
+      <tr>
+        <td><code>CommandDialog</code></td>
+        <td><code>onOpenChange</code></td>
+        <td><code>{`(open: boolean) => void`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>Callback fired when the dialog is dismissed via a click-outside event or by pressing the Escape key.</td>
+      </tr>
+      <tr>
+        <td><code>CommandGroup</code></td>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional text label displayed directly above the clustered items. The entire group automatically hides if all its items are filtered out.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>An explicit string used for fuzzy searching. If omitted, the component automatically falls back to searching the rendered <code>textContent</code> of the item.</td>
+      </tr>
+      <tr>
+        <td><code>CommandItem</code></td>
+        <td><code>onSelect</code></td>
+        <td><code>{`(value: string) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the item is clicked with the mouse or activated via the Enter key during keyboard navigation.</td>
+      </tr>
+      <tr>
+        <td><strong>All Components</strong></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Standard Tailwind CSS overrides for customized styling, sizing, or spacing.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

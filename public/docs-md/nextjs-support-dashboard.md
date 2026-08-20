@@ -96,13 +96,6 @@ export default function TicketTable() {
   return ;
 }`;
 
-export const usageMinimal = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
-
-export default function EmbeddedDashboard() {
-  // Borders and shadows pared back for embedding in an existing admin shell.
-  return ;
-}`;
-
 export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
 
 export default function GlassDashboard() {
@@ -162,6 +155,6 @@ export default function GlassDashboard() {
 
 ---
 
-**Component Path:** `nextjs\support-dashboard\page.mdx`
+**Component Path:** `[framework]\support-dashboard\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

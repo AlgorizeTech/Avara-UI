@@ -1,8 +1,12 @@
 "use client";
 
 import { Car, ChevronRight, Menu, Search, X } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 export type Vehicle = {
   id: string;
@@ -18,29 +22,51 @@ type MapProps = {
 };
 
 // Dynamically import the map file we just created!
-const DynamicMap = dynamic<MapProps>(() => import("./Fleet-map"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
-      <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  ),
-});
+/**
+ * Leaflet reads `window` at import time, so the map must never load on a server.
+ *
+ * `React.lazy` rather than `next/dynamic` because this component ships to Vite
+ * apps too. Unlike next/dynamic there is no `ssr: false` flag, so the render is
+ * gated on `isMounted` below — which is what actually keeps the import in the
+ * browser, under both frameworks.
+ */
+const DynamicMap = lazy<React.ComponentType<MapProps>>(() => import("./Fleet-map"));
+
+const MapFallback = () => (
+  <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
+    <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
+
+/**
+ * True only after hydration. useSyncExternalStore reports a different snapshot
+ * on the server than on the client, so this needs no state update in an effect
+ * and costs no extra render.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
 
 export default function FleetTracker({
   fleetData = [],
 }: {
   fleetData: Vehicle[];
 }) {
-  const [activeVehicle, setActiveVehicle] = useState<Vehicle | null>(
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(
     fleetData[0] || null,
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Gates the lazy map import to the browser — see the note on DynamicMap.
+  const isMounted = useIsMounted();
 
-  useEffect(() => {
-    if (!activeVehicle && fleetData.length > 0) setActiveVehicle(fleetData[0]);
-  }, [fleetData, activeVehicle]);
+  // Falling back to the first vehicle here rather than writing it back in an
+  // effect: the effect rendered once with nothing selected before correcting.
+  const activeVehicle = selectedVehicle ?? fleetData[0] ?? null;
 
   const filteredFleet = fleetData.filter(
     (vehicle) =>
@@ -49,7 +75,7 @@ export default function FleetTracker({
   );
 
   const handleVehicleClick = (vehicle: Vehicle) => {
-    setActiveVehicle(vehicle);
+    setSelectedVehicle(vehicle);
     if (typeof window !== "undefined" && window.innerWidth < 768)
       setIsSidebarOpen(false);
   };
@@ -153,13 +179,18 @@ export default function FleetTracker({
           <Menu className="w-5 h-5 cursor-pointer" />
         </button>
 
-        {activeVehicle && (
-          <DynamicMap
-            fleetData={filteredFleet}
-            activeVehicle={activeVehicle}
-            setActiveVehicle={setActiveVehicle}
-          />
-        )}
+        {activeVehicle &&
+          (isMounted ? (
+            <Suspense fallback={<MapFallback />}>
+              <DynamicMap
+                fleetData={filteredFleet}
+                activeVehicle={activeVehicle}
+                setActiveVehicle={setSelectedVehicle}
+              />
+            </Suspense>
+          ) : (
+            <MapFallback />
+          ))}
       </main>
     </div>
   );

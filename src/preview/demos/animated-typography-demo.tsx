@@ -23,6 +23,7 @@ export default function AnimatedTypographyDemo({
   color = "primary",
   showAll,
   variants,
+  singleVariant,
 }: {
   tag?: TypographyTag;
   variant?: TypographyVariant;
@@ -42,7 +43,27 @@ export default function AnimatedTypographyDemo({
    * dumping all nine in one frame does not (Rule 14).
    */
   variants?: TypographyVariant[];
+  singleVariant?: TypographyVariant;
 }) {
+  if (singleVariant) {
+    const tags: TypographyTag[] = ["h3", "h4", "p"];
+    return (
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10 flex flex-col justify-center items-center">
+        <div className="w-full max-w-3xl flex flex-col gap-6 items-center text-center">
+          {tags.map((t) => (
+            <AnimatedTypographyBlock
+              key={`${animationKey}-${singleVariant}-${t}`}
+              as={t}
+              variant={singleVariant}
+              align="center"
+              text="The quick brown fox jumps over the lazy dog."
+              color={color}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
   if (variants?.length) {
     return (
       <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10">

@@ -86,8 +86,8 @@ const defaultStackItems: ScrollStackItem[] = [
     description:
       "Building memorable, iconic brand identities that stand out in crowded markets.",
     imageUrl:
-      "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Brand guidelines mockup",
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Misty mountain forest nature landscape",
     buttonText: "Explore Branding",
   },
   {
@@ -114,8 +114,8 @@ const defaultStackItems: ScrollStackItem[] = [
     description:
       "Scalable, secure web applications built with modern React and Next.js frameworks.",
     imageUrl:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Code editor preview",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Golden mountain valley sunset nature landscape",
     buttonText: "Tech Stack Specs",
   },
   {
@@ -308,7 +308,7 @@ export const StickyScrollStack = React.forwardRef<
   (
     {
       headerBadge = "Expertise & Solutions",
-      headerTitle = "We can help you with",
+      headerTitle = "Our Core Capabilities",
       headerSubtitle = "We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience.",
       headerButtonText = "Request free audit",
       onHeaderButtonClick,
@@ -354,7 +354,7 @@ export const StickyScrollStack = React.forwardRef<
               </div>
             )}
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1] mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.15] mb-4">
               {headerTitle}
             </h2>
 

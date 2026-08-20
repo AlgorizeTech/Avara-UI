@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
-  PanInfo,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -173,7 +173,7 @@ export const ThreeDCarousel = React.forwardRef<
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(autoPlay);
     const [isHovered, setIsHovered] = useState(false);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const total = items.length;
 

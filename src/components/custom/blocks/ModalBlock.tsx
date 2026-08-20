@@ -111,15 +111,12 @@ const ModalRoot = ({
   type: ModalType;
   children: React.ReactNode;
 }) => {
-  const [mounted, setMounted] = useState(false);
   const [renderLayer, setRenderLayer] = useState(open);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-  useEffect(() => {
-    if (open) setRenderLayer(true);
-    else {
+    if (open) {
+      setRenderLayer(true);
+    } else {
       const timer = setTimeout(() => setRenderLayer(false), 300);
       return () => clearTimeout(timer);
     }
@@ -133,7 +130,7 @@ const ModalRoot = ({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [open, onOpenChange]);
 
-  if (!mounted || !renderLayer) return null;
+  if (!renderLayer) return null;
   return (
     <ModalContext.Provider value={{ open, onOpenChange, type }}>
       <div className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
@@ -148,18 +145,19 @@ const ModalOverlay = ({ className }: { className?: string }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open)
+    if (open && overlayRef.current) {
       gsap.fromTo(
         overlayRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.3, ease: "power2.out" },
       );
-    else
+    } else if (overlayRef.current) {
       gsap.to(overlayRef.current, {
         opacity: 0,
         duration: 0.3,
         ease: "power2.in",
       });
+    }
   }, [open]);
 
   return (
@@ -268,7 +266,13 @@ export function ModalBlock({
   );
 
   return (
-    <div className="w-full flex items-center justify-center" style={style}>
+    <div
+      className={cn(
+        "w-full flex items-center justify-center transition-all",
+        isOpen ? "absolute inset-0 z-40" : "relative z-10",
+      )}
+      style={style}
+    >
       <button
         onClick={() => setIsOpen(true)}
         className={cn(

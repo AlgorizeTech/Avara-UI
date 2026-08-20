@@ -1,15 +1,27 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
 import { useMap } from "react-leaflet";
 
-const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
-const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
-
-const ZoomControl = dynamic(() => import("react-leaflet").then((mod) => mod.ZoomControl), { ssr: false });
+/**
+ * Leaflet reads `window` at import time, so it must never load on a server.
+ *
+ * The map components are pulled in at runtime and held in state, NOT as React.lazy
+ * components. Lazy children (GeoJSON, ZoomControl) suspend *after* MapContainer has
+ * mounted, and the resulting unmount/remount tears down the leaflet instance mid-flight
+ * -- "Map container is being reused by another instance". One import, one gate, one mount.
+ *
+ * Held in state rather than next/dynamic because this component ships to Vite apps too,
+ * where next/dynamic does not resolve.
+ */
+type ReactLeaflet = typeof import("react-leaflet");
 
 function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number; zoomable?: boolean }) {
   const map = useMap();
@@ -75,6 +87,18 @@ function getFlagHtml(alpha3: string) {
   return `<img src="https://flagcdn.com/w40/${alpha2.toLowerCase()}.png" width="20" alt="${alpha2}" class="inline-block object-cover rounded-[2px]" />`;
 }
 
+/**
+ * True only after hydration. useSyncExternalStore reports a different snapshot
+ * on the server than on the client, so this needs no state update in an effect.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   (
     {
@@ -94,7 +118,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     },
     ref
   ) => {
-    const [isMounted, setIsMounted] = useState(false);
+    const isMounted = useIsMounted();
     const [geoData, setGeoData] = useState<any>(null);
     const mapRef = useRef<any>(null);
     const mapWrapperRef = useRef<HTMLDivElement>(null);
@@ -103,11 +127,20 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const highlightColorRef = useRef(highlightColor);
     const variantRef = useRef(variant);
     const [leafletLib, setLeafletLib] = useState<any>(null);
+    const [rl, setRl] = useState<ReactLeaflet | null>(null);
     const [dotCount, setDotCount] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      import("leaflet").then((L) => setLeafletLib(L));
+      let cancelled = false;
+      Promise.all([import("leaflet"), import("react-leaflet")]).then(([L, RL]) => {
+        if (cancelled) return;
+        setLeafletLib(L);
+        setRl(RL);
+      });
+      return () => {
+        cancelled = true;
+      };
     }, []);
 
     useEffect(() => {
@@ -197,7 +230,6 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     }, [highlightColor, dataPoints, variant, geoData, leafletLib]);
 
     useEffect(() => {
-      setIsMounted(true);
       fetch(mapGeoJsonUrl)
         .then((res) => res.json())
         .then((data) => setGeoData(data))
@@ -278,7 +310,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           }
         `}} />
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
-          <MapContainer
+          {rl && (
+          <rl.MapContainer
             ref={mapRef}
             center={center}
             zoom={zoom}
@@ -293,8 +326,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             attributionControl={false}
           >
             <ResizeHandler wrapperRef={wrapperRef} initialZoom={zoom} zoomable={zoomable} />
-            {zoomable && <ZoomControl position="bottomright" />}
-            <GeoJSON
+            {zoomable && <rl.ZoomControl position="bottomright" />}
+            <rl.GeoJSON
               ref={geoJsonRef}
               data={geoData}
               style={(feature) => {
@@ -381,7 +414,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                 });
               }}
             />
-          </MapContainer>
+          </rl.MapContainer>
+          )}
         </div>
         
         {variant === "dots" && (

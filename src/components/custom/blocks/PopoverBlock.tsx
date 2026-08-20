@@ -16,7 +16,13 @@ import { createPortal } from "react-dom";
 interface PopoverContextType {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  /**
+   * The trigger node itself, held in state rather than a ref. A ref shared
+   * through context makes every read of this context a ref read during render;
+   * a plain node lets the content position and portal itself without one.
+   */
+  trigger: HTMLDivElement | null;
+  setTrigger: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>;
 }
 const PopoverContext = createContext<PopoverContextType | undefined>(undefined);
 
@@ -29,10 +35,10 @@ export interface PopoverProps {
 
 export function Popover({ children }: PopoverProps) {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const [trigger, setTrigger] = useState<HTMLDivElement | null>(null);
 
   return (
-    <PopoverContext.Provider value={{ open, setOpen, triggerRef }}>
+    <PopoverContext.Provider value={{ open, setOpen, trigger, setTrigger }}>
       {children}
     </PopoverContext.Provider>
   );
@@ -54,7 +60,7 @@ export function PopoverTrigger({
   const context = useContext(PopoverContext);
   if (!context) throw new Error("PopoverTrigger must be used within a Popover");
 
-  const { open, setOpen, triggerRef } = context;
+  const { open, setOpen, setTrigger } = context;
 
   const handleClick = (e: React.MouseEvent) => {
     // Prevent event bubbling if placed inside another clickable element
@@ -64,7 +70,7 @@ export function PopoverTrigger({
 
   return (
     <div
-      ref={triggerRef}
+      ref={setTrigger}
       onClick={handleClick}
       className={cn("inline-block", className)}
       role="button"
@@ -127,27 +133,20 @@ export function PopoverContent({
   const context = useContext(PopoverContext);
   if (!context) throw new Error("PopoverContent must be used within a Popover");
 
-  const { open, setOpen, triggerRef } = context;
+  const { open, setOpen, trigger: triggerEl } = context;
   const [coords, setCoords] = useState({ top: -9999, left: -9999 });
   const contentRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // SSR Safety
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Handle Position Updates
   useEffect(() => {
-    if (!open || !triggerRef.current || !contentRef.current) return;
+    if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
     // popover works when rendered inside an iframe (e.g. docs device preview).
-    const doc = triggerRef.current.ownerDocument;
+    const doc = triggerEl.ownerDocument;
     const win = doc.defaultView ?? window;
 
     const updatePosition = () => {
-      const triggerEl = triggerRef.current;
       const contentEl = contentRef.current;
       if (!triggerEl || !contentEl) return;
 
@@ -272,7 +271,7 @@ export function PopoverContent({
       updatePosition,
     );
     sizeObserver.observe(contentRef.current);
-    sizeObserver.observe(triggerRef.current);
+    sizeObserver.observe(triggerEl);
 
     return () => {
       sizeObserver.disconnect();
@@ -288,7 +287,7 @@ export function PopoverContent({
     sideOffset,
     avoidCollisions,
     collisionPadding,
-    triggerRef,
+    triggerEl,
   ]);
 
   // Handle Click Outside & Escape Key
@@ -299,8 +298,8 @@ export function PopoverContent({
       if (
         contentRef.current &&
         !contentRef.current.contains(e.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
+        triggerEl &&
+        !triggerEl.contains(e.target as Node)
       ) {
         setOpen(false);
       }
@@ -311,7 +310,7 @@ export function PopoverContent({
     };
 
     // Listen on the document the trigger actually lives in (supports iframe rendering).
-    const doc = triggerRef.current?.ownerDocument ?? document;
+    const doc = contentRef.current?.ownerDocument ?? document;
 
     doc.addEventListener("mousedown", handleInteractOutside);
     doc.addEventListener("touchstart", handleInteractOutside);
@@ -322,12 +321,14 @@ export function PopoverContent({
       doc.removeEventListener("touchstart", handleInteractOutside);
       doc.removeEventListener("keydown", handleEscape);
     };
-  }, [open, setOpen, triggerRef]);
+  }, [open, setOpen, triggerEl]);
 
-  if (!mounted || !open) return null;
+  // triggerEl is null until the trigger commits, which also covers SSR: there
+  // is no document to portal into on the server.
+  if (!triggerEl || !open) return null;
 
   // Portal into the trigger's own document (supports iframe rendering).
-  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
+  const portalTarget = triggerEl.ownerDocument.body;
 
   return createPortal(
     <div

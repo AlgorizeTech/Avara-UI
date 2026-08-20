@@ -1,0 +1,127 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# API Playground
+
+A highly advanced, interactive split-pane block for testing API requests directly inside documentation.
+
+This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or Vercel). Instead of showing static code blocks, this component allows users to adjust headers, parameters, and JSON payloads, and hit "Send" to see formatted responses.
+
+Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
+
+## Examples
+
+Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
+
+export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+export default function UsersEndpointDocs() {
+  // Decide how the playground responds to whatever the reader types.
+  const handleApiMock = async (req) => {
+    await new Promise((resolve) => setTimeout(resolve, 500)); // latency
+
+    if (req.method === "POST") {
+      return { status: 201, timeMs: 120, data: { id: "cus_123", created: true } };
+    }
+
+    return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+  };
+
+  return (
+    <ApiPlaygroundBlock
+      defaultUrl="https://api.acme.com/v1/customers"
+      defaultMethod="POST"
+      mockHandler={handleApiMock}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="api-playground"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "API playground",
+      subheading: "A split-pane request builder.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "mockHandler",
+          effect:
+            "an async function — it receives the method, url, headers, params and body, and returns { status, timeMs, data } for the response pane to render.",
+        },
+        {
+          prop: "defaultUrl",
+          effect: "seeds the address bar the reader lands on.",
+        },
+      ],
+      props: { defaultMethod: "POST" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ApiPlaygroundBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="api-playground" />
+
+## Features & Core Capabilities
+Explore the interactive API Playground component capabilities designed to elevate API documentation:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Split-Pane Architecture</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">CORS-Safe Mock Handler</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Full Header & Query Params Editor</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">JSON Body Payload & Syntax Highlighting</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.</p>
+  </div>
+</div>
+
+## Props Reference
+
+mockHandler Object Signatures
+When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object.
+
+The Request Object (Passed to your function):
+
+```tsx
+{
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  url: string;
+  headers: Array<{ id: string; key: string; value: string; enabled: boolean }>;
+  params: Array<{ id: string; key: string; value: string; enabled: boolean }>;
+  body: string; // The raw JSON string from the text area
+}
+```
+
+The Response Object (Required return type):
+
+```tsx
+{
+  status: number; // e.g. 200, 201, 400, 401, 500
+  timeMs: number; // e.g. 142 (Displayed in the terminal header)
+  data: any; // A Javascript object or array. The component will format this as JSON automatically.
+}
+```

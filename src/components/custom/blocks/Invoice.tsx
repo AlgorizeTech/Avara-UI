@@ -47,20 +47,19 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     blockBg: "bg-transparent border-none p-0",
   },
   glass: {
-    wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+    wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white/50 dark:bg-black/50 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg",
+      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl text-zinc-900 dark:text-zinc-100",
     sidebarCard:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-2xl",
+      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-xl rounded-2xl",
     tableHeader:
-      "bg-white/20 dark:bg-black/20 border-b border-white/20 dark:border-white/10",
+      "bg-white/60 dark:bg-zinc-800/60 border-b border-zinc-200/60 dark:border-white/10 text-zinc-900 dark:text-zinc-100 font-bold",
     tableRow:
-      "divide-white/10 dark:divide-white/5 hover:bg-white/20 dark:hover:bg-white/5",
+      "divide-zinc-200/50 dark:divide-white/10 hover:bg-white/50 dark:hover:bg-white/5",
     inputBg:
-      "bg-white/40 dark:bg-black/40 border border-white/30 dark:border-white/10 backdrop-blur-md",
+      "bg-white/80 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-md text-zinc-900 dark:text-zinc-100",
     blockBg:
-      "bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10",
+      "bg-white/60 dark:bg-zinc-800/40 border border-zinc-200/60 dark:border-white/10 backdrop-blur-md",
   },
 };
 
@@ -174,6 +173,52 @@ export type InvoiceData = {
   note: string;
 };
 
+type EditableInputProps = {
+  /** InvoiceItem.hours and .qty are number | string, so both are accepted. */
+  value: string | number;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  placeholder?: string;
+  className?: string;
+  align?: "left" | "right" | "center";
+  isEditing: boolean;
+  inputBg: string;
+  focusRing: string;
+};
+
+/**
+ * Defined at module scope on purpose. Declaring it inside Invoice would make it
+ * a new component type on every render, so React would unmount and remount each
+ * field — the input would lose focus after every keystroke.
+ */
+function EditableInput({
+  value,
+  onChange,
+  placeholder,
+  className = "",
+  align = "left",
+  isEditing,
+  inputBg,
+  focusRing,
+}: EditableInputProps) {
+  if (!isEditing) {
+    return <span className={`block ${className}`}>{value}</span>;
+  }
+
+  return (
+    <input
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={cn(
+        `w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-${align}`,
+        inputBg,
+        focusRing,
+        className,
+      )}
+    />
+  );
+}
+
 export default function Invoice({
   invoiceData,
   variant = "default",
@@ -235,29 +280,6 @@ export default function Invoice({
     link.click();
     document.body.removeChild(link);
   };
-
-  const EditableInput = ({
-    value,
-    onChange,
-    placeholder,
-    className = "",
-    align = "left",
-  }: any) =>
-    isEditing ? (
-      <input
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={cn(
-          `w-full rounded-md px-3 py-1.5 outline-none focus:ring-2 transition-all text-${align}`,
-          styles.inputBg,
-          theme.focusRing,
-          className,
-        )}
-      />
-    ) : (
-      <span className={`block ${className}`}>{value}</span>
-    );
 
   return (
     <div
@@ -329,6 +351,9 @@ export default function Invoice({
                 Date Issued:
               </span>
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.dateIssued}
                 onChange={(e: any) =>
                   handleMainChange("dateIssued", e.target.value)
@@ -340,6 +365,9 @@ export default function Invoice({
                 Date Due:
               </span>
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.dateDue}
                 onChange={(e: any) =>
                   handleMainChange("dateDue", e.target.value)
@@ -359,6 +387,9 @@ export default function Invoice({
             </span>
             <div className="space-y-1.5 text-xs sm:text-sm break-words">
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.invoiceTo.name}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "name", e.target.value)
@@ -367,6 +398,9 @@ export default function Invoice({
                 className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-zinc-100 mb-2"
               />
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.invoiceTo.company}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "company", e.target.value)
@@ -375,6 +409,9 @@ export default function Invoice({
                 className="text-zinc-600 dark:text-zinc-300"
               />
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.invoiceTo.address}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "address", e.target.value)
@@ -383,6 +420,9 @@ export default function Invoice({
                 className="text-zinc-600 dark:text-zinc-300"
               />
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.invoiceTo.phone}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "phone", e.target.value)
@@ -391,6 +431,9 @@ export default function Invoice({
                 className="text-zinc-600 dark:text-zinc-300"
               />
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.invoiceTo.email}
                 onChange={(e: any) =>
                   handleNestedChange("invoiceTo", "email", e.target.value)
@@ -413,6 +456,9 @@ export default function Invoice({
                   Total Due:
                 </span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.billTo.totalDue}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "totalDue", e.target.value)
@@ -424,6 +470,9 @@ export default function Invoice({
               <div className="grid grid-cols-[75px,1fr] sm:grid-cols-[100px,1fr] gap-2 items-center">
                 <span className="text-zinc-500 dark:text-zinc-400">Bank:</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.billTo.bankName}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "bankName", e.target.value)
@@ -434,6 +483,9 @@ export default function Invoice({
                   Country:
                 </span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.billTo.country}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "country", e.target.value)
@@ -442,6 +494,9 @@ export default function Invoice({
                 />
                 <span className="text-zinc-500 dark:text-zinc-400">IBAN:</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.billTo.iban}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "iban", e.target.value)
@@ -450,6 +505,9 @@ export default function Invoice({
                 />
                 <span className="text-zinc-500 dark:text-zinc-400">SWIFT:</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.billTo.swift}
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "swift", e.target.value)
@@ -520,6 +578,9 @@ export default function Invoice({
                   <div>
                     <span className="text-[10px] text-zinc-400 block uppercase">Hours</span>
                     <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                       value={item.hours}
                       onChange={(e: any) => handleItemChange(idx, "hours", e.target.value)}
                       className="font-medium text-zinc-800 dark:text-zinc-200"
@@ -528,6 +589,9 @@ export default function Invoice({
                   <div>
                     <span className="text-[10px] text-zinc-400 block uppercase">Qty</span>
                     <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                       value={item.qty}
                       onChange={(e: any) => handleItemChange(idx, "qty", e.target.value)}
                       className="font-medium text-zinc-800 dark:text-zinc-200"
@@ -536,6 +600,9 @@ export default function Invoice({
                   <div className="text-right">
                     <span className="text-[10px] text-zinc-400 block uppercase">Total</span>
                     <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                       value={item.total}
                       onChange={(e: any) => handleItemChange(idx, "total", e.target.value)}
                       align="right"
@@ -613,6 +680,9 @@ export default function Invoice({
                     </td>
                     <td className="px-4 py-4 text-right align-top">
                       <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                         value={item.hours}
                         onChange={(e: any) =>
                           handleItemChange(idx, "hours", e.target.value)
@@ -622,6 +692,9 @@ export default function Invoice({
                     </td>
                     <td className="px-4 py-4 text-right align-top">
                       <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                         value={item.qty}
                         onChange={(e: any) =>
                           handleItemChange(idx, "qty", e.target.value)
@@ -631,6 +704,9 @@ export default function Invoice({
                     </td>
                     <td className="px-4 py-4 text-right align-top">
                       <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                         value={item.total}
                         onChange={(e: any) =>
                           handleItemChange(idx, "total", e.target.value)
@@ -685,6 +761,9 @@ export default function Invoice({
                 Salesperson
               </span>
               <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                 value={data.salesPerson}
                 onChange={(e: any) =>
                   handleMainChange("salesPerson", e.target.value)
@@ -725,6 +804,9 @@ export default function Invoice({
               <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
                 <span>Subtotal</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.subtotal}
                   onChange={(e: any) =>
                     handleMainChange("subtotal", e.target.value)
@@ -736,6 +818,9 @@ export default function Invoice({
               <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
                 <span>Discount</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.discount}
                   onChange={(e: any) =>
                     handleMainChange("discount", e.target.value)
@@ -747,6 +832,9 @@ export default function Invoice({
               <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400 pb-4 border-b border-zinc-200 dark:border-zinc-800">
                 <span>Tax</span>
                 <EditableInput
+                isEditing={isEditing}
+                inputBg={styles.inputBg}
+                focusRing={theme.focusRing}
                   value={data.tax}
                   onChange={(e: any) => handleMainChange("tax", e.target.value)}
                   align="right"

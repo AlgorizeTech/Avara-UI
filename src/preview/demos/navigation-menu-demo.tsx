@@ -25,10 +25,21 @@ export default function NavigationMenuDemo({
     <div
       className={`relative overflow-visible w-full flex items-start justify-center min-h-[450px] ${
         variant === "glass"
-          ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-3 sm:p-6 md:p-12"
+          ? "bg-cover bg-center rounded-2xl p-3 sm:p-6 md:p-12"
           : ""
       }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      )}
       <NavigationMenu
         key={`${variant}-${color}`}
         variant={variant}

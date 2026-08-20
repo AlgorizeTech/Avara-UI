@@ -120,6 +120,46 @@ export interface TableBlockProps<T> {
   className?: string;
 }
 
+/**
+ * Defined at module scope on purpose: inside TableBlock it would be a new
+ * component type on every render, remounting every row checkbox on selection.
+ */
+function CustomCheckbox({
+  checked,
+  onChange,
+  themeBg,
+  themeFocusRing,
+}: {
+  checked: boolean;
+  onChange: (e: any) => void;
+  themeBg: string;
+  themeFocusRing: string;
+}) {
+  return (
+    <div
+      className="relative flex items-center justify-center pt-0.5"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className={cn(
+          "peer h-4 w-4 shrink-0 rounded-[4px] border-2 appearance-none cursor-pointer transition-colors outline-none",
+          checked
+            ? cn(themeBg, "border-transparent")
+            : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900",
+          themeFocusRing,
+        )}
+      />
+      <Check
+        className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
+        strokeWidth={3}
+      />
+    </div>
+  );
+}
+
 export function TableBlock<T extends { id: string | number }>({
   data,
   columns,
@@ -260,11 +300,7 @@ export function TableBlock<T extends { id: string | number }>({
     }
   };
 
-  const handleSelectRow = (
-    id: string | number,
-    row: T,
-    e: React.MouseEvent,
-  ) => {
+  const handleSelectRow = (id: string | number, e: React.MouseEvent) => {
     e.stopPropagation();
     const newSelected = new Set(selectedIds);
     if (newSelected.has(id)) newSelected.delete(id);
@@ -283,35 +319,6 @@ export function TableBlock<T extends { id: string | number }>({
   };
 
   // --- Render Helpers ---
-  const CustomCheckbox = ({
-    checked,
-    onChange,
-  }: {
-    checked: boolean;
-    onChange: (e: any) => void;
-  }) => (
-    <div
-      className="relative flex items-center justify-center pt-0.5"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-        className={cn(
-          "peer h-4 w-4 shrink-0 rounded-[4px] border-2 appearance-none cursor-pointer transition-colors outline-none",
-          checked
-            ? cn(theme.bg, "border-transparent")
-            : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900",
-          theme.focusRing,
-        )}
-      />
-      <Check
-        className="absolute w-3 h-3 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
-        strokeWidth={3}
-      />
-    </div>
-  );
 
   return (
     <div className={cn("w-full flex flex-col gap-4", className)} style={style}>
@@ -324,7 +331,7 @@ export function TableBlock<T extends { id: string | number }>({
                 {expandable && <th className="w-10 px-2" />}
                 {selectable && (
                   <th className={cn(s.th, "w-12 text-center")}>
-                    <CustomCheckbox
+                    <CustomCheckbox themeBg={theme.bg} themeFocusRing={theme.focusRing}
                       checked={
                         paginatedData.length > 0 &&
                         selectedIds.size === paginatedData.length
@@ -419,9 +426,9 @@ export function TableBlock<T extends { id: string | number }>({
                         )}
                         {selectable && (
                           <td className={cn(s.td, "w-12 text-center")}>
-                            <CustomCheckbox
+                            <CustomCheckbox themeBg={theme.bg} themeFocusRing={theme.focusRing}
                               checked={isSelected}
-                              onChange={(e) => handleSelectRow(row.id, row, e)}
+                              onChange={(e) => handleSelectRow(row.id, e)}
                             />
                           </td>
                         )}

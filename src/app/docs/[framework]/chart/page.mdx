@@ -1,0 +1,316 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Chart
+
+A beautiful, completely custom charting engine built from the ground up for modern React applications.
+
+This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
+
+## Examples
+
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
+
+export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const revenue = [
+  { label: "Jan", value: 1200 },
+  { label: "Feb", value: 1900 },
+  { label: "Mar", value: 1500 },
+  { label: "Apr", value: 2400 },
+];
+
+export default function RevenueChart() {
+  return (
+    <ChartBlock
+      data={revenue}
+      type="bar"
+      valuePrefix="$"
+      height={300}
+    />
+  );
+}`;
+
+export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function RevenueLine() {
+  // Bezier-smoothed stroke, no fill.
+  return (
+    <ChartBlock
+      data={revenue}
+      type="line"
+      showArea={false}
+      valuePrefix="$"
+      height={300}
+    />
+  );
+}`;
+
+export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function RevenuePie() {
+  // Pie and donut render in a 1:1 container, so they never stretch into
+  // ovals, and shade each slice from a single theme color.
+  return (
+    <ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />
+  );
+}`;
+
+export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import { revenue } from "./data";
+
+export default function RevenueDonut() {
+  return (
+    <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
+  );
+}`;
+
+<ExampleShowcase
+  name="chart"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Bar chart",
+      subheading: "Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "data",
+          effect: "as `{ label, value }[]`.",
+        },
+        { prop: "type", value: '"bar"', effect: "is the default." },
+        {
+          prop: "valuePrefix",
+          value: '"$"',
+          effect: "is prepended to every rendered number, axis labels and tooltip alike.",
+        },
+        {
+          prop: "height",
+          value: "{300}",
+          effect:
+            "fixes the pixel height to stop layout shift — width is always 100% responsive.",
+        },
+      ],
+      props: { type: "bar" },
+      usage: usageBar,
+      code: extractCode("src/components/custom/blocks/ChartBlock.tsx"),
+    },
+    {
+      title: "Line chart",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"line"',
+          effect: "to draw a custom spline — smooth bezier curves instead of hard angles.",
+        },
+        {
+          prop: "showArea",
+          value: "{false}",
+          effect: "leaves the stroke bare, with nothing under it.",
+        },
+      ],
+      props: { type: "line", showArea: false },
+      usage: usageLine,
+    },
+    {
+      title: "Pie chart",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"pie"',
+          effect:
+            "to render in a 1:1 container — so it never stretches into an oval — with each slice shaded from your `color`.",
+        },
+      ],
+      props: { type: "pie" },
+      usage: usagePie,
+    },
+    {
+      title: "Donut chart",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"donut"',
+          effect: "for the same geometry with the centre cut out.",
+        },
+      ],
+      props: { type: "donut" },
+      usage: usageDonut,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="chart" />
+
+## Features
+Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>data</code>
+        </td>
+        <td>
+          <code>{`{ label: string, value: number }[]`}</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>An array of objects mapping string labels to numerical values.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"bar" | "line" | "pie" | "donut"</code>
+        </td>
+        <td>
+          <code>"bar"</code>
+        </td>
+        <td>Determines the core visualization architecture to render.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
+          </code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the active color theme to the bars, strokes, gradients, pie
+          slices, and tooltips. Accepts hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>height</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>300</code>
+        </td>
+        <td>
+          Forces a fixed pixel height for the chart container to prevent layout
+          shifting. Width is always 100% responsive.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showGrid</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders dotted horizontal gridlines mapping 0% to 100% of the
+          Y-Axis maximum. (Ignored on Pie/Donut).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showArea</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <strong>Line Chart Only:</strong> Toggles the gradient fill rendered
+          beneath the bezier curve.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>valuePrefix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Prepends a string (like <code>"$"</code>) to the tooltip and Y-Axis
+          values.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>valueSuffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Appends a string (like <code>"k"</code> or <code>"%"</code>) to the
+          tooltip and Y-Axis values.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

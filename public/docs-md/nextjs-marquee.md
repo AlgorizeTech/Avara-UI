@@ -136,6 +136,6 @@ export default function BareMarquee() {
 
 ---
 
-**Component Path:** `nextjs\marquee\page.mdx`
+**Component Path:** `[framework]\marquee\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

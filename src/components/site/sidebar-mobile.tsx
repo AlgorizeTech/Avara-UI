@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { ScrollArea } from '@/components/site/scroll-area';
+import { FrameworkSwitcher } from '@/components/site/framework-switcher';
 import { navigation } from '@/constants/navigation';
+import { docsHref, frameworkFromPathname, slugFromPathname } from '@/lib/framework';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,7 +31,9 @@ const useCurrentPath = () => {
 
 interface MenuItem {
   label: string;
-  href: string;
+  /** Path below the framework segment. Composed into an href at render time. */
+  slug?: string;
+  href?: string;
   badge?: string;
   children?: MenuItem[];
 }
@@ -38,10 +42,10 @@ interface MenuItem {
 const transformNavigation = (): MenuItem[] => {
   return navigation.map(section => ({
     label: section.label,
-    href: section.children[0]?.href || '#',
+    slug: section.children[0]?.slug ?? '',
     children: section.children.map(child => ({
       label: child.label,
-      href: child.href,
+      slug: child.slug,
       badge: child.badge,
     })),
   }));
@@ -55,9 +59,12 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
   onClose,
 }) => {
   const pathName = useCurrentPath();
+  const framework = frameworkFromPathname(pathName);
+  const currentSlug = slugFromPathname(pathName);
   const [isOpen, setIsOpen] = useState(true);
-  const isActive = pathName === item.href;
-  const hasActiveChild = item.children?.some(child => pathName === child.href);
+  // Slug comparison, never href — see the note in sidebar.tsx.
+  const isActive = currentSlug === item.slug;
+  const hasActiveChild = item.children?.some(child => currentSlug === child.slug);
 
   const handleClick = (e: React.MouseEvent) => {
     if (item.children) {
@@ -123,19 +130,19 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
           )}
         >
           {item.children.map((child, index) => {
-            const isChildActive = pathName === child.href;
+            const isChildActive = currentSlug === child.slug;
 
             return isNested ? (
               <MenuItem key={index} item={child} isNested onClose={onClose} />
             ) : (
-              <li key={child.href} className="relative py-0 pl-4">
+              <li key={child.slug} className="relative py-0 pl-4">
                 <div className="flex items-center">
                   {/* Active indicator dot for child links */}
                   {isChildActive && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
                   )}
                   <Link
-                    href={child.href}
+                    href={child.href || docsHref(framework, child.slug || "")}
                     onClick={onClose}
                     className={cn(
                       'block py-1 text-sm',
@@ -173,11 +180,18 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
 
 export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
   const currentPath = useCurrentPath();
+  const framework = frameworkFromPathname(currentPath);
+  const currentSlug = slugFromPathname(currentPath);
 
   return (
     <aside className="w-full h-[calc(100%-60px)] sticky top-[60px] border-t border-zinc-100 dark:border-zinc-800 overflow-visible">
       <ScrollArea className="h-full w-full">
         <div className="py-6 px-6 relative overflow-visible">
+          {/* Same control, same position as desktop. onNavigate closes the sheet:
+              leaving it open over the newly loaded page hides the very content
+              the reader switched to see. */}
+          <FrameworkSwitcher onNavigate={onClose} className="mb-5" />
+
           <nav role="navigation" aria-label="Documentation navigation">
             <ul className="space-y-1 relative">
               {menuData.map((item, index) => (
@@ -189,14 +203,14 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
           <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center">
               {/* Active indicator dot for Getting Started Guide - inline */}
-              {currentPath === '/docs/nextjs/index' && (
+              {currentSlug === 'index' && (
                 <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
               )}
               <Link
-                href="/docs/nextjs/index"
+                href={docsHref(framework, 'index')}
                 className={cn(
                   'block py-1.5 text-sm',
-                  currentPath === '/docs/nextjs/index'
+                  currentSlug === 'index'
                     ? 'text-blue-600 dark:text-blue-400 font-medium'
                     : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300'
                 )}

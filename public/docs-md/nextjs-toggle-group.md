@@ -214,6 +214,6 @@ export default function TextEditor() {
 
 ---
 
-**Component Path:** `nextjs\toggle-group\page.mdx`
+**Component Path:** `[framework]\toggle-group\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

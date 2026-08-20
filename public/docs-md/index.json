@@ -1,612 +1,1200 @@
 {
-  "generatedAt": "2026-08-18T13:43:25.920Z",
-  "totalFiles": 101,
+  "generatedAt": "2026-08-20T06:55:11.729Z",
+  "totalFiles": 199,
   "files": [
     {
       "name": "nextjs/3d-carousel",
       "path": "/docs/nextjs-3d-carousel.md",
       "url": "/docs/nextjs/3d-carousel",
-      "originalMdx": "nextjs\\3d-carousel\\page.mdx"
+      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
     },
     {
       "name": "nextjs/accordion",
       "path": "/docs/nextjs-accordion.md",
       "url": "/docs/nextjs/accordion",
-      "originalMdx": "nextjs\\accordion\\page.mdx"
+      "originalMdx": "[framework]\\accordion\\page.mdx"
     },
     {
       "name": "nextjs/ai-chat",
       "path": "/docs/nextjs-ai-chat.md",
       "url": "/docs/nextjs/ai-chat",
-      "originalMdx": "nextjs\\ai-chat\\page.mdx"
+      "originalMdx": "[framework]\\ai-chat\\page.mdx"
     },
     {
       "name": "nextjs/alert",
       "path": "/docs/nextjs-alert.md",
       "url": "/docs/nextjs/alert",
-      "originalMdx": "nextjs\\alert\\page.mdx"
+      "originalMdx": "[framework]\\alert\\page.mdx"
     },
     {
       "name": "nextjs/animated-list",
       "path": "/docs/nextjs-animated-list.md",
       "url": "/docs/nextjs/animated-list",
-      "originalMdx": "nextjs\\animated-list\\page.mdx"
+      "originalMdx": "[framework]\\animated-list\\page.mdx"
     },
     {
       "name": "nextjs/animated-timeline",
       "path": "/docs/nextjs-animated-timeline.md",
       "url": "/docs/nextjs/animated-timeline",
-      "originalMdx": "nextjs\\animated-timeline\\page.mdx"
+      "originalMdx": "[framework]\\animated-timeline\\page.mdx"
     },
     {
       "name": "nextjs/animated-typography",
       "path": "/docs/nextjs-animated-typography.md",
       "url": "/docs/nextjs/animated-typography",
-      "originalMdx": "nextjs\\animated-typography\\page.mdx"
+      "originalMdx": "[framework]\\animated-typography\\page.mdx"
     },
     {
       "name": "nextjs/api-playground",
       "path": "/docs/nextjs-api-playground.md",
       "url": "/docs/nextjs/api-playground",
-      "originalMdx": "nextjs\\api-playground\\page.mdx"
+      "originalMdx": "[framework]\\api-playground\\page.mdx"
     },
     {
       "name": "nextjs/architecture",
       "path": "/docs/nextjs-architecture.md",
       "url": "/docs/nextjs/architecture",
-      "originalMdx": "nextjs\\architecture\\page.mdx"
+      "originalMdx": "[framework]\\architecture\\page.mdx"
     },
     {
       "name": "nextjs/breadcrumb",
       "path": "/docs/nextjs-breadcrumb.md",
       "url": "/docs/nextjs/breadcrumb",
-      "originalMdx": "nextjs\\breadcrumb\\page.mdx"
+      "originalMdx": "[framework]\\breadcrumb\\page.mdx"
     },
     {
       "name": "nextjs/button",
       "path": "/docs/nextjs-button.md",
       "url": "/docs/nextjs/button",
-      "originalMdx": "nextjs\\button\\page.mdx"
+      "originalMdx": "[framework]\\button\\page.mdx"
     },
     {
       "name": "nextjs/calendar",
       "path": "/docs/nextjs-calendar.md",
       "url": "/docs/nextjs/calendar",
-      "originalMdx": "nextjs\\calendar\\page.mdx"
+      "originalMdx": "[framework]\\calendar\\page.mdx"
     },
     {
       "name": "nextjs/card",
       "path": "/docs/nextjs-card.md",
       "url": "/docs/nextjs/card",
-      "originalMdx": "nextjs\\card\\page.mdx"
+      "originalMdx": "[framework]\\card\\page.mdx"
     },
     {
       "name": "nextjs/carousel",
       "path": "/docs/nextjs-carousel.md",
       "url": "/docs/nextjs/carousel",
-      "originalMdx": "nextjs\\carousel\\page.mdx"
+      "originalMdx": "[framework]\\carousel\\page.mdx"
     },
     {
       "name": "nextjs/cart",
       "path": "/docs/nextjs-cart.md",
       "url": "/docs/nextjs/cart",
-      "originalMdx": "nextjs\\cart\\page.mdx"
+      "originalMdx": "[framework]\\cart\\page.mdx"
     },
     {
       "name": "nextjs/chart",
       "path": "/docs/nextjs-chart.md",
       "url": "/docs/nextjs/chart",
-      "originalMdx": "nextjs\\chart\\page.mdx"
+      "originalMdx": "[framework]\\chart\\page.mdx"
     },
     {
       "name": "nextjs/chat",
       "path": "/docs/nextjs-chat.md",
       "url": "/docs/nextjs/chat",
-      "originalMdx": "nextjs\\chat\\page.mdx"
+      "originalMdx": "[framework]\\chat\\page.mdx"
     },
     {
       "name": "nextjs/chat-bubble",
       "path": "/docs/nextjs-chat-bubble.md",
       "url": "/docs/nextjs/chat-bubble",
-      "originalMdx": "nextjs\\chat-bubble\\page.mdx"
+      "originalMdx": "[framework]\\chat-bubble\\page.mdx"
     },
     {
       "name": "nextjs/collapsible",
       "path": "/docs/nextjs-collapsible.md",
       "url": "/docs/nextjs/collapsible",
-      "originalMdx": "nextjs\\collapsible\\page.mdx"
+      "originalMdx": "[framework]\\collapsible\\page.mdx"
     },
     {
       "name": "nextjs/command",
       "path": "/docs/nextjs-command.md",
       "url": "/docs/nextjs/command",
-      "originalMdx": "nextjs\\command\\page.mdx"
+      "originalMdx": "[framework]\\command\\page.mdx"
     },
     {
       "name": "nextjs/context-menu",
       "path": "/docs/nextjs-context-menu.md",
       "url": "/docs/nextjs/context-menu",
-      "originalMdx": "nextjs\\context-menu\\page.mdx"
+      "originalMdx": "[framework]\\context-menu\\page.mdx"
     },
     {
       "name": "nextjs/counter",
       "path": "/docs/nextjs-counter.md",
       "url": "/docs/nextjs/counter",
-      "originalMdx": "nextjs\\counter\\page.mdx"
+      "originalMdx": "[framework]\\counter\\page.mdx"
     },
     {
       "name": "nextjs/cursor-animation",
       "path": "/docs/nextjs-cursor-animation.md",
       "url": "/docs/nextjs/cursor-animation",
-      "originalMdx": "nextjs\\cursor-animation\\page.mdx"
+      "originalMdx": "[framework]\\cursor-animation\\page.mdx"
     },
     {
       "name": "nextjs/curved-carousel",
       "path": "/docs/nextjs-curved-carousel.md",
       "url": "/docs/nextjs/curved-carousel",
-      "originalMdx": "nextjs\\curved-carousel\\page.mdx"
+      "originalMdx": "[framework]\\curved-carousel\\page.mdx"
     },
     {
       "name": "nextjs/custom-code-block",
       "path": "/docs/nextjs-custom-code-block.md",
       "url": "/docs/nextjs/custom-code-block",
-      "originalMdx": "nextjs\\custom-code-block\\page.mdx"
+      "originalMdx": "[framework]\\custom-code-block\\page.mdx"
     },
     {
       "name": "nextjs/data-grid",
       "path": "/docs/nextjs-data-grid.md",
       "url": "/docs/nextjs/data-grid",
-      "originalMdx": "nextjs\\data-grid\\page.mdx"
+      "originalMdx": "[framework]\\data-grid\\page.mdx"
     },
     {
       "name": "nextjs/data-maps",
       "path": "/docs/nextjs-data-maps.md",
       "url": "/docs/nextjs/data-maps",
-      "originalMdx": "nextjs\\data-maps\\page.mdx"
+      "originalMdx": "[framework]\\data-maps\\page.mdx"
     },
     {
       "name": "nextjs/data-table",
       "path": "/docs/nextjs-data-table.md",
       "url": "/docs/nextjs/data-table",
-      "originalMdx": "nextjs\\data-table\\page.mdx"
+      "originalMdx": "[framework]\\data-table\\page.mdx"
     },
     {
       "name": "nextjs/date-picker",
       "path": "/docs/nextjs-date-picker.md",
       "url": "/docs/nextjs/date-picker",
-      "originalMdx": "nextjs\\date-picker\\page.mdx"
+      "originalMdx": "[framework]\\date-picker\\page.mdx"
     },
     {
       "name": "nextjs/design-components-folder",
       "path": "/docs/nextjs-design-components-folder.md",
       "url": "/docs/nextjs/design-components-folder",
-      "originalMdx": "nextjs\\design-components-folder\\page.mdx"
+      "originalMdx": "[framework]\\design-components-folder\\page.mdx"
     },
     {
       "name": "nextjs/dialog",
       "path": "/docs/nextjs-dialog.md",
       "url": "/docs/nextjs/dialog",
-      "originalMdx": "nextjs\\dialog\\page.mdx"
+      "originalMdx": "[framework]\\dialog\\page.mdx"
     },
     {
       "name": "nextjs/dock",
       "path": "/docs/nextjs-dock.md",
       "url": "/docs/nextjs/dock",
-      "originalMdx": "nextjs\\dock\\page.mdx"
+      "originalMdx": "[framework]\\dock\\page.mdx"
     },
     {
       "name": "nextjs/drawer",
       "path": "/docs/nextjs-drawer.md",
       "url": "/docs/nextjs/drawer",
-      "originalMdx": "nextjs\\drawer\\page.mdx"
+      "originalMdx": "[framework]\\drawer\\page.mdx"
     },
     {
       "name": "nextjs/email",
       "path": "/docs/nextjs-email.md",
       "url": "/docs/nextjs/email",
-      "originalMdx": "nextjs\\email\\page.mdx"
+      "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
       "name": "nextjs/examples",
       "path": "/docs/nextjs-examples.md",
       "url": "/docs/nextjs/examples",
-      "originalMdx": "nextjs\\examples\\page.mdx"
+      "originalMdx": "[framework]\\examples\\page.mdx"
     },
     {
       "name": "nextjs/examples/button",
       "path": "/docs/nextjs-examples-button.md",
       "url": "/docs/nextjs/examples/button",
-      "originalMdx": "nextjs\\examples\\button\\page.mdx"
+      "originalMdx": "[framework]\\examples\\button\\page.mdx"
     },
     {
       "name": "nextjs/examples/counter",
       "path": "/docs/nextjs-examples-counter.md",
       "url": "/docs/nextjs/examples/counter",
-      "originalMdx": "nextjs\\examples\\counter\\page.mdx"
+      "originalMdx": "[framework]\\examples\\counter\\page.mdx"
     },
     {
       "name": "nextjs/examples/video-text",
       "path": "/docs/nextjs-examples-video-text.md",
       "url": "/docs/nextjs/examples/video-text",
-      "originalMdx": "nextjs\\examples\\video-text\\page.mdx"
+      "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
     },
     {
       "name": "nextjs/examples/waitlist",
       "path": "/docs/nextjs-examples-waitlist.md",
       "url": "/docs/nextjs/examples/waitlist",
-      "originalMdx": "nextjs\\examples\\waitlist\\page.mdx"
+      "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
     },
     {
       "name": "nextjs/file-upload",
       "path": "/docs/nextjs-file-upload.md",
       "url": "/docs/nextjs/file-upload",
-      "originalMdx": "nextjs\\file-upload\\page.mdx"
+      "originalMdx": "[framework]\\file-upload\\page.mdx"
     },
     {
       "name": "nextjs/first-app",
       "path": "/docs/nextjs-first-app.md",
       "url": "/docs/nextjs/first-app",
-      "originalMdx": "nextjs\\first-app\\page.mdx"
+      "originalMdx": "[framework]\\first-app\\_content\\nextjs.mdx"
     },
     {
       "name": "nextjs/fleet-tracker",
       "path": "/docs/nextjs-fleet-tracker.md",
       "url": "/docs/nextjs/fleet-tracker",
-      "originalMdx": "nextjs\\fleet-tracker\\page.mdx"
+      "originalMdx": "[framework]\\fleet-tracker\\page.mdx"
     },
     {
       "name": "nextjs/floating-contact-button",
       "path": "/docs/nextjs-floating-contact-button.md",
       "url": "/docs/nextjs/floating-contact-button",
-      "originalMdx": "nextjs\\floating-contact-button\\page.mdx"
+      "originalMdx": "[framework]\\floating-contact-button\\page.mdx"
     },
     {
       "name": "nextjs/flowchart",
       "path": "/docs/nextjs-flowchart.md",
       "url": "/docs/nextjs/flowchart",
-      "originalMdx": "nextjs\\flowchart\\page.mdx"
+      "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
       "name": "nextjs/form",
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
-      "originalMdx": "nextjs\\form\\page.mdx"
+      "originalMdx": "[framework]\\form\\page.mdx"
     },
     {
       "name": "nextjs/half-stars",
       "path": "/docs/nextjs-half-stars.md",
       "url": "/docs/nextjs/half-stars",
-      "originalMdx": "nextjs\\half-stars\\page.mdx"
+      "originalMdx": "[framework]\\half-stars\\page.mdx"
     },
     {
       "name": "nextjs/hero",
       "path": "/docs/nextjs-hero.md",
       "url": "/docs/nextjs/hero",
-      "originalMdx": "nextjs\\hero\\page.mdx"
+      "originalMdx": "[framework]\\hero\\page.mdx"
     },
     {
       "name": "nextjs/hero-video-player",
       "path": "/docs/nextjs-hero-video-player.md",
       "url": "/docs/nextjs/hero-video-player",
-      "originalMdx": "nextjs\\hero-video-player\\page.mdx"
+      "originalMdx": "[framework]\\hero-video-player\\page.mdx"
     },
     {
       "name": "nextjs/image-compare",
       "path": "/docs/nextjs-image-compare.md",
       "url": "/docs/nextjs/image-compare",
-      "originalMdx": "nextjs\\image-compare\\page.mdx"
+      "originalMdx": "[framework]\\image-compare\\page.mdx"
     },
     {
       "name": "nextjs/index",
       "path": "/docs/nextjs-index.md",
       "url": "/docs/nextjs/index",
-      "originalMdx": "nextjs\\index\\page.mdx"
+      "originalMdx": "[framework]\\index\\page.mdx"
     },
     {
       "name": "nextjs/input",
       "path": "/docs/nextjs-input.md",
       "url": "/docs/nextjs/input",
-      "originalMdx": "nextjs\\input\\page.mdx"
+      "originalMdx": "[framework]\\input\\page.mdx"
     },
     {
       "name": "nextjs/installation",
       "path": "/docs/nextjs-installation.md",
       "url": "/docs/nextjs/installation",
-      "originalMdx": "nextjs\\installation\\page.mdx"
+      "originalMdx": "[framework]\\installation\\_content\\nextjs.mdx"
     },
     {
       "name": "nextjs/invoice",
       "path": "/docs/nextjs-invoice.md",
       "url": "/docs/nextjs/invoice",
-      "originalMdx": "nextjs\\invoice\\page.mdx"
+      "originalMdx": "[framework]\\invoice\\page.mdx"
     },
     {
       "name": "nextjs/item",
       "path": "/docs/nextjs-item.md",
       "url": "/docs/nextjs/item",
-      "originalMdx": "nextjs\\item\\page.mdx"
+      "originalMdx": "[framework]\\item\\page.mdx"
     },
     {
       "name": "nextjs/kbd",
       "path": "/docs/nextjs-kbd.md",
       "url": "/docs/nextjs/kbd",
-      "originalMdx": "nextjs\\kbd\\page.mdx"
+      "originalMdx": "[framework]\\kbd\\page.mdx"
     },
     {
       "name": "nextjs/loader",
       "path": "/docs/nextjs-loader.md",
       "url": "/docs/nextjs/loader",
-      "originalMdx": "nextjs\\loader\\page.mdx"
+      "originalMdx": "[framework]\\loader\\page.mdx"
     },
     {
       "name": "nextjs/magic-bento",
       "path": "/docs/nextjs-magic-bento.md",
       "url": "/docs/nextjs/magic-bento",
-      "originalMdx": "nextjs\\magic-bento\\page.mdx"
+      "originalMdx": "[framework]\\magic-bento\\page.mdx"
     },
     {
       "name": "nextjs/marquee",
       "path": "/docs/nextjs-marquee.md",
       "url": "/docs/nextjs/marquee",
-      "originalMdx": "nextjs\\marquee\\page.mdx"
+      "originalMdx": "[framework]\\marquee\\page.mdx"
     },
     {
       "name": "nextjs/masonry-grid",
       "path": "/docs/nextjs-masonry-grid.md",
       "url": "/docs/nextjs/masonry-grid",
-      "originalMdx": "nextjs\\masonry-grid\\page.mdx"
+      "originalMdx": "[framework]\\masonry-grid\\page.mdx"
     },
     {
       "name": "nextjs/memories-card",
       "path": "/docs/nextjs-memories-card.md",
       "url": "/docs/nextjs/memories-card",
-      "originalMdx": "nextjs\\memories-card\\page.mdx"
+      "originalMdx": "[framework]\\memories-card\\page.mdx"
     },
     {
       "name": "nextjs/menubar",
       "path": "/docs/nextjs-menubar.md",
       "url": "/docs/nextjs/menubar",
-      "originalMdx": "nextjs\\menubar\\page.mdx"
+      "originalMdx": "[framework]\\menubar\\page.mdx"
     },
     {
       "name": "nextjs/mobile-mockup",
       "path": "/docs/nextjs-mobile-mockup.md",
       "url": "/docs/nextjs/mobile-mockup",
-      "originalMdx": "nextjs\\mobile-mockup\\page.mdx"
+      "originalMdx": "[framework]\\mobile-mockup\\page.mdx"
     },
     {
       "name": "nextjs/modal",
       "path": "/docs/nextjs-modal.md",
       "url": "/docs/nextjs/modal",
-      "originalMdx": "nextjs\\modal\\page.mdx"
+      "originalMdx": "[framework]\\modal\\page.mdx"
     },
     {
       "name": "nextjs/navbar",
       "path": "/docs/nextjs-navbar.md",
       "url": "/docs/nextjs/navbar",
-      "originalMdx": "nextjs\\navbar\\page.mdx"
+      "originalMdx": "[framework]\\navbar\\page.mdx"
     },
     {
       "name": "nextjs/navigation",
       "path": "/docs/nextjs-navigation.md",
       "url": "/docs/nextjs/navigation",
-      "originalMdx": "nextjs\\navigation\\page.mdx"
+      "originalMdx": "[framework]\\navigation\\page.mdx"
     },
     {
       "name": "nextjs/network-graph",
       "path": "/docs/nextjs-network-graph.md",
       "url": "/docs/nextjs/network-graph",
-      "originalMdx": "nextjs\\network-graph\\page.mdx"
+      "originalMdx": "[framework]\\network-graph\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
       "path": "/docs/nextjs-otp-input.md",
       "url": "/docs/nextjs/otp-input",
-      "originalMdx": "nextjs\\otp-input\\page.mdx"
+      "originalMdx": "[framework]\\otp-input\\page.mdx"
     },
     {
       "name": "nextjs/pagination",
       "path": "/docs/nextjs-pagination.md",
       "url": "/docs/nextjs/pagination",
-      "originalMdx": "nextjs\\pagination\\page.mdx"
+      "originalMdx": "[framework]\\pagination\\page.mdx"
     },
     {
       "name": "nextjs/popover",
       "path": "/docs/nextjs-popover.md",
       "url": "/docs/nextjs/popover",
-      "originalMdx": "nextjs\\popover\\page.mdx"
+      "originalMdx": "[framework]\\popover\\page.mdx"
     },
     {
       "name": "nextjs/pricing",
       "path": "/docs/nextjs-pricing.md",
       "url": "/docs/nextjs/pricing",
-      "originalMdx": "nextjs\\pricing\\page.mdx"
+      "originalMdx": "[framework]\\pricing\\page.mdx"
     },
     {
       "name": "nextjs/progress",
       "path": "/docs/nextjs-progress.md",
       "url": "/docs/nextjs/progress",
-      "originalMdx": "nextjs\\progress\\page.mdx"
+      "originalMdx": "[framework]\\progress\\page.mdx"
     },
     {
       "name": "nextjs/qr-code-generator",
       "path": "/docs/nextjs-qr-code-generator.md",
       "url": "/docs/nextjs/qr-code-generator",
-      "originalMdx": "nextjs\\qr-code-generator\\page.mdx"
+      "originalMdx": "[framework]\\qr-code-generator\\page.mdx"
     },
     {
       "name": "nextjs/resizable",
       "path": "/docs/nextjs-resizable.md",
       "url": "/docs/nextjs/resizable",
-      "originalMdx": "nextjs\\resizable\\page.mdx"
+      "originalMdx": "[framework]\\resizable\\page.mdx"
     },
     {
       "name": "nextjs/scroll-area",
       "path": "/docs/nextjs-scroll-area.md",
       "url": "/docs/nextjs/scroll-area",
-      "originalMdx": "nextjs\\scroll-area\\page.mdx"
+      "originalMdx": "[framework]\\scroll-area\\page.mdx"
     },
     {
       "name": "nextjs/scroll-stack",
       "path": "/docs/nextjs-scroll-stack.md",
       "url": "/docs/nextjs/scroll-stack",
-      "originalMdx": "nextjs\\scroll-stack\\page.mdx"
+      "originalMdx": "[framework]\\scroll-stack\\page.mdx"
     },
     {
       "name": "nextjs/select",
       "path": "/docs/nextjs-select.md",
       "url": "/docs/nextjs/select",
-      "originalMdx": "nextjs\\select\\page.mdx"
+      "originalMdx": "[framework]\\select\\page.mdx"
     },
     {
       "name": "nextjs/sidebar",
       "path": "/docs/nextjs-sidebar.md",
       "url": "/docs/nextjs/sidebar",
-      "originalMdx": "nextjs\\sidebar\\page.mdx"
+      "originalMdx": "[framework]\\sidebar\\page.mdx"
     },
     {
       "name": "nextjs/signup-form",
       "path": "/docs/nextjs-signup-form.md",
       "url": "/docs/nextjs/signup-form",
-      "originalMdx": "nextjs\\signup-form\\page.mdx"
+      "originalMdx": "[framework]\\signup-form\\page.mdx"
     },
     {
       "name": "nextjs/skeleton",
       "path": "/docs/nextjs-skeleton.md",
       "url": "/docs/nextjs/skeleton",
-      "originalMdx": "nextjs\\skeleton\\page.mdx"
+      "originalMdx": "[framework]\\skeleton\\page.mdx"
     },
     {
       "name": "nextjs/sonner",
       "path": "/docs/nextjs-sonner.md",
       "url": "/docs/nextjs/sonner",
-      "originalMdx": "nextjs\\sonner\\page.mdx"
+      "originalMdx": "[framework]\\sonner\\page.mdx"
     },
     {
       "name": "nextjs/split-scroll-stepper",
       "path": "/docs/nextjs-split-scroll-stepper.md",
       "url": "/docs/nextjs/split-scroll-stepper",
-      "originalMdx": "nextjs\\split-scroll-stepper\\page.mdx"
+      "originalMdx": "[framework]\\split-scroll-stepper\\page.mdx"
     },
     {
       "name": "nextjs/split-stepper",
       "path": "/docs/nextjs-split-stepper.md",
       "url": "/docs/nextjs/split-stepper",
-      "originalMdx": "nextjs\\split-stepper\\page.mdx"
+      "originalMdx": "[framework]\\split-stepper\\page.mdx"
     },
     {
       "name": "nextjs/stepper",
       "path": "/docs/nextjs-stepper.md",
       "url": "/docs/nextjs/stepper",
-      "originalMdx": "nextjs\\stepper\\page.mdx"
+      "originalMdx": "[framework]\\stepper\\page.mdx"
     },
     {
       "name": "nextjs/support-dashboard",
       "path": "/docs/nextjs-support-dashboard.md",
       "url": "/docs/nextjs/support-dashboard",
-      "originalMdx": "nextjs\\support-dashboard\\page.mdx"
+      "originalMdx": "[framework]\\support-dashboard\\page.mdx"
     },
     {
       "name": "nextjs/table",
       "path": "/docs/nextjs-table.md",
       "url": "/docs/nextjs/table",
-      "originalMdx": "nextjs\\table\\page.mdx"
+      "originalMdx": "[framework]\\table\\page.mdx"
     },
     {
       "name": "nextjs/terminal",
       "path": "/docs/nextjs-terminal.md",
       "url": "/docs/nextjs/terminal",
-      "originalMdx": "nextjs\\terminal\\page.mdx"
+      "originalMdx": "[framework]\\terminal\\page.mdx"
     },
     {
       "name": "nextjs/text-animation",
       "path": "/docs/nextjs-text-animation.md",
       "url": "/docs/nextjs/text-animation",
-      "originalMdx": "nextjs\\text-animation\\page.mdx"
+      "originalMdx": "[framework]\\text-animation\\page.mdx"
     },
     {
       "name": "nextjs/theme-switcher",
       "path": "/docs/nextjs-theme-switcher.md",
       "url": "/docs/nextjs/theme-switcher",
-      "originalMdx": "nextjs\\theme-switcher\\page.mdx"
+      "originalMdx": "[framework]\\theme-switcher\\page.mdx"
     },
     {
       "name": "nextjs/tilted-card",
       "path": "/docs/nextjs-tilted-card.md",
       "url": "/docs/nextjs/tilted-card",
-      "originalMdx": "nextjs\\tilted-card\\page.mdx"
+      "originalMdx": "[framework]\\tilted-card\\page.mdx"
     },
     {
       "name": "nextjs/timeline",
       "path": "/docs/nextjs-timeline.md",
       "url": "/docs/nextjs/timeline",
-      "originalMdx": "nextjs\\timeline\\page.mdx"
+      "originalMdx": "[framework]\\timeline\\page.mdx"
     },
     {
       "name": "nextjs/toast",
       "path": "/docs/nextjs-toast.md",
       "url": "/docs/nextjs/toast",
-      "originalMdx": "nextjs\\toast\\page.mdx"
+      "originalMdx": "[framework]\\toast\\page.mdx"
     },
     {
       "name": "nextjs/toggle",
       "path": "/docs/nextjs-toggle.md",
       "url": "/docs/nextjs/toggle",
-      "originalMdx": "nextjs\\toggle\\page.mdx"
+      "originalMdx": "[framework]\\toggle\\page.mdx"
     },
     {
       "name": "nextjs/toggle-group",
       "path": "/docs/nextjs-toggle-group.md",
       "url": "/docs/nextjs/toggle-group",
-      "originalMdx": "nextjs\\toggle-group\\page.mdx"
+      "originalMdx": "[framework]\\toggle-group\\page.mdx"
     },
     {
       "name": "nextjs/tooltip",
       "path": "/docs/nextjs-tooltip.md",
       "url": "/docs/nextjs/tooltip",
-      "originalMdx": "nextjs\\tooltip\\page.mdx"
-    },
-    {
-      "name": "nextjs/typography",
-      "path": "/docs/nextjs-typography.md",
-      "url": "/docs/nextjs/typography",
-      "originalMdx": "nextjs\\typography\\page.mdx"
+      "originalMdx": "[framework]\\tooltip\\page.mdx"
     },
     {
       "name": "nextjs/user-graph",
       "path": "/docs/nextjs-user-graph.md",
       "url": "/docs/nextjs/user-graph",
-      "originalMdx": "nextjs\\user-graph\\page.mdx"
+      "originalMdx": "[framework]\\user-graph\\page.mdx"
     },
     {
       "name": "nextjs/verify-badge",
       "path": "/docs/nextjs-verify-badge.md",
       "url": "/docs/nextjs/verify-badge",
-      "originalMdx": "nextjs\\verify-badge\\page.mdx"
+      "originalMdx": "[framework]\\verify-badge\\page.mdx"
     },
     {
       "name": "nextjs/vertical-tabs",
       "path": "/docs/nextjs-vertical-tabs.md",
       "url": "/docs/nextjs/vertical-tabs",
-      "originalMdx": "nextjs\\vertical-tabs\\page.mdx"
+      "originalMdx": "[framework]\\vertical-tabs\\page.mdx"
     },
     {
       "name": "nextjs/video-accordion",
       "path": "/docs/nextjs-video-accordion.md",
       "url": "/docs/nextjs/video-accordion",
-      "originalMdx": "nextjs\\video-accordion\\page.mdx"
+      "originalMdx": "[framework]\\video-accordion\\page.mdx"
     },
     {
       "name": "nextjs/wizard",
       "path": "/docs/nextjs-wizard.md",
       "url": "/docs/nextjs/wizard",
-      "originalMdx": "nextjs\\wizard\\page.mdx"
+      "originalMdx": "[framework]\\wizard\\page.mdx"
     },
     {
       "name": "page.mdx",
       "path": "/docs/page.mdx.md",
       "url": "/docs/page.mdx",
       "originalMdx": "page.mdx"
+    },
+    {
+      "name": "reactjs/3d-carousel",
+      "path": "/docs/reactjs-3d-carousel.md",
+      "url": "/docs/reactjs/3d-carousel",
+      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
+    },
+    {
+      "name": "reactjs/accordion",
+      "path": "/docs/reactjs-accordion.md",
+      "url": "/docs/reactjs/accordion",
+      "originalMdx": "[framework]\\accordion\\page.mdx"
+    },
+    {
+      "name": "reactjs/ai-chat",
+      "path": "/docs/reactjs-ai-chat.md",
+      "url": "/docs/reactjs/ai-chat",
+      "originalMdx": "[framework]\\ai-chat\\page.mdx"
+    },
+    {
+      "name": "reactjs/alert",
+      "path": "/docs/reactjs-alert.md",
+      "url": "/docs/reactjs/alert",
+      "originalMdx": "[framework]\\alert\\page.mdx"
+    },
+    {
+      "name": "reactjs/animated-list",
+      "path": "/docs/reactjs-animated-list.md",
+      "url": "/docs/reactjs/animated-list",
+      "originalMdx": "[framework]\\animated-list\\page.mdx"
+    },
+    {
+      "name": "reactjs/animated-timeline",
+      "path": "/docs/reactjs-animated-timeline.md",
+      "url": "/docs/reactjs/animated-timeline",
+      "originalMdx": "[framework]\\animated-timeline\\page.mdx"
+    },
+    {
+      "name": "reactjs/animated-typography",
+      "path": "/docs/reactjs-animated-typography.md",
+      "url": "/docs/reactjs/animated-typography",
+      "originalMdx": "[framework]\\animated-typography\\page.mdx"
+    },
+    {
+      "name": "reactjs/api-playground",
+      "path": "/docs/reactjs-api-playground.md",
+      "url": "/docs/reactjs/api-playground",
+      "originalMdx": "[framework]\\api-playground\\page.mdx"
+    },
+    {
+      "name": "reactjs/architecture",
+      "path": "/docs/reactjs-architecture.md",
+      "url": "/docs/reactjs/architecture",
+      "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "reactjs/breadcrumb",
+      "path": "/docs/reactjs-breadcrumb.md",
+      "url": "/docs/reactjs/breadcrumb",
+      "originalMdx": "[framework]\\breadcrumb\\page.mdx"
+    },
+    {
+      "name": "reactjs/button",
+      "path": "/docs/reactjs-button.md",
+      "url": "/docs/reactjs/button",
+      "originalMdx": "[framework]\\button\\page.mdx"
+    },
+    {
+      "name": "reactjs/calendar",
+      "path": "/docs/reactjs-calendar.md",
+      "url": "/docs/reactjs/calendar",
+      "originalMdx": "[framework]\\calendar\\page.mdx"
+    },
+    {
+      "name": "reactjs/card",
+      "path": "/docs/reactjs-card.md",
+      "url": "/docs/reactjs/card",
+      "originalMdx": "[framework]\\card\\page.mdx"
+    },
+    {
+      "name": "reactjs/carousel",
+      "path": "/docs/reactjs-carousel.md",
+      "url": "/docs/reactjs/carousel",
+      "originalMdx": "[framework]\\carousel\\page.mdx"
+    },
+    {
+      "name": "reactjs/cart",
+      "path": "/docs/reactjs-cart.md",
+      "url": "/docs/reactjs/cart",
+      "originalMdx": "[framework]\\cart\\page.mdx"
+    },
+    {
+      "name": "reactjs/chart",
+      "path": "/docs/reactjs-chart.md",
+      "url": "/docs/reactjs/chart",
+      "originalMdx": "[framework]\\chart\\page.mdx"
+    },
+    {
+      "name": "reactjs/chat",
+      "path": "/docs/reactjs-chat.md",
+      "url": "/docs/reactjs/chat",
+      "originalMdx": "[framework]\\chat\\page.mdx"
+    },
+    {
+      "name": "reactjs/chat-bubble",
+      "path": "/docs/reactjs-chat-bubble.md",
+      "url": "/docs/reactjs/chat-bubble",
+      "originalMdx": "[framework]\\chat-bubble\\page.mdx"
+    },
+    {
+      "name": "reactjs/collapsible",
+      "path": "/docs/reactjs-collapsible.md",
+      "url": "/docs/reactjs/collapsible",
+      "originalMdx": "[framework]\\collapsible\\page.mdx"
+    },
+    {
+      "name": "reactjs/command",
+      "path": "/docs/reactjs-command.md",
+      "url": "/docs/reactjs/command",
+      "originalMdx": "[framework]\\command\\page.mdx"
+    },
+    {
+      "name": "reactjs/context-menu",
+      "path": "/docs/reactjs-context-menu.md",
+      "url": "/docs/reactjs/context-menu",
+      "originalMdx": "[framework]\\context-menu\\page.mdx"
+    },
+    {
+      "name": "reactjs/counter",
+      "path": "/docs/reactjs-counter.md",
+      "url": "/docs/reactjs/counter",
+      "originalMdx": "[framework]\\counter\\page.mdx"
+    },
+    {
+      "name": "reactjs/cursor-animation",
+      "path": "/docs/reactjs-cursor-animation.md",
+      "url": "/docs/reactjs/cursor-animation",
+      "originalMdx": "[framework]\\cursor-animation\\page.mdx"
+    },
+    {
+      "name": "reactjs/curved-carousel",
+      "path": "/docs/reactjs-curved-carousel.md",
+      "url": "/docs/reactjs/curved-carousel",
+      "originalMdx": "[framework]\\curved-carousel\\page.mdx"
+    },
+    {
+      "name": "reactjs/custom-code-block",
+      "path": "/docs/reactjs-custom-code-block.md",
+      "url": "/docs/reactjs/custom-code-block",
+      "originalMdx": "[framework]\\custom-code-block\\page.mdx"
+    },
+    {
+      "name": "reactjs/data-grid",
+      "path": "/docs/reactjs-data-grid.md",
+      "url": "/docs/reactjs/data-grid",
+      "originalMdx": "[framework]\\data-grid\\page.mdx"
+    },
+    {
+      "name": "reactjs/data-maps",
+      "path": "/docs/reactjs-data-maps.md",
+      "url": "/docs/reactjs/data-maps",
+      "originalMdx": "[framework]\\data-maps\\page.mdx"
+    },
+    {
+      "name": "reactjs/data-table",
+      "path": "/docs/reactjs-data-table.md",
+      "url": "/docs/reactjs/data-table",
+      "originalMdx": "[framework]\\data-table\\page.mdx"
+    },
+    {
+      "name": "reactjs/date-picker",
+      "path": "/docs/reactjs-date-picker.md",
+      "url": "/docs/reactjs/date-picker",
+      "originalMdx": "[framework]\\date-picker\\page.mdx"
+    },
+    {
+      "name": "reactjs/design-components-folder",
+      "path": "/docs/reactjs-design-components-folder.md",
+      "url": "/docs/reactjs/design-components-folder",
+      "originalMdx": "[framework]\\design-components-folder\\page.mdx"
+    },
+    {
+      "name": "reactjs/dialog",
+      "path": "/docs/reactjs-dialog.md",
+      "url": "/docs/reactjs/dialog",
+      "originalMdx": "[framework]\\dialog\\page.mdx"
+    },
+    {
+      "name": "reactjs/dock",
+      "path": "/docs/reactjs-dock.md",
+      "url": "/docs/reactjs/dock",
+      "originalMdx": "[framework]\\dock\\page.mdx"
+    },
+    {
+      "name": "reactjs/drawer",
+      "path": "/docs/reactjs-drawer.md",
+      "url": "/docs/reactjs/drawer",
+      "originalMdx": "[framework]\\drawer\\page.mdx"
+    },
+    {
+      "name": "reactjs/email",
+      "path": "/docs/reactjs-email.md",
+      "url": "/docs/reactjs/email",
+      "originalMdx": "[framework]\\email\\page.mdx"
+    },
+    {
+      "name": "reactjs/examples",
+      "path": "/docs/reactjs-examples.md",
+      "url": "/docs/reactjs/examples",
+      "originalMdx": "[framework]\\examples\\page.mdx"
+    },
+    {
+      "name": "reactjs/examples/button",
+      "path": "/docs/reactjs-examples-button.md",
+      "url": "/docs/reactjs/examples/button",
+      "originalMdx": "[framework]\\examples\\button\\page.mdx"
+    },
+    {
+      "name": "reactjs/examples/counter",
+      "path": "/docs/reactjs-examples-counter.md",
+      "url": "/docs/reactjs/examples/counter",
+      "originalMdx": "[framework]\\examples\\counter\\page.mdx"
+    },
+    {
+      "name": "reactjs/examples/video-text",
+      "path": "/docs/reactjs-examples-video-text.md",
+      "url": "/docs/reactjs/examples/video-text",
+      "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/examples/waitlist",
+      "path": "/docs/reactjs-examples-waitlist.md",
+      "url": "/docs/reactjs/examples/waitlist",
+      "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
+    },
+    {
+      "name": "reactjs/file-upload",
+      "path": "/docs/reactjs-file-upload.md",
+      "url": "/docs/reactjs/file-upload",
+      "originalMdx": "[framework]\\file-upload\\page.mdx"
+    },
+    {
+      "name": "reactjs/first-app",
+      "path": "/docs/reactjs-first-app.md",
+      "url": "/docs/reactjs/first-app",
+      "originalMdx": "[framework]\\first-app\\_content\\reactjs.mdx"
+    },
+    {
+      "name": "reactjs/fleet-tracker",
+      "path": "/docs/reactjs-fleet-tracker.md",
+      "url": "/docs/reactjs/fleet-tracker",
+      "originalMdx": "[framework]\\fleet-tracker\\page.mdx"
+    },
+    {
+      "name": "reactjs/floating-contact-button",
+      "path": "/docs/reactjs-floating-contact-button.md",
+      "url": "/docs/reactjs/floating-contact-button",
+      "originalMdx": "[framework]\\floating-contact-button\\page.mdx"
+    },
+    {
+      "name": "reactjs/flowchart",
+      "path": "/docs/reactjs-flowchart.md",
+      "url": "/docs/reactjs/flowchart",
+      "originalMdx": "[framework]\\flowchart\\page.mdx"
+    },
+    {
+      "name": "reactjs/form",
+      "path": "/docs/reactjs-form.md",
+      "url": "/docs/reactjs/form",
+      "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "reactjs/half-stars",
+      "path": "/docs/reactjs-half-stars.md",
+      "url": "/docs/reactjs/half-stars",
+      "originalMdx": "[framework]\\half-stars\\page.mdx"
+    },
+    {
+      "name": "reactjs/hero",
+      "path": "/docs/reactjs-hero.md",
+      "url": "/docs/reactjs/hero",
+      "originalMdx": "[framework]\\hero\\page.mdx"
+    },
+    {
+      "name": "reactjs/hero-video-player",
+      "path": "/docs/reactjs-hero-video-player.md",
+      "url": "/docs/reactjs/hero-video-player",
+      "originalMdx": "[framework]\\hero-video-player\\page.mdx"
+    },
+    {
+      "name": "reactjs/image-compare",
+      "path": "/docs/reactjs-image-compare.md",
+      "url": "/docs/reactjs/image-compare",
+      "originalMdx": "[framework]\\image-compare\\page.mdx"
+    },
+    {
+      "name": "reactjs/index",
+      "path": "/docs/reactjs-index.md",
+      "url": "/docs/reactjs/index",
+      "originalMdx": "[framework]\\index\\page.mdx"
+    },
+    {
+      "name": "reactjs/input",
+      "path": "/docs/reactjs-input.md",
+      "url": "/docs/reactjs/input",
+      "originalMdx": "[framework]\\input\\page.mdx"
+    },
+    {
+      "name": "reactjs/installation",
+      "path": "/docs/reactjs-installation.md",
+      "url": "/docs/reactjs/installation",
+      "originalMdx": "[framework]\\installation\\_content\\reactjs.mdx"
+    },
+    {
+      "name": "reactjs/invoice",
+      "path": "/docs/reactjs-invoice.md",
+      "url": "/docs/reactjs/invoice",
+      "originalMdx": "[framework]\\invoice\\page.mdx"
+    },
+    {
+      "name": "reactjs/item",
+      "path": "/docs/reactjs-item.md",
+      "url": "/docs/reactjs/item",
+      "originalMdx": "[framework]\\item\\page.mdx"
+    },
+    {
+      "name": "reactjs/kbd",
+      "path": "/docs/reactjs-kbd.md",
+      "url": "/docs/reactjs/kbd",
+      "originalMdx": "[framework]\\kbd\\page.mdx"
+    },
+    {
+      "name": "reactjs/loader",
+      "path": "/docs/reactjs-loader.md",
+      "url": "/docs/reactjs/loader",
+      "originalMdx": "[framework]\\loader\\page.mdx"
+    },
+    {
+      "name": "reactjs/magic-bento",
+      "path": "/docs/reactjs-magic-bento.md",
+      "url": "/docs/reactjs/magic-bento",
+      "originalMdx": "[framework]\\magic-bento\\page.mdx"
+    },
+    {
+      "name": "reactjs/marquee",
+      "path": "/docs/reactjs-marquee.md",
+      "url": "/docs/reactjs/marquee",
+      "originalMdx": "[framework]\\marquee\\page.mdx"
+    },
+    {
+      "name": "reactjs/masonry-grid",
+      "path": "/docs/reactjs-masonry-grid.md",
+      "url": "/docs/reactjs/masonry-grid",
+      "originalMdx": "[framework]\\masonry-grid\\page.mdx"
+    },
+    {
+      "name": "reactjs/memories-card",
+      "path": "/docs/reactjs-memories-card.md",
+      "url": "/docs/reactjs/memories-card",
+      "originalMdx": "[framework]\\memories-card\\page.mdx"
+    },
+    {
+      "name": "reactjs/menubar",
+      "path": "/docs/reactjs-menubar.md",
+      "url": "/docs/reactjs/menubar",
+      "originalMdx": "[framework]\\menubar\\page.mdx"
+    },
+    {
+      "name": "reactjs/mobile-mockup",
+      "path": "/docs/reactjs-mobile-mockup.md",
+      "url": "/docs/reactjs/mobile-mockup",
+      "originalMdx": "[framework]\\mobile-mockup\\page.mdx"
+    },
+    {
+      "name": "reactjs/modal",
+      "path": "/docs/reactjs-modal.md",
+      "url": "/docs/reactjs/modal",
+      "originalMdx": "[framework]\\modal\\page.mdx"
+    },
+    {
+      "name": "reactjs/navbar",
+      "path": "/docs/reactjs-navbar.md",
+      "url": "/docs/reactjs/navbar",
+      "originalMdx": "[framework]\\navbar\\page.mdx"
+    },
+    {
+      "name": "reactjs/navigation",
+      "path": "/docs/reactjs-navigation.md",
+      "url": "/docs/reactjs/navigation",
+      "originalMdx": "[framework]\\navigation\\page.mdx"
+    },
+    {
+      "name": "reactjs/network-graph",
+      "path": "/docs/reactjs-network-graph.md",
+      "url": "/docs/reactjs/network-graph",
+      "originalMdx": "[framework]\\network-graph\\page.mdx"
+    },
+    {
+      "name": "reactjs/otp-input",
+      "path": "/docs/reactjs-otp-input.md",
+      "url": "/docs/reactjs/otp-input",
+      "originalMdx": "[framework]\\otp-input\\page.mdx"
+    },
+    {
+      "name": "reactjs/pagination",
+      "path": "/docs/reactjs-pagination.md",
+      "url": "/docs/reactjs/pagination",
+      "originalMdx": "[framework]\\pagination\\page.mdx"
+    },
+    {
+      "name": "reactjs/popover",
+      "path": "/docs/reactjs-popover.md",
+      "url": "/docs/reactjs/popover",
+      "originalMdx": "[framework]\\popover\\page.mdx"
+    },
+    {
+      "name": "reactjs/pricing",
+      "path": "/docs/reactjs-pricing.md",
+      "url": "/docs/reactjs/pricing",
+      "originalMdx": "[framework]\\pricing\\page.mdx"
+    },
+    {
+      "name": "reactjs/progress",
+      "path": "/docs/reactjs-progress.md",
+      "url": "/docs/reactjs/progress",
+      "originalMdx": "[framework]\\progress\\page.mdx"
+    },
+    {
+      "name": "reactjs/qr-code-generator",
+      "path": "/docs/reactjs-qr-code-generator.md",
+      "url": "/docs/reactjs/qr-code-generator",
+      "originalMdx": "[framework]\\qr-code-generator\\page.mdx"
+    },
+    {
+      "name": "reactjs/resizable",
+      "path": "/docs/reactjs-resizable.md",
+      "url": "/docs/reactjs/resizable",
+      "originalMdx": "[framework]\\resizable\\page.mdx"
+    },
+    {
+      "name": "reactjs/scroll-area",
+      "path": "/docs/reactjs-scroll-area.md",
+      "url": "/docs/reactjs/scroll-area",
+      "originalMdx": "[framework]\\scroll-area\\page.mdx"
+    },
+    {
+      "name": "reactjs/scroll-stack",
+      "path": "/docs/reactjs-scroll-stack.md",
+      "url": "/docs/reactjs/scroll-stack",
+      "originalMdx": "[framework]\\scroll-stack\\page.mdx"
+    },
+    {
+      "name": "reactjs/select",
+      "path": "/docs/reactjs-select.md",
+      "url": "/docs/reactjs/select",
+      "originalMdx": "[framework]\\select\\page.mdx"
+    },
+    {
+      "name": "reactjs/sidebar",
+      "path": "/docs/reactjs-sidebar.md",
+      "url": "/docs/reactjs/sidebar",
+      "originalMdx": "[framework]\\sidebar\\page.mdx"
+    },
+    {
+      "name": "reactjs/signup-form",
+      "path": "/docs/reactjs-signup-form.md",
+      "url": "/docs/reactjs/signup-form",
+      "originalMdx": "[framework]\\signup-form\\page.mdx"
+    },
+    {
+      "name": "reactjs/skeleton",
+      "path": "/docs/reactjs-skeleton.md",
+      "url": "/docs/reactjs/skeleton",
+      "originalMdx": "[framework]\\skeleton\\page.mdx"
+    },
+    {
+      "name": "reactjs/sonner",
+      "path": "/docs/reactjs-sonner.md",
+      "url": "/docs/reactjs/sonner",
+      "originalMdx": "[framework]\\sonner\\page.mdx"
+    },
+    {
+      "name": "reactjs/split-scroll-stepper",
+      "path": "/docs/reactjs-split-scroll-stepper.md",
+      "url": "/docs/reactjs/split-scroll-stepper",
+      "originalMdx": "[framework]\\split-scroll-stepper\\page.mdx"
+    },
+    {
+      "name": "reactjs/split-stepper",
+      "path": "/docs/reactjs-split-stepper.md",
+      "url": "/docs/reactjs/split-stepper",
+      "originalMdx": "[framework]\\split-stepper\\page.mdx"
+    },
+    {
+      "name": "reactjs/stepper",
+      "path": "/docs/reactjs-stepper.md",
+      "url": "/docs/reactjs/stepper",
+      "originalMdx": "[framework]\\stepper\\page.mdx"
+    },
+    {
+      "name": "reactjs/support-dashboard",
+      "path": "/docs/reactjs-support-dashboard.md",
+      "url": "/docs/reactjs/support-dashboard",
+      "originalMdx": "[framework]\\support-dashboard\\page.mdx"
+    },
+    {
+      "name": "reactjs/table",
+      "path": "/docs/reactjs-table.md",
+      "url": "/docs/reactjs/table",
+      "originalMdx": "[framework]\\table\\page.mdx"
+    },
+    {
+      "name": "reactjs/terminal",
+      "path": "/docs/reactjs-terminal.md",
+      "url": "/docs/reactjs/terminal",
+      "originalMdx": "[framework]\\terminal\\page.mdx"
+    },
+    {
+      "name": "reactjs/text-animation",
+      "path": "/docs/reactjs-text-animation.md",
+      "url": "/docs/reactjs/text-animation",
+      "originalMdx": "[framework]\\text-animation\\page.mdx"
+    },
+    {
+      "name": "reactjs/theme-switcher",
+      "path": "/docs/reactjs-theme-switcher.md",
+      "url": "/docs/reactjs/theme-switcher",
+      "originalMdx": "[framework]\\theme-switcher\\page.mdx"
+    },
+    {
+      "name": "reactjs/tilted-card",
+      "path": "/docs/reactjs-tilted-card.md",
+      "url": "/docs/reactjs/tilted-card",
+      "originalMdx": "[framework]\\tilted-card\\page.mdx"
+    },
+    {
+      "name": "reactjs/timeline",
+      "path": "/docs/reactjs-timeline.md",
+      "url": "/docs/reactjs/timeline",
+      "originalMdx": "[framework]\\timeline\\page.mdx"
+    },
+    {
+      "name": "reactjs/toast",
+      "path": "/docs/reactjs-toast.md",
+      "url": "/docs/reactjs/toast",
+      "originalMdx": "[framework]\\toast\\page.mdx"
+    },
+    {
+      "name": "reactjs/toggle",
+      "path": "/docs/reactjs-toggle.md",
+      "url": "/docs/reactjs/toggle",
+      "originalMdx": "[framework]\\toggle\\page.mdx"
+    },
+    {
+      "name": "reactjs/toggle-group",
+      "path": "/docs/reactjs-toggle-group.md",
+      "url": "/docs/reactjs/toggle-group",
+      "originalMdx": "[framework]\\toggle-group\\page.mdx"
+    },
+    {
+      "name": "reactjs/tooltip",
+      "path": "/docs/reactjs-tooltip.md",
+      "url": "/docs/reactjs/tooltip",
+      "originalMdx": "[framework]\\tooltip\\page.mdx"
+    },
+    {
+      "name": "reactjs/user-graph",
+      "path": "/docs/reactjs-user-graph.md",
+      "url": "/docs/reactjs/user-graph",
+      "originalMdx": "[framework]\\user-graph\\page.mdx"
+    },
+    {
+      "name": "reactjs/verify-badge",
+      "path": "/docs/reactjs-verify-badge.md",
+      "url": "/docs/reactjs/verify-badge",
+      "originalMdx": "[framework]\\verify-badge\\page.mdx"
+    },
+    {
+      "name": "reactjs/vertical-tabs",
+      "path": "/docs/reactjs-vertical-tabs.md",
+      "url": "/docs/reactjs/vertical-tabs",
+      "originalMdx": "[framework]\\vertical-tabs\\page.mdx"
+    },
+    {
+      "name": "reactjs/video-accordion",
+      "path": "/docs/reactjs-video-accordion.md",
+      "url": "/docs/reactjs/video-accordion",
+      "originalMdx": "[framework]\\video-accordion\\page.mdx"
+    },
+    {
+      "name": "reactjs/wizard",
+      "path": "/docs/reactjs-wizard.md",
+      "url": "/docs/reactjs/wizard",
+      "originalMdx": "[framework]\\wizard\\page.mdx"
     }
   ]
 }

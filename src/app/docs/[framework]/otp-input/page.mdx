@@ -1,0 +1,317 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# OTP Input
+
+A fully accessible, developer-friendly multi-box input designed for One-Time Passwords and 2FA codes.
+
+Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
+
+## Examples
+
+Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
+
+export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { useState } from "react";
+
+export default function BasicOtp() {
+  const [value, setValue] = useState("");
+
+  return (
+    <OtpInputBlock
+      length={6}
+      value={value}
+      onChange={setValue}
+      onComplete={(code) => console.log("Submitted:", code)}
+    />
+  );
+}`;
+
+export const usageUnderlined = `"use client";
+
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function UnderlinedOtp() {
+  const [value, setValue] = useState("");
+
+  return (
+    <OtpInputBlock
+      variant="underlined"
+      length={6}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="otp-input"
+  colorControl
+  colorLabel="Focus Color"
+  columns={1}
+  examples={[
+    {
+      title: "OTP Input",
+      subheading: "Paste, arrow-key and backspace handling are built in.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "and `onChange` work with the assembled string, not an array — the internal per-box state syncs to it.",
+        },
+        {
+          prop: "onComplete",
+          effect:
+            "fires once every box is filled, which saves you comparing lengths yourself.",
+        },
+      ],
+      props: { length: 6 },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/OtpInputBlock.tsx"),
+    },
+    {
+      title: "Underlined",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"underlined"',
+          effect:
+            "to reduce each box to a baseline rule.",
+        },
+      ],
+      props: { variant: "underlined" },
+      usage: usageUnderlined,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="otp-input" />
+
+## Usage
+
+The component acts exactly like a standard controlled or uncontrolled React input. You can listen to every keystroke via `onChange`, or simply wait for the user to finish typing via `onComplete`.
+
+```tsx
+import { useState } from "react";
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+
+export default function VerificationForm() {
+  const [code, setCode] = useState("");
+
+  const handleVerify = (finalCode: string) => {
+    console.log("Submitting code to API:", finalCode);
+    // API logic here...
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <h3 className="font-bold text-lg">Enter Security Code</h3>
+      <OtpInputBlock
+        color="#10b981"
+        length="{6}"
+        onChange="{setCode}"
+        onComplete="{handleVerify}"
+        value="{code}"
+        variant="filled"
+      />
+    </div>
+  );
+}
+```
+
+## Features
+Learn about the OTP Input's seamless user experience, featuring automatic focus advancing, paste support, and backspace handling.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>length</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>
+          The number of individual input boxes to generate for the OTP code.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          The controlled string value. The internal array state automatically
+          syncs with this value.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(value: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fires every time a single digit is added, changed, or removed,
+          returning the newly assembled string.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>onComplete</code>
+        </td>
+        <td>
+          <code>(value: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          A convenience callback that fires automatically as soon as all input
+          boxes have been filled.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the structural styling and border treatment of the
+          individual input boxes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          The theme color applied to the borders, text, and focus rings. Fully
+          supports custom hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>mask</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, converts the underlying HTML inputs to{" "}
+          <code>type="password"</code> to obscure the characters.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>OtpInputBlock</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, disables all interactions across all input boxes and reduces
+          their overall opacity.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

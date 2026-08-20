@@ -243,6 +243,6 @@ Learn about the Stepper component's linear progression features, providing clear
 
 ---
 
-**Component Path:** `nextjs\stepper\page.mdx`
+**Component Path:** `[framework]\stepper\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

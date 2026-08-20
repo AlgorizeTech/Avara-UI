@@ -202,6 +202,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\memories-card\page.mdx`
+**Component Path:** `[framework]\memories-card\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

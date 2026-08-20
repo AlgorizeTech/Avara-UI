@@ -116,13 +116,20 @@ export default function MultiSelect({
   const flatIndexMap = new Map<string, number>();
   flatFilteredOptions.forEach((opt, i) => flatIndexMap.set(opt.value, i));
 
-  useEffect(() => {
-    if (!isOpen) setSearchTerm("");
-  }, [isOpen]);
-
-  useEffect(() => {
+  // Resetting on a change is done during render rather than in an effect: an
+  // effect would paint one frame with the stale search term and highlight.
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (prevIsOpen !== isOpen) {
+    setPrevIsOpen(isOpen);
     setHighlightedIndex(-1);
-  }, [searchTerm, isOpen]);
+    if (!isOpen) setSearchTerm("");
+  }
+
+  const [prevSearchTerm, setPrevSearchTerm] = useState(searchTerm);
+  if (prevSearchTerm !== searchTerm) {
+    setPrevSearchTerm(searchTerm);
+    setHighlightedIndex(-1);
+  }
 
   useEffect(() => {
     if (highlightedIndex >= 0 && listRef.current) {

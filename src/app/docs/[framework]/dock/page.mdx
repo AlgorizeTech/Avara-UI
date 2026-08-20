@@ -1,0 +1,383 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Dock
+
+A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
+
+## Examples
+
+Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
+
+export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Compass, Home, Mail, Settings, Terminal } from "lucide-react";
+import { useState } from "react";
+
+export default function BottomNav() {
+  const [active, setActive] = useState("home");
+
+  const items = [
+    // icon is a node — give it w-full h-full so it scales with the dock
+    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: active === "home", onClick: () => setActive("home") },
+    { id: "compass", label: "Explore", icon: <Compass className="w-full h-full" />, isActive: active === "compass", onClick: () => setActive("compass") },
+    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
+  ];
+
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      <Dock items={items} />
+    </div>
+  );
+}`;
+
+export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Home, Mail, Settings, Terminal } from "lucide-react";
+
+export default function CompactNav() {
+  const items = [
+    // isActive draws the indicator dot; badge prints a counter pill
+    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: true },
+    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3 },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" /> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" /> },
+  ];
+
+  return <Dock items={items} />;
+}`;
+
+<ExampleShowcase
+  name="dock"
+  columns={1}
+  examples={[
+    {
+      title: "Dock",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `{ id, label, icon }[]` — `label` is the hover tooltip and `icon` a node, not a name.",
+        },
+        {
+          prop: "containerHeight",
+          value: '{64}',
+          effect:
+            "sizes the glass bar; a number is pixels, a string is raw CSS.",
+        },
+      ],
+      props: { itemSet: "full" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/DockBlock.tsx"),
+    },
+    {
+      title: "Badges & active app",
+      propNotes: [
+        {
+          prop: "badge",
+          effect:
+            "on an item prints a pulsing counter pill in its top-right corner.",
+        },
+        {
+          prop: "isActive",
+          effect:
+            "draws the running-app dot beneath the icon.",
+        },
+      ],
+      props: { itemSet: "compact", activeTab: "home" },
+      usage: usageBadges,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="dock" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>DockItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the icons, labels, onClick
+          callbacks, badges, and active states for each item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>containerHeight</code>
+        </td>
+        <td>
+          <code>number | string</code>
+        </td>
+        <td>
+          <code>64</code>
+        </td>
+        <td>
+          The height of the glassmorphic background bar (in pixels if passed as
+          a number, or valid CSS string e.g., <code>"4.5rem"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>gap</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>12</code>
+        </td>
+        <td>
+          The horizontal gap spacing (in pixels) between resting dock icon
+          buttons. Automatically compresses on mobile viewports.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>baseSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>48</code>
+        </td>
+        <td>
+          The resting width and height (in pixels) of each dock icon button
+          before any hover interaction occurs.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>magnification</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>80</code>
+        </td>
+        <td>
+          The maximum expanded width and height (in pixels) an icon reaches when
+          the mouse cursor is directly over its center.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>distance</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>140</code>
+        </td>
+        <td>
+          The pixel distance radius around the mouse cursor within which
+          neighboring icons will begin to magnify.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dock</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost glassmorphic
+          dock wrapper container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          layout animations.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The text displayed inside the floating tooltip tag above the icon when
+          hovered.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A React element or Lucide icon component to render inside the button
+          (should use classes like <code>w-full h-full</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback function fired whenever the user clicks on the
+          specific dock icon button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>isActive</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When set to <code>true</code>, displays a smooth animated dot
+          indicator beneath the icon button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DockItem</code>
+        </td>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional notification badge string or number (e.g., "3", "NEW")
+          rendered as a pulsing red pill in the top-right corner.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

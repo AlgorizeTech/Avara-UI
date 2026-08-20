@@ -1,0 +1,211 @@
+export const metadata = {
+    title: 'Introduction - Algorize UI',
+    description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+    keywords: [
+        'Next.js introduction',
+        'React framework',
+        'Server-side rendering',
+        'Static site generation',
+        'Next.js features'
+    ],
+    openGraph: {
+        title: 'Introduction - Algorize UI',
+        description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+        type: 'article',
+        url: '/docs/nextjs/index',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Introduction - Algorize UI',
+        description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+    },
+    alternates: {
+        canonical: '/docs/nextjs/index',
+    },
+};
+
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+import { PropsTable } from "@/components/site/props-table.tsx";
+import { MdxTable } from "@/components/site/mdx-table.tsx";
+import { COMPONENT_COUNT } from "@/config/site";
+
+# Introduction
+
+Algorize UI is a library of **{COMPONENT_COUNT} React components** — from buttons
+and inputs to dashboards, carousels and scroll-driven marketing sections. Each
+one is animated, responsive, themeable and typed.
+
+It is not an npm package. Components are published as a
+[shadcn registry](https://ui.shadcn.com/docs/registry), so the CLI copies a
+component's source **into your project**. From that moment the file is yours:
+read it, edit it, delete half of it. There is no library version to track and
+nothing to fight when a design calls for something the props do not cover.
+
+<Cli command={`add button.json`} />
+
+## Component Philosophy
+
+Build software faster with complete code ownership, no wrapper package, and total styling freedom.
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-8 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
+    {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
+        block content, which would wrap it in the custom <p> (mb-4) and push it 8px
+        off-centre, since flex centres the margin box. */}
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">⚡</div>
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">No Wrapper Package</h3>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+      There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
+    </p>
+  </div>
+
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">🎨</div>
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">100% Customizability</h3>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+      Modify styles, animations, and behaviors directly within your <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">components/custom</code> folder.
+    </p>
+  </div>
+
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
+    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold mb-4 leading-none">🧩</div>
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-2">Dependencies Per Component</h3>
+    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+      Each component declares only what it imports — usually <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">lucide-react</code>, <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">gsap</code> or <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">framer-motion</code>, and often nothing at all. Its page lists them before you install.
+    </p>
+  </div>
+</div>
+
+## What's in the library
+
+<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 my-8 not-prose">
+  <DocLink to="hero" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">33</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Marketing sections</div>
+  </DocLink>
+  <DocLink to="data-table" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">21</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Data display</div>
+  </DocLink>
+  <DocLink to="form" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">18</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Forms &amp; inputs</div>
+  </DocLink>
+  <DocLink to="card" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">15</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Layout</div>
+  </DocLink>
+  <DocLink to="carousel" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">14</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Media</div>
+  </DocLink>
+  <DocLink to="navigation" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <div className="text-2xl font-bold text-primary">13</div>
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Navigation</div>
+  </DocLink>
+</div>
+
+Plus overlays, feedback, scroll effects, commerce, authentication, maps, code
+blocks and typography. [Browse everything](/docs/nextjs/all-components).
+
+## What you need
+
+{/* Written as JSX, not a markdown table: remarkPlugins is empty in
+    next.config.ts, so GFM tables render as literal pipe characters. */}
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Requirement</th>
+        <th>Supported</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>React</strong></td>
+        <td>18 or 19</td>
+      </tr>
+      <ForFramework only="nextjs">
+        <tr>
+          <td><strong>Next.js</strong></td>
+          <td>14, 15 or 16 — App Router</td>
+        </tr>
+      </ForFramework>
+      <ForFramework only="reactjs">
+        <tr>
+          <td><strong>Vite</strong></td>
+          <td>5 or 6 — also works with CRA and React Router</td>
+        </tr>
+      </ForFramework>
+      <tr>
+        <td><strong>Tailwind CSS</strong></td>
+        <td>v3.4+ or v4</td>
+      </tr>
+      <tr>
+        <td><strong>TypeScript</strong></td>
+        <td>5+, or plain JavaScript</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ForFramework only="nextjs">
+Every component is plain React — none of them import from `next/*`. The dozen that
+render links or images take a `linkComponent` / `imageComponent` prop instead, so
+pass `next/link` or `next/image` to keep prefetching and image optimisation. Each
+of those pages shows the one line.
+</ForFramework>
+
+<ForFramework only="reactjs">
+Every component is plain React and drops straight into a Vite app — none of them
+import from `next/*`, so what the CLI writes compiles as-is. The dozen that render
+links or images default to plain `<a>` and `<img>`, and take a `linkComponent` /
+`imageComponent` prop if you would rather supply your own — React Router's `Link`,
+for instance.
+</ForFramework>
+
+## How a component reaches your project
+
+Every component page follows the same two steps:
+
+1. **Install it** — one `shadcn add` command, which also pulls in anything it
+   depends on.
+2. **Install dependencies** — listed explicitly, split between registry
+   components and npm packages, because those need different commands. Many
+   components need no npm packages at all, and the page says so plainly.
+
+Then copy a snippet from the **Usage** tab. Every snippet is a complete file,
+not a fragment.
+
+## Theming
+
+Components read your Tailwind theme tokens, so they inherit your colours and
+radii without configuration. Many accept a `color` prop for a per-instance
+accent, and the [theme customizer](/themes) lets you preview a palette across
+the whole library before committing to it.
+
+## Where next
+
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
+  <DocLink to="installation" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Installation</h3>
+    <span className="block text-sm text-zinc-600 dark:text-zinc-400">Set up the CLI and add your first component.</span>
+  </DocLink>
+  <DocLink to="first-app" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Quick Start</h3>
+    <span className="block text-sm text-zinc-600 dark:text-zinc-400">A component on screen in four steps.</span>
+  </DocLink>
+  <DocLink to="architecture" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
+    <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 mb-1">Architecture</h3>
+    <span className="block text-sm text-zinc-600 dark:text-zinc-400">How the library is structured and why.</span>
+  </DocLink>
+</div>

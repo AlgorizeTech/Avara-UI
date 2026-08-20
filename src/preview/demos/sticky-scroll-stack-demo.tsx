@@ -41,7 +41,6 @@ export default function StickyScrollStackDemo({
         "Comprehensive Design Systems",
       ],
       buttonText: "View UI Showcase",
-      onButtonClick: () => alert("Navigating to UI Showcase..."),
     },
     {
       id: "branding",
@@ -57,8 +56,8 @@ export default function StickyScrollStackDemo({
         "Brand Guidelines & Tone",
       ],
       imageUrl:
-        "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
-      imageAlt: "Brand guidelines mockup",
+        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Misty mountain forest nature landscape",
       buttonText: "Explore Branding",
     },
     {
@@ -70,8 +69,8 @@ export default function StickyScrollStackDemo({
       description:
         "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
       imageUrl:
-        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-      imageAlt: "Code editor preview",
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Golden mountain valley sunset nature landscape",
       buttonText: "Tech Stack Specs",
     },
     {
@@ -83,8 +82,8 @@ export default function StickyScrollStackDemo({
       description:
         "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
       imageUrl:
-        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-      imageAlt: "Cloud infrastructure preview",
+        "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Lush green forest nature landscape",
       buttonText: "View Cloud Specs",
     },
   ];
@@ -101,13 +100,12 @@ export default function StickyScrollStackDemo({
           headerContentType={headerMode}
           headerImageUrl={
             headerMode === "image-button"
-              ? "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80"
+              ? "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
               : undefined
           }
-          headerTitle="We can help you with"
+          headerTitle="Our Core Capabilities"
           headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
           headerButtonText="Request free audit"
-          onHeaderButtonClick={() => alert("Free audit requested!")}
           className="py-10 sm:py-14"
         />
       </div>

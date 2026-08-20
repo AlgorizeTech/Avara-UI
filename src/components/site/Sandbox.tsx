@@ -1,5 +1,7 @@
 "use client";
 
+import { useFramework } from "@/hooks/use-framework";
+import { resolveSnippet, type Snippet } from "@/lib/snippet";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
@@ -21,6 +23,10 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
+import {
+  prefetchHighlight,
+  warmHighlighter,
+} from "@/components/custom/ui/code-renderer";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
   DEFAULT_SHOWCASE_COLOR,
@@ -28,6 +34,11 @@ import {
 } from "@/components/site/showcase-color";
 import React, { Fragment, useEffect, useId, useRef, useState } from "react";
 
+/**
+ * Hard floor for the preview viewport. Nothing — drag, keyboard, or the fluid
+ * "100%" state on a sub-350px phone — renders the demo narrower than this; below
+ * it the scale-to-fit math shrinks a real 350px viewport instead.
+ */
 const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
@@ -137,6 +148,16 @@ export function Sandbox({
   const [resetKey, setResetKey] = useState(0);
   const areaRef = useRef<HTMLDivElement>(null);
 
+  // Highlight every code tab while the reader is still on the preview, so
+  // opening Usage or Code paints coloured on its first frame instead of
+  // flashing raw text and reflowing when Shiki lands. Runs during idle time.
+  useEffect(() => {
+    warmHighlighter();
+    for (const tab of tabs) {
+      if (tab.code) prefetchHighlight(tab.code, tab.lang ?? "tsx");
+    }
+  }, [tabs]);
+
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
     const area = areaRef.current;
@@ -153,7 +174,11 @@ export function Sandbox({
 
   const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
   const viewportWidth =
-    previewWidth === "100%" ? availableWidth : (previewWidth as number);
+    previewWidth === "100%"
+      ? availableWidth === null
+        ? null
+        : Math.max(availableWidth, MIN_PREVIEW_WIDTH)
+      : (previewWidth as number);
 
   // Wide device on a narrow area → keep the true viewport, shrink visually.
   const fitScale =
@@ -161,8 +186,9 @@ export function Sandbox({
       ? availableWidth / viewportWidth
       : 1;
   const visualScale = fitScale;
-  /** Fluid AND unscaled — the only state that fills the card edge to edge. */
-  const isFitted = previewWidth === "100%" && fitScale === 1;
+  /** The fluid state — the only one that fills the card edge to edge. On a
+   *  sub-floor screen it is scaled rather than unscaled, but still edge to edge. */
+  const isFitted = previewWidth === "100%";
 
   // Derived from the MEASURED width, including the fluid "100%" state — so on
   // first load the highlighted button is the visitor's own device class.
@@ -179,7 +205,10 @@ export function Sandbox({
     if (width >= max - SNAP_TO_FULL_THRESHOLD) {
       setPreviewWidth("100%");
     } else {
-      setPreviewWidth(Math.round(Math.min(Math.max(width, MIN_PREVIEW_WIDTH), max)));
+      // The floor wins over `max`: in an area narrower than 350px the preview
+      // keeps a real 350px viewport and the scale-to-fit math shrinks it visually,
+      // exactly like the mobile preset does.
+      setPreviewWidth(Math.round(Math.max(Math.min(width, max), MIN_PREVIEW_WIDTH)));
     }
   };
 
@@ -207,7 +236,7 @@ export function Sandbox({
   const handleResizeKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const max = areaWidth ?? Infinity;
     const current =
-      previewWidth === "100%" ? (areaWidth ?? DESKTOP_MIN_WIDTH) : previewWidth;
+      previewWidth === "100%" ? (viewportWidth ?? DESKTOP_MIN_WIDTH) : previewWidth;
     const step = e.shiftKey ? 64 : 16;
     if (e.key === "ArrowLeft") {
       e.preventDefault();
@@ -555,15 +584,32 @@ export interface ShowcaseExample {
   id?: string;
   /** JSON-serializable props bridged into the sandbox demo for this preview. */
   props?: Record<string, unknown>;
-  /** Authored usage snippet — adds a Usage tab (TSX; JS toggle built in). */
-  usage?: string;
-  /** Optional source snippet — adds a Code tab. */
-  code?: string;
+  /**
+   * Authored usage snippet — adds a Usage tab (TSX; JS toggle built in).
+   *
+   * A plain string is identical in every framework. Pass `{ nextjs, reactjs }`
+   * only when the code genuinely differs — see src/lib/snippet.ts.
+   */
+  usage?: Snippet;
+  /** Optional source snippet — adds a Code tab. Same string-or-map rule. */
+  code?: Snippet;
   /** Per-example overrides for the Sandbox. */
   options?: SandboxOptions;
   minHeight?: number;
   maxHeight?: number;
 }
+
+/**
+ * A ShowcaseExample whose snippets have already been resolved to one framework.
+ *
+ * This type is the seam: ExampleShowcase resolves `usage` and `code` once, and
+ * everything below it — the cards, the code tabs, the TSX→JS transform — deals
+ * only in plain strings and never has to know a framework exists.
+ */
+export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & {
+  usage?: string;
+  code?: string;
+};
 
 const slugify = (value: string) =>
   value
@@ -737,8 +783,16 @@ export function ExampleShowcase({
     if (defaultColor !== DEFAULT_SHOWCASE_COLOR) shared.setColor(defaultColor);
   }, [shared, ownsPicker, defaultColor]);
 
+  // Snippets resolve once, here, against the framework in the URL. Everything
+  // below this point works with plain strings, so the sandbox, the code tabs and
+  // the TSX→JS transform needed no changes at all.
+  const framework = useFramework();
+
   // Find component source code fallback from any example that explicitly provides it
-  const fallbackCode = examples.find((ex) => ex.code)?.code;
+  const fallbackCode = resolveSnippet(
+    examples.find((ex) => ex.code)?.code,
+    framework,
+  );
 
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
@@ -765,10 +819,10 @@ export function ExampleShowcase({
             : example.props;
 
           const effectiveUsage =
-            example.usage ??
+            resolveSnippet(example.usage, framework) ??
             generateFallbackUsage(name, example.title, effectiveProps);
 
-          const effectiveCode = example.code ?? fallbackCode;
+          const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;
 
           return (
             <ExampleCard
@@ -799,7 +853,7 @@ function ExampleCard({
   maxHeight,
 }: {
   name: string;
-  example: ShowcaseExample;
+  example: ResolvedShowcaseExample;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;

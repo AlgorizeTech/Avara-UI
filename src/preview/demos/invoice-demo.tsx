@@ -56,8 +56,23 @@ export default function InvoiceDemo({
 }) {
   return (
     <div
-      className={`w-full max-w-full overflow-hidden transition-all duration-500 ${variant === "glass" ? "p-1 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "p-0 bg-transparent"}`}
+      className={`w-full max-w-full overflow-hidden transition-all duration-500 relative ${
+        variant === "glass"
+          ? "p-4 sm:p-8 rounded-2xl bg-cover bg-center"
+          : "p-0 bg-transparent"
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
+      )}
       <Invoice
         key={`${variant}-${color}`} // Force re-render to clear edit state on theme change
         variant={variant}

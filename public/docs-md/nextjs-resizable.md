@@ -175,6 +175,6 @@ Learn about the Resizable component's panel layout capabilities, supporting drag
 
 ---
 
-**Component Path:** `nextjs\resizable\page.mdx`
+**Component Path:** `[framework]\resizable\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -689,7 +689,11 @@
         "data-display"
       ],
       "dependencies": [
+        "leaflet",
         "react-leaflet"
+      ],
+      "devDependencies": [
+        "@types/leaflet"
       ],
       "registryDependencies": [
         "utils"
@@ -889,6 +893,9 @@
         "lucide-react",
         "react-leaflet"
       ],
+      "devDependencies": [
+        "@types/leaflet"
+      ],
       "registryDependencies": [
         "utils"
       ],
@@ -913,7 +920,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/fleet-map.json"
+      ],
       "files": [
         {
           "path": "src/components/custom/blocks/Fleet-tracker.tsx",
@@ -1077,8 +1086,8 @@
         "marketing"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "framer-motion",
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/icons.json",
@@ -2286,10 +2295,9 @@
       "type": "registry:component",
       "title": "Terminal",
       "author": "AlgorizeTech",
-      "description": "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
+      "description": "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
       "categories": [
-        "code",
-        "marketing"
+        "code"
       ],
       "dependencies": [
         "lucide-react"
@@ -2304,7 +2312,7 @@
           "target": "components/custom/blocks/TerminalBlock.tsx"
         }
       ],
-      "docs": "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost)."
+      "docs": "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`."
     },
     {
       "name": "text-animation",
@@ -2501,28 +2509,6 @@
       "docs": "Named exports: TooltipProvider, Tooltip, TooltipTrigger, TooltipContent. Requires the `animate-in`, `fade-in` and `zoom-in-95` utilities — on Tailwind v4 add `@import \"tw-animate-css\";` to your global stylesheet, on v3 use the `tailwindcss-animate` plugin. Content renders through a React portal at z-index 9999."
     },
     {
-      "name": "typography",
-      "type": "registry:component",
-      "title": "Typography",
-      "author": "AlgorizeTech",
-      "description": "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
-      "categories": [
-        "typography"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/TypographyBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/TypographyBlock.tsx"
-        }
-      ],
-      "docs": "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers."
-    },
-    {
       "name": "ui-accordion",
       "type": "registry:ui",
       "title": "UI Accordion",
@@ -2668,7 +2654,7 @@
       "type": "registry:ui",
       "title": "UI Code Renderer",
       "author": "AlgorizeTech",
-      "description": "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+      "description": "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes, a shared cached highlighter and a non-shifting fallback while a cold snippet resolves.",
       "categories": [
         "code"
       ],
@@ -2683,7 +2669,7 @@
           "target": "components/custom/ui/code-renderer.tsx"
         }
       ],
-      "docs": "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface."
+      "docs": "Named export: CodeRenderer, plus `warmHighlighter` and `prefetchHighlight` for callers that know a snippet before it is shown — prefetching one makes its first paint already highlighted, with no unstyled flash. Takes `code` and a Shiki `lang`. One Shiki instance and one markup cache are shared by every block on the page. A snippet that is still cold renders inside `pre.shiki-pending`; style that class to match your `.shiki` metrics so the swap does not shift the page. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface."
     },
     {
       "name": "ui-codeblocks",

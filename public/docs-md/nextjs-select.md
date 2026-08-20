@@ -255,6 +255,6 @@ Discover the Select component's accessible dropdown features, including keyboard
 
 ---
 
-**Component Path:** `nextjs\select\page.mdx`
+**Component Path:** `[framework]\select\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

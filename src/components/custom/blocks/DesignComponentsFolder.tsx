@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -11,9 +10,21 @@ import { cn } from "@/lib/utils";
 export interface DesignComponentsFolderProps {
   color?: string;
   className?: string;
+  disableLinks?: boolean;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
 }
 
-export function DesignComponentsFolder({ color, className }: DesignComponentsFolderProps) {
+export function DesignComponentsFolder({
+  color,
+  className,
+  disableLinks = false,
+  linkComponent: Link = "a",
+}: DesignComponentsFolderProps) {
   const [isInView, setIsInView] = useState(false);
   const [retractedIndex, setRetractedIndex] = useState<number | null>(null);
 
@@ -119,7 +130,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
               className="absolute top-[26%] sm:top-[6%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/calendar" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/calendar"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-indigo-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-indigo-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -190,7 +201,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
               className="absolute top-[24%] sm:top-[4%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[110px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/data-table" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/data-table"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-emerald-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-emerald-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -250,7 +261,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
               className="absolute top-[24%] sm:top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/fleet-tracker" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/fleet-tracker"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-sky-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-sky-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -303,7 +314,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
               className="absolute top-[28%] sm:top-[18%] left-[12%] sm:left-[16%] md:left-[20%] lg:left-[23%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 cursor-pointer group bg-gradient-to-br from-violet-500/10 via-card to-fuchsia-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/breadcrumb" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/breadcrumb"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-violet-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-violet-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -353,7 +364,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
               className="absolute top-[30%] sm:top-[20%] right-[7%] sm:right-[11%] md:right-[15%] lg:right-[18%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[155px] sm:h-[285px] md:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 cursor-pointer group bg-gradient-to-br from-amber-500/10 via-card to-orange-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/dock" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/dock"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-amber-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-amber-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -406,7 +417,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.05, rotate: -6, y: -10, zIndex: 40 }}
               className="absolute top-[38%] sm:top-[28%] left-[2%] sm:left-[4%] md:left-[7%] lg:left-[9%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-rose-500/30 cursor-pointer group bg-gradient-to-br from-rose-500/10 via-card to-pink-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/file-upload" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/file-upload"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-rose-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-rose-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -451,7 +462,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.05, rotate: 6, y: -10, zIndex: 40 }}
               className="absolute top-[38%] sm:top-[28%] right-[1%] sm:right-[2%] md:right-[4%] lg:right-[5%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30 cursor-pointer group bg-gradient-to-br from-cyan-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/network-graph" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/network-graph"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-cyan-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-1.5 sm:mb-2 group-hover:border-cyan-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
@@ -503,7 +514,7 @@ export function DesignComponentsFolder({ color, className }: DesignComponentsFol
               whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
               className="absolute top-[36%] sm:top-[28%] left-[24%] sm:left-[28%] md:left-[33%] lg:left-[36%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 cursor-pointer group bg-gradient-to-br from-purple-500/10 via-card to-indigo-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
-              <Link href="/docs/nextjs/navbar" className="w-full h-full flex flex-col justify-between">
+              <Link href={disableLinks ? "#" : "/docs/nextjs/navbar"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
                 {/* Top: Miniature Illustration Container */}
                 <div className="w-full flex-1 rounded-xl border border-purple-500/20 bg-background/80 p-2 sm:p-2.5 flex flex-col justify-between overflow-hidden relative mb-2 group-hover:border-purple-500/60 transition-colors">
                   <div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">

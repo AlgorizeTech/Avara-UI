@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-react";
 import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
@@ -122,16 +122,16 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl",
+      "bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-2xl text-white",
     sidebar:
-      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+      "bg-white/10 dark:bg-black/20 border-r border-white/20 dark:border-white/10",
     header: "bg-transparent border-b border-white/20 dark:border-white/10",
-    gridOuter: "bg-gray-400/20 dark:bg-gray-700/30 p-px",
+    gridOuter: "bg-white/10 dark:bg-black/20 p-px",
     gridGap: "gap-px",
     gridHeader:
-      "bg-white/20 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10",
+      "bg-white/15 dark:bg-black/30 backdrop-blur-md border-b border-white/20 dark:border-white/10",
     cellBg:
-      "bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 backdrop-blur-sm",
+      "bg-white/20 dark:bg-black/30 hover:bg-white/35 dark:hover:bg-black/50 backdrop-blur-sm",
   },
 };
 
@@ -382,6 +382,36 @@ const formatDateForInput = (dateKey: string) => {
 
 const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {};
 
+type CalendarEvent = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  type: string;
+  platform: string;
+};
+
+// Ids are derived from the date key and position so they stay stable across
+// re-seeds -- an open popup keeps pointing at the same event.
+function buildEventsFromMock(
+  mockEvents: Record<string, string[]>,
+): CalendarEvent[] {
+  const list: CalendarEvent[] = [];
+  Object.entries(mockEvents).forEach(([dateKey, types]) => {
+    types.forEach((type, index) => {
+      list.push({
+        id: `${dateKey}-${index}`,
+        title: type === "pentest" ? "Pentest" : "Kick-Off",
+        date: dateKey,
+        time: "12:00",
+        type: type,
+        platform: type === "pentest" ? "slack" : "meet",
+      });
+    });
+  });
+  return list;
+}
+
 function CalendarDashboard({
   mockEvents = DEFAULT_MOCK_EVENTS,
   variant = "default",
@@ -415,25 +445,18 @@ function CalendarDashboard({
       }
     : colorThemes[color] || colorThemes["primary"];
 
-  // Convert dict prop to rich array state
-  const [events, setEvents] = useState<any[]>([]);
+  // Convert dict prop to rich array state. Seeded during render rather than in
+  // an effect: an effect would render once with an empty calendar, then again
+  // with the events, and re-seeding on a prop change would flash the same way.
+  const [events, setEvents] = useState<CalendarEvent[]>(() =>
+    buildEventsFromMock(mockEvents),
+  );
+  const [seededFrom, setSeededFrom] = useState(mockEvents);
 
-  useEffect(() => {
-    const initialEventsList: any[] = [];
-    Object.entries(mockEvents).forEach(([dateKey, types]) => {
-      types.forEach((type, index) => {
-        initialEventsList.push({
-          id: `${dateKey}-${index}-${Math.random()}`,
-          title: type === "pentest" ? "Pentest" : "Kick-Off",
-          date: dateKey,
-          time: "12:00",
-          type: type,
-          platform: type === "pentest" ? "slack" : "meet",
-        });
-      });
-    });
-    setEvents(initialEventsList);
-  }, [mockEvents]);
+  if (mockEvents !== seededFrom) {
+    setSeededFrom(mockEvents);
+    setEvents(buildEventsFromMock(mockEvents));
+  }
 
   // View & Date State
   const [view, setView] = useState("month");
@@ -565,13 +588,13 @@ function CalendarDashboard({
     const [y, m, d] = rawDate.split("-");
     const formattedDateKey = `${parseInt(y)}-${parseInt(m)}-${parseInt(d)}`;
 
-    const eventData = {
+    const eventData: CalendarEvent = {
       id: editingEvent ? editingEvent.id : Date.now().toString(),
-      title: formData.get("title"),
+      title: String(formData.get("title") ?? ""),
       date: formattedDateKey,
-      time: formData.get("time"),
-      type: formData.get("type"),
-      platform: formData.get("platform"),
+      time: String(formData.get("time") ?? ""),
+      type: String(formData.get("type") ?? ""),
+      platform: String(formData.get("platform") ?? ""),
     };
 
     if (editingEvent) {
@@ -1234,15 +1257,23 @@ function CalendarDashboard({
       {/* --- ADD / EDIT EVENT MODAL --- */}
       {isAddModalOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 cursor-pointer"
           onClick={closeModal}
         >
           <div
-            className="bg-white dark:bg-gray-900 w-full max-w-md rounded-xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800 animate-in fade-in zoom-in duration-200 cursor-default"
+            className={cn(
+              "w-full max-w-md rounded-xl shadow-2xl overflow-hidden border animate-in fade-in zoom-in duration-200 cursor-default",
+              variant === "glass"
+                ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
+                : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800",
+            )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+            <div className={cn(
+              "flex items-center justify-between px-6 py-4 border-b",
+              variant === "glass" ? "border-white/20 dark:border-white/10" : "border-gray-100 dark:border-gray-800"
+            )}>
+              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-gray-900 dark:text-white")}>
                 {editingEvent ? "Update Event" : "Add New Event"}
               </h3>
               <button
@@ -1254,7 +1285,7 @@ function CalendarDashboard({
             </div>
             <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
                   Event Title
                 </label>
                 <input
@@ -1264,14 +1295,17 @@ function CalendarDashboard({
                   defaultValue={editingEvent ? editingEvent.title : ""}
                   placeholder="e.g. Q3 Roadmap Review"
                   className={cn(
-                    "w-full cursor-text border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white transition-shadow",
+                    "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
+                    variant === "glass"
+                      ? "border-white/20 text-white placeholder:text-white/50 bg-white/10"
+                      : "border-gray-200 dark:border-gray-700 dark:text-white",
                     theme.focusRing,
                   )}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
                     Date
                   </label>
                   <input
@@ -1285,13 +1319,16 @@ function CalendarDashboard({
                           `${year}-${String(month + 1).padStart(2, "0")}-01`
                     }
                     className={cn(
-                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark] transition-shadow",
+                      "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
+                      variant === "glass"
+                        ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
+                        : "border-gray-200 dark:border-gray-700 dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
                     Time
                   </label>
                   <input
@@ -1300,7 +1337,10 @@ function CalendarDashboard({
                     type="time"
                     defaultValue={editingEvent ? editingEvent.time : selectedTime || "12:00"}
                     className={cn(
-                      "w-full cursor-pointer border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none dark:text-white [color-scheme:light] dark:[color-scheme:dark] transition-shadow",
+                      "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
+                      variant === "glass"
+                        ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
+                        : "border-gray-200 dark:border-gray-700 dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1308,7 +1348,7 @@ function CalendarDashboard({
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
                     Event Type
                   </label>
                   {/* Hidden input keeps this field in the form's FormData,
@@ -1319,11 +1359,12 @@ function CalendarDashboard({
                     value={eventType}
                     onChange={setEventType}
                     color={color}
+                    variant={variant === "glass" ? "glass" : "default"}
                     inputSize="sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
                     Platform
                   </label>
                   <input type="hidden" name="platform" value={eventPlatform} />
@@ -1332,6 +1373,7 @@ function CalendarDashboard({
                     value={eventPlatform}
                     onChange={setEventPlatform}
                     color={color}
+                    variant={variant === "glass" ? "glass" : "default"}
                     inputSize="sm"
                   />
                 </div>
@@ -1340,7 +1382,12 @@ function CalendarDashboard({
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors cursor-pointer"
+                  className={cn(
+                    "px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
+                    variant === "glass"
+                      ? "text-white/80 hover:bg-white/10 hover:text-white"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                  )}
                 >
                   Cancel
                 </button>
@@ -1377,6 +1424,7 @@ function CalendarCell({
   onClickCell,
   cellClass,
   theme,
+  variant
 }: any) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";
@@ -1468,11 +1516,15 @@ function CalendarCell({
               }}
             />
             <div
-              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
+                variant === "glass"
+                  ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
+                  : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800"
+              } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className="font-semibold text-base text-gray-900 dark:text-white truncate pr-4">
+                <h4 className={cn("font-semibold text-base truncate pr-4", variant === "glass" ? "text-white" : "text-gray-900 dark:text-white")}>
                   {event.title}
                 </h4>
                 <div className="flex items-center gap-2 text-gray-400 shrink-0">

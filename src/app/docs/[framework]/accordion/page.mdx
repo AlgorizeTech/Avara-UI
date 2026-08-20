@@ -1,0 +1,344 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Accordion
+
+A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
+
+## Examples
+
+You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
+
+export const usageData = `const faqItems = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];`;
+
+export const usageDefault = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function Faq() {
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible
+      defaultValue="getting-started"
+    />
+  );
+}`;
+
+export const usageMultiple = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function MultiOpenFaq() {
+  // type="multiple" lets any number of panels stay open at once.
+  // defaultValue becomes an array in this mode.
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="multiple"
+      variant="bordered"
+      defaultValue={["getting-started"]}
+    />
+  );
+}`;
+
+export const usageMandatory = `import { Accordion } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function AlwaysOpenFaq() {
+  // collapsible={false} stops the user closing the last open panel,
+  // so exactly one is always showing.
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible={false}
+      variant="filled"
+      defaultValue="getting-started"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="accordion"
+  columns={1}
+  examples={[
+    {
+      title: "Accordion",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "accordionData",
+          effect:
+            "as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
+        },
+        {
+          prop: "type",
+          value: '"single"',
+          effect: "keeps one panel open at a time.",
+        },
+        {
+          prop: "collapsible",
+          effect: "lets the open panel be closed again, leaving all of them shut.",
+        },
+        {
+          prop: "defaultValue",
+          value: '"getting-started"',
+          effect: "matches an item's `value` to decide which panel starts open.",
+        },
+      ],
+      props: { variant: "default", interaction: "single" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
+    {
+      title: "Multiple open",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"multiple"',
+          effect: "to let any number of panels stay open at once.",
+        },
+        {
+          prop: "defaultValue",
+          effect:
+            "becomes an **array** in this mode — passing a bare string silently opens nothing.",
+        },
+        {
+          prop: "collapsible",
+          effect: "is ignored here; every panel can always be closed.",
+        },
+      ],
+      props: { variant: "bordered", interaction: "multiple" },
+      usage: usageMultiple,
+    },
+    {
+      title: "Always one open",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "collapsible",
+          value: "{false}",
+          effect:
+            "to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.",
+        },
+      ],
+      props: { variant: "filled", interaction: "single-mandatory" },
+      usage: usageMandatory,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="accordion" />
+
+## Features
+Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>accordionData</code>
+        </td>
+        <td>
+          <code>AccordionDataItem[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          Array of objects defining <code>value</code>, <code>title</code>,{" "}
+          <code>icon</code>, and <code>content</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "bordered" | "filled" | "elevated" | "ghost"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Applies pre-defined structural and aesthetic styling.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"single" | "multiple"</code>
+        </td>
+        <td>
+          <code>"single"</code>
+        </td>
+        <td>
+          Determines if one or multiple panels can be open simultaneously.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>collapsible</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If <code>type="single"</code>, allows closing the currently open
+          panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultValue</code>
+        </td>
+        <td>
+          <code>string | string[]</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          The <code>value</code> of the item(s) open by default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>expandIcon</code>
+        </td>
+        <td>
+          <code>ReactNode | string</code>
+        </td>
+        <td>
+          <code>null</code>
+        </td>
+        <td>
+          Overrides the default chevron icon. Pass a lucide string like{" "}
+          <code>"Plus"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the root container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>itemClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to individual accordion items.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>triggerClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the clickable trigger row.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>contentClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom classes applied to the expanded content area.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

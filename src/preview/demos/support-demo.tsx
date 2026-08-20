@@ -150,15 +150,27 @@ export default function SupportDemo({
 }) {
   return (
     <div
-      className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+      className={`w-full transition-all duration-500 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : ""}`}
     >
-      <SupportDashboard
-        key={`${variant}-${color}-${layout}`}
-        variant={variant}
-        color={color}
-        layout={layout}
-        data={sampleData}
-      />
+      {variant === "glass" && (
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+            alt="Moody nature landscape background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        </div>
+      )}
+      <div className="relative z-10 w-full">
+        <SupportDashboard
+          key={`${variant}-${color}-${layout}`}
+          variant={variant}
+          color={color}
+          layout={layout}
+          data={sampleData}
+        />
+      </div>
     </div>
   );
 }

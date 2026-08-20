@@ -128,12 +128,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display"],
     docs: "Duplicate the children set to keep the loop seamless; supports reverse and vertical orientations.",
   },
-  terminal: {
-    description:
-      "A terminal-styled code surface with a copy-to-clipboard control. Use it in docs and landing pages to present install or CLI commands.",
-    categories: ["code", "marketing"],
-    docs: "The copy button uses navigator.clipboard, which requires a secure context (HTTPS or localhost).",
-  },
 
   // ---- Phase 4A: forms & input controls ----
   input: {
@@ -318,12 +312,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout", "data-display"],
     docs: "Named export: ItemBlock. `media` and `actions` take arbitrary nodes, so an avatar and a button drop straight in. Variants: default | compact | card | bordered. Passing `onClick` makes the whole row interactive.",
   },
-  typography: {
-    description:
-      "A set of prose primitives — headings, paragraph, lead, blockquote, list and inline code — with consistent rhythm. Use them for article and documentation body copy.",
-    categories: ["typography"],
-    docs: "Named exports: H1, H2, H3, H4, P, Lead, Large, Blockquote, List, InlineCode. Plain semantic elements with spacing baked in, so they compose with MDX without extra wrappers.",
-  },
   icons: {
     description:
       "A set of 26 brand SVG icons — Google, GitHub, Apple, Microsoft, Slack, LinkedIn and more — as React components. Use them for social sign-in buttons and provider lists.",
@@ -492,15 +480,21 @@ export const META: Record<string, ItemMeta> = {
   },
   "ui-code-renderer": {
     description:
-      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes and a plain-text fallback while the highlighter loads.",
+      "Shiki-backed syntax highlighting for a single snippet, with matched light and dark themes, a shared cached highlighter and a non-shifting fallback while a cold snippet resolves.",
     categories: ["code"],
-    docs: "Named export: CodeRenderer. Takes `code` and a Shiki `lang`. Highlighting runs in an effect, so the first paint is unhighlighted text rather than an empty box. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
+    docs: "Named export: CodeRenderer, plus `warmHighlighter` and `prefetchHighlight` for callers that know a snippet before it is shown — prefetching one makes its first paint already highlighted, with no unstyled flash. Takes `code` and a Shiki `lang`. One Shiki instance and one markup cache are shared by every block on the page. A snippet that is still cold renders inside `pre.shiki-pending`; style that class to match your `.shiki` metrics so the swap does not shift the page. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface.",
   },
   "custom-code-block": {
     description:
       "A tabbed code viewer with filenames, language badges and per-tab copy. Use it in documentation to show the same example across several files.",
     categories: ["code"],
     docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
+  },
+  terminal: {
+    description:
+      "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
+    categories: ["code"],
+    docs: "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
   },
   chat: {
     description:

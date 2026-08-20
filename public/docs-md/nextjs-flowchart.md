@@ -132,6 +132,6 @@ export default function AccentedPipeline() {
 
 ---
 
-**Component Path:** `nextjs\flowchart\page.mdx`
+**Component Path:** `[framework]\flowchart\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

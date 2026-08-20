@@ -40,13 +40,6 @@ export default function GlassHeader() {
   return ;
 }`;
 
-export const usageLogo = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
-
-export default function BrandedHeader() {
-  // logoText replaces the wordmark without touching the component.
-  return ;
-}`;
-
 ## Installation
 
 ## Props Reference
@@ -84,6 +77,6 @@ export default function BrandedHeader() {
 
 ---
 
-**Component Path:** `nextjs\navbar\page.mdx`
+**Component Path:** `[framework]\navbar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

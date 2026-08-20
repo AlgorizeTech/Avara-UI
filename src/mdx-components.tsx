@@ -5,6 +5,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/site/tabs
 import { Cli } from './components/site/cli';
 import { Installation, InstallGroup } from './components/site/installation';
 import { AIButton } from './components/site/ai-button';
+import { DocLink, MdxLink } from './components/site/doc-link';
+import { ForFramework } from './components/site/for-framework';
+import { InjectablePropNote } from './components/site/injectable-prop-note';
+import { OtherFrameworkGuide } from './components/site/other-framework-guide';
 import {
   PackageManagerTabs as PMTabs,
   PMTabContent,
@@ -194,17 +198,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       );
     },
 
-    a: ({ children, href, ...props }: React.ComponentProps<'a'>) => {
-      return (
-        <a
-          href={href}
-          className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
-          {...props}
-        >
-          {children}
-        </a>
-      );
-    },
+    // Routed through MdxLink so a prose link written as
+    // `[Hero](/docs/nextjs/hero)` follows the reader's framework instead of
+    // dropping them back into the Next.js tree.
+    a: MdxLink,
 
     strong: ({ children, ...props }: React.ComponentProps<'strong'>) => {
       return (
@@ -298,6 +295,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Installation,
     InstallGroup,
     AI: AIButton,
+    DocLink,
+    ForFramework,
+    InjectablePropNote,
+    OtherFrameworkGuide,
     PMTabs,
     PMTabContent,
     NPMTabContent,

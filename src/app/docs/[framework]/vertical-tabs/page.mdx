@@ -1,0 +1,261 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Vertical Tabs
+
+A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
+
+## Examples
+
+Switch tabs in any preview to see the GSAP crossfade.
+
+export const usageTabsData = `const tabs = [
+  {
+    id: "photos",
+    label: "Photos",
+    icon: Camera, // the Lucide component itself, not a string
+    content: <p>Your photo gallery, albums or image grids go here.</p>,
+  },
+  {
+    id: "music",
+    label: "Music",
+    icon: Music,
+    content: <p>A playlist, audio controls or your favourite albums.</p>,
+  },
+  {
+    id: "videos",
+    label: "Videos",
+    icon: Clapperboard,
+    content: <p>Video players, stream links or watch-later lists.</p>,
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    content: <p>Preferences, notifications and privacy controls.</p>,
+  },
+];`;
+
+export const usageDefault = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function MediaTabs() {
+  // Each tab carries its own content — the block handles the crossfade.
+  return <VerticalTabs tabs={tabs} />;
+}`;
+
+export const usageHorizontal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function HorizontalTabs() {
+  // Same rail, running across the top. Tabs keep their natural width and
+  // scroll sideways rather than squashing, so a long set stays readable.
+  return <VerticalTabs tabs={tabs} orientation="horizontal" />;
+}`;
+
+export const usageHorizontalBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { tabs } from "./tabs";
+
+export default function HorizontalRail() {
+  // Every variant works in both orientations — \`bordered\` just moves its
+  // divider from the right edge of the rail to the bottom.
+  return <VerticalTabs tabs={tabs} orientation="horizontal" variant="bordered" />;
+}`;
+
+export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function MinimalTabs() {
+  // No card chrome — just the rail and the pane.
+  return <VerticalTabs tabs={tabs} variant="minimal" />;
+}`;
+
+export const usageBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function BorderedTabs() {
+  return <VerticalTabs tabs={tabs} variant="bordered" />;
+}`;
+
+export const usageGlass = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function GlassTabs() {
+  return (
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
+      <VerticalTabs tabs={tabs} variant="glass" />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Vertical tabs",
+      subheading: "The rail sits beside the pane, and stacks above it on narrow screens.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "tabs",
+          effect:
+            "as `{ id, label, icon, content }[]` — that is the whole API.",
+        },
+        {
+          prop: "orientation",
+          value: '"vertical"',
+          effect:
+            "is the default; `horizontal` puts the rail across the top as a pill bar that scrolls sideways.",
+        },
+        {
+          prop: "defaultActiveId",
+          effect:
+            "picks which tab opens first, defaulting to the first entry.",
+        },
+      ],
+      props: { variant: "default", orientation: "vertical" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the panel — it needs a rich background to blur.",
+        },
+        {
+          prop: "color",
+          effect:
+            "tints the active tab; it takes preset names or a hex, and defaults to `purple`.",
+        },
+      ],
+      props: { variant: "glass", orientation: "vertical" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="vertical-tabs" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>tabs</code>
+        </td>
+        <td>
+          <code>TabItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Array of objects containing the tab <code>id</code>,{" "}
+          <code>label</code>, optional <code>icon</code>, and the{" "}
+          <code>content</code> to render.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glass" | "minimal" | "bordered"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts. <code>bordered</code> connects
+          the menu directly to the content, while <code>minimal</code> removes
+          background containers.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>orientation</code>
+        </td>
+        <td>
+          <code>"vertical" | "horizontal"</code>
+        </td>
+        <td>
+          <code>"vertical"</code>
+        </td>
+        <td>
+          Which way the tab rail runs. <code>vertical</code> puts it beside the
+          content pane (stacking above it below <code>md</code>);{" "}
+          <code>horizontal</code> puts it across the top as a pill bar that
+          scrolls sideways when the tabs outgrow the width.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "indigo" | "rose" | "emerald" | "zinc" | "purple" | string
+          </code>
+        </td>
+        <td>
+          <code>"purple"</code>
+        </td>
+        <td>
+          Applies the active state color to the selected tab. Accepts preset
+          names or valid hex codes (e.g. <code>"#FF0055"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultActiveId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>tabs[0].id</code>
+        </td>
+        <td>
+          Optionally specify which tab ID should be open when the component
+          first mounts.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,550 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Hero Sections
+
+A collection of modern, highly composable Hero components for marketing websites. Built with Tailwind CSS and Framer Motion. This block separates layout structure from visual style through **Compound Components**, so you can write the exact same clean component structure every time.
+
+<InjectablePropNote prop="linkComponent" component="HomepageHeroBlock" />
+
+## Examples
+
+Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections.
+
+### Composable hero
+
+`Hero` publishes `layout`, `variant` and `color` through context, so `HeroTitle`, `HeroAction` and `HeroVisual` restyle themselves — you never repeat the theme on a child.
+
+export const usageSplitRight = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
+
+export default function LandingPage() {
+  return (
+    <Hero layout="split-right" variant="default" pattern="grid" color="indigo">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+
+        <HeroTitle animation="blur-in">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+
+      <HeroVisual>
+        <img
+          src="/hero.jpg"
+          alt="Abstract gradient interface"
+          className="w-full h-full object-cover"
+        />
+      </HeroVisual>
+    </Hero>
+  );
+}`;
+
+export const usageSplitLeft = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+
+export default function SplitLeftHero() {
+  // The visual moves to the left column; the markup order never changes.
+  return (
+    <Hero layout="split-left" pattern="grid">
+      <HeroContent>{/* … */}</HeroContent>
+      <HeroVisual>{/* … */}</HeroVisual>
+    </Hero>
+  );
+}`;
+
+export const usageCenter = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+
+export default function CenteredHero() {
+  // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
+  return (
+    <Hero layout="center" pattern="grid">
+      <HeroContent>{/* … */}</HeroContent>
+      <HeroVisual>{/* … */}</HeroVisual>
+    </Hero>
+  );
+}`;
+
+export const usageLeft = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
+
+export default function LeftAlignedHero() {
+  // Single column, left aligned — no visual column at all.
+  return (
+    <Hero layout="left" pattern="none">
+      <HeroContent>{/* … */}</HeroContent>
+    </Hero>
+  );
+}`;
+
+export const usageGlass = `import {
+  Hero,
+  HeroContent,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+
+export default function GlassHero() {
+  // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
+  // \`HeroAction\` picks that up from context — no extra props on the buttons.
+  return (
+    <Hero layout="split-right" variant="glass" color="indigo">
+      <HeroContent>{/* … */}</HeroContent>
+      <HeroVisual>{/* … */}</HeroVisual>
+    </Hero>
+  );
+}`;
+
+export const usageGlow = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroContent,
+} from "@/components/custom/blocks/HeroBlock";
+
+export default function GlowHero() {
+  // \`glow\` adds the ambient accent bloom behind the content. Pair it with
+  // the matching action so the button glows too.
+  return (
+    <Hero layout="split-right" variant="glow" color="rose">
+      <HeroContent>
+        <HeroActions>
+          <HeroAction variant="glow">Start Building</HeroAction>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
+  );
+}`;
+
+export const usagePattern = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
+
+export default function PatternedHero() {
+  // \`pattern\` paints the backdrop: "none", "grid" or "dots".
+  return (
+    <Hero layout="center" pattern="dots">
+      <HeroContent>{/* … */}</HeroContent>
+    </Hero>
+  );
+}`;
+
+export const usageGlitch = `import {
+  Hero,
+  HeroContent,
+  HeroTitle,
+} from "@/components/custom/blocks/HeroBlock";
+
+export default function GlitchHero() {
+  // \`animation\` lives on the title, not the root — the other children keep
+  // their own entrances.
+  return (
+    <Hero layout="center">
+      <HeroContent>
+        <HeroTitle animation="glitch">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+      </HeroContent>
+    </Hero>
+  );
+}`;
+
+<ExampleShowcase
+  name="hero"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Split left",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"split-left"',
+          effect:
+            "to swap the columns **on desktop only** — the markup order is untouched, so the visual still follows the copy on mobile.",
+        },
+      ],
+      props: { layout: "split-left", variant: "default", pattern: "grid", titleAnimation: "blur-in" },
+      usage: usageSplitLeft,
+      code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
+    },
+    {
+      title: "Centered",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "to stack everything down the middle, dropping `HeroVisual` below the copy.",
+        },
+      ],
+      props: { layout: "center", variant: "default", pattern: "grid", titleAnimation: "blur-in" },
+      usage: usageCenter,
+    },
+    {
+      title: "Left aligned",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "layout",
+          value: '"left"',
+          effect:
+            "for the single-column, text-only shape used by docs and changelog headers.",
+        },
+      ],
+      props: { layout: "left", variant: "default", pattern: "none", titleAnimation: "fade-up" },
+      usage: usageLeft,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for a dark, frosted treatment. It publishes through context, so `HeroAction` restyles itself with no extra props.",
+        },
+      ],
+      props: { layout: "split-right", variant: "glass", pattern: "grid", titleAnimation: "blur-in" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+### Homepage hero — word bounce
+
+The flagship centered hero: a sparkle pill badge, a rotating word that bounces in and out, a one-click CLI copy button, and two call-to-action buttons. Every string is a prop.
+
+export const usageHomepageHero = `import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+
+export default function Page() {
+  return (
+    <HomepageHeroBlock
+      badgeText="Next-Gen React Components"
+      badgeHref="/docs"
+      titlePrefix="Build Interactive "
+      typingWords={["Interfaces", "Components", "Experiences", "Animations"]}
+      cliCommand="npx shadcn@latest add button"
+      primaryActionLabel="Get Started"
+      primaryActionHref="/docs"
+      secondaryActionLabel="GitHub"
+      className="w-full min-h-screen"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero"
+  colorControl
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Word bounce hero",
+      propNotes: [
+        {
+          prop: "typingWords",
+          effect:
+            "cycles on a timer, each word springing in and out. Leave any prop off and the block falls back to its own default copy.",
+        },
+      ],
+      usage: usageHomepageHero,
+      code: extractCode("src/components/custom/blocks/HomepageHeroBlock.tsx"),
+    },
+  ]}
+/>
+
+### Homepage hero — typing effect
+
+The same layout with a character-by-character typewriter and a blinking cursor in place of the bounce.
+
+export const usageHomepageHeroTyping = `import { HomepageHeroTypingBlock } from "@/components/custom/blocks/HomepageHeroTypingBlock";
+
+export default function Page() {
+  return (
+    <HomepageHeroTypingBlock
+      titlePrefix="Build "
+      typingWords={["Exceptional", "Interactive", "Animated"]}
+      titleSuffix="Interfaces"
+      cliCommand="npx shadcn@latest add button"
+      className="w-full min-h-screen"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-typing"
+  colorControl
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Typing hero",
+      propNotes: [
+        {
+          prop: "typingWords",
+          effect:
+            "has the same shape here — swap the import and the word animation changes, nothing else.",
+        },
+      ],
+      usage: usageHomepageHeroTyping,
+      code: extractCode("src/components/custom/blocks/HomepageHeroTypingBlock.tsx"),
+    },
+  ]}
+/>
+
+### Recipes
+
+Two finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
+
+## Installation
+
+Three independent blocks live on this page. Install whichever you need — they share no files.
+
+<InstallGroup>
+  <Installation name="hero" />
+  <Installation name="homepage-hero" />
+  <Installation name="homepage-hero-typing" />
+</InstallGroup>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>layout</code>
+        </td>
+        <td>
+          <code>"center" | "left" | "split-right" | "split-left"</code>
+        </td>
+        <td>
+          <code>"center"</code>
+        </td>
+        <td>
+          Structural arrangement of <code>HeroContent</code> and{" "}
+          <code>HeroVisual</code>. The split layouts reorder the columns on
+          desktop only.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "glass" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Visual treatment, published through context so children restyle
+          themselves. <code>glass</code> goes light-on-dark and frosted;{" "}
+          <code>glow</code> blooms the accent behind the content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>pattern</code>
+        </td>
+        <td>
+          <code>"none" | "grid" | "dots"</code>
+        </td>
+        <td>
+          <code>"none"</code>
+        </td>
+        <td>Background pattern painted behind the section.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Hero</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Accent for the badge, primary action and glow. Any hex string is
+          resolved through CSS variables.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroTitle</code>
+        </td>
+        <td>
+          <code>animation</code>
+        </td>
+        <td>
+          <code>"fade-up" | "blur-in" | "glitch" | "none"</code>
+        </td>
+        <td>
+          <code>"fade-up"</code>
+        </td>
+        <td>
+          Entrance animation for the headline only — the other children keep
+          their own.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HeroAction</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"primary" | "secondary" | "outline" | "ghost" | "glow"</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Button style. It is also re-derived from the hero's own{" "}
+          <code>variant</code>, so the same value looks right on a glass hero
+          without extra props.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HomepageHeroBlock</code>
+          <br />
+          <code>HomepageHeroTypingBlock</code>
+        </td>
+        <td>
+          <code>typingWords</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>["Interfaces", "Components", …]</code>
+        </td>
+        <td>
+          The rotating words between <code>titlePrefix</code> and{" "}
+          <code>titleSuffix</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HomepageHeroBlock</code>
+          <br />
+          <code>HomepageHeroTypingBlock</code>
+        </td>
+        <td>
+          <code>badgeText</code> · <code>badgeHref</code> ·{" "}
+          <code>titlePrefix</code> · <code>titleSuffix</code> ·{" "}
+          <code>subtitle</code> · <code>cliCommand</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>
+          Every string in the section is a prop, each with a sensible default.{" "}
+          <code>cliCommand</code> also feeds the one-click copy button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>HomepageHeroBlock</code>
+          <br />
+          <code>HomepageHeroTypingBlock</code>
+        </td>
+        <td>
+          <code>primaryActionLabel</code> · <code>primaryActionHref</code> ·{" "}
+          <code>secondaryActionLabel</code> ·{" "}
+          <code>secondaryActionHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>Label and destination for each of the two call-to-action buttons.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>HomepageHeroBlock</code>
+          <br />
+          <code>HomepageHeroTypingBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accent color — a preset name or any CSS color. Left unset it inherits
+          your theme.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -88,24 +88,6 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   const isTop = position.includes("top");
   const yOffset = isTop ? -30 : 30;
 
-  // Handle Entrance & Auto-dismiss
-  useEffect(() => {
-    const el = toastRef.current;
-    if (!el) return;
-
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: yOffset, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }
-    );
-
-    let timer: NodeJS.Timeout;
-    if (duration > 0) {
-      timer = setTimeout(() => handleClose(), duration);
-    }
-    return () => clearTimeout(timer);
-  }, []);
-
   // Handle Exit
   const handleClose = useCallback(() => {
     if (!toastRef.current) return;
@@ -118,6 +100,24 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
       onComplete: () => onRemove(id)
     });
   }, [id, onRemove, yOffset]);
+
+  // Handle Entrance & Auto-dismiss
+  useEffect(() => {
+    const el = toastRef.current;
+    if (!el) return;
+
+    gsap.fromTo(
+      el,
+      { opacity: 0, y: yOffset, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }
+    );
+
+    let timer: ReturnType<typeof setTimeout>;
+    if (duration > 0) {
+      timer = setTimeout(() => handleClose(), duration);
+    }
+    return () => clearTimeout(timer);
+  }, [duration, yOffset, handleClose]);
 
   // Styling logic
   const typeStyles = {

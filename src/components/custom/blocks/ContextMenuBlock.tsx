@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +53,7 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
   if (!context) throw new Error("ContextMenuTrigger must be used within a ContextMenu");
 
   const { setOpen, setCoords } = context;
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openMenuAt = (x: number, y: number) => {
     setCoords({ x, y });
@@ -116,14 +123,16 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
 
   const { open, setOpen, coords } = context;
   const contentRef = useRef<HTMLDivElement>(null);
-  const anchorRef = useRef<HTMLSpanElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const [adjustedCoords, setAdjustedCoords] = useState({ x: -9999, y: -9999 });
   const [visible, setVisible] = useState(false);
 
-  // SSR Safety
-  useEffect(() => {
-    setMounted(true);
+  // Resolves the document this menu actually lives in, which is not always the
+  // global one — previews portal components into an iframe. Resolving in a
+  // callback ref rather than reading a ref during render keeps render pure, and
+  // a null target doubles as the "not mounted yet" signal that guards SSR.
+  const setAnchor = useCallback((node: HTMLSpanElement | null) => {
+    setPortalTarget(node ? node.ownerDocument.body : null);
   }, []);
 
   // Handle Position & Screen Boundaries
@@ -211,14 +220,11 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
     };
   }, [open, setOpen]);
 
-  if (!mounted || !open) return <span ref={anchorRef} hidden />;
-
-  // Portal into the anchor's own document (supports iframe rendering).
-  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+  if (!portalTarget || !open) return <span ref={setAnchor} hidden />;
 
   return (
     <>
-      <span ref={anchorRef} hidden />
+      <span ref={setAnchor} hidden />
       {createPortal(
     <div
       ref={contentRef}

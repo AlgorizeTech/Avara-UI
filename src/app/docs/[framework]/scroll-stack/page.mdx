@@ -1,0 +1,512 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Scroll Stack
+
+A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
+
+
+## Examples
+
+Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
+
+### Simple stack
+
+export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+import { items } from "./items";
+
+export default function GappedStack() {
+  // Pixel distance between the stacked sticky cards.
+  return <ScrollStack items={items} cardGap={64} />;
+}`;
+
+<ExampleShowcase
+  name="scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Card gap",
+      propNotes: [
+        {
+          prop: "cardGap",
+          value: '{64}',
+          effect:
+            "is the pixel offset between stacked cards, which is what keeps the titles underneath readable.",
+        },
+      ],
+      props: { cardGap: 64 },
+      usage: usageSimpleGap,
+      code: extractCode("src/components/custom/blocks/ScrollStackBlock.tsx"),
+    },
+  ]}
+/>
+
+### Sticky stack
+
+export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+const items = [
+  {
+    id: "ui-design",
+    title: "UI Design",
+    badge: "Visual Identity",
+    contentType: "list",
+    description: "Interfaces that look deliberate at every breakpoint.",
+    listItems: ["Design tokens", "Component specs", "Motion guidelines"],
+  },
+];
+
+export default function ServicesSection() {
+  return (
+    <StickyScrollStack
+      items={items}
+      headerTitle="What we do"
+      headerContentType="text-button"
+      headerButtonText="Book a call"
+    />
+  );
+}`;
+
+export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+import { items } from "./items";
+
+export default function TunedStickyStack() {
+  // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
+  // offset that keeps the earlier headers peeking out.
+  return <StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />;
+}`;
+
+<ExampleShowcase
+  name="sticky-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Sticky stack",
+      subheading: "A headed section where each card sticks and the next overlaps it.",
+      propNotes: [
+        {
+          prop: "contentType",
+          effect:
+            "on an item picks its body: `list`, `image`, `split` or `custom`.",
+        },
+      ],
+      props: { headerMode: "text-button" },
+      usage: usageSticky,
+      code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
+    },
+    {
+      title: "Stack geometry",
+      propNotes: [
+        {
+          prop: "scaleStep",
+          value: '{0.08}',
+          effect:
+            "is how far each covered card recedes.",
+        },
+        {
+          prop: "stackOffsetStep",
+          value: '{28}',
+          effect:
+            "is the pixel offset that keeps earlier headers peeking out.",
+        },
+      ],
+      props: { headerMode: "image-button", scaleStep: 0.08, stackOffsetStep: 28 },
+      usage: usageStickyGeometry,
+    },
+  ]}
+/>
+
+### Split stack
+
+export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+import { items } from "./items";
+
+export default function PinnedRightStack() {
+  return <SplitScrollStack items={items} stickySide="right" />;
+}`;
+
+export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+import { items } from "./items";
+
+export default function PinnedLeftStack() {
+  return (
+    <SplitScrollStack
+      items={items}
+      stickySide="left"
+      cardDepthScale={0.1}
+      cardOffset={32}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="split-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Pinned right",
+      subheading: "A two-column layout: the right column pins while the left scrolls its deck past it.",
+      propNotes: [
+        {
+          prop: "stickySide",
+          value: '"right"',
+          effect:
+            "pins the right-hand column so cards stack on the right.",
+        },
+      ],
+      props: { stickySide: "right" },
+      usage: usageSplitRight,
+      code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
+    },
+    {
+      title: "Pinned left",
+      propNotes: [
+        {
+          lead: "Flip",
+          prop: "stickySide",
+          value: '"left"',
+          effect:
+            "and the deck moves to the left side.",
+        },
+        {
+          prop: "cardDepthScale",
+          effect:
+            "and `cardOffset` tune that deck's shrink and spacing.",
+        },
+      ],
+      props: { stickySide: "left", cardDepthScale: 0.1, cardOffset: 32 },
+      usage: usageSplitLeft,
+    },
+  ]}
+/>
+
+### Horizontal stack
+
+export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+
+const steps = [
+  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
+  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
+];
+
+export default function ProcessRail() {
+  return (
+    <HorizontalScrollStack
+      items={steps}
+      title="How we work"
+      subtitle="Four steps, start to ship."
+    />
+  );
+}`;
+
+export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { steps } from "./steps";
+
+export default function ShortRail() {
+  // Fewer steps means a shorter pinned scroll distance.
+  return <HorizontalScrollStack items={steps.slice(0, 3)} />;
+}`;
+
+<ExampleShowcase
+  name="horizontal-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Horizontal stack",
+      subheading: "The section pins and vertical scroll is translated into horizontal travel.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "become the cards on the rail, in order.",
+        },
+      ],
+      props: { title: "How we work", subtitle: "Four steps, start to ship." },
+      usage: usageHorizontal,
+      code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
+    },
+    {
+      title: "Shorter rail",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "also sets the pinned scroll distance — it is derived from the count, so trimming the array shortens the section.",
+        },
+      ],
+      props: { itemCount: 3 },
+      usage: usageHorizontalShort,
+    },
+  ]}
+/>
+
+## Installation
+
+Each layout is its own block file. Install only the ones you use — they share no code.
+
+<InstallGroup>
+  <Installation name="scroll-stack" />
+  <Installation name="sticky-scroll-stack" />
+  <Installation name="split-scroll-stack" />
+  <Installation name="horizontal-scroll-stack" />
+</InstallGroup>
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>StackItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of feature card objects defining the sequential stack
+          sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>depthScale</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.05</code>
+        </td>
+        <td>
+          Controls the scaling mathematics. A value of <code>0.05</code> means
+          each background card shrinks by 5% as the next card stacks over it via
+          GSAP.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>cardGap</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>24</code>
+        </td>
+        <td>
+          The vertical pixel distance applied to the sticky top offset of each
+          subsequent card, creating a staggered folder/deck appearance at the
+          top of the viewport.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>scroller</code>
+        </td>
+        <td>
+          <code>string | Element | null</code>
+        </td>
+        <td>
+          <code>window</code>
+        </td>
+        <td>
+          Optional scrolling viewport target passed directly to GSAP's{" "}
+          <code>ScrollTrigger</code>. Essential when rendering the stack inside
+          custom overflow containers, modals, or preview boxes instead of the
+          native window root.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollStack</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost scrolling
+          container wrapper.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          GSAP key mapping.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the left or top side of
+          the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Detailed paragraph text explaining the feature, displayed beneath the
+          headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional Lucide React icon rendered inside an adaptive badge box above
+          the title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>content</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional custom JSX/UI payload (e.g., code blocks, interactive graphs,
+          mockups) rendered on the right half of the card on desktop viewports.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"bg-white dark:bg-zinc-900..."</code>
+        </td>
+        <td>
+          Optional Tailwind background, text, and border classes applied to the
+          card surface (e.g., <code>"bg-indigo-600 text-white"</code>). Omitting
+          this allows the card to adapt automatically to light and dark modes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

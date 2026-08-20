@@ -1,0 +1,214 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Calendar Dashboard
+
+A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
+
+## Examples
+
+`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
+
+export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+
+// Keys are "YYYY-M-D" (no zero padding); values are event types.
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function TeamCalendar() {
+  return <CalendarDashboard mockEvents={events} />;
+}`;
+
+export const usageMinimal = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
+
+export default function EmbeddedCalendar() {
+  // "minimal" drops the card chrome so the dashboard sits flush inside your page.
+  return <CalendarDashboard variant="minimal" mockEvents={events} />;
+}`;
+
+export const usageGlass = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
+
+export default function GlassCalendar() {
+  // "glass" is translucent — intended to sit on a background image or rich pattern.
+  return (
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop')",
+      }}
+    >
+      <CalendarDashboard variant="glass" mockEvents={events} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="calendar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Calendar dashboard",
+      subheading: "Everything past the initial events is internal state.",
+      propNotes: [
+        {
+          lead: "Seed",
+          prop: "mockEvents",
+          effect:
+            "with a map of `\"YYYY-M-D\"` to an array of event types (`\"pentest\"`, `\"kickoff\"`). Note the un-padded month and day.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the active states, primary buttons and focus rings — a named key or a hex string.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Calendar.tsx"),
+    },
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card chrome so the dashboard sits flush in your own layout.",
+        },
+      ],
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit on a coloured or photographic surface.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="calendar" />
+
+## Features
+Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
+
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>mockEvents</code>
+        </td>
+        <td>
+          <code>Record&lt;string, string[]&gt;</code>
+        </td>
+        <td>
+          <code>{"{}"}</code>
+        </td>
+        <td>
+          A dictionary mapping string dates (<code>"YYYY-M-D"</code>) to an
+          array of event types (<code>"pentest"</code> or <code>"kickoff"</code>
+          ).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including borders, padding,
+          and grid-gaps.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes to active states, primary buttons, and
+          focus rings. Accepts valid hex codes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

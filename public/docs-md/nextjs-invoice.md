@@ -122,6 +122,6 @@ Explore the Invoice component's structured layout for displaying billing informa
 
 ---
 
-**Component Path:** `nextjs\invoice\page.mdx`
+**Component Path:** `[framework]\invoice\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

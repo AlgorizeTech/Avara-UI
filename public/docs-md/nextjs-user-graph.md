@@ -76,6 +76,6 @@ Discover the key capabilities of the User Graph hierarchy tree:
 
 ---
 
-**Component Path:** `nextjs\user-graph\page.mdx`
+**Component Path:** `[framework]\user-graph\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

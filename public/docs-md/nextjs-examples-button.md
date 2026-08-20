@@ -8,7 +8,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/button-view.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/button-view.tsx`
 
 ## Others
 
@@ -18,7 +18,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/others.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/others.tsx`
 
 ## Social Buttons
 
@@ -28,7 +28,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/social-button.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/social-button.tsx`
 
 ## Action Buttons
 
@@ -38,7 +38,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/action.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/action.tsx`
 
 ## Right Icon Buttons
 
@@ -48,7 +48,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/righticon.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/righticon.tsx`
 
 ## Icon Only Buttons
 
@@ -58,7 +58,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/only.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/only.tsx`
 
 ## E-commerce Buttons
 
@@ -68,7 +68,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/button/commerce.tsx`
+See implementation in: `src/app/docs/[framework]/examples/button/commerce.tsx`
 
 # Button Component
 
@@ -176,6 +176,6 @@ You can put the button into a loading state, which disables it and shows a spinn
 
 ---
 
-**Component Path:** `nextjs\examples\button\page.mdx`
+**Component Path:** `[framework]\examples\button\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

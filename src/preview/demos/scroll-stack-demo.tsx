@@ -164,9 +164,9 @@ export default function ScrollStackDemo({
                   <div className="text-[10px] text-[var(--theme-color,var(--primary))]">Interactive GSAP Widget</div>
                 </div>
               </div>
-              <button className="px-2.5 py-1 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold text-[10px] shadow-xs">
+              <div className="px-2.5 py-1 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold text-[10px] shadow-xs">
                 Insert
-              </button>
+              </div>
             </div>
           </div>
 

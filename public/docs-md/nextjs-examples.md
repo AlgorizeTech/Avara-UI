@@ -34,7 +34,7 @@ Each example follows Next.js best practices:
 Have an example you'd like to share? We welcome contributions to our examples collection:
 
 1. Fork the repository
-2. Create a new example directory in `/src/app/docs/nextjs/examples/`
+2. Create a new example directory in `/src/app/docs/[framework]/examples/`
 3. Follow the existing structure and best practices
 4. Submit a pull request with your example
 
@@ -47,6 +47,6 @@ Have an example you'd like to share? We welcome contributions to our examples co
 
 ---
 
-**Component Path:** `nextjs\examples\page.mdx`
+**Component Path:** `[framework]\examples\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

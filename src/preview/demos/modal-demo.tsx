@@ -18,8 +18,21 @@ export default function ModalDemo({
   return (
     /* CRITICAL: relative and overflow-hidden trap the absolute modal inside the preview box */
     <div
-      className={`relative overflow-hidden w-full flex items-center justify-center min-h-[550px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50" : ""}`}
+      className={`relative overflow-hidden w-full flex items-center justify-center min-h-[550px] ${
+        variant === "glass" ? "p-4 sm:p-8 bg-cover bg-center" : ""
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0" />
+      )}
       <ModalBlock
         key={`${type}-${variant}-${color}`}
         type={type}

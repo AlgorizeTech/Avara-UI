@@ -462,7 +462,7 @@ export default function SupportDashboard({
             className={cn(
               "w-full max-w-2xl max-h-full rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200",
               variant === "glass"
-                ? "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 backdrop-blur-xl"
+                ? "bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10 backdrop-blur-2xl"
                 : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
             )}
           >
@@ -554,17 +554,29 @@ export default function SupportDashboard({
             <div
               className={cn("p-4 shrink-0 flex-none", styles.chatFooter)}
             >
-              <div className="bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden shadow-sm">
-                <div className="flex border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217]">
+              <div className={cn(
+                "border rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0",
+                variant === "glass"
+                  ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
+                  : "bg-white dark:bg-[#121217] border-zinc-200 dark:border-zinc-800"
+              )}>
+                <div className={cn(
+                  "flex border-b m-0 p-0",
+                  variant === "glass"
+                    ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
+                    : "border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217]"
+                )}>
                   {data.replySection.tabs.map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setModalReplyTab(tab)}
                       className={cn(
-                        "px-5 py-2.5 text-[13px] font-bold transition-colors cursor-pointer",
+                        "px-5 py-2.5 text-[13px] font-bold transition-colors m-0 cursor-pointer",
                         modalReplyTab === tab
                           ? cn(
-                              "bg-white dark:bg-[#121217]",
+                              variant === "glass"
+                                ? "bg-white/40 dark:bg-black/40"
+                                : "bg-white dark:bg-[#121217]",
                               theme.text,
                               theme.activeBorder,
                             )
@@ -1028,7 +1040,7 @@ export default function SupportDashboard({
                         className={cn(
                           "absolute left-1 right-1 top-full z-30 mt-1 p-1 rounded-lg border shadow-xl flex flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-150",
                           variant === "glass"
-                            ? "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-white/10 backdrop-blur-xl"
+                            ? "bg-white/80 dark:bg-zinc-900/90 text-zinc-900 dark:text-white border-white/40 dark:border-white/20 backdrop-blur-2xl shadow-xl"
                             : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800",
                         )}
                       >
@@ -1047,7 +1059,9 @@ export default function SupportDashboard({
                                 "w-full flex items-center justify-between gap-2 px-3 py-2 rounded-md text-xs font-semibold text-left transition-colors cursor-pointer",
                                 active
                                   ? cn(theme.lightBg, theme.text)
-                                  : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60",
+                                  : variant === "glass"
+                                    ? "text-zinc-800 dark:text-zinc-200 hover:bg-black/10 dark:hover:bg-white/10"
+                                    : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60",
                               )}
                             >
                               {opt}
@@ -1087,7 +1101,9 @@ export default function SupportDashboard({
                       className={cn(
                         "flex items-start gap-3 p-4 cursor-pointer transition-all border-l-2 m-0",
                         isActive
-                          ? cn(theme.lightBg, theme.border)
+                          ? variant === "glass"
+                            ? "bg-white/20 dark:bg-white/10 border-white/60 dark:border-white/40"
+                            : cn(theme.lightBg, theme.border)
                           : cn(
                               "border-transparent hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
                               variant === "glass" &&
@@ -1252,8 +1268,18 @@ export default function SupportDashboard({
                       styles.chatFooter,
                     )}
                   >
-                    <div className="max-w-3xl mx-auto bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0">
-                      <div className="flex border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217] m-0 p-0">
+                    <div className={cn(
+                      "max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0 border",
+                      variant === "glass"
+                        ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
+                        : "bg-white dark:bg-[#121217] border-zinc-200 dark:border-zinc-800"
+                    )}>
+                      <div className={cn(
+                        "flex border-b m-0 p-0",
+                        variant === "glass"
+                          ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
+                          : "border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217]"
+                      )}>
                         {data.replySection.tabs.map((tab) => (
                           <button
                             key={tab}
@@ -1262,7 +1288,9 @@ export default function SupportDashboard({
                               "px-5 py-2.5 text-[13px] font-bold transition-colors m-0 cursor-pointer",
                               activeReplyTab === tab
                                 ? cn(
-                                    "bg-white dark:bg-[#121217]",
+                                    variant === "glass"
+                                      ? "bg-white/40 dark:bg-black/40"
+                                      : "bg-white dark:bg-[#121217]",
                                     theme.text,
                                     theme.activeBorder,
                                   )
@@ -1288,7 +1316,12 @@ export default function SupportDashboard({
                             "bg-amber-50/30 dark:bg-amber-900/5",
                         )}
                       />
-                      <div className="flex items-center justify-between p-3 border-t border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217] m-0">
+                      <div className={cn(
+                        "flex items-center justify-between p-3 border-t m-0",
+                        variant === "glass"
+                          ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
+                          : "border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-[#121217]"
+                      )}>
                         <div className="flex gap-1 text-zinc-400 m-0 p-0">
                           <button
                             className={cn(

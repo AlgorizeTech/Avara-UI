@@ -199,6 +199,6 @@ Discover the Collapsible component's accessible disclosure patterns and smooth h
 
 ---
 
-**Component Path:** `nextjs\collapsible\page.mdx`
+**Component Path:** `[framework]\collapsible\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

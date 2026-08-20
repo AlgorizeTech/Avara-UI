@@ -59,27 +59,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }`;
 
-export const usageFloating = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function FloatingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    
-      {/* "floating" detaches the panel from the edge and rounds it */}
-
-            } active>
-              Dashboard
-
-      {children}
-    
-  );
-}`;
-
 export const usageCollapsed = `import {
   Sidebar,
   SidebarContent,
@@ -185,6 +164,6 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
-**Component Path:** `nextjs\sidebar\page.mdx`
+**Component Path:** `[framework]\sidebar\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

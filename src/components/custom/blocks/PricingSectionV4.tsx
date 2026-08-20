@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRight, Star } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AnimatedPrice = ({ value }: any) => {
@@ -38,10 +37,9 @@ const AnimatedPrice = ({ value }: any) => {
   return <span>{formatted}</span>;
 };
 
-export default function PricingSectionV4({ packages }: any) {
+export default function PricingSectionV4({ packages, linkComponent: Link = "a" }: any) {
   const [billingCycle, setBillingCycle] = useState("monthly");
-  const [isMounted, setIsMounted] = useState(false);
-  const [activePlanId, setActivePlanId] = useState<any>(null);
+  const [selectedPlanId, setSelectedPlanId] = useState<any>(null);
 
   let monthlyPlans: any[] = [];
   let yearlyPlans: any[] = [];
@@ -57,13 +55,11 @@ export default function PricingSectionV4({ packages }: any) {
   const activePlans = billingCycle === "monthly" ? monthlyPlans : yearlyPlans;
   const hasYearlyPlans = yearlyPlans.length > 0;
 
-  useEffect(() => {
-    setIsMounted(true);
-    if (activePlans.length > 0 && activePlanId === null) {
-      const defaultPlan = activePlans.find((p) => p.isFeatured) || activePlans[0];
-      setActivePlanId(defaultPlan.id);
-    }
-  }, [activePlans, activePlanId]);
+  // The featured plan is resolved here rather than written back in an effect,
+  // which rendered once with nothing selected before correcting itself.
+  const defaultPlan =
+    activePlans.find((p) => p.isFeatured) ?? activePlans[0] ?? null;
+  const activePlanId = selectedPlanId ?? (defaultPlan ? defaultPlan.id : null);
 
   const activePlan = activePlans.find((p) => p.id === activePlanId) || activePlans[0];
 
@@ -72,11 +68,11 @@ export default function PricingSectionV4({ packages }: any) {
     const newPlans = cycle === "monthly" ? monthlyPlans : yearlyPlans;
     if (newPlans.length > 0) {
       const newFeatured = newPlans.find((p) => p.isFeatured) || newPlans[0];
-      setActivePlanId(newFeatured.id);
+      setSelectedPlanId(newFeatured.id);
     }
   };
 
-  if (!isMounted || !packages) {
+  if (!packages) {
     return (
       <section id="pricing" className="py-32 bg-white dark:bg-black flex justify-center items-center min-h-[500px] transition-colors duration-300">
         <div className="w-8 h-8 border-4 border-lime-500 dark:border-[#CCFF00] border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
@@ -157,8 +153,8 @@ export default function PricingSectionV4({ packages }: any) {
               return (
                 <button
                   key={plan.id}
-                  onMouseEnter={() => setActivePlanId(plan.id)}
-                  onClick={() => setActivePlanId(plan.id)}
+                  onMouseEnter={() => setSelectedPlanId(plan.id)}
+                  onClick={() => setSelectedPlanId(plan.id)}
                   className="group flex flex-col items-start text-left w-full py-4 pr-4"
                 >
                   {plan.isFeatured && (
@@ -236,7 +232,7 @@ export default function PricingSectionV4({ packages }: any) {
             const isActive = activePlanId === plan.id;
             return (
               <div key={plan.id} className="border-b border-zinc-200 dark:border-white/10 transition-colors duration-300">
-                <button onClick={() => setActivePlanId(isActive ? null : plan.id)} className="w-full py-6 md:py-8 flex justify-between items-center text-left">
+                <button onClick={() => setSelectedPlanId(isActive ? null : plan.id)} className="w-full py-6 md:py-8 flex justify-between items-center text-left">
                   <div className="flex flex-col pr-4">
                     {plan.isFeatured && (
                       <span className={`text-[9px] font-mono tracking-widest uppercase mb-1 transition-colors duration-300 ${isActive ? "text-lime-600 dark:text-[#CCFF00]" : "text-zinc-500"}`}>

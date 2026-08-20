@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { X } from "lucide-react";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -33,50 +34,59 @@ export const Drawer = ({
   side?: DrawerSide;
   children: React.ReactNode;
 }) => {
-  const [mounted, setMounted] = useState(false);
   const [renderLayer, setRenderLayer] = useState(open);
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+  const layerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setMounted(true);
+  // Resolves the document this drawer actually lives in, which is not always
+  // the global one — previews portal components into an iframe. Resolving in a
+  // callback ref rather than reading a ref during render keeps render pure, and
+  // a null target doubles as the "not mounted yet" signal that guards SSR.
+  const setAnchor = useCallback((node: HTMLSpanElement | null) => {
+    setPortalTarget(node ? node.ownerDocument.body : null);
   }, []);
+
+  // Opening must show the layer immediately. Adjusting state during render on a
+  // prop change is React's documented alternative to an effect here, and avoids
+  // the extra render an effect would cost on every open.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
+    if (open) setRenderLayer(true);
+  }
 
   useEffect(() => {
     // Resolve the document the drawer actually lives in (supports iframe rendering).
-    const doc = anchorRef.current?.ownerDocument ?? document;
+    const doc = layerRef.current?.ownerDocument ?? document;
     if (open) {
-      setRenderLayer(true);
       doc.body.style.overflow = "hidden";
-    } else {
-      doc.body.style.overflow = "";
-      // Match GSAP animation duration (300ms) before unmounting from DOM
-      const timer = setTimeout(() => setRenderLayer(false), 300);
-      return () => clearTimeout(timer);
+      return () => {
+        doc.body.style.overflow = "";
+      };
     }
-    return () => {
-      doc.body.style.overflow = "";
-    };
-  }, [open]);
+    doc.body.style.overflow = "";
+    // Match GSAP animation duration (300ms) before unmounting from DOM
+    const timer = setTimeout(() => setRenderLayer(false), 300);
+    return () => clearTimeout(timer);
+  }, [open, portalTarget]);
 
   useEffect(() => {
-    const doc = anchorRef.current?.ownerDocument ?? document;
+    const doc = layerRef.current?.ownerDocument ?? document;
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onOpenChange(false);
     };
     if (open) doc.addEventListener("keydown", handleEsc);
     return () => doc.removeEventListener("keydown", handleEsc);
-  }, [open, onOpenChange]);
+  }, [open, onOpenChange, portalTarget]);
 
-  if (!mounted || !renderLayer) return <span ref={anchorRef} hidden />;
-
-  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+  if (!portalTarget || !renderLayer) return <span ref={setAnchor} hidden />;
 
   return (
     <>
-      <span ref={anchorRef} hidden />
+      <span ref={setAnchor} hidden />
       {createPortal(
         <DrawerContext.Provider value={{ open, onOpenChange, side }}>
-          <div className="fixed inset-0 z-50 pointer-events-none">
+          <div ref={layerRef} className="fixed inset-0 z-50 pointer-events-none">
             {children}
           </div>
         </DrawerContext.Provider>,

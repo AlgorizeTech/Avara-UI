@@ -239,6 +239,44 @@ const Summary = ({
   </div>
 );
 
+/**
+ * Defined at module scope on purpose: inside CartBlock it would be a new
+ * component type on every render, remounting the button on each cart change.
+ */
+function TriggerButton({
+  isOpen,
+  onToggle,
+  totalItems,
+  themeBg,
+}: {
+  isOpen: boolean;
+  onToggle: () => void;
+  totalItems: number;
+  themeBg: string;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className={cn(
+        "relative flex items-center justify-center p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all active:scale-95 text-zinc-700 dark:text-zinc-200",
+        isOpen && "bg-zinc-100 dark:bg-zinc-800",
+      )}
+    >
+      <ShoppingBag size={22} />
+      {totalItems > 0 && (
+        <span
+          className={cn(
+            "absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-full shadow-sm",
+            themeBg,
+          )}
+        >
+          {totalItems}
+        </span>
+      )}
+    </button>
+  );
+}
+
 export function CartBlock({
   type = "drawer",
   color = "primary",
@@ -276,12 +314,19 @@ export function CartBlock({
     setItems(items.filter((item) => item.id !== id));
 
   // --- ANIMATION EFFECTS & RENDER LAYER ---
-  useEffect(() => {
+  // Opening must show the layer immediately. Adjusting state during render on a
+  // state change is React's documented alternative to an effect here, and avoids
+  // the extra render an effect would cost on every open.
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (prevIsOpen !== isOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) setRenderLayer(true);
-    else {
-      const timer = setTimeout(() => setRenderLayer(false), 350);
-      return () => clearTimeout(timer);
-    }
+  }
+
+  useEffect(() => {
+    if (isOpen) return;
+    const timer = setTimeout(() => setRenderLayer(false), 350);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   useEffect(() => {
@@ -351,27 +396,6 @@ export function CartBlock({
     return () => document.removeEventListener("keydown", handleEsc);
   }, [isOpen]);
 
-  const TriggerButton = () => (
-    <button
-      onClick={() => setIsOpen(!isOpen)}
-      className={cn(
-        "relative flex items-center justify-center p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all active:scale-95 text-zinc-700 dark:text-zinc-200",
-        isOpen && "bg-zinc-100 dark:bg-zinc-800",
-      )}
-    >
-      <ShoppingBag size={22} />
-      {totalItems > 0 && (
-        <span
-          className={cn(
-            "absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-full shadow-sm",
-            theme.bg,
-          )}
-        >
-          {totalItems}
-        </span>
-      )}
-    </button>
-  );
 
   if (type === "page") {
     return (
@@ -437,7 +461,12 @@ export function CartBlock({
           type === "popover" ? "flex flex-col items-center" : "",
         )}
       >
-        <TriggerButton />
+        <TriggerButton
+          isOpen={isOpen}
+          onToggle={() => setIsOpen(!isOpen)}
+          totalItems={totalItems}
+          themeBg={theme.bg}
+        />
 
         {type === "popover" && (
           <div className="absolute top-[calc(100%+12px)] right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] pointer-events-none">

@@ -9,24 +9,24 @@ import { FileText, Folder, Home, Settings } from "lucide-react";
 
 // Mock Paths
 const shortPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
+  { label: "Home", href: "#", icon: Home },
+  { label: "Settings", href: "#", icon: Settings },
+  { label: "Profile", href: "#" },
 ];
 
 const longPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
+  { label: "Home", href: "#", icon: Home },
+  { label: "Dashboard", href: "#" },
+  { label: "Projects", href: "#", icon: Folder },
+  { label: "Nexus UI Kit", href: "#" },
+  { label: "Components", href: "#" },
   { label: "Breadcrumb.tsx", href: "#", icon: FileText },
 ];
 
 const plainPath = [
-  { label: "Docs", href: "/docs" },
-  { label: "Components", href: "/docs/components" },
-  { label: "Breadcrumb", href: "/docs/components/breadcrumb" },
+  { label: "Docs", href: "#" },
+  { label: "Components", href: "#" },
+  { label: "Breadcrumb", href: "#" },
 ];
 
 export default function BreadcrumbDemo({

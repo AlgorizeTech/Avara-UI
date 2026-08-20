@@ -118,14 +118,36 @@ function deriveName(basename: string, kind: Source["kind"]): string {
 // Import parsing
 // ---------------------------------------------------------------------------
 
+/** Anchored to the start of a line so a JSDoc body cannot look like an import. */
 const IMPORT_RE =
-  /import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/g;
+  /^[ \t]*import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/gm;
+
+/**
+ * `lazy(() => import("./Fleet-map"))` and friends. These resolve at runtime but
+ * still have to ship: an item whose dynamic import is not counted installs
+ * without the file it reaches for, and the consumer's build fails on a module
+ * it never wrote.
+ */
+const DYNAMIC_IMPORT_RE = /\bimport\s*\(\s*["']([^"']+)["']\s*\)/g;
+
+/** JSDoc bodies and commented-out code — documentation, not dependencies. */
+const COMMENT_LINE_RE = /^[ \t]*(?:\/\/|\/\*|\*)/;
 
 function parseImports(src: string): string[] {
+  // Comment-only lines go first. A JSDoc example showing `import Link from
+  // "next/link"` is instructions for the consumer, not a dependency, and
+  // counting it reported a framework-agnostic component as Next-coupled.
+  const code = src
+    .split("\n")
+    .map((line) => (COMMENT_LINE_RE.test(line) ? "" : line))
+    .join("\n");
+
   const specs: string[] = [];
-  IMPORT_RE.lastIndex = 0;
-  let m: RegExpExecArray | null;
-  while ((m = IMPORT_RE.exec(src))) specs.push(m[1]);
+  for (const re of [IMPORT_RE, DYNAMIC_IMPORT_RE]) {
+    re.lastIndex = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(code))) specs.push(m[1]);
+  }
   return specs;
 }
 
@@ -133,6 +155,43 @@ function packageOf(spec: string): string {
   return spec.startsWith("@")
     ? spec.split("/").slice(0, 2).join("/")
     : spec.split("/")[0];
+}
+
+/**
+ * The `@types/x` companion for a package that ships no types of its own.
+ *
+ * A TypeScript consumer installing an item that imports `leaflet` otherwise gets
+ * "Could not find a declaration file for module 'leaflet'" — and, worse, cascading
+ * errors in packages whose own types depend on it.
+ *
+ * These go in `devDependencies`, not `dependencies`: the shadcn registry-item schema
+ * supports both channels and the CLI installs them separately. Emitting `@types/*` as
+ * a runtime dependency inflates production installs and misstates what the component
+ * needs at run time.
+ *
+ * Resolved from this repo's own node_modules so the list cannot go stale: if we
+ * need the types to compile, so does everyone installing the component.
+ */
+function typesPackageFor(pkg: string): string | null {
+  if (pkg.startsWith("@types/")) return null;
+  try {
+    const meta = JSON.parse(
+      fs.readFileSync(
+        path.join(ROOT, "node_modules", pkg, "package.json"),
+        "utf8"
+      )
+    );
+    if (meta.types || meta.typings) return null;
+  } catch {
+    return null; // not installed here — nothing to assert
+  }
+  const scoped = pkg.startsWith("@")
+    ? pkg.slice(1).replace("/", "__")
+    : pkg;
+  const typesPkg = `@types/${scoped}`;
+  return fs.existsSync(path.join(ROOT, "node_modules", typesPkg))
+    ? typesPkg
+    : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -202,6 +261,7 @@ type BuiltItem = {
   description: string;
   categories: string[];
   dependencies: string[];
+  devDependencies?: string[];
   registryDependencies: string[];
   files: { path: string; type: string; target: string }[];
   docs?: string;
@@ -244,6 +304,7 @@ const items: BuiltItem[] = sources.map((s) => {
   const specs = parseImports(src);
 
   const dependencies = new Set<string>();
+  const devDependencies = new Set<string>();
   const registryDependencies = new Set<string>();
   let usesNext = false;
 
@@ -268,6 +329,8 @@ const items: BuiltItem[] = sources.map((s) => {
     if (pkg === "next") usesNext = true;
     if (AMBIENT_PACKAGES.has(pkg)) continue;
     dependencies.add(pkg);
+    const types = typesPackageFor(pkg);
+    if (types) devDependencies.add(types);
   }
 
   if (usesNext) nextCoupled.push(s.name);
@@ -298,6 +361,9 @@ const items: BuiltItem[] = sources.map((s) => {
       meta?.description ?? `TODO: describe ${s.name}. Generated placeholder.`,
     categories: meta?.categories ?? [],
     dependencies: [...dependencies].sort(),
+    ...(devDependencies.size
+      ? { devDependencies: [...devDependencies].sort() }
+      : {}),
     registryDependencies: [...registryDependencies].sort().map(depRef),
     files: [{ path: s.rel, type: fileType, target: s.target }],
   };
@@ -361,7 +427,7 @@ console.log(`\nnpm dependencies across registry: ${[...allDeps].sort().join(", "
 
 if (nextCoupled.length) {
   console.log(
-    `\nNext.js-coupled (import next/image or next/link) — ${nextCoupled.length} items:`
+    `\nNext.js-coupled (any next/* import) — ${nextCoupled.length} items:`
   );
   console.log(`  ${nextCoupled.sort().join(", ")}`);
   console.log("  These will not work in Vite/Remix without edits.");

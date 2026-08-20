@@ -158,6 +158,6 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
 ---
 
-**Component Path:** `nextjs\button\page.mdx`
+**Component Path:** `[framework]\button\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
