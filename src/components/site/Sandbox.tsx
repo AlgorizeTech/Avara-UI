@@ -34,6 +34,11 @@ import {
 } from "@/components/site/showcase-color";
 import React, { Fragment, useEffect, useId, useRef, useState } from "react";
 
+/**
+ * Hard floor for the preview viewport. Nothing — drag, keyboard, or the fluid
+ * "100%" state on a sub-350px phone — renders the demo narrower than this; below
+ * it the scale-to-fit math shrinks a real 350px viewport instead.
+ */
 const MIN_PREVIEW_WIDTH = 350;
 // Standard breakpoint ranges: mobile < 640 <= tablet < 1024 <= desktop
 const TABLET_MIN_WIDTH = 640;
@@ -169,7 +174,11 @@ export function Sandbox({
 
   const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
   const viewportWidth =
-    previewWidth === "100%" ? availableWidth : (previewWidth as number);
+    previewWidth === "100%"
+      ? availableWidth === null
+        ? null
+        : Math.max(availableWidth, MIN_PREVIEW_WIDTH)
+      : (previewWidth as number);
 
   // Wide device on a narrow area → keep the true viewport, shrink visually.
   const fitScale =
@@ -177,8 +186,9 @@ export function Sandbox({
       ? availableWidth / viewportWidth
       : 1;
   const visualScale = fitScale;
-  /** Fluid AND unscaled — the only state that fills the card edge to edge. */
-  const isFitted = previewWidth === "100%" && fitScale === 1;
+  /** The fluid state — the only one that fills the card edge to edge. On a
+   *  sub-floor screen it is scaled rather than unscaled, but still edge to edge. */
+  const isFitted = previewWidth === "100%";
 
   // Derived from the MEASURED width, including the fluid "100%" state — so on
   // first load the highlighted button is the visitor's own device class.
@@ -195,7 +205,10 @@ export function Sandbox({
     if (width >= max - SNAP_TO_FULL_THRESHOLD) {
       setPreviewWidth("100%");
     } else {
-      setPreviewWidth(Math.round(Math.min(Math.max(width, MIN_PREVIEW_WIDTH), max)));
+      // The floor wins over `max`: in an area narrower than 350px the preview
+      // keeps a real 350px viewport and the scale-to-fit math shrinks it visually,
+      // exactly like the mobile preset does.
+      setPreviewWidth(Math.round(Math.max(Math.min(width, max), MIN_PREVIEW_WIDTH)));
     }
   };
 
@@ -223,7 +236,7 @@ export function Sandbox({
   const handleResizeKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const max = areaWidth ?? Infinity;
     const current =
-      previewWidth === "100%" ? (areaWidth ?? DESKTOP_MIN_WIDTH) : previewWidth;
+      previewWidth === "100%" ? (viewportWidth ?? DESKTOP_MIN_WIDTH) : previewWidth;
     const step = e.shiftKey ? 64 : 16;
     if (e.key === "ArrowLeft") {
       e.preventDefault();
