@@ -300,11 +300,7 @@ export function TableBlock<T extends { id: string | number }>({
     }
   };
 
-  const handleSelectRow = (
-    id: string | number,
-    row: T,
-    e: React.MouseEvent,
-  ) => {
+  const handleSelectRow = (id: string | number, e: React.MouseEvent) => {
     e.stopPropagation();
     const newSelected = new Set(selectedIds);
     if (newSelected.has(id)) newSelected.delete(id);
@@ -432,7 +428,7 @@ export function TableBlock<T extends { id: string | number }>({
                           <td className={cn(s.td, "w-12 text-center")}>
                             <CustomCheckbox themeBg={theme.bg} themeFocusRing={theme.focusRing}
                               checked={isSelected}
-                              onChange={(e) => handleSelectRow(row.id, row, e)}
+                              onChange={(e) => handleSelectRow(row.id, e)}
                             />
                           </td>
                         )}

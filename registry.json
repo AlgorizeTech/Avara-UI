@@ -689,6 +689,8 @@
         "data-display"
       ],
       "dependencies": [
+        "@types/leaflet",
+        "leaflet",
         "react-leaflet"
       ],
       "registryDependencies": [
@@ -885,6 +887,7 @@
         "data-display"
       ],
       "dependencies": [
+        "@types/leaflet",
         "leaflet",
         "lucide-react",
         "react-leaflet"
@@ -913,7 +916,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/fleet-map.json"
+      ],
       "files": [
         {
           "path": "src/components/custom/blocks/Fleet-tracker.tsx",

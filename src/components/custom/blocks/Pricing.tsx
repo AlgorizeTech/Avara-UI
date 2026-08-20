@@ -895,16 +895,9 @@ export interface PricingTableData {
 export function PricingTable({
   data,
   color = "indigo",
-  linkComponent: Link = "a",
 }: {
   data: PricingTableData;
   color?: PricingColor;
-  /**
-   * The element used for links. Defaults to a plain `a`, so this component works
-   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
-   * client-side navigation and prefetching: `linkComponent={Link}`.
-   */
-  linkComponent?: React.ElementType;
 }) {
   const { theme, style } = getThemeStyles(color);
   const renderFeatureValue = (value: string | boolean) => {
