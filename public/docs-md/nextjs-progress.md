@@ -14,30 +14,6 @@ export default function ProgressDemo() {
   return ;
 }`;
 
-export const usageField = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function LabelledProgress() {
-  return (
-
-  );
-}`;
-
-export const usageVariants = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressVariants() {
-  return (
-
-  );
-}`;
-
-export const usageSizes = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressSizes() {
-  return (
-
-  );
-}`;
-
 export const usageFormatted = `import { useState } from "react";
 
 export default function StorageWidget() {

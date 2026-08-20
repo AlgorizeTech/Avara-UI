@@ -14,18 +14,6 @@ export default function BasicKbd() {
   return ⌘;
 }`;
 
-export const usageSizes = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
-
-export default function KbdSizes() {
-  return (
-    
-      ⌘
-      ⌘
-      ⌘
-    
-  );
-}`;
-
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
 export default function ShortcutList() {
@@ -62,19 +50,6 @@ export default function InlineShortcut() {
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          effect:
-            "to set height, padding and font-size — `sm` (the default), `md` or `lg`.",
-        },
-      ],
-      props: { example: "sizes" },
-      usage: usageSizes,
     },
     {
       title: "Combinations",

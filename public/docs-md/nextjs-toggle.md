@@ -8,36 +8,6 @@ Toggles are primarily used to manage interface states (like text formatting in a
 
 Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
-export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function BasicToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
-
-export const usageOutline = `"use client";
-
-export default function OutlineToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
-
-export const usageGhost = `"use client";
-
-export default function GhostToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
-
 export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
 export default function ToggleSizes() {

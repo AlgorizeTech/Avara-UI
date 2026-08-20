@@ -34,40 +34,6 @@ export default function NotificationCard() {
   );
 }`;
 
-export const usageDefaultVariant = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-
-export default function ActionCards() {
-  // "default" drops the border and leans on the shadow alone.
-  return (
-
-             Download Report
-
-            Export your analytics data as a CSV file for external processing.
-
-             Import Data
-
-            Upload legacy customer profiles to merge into your active CRM.
-
-  );
-}`;
-
-export const usageFlat = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-
-export default function FlatCards() {
-  // "flat" tints the surface instead of raising it — good for nested panels.
-  return (
-
-             Download Report
-          
-          Export your analytics data as a CSV file.
-
-             Import Data
-          
-          Upload legacy customer profiles into your CRM.
-
-  );
-}`;
-
 export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
 
 export default function ClickableCards() {

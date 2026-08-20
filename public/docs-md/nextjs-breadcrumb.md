@@ -34,20 +34,6 @@ export default function BreadcrumbWithIcons() {
   return ;
 }`;
 
-export const usageVariants = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const items = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
-];
-
-export default function BreadcrumbVariants() {
-  return (
-
-  );
-}`;
-
 export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
 
 const deepPath = [
@@ -62,22 +48,6 @@ const deepPath = [
 export default function DeepBreadcrumb() {
   // More items than maxItems? The middle collapses behind a "..." button
   // that expands the full trail when clicked.
-  return ;
-}`;
-
-export const usageMaxItems = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const deepPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
-  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
-];
-
-export default function WideBreadcrumb() {
-  // Raise maxItems past the item count and nothing collapses.
   return ;
 }`;
 

@@ -510,7 +510,7 @@ export default function FleetTracker({
                   theme.bg,
                 )}
               >
-                <Navigation2 className="w-5 h-5 text-white" />
+                <Navigation2 className={cn("w-5 h-5", theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")} />
               </div>
               <div>
                 <h2 className="font-bold text-lg text-zinc-900 dark:text-white leading-tight">
@@ -583,7 +583,7 @@ export default function FleetTracker({
                     className={cn(
                       "w-5 h-5",
                       isActive
-                        ? "text-white"
+                        ? theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900"
                         : "text-zinc-500 dark:text-zinc-400",
                     )}
                   />

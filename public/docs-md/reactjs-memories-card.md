@@ -4,46 +4,7 @@ A premium, interactive card stack component featuring real-time 3D tilt physics,
 
 ## Examples
 
-Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck.
-
-export const usageDefault = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
-
-const memories = [
-  {
-    id: "m1",
-    tag: "Highlight",
-    title: "Kyoto Lantern Festival",
-    location: "Kyoto, Japan",
-    date: "Oct 2025",
-    description: "Thousands of paper lanterns lighting the Gion district.",
-    image: "/photos/kyoto.jpg",
-  },
-  {
-    id: "m2",
-    tag: "Expedition",
-    title: "Dolomites Alpine Ridge",
-    location: "South Tyrol, Italy",
-    date: "Aug 2025",
-    image: "/photos/dolomites.jpg",
-  },
-];
-
-export default function TravelDeck() {
-  return ;
-}`;
-
-export const usageMinimal = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
-
-// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
-// metadata and the overlay collapses to just the title.
-const memories = [
-  { id: "m1", title: "Kyoto Lantern Festival", image: "/photos/kyoto.jpg" },
-  { id: "m2", title: "Dolomites Alpine Ridge", image: "/photos/dolomites.jpg" },
-];
-
-export default function PhotoDeck() {
-  return ;
-}`;
+Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
 
 export const usageOnChange = `import { useState } from "react";
 
@@ -111,8 +72,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           undefined
 
-          Optional callback function fired whenever a card is swiped to the back
-          and the stack cycles to a new front card.
+          Callback function triggered on every card swipe gesture. It receives the new active card index (`number`), allowing you to dynamically sync external captions, counter indicators, or trigger custom analytics events.
 
           MemoriesCard
 

@@ -507,9 +507,10 @@ export default function ChatApp({
                 "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-white dark:border-zinc-800 rotate-3 shrink-0 flex-none shadow-xl",
                 theme.gradient,
                 theme.shadow,
+                theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
               )}
             >
-              <MessageCircle className="w-10 h-10 text-white -rotate-3" />
+              <MessageCircle className="w-10 h-10 -rotate-3" />
             </div>
             <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
               Your Messages

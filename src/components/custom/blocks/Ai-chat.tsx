@@ -517,8 +517,9 @@ export default function AIChat({
           <div className="flex items-center gap-3">
             <div
               className={cn(
-                "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center text-white font-bold text-xs shadow-sm",
+                "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
                 theme.gradient,
+                theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
               )}
             >
               JM
@@ -600,9 +601,10 @@ export default function AIChat({
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      "w-9 h-9 bg-gradient-to-br rounded-xl flex items-center justify-center text-white shadow-sm",
+                      "w-9 h-9 bg-gradient-to-br rounded-xl flex items-center justify-center shadow-sm",
                       theme.gradient,
                       theme.shadow,
+                      theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
                     )}
                   >
                     <Sparkles className="w-4 h-4" />
@@ -636,14 +638,21 @@ export default function AIChat({
                       {msg.role === "ai" ? (
                         <div
                           className={cn(
-                            "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center text-white shadow-sm",
+                            "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-sm",
                             theme.gradient,
+                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
                           )}
                         >
                           <Bot className="w-5 h-5" />
                         </div>
                       ) : (
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-600 flex items-center justify-center text-zinc-600 dark:text-zinc-300 font-bold text-xs shadow-sm">
+                        <div
+                          className={cn(
+                            "w-8 h-8 rounded-lg bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
+                            theme.gradient,
+                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
+                          )}
+                        >
                           JM
                         </div>
                       )}
@@ -670,8 +679,8 @@ export default function AIChat({
                           {msg.time}
                         </span>
                         {msg.role === "ai" && (
-                          <div className="flex items-center gap-1.5 text-zinc-400">
-                            <button className="p-1 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors">
+                          <div className="flex items-center gap-1.5 text-white dark:text-zinc-900">
+                            <button className="p-1 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors">
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <button className="p-1 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded transition-colors">

@@ -41,18 +41,10 @@ const m = new Date().getMonth() + 1;
 const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
 
 export default function GlassCalendar() {
-  // "glass" is translucent — give it a colored surface to sit on.
+  // "glass" is translucent — intended to sit on a background image or rich pattern.
   return (
 
   );
-}`;
-
-export const usageEmpty = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
-
-export default function EmptyCalendar() {
-  // mockEvents defaults to {} — the dashboard starts clean and you add
-  // events through its own UI.
-  return ;
 }`;
 
 ## Installation

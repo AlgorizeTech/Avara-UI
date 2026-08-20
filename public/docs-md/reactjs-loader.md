@@ -26,29 +26,9 @@ export default function PulseLoader() {
   return ;
 }`;
 
-export const usageRing = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function RingLoader() {
-  return ;
-}`;
-
 export const usageBar = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
 export default function BarLoader() {
-  return ;
-}`;
-
-export const usageSizes = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function LoaderSizes() {
-  return (
-
-  );
-}`;
-
-export const usageText = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function LoaderWithText() {
   return ;
 }`;
 

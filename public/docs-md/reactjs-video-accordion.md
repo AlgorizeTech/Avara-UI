@@ -8,30 +8,6 @@ This layout is incredibly useful for portfolio reels, storytelling feature secti
 
 Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
 
-export const usageDefault = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
-
-const panels = [
-  {
-    id: "ocean",
-    title: "Ocean Life",
-    description: "Dive deep into the abyss and discover the world beneath.",
-    videoSrc: "/videos/sea-turtle.mp4",
-    posterUrl: "/photos/ocean.jpg",
-  },
-  {
-    id: "wildlife",
-    title: "Majestic Wildlife",
-    description: "The power and scale of untamed nature.",
-    videoSrc: "/videos/elephants.mp4",
-    posterUrl: "/photos/wildlife.jpg",
-  },
-];
-
-export default function FeatureReel() {
-  // Omitting defaultActiveId starts in the resting state: no panel dominant.
-  return ;
-}`;
-
 export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
 
 export default function OpenedOnLoad() {

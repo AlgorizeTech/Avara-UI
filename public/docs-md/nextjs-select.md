@@ -24,16 +24,6 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageFilled = `"use client";
-
-export default function FilledSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
 export const usageUnderlined = `"use client";
 
 export default function UnderlinedSelect() {
@@ -41,26 +31,6 @@ export default function UnderlinedSelect() {
 
   return (
     
-  );
-}`;
-
-export const usageGlow = `"use client";
-
-export default function GlowSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-export default function SelectSizes() {
-  const [value, setValue] = useState("");
-
-  return (
-
   );
 }`;
 
@@ -81,32 +51,6 @@ export default function MultiSelect() {
 
   return (
     
-  );
-}`;
-
-export const usageGrouped = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-
-const options = [
-  { label: "React", value: "react", icon: Code, group: "Frontend" },
-  { label: "Vue", value: "vue", icon: Code, group: "Frontend" },
-  { label: "Node.js", value: "node", icon: Database, group: "Backend" },
-];
-
-export default function GroupedSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
-export const usageStates = `"use client";
-
-export default function SelectStates() {
-  const [value, setValue] = useState("");
-
-  return (
-
   );
 }`;
 

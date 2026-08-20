@@ -122,24 +122,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 }`;
 
-export const usageGlass = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  // Glass leans on a backdrop blur — best over photos or rich backgrounds.
-  return {children};
-}`;
-
 export const usageMinimal = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return {children};
-}`;
-
-export const usagePosition = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  // "top-right" | "top-left" | "top-center"
-  // "bottom-right" | "bottom-left" | "bottom-center"
   return {children};
 }`;
 

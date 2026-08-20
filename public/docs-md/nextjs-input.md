@@ -32,22 +32,6 @@ export default function UnderlinedInput() {
   );
 }`;
 
-export const usageGlow = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function GlowInput() {
-  return (
-    
-  );
-}`;
-
-export const usageSizes = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function InputSizes() {
-  return (
-
-  );
-}`;
-
 export const usagePassword = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 export default function PasswordInput() {
@@ -62,14 +46,6 @@ export default function FileUploadInput() {
   return (
      console.log("Uploaded files:", files)}
     />
-  );
-}`;
-
-export const usageStates = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function InputStates() {
-  return (
-
   );
 }`;
 

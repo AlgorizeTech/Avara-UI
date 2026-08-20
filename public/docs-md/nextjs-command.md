@@ -8,36 +8,6 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
-export const usageDefault = `import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/custom/blocks/CommandBlock";
-
-export default function ActionSearch() {
-  return (
-
-        {/* Shown automatically when every item is filtered out */}
-        No matching records found.
-
-           console.log(value)}>
-            
-            Calendar
-          
-           console.log(value)}>
-            
-            Search Emoji
-          
-           console.log(value)}>
-            
-            Calculator
-
-  );
-}`;
-
 export const usageGroups = `import {
   Command,
   CommandEmpty,

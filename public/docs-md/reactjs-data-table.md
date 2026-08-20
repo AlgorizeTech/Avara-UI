@@ -41,39 +41,6 @@ export default function UserManagement() {
   );
 }`;
 
-export const usageNoSearch = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-
-export default function TableWithoutSearch() {
-  // Drop the global search bar when the dataset is small enough to scan.
-  return (
-    
-  );
-}`;
-
-export const usageNoSelection = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-
-export default function ReadOnlyTable() {
-  // Without selection there is no checkbox column and no batch toolbar —
-  // a purely read-only report table.
-  return (
-    
-  );
-}`;
-
-export const usageBatchActions = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
-
-export default function ExportableTable() {
-  return (
-     (
-        <>
-           exportCsv(selectedIds)}>Export CSV
-          Clear
-        
-      )}
-    />
-  );
-}`;
-
 ## Installation
 
 ## Features

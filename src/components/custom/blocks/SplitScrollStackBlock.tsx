@@ -209,7 +209,7 @@ export const SplitScrollStack = React.forwardRef<
                       className={cn(
                         "w-11 h-11 rounded-xl flex items-center justify-center font-mono font-bold text-sm border transition-all duration-300 shadow-sm",
                         isActive
-                          ? "text-white border-transparent scale-110"
+                          ? "text-primary-foreground dark:text-zinc-900 border-transparent scale-110"
                           : isPassed
                             ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-transparent"
                             : "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 border-zinc-200 dark:border-zinc-700",

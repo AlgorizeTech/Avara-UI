@@ -83,18 +83,8 @@ ${usageTabsData}
 
 export default function GlassTabs() {
   return (
-    // Glass needs a rich surface behind it to blur.
 
   );
-}`;
-
-export const usageDefaultActive = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-
-${usageTabsData}
-
-export default function SettingsFirst() {
-  // defaultActiveId opens a specific tab instead of the first one.
-  return ;
 }`;
 
 ## Installation
