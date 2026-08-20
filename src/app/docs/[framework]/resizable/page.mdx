@@ -89,29 +89,6 @@ export default function VerticalSplit() {
   );
 }`;
 
-export const usageNoGrip = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-import { PanelOne, PanelTwo } from "./panels";
-
-export default function HairlineDivider() {
-  return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel>
-        <PanelOne />
-      </ResizablePanel>
-      {/* Omit \`withHandle\` for a bare 1px divider — still draggable, still
-          keyboard accessible, just without the visible grip. */}
-      <ResizableHandle />
-      <ResizablePanel>
-        <PanelTwo />
-      </ResizablePanel>
-    </ResizablePanelGroup>
-  );
-}`;
-
 export const usageConstraints = `import {
   ResizableHandle,
   ResizablePanel,
@@ -183,19 +160,6 @@ export default function ConstrainedSidebar() {
       ],
       props: { example: "vertical" },
       usage: usageVertical,
-    },
-    {
-      title: "Handle without a grip",
-      propNotes: [
-        {
-          lead: "Leave",
-          prop: "withHandle",
-          effect:
-            "off for a hairline divider that is still draggable and still keyboard focusable.",
-        },
-      ],
-      props: { example: "no-grip" },
-      usage: usageNoGrip,
     },
     {
       title: "Size constraints",

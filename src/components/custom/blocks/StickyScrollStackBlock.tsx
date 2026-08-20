@@ -308,7 +308,7 @@ export const StickyScrollStack = React.forwardRef<
   (
     {
       headerBadge = "Expertise & Solutions",
-      headerTitle = "We can help you with",
+      headerTitle = "Our Core Capabilities",
       headerSubtitle = "We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience.",
       headerButtonText = "Request free audit",
       onHeaderButtonClick,
@@ -354,7 +354,7 @@ export const StickyScrollStack = React.forwardRef<
               </div>
             )}
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1] mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.15] mb-4">
               {headerTitle}
             </h2>
 

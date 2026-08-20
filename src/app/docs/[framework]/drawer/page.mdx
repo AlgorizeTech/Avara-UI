@@ -55,58 +55,6 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageSides = `import { useState } from "react";
-import {
-  Button,
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerTitle,
-} from "@/components/custom/blocks/Drawer";
-
-type Side = "top" | "bottom" | "left" | "right";
-
-function DrawerTile({ side }: { side: Side }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <Button variant="outline" onClick={() => setOpen(true)}>
-        {side}
-      </Button>
-
-      <Drawer open={open} onOpenChange={setOpen} side={side}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>side="{side}"</DrawerTitle>
-            <DrawerDescription>
-              The drawer slides in from the {side} edge and sizes itself to match.
-            </DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button onClick={() => setOpen(false)}>Close</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
-  );
-}
-
-export default function DrawerSides() {
-  return (
-    <div className="flex flex-wrap gap-4">
-      <DrawerTile side="top" />
-      <DrawerTile side="right" />
-      <DrawerTile side="bottom" />
-      <DrawerTile side="left" />
-    </div>
-  );
-}`;
-
 export const usageBottom = `import { useState } from "react";
 import {
   Button,
@@ -178,6 +126,7 @@ export default function OnboardingDrawer() {
 <ExampleShowcase
   name="drawer"
   columns={1}
+  minHeight={500}
   examples={[
     {
       title: "Drawer",
@@ -196,19 +145,6 @@ export default function OnboardingDrawer() {
       props: { side: "right" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Drawer.tsx"),
-    },
-    {
-      title: "Sides",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "side",
-          effect:
-            "to slide in from any edge — `top`, `bottom`, `left` or `right`. It also sets the matching width or height.",
-        },
-      ],
-      props: { showAll: "sides" },
-      usage: usageSides,
     },
     {
       title: "Bottom sheet",

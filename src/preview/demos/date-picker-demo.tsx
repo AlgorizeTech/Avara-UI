@@ -65,7 +65,7 @@ export default function DatePickerDemo({
   }
 
   return (
-    <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
+    <div className="w-full flex flex-col items-start justify-start pt-5 pb-6 min-h-[450px] relative z-10">
       <div className="w-full max-w-sm mx-auto">
         <DatePickerBlock
           key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}`}

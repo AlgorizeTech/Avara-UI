@@ -65,7 +65,7 @@ export default function DrawerDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] bg-white dark:bg-transparent transition-colors duration-300">
+    <div className="w-full flex items-center justify-center min-h-[500px] py-8 px-4 bg-white dark:bg-transparent transition-colors duration-300">
       <Button onClick={() => setIsOpen(true)}>Open Drawer ({side})</Button>
 
       <Drawer open={isOpen} onOpenChange={setIsOpen} side={side}>

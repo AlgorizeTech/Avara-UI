@@ -51,89 +51,6 @@ export default function Faq() {
   );
 }`;
 
-export const usageVariants = `import { Accordion } from "@/components/custom/blocks/Accordion";
-
-export default function AccordionVariants() {
-  return (
-    <div className="flex flex-col gap-6">
-      <Accordion
-        variant="default"
-        type="single"
-        collapsible
-        defaultValue="default"
-        accordionData={[
-          {
-            value: "default",
-            title: 'variant="default"',
-            icon: "FileText",
-            content: ["The “default” accordion styling."],
-          },
-        ]}
-      />
-
-      <Accordion
-        variant="bordered"
-        type="single"
-        collapsible
-        defaultValue="bordered"
-        accordionData={[
-          {
-            value: "bordered",
-            title: 'variant="bordered"',
-            icon: "FileText",
-            content: ["The “bordered” accordion styling."],
-          },
-        ]}
-      />
-
-      <Accordion
-        variant="filled"
-        type="single"
-        collapsible
-        defaultValue="filled"
-        accordionData={[
-          {
-            value: "filled",
-            title: 'variant="filled"',
-            icon: "FileText",
-            content: ["The “filled” accordion styling."],
-          },
-        ]}
-      />
-
-      <Accordion
-        variant="ghost"
-        type="single"
-        collapsible
-        defaultValue="ghost"
-        accordionData={[
-          {
-            value: "ghost",
-            title: 'variant="ghost"',
-            icon: "FileText",
-            content: ["The “ghost” accordion styling."],
-          },
-        ]}
-      />
-
-      <Accordion
-        variant="elevated"
-        type="single"
-        collapsible
-        defaultValue="elevated"
-        accordionData={[
-          {
-            value: "elevated",
-            title: 'variant="elevated"',
-            icon: "FileText",
-            content: ["The “elevated” accordion styling."],
-          },
-        ]}
-      />
-    </div>
-  );
-}`;
-
 export const usageMultiple = `import { Accordion } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
@@ -164,24 +81,6 @@ export default function AlwaysOpenFaq() {
       type="single"
       collapsible={false}
       variant="filled"
-      defaultValue="getting-started"
-    />
-  );
-}`;
-
-export const usageIcon = `import { Accordion } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PlusFaq() {
-  // expandIcon swaps the chevron — pass a lucide name from ICON_MAP.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible
-      variant="elevated"
-      expandIcon="Plus"
       defaultValue="getting-started"
     />
   );
@@ -220,19 +119,6 @@ export default function PlusFaq() {
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
     {
-      title: "Variants",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to change the item styling — `default`, `bordered`, `filled`, `ghost` or `elevated`. It only affects the chrome, never the behaviour.",
-        },
-      ],
-      props: { showAll: "variants" },
-      usage: usageVariants,
-    },
-    {
       title: "Multiple open",
       propNotes: [
         {
@@ -267,20 +153,6 @@ export default function PlusFaq() {
       ],
       props: { variant: "filled", interaction: "single-mandatory" },
       usage: usageMandatory,
-    },
-    {
-      title: "Custom expand icon",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "expandIcon",
-          value: '"Plus"',
-          effect:
-            "to replace the chevron with any name from the block's `ICON_MAP`. It rotates on open just as the chevron does.",
-        },
-      ],
-      props: { variant: "elevated", interaction: "single", expandIcon: "Plus" },
-      usage: usageIcon,
     },
   ]}
 />

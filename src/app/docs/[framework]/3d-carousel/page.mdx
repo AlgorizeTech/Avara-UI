@@ -33,22 +33,6 @@ export default function ProductShowcase() {
   return <ThreeDCarousel items={items} autoPlay autoPlayInterval={4000} />;
 }`;
 
-export const usageNoAutoplay = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-import { items } from "./items";
-
-export default function ManualCarousel() {
-  // Manual only — drag, arrow keys and the nav controls still work.
-  return <ThreeDCarousel items={items} autoPlay={false} />;
-}`;
-
-export const usageInterval = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-import { items } from "./items";
-
-export default function FastCarousel() {
-  // Time between advances, in milliseconds.
-  return <ThreeDCarousel items={items} autoPlay autoPlayInterval={1500} />;
-}`;
-
 export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { items } from "./items";
 
@@ -80,33 +64,6 @@ export default function ShortDeckCarousel() {
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ThreeDCarouselBlock.tsx"),
-    },
-    {
-      title: "Without autoplay",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "autoPlay",
-          value: "{false}",
-          effect:
-            "when the deck should only move on interaction — drag, arrow keys and the nav controls still work.",
-        },
-      ],
-      props: { autoPlay: false },
-      usage: usageNoAutoplay,
-    },
-    {
-      title: "Autoplay interval",
-      propNotes: [
-        {
-          prop: "autoPlayInterval",
-          value: "{1500}",
-          effect:
-            "sets the dwell time per card in milliseconds. Defaults to `4000`; only read when `autoPlay` is on.",
-        },
-      ],
-      props: { autoPlay: true, autoPlayInterval: 1500 },
-      usage: usageInterval,
     },
     {
       title: "Shorter deck",

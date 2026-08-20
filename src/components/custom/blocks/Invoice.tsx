@@ -47,20 +47,19 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     blockBg: "bg-transparent border-none p-0",
   },
   glass: {
-    wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+    wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white/50 dark:bg-black/50 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg",
+      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl text-zinc-900 dark:text-zinc-100",
     sidebarCard:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg rounded-2xl",
+      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-xl rounded-2xl",
     tableHeader:
-      "bg-white/20 dark:bg-black/20 border-b border-white/20 dark:border-white/10",
+      "bg-white/60 dark:bg-zinc-800/60 border-b border-zinc-200/60 dark:border-white/10 text-zinc-900 dark:text-zinc-100 font-bold",
     tableRow:
-      "divide-white/10 dark:divide-white/5 hover:bg-white/20 dark:hover:bg-white/5",
+      "divide-zinc-200/50 dark:divide-white/10 hover:bg-white/50 dark:hover:bg-white/5",
     inputBg:
-      "bg-white/40 dark:bg-black/40 border border-white/30 dark:border-white/10 backdrop-blur-md",
+      "bg-white/80 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-md text-zinc-900 dark:text-zinc-100",
     blockBg:
-      "bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10",
+      "bg-white/60 dark:bg-zinc-800/40 border border-zinc-200/60 dark:border-white/10 backdrop-blur-md",
   },
 };
 

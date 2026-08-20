@@ -73,8 +73,23 @@ export default function VerticalTabsDemo({
 }) {
   return (
     <div
-      className={`w-full max-w-full overflow-hidden flex items-center justify-center min-h-[450px] sm:min-h-[500px] transition-colors duration-300 ${variant === "glass" ? "p-3 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "bg-white dark:bg-black p-2 sm:p-6"}`}
+      className={`w-full max-w-full overflow-hidden flex items-center justify-center min-h-[450px] sm:min-h-[500px] transition-colors duration-300 ${
+        variant === "glass"
+          ? "p-3 sm:p-8 bg-cover bg-center rounded-2xl relative"
+          : "bg-white dark:bg-black p-2 sm:p-6"
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
+      )}
       <div className="w-full max-w-4xl min-w-0 mx-auto">
         <VerticalTabs
           key={`${variant}-${orientation}-${color}-${defaultActiveId ?? ""}`}

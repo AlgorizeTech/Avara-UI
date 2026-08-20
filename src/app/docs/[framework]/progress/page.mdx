@@ -17,60 +17,6 @@ export default function ProgressDemo() {
   return <Progress value={45} max={100} />;
 }`;
 
-export const usageField = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function LabelledProgress() {
-  return (
-    <ProgressField label="Database Synchronization Pipeline" value={45} max={100}>
-      <Progress value={45} max={100} variant="glow" />
-    </ProgressField>
-  );
-}`;
-
-export const usageVariants = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressVariants() {
-  return (
-    <div className="flex flex-col gap-6">
-      <ProgressField label="default" value={45} max={100}>
-        <Progress value={45} max={100} variant="default" />
-      </ProgressField>
-
-      <ProgressField label="glass" value={45} max={100}>
-        <Progress value={45} max={100} variant="glass" />
-      </ProgressField>
-
-      <ProgressField label="glow" value={45} max={100}>
-        <Progress value={45} max={100} variant="glow" />
-      </ProgressField>
-
-      <ProgressField label="minimal" value={45} max={100}>
-        <Progress value={45} max={100} variant="minimal" />
-      </ProgressField>
-    </div>
-  );
-}`;
-
-export const usageSizes = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressSizes() {
-  return (
-    <div className="flex flex-col gap-6">
-      <ProgressField label='barSize="sm"' value={45} max={100}>
-        <Progress value={45} max={100} variant="glow" barSize="sm" />
-      </ProgressField>
-
-      <ProgressField label='barSize="md"' value={45} max={100}>
-        <Progress value={45} max={100} variant="glow" barSize="md" />
-      </ProgressField>
-
-      <ProgressField label='barSize="lg"' value={45} max={100}>
-        <Progress value={45} max={100} variant="glow" barSize="lg" />
-      </ProgressField>
-    </div>
-  );
-}`;
-
 export const usageFormatted = `import { useState } from "react";
 import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
 
@@ -127,45 +73,6 @@ export default function WizardProgress() {
       props: { example: "bare", variant: "default", value: 45 },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ProgressBlock.tsx"),
-    },
-    {
-      title: "With label",
-      propNotes: [
-        {
-          lead: "Wrap it in",
-          prop: "ProgressField",
-          effect:
-            "to align a `label` on the left and the value on the right, above the bar.",
-        },
-      ],
-      props: { example: "field", variant: "glow", value: 45 },
-      usage: usageField,
-    },
-    {
-      title: "Variants",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to change the track and indicator style — `default`, `glass`, `glow` or `minimal`.",
-        },
-      ],
-      props: { showAll: "variants", value: 45 },
-      usage: usageVariants,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "barSize",
-          effect:
-            "to change the bar thickness — `sm`, `md` or `lg`. Note it is `barSize`, not `size`.",
-        },
-      ],
-      props: { showAll: "sizes", variant: "glow", value: 45 },
-      usage: usageSizes,
     },
     {
       title: "Custom value format",

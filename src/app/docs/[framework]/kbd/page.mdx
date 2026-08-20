@@ -17,18 +17,6 @@ export default function BasicKbd() {
   return <Kbd>⌘</Kbd>;
 }`;
 
-export const usageSizes = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
-
-export default function KbdSizes() {
-  return (
-    <div className="flex items-center gap-4">
-      <Kbd size="sm">⌘</Kbd>
-      <Kbd size="md">⌘</Kbd>
-      <Kbd size="lg">⌘</Kbd>
-    </div>
-  );
-}`;
-
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
 export default function ShortcutList() {
@@ -72,19 +60,6 @@ export default function InlineShortcut() {
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          effect:
-            "to set height, padding and font-size — `sm` (the default), `md` or `lg`.",
-        },
-      ],
-      props: { example: "sizes" },
-      usage: usageSizes,
     },
     {
       title: "Combinations",

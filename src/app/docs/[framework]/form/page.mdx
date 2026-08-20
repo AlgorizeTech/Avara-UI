@@ -11,50 +11,6 @@ This engine decouples layout from state. It provides a stunning visual wrapper w
 
 `FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
-export const usageNative = `"use client";
-
-import { useState } from "react";
-import {
-  FormField,
-  FormSubmit,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!email.includes("@")) {
-      setError("Please provide a valid email address.");
-      return;
-    }
-    setError("");
-    // Submit logic...
-  };
-
-  return (
-    <FormWrapper
-      title="Newsletter Signup"
-      description="A simple, single-field form using native React state."
-      onSubmit={onSubmit}
-    >
-      <FormField label="Email Address" error={error}>
-        <InputBlock
-          type="email"
-          placeholder="Enter your email..."
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </FormField>
-
-      <FormSubmit>Subscribe Now</FormSubmit>
-    </FormWrapper>
-  );
-}`;
-
 export const usageZod = `"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -111,33 +67,6 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageErrorStyles = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function ErrorStyles() {
-  const message = "Invalid corporate email format detected.";
-
-  return (
-    <FormWrapper
-      title="Error Styles"
-      description="The same message rendered with each errorVariant."
-    >
-      {/* "glitch" is the default — animated RGB-split text */}
-      <FormField label="Glitch (default)" error={message} errorVariant="glitch">
-        <InputBlock type="email" defaultValue="invalid-email" />
-      </FormField>
-
-      {/* "default" is the quiet, static variant */}
-      <FormField label="Default" error={message} errorVariant="default">
-        <InputBlock type="email" defaultValue="invalid-email" />
-      </FormField>
-    </FormWrapper>
-  );
-}`;
-
 export const usageSubmitting = `import {
   FormField,
   FormSubmit,
@@ -162,52 +91,11 @@ export default function SubmittingForm() {
   );
 }`;
 
-export const usageBare = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function SettingsPanel() {
-  // No title/description = no header. No onSubmit = a <div>, not a <form>,
-  // so the wrapper can nest inside a form you already own.
-  return (
-    <FormWrapper>
-      <FormField label="Display Name">
-        <InputBlock placeholder="Ada Lovelace" />
-      </FormField>
-
-      <FormField label="Time Zone">
-        <InputBlock placeholder="UTC+00:00" />
-      </FormField>
-    </FormWrapper>
-  );
-}`;
-
 <ExampleShowcase
   name="form"
   colorControl
   columns={1}
   examples={[
-    {
-      title: "Form",
-      subheading: "Submit an invalid value to see the glitching `FormError`.",
-      propNotes: [
-        {
-          prop: "onSubmit",
-          effect:
-            "on `FormWrapper` is what decides the element: given one the children are wrapped in a `<form>`, otherwise a plain `<div>`.",
-        },
-        {
-          prop: "error",
-          effect:
-            "on `FormField` renders below the input and turns the label red. A falsy value renders nothing.",
-        },
-      ],
-      props: { demoType: "native" },
-      usage: usageNative,
-      code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
-    },
     {
       title: "React Hook Form + Zod",
       propNotes: [
@@ -220,20 +108,7 @@ export default function SettingsPanel() {
       ],
       props: { demoType: "zod" },
       usage: usageZod,
-    },
-    {
-      title: "Error styles",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "errorVariant",
-          value: '"glitch"',
-          effect:
-            "for the animated RGB-split error text. It is the default; `\"default\"` is the static, quieter one.",
-        },
-      ],
-      props: { showAll: "error-styles" },
-      usage: usageErrorStyles,
+      code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
     },
     {
       title: "Submitting",
@@ -247,24 +122,6 @@ export default function SettingsPanel() {
       ],
       props: { showAll: "submitting" },
       usage: usageSubmitting,
-    },
-    {
-      title: "Without a header",
-      propNotes: [
-        {
-          lead: "Omit",
-          prop: "title",
-          effect:
-            "and `description` to drop the header and divider entirely.",
-        },
-        {
-          prop: "color",
-          effect:
-            "still drives the animated border, focus ring and submit button — any named key or hex.",
-        },
-      ],
-      props: { showAll: "bare" },
-      usage: usageBare,
     },
   ]}
 />

@@ -27,23 +27,6 @@ export default function BasicPagination() {
   );
 }`;
 
-export const usageManyPages = `import { useState } from "react";
-import { Pagination } from "@/components/custom/blocks/PaginationBlock";
-
-export default function DeepPagination() {
-  const [currentPage, setCurrentPage] = useState(50);
-
-  // With 100 pages the block renders 1 … 48 49 [50] 51 52 … 100 and keeps
-  // the window centred as you move.
-  return (
-    <Pagination
-      currentPage={currentPage}
-      totalPages={100}
-      onPageChange={setCurrentPage}
-    />
-  );
-}`;
-
 export const usageSiblingCount = `import { useState } from "react";
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
@@ -58,23 +41,6 @@ export default function TightPagination() {
       totalPages={100}
       onPageChange={setCurrentPage}
       siblingCount={1}
-    />
-  );
-}`;
-
-export const usageNoEdges = `import { useState } from "react";
-import { Pagination } from "@/components/custom/blocks/PaginationBlock";
-
-export default function NumbersOnlyPagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // showEdges={false} drops the Previous / Next controls.
-  return (
-    <Pagination
-      currentPage={currentPage}
-      totalPages={10}
-      onPageChange={setCurrentPage}
-      showEdges={false}
     />
   );
 }`;
@@ -137,18 +103,6 @@ export default function CustomerDirectory() {
       code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
     },
     {
-      title: "Many pages",
-      propNotes: [
-        {
-          prop: "totalPages",
-          effect:
-            "drives the ellipsis maths — the window stays centred on the active page and collapses the rest into `…`.",
-        },
-      ],
-      props: { example: "bare", totalPages: 100, currentPage: 50 },
-      usage: usageManyPages,
-    },
-    {
       title: "Sibling count",
       propNotes: [
         {
@@ -160,20 +114,6 @@ export default function CustomerDirectory() {
       ],
       props: { example: "bare", totalPages: 100, currentPage: 50, siblingCount: 1 },
       usage: usageSiblingCount,
-    },
-    {
-      title: "Without edge controls",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "showEdges",
-          value: '{false}',
-          effect:
-            "to drop the Previous and Next buttons, leaving the numbers alone.",
-        },
-      ],
-      props: { example: "bare", totalPages: 10, currentPage: 1, showEdges: false },
-      usage: usageNoEdges,
     },
     {
       title: "In a data table",

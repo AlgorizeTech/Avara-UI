@@ -40,26 +40,6 @@ export default function BreadcrumbWithIcons() {
   return <BreadcrumbBlock items={items} />;
 }`;
 
-export const usageVariants = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-import { Home, Settings } from "lucide-react";
-
-const items = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
-];
-
-export default function BreadcrumbVariants() {
-  return (
-    <div className="flex flex-col gap-6">
-      <BreadcrumbBlock variant="classic" items={items} />
-      <BreadcrumbBlock variant="slash" items={items} />
-      <BreadcrumbBlock variant="solid" items={items} />
-      <BreadcrumbBlock variant="ghost" items={items} />
-    </div>
-  );
-}`;
-
 export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
 import { FileText, Folder, Home } from "lucide-react";
 
@@ -76,23 +56,6 @@ export default function DeepBreadcrumb() {
   // More items than maxItems? The middle collapses behind a "..." button
   // that expands the full trail when clicked.
   return <BreadcrumbBlock items={deepPath} maxItems={4} />;
-}`;
-
-export const usageMaxItems = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-import { FileText, Folder, Home } from "lucide-react";
-
-const deepPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
-  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
-];
-
-export default function WideBreadcrumb() {
-  // Raise maxItems past the item count and nothing collapses.
-  return <BreadcrumbBlock items={deepPath} maxItems={10} />;
 }`;
 
 <ExampleShowcase
@@ -133,19 +96,6 @@ export default function WideBreadcrumb() {
       usage: usageIcons,
     },
     {
-      title: "Variants",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to change the link and divider styling — `classic`, `slash`, `solid` or `ghost`.",
-        },
-      ],
-      props: { showAll: "variants", showIcons: true },
-      usage: usageVariants,
-    },
-    {
       title: "Truncated path",
       propNotes: [
         {
@@ -157,19 +107,6 @@ export default function WideBreadcrumb() {
       ],
       props: { variant: "classic", isLongPath: true, maxItems: 4 },
       usage: usageTruncated,
-    },
-    {
-      title: "No truncation",
-      propNotes: [
-        {
-          lead: "Raise",
-          prop: "maxItems",
-          value: "{10}",
-          effect: "above the item count to always show the full trail.",
-        },
-      ],
-      props: { variant: "classic", isLongPath: true, maxItems: 10 },
-      usage: usageMaxItems,
     },
   ]}
 />

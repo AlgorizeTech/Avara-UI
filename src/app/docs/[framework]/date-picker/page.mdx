@@ -30,41 +30,6 @@ export default function LaunchDatePicker() {
   );
 }`;
 
-export const usageVariants = `"use client";
-
-import { useState } from "react";
-import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
-
-export default function DatePickerVariants() {
-  const [date, setDate] = useState(null);
-
-  return (
-    <div className="flex flex-col gap-6">
-      <DatePickerBlock value={date} onChange={setDate} variant="default" label="default" />
-      <DatePickerBlock value={date} onChange={setDate} variant="filled" label="filled" />
-      <DatePickerBlock value={date} onChange={setDate} variant="underlined" label="underlined" />
-      <DatePickerBlock value={date} onChange={setDate} variant="glow" label="glow" />
-    </div>
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-import { useState } from "react";
-import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
-
-export default function DatePickerSizes() {
-  const [date, setDate] = useState(null);
-
-  return (
-    <div className="flex flex-col gap-6">
-      <DatePickerBlock value={date} onChange={setDate} inputSize="sm" label="sm" />
-      <DatePickerBlock value={date} onChange={setDate} inputSize="md" label="md" />
-      <DatePickerBlock value={date} onChange={setDate} inputSize="lg" label="lg" />
-    </div>
-  );
-}`;
-
 export const usageError = `"use client";
 
 import { useState } from "react";
@@ -86,24 +51,11 @@ export default function ValidatedDatePicker() {
   );
 }`;
 
-export const usageDisabled = `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
-
-export default function DisabledDatePicker() {
-  return (
-    <DatePickerBlock
-      value={null}
-      label="Launch Date"
-      placeholder="Select a date"
-      helperText="Choose the date for your next launch."
-      disabled
-    />
-  );
-}`;
-
 <ExampleShowcase
   name="date-picker"
   colorControl
   columns={1}
+  minHeight={450}
   examples={[
     {
       title: "Date picker",
@@ -130,32 +82,6 @@ export default function DisabledDatePicker() {
       code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
     },
     {
-      title: "Variants",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to change the border, background and focus treatment — `default`, `filled`, `underlined` or `glow`.",
-        },
-      ],
-      props: { showAll: "variants" },
-      usage: usageVariants,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "inputSize",
-          effect:
-            "to scale the padding, text and calendar icon together — `sm`, `md` or `lg`.",
-        },
-      ],
-      props: { showAll: "sizes" },
-      usage: usageSizes,
-    },
-    {
       title: "Error",
       propNotes: [
         {
@@ -167,19 +93,6 @@ export default function DisabledDatePicker() {
       ],
       props: { showError: true },
       usage: usageError,
-    },
-    {
-      title: "Disabled",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "disabled",
-          effect:
-            "to fade the trigger and stop the dropdown opening.",
-        },
-      ],
-      props: { isDisabled: true },
-      usage: usageDisabled,
     },
   ]}
 />

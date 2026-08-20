@@ -27,24 +27,6 @@ export default function BasicOtp() {
   );
 }`;
 
-export const usageFilled = `"use client";
-
-import { useState } from "react";
-import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
-
-export default function FilledOtp() {
-  const [value, setValue] = useState("");
-
-  return (
-    <OtpInputBlock
-      variant="filled"
-      length={6}
-      value={value}
-      onChange={setValue}
-    />
-  );
-}`;
-
 export const usageUnderlined = `"use client";
 
 import { useState } from "react";
@@ -61,45 +43,6 @@ export default function UnderlinedOtp() {
       onChange={setValue}
     />
   );
-}`;
-
-export const usageLengths = `"use client";
-
-import { useState } from "react";
-import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
-
-export default function OtpLengths() {
-  const [value, setValue] = useState("");
-
-  return (
-    <div className="flex flex-col items-center gap-8">
-      <OtpInputBlock length={4} value={value} onChange={setValue} />
-      <OtpInputBlock length={6} value={value} onChange={setValue} />
-      <OtpInputBlock length={8} value={value} onChange={setValue} />
-    </div>
-  );
-}`;
-
-export const usageMasked = `"use client";
-
-import { useState } from "react";
-import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
-
-export default function MaskedOtp() {
-  const [value, setValue] = useState("");
-
-  return <OtpInputBlock mask length={6} value={value} onChange={setValue} />;
-}`;
-
-export const usageDisabled = `"use client";
-
-import { useState } from "react";
-import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
-
-export default function DisabledOtp() {
-  const [value, setValue] = useState("123456");
-
-  return <OtpInputBlock disabled length={6} value={value} onChange={setValue} />;
 }`;
 
 <ExampleShowcase
@@ -128,20 +71,6 @@ export default function DisabledOtp() {
       code: extractCode("src/components/custom/blocks/OtpInputBlock.tsx"),
     },
     {
-      title: "Filled",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          value: '"filled"',
-          effect:
-            "for solid, low-contrast boxes.",
-        },
-      ],
-      props: { variant: "filled" },
-      usage: usageFilled,
-    },
-    {
       title: "Underlined",
       propNotes: [
         {
@@ -154,46 +83,6 @@ export default function DisabledOtp() {
       ],
       props: { variant: "underlined" },
       usage: usageUnderlined,
-    },
-    {
-      title: "Lengths",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "length",
-          value: '{6}',
-          effect:
-            "to set how many digits are collected. It is also what `onComplete` measures against.",
-        },
-      ],
-      props: { showAll: "lengths" },
-      usage: usageLengths,
-    },
-    {
-      title: "Masked",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "mask",
-          effect:
-            "to hide the entered digits behind dots, like a password field. `value` is unaffected.",
-        },
-      ],
-      props: { isMasked: true },
-      usage: usageMasked,
-    },
-    {
-      title: "Disabled",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "disabled",
-          effect:
-            "to lock every box — the state to use while the code is being verified.",
-        },
-      ],
-      props: { isDisabled: true },
-      usage: usageDisabled,
     },
   ]}
 />

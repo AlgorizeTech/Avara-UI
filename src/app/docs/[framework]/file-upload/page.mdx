@@ -15,61 +15,6 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-export const usageFlow = `"use client";
-
-import { useState } from "react";
-import {
-  Dropzone,
-  UploadItem,
-} from "@/components/custom/blocks/UploadBlock";
-
-export default function DocumentUploader() {
-  const [queue, setQueue] = useState([]);
-
-  const handleFilesAdded = (nativeFiles) => {
-    // 1. Turn raw files into your own state objects
-    const newItems = nativeFiles.map((file) => ({
-      id: crypto.randomUUID(),
-      file,
-      progress: 0,
-      status: "idle",
-      // Instant client-side thumbnail for images
-      previewUrl: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : undefined,
-    }));
-
-    setQueue((prev) => [...newItems, ...prev]);
-
-    // 2. Kick off your real POST per file and update each item's
-    //    progress/status from the XHR upload-progress listener.
-  };
-
-  return (
-    <div className="max-w-md mx-auto flex flex-col gap-6">
-      <Dropzone
-        onFilesDrop={handleFilesAdded}
-        accept="image/*,application/pdf,video/mp4"
-      />
-
-      {queue.length > 0 && (
-        <div className="flex flex-col gap-3">
-          {queue.map((item) => (
-            <UploadItem
-              key={item.id}
-              item={item}
-              onRetry={(id) => console.log("Retry upload for", id)}
-              onRemove={(id) =>
-                setQueue((prev) => prev.filter((q) => q.id !== id))
-              }
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}`;
-
 export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
 
 export default function AvatarDropzone() {
@@ -123,54 +68,10 @@ export default function UploadStates() {
   );
 }`;
 
-export const usageAnimated = `"use client";
-
-import { AnimatePresence, motion } from "framer-motion";
-import { UploadItem } from "@/components/custom/blocks/UploadBlock";
-
-// UploadItem is layout-agnostic, so wrap each row to animate the queue.
-export default function AnimatedQueue({ queue, onRetry, onRemove }) {
-  return (
-    <AnimatePresence mode="popLayout">
-      {queue.map((item) => (
-        <motion.div
-          key={item.id}
-          layout
-          initial={{ opacity: 0, scale: 0.8, height: 0, marginTop: 0 }}
-          animate={{ opacity: 1, scale: 1, height: "auto", marginTop: 12 }}
-          exit={{ opacity: 0, scale: 0.8, height: 0, marginTop: 0 }}
-          transition={{ duration: 0.4, type: "spring", bounce: 0.25 }}
-        >
-          <UploadItem item={item} onRetry={onRetry} onRemove={onRemove} />
-        </motion.div>
-      ))}
-    </AnimatePresence>
-  );
-}`;
-
 <ExampleShowcase
   name="upload"
   columns={1}
   examples={[
-    {
-      title: "Upload flow",
-      subheading: "You own the queue; `Dropzone` and `UploadItem` are the two halves.",
-      propNotes: [
-        {
-          prop: "onFilesDrop",
-          effect:
-            "hands you `File[]` from both the drop and the native file browser.",
-        },
-        {
-          prop: "item",
-          effect:
-            "on `UploadItem` is the per-file state object you feed back in for each row.",
-        },
-      ],
-      props: { variant: "slide-up" },
-      usage: usageFlow,
-      code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
-    },
     {
       title: "Dropzone",
       propNotes: [
@@ -189,6 +90,7 @@ export default function AnimatedQueue({ queue, onRetry, onRemove }) {
       ],
       props: { layout: "dropzone" },
       usage: usageDropzone,
+      code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
     },
     {
       title: "Upload states",
@@ -206,18 +108,6 @@ export default function AnimatedQueue({ queue, onRetry, onRemove }) {
       ],
       props: { showAll: "states" },
       usage: usageStates,
-    },
-    {
-      title: "Animated queue",
-      propNotes: [
-        {
-          prop: "item",
-          effect:
-            "is all `UploadItem` needs — it is layout-agnostic, so wrap each row in `motion.div` yourself to animate entries and exits.",
-        },
-      ],
-      props: { variant: "pop" },
-      usage: usageAnimated,
     },
   ]}
 />

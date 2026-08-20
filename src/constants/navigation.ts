@@ -150,7 +150,7 @@ export const navigation: NavigationItem[] = [
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Video Accordion", slug: "video-accordion" },
       { label: "Network Graph", slug: "network-graph", badge: "New" },
-      { label: "Design Components", slug: "design-components-folder", badge: "New" },
+      { label: "Components Folder", slug: "design-components-folder", badge: "New" },
       { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
     ],
   },
