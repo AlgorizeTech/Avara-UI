@@ -12,7 +12,7 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
   <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
     <div>
       <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Build Tool</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Vite 5 / 6</h4>
+      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Vite 5 &ndash; 8</h4>
     </div>
     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Also works with Create React App and React Router</p>
   </div>
@@ -28,7 +28,7 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
   <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
     <div>
       <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Styling</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Tailwind CSS v3.4+ / v4</h4>
+      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Tailwind CSS v4</h4>
     </div>
     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Utility-first CSS styling & design tokens</p>
   </div>
@@ -36,7 +36,7 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
   <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
     <div>
       <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Language</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">TypeScript 5+ & JS</h4>
+      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">TypeScript 5 & 6</h4>
     </div>
     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Strict type checking or pure JavaScript</p>
   </div>
@@ -123,18 +123,29 @@ Then import Tailwind at the top of `src/index.css`:
 
 Every component imports through `@/`, so the alias has to resolve in **two** places: TypeScript, for editor and type checking, and Vite, for the actual bundle. Configuring only one is the single most common setup failure, and it fails confusingly — types resolve but the build cannot find the module, or the reverse.
 
-`tsconfig.json`:
+`tsconfig.json` — the Vite React template uses project references, so **add** the
+`compilerOptions` block and keep `files` and `references` exactly as they are. Replacing
+the whole file drops the references, and with them the `noEmit` that lives in
+`tsconfig.app.json`, which makes `tsc -b` emit stray `.js` files next to your sources:
 
 ```json
 {
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   }
 }
 ```
+
+Do not add `baseUrl`. It is deprecated in TypeScript 6 and reported as an error
+(`TS5101`), which fails the build — and it has been unnecessary since TypeScript 4.4,
+because `paths` resolve relative to the config file that declares them.
 
 `vite.config.ts`:
 
@@ -154,7 +165,7 @@ export default defineConfig({
 });
 ```
 
-If your project splits TypeScript config across `tsconfig.app.json` and `tsconfig.node.json` — which the Vite React template does — put the `paths` block in `tsconfig.app.json`, and mirror `baseUrl` and `paths` into the root `tsconfig.json` so the shadcn CLI can read them.
+If your project splits TypeScript config across `tsconfig.app.json` and `tsconfig.node.json` — which the Vite React template does — put the `paths` block in `tsconfig.app.json`, and mirror `paths` into the root `tsconfig.json` so the shadcn CLI can read them.
 
 ## Adding components
 
@@ -162,16 +173,25 @@ Components are published as a [shadcn registry](https://ui.shadcn.com/docs/regis
 
 ### Step 1: Initialize your project
 
-Run this once per project. It creates `components.json`, sets up the `cn` helper and confirms your path aliases.
+Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
+`cn` helper, and confirms your path aliases.
 
-<Cli command={`init`} />
+Algorize UI components are built on Radix primitives, so select the Radix base. Passing it
+on the command line also keeps the command usable in CI:
 
-When it asks, answer **no** to React Server Components — a Vite app has none. The resulting `components.json` should read:
+<Cli command={`init --base radix --preset nova`} />
+
+Running it without flags is fine too — the CLI will ask which component library to use
+(**choose Radix UI**, not the recommended default) and which preset. Any preset works;
+it only sets the starting theme.
+
+The CLI detects Vite and sets `rsc` to `false` for you. The resulting `components.json`
+should read:
 
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "radix-nova",
   "rsc": false,
   "tsx": true,
   "tailwind": {
@@ -222,7 +242,7 @@ src/
 
 If you already have a React project, only three things need to be true before the CLI will work:
 
-1. **Tailwind is installed and imported.** v4 via `@tailwindcss/vite`, or v3.4+ with a `tailwind.config.js`.
+1. **Tailwind v4 is installed and imported.** Via `@tailwindcss/vite`, with `@import "tailwindcss";` in your entry CSS.
 2. **The `@/` alias resolves in both TypeScript and your bundler.** See above.
 3. **`components.json` exists** — run `init` and answer `no` to RSC.
 
