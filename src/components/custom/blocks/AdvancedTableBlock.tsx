@@ -418,13 +418,19 @@ export const AdvancedTableBlock = forwardRef<
                       >
                         {isAllPageSelected && (
                           <Check
-                            className="w-2.5 h-2.5 text-white"
+                            className={cn(
+                              "w-2.5 h-2.5",
+                              theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                            )}
                             strokeWidth={3}
                           />
                         )}
                         {isSomePageSelected && (
                           <Minus
-                            className="w-2.5 h-2.5 text-white"
+                            className={cn(
+                              "w-2.5 h-2.5",
+                              theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                            )}
                             strokeWidth={3}
                           />
                         )}
@@ -529,7 +535,10 @@ export const AdvancedTableBlock = forwardRef<
                             >
                               {isSelected && (
                                 <Check
-                                  className="w-2.5 h-2.5 text-white"
+                                  className={cn(
+                                    "w-2.5 h-2.5",
+                                    theme.iconText || (theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900")
+                                  )}
                                   strokeWidth={3}
                                 />
                               )}
