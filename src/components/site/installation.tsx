@@ -1,5 +1,6 @@
 import React from "react";
 import { Cli } from "./cli";
+import { SetupPath } from "./setup-path";
 import registry from "../../../registry.json";
 
 /**
@@ -20,6 +21,15 @@ const ITEMS = registry.items as RegistryItem[];
 export interface InstallationProps {
   /** Registry item name, e.g. `calendar`. Everything else is derived. */
   name: string;
+  /**
+   * Whether to print the "set the project up first" banner above step 1.
+   *
+   * Defaults to `true` so every component page carries it without its MDX
+   * having to remember. `<InstallGroup>` turns it off for the second and
+   * subsequent blocks on a page — the reader has already read it once, and
+   * repeating it four times buries the commands it is meant to introduce.
+   */
+  showSetupPath?: boolean;
 }
 
 /**
@@ -115,7 +125,13 @@ export function InstallGroup({ children }: { children: React.ReactNode }) {
       {blocks.map((block, i) => (
         <React.Fragment key={i}>
           {i > 0 && <InstallDivider />}
-          {block}
+          {/* The setup banner belongs to the page, not to each block, so only
+              the first one prints it. cloneElement rather than a context: the
+              blocks are server components rendered in place, and this is the
+              only prop that has to reach them. */}
+          {i > 0 && React.isValidElement<InstallationProps>(block)
+            ? React.cloneElement(block, { showSetupPath: false })
+            : block}
         </React.Fragment>
       ))}
     </>
@@ -157,7 +173,7 @@ function BadgeList({ items }: { items: string[] }) {
  * in a provider, an optional extra package) write it as ordinary MDX after this
  * element, so those steps keep their own heading in the table of contents.
  */
-export function Installation({ name }: InstallationProps) {
+export function Installation({ name, showSetupPath = true }: InstallationProps) {
   const item = ITEMS.find((entry) => entry.name === name);
 
   // Fail at build time rather than shipping a page whose install command is a
@@ -183,6 +199,8 @@ export function Installation({ name }: InstallationProps) {
     // section, not navigation targets. A page documenting four components would
     // otherwise put four identical "2. Install dependencies" in the sidebar.
     <div className="my-6" data-toc-skip>
+      {showSetupPath && <SetupPath />}
+
       <h3 id={`install-${name}`} className={`${STEP_HEADING} first:mt-0`}>
         1. Install {title}
       </h3>
