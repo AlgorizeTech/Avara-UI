@@ -152,6 +152,7 @@ export const navigation: NavigationItem[] = [
       { label: "Network Graph", slug: "network-graph", badge: "New" },
       { label: "Components Folder", slug: "design-components-folder", badge: "New" },
       { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
+      { label: "Globe", slug: "globe", badge: "New" },
     ],
   },
   {
@@ -164,6 +165,7 @@ export const navigation: NavigationItem[] = [
       { label: "Pricing Section", slug: "pricing", badge: "Core" },
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
+      { label: "Footer", slug: "footer", badge: "New" },
     ],
   },
 ];
