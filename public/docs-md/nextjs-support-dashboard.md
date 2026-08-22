@@ -11,11 +11,7 @@ It now features a **dual-layout system**:
 
 Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
-export const usageChat = `import SupportDashboard, {
-  SupportData,
-} from "@/components/custom/blocks/Support-dashboard";
-
-const data: SupportData = {
+export const supportData = `const data: SupportData = {
   header: { title: "Sales Tickets", subtitle: "All Open" },
   filters: [
     { id: "status", label: "Open", count: 99, icon: "Inbox" },
@@ -82,13 +78,24 @@ const data: SupportData = {
       ],
     },
   ],
-};
+};`;
+
+export const usageChat = `import SupportDashboard, {
+  SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function Helpdesk() {
   return ;
 }`;
 
-export const usageTable = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+export const usageTable = `import {
+  SupportDashboard,
+  SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function TicketTable() {
   // Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
@@ -96,7 +103,12 @@ export default function TicketTable() {
   return ;
 }`;
 
-export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+export const usageGlass = `import {
+  SupportDashboard,
+  SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function GlassDashboard() {
   return (

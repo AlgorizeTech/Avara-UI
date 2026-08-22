@@ -6,30 +6,65 @@ A premium 3D carousel with a fanned layout, smooth interactive animations, and a
 
 Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck.
 
-export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
-
-const items = [
+export const carouselItems = `const items = [
   {
     id: "c1",
-    category: "Architecture",
-    title: "Futuristic Urban Sanctuary",
-    description: "Next-generation living spaces woven into organic flora.",
-    image: "/photos/architecture.jpg",
+    category: "Nature",
+    title: "Misty Pine Forest",
+    description:
+      "Early morning fog weaving through dense evergreen woodland trees.",
+    image:
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "c2",
-    category: "Automotive",
-    title: "Cybernetic Grand Tourer",
-    description: "Pure electric performance meeting aerodynamic excellence.",
-    image: "/photos/car.jpg",
+    category: "Wilderness",
+    title: "Lush River Valley",
+    description:
+      "Sunbeams streaming through valley clouds onto pristine forest waters.",
+    image:
+      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
   },
-];
+  {
+    id: "c3",
+    category: "Landscape",
+    title: "Autumn Woodland Path",
+    description:
+      "Vibrant golden foliage covering quiet forest trails in peak autumn.",
+    image:
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "c4",
+    category: "Sanctuary",
+    title: "Cascading Mountain Falls",
+    description:
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "c5",
+    category: "Expedition",
+    title: "Emerald Mountain Peak",
+    description:
+      "Panoramic views of majestic mountain ridges rising into crisp morning skies.",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+];`;
+
+export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
 
 export default function ProductShowcase() {
   return ;
 }`;
 
 export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
 
 export default function ShortDeckCarousel() {
   // The fan tightens automatically as the deck shrinks — the circular

@@ -6,7 +6,45 @@ A premium, interactive card stack component featuring real-time 3D tilt physics,
 
 Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
 
+export const memoriesData = `const memories = [
+  {
+    id: "m1",
+    tag: "Highlight",
+    title: "Alpine Forest Lake",
+    location: "Swiss Alps",
+    date: "Oct 2025",
+    description:
+      "Serene pine forests reflecting over calm turquoise mountain waters at sunrise.",
+    image:
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "m2",
+    tag: "Expedition",
+    title: "Dolomites Alpine Ridge",
+    location: "South Tyrol, Italy",
+    date: "Aug 2025",
+    description:
+      "Reaching the summit just as the morning sun cast jagged shadows across the limestone peaks.",
+    image:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "m3",
+    tag: "Sanctuary",
+    title: "Emerald Forest Stream",
+    location: "Pacific Northwest",
+    date: "Jul 2025",
+    description:
+      "A tranquil river winding through dense ancient rainforests and mossy rocks.",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+];`;
+
 export const usageOnChange = `import { useState } from "react";
+
+${memoriesData}
 
 export default function TravelDeck() {
   const [active, setActive] = useState(0);

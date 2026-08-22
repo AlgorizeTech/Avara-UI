@@ -6,9 +6,7 @@ A premium, fully interactive email client featuring a modern SaaS aesthetic. It 
 
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
-export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
-
-const emails = [
+export const emailData = `const emails = [
   {
     id: 1,
     sender: "Tressa Gass",
@@ -32,7 +30,11 @@ const emails = [
     ],
     folder: "inbox",
   },
-];
+];`;
+
+export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
+
+${emailData}
 
 export default function Mailbox() {
   return ;
@@ -40,12 +42,16 @@ export default function Mailbox() {
 
 export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
 
+${emailData}
+
 export default function MinimalMailbox() {
   // Flattens the shell — no elevated card, lighter dividers.
   return ;
 }`;
 
 export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
+
+${emailData}
 
 export default function GlassMailbox() {
   return (

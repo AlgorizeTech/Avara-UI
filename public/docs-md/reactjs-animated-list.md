@@ -8,6 +8,13 @@ Standard list animations often feel rigid. By wrapping your notification or acti
 
 Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
 
+export const listItems = `const items = [
+  { id: 1, label: "Payment Received — $129.00 via Stripe" },
+  { id: 2, label: "New Signup — alice@example.com created a Pro account" },
+  { id: 3, label: "Deployment Successful — production (v2.4.1) is live" },
+  { id: 4, label: "Server Scaled — cluster auto-scaled for a traffic spike" },
+];`;
+
 export const usageDefault = `import {
   AnimatedList,
   AnimatedListItem,
@@ -35,6 +42,8 @@ export const usageFlip = `import {
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
 
+${listItems}
+
 export default function FlipFeed() {
   // The 3D flip is the signature entrance — children rotate in on the X axis.
   return (
@@ -50,6 +59,8 @@ export const usageSlideUp = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+
+${listItems}
 
 export default function SlideUpFeed() {
   // Slide variants come in from a direction instead of rotating.
@@ -67,6 +78,8 @@ export const usagePop = `import {
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
 
+${listItems}
+
 export default function PopFeed() {
   return (
     
@@ -81,6 +94,8 @@ export const usageTiming = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+
+${listItems}
 
 export default function TunedFeed() {
   // \`staggerDelay\` is the gap between children, \`duration\` how long each one

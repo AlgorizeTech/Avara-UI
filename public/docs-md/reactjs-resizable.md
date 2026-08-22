@@ -8,11 +8,38 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
+export const paneHelper = `// Panel bodies — swap these for your own content.
+function Pane({ label }) {
+  return (
+    
+      {label}
+    
+  );
+}`;
+
+export const studioPanes = `${paneHelper}
+
+const Explorer = () => ;
+const Editor = () => ;
+const TerminalPane = () => ;`;
+
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => ;
+const PanelTwo = () => ;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => ;
+const Editor = () => ;`;
+
 export const usageDefault = `import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
+
+${studioPanes}
 
 export default function StudioLayout() {
   return (
@@ -29,6 +56,8 @@ export const usageHorizontal = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${splitPanes}
+
 export default function HorizontalSplit() {
   return (
 
@@ -40,6 +69,8 @@ export const usageVertical = `import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
+
+${splitPanes}
 
 export default function VerticalSplit() {
   // \`direction\` sets the flex axis of the group and the drag axis of every
@@ -54,6 +85,8 @@ export const usageConstraints = `import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
+
+${sidebarPanes}
 
 export default function ConstrainedSidebar() {
   return (

@@ -9,9 +9,9 @@ Four independent components live on this page — three in `carousel.tsx` and th
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
 const images = [
-  "/photos/beach.jpg",
-  "/photos/trail.jpg",
-  "/photos/retreat.jpg",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
 ];
 
 export default function Gallery() {
@@ -20,20 +20,27 @@ export default function Gallery() {
   );
 }`;
 
-export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
-
-const slides = [
+export const carouselSlides = `const slides = [
   {
-    img: "/photos/beach.jpg",
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
     title: "Tropical Paradise",
     des: "Discover pristine beaches and crystal-clear waters.",
   },
   {
-    img: "/photos/trail.jpg",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
     title: "Peak Adventures",
     des: "Challenge yourself with epic mountain trails.",
   },
-];
+  {
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];`;
+
+export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
+
+${carouselSlides}
 
 export default function Hero() {
   return ;
@@ -41,12 +48,16 @@ export default function Hero() {
 
 export const usageThumbnails = `import { CustomCarousel } from "@/components/custom/carousel";
 
+${carouselSlides}
+
 // \`imageButtonPosition\` moves the thumbnail rail: "bottom" | "left" | "right".
 export default function Showcase() {
   return ;
 }`;
 
 export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
+
+${carouselSlides}
 
 export default function SideThumbnails() {
   return ;

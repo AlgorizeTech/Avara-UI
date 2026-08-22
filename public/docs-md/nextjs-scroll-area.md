@@ -8,6 +8,74 @@ This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works
 
 Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
 
+export const longListSource = `// The scrollable content — swap it for your own.
+function LongList() {
+  const tags = Array.from({ length: 50 }).map((_, i) => "Item " + (i + 1));
+
+  return (
+    
+      {tags.map((tag) => (
+        
+          {tag}
+        
+      ))}
+    
+  );
+}`;
+
+export const artworkSource = `const artwork = [
+  {
+    id: 1,
+    title: "Misty Pine Forest",
+    artist: "Ornella Binni",
+    image:
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Lush River Valley",
+    artist: "Tom Byrom",
+    image:
+      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Autumn Woodland Path",
+    artist: "Vladimir Malyavko",
+    image:
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=400&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    title: "Cascading Mountain Falls",
+    artist: "Ornella Binni",
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+  },
+];
+
+function Card({ title, artist, image }) {
+  return (
+
+        {title} —{" "}
+        {artist}
+
+  );
+}`;
+
+export const gridSource = `// Content wider AND taller than the box, so both bars appear.
+function Grid() {
+  return (
+    
+      {Array.from({ length: 60 }).map((_, i) => (
+        
+          {"R" + (Math.floor(i / 6) + 1) + " C" + ((i % 6) + 1)}
+        
+      ))}
+    
+  );
+}`;
+
 export const usageDefault = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
 export default function LongList() {
@@ -26,6 +94,8 @@ export default function LongList() {
 
 export const usageHorizontal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
+${artworkSource}
+
 export default function HorizontalScroller() {
   // Horizontal areas need content wider than the box — \`w-max\` on the inner
   // row is the usual way to get it.
@@ -40,6 +110,8 @@ export default function HorizontalScroller() {
 
 export const usageBoth = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
+${gridSource}
+
 export default function BothAxes() {
   return (
 
@@ -47,6 +119,8 @@ export default function BothAxes() {
 }`;
 
 export const usageMinimal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+${longListSource}
 
 export default function MinimalScroller() {
   // Thinner thumb, no track chrome.
@@ -57,6 +131,8 @@ export default function MinimalScroller() {
 
 export const usageGlass = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
 
+${longListSource}
+
 export default function GlassScroller() {
   return (
 
@@ -64,6 +140,8 @@ export default function GlassScroller() {
 }`;
 
 export const usageAutoHide = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+${longListSource}
 
 export default function AutoHideScroller() {
   // \`autoHide\` fades the bar out until you scroll or hover; \`hideTrack\`

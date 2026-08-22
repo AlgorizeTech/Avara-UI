@@ -28,6 +28,8 @@ export default function AnalyticsDashboard() {
 
 export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
 
+${mapDataSource}
+
 export default function DensityMap() {
   // \`dots\` places a pulsing marker at each country's centroid instead of
   // filling the polygon — better when the regions are small or crowded.
@@ -35,6 +37,8 @@ export default function DensityMap() {
 }`;
 
 export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function ZoomableMap() {
   // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;

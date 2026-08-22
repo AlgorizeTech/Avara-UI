@@ -202,6 +202,24 @@ export function HeroCarousel({
     }
   }, [autoPlay, autoPlayInterval, nextSlider, slides.length, currentSlider]);
 
+  const [slideWidth, setSlideWidth] = useState<number>(200);
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  // Measures the first preview card so the track can be translated by an exact
+  // pixel amount. Kept above the `slides.length` guard: hooks must run in the
+  // same order on every render, including the one where `slides` is empty.
+  useEffect(() => {
+    const measure = () => {
+      if (cardRef.current) {
+        // 16px is the gap-4 distance between cards
+        setSlideWidth(cardRef.current.offsetWidth + 16);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   if (!slides.length) return null;
 
   // Modulo math that supports negative numbers correctly
@@ -219,23 +237,6 @@ export function HeroCarousel({
 
   // Large infinite repeated slides array centered around base offset
   const infiniteSlides = Array.from({ length: 200 }, () => slides).flat();
-
-  const [slideWidth, setSlideWidth] = useState<number>(200);
-  const cardRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (cardRef.current) {
-      // 16px is the gap-4 distance between cards
-      setSlideWidth(cardRef.current.offsetWidth + 16);
-    }
-    const handleResize = () => {
-      if (cardRef.current) {
-        setSlideWidth(cardRef.current.offsetWidth + 16);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div

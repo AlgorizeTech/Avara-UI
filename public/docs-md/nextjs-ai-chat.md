@@ -6,9 +6,7 @@ A premium, interactive LLM chat interface featuring conversation history managem
 
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
-export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
-
-const chatHistory = [
+export const chatData = `const chatHistory = [
   { id: 1, title: "Help with React Components", date: "Today" },
   { id: 2, title: "Write a python script for SEO", date: "Today" },
   { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
@@ -27,7 +25,11 @@ const initialMessages = [
     content: "Can you help me build a modern dashboard UI using Tailwind CSS?",
     time: "10:02 AM",
   },
-];
+];`;
+
+export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
 
 export default function Assistant() {
   return (
@@ -36,6 +38,8 @@ export default function Assistant() {
 }`;
 
 export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
 
 export default function MinimalAssistant() {
   return (
@@ -46,6 +50,8 @@ export default function MinimalAssistant() {
 }`;
 
 export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
 
 export default function GlassAssistant() {
   return (
