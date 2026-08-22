@@ -983,6 +983,32 @@
       "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
     },
     {
+      "name": "footer",
+      "type": "registry:component",
+      "title": "Footer",
+      "author": "AlgorizeTech",
+      "description": "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "categories": [
+        "marketing",
+        "navigation",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FooterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FooterBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens."
+    },
+    {
       "name": "form",
       "type": "registry:component",
       "title": "Form",
@@ -1003,6 +1029,30 @@
         }
       ],
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
+    },
+    {
+      "name": "globe",
+      "type": "registry:component",
+      "title": "Globe",
+      "author": "AlgorizeTech",
+      "description": "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "maps"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GlobeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GlobeBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color."
     },
     {
       "name": "half-stars",

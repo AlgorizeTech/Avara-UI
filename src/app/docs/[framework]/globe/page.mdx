@@ -1,0 +1,228 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Globe
+
+An interactive 3D Globe component with 9 distinct animation variants matching site theme colors, 3D Canvas physics, holographic wireframes, tactical radar sweeps, and digital matrix code.
+
+`Globe` brings global network activity, real-time analytics, and futuristic visual landing pages to life with high-performance 60fps HTML5 3D rendering.
+
+export const usageInteractiveDots = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeDotsDemo() {
+  return <Globe variant="interactive-dots" size={560} speed={1} />;
+}`;
+
+export const usageHologramWireframe = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeHologramDemo() {
+  return <Globe variant="hologram-wireframe" size={560} />;
+}`;
+
+export const usageDigitalMatrix = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeMatrixDemo() {
+  return <Globe variant="digital-matrix" size={560} />;
+}`;
+
+export const usageShieldEnergy = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeShieldDemo() {
+  return <Globe variant="shield-energy" size={560} />;
+}`;
+
+export const usageMinimalFlat = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeMinimalDemo() {
+  return <Globe variant="minimal-flat-3d" size={560} speed={0.9} />;
+}`;
+
+export const usageHeatMap = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeHeatmapDemo() {
+  return <Globe variant="heat-map" size={560} />;
+}`;
+
+export const usageCyberHex = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeCyberHexDemo() {
+  return <Globe variant="cyber-hex" size={560} />;
+}`;
+
+export const usageRadarSweep = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeRadarDemo() {
+  return <Globe variant="radar-sweep" size={560} speed={1.1} />;
+}`;
+
+export const usageGalaxySpiral = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeGalaxyDemo() {
+  return <Globe variant="galaxy-spiral" size={560} />;
+}`;
+
+<ExampleShowcase
+  name="globe"
+  columns={1}
+  examples={[
+    {
+      title: "Interactive Dotted Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"interactive-dots"', effect: "for 3D point matrix globe with manual rotation drag and smooth inertia." },
+      ],
+      props: { variant: "interactive-dots" },
+      usage: usageInteractiveDots,
+      code: extractCode("src/components/custom/blocks/GlobeBlock.tsx"),
+    },
+    {
+      title: "Hologram Wireframe Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"hologram-wireframe"', effect: "for futuristic lat/long wireframe grid with active radar scan line." },
+      ],
+      props: { variant: "hologram-wireframe" },
+      usage: usageHologramWireframe,
+    },
+    {
+      title: "Digital Binary Matrix Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"digital-matrix"', effect: "streams digital hex/binary code forming continent shapes." },
+      ],
+      props: { variant: "digital-matrix" },
+      usage: usageDigitalMatrix,
+    },
+    {
+      title: "Energy Shield Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"shield-energy"', effect: "renders forcefield grid ring with click shockwave ripples." },
+      ],
+      props: { variant: "shield-energy" },
+      usage: usageShieldEnergy,
+    },
+    {
+      title: "Minimal Flat 3D Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"minimal-flat-3d"', effect: "minimal vector sphere aesthetic for clean dark themes." },
+      ],
+      props: { variant: "minimal-flat-3d" },
+      usage: usageMinimalFlat,
+    },
+    {
+      title: "Global Activity Heatmap Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"heat-map"', effect: "renders dynamic hotspot pulse waves for live traffic analytics." },
+      ],
+      props: { variant: "heat-map" },
+      usage: usageHeatMap,
+    },
+    {
+      title: "Cyberpunk Hexagonal Grid Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"cyber-hex"', effect: "renders hexagonal matrix points for futuristic cyberpunk UI." },
+      ],
+      props: { variant: "cyber-hex" },
+      usage: usageCyberHex,
+    },
+    {
+      title: "Tactical Radar Sweep Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"radar-sweep"', effect: "renders tactical range circles and 360-degree rotating radar beam sweep." },
+      ],
+      props: { variant: "radar-sweep" },
+      usage: usageRadarSweep,
+    },
+    {
+      title: "Galaxy Spiral Nebula Globe",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"galaxy-spiral"', effect: "renders swirling spiral galaxy particle arms around the sphere." },
+      ],
+      props: { variant: "galaxy-spiral" },
+      usage: usageGalaxySpiral,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="globe" />
+
+## Features
+
+Discover the key capabilities of the `Globe` component:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">9 Theme-Adaptive Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Includes dotted sphere, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Automatic Website Theme Match</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Dynamically inherits <code>var(--primary)</code> site CSS variables to seamlessly adapt across custom theme colors and light/dark modes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Interactive Orbit & Drag Controls</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Full 360-degree pointer drag rotation, smooth auto-orbit toggle, and inertia physics.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">60fps HTML5 Canvas Engine</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Zero heavyweight WebGL dependencies — pure HTML5 2D Canvas 3D projection for ultra-fast load times.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>GlobeVariant</code></td>
+        <td><code>"interactive-dots"</code></td>
+        <td>Selects from the 9 3D globe animation variants.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>number</code></td>
+        <td><code>560</code></td>
+        <td>Pixel diameter size for the globe canvas rendering box.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>1</code></td>
+        <td>Rotation speed multiplier.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables pointer drag rotation controls.</td>
+      </tr>
+      <tr>
+        <td><code>primaryColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"var(--primary)"</code></td>
+        <td>Primary theme color (CSS variable or hex) for land points and active arcs.</td>
+      </tr>
+      <tr>
+        <td><code>markers</code></td>
+        <td><code>LocationMarker[]</code></td>
+        <td><code>DEFAULT_CITIES</code></td>
+        <td>Array of geo latitude/longitude city marker objects.</td>
+      </tr>
+      <tr>
+        <td><code>arcs</code></td>
+        <td><code>FlightArc[]</code></td>
+        <td><code>DEFAULT_ARCS</code></td>
+        <td>Array of connection arc route definitions.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
