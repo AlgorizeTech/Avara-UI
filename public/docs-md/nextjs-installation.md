@@ -58,9 +58,21 @@ You can also combine flags:
 npx create-next-app@latest my-app --typescript --app
 ```
 
+Answer **yes** to the Tailwind CSS prompt — `create-next-app` then installs it and writes
+`src/app/globals.css` for you, and you can skip the manual Tailwind setup below. If you answered
+**no**, or you are adding Algorize UI to an app that predates the prompt, set Tailwind up by hand.
+
+Every prompt and flag is documented in the
+[Next.js installation guide](https://nextjs.org/docs/app/getting-started/installation).
+
 ## Adding components
 
 Components are published as a [shadcn registry](https://ui.shadcn.com/docs/registry), so you install them with the `shadcn` CLI — there is nothing to copy and paste.
+
+Tailwind CSS has to be working before any of this produces a styled component. If
+`create-next-app` did not set it up for you, do
+[Installation & Peer Dependencies Setup](#installation--peer-dependencies-setup) further down
+this page first, then come back here.
 
 ### Step 1: Initialize your project
 
@@ -78,7 +90,19 @@ Running it without flags is fine too — the CLI will ask which component librar
 (**choose Radix UI**, not the recommended default) and which preset. Any preset works; it only
 sets the starting theme.
 
-### Step 2: Add a component
+### Step 2: Pick a theme
+
+Do this before you add anything. Every component reads its colours, radius and fonts from CSS
+variables rather than hard-coded classes, and `shadcn init` only wrote the default set.
+
+Open the [Themes page](/themes), choose a preset or customise one, press **Copy Code**, and paste
+the block into `src/app/globals.css` — underneath the `@import "tailwindcss";` line.
+
+Adding components first is not fatal; they render in the default palette until you paste your
+own variables in. Doing it now just means the first component you install already looks like
+your product.
+
+### Step 3: Add a component
 
 Every component page carries its own command. Point the CLI at the component's URL in the registry:
 
@@ -170,7 +194,57 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-### Step 3: Confirm your Tailwind v4 theme
+### Step 3: Install Tailwind CSS
+
+Skip ahead to Step 4 if `create-next-app` already set Tailwind up for you. Otherwise there are
+three parts, and the last one is the one people miss.
+
+The canonical version of this process is Tailwind's own
+[Next.js installation guide](https://tailwindcss.com/docs/installation/framework-guides/nextjs);
+what follows is that same process with the Algorize UI specifics folded in.
+
+#### 1. Install the packages
+
+Next.js compiles CSS through PostCSS, so v4 goes in as a PostCSS plugin — not the Vite plugin the
+React guide uses:
+
+```bash
+npm install tailwindcss @tailwindcss/postcss postcss
+```
+
+#### 2. Register the plugin in `postcss.config.mjs`
+
+Create the file in the root of your project:
+
+```js
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+```
+
+#### 3. Add the Tailwind import to `src/app/globals.css`
+
+Installing the package does not switch Tailwind on. Nothing generates a single utility class
+until your global stylesheet imports Tailwind, and the failure is silent — the install succeeds,
+`next dev` starts, `next build` passes, and every component renders completely unstyled.
+
+Make `@import "tailwindcss";` the **first line** of `src/app/globals.css` — or `app/globals.css`
+if you skipped the `src/` directory:
+
+```css
+@import "tailwindcss";
+```
+
+    Two things that make this line fail quietly
+    
+      It has to be the first rule in the file. CSS requires @import to come before every other rule, so an @import sitting underneath your own styles is discarded by the browser without an error.
+      Your root layout has to import that stylesheet. create-next-app puts import "./globals.css"; at the top of src/app/layout.tsx. If your layout does not have it, Tailwind never reaches the page.
+
+### Step 4: Confirm your Tailwind v4 theme
 
 Tailwind v4 is CSS-first — there is no `tailwind.config.ts` to create, and `create-next-app` no
 longer emits one. `shadcn init` already wrote the theme tokens into your global stylesheet. Open
@@ -190,6 +264,9 @@ use them to respond to their parent's width rather than the viewport.
 Migrating an existing v3 config? Run `npx @tailwindcss/upgrade` rather than porting it by hand.
 Do not hand-write a `tailwind.config.ts` with `darkMode: ["class"]` — v4 types that field as
 `"class"` or `["class", string]`, so the mismatch fails `next build` type checking.
+
+    Components render completely unstyled
+    Almost always the missing @import "tailwindcss";. Check three things, in order: the line is the first rule in src/app/globals.css; your root layout imports that file; and components.json points tailwind.css at that same file. Installing @tailwindcss/postcss on its own generates nothing.
 
 ## Development Server
 
@@ -275,8 +352,27 @@ After setting up your project, consider:
 1. [Adding your first component](/docs/nextjs/first-app) in four steps
 2. [Browsing the component library](/docs/nextjs/all-components)
 3. [Reading the Architecture](/docs/nextjs/architecture) to see how components are structured
-4. For the framework itself — routing, data fetching, deployment — see the
-   [Next.js documentation](https://nextjs.org/docs)
+
+### Upstream documentation
+
+This page covers only what Algorize UI needs. For the complete installation process for each tool
+underneath it:
+
+    Next.js
+    Installation
+    Every create-next-app prompt and flag, plus the manual setup
+
+    Tailwind CSS v4
+    Install with Next.js
+    The official steps, including the @import "tailwindcss"; line
+
+    Next.js
+    Full documentation
+    Routing, data fetching, and deployment for the framework itself
+
+    shadcn
+    CLI reference
+    Every flag on init and add, and the components.json schema
 
 ---
 

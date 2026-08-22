@@ -59,15 +59,27 @@ npm install
 
 For plain JavaScript, use the `react` template instead of `react-ts`.
 
+Already have a React app? Skip ahead to [Adding to an existing React app](#adding-to-an-existing-react-app).
+For the full walkthrough — every template, every flag, and the dev-server options — see Vite's
+[Getting Started guide](https://vite.dev/guide/) and React's
+[Creating a React App](https://react.dev/learn/creating-a-react-app).
+
 ### Install Tailwind CSS
 
-Tailwind v4 ships a first-party Vite plugin, which is the shortest path:
+Tailwind v4 ships a first-party Vite plugin, which is the shortest path. Three steps, then a
+check. **None of the three are optional**, and the third is the one people skip.
+
+The canonical version of this process is Tailwind's own
+[Using Vite guide](https://tailwindcss.com/docs/installation/using-vite); what follows is that
+same process with the Algorize UI specifics folded in.
+
+#### 1. Install the packages
 
 ```bash
 npm install tailwindcss @tailwindcss/vite
 ```
 
-Add it to `vite.config.ts`:
+#### 2. Register the plugin in `vite.config.ts`
 
 ```ts
 
@@ -76,11 +88,38 @@ export default defineConfig({
 });
 ```
 
-Then import Tailwind at the top of `src/index.css`:
+#### 3. Add `@import "tailwindcss";` to `src/index.css`
+
+Installing the plugin does not switch Tailwind on. Nothing generates a single utility class
+until your stylesheet imports Tailwind, and the failure is silent — the install succeeds, the
+dev server starts, the build passes, and every component renders completely unstyled.
+
+`src/index.css` already exists in the Vite React template, but it is starter boilerplate:
+`:root` colour tokens, and a `#root` rule that pins the app to a fixed width and centres its
+text. Those rules do not go away when you add Tailwind — they fight the layout utilities the
+components rely on. **Replace the entire file** with:
 
 ```css
 @import "tailwindcss";
 ```
+
+    Two things that make this line fail quietly
+    
+      It has to be the first rule in the file. CSS requires @import to come before every other rule, so an @import sitting underneath your own styles is discarded by the browser without an error.
+      Your entry file has to import that stylesheet. The Vite template's src/main.tsx already carries import "./index.css";. If you removed that line, or your project puts its global CSS somewhere else, Tailwind never reaches the page.
+
+While you are here, delete `src/App.css` along with the `import "./App.css";` line in
+`src/App.tsx` — it holds the rest of the template's starter styling.
+
+#### 4. Confirm it worked
+
+```bash
+npm run dev
+```
+
+Put the classes `text-3xl font-bold underline` on a heading in `src/App.tsx`. If it renders
+large, bold and underlined, Tailwind is compiling and you can move on to the path aliases. If it
+renders as plain text, step 3 is the thing to re-check.
 
 ### Path aliases — do not skip this
 
@@ -174,7 +213,19 @@ should read:
 
 Two fields differ from a Next.js setup: `rsc` is `false`, and `tailwind.css` points at `src/index.css` rather than `src/app/globals.css`.
 
-### Step 2: Add a component
+### Step 2: Pick a theme
+
+Do this before you add anything. Every component reads its colours, radius and fonts from CSS
+variables rather than hard-coded classes, and `shadcn init` only wrote the default set.
+
+Open the [Themes page](/themes), choose a preset or customise one, press **Copy Code**, and paste
+the block into `src/index.css` — underneath the `@import "tailwindcss";` line you added earlier.
+
+Adding components first is not fatal; they render in the default palette until you paste your
+own variables in. Doing it now just means the first component you install already looks like
+your product.
+
+### Step 3: Add a component
 
 Every component page carries its own command. Point the CLI at the component's URL in the registry:
 
@@ -205,19 +256,30 @@ src/
 
 If you already have a React project, only three things need to be true before the CLI will work:
 
-1. **Tailwind v4 is installed and imported.** Via `@tailwindcss/vite`, with `@import "tailwindcss";` in your entry CSS.
-2. **The `@/` alias resolves in both TypeScript and your bundler.** See above.
+1. **Tailwind v4 is installed and imported.** The `@tailwindcss/vite` plugin is registered in
+   `vite.config.ts`, **and** `@import "tailwindcss";` is the first line of the CSS file your entry
+   point imports. Both halves are required — see [Install Tailwind CSS](#install-tailwind-css)
+   above, or Tailwind's [Using Vite guide](https://tailwindcss.com/docs/installation/using-vite)
+   for the full process.
+2. **The `@/` alias resolves in both TypeScript and your bundler.** See
+   [Path aliases](#path-aliases--do-not-skip-this) above.
 3. **`components.json` exists** — run `init` and answer `no` to RSC.
 
+Then paste a theme from the [Themes page](/themes) into your entry CSS, and you are on the same
+footing as a fresh project.
+
 Nothing else about your app has to change. The registry writes source files into your tree; there is no provider to mount, no wrapper package to depend on, and no build step of its own.
+
+Still on Tailwind v3? Run `npx @tailwindcss/upgrade` rather than porting the config by hand —
+the components are written against v4 tokens.
 
 ## Troubleshooting
 
     "Failed to resolve import @/lib/utils"
     The alias is configured in TypeScript but not in Vite, or the reverse. Both files need it — tsconfig.json and vite.config.ts.
 
-    Styles render unstyled
-    Confirm @import "tailwindcss"; is in the CSS file your app actually imports, and that components.json points tailwind.css at that same file.
+    Components render completely unstyled
+    Almost always the missing @import "tailwindcss";. Check three things, in order: the line is the first rule in src/index.css; src/main.tsx imports that file; and components.json points tailwind.css at that same file. Installing @tailwindcss/vite alone generates nothing. Install Tailwind CSS walks through it, step by step.
 
     "Module level directives cause errors when bundled"
     A Rollup warning about "use client". Harmless — the build succeeds and the component works. See the note above.
@@ -230,6 +292,27 @@ Nothing else about your app has to change. The registry writes source files into
 1. [Adding your first component](/docs/nextjs/first-app) in four steps
 2. [Browsing the component library](/docs/nextjs/all-components)
 3. [Reading the Architecture](/docs/nextjs/architecture) to see how components are structured
+
+### Upstream documentation
+
+This page covers only what Algorize UI needs. For the complete installation process for each
+tool underneath it:
+
+    Vite
+    Getting Started
+    Scaffolding a project, every template, and the dev-server options
+
+    React
+    Creating a React App
+    How the React team recommends starting a new project
+
+    Tailwind CSS v4
+    Install with Vite
+    The five official steps, including the @import "tailwindcss"; line
+
+    shadcn
+    CLI reference
+    Every flag on init and add, and the components.json schema
 
 ---
 

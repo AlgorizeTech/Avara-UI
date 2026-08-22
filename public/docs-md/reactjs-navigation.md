@@ -17,7 +17,7 @@ export default function MinimalNav() {
   // Pill chrome removed; the indicator becomes a thin underline.
   return (
     
-      {/* … */}
+      {/* your NavigationMenuItem children */}
     
   );
 }`;

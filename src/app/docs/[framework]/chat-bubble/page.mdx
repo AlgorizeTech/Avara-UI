@@ -26,7 +26,7 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col gap-1.5 p-4 max-w-md mx-auto">
       <ChatBubble variant="received" layout="group-top">
-        <ChatAvatar fallback="SJ" src="/sarah.png" />
+        <ChatAvatar fallback="SJ" />
         <ChatMessage>Hey! Did you check out the new Docs UI kit?</ChatMessage>
       </ChatBubble>
 
@@ -209,7 +209,7 @@ export default function TypingIndicator() {
           prop: "fallback",
           value: '"SJ"',
           effect:
-            "on `ChatAvatar` is required — the initials shown until `src` loads.",
+            "on `ChatAvatar` is required — the initials show until `src` loads, and stay if it fails.",
         },
       ],
       props: { example: "conversation" },
