@@ -4,8 +4,6 @@ A production-grade, highly animated multi-step wizard component engineered exclu
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
-## Examples
-
 `Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
 export const stepperPanels = `// The three step bodies — swap them for your own fields.

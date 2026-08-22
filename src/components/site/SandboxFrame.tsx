@@ -16,6 +16,7 @@ export function SandboxFrame({
   scale = 1,
   resetKey = 0,
   minHeight = 0,
+  fill = false,
   className,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
@@ -30,6 +31,13 @@ export function SandboxFrame({
   resetKey?: number;
   minHeight?: number;
   maxHeight?: number;
+  /**
+   * Fills the container instead of auto-sizing to the height the demo reports.
+   * The sandbox document is told over postMessage — NOT through the URL, which
+   * would reload it — so entering fullscreen resizes the live demo instead of
+   * throwing it away and loading a second one.
+   */
+  fill?: boolean;
   className?: string;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -56,16 +64,30 @@ export function SandboxFrame({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, resetKey]);
 
-  const postProps = () => {
+  const fillRef = useRef(fill);
+  fillRef.current = fill;
+
+  const post = (message: Record<string, unknown>) => {
     iframeRef.current?.contentWindow?.postMessage(
-      { type: "sandbox:props", props: propsRef.current ?? {} },
+      message,
       window.location.origin,
     );
   };
 
+  // Sent together on load: a document that just booted needs both, and the
+  // demo must not paint one frame of the wrong size or the wrong props.
+  const postState = () => {
+    post({ type: "sandbox:props", props: propsRef.current ?? {} });
+    post({ type: "sandbox:fill", fill: fillRef.current });
+  };
+
   useEffect(() => {
-    postProps();
+    post({ type: "sandbox:props", props: sandboxProps ?? {} });
   }, [sandboxProps]);
+
+  useEffect(() => {
+    post({ type: "sandbox:fill", fill });
+  }, [fill]);
 
   // Auto-height reported from inside the sandbox document.
   useEffect(() => {
@@ -96,25 +118,26 @@ export function SandboxFrame({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden transition-[height] duration-300 ease-out",
+        "relative w-full overflow-hidden",
+        !fill && "transition-[height] duration-300 ease-out",
         className,
       )}
-      style={{ height: Math.round(frameHeight * safeScale) }}
+      style={fill ? undefined : { height: Math.round(frameHeight * safeScale) }}
     >
       <iframe
         key={resetKey}
         ref={iframeRef}
         src={src}
         title={`${name} sandbox preview`}
-        onLoad={postProps}
+        onLoad={postState}
         className={cn(
           "absolute top-0 left-0 block border-0 transition-opacity duration-300",
           ready ? "opacity-100" : "opacity-0",
         )}
         style={{
-          width: viewportWidth == null ? "100%" : `${viewportWidth}px`,
-          height: frameHeight,
-          transform: scale !== 1 ? `scale(${scale})` : undefined,
+          width: fill || viewportWidth == null ? "100%" : `${viewportWidth}px`,
+          height: fill ? "100%" : frameHeight,
+          transform: !fill && scale !== 1 ? `scale(${scale})` : undefined,
           transformOrigin: "top left",
         }}
       />

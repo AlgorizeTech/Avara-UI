@@ -2,8 +2,6 @@
 
 A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
 
-## Examples
-
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
 export const chatData = `const chatHistory = [
@@ -61,6 +59,8 @@ export default function GlassAssistant() {
 };`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.

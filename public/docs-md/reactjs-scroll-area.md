@@ -4,8 +4,6 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
 
-## Examples
-
 Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
 
 export const longListSource = `// The scrollable content — swap it for your own.
@@ -152,6 +150,8 @@ export default function AutoHideScroller() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.

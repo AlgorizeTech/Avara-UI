@@ -4,8 +4,6 @@ A premium, dependency-free loading indicator component.
 
 Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`. This component consolidates 5 distinct, ultra-smooth animations into a single block.
 
-## Examples
-
 Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
 
 export const usageSpinner = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
@@ -33,6 +31,8 @@ export default function BarLoader() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

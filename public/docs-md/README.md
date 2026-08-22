@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-22T02:05:30.436Z
-**Total files:** 201
+**Generated at:** 2026-08-22T12:38:25.860Z
+**Total files:** 203
 
 ## Available Files
 
@@ -51,6 +51,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [nextjs/floating-contact-button](/docs/nextjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [nextjs/flowchart](/docs/nextjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
+- [nextjs/footer](/docs/nextjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
 - [nextjs/globe](/docs/nextjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
@@ -152,6 +153,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/fleet-tracker](/docs/reactjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [reactjs/floating-contact-button](/docs/reactjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [reactjs/flowchart](/docs/reactjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
+- [reactjs/footer](/docs/reactjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
 - [reactjs/globe](/docs/reactjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`

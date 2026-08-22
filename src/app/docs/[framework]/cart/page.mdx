@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-## Examples
-
 One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
 export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
@@ -59,6 +57,20 @@ export default function CartPage() {
       usage: usageDrawer,
       code: extractCode("src/components/custom/blocks/CartBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="cart" />
+
+## Examples
+
+<ExampleShowcase
+  name="cart"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Modal",
       propNotes: [
@@ -90,13 +102,8 @@ export default function CartPage() {
   ]}
 />
 
-## Installation
-
-<Installation name="cart" />
-
 ## Features
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

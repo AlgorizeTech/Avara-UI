@@ -4,8 +4,6 @@ A declarative, highly sleek flowchart engine complete with custom responsive col
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-## Examples
-
 Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
 
 export const pipelineNodes = `function PipelineNodes() {
@@ -83,6 +81,8 @@ export default function AccentedPipeline() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Best Practices & Guidelines
 

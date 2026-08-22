@@ -6,8 +6,6 @@ Popovers and Dropdowns are great for quick, non-blocking actions. But when you n
 
 The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
 
-## Examples
-
 Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
 export const usageDefault = `import {
@@ -148,6 +146,8 @@ export default function ControlledDialog() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.

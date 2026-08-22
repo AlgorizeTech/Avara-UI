@@ -4,8 +4,6 @@ A high-fidelity Form toolkit engineered for both simple landing pages and comple
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
-## Examples
-
 `FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
 export const usageZod = `"use client";
@@ -58,6 +56,8 @@ The form primitives are unopinionated about validation; the native example uses 
 ```bash
 npx shadcn@latest install react-hook-form zod @hookform/resolvers
 ```
+
+## Examples
 
 ## Features
 Explore the Form component's validation integration, accessible error messages, and loading state management.

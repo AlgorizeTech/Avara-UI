@@ -4,8 +4,6 @@ A navigational aid that helps users understand their current location within a w
 
 This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
 
-## Examples
-
 You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
 export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
@@ -52,6 +50,8 @@ export default function DeepBreadcrumb() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
@@ -116,6 +116,17 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
 
           The maximum number of links to display before automatically truncating
           the middle of the path.
+
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The element each item renders as. It defaults to a plain{" "}
+          &lt;a&gt; so one source works in any React app — pass{" "}
+          Link from next/link to get client-side
+          navigation and prefetching back.
 
 ---
 

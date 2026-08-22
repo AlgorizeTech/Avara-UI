@@ -4,8 +4,6 @@ A visually persistent, OS-style menu component that provides quick access to a c
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Examples
-
 Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
 export const usageDefault = `import {
@@ -90,6 +88,8 @@ export default function AppWindow() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.

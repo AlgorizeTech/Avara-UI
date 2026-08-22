@@ -7,8 +7,6 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Examples
-
 Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
 export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
@@ -108,6 +106,19 @@ export default function DisabledToggle() {
       usage: usageSizes,
       code: extractCode("src/components/custom/blocks/ToggleBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="toggle" />
+
+## Examples
+
+<ExampleShowcase
+  name="toggle"
+  columns={1}
+  examples={[
     {
       title: "With text",
       propNotes: [
@@ -147,10 +158,6 @@ export default function DisabledToggle() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="toggle" />
 
 ## Usage
 
@@ -199,7 +206,6 @@ export default function Toolbar() {
 
 ## Features
 Explore the Toggle button's simple two-state functionality, perfect for on/off switches and boolean preferences with smooth transitions.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

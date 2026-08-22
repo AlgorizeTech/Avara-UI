@@ -6,8 +6,6 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 ---
 
-## Examples
-
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
 export const networkNodes = `const users = [
@@ -61,6 +59,8 @@ export default function FastGraph() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

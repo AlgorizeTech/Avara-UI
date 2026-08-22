@@ -4,8 +4,6 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
-## Examples
-
 Every block ships with macOS window controls, a language badge derived from `language`, and a copy button.
 
 export const htmlSource = `const html = \`
@@ -71,6 +69,8 @@ export default function MultiFileSnippet() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.

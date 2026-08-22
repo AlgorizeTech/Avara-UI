@@ -1,8 +1,8 @@
 # Globe
 
-An interactive 3D Globe component with 10 distinct animation variants, live rotation controls, 3D Canvas physics, flight route arcs, geo-markers, holographic wireframes, and particle clouds.
+An interactive 3D Globe component with 9 distinct animation variants matching site theme colors, 3D Canvas physics, holographic wireframes, tactical radar sweeps, and digital matrix code.
 
-`Globe` brings global network activity, flight paths, real-time analytics, and futuristic visual landing pages to life with high-performance 60fps HTML5 3D rendering.
+`Globe` brings global network activity, real-time analytics, and futuristic visual landing pages to life with high-performance 60fps HTML5 3D rendering.
 
 export const usageInteractiveDots = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
 
@@ -10,33 +10,9 @@ export default function GlobeDotsDemo() {
   return ;
 }`;
 
-export const usageFlightRoutes = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
-
-export default function GlobeFlightDemo() {
-  return ;
-}`;
-
 export const usageHologramWireframe = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
 
 export default function GlobeHologramDemo() {
-  return ;
-}`;
-
-export const usageParticleCloud = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
-
-export default function GlobeParticlesDemo() {
-  return ;
-}`;
-
-export const usageDayNight = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
-
-export default function GlobeDayNightDemo() {
-  return ;
-}`;
-
-export const usageTechPinpoint = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
-
-export default function GlobePinpointDemo() {
   return ;
 }`;
 
@@ -64,20 +40,40 @@ export default function GlobeHeatmapDemo() {
   return ;
 }`;
 
+export const usageCyberHex = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeCyberHexDemo() {
+  return ;
+}`;
+
+export const usageRadarSweep = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeRadarDemo() {
+  return ;
+}`;
+
+export const usageGalaxySpiral = `import { Globe } from "@/components/custom/blocks/GlobeBlock";
+
+export default function GlobeGalaxyDemo() {
+  return ;
+}`;
+
 ## Installation
+
+## Examples
 
 ## Features
 
 Discover the key capabilities of the `Globe` component:
 
-    10 Animated Variants
-    Includes dotted sphere, flight arcs, wireframe hologram, particle cloud, day/night lights, geo pinpoints, digital matrix, energy shield, minimal flat 3D, and activity heatmap.
+    9 Theme-Adaptive Variants
+    Includes dotted sphere, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.
+
+    Automatic Website Theme Match
+    Dynamically inherits var(--primary) site CSS variables to seamlessly adapt across custom theme colors and light/dark modes.
 
     Interactive Orbit & Drag Controls
     Full 360-degree pointer drag rotation, smooth auto-orbit toggle, and inertia physics.
-
-    3D Connection Arcs & Particles
-    Quadratic 3D bézier curve arcs connecting global city coordinates with traveling light pulses.
 
     60fps HTML5 Canvas Engine
     Zero heavyweight WebGL dependencies — pure HTML5 2D Canvas 3D projection for ultra-fast load times.
@@ -92,11 +88,11 @@ Discover the key capabilities of the `Globe` component:
         variant
         GlobeVariant
         "interactive-dots"
-        Selects from the 10 3D globe animation variants.
+        Selects from the 9 3D globe animation variants.
 
         size
         number
-        440
+        560
         Pixel diameter size for the globe canvas rendering box.
 
         speed
@@ -109,15 +105,10 @@ Discover the key capabilities of the `Globe` component:
         true
         Enables pointer drag rotation controls.
 
-        glowColor
-        string
-        "#3b82f6"
-        Hex color string for ambient atmosphere glow aura.
-
         primaryColor
         string
-        "#60a5fa"
-        Primary color for land points and active arcs.
+        "var(--primary)"
+        Primary theme color (CSS variable or hex) for land points and active arcs.
 
         markers
         LocationMarker[]

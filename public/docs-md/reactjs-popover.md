@@ -6,8 +6,6 @@ While tooltips are meant for small text hints on hover, Popovers are designed to
 
 The same goes for the screen edge. `side` and `align` are *preferences*: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport when it still overhangs, and caps its own width and height to the screen — so a `w-72` panel opened `side="left"` next to a phone-width trigger stays fully readable instead of running off the edge. Pass `avoidCollisions={false}` to opt out.
 
-## Examples
-
 Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
 
 export const usageMenu = `import {
@@ -70,6 +68,8 @@ export default function OffsetPopover() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.

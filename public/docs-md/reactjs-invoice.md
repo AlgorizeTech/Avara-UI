@@ -2,8 +2,6 @@
 
 A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
 
-## Examples
-
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
 export const invoiceSource = `const invoiceData = {
@@ -70,6 +68,8 @@ export default function GlassInvoice() {
 };`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.

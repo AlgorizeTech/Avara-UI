@@ -7,8 +7,6 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Examples
-
 Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
 
 export const usageDefault = `import {
@@ -118,6 +116,20 @@ export default function BareWizard() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="wizard" />
+
+## Examples
+
+<ExampleShowcase
+  name="wizard"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Starting step",
       propNotes: [
@@ -146,13 +158,8 @@ export default function BareWizard() {
   ]}
 />
 
-## Installation
-
-<Installation name="wizard" />
-
 ## Features
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

@@ -23,9 +23,9 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Examples
+Everything below runs client-side — type a new value and the SVG regenerates instantly. The generator and the reader are separate components with separate install commands.
 
-Everything below runs client-side — type a new value and the SVG regenerates instantly.
+## QR generator
 
 export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
@@ -81,6 +81,22 @@ export default function ReaderExample() {
       usage: usageGenerator,
       code: extractCode("src/components/custom/blocks/QrCodeGeneratorBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="qr-code-generator" />
+
+### More examples
+
+<ExampleShowcase
+  name="qr-code"
+  colorControl
+  colorProp="themeColor"
+  colorLabel="Color Variant"
+  columns={1}
+  examples={[
     {
       title: "Sizes & levels",
       propNotes: [
@@ -104,6 +120,20 @@ export default function ReaderExample() {
       props: { example: "gallery" },
       usage: usageGallery,
     },
+  ]}
+/>
+
+## QR reader
+
+A separate component with its own dependencies — decoding happens entirely in the browser.
+
+<ExampleShowcase
+  name="qr-code"
+  colorControl
+  colorProp="themeColor"
+  colorLabel="Color Variant"
+  columns={1}
+  examples={[
     {
       title: "QR reader",
       propNotes: [
@@ -120,14 +150,9 @@ export default function ReaderExample() {
   ]}
 />
 
-## Installation
+### Installation
 
-The generator and the reader are separate components with separate dependencies.
-
-<InstallGroup>
-  <Installation name="qr-code-generator" />
-  <Installation name="qr-code-reader" />
-</InstallGroup>
+<Installation name="qr-code-reader" showSetupPath={false} />
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

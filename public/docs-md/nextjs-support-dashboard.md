@@ -7,8 +7,6 @@ It now features a **dual-layout system**:
 1. **Chat View:** A highly detailed 3-pane layout for resolving individual customer tickets. Features a sortable inbox, a responsive chat thread, and a collapsible metadata pane.
 2. **Table View:** A macro-level Ticket System layout. Automatically calculates top-level metrics (Total, Open, High Priority) based on the exact same data object, and displays an elegant, sortable list view.
 
-## Examples
-
 Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
 export const supportData = `const data: SupportData = {
@@ -118,6 +116,8 @@ export default function GlassDashboard() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

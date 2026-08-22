@@ -2,13 +2,13 @@
 
 An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Framer Motion and Tailwind CSS.
 
-## Examples
-
 export const usageFolder = `import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 
 export default function Showcase() {
   return ;
 }`;
+
+### Installation
 
 export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
 
@@ -18,9 +18,7 @@ export default function CustomLabelBox() {
   return ;
 }`;
 
-## Installation
-
-Two independent components ship here — take only the one you need.
+### Installation
 
 ## Props Reference
 

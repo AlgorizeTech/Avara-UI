@@ -9,8 +9,6 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
-## Examples
-
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
 export const masonryData = `const items = [
@@ -156,6 +154,19 @@ export default function StaticGrid() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="masonry-grid" />
+
+## Examples
+
+<ExampleShowcase
+  name="masonry-grid"
+  columns={1}
+  examples={[
     {
       title: "Column counts",
       propNotes: [
@@ -211,14 +222,9 @@ export default function StaticGrid() {
   ]}
 />
 
-## Installation
-
-<Installation name="masonry-grid" />
-
 ## Features
 
 Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

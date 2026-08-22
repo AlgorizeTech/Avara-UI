@@ -4,8 +4,6 @@ A cinematic, expanding gallery component built with **GSAP**. It keeps one panel
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-## Examples
-
 Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
 
 export const accordionPanels = `const panels = [
@@ -72,6 +70,8 @@ export default function ShortReel() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

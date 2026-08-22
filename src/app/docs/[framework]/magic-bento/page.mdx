@@ -5,13 +5,9 @@ import { extractCode } from "@/lib/code";
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
-
 This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
 to track pointer coordinates without triggering heavy React state re-renders,
 ensuring the volumetric glows remain silky smooth.
-
-
-## Examples
 
 Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
 
@@ -80,6 +76,20 @@ export default function HighlightedBento() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MagicBentoBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="magic-bento" />
+
+## Examples
+
+<ExampleShowcase
+  name="magic-bento"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Highlight card",
       propNotes: [
@@ -95,10 +105,6 @@ export default function HighlightedBento() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="magic-bento" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -2,8 +2,6 @@
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Examples
-
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
 export const emailData = `const emails = [
@@ -61,6 +59,8 @@ export default function GlassMailbox() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.

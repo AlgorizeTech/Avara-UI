@@ -9,8 +9,6 @@ Traditional collapsible components rely on Javascript (like `Element.scrollHeigh
 
 The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
 
-## Examples
-
 From a bare disclosure to a nested file tree — the same three parts every time.
 
 export const usageSettings = `import {
@@ -120,6 +118,19 @@ export default function FileTree() {
       usage: usageSettings,
       code: extractCode("src/components/custom/blocks/CollapsibleBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="collapsible" />
+
+## Examples
+
+<ExampleShowcase
+  name="collapsible"
+  columns={1}
+  examples={[
     {
       title: "File tree",
       subheading: "Collapsibles nest freely; each level keeps its own open state.",
@@ -135,13 +146,8 @@ export default function FileTree() {
   ]}
 />
 
-## Installation
-
-<Installation name="collapsible" />
-
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

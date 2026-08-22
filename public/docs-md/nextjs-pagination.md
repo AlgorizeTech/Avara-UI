@@ -4,8 +4,6 @@ A complex navigation component that intelligently handles page rendering, ellips
 
 Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
 
-## Examples
-
 Click through the page numbers in each preview to watch the ellipses shift.
 
 export const usageDefault = `import { useState } from "react";
@@ -53,6 +51,8 @@ export default function CustomerDirectory() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

@@ -4,8 +4,6 @@ A high-impact, interactive split-screen layout engineered exclusively with **GSA
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-## Examples
-
 `SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const splitSteps = `// Card bodies — swap these for your own screens.
@@ -89,6 +87,8 @@ export default function BrandedSplitStepper() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

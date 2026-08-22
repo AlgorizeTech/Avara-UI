@@ -4,8 +4,6 @@ A versatile layout component for displaying structured content featuring media, 
 
 Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
 
-## Examples
-
 `title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
 
 export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
@@ -36,6 +34,8 @@ export default function FeatureCard() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.

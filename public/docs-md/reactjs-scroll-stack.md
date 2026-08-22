@@ -2,11 +2,9 @@
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-## Examples
-
 Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-### Simple stack
+## Simple stack
 
 export const stackItems = `const items = [
   {
@@ -48,7 +46,9 @@ export default function GappedStack() {
   return ;
 }`;
 
-### Sticky stack
+### Installation
+
+## Sticky stack
 
 export const stickyItems = `const items = [
   {
@@ -99,7 +99,11 @@ export default function TunedStickyStack() {
   return ;
 }`;
 
-### Split stack
+### Installation
+
+### More examples
+
+## Split stack
 
 export const splitItems = `const items = [
   {
@@ -158,7 +162,11 @@ export default function PinnedLeftStack() {
   );
 }`;
 
-### Horizontal stack
+### Installation
+
+### More examples
+
+## Horizontal stack
 
 export const railSteps = `const steps = [
   { id: "1", number: "01", title: "Understand", description: "Map the problem." },
@@ -186,9 +194,9 @@ export default function ShortRail() {
   return ;
 }`;
 
-## Installation
+### Installation
 
-Each layout is its own block file. Install only the ones you use — they share no code.
+### More examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
