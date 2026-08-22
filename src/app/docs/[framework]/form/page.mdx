@@ -7,8 +7,6 @@ A high-fidelity Form toolkit engineered for both simple landing pages and comple
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
-## Examples
-
 `FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
 export const usageZod = `"use client";
@@ -110,6 +108,26 @@ export default function SubmittingForm() {
       usage: usageZod,
       code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="form" />
+
+### Optional — schema validation
+
+The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
+
+<Cli command={`install react-hook-form zod @hookform/resolvers`} />
+
+## Examples
+
+<ExampleShowcase
+  name="form"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Submitting",
       propNotes: [
@@ -126,19 +144,8 @@ export default function SubmittingForm() {
   ]}
 />
 
-## Installation
-
-<Installation name="form" />
-
-### Optional — schema validation
-
-The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
-
-<Cli command={`install react-hook-form zod @hookform/resolvers`} />
-
 ## Features
 Explore the Form component's validation integration, accessible error messages, and loading state management.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

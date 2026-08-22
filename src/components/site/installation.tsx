@@ -92,7 +92,7 @@ const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
  */
 function InstallDivider() {
   return (
-    <div className="my-12 flex items-center gap-4">
+    <div className="my-14 flex items-center gap-4">
       <span
         aria-hidden
         className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"

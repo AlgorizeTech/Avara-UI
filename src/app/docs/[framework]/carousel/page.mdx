@@ -7,9 +7,9 @@ A collection of highly interactive carousel components for image galleries, hero
 
 <InjectablePropNote prop="imageComponent" component="ImageCarousel" />
 
-## Examples
+Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`.
+## Carousels
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
@@ -106,6 +106,21 @@ export default function FluidShowcase() {
       usage: usageImage,
       code: extractCode("src/components/custom/carousel.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="carousel" />
+
+### More examples
+
+`ImageCarousel`, `HeroCarousel` and `CustomCarousel` all ship in the one file you just installed.
+
+<ExampleShowcase
+  name="carousel"
+  columns={1}
+  examples={[
     {
       title: "Hero carousel",
       subheading: "`HeroCarousel` overlays copy on a full-bleed image.",
@@ -149,9 +164,19 @@ export default function FluidShowcase() {
       props: { carouselType: "thumbnails", thumbPosition: "left" },
       usage: usageThumbnailsSide,
     },
+  ]}
+/>
+
+## Fluid glass slider
+
+A separate GSAP-driven component with its own file and its own install command.
+
+<ExampleShowcase
+  name="carousel"
+  columns={1}
+  examples={[
     {
       title: "Fluid glass slider",
-      subheading: "A separate GSAP-driven component — installed on its own, see Installation below.",
       propNotes: [
         {
           prop: "items",
@@ -166,14 +191,9 @@ export default function FluidShowcase() {
   ]}
 />
 
-## Installation
+### Installation
 
-Four components live on this page. The three standard carousels share one file — import `ImageCarousel`, `HeroCarousel` or `CustomCarousel` from it. The fluid glass slider is its own file, installed separately.
-
-<InstallGroup>
-  <Installation name="carousel" />
-  <Installation name="ui-fluid-glass-slider" />
-</InstallGroup>
+<Installation name="ui-fluid-glass-slider" showSetupPath={false} />
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

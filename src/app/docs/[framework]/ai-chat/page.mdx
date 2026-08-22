@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
 
-## Examples
-
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
 export const chatData = `const chatHistory = [
@@ -113,6 +111,20 @@ export default function GlassAssistant() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Ai-chat.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="ai-chat" />
+
+## Examples
+
+<ExampleShowcase
+  name="ai-chat"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -149,13 +161,8 @@ export default function GlassAssistant() {
   ]}
 />
 
-## Installation
-
-<Installation name="ai-chat" />
-
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

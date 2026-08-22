@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Examples
-
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
 export const emailData = `const emails = [
@@ -96,6 +94,20 @@ export default function GlassMailbox() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Email.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="email" />
+
+## Examples
+
+<ExampleShowcase
+  name="email"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -127,13 +139,8 @@ export default function GlassMailbox() {
   ]}
 />
 
-## Installation
-
-<Installation name="email" />
-
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

@@ -6,8 +6,6 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 ---
 
-## Examples
-
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
 export const masonryData = `const items = [
@@ -107,6 +105,8 @@ export default function StaticGrid() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 

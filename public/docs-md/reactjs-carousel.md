@@ -2,9 +2,9 @@
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-## Examples
+Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`.
+## Carousels
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
@@ -70,9 +70,17 @@ export default function FluidShowcase() {
   return ;
 }`;
 
-## Installation
+### Installation
 
-Four components live on this page. The three standard carousels share one file — import `ImageCarousel`, `HeroCarousel` or `CustomCarousel` from it. The fluid glass slider is its own file, installed separately.
+### More examples
+
+`ImageCarousel`, `HeroCarousel` and `CustomCarousel` all ship in the one file you just installed.
+
+## Fluid glass slider
+
+A separate GSAP-driven component with its own file and its own install command.
+
+### Installation
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

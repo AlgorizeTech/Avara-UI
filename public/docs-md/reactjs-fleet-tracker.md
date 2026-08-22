@@ -2,8 +2,6 @@
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
-## Examples
-
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
 export const fleetData = `const fleet = [
@@ -55,6 +53,8 @@ export default function ModernFleet() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.

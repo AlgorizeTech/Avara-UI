@@ -4,8 +4,6 @@ A completely custom, headless-style dropdown component. Native HTML `` elements 
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
-## Examples
-
 Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
 export const selectOptions = `const options = [
@@ -65,6 +63,8 @@ export default function MultiSelect() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.

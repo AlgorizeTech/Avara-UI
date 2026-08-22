@@ -2,8 +2,6 @@
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 
-## Examples
-
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
 export const chatData = `const currentUser = {
@@ -65,6 +63,8 @@ export default function GlassChat() {
 };`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.

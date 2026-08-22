@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Examples
-
 Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
@@ -76,6 +74,20 @@ export default function GlassModal() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="modal" />
+
+## Examples
+
+<ExampleShowcase
+  name="modal"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Form",
       propNotes: [
@@ -135,13 +147,8 @@ export default function GlassModal() {
   ]}
 />
 
-## Installation
-
-<Installation name="modal" />
-
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

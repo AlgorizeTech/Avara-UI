@@ -6,8 +6,6 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 ---
 
-## Examples
-
 These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
 export const usageConversation = `import {
@@ -98,6 +96,8 @@ export default function TypingIndicator() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

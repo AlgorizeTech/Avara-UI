@@ -4,8 +4,6 @@ A context-aware popup that displays information when an element receives keyboar
 
 Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
 
-## Examples
-
 Hover or tab to each trigger to open its tooltip.
 
 export const usageRich = `import {
@@ -45,6 +43,8 @@ export default function OffsetTooltip() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

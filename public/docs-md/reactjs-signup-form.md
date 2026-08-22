@@ -2,8 +2,6 @@
 
 A complete, production-ready Authentication Block that acts as both a Login and Signup component. It features comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles, and social auth button templates.
 
-## Examples
-
 One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome.
 
 export const usageSignup = `import AuthForm from "@/components/custom/blocks/AuthForm";
@@ -43,6 +41,8 @@ export default function MinimalLoginPage() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

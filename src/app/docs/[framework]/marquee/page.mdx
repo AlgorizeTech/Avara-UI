@@ -7,8 +7,6 @@ An infinite, seamless scrolling container ideal for logos, testimonials, and ima
 
 This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
 
-## Examples
-
 You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
 
 export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
@@ -141,6 +139,19 @@ export default function BareMarquee() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MarqueeBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="marquee" />
+
+## Examples
+
+<ExampleShowcase
+  name="marquee"
+  columns={1}
+  examples={[
     {
       title: "Reverse direction",
       propNotes: [
@@ -220,10 +231,6 @@ export default function BareMarquee() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="marquee" />
 
 ## Props Reference
 

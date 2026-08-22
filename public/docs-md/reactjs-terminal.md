@@ -4,8 +4,6 @@ A beautiful, dependency-free code display block inspired by Mac OS windows.
 
 If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
 
-## Examples
-
 Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button.
 
 export const pythonSource = `const source = \`import httpx
@@ -78,6 +76,8 @@ export default function BareTerminal() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

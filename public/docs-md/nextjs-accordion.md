@@ -2,8 +2,6 @@
 
 A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
 
-## Examples
-
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
 
 export const usageData = `const faqItems = [
@@ -68,6 +66,8 @@ export default function AlwaysOpenFaq() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.

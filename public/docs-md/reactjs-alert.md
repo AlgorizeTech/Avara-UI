@@ -4,8 +4,6 @@ A highly versatile Alert component designed to communicate states and important 
 
 Along with the classic `solid` and `outline` variations, this component now features three completely modern aesthetics: `modern` (SaaS style), `glass` (glassmorphism), and `glow` (dark mode neon).
 
-## Examples
-
 Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Alert } from "@/components/custom/blocks/Alerts";
@@ -89,6 +87,8 @@ export default function RichAlert() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Alert component's capabilities, including different severity levels, customizable icons, and dismissible actions.

@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
 
-## Examples
-
 Explore the different variations of the Button component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
@@ -103,6 +101,25 @@ export default function SocialLoginButtons() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="button" />
+
+### Optional — the icon set
+
+The showcase uses a set of brand and UI icons that ship as their own registry item. The button does not need them.
+
+<Cli command={`add icons.json`} />
+
+## Examples
+
+<ExampleShowcase
+  name="button"
+  columns={1}
+  examples={[
     {
       title: "Variants",
       propNotes: [
@@ -182,19 +199,8 @@ export default function SocialLoginButtons() {
   ]}
 />
 
-## Installation
-
-<Installation name="button" />
-
-### Optional — the icon set
-
-The showcase uses a set of brand and UI icons that ship as their own registry item. The button does not need them.
-
-<Cli command={`add icons.json`} />
-
 ## Features
 Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

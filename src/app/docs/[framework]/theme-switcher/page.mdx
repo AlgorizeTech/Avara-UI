@@ -7,8 +7,6 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Examples
-
 Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
 
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
@@ -57,34 +55,6 @@ export default function DropdownSwitcher() {
       usage: usageIcon,
       code: extractCode("src/components/custom/blocks/ThemeSwitcherBlock.tsx"),
     },
-    {
-      title: "Pill",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"pill"',
-          effect:
-            "for a segmented control with a sliding indicator. It shows the current mode explicitly, which suits a settings page.",
-        },
-      ],
-      props: { variant: "pill" },
-      usage: usagePill,
-    },
-    {
-      title: "Dropdown",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"dropdown"',
-          effect:
-            "for a menu — the **only** variant that exposes the `system` option, so users can defer to their OS setting.",
-        },
-      ],
-      props: { variant: "dropdown" },
-      usage: usageDropdown,
-    },
   ]}
 />
 
@@ -117,10 +87,46 @@ export default function RootLayout({
 }
 ```
 
+## Examples
+
+<ExampleShowcase
+  name="theme-switcher"
+  columns={1}
+  examples={[
+    {
+      title: "Pill",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"pill"',
+          effect:
+            "for a segmented control with a sliding indicator. It shows the current mode explicitly, which suits a settings page.",
+        },
+      ],
+      props: { variant: "pill" },
+      usage: usagePill,
+    },
+    {
+      title: "Dropdown",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"dropdown"',
+          effect:
+            "for a menu — the **only** variant that exposes the `system` option, so users can defer to their OS setting.",
+        },
+      ],
+      props: { variant: "dropdown" },
+      usage: usageDropdown,
+    },
+  ]}
+/>
+
 ## Features
 
 Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

@@ -4,8 +4,6 @@ A deeply interactive, parallax-driven 3D tilt component. It calculates the relat
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
-## Examples
-
 Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
 
 export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
@@ -77,6 +75,8 @@ export default function LiftOnHover() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -4,8 +4,6 @@ A powerful typography component that breathes life into your text using Framer M
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-## Examples
-
 Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
@@ -46,6 +44,8 @@ export default function HeadlineAnimation() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

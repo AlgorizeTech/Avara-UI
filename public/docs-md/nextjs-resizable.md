@@ -4,8 +4,6 @@ A high-performance system for building resizable panel layouts, complete with ke
 
 Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
 
-## Examples
-
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
 export const paneHelper = `// Panel bodies — swap these for your own content.
@@ -98,6 +96,8 @@ export default function ConstrainedSidebar() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

@@ -6,8 +6,6 @@ This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
 to track pointer coordinates without triggering heavy React state re-renders,
 ensuring the volumetric glows remain silky smooth.
 
-## Examples
-
 Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
@@ -46,6 +44,8 @@ export default function HighlightedBento() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

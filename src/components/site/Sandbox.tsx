@@ -56,6 +56,15 @@ type Device = "desktop" | "tablet" | "mobile";
  */
 const DESKTOP_PRESET_WIDTH = 1280;
 
+/**
+ * Floor for the fluid "100%" state on a desktop-class screen. A desktop visitor
+ * should land on the desktop tab even when the docs column is narrower than a
+ * desktop viewport, so the fluid state never drops below this: a column wider
+ * than 1080 still fills edge to edge at a true 100%, a narrower one keeps a
+ * real 1080px viewport and lets the scale-to-fit math shrink it.
+ */
+const DESKTOP_MIN_PREVIEW_WIDTH = 1080;
+
 const DEVICE_PRESETS: Record<Device, number> = {
   desktop: DESKTOP_PRESET_WIDTH,
   tablet: 768,
@@ -94,6 +103,25 @@ export interface SandboxOptions {
   zoom?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
+}
+
+/**
+ * Whether the VISITOR's screen is desktop-class — not the preview area, which
+ * is only ever a fraction of it. Null until the first client effect so the
+ * server render and first paint stay neutral.
+ */
+function useIsDesktopScreen() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
+    const sync = () => setIsDesktop(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  return isDesktop;
 }
 
 /**
@@ -137,11 +165,13 @@ export function Sandbox({
   const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
-  // Every preview opens fitted: fluid "100%", unscaled, filling the card edge
-  // to edge. That is the visitor's OWN viewport, so the first thing they see is
-  // the component exactly as it renders on the device they arrived on — no
-  // preset width, no shrink-to-fit. The device buttons are there for anyone who
-  // wants to check a class other than their own.
+  // Every preview opens fitted: fluid "100%", filling the card edge to edge.
+  // That is the visitor's OWN viewport, so the first thing they see is the
+  // component as it renders on the device they arrived on — except on a desktop
+  // screen, where the fluid state is floored at DESKTOP_MIN_PREVIEW_WIDTH so a
+  // desktop visitor lands on a real desktop viewport (and the desktop tab)
+  // even though the docs column is narrower than one. The device buttons are
+  // there for anyone who wants to check a class other than their own.
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -173,11 +203,20 @@ export function Sandbox({
   }, []);
 
   const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
+  const isDesktopScreen = useIsDesktopScreen();
+
+  // Floor for the fluid state. A desktop visitor gets a desktop viewport even
+  // when the docs column is narrower than one; every other screen keeps the
+  // hard 350px floor and its own column width.
+  const fluidFloor = isDesktopScreen
+    ? DESKTOP_MIN_PREVIEW_WIDTH
+    : MIN_PREVIEW_WIDTH;
+
   const viewportWidth =
     previewWidth === "100%"
       ? availableWidth === null
         ? null
-        : Math.max(availableWidth, MIN_PREVIEW_WIDTH)
+        : Math.max(availableWidth, fluidFloor)
       : (previewWidth as number);
 
   // Wide device on a narrow area → keep the true viewport, shrink visually.
@@ -186,8 +225,9 @@ export function Sandbox({
       ? availableWidth / viewportWidth
       : 1;
   const visualScale = fitScale;
-  /** The fluid state — the only one that fills the card edge to edge. On a
-   *  sub-floor screen it is scaled rather than unscaled, but still edge to edge. */
+  /** The fluid state — the only one that fills the card edge to edge. When the
+   *  column is narrower than the floor (a sub-350px phone, or any column under
+   *  1080 on desktop) it is scaled rather than unscaled, but still edge to edge. */
   const isFitted = previewWidth === "100%";
 
   // Derived from the MEASURED width, including the fluid "100%" state — so on
@@ -378,7 +418,13 @@ export function Sandbox({
                     ? "bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-600"
                     : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
                 )}
-                title="Fit to screen (100%)"
+                title={
+                  fluidFloor > MIN_PREVIEW_WIDTH &&
+                  availableWidth !== null &&
+                  availableWidth < fluidFloor
+                    ? `Fit to screen (${fluidFloor}px desktop viewport)`
+                    : "Fit to screen (100%)"
+                }
                 aria-label="Fit preview to screen"
                 aria-pressed={isFitted}
               >

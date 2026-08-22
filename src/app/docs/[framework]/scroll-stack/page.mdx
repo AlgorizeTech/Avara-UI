@@ -5,12 +5,9 @@ import { extractCode } from "@/lib/code";
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-
-## Examples
-
 Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-### Simple stack
+## Simple stack
 
 export const stackItems = `const items = [
   {
@@ -75,7 +72,11 @@ export default function GappedStack() {
   ]}
 />
 
-### Sticky stack
+### Installation
+
+<Installation name="scroll-stack" />
+
+## Sticky stack
 
 export const stickyItems = `const items = [
   {
@@ -150,6 +151,20 @@ export default function TunedStickyStack() {
       usage: usageSticky,
       code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="sticky-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="sticky-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Stack geometry",
       propNotes: [
@@ -172,7 +187,7 @@ export default function TunedStickyStack() {
   ]}
 />
 
-### Split stack
+## Split stack
 
 export const splitItems = `const items = [
   {
@@ -256,6 +271,20 @@ export default function PinnedLeftStack() {
       usage: usageSplitRight,
       code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="split-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="split-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Pinned left",
       propNotes: [
@@ -278,7 +307,7 @@ export default function PinnedLeftStack() {
   ]}
 />
 
-### Horizontal stack
+## Horizontal stack
 
 export const railSteps = `const steps = [
   { id: "1", number: "01", title: "Understand", description: "Map the problem." },
@@ -329,6 +358,20 @@ export default function ShortRail() {
       usage: usageHorizontal,
       code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="horizontal-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="horizontal-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Shorter rail",
       propNotes: [
@@ -343,17 +386,6 @@ export default function ShortRail() {
     },
   ]}
 />
-
-## Installation
-
-Each layout is its own block file. Install only the ones you use — they share no code.
-
-<InstallGroup>
-  <Installation name="scroll-stack" />
-  <Installation name="sticky-scroll-stack" />
-  <Installation name="split-scroll-stack" />
-  <Installation name="horizontal-scroll-stack" />
-</InstallGroup>
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

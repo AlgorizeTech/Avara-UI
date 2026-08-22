@@ -2,8 +2,6 @@
 
 A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
-## Examples
-
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
 export const usageDefault = `import { useState } from "react";
@@ -68,6 +66,8 @@ export default function OnboardingDrawer() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
