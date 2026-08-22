@@ -11,11 +11,38 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
+export const paneHelper = `// Panel bodies — swap these for your own content.
+function Pane({ label }) {
+  return (
+    <div className="flex h-full items-center justify-center bg-zinc-50 dark:bg-zinc-900">
+      <span className="text-sm font-medium text-zinc-500">{label}</span>
+    </div>
+  );
+}`;
+
+export const studioPanes = `${paneHelper}
+
+const Explorer = () => <Pane label="Explorer" />;
+const Editor = () => <Pane label="Editor" />;
+const TerminalPane = () => <Pane label="Terminal" />;`;
+
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => <Pane label="Panel one" />;
+const PanelTwo = () => <Pane label="Panel two" />;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => <Pane label="Sidebar" />;
+const Editor = () => <Pane label="Editor" />;`;
+
 export const usageDefault = `import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
+
+${studioPanes}
 
 export default function StudioLayout() {
   return (
@@ -50,7 +77,8 @@ export const usageHorizontal = `import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
-import { PanelOne, PanelTwo } from "./panels";
+
+${splitPanes}
 
 export default function HorizontalSplit() {
   return (
@@ -71,7 +99,8 @@ export const usageVertical = `import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
-import { PanelOne, PanelTwo } from "./panels";
+
+${splitPanes}
 
 export default function VerticalSplit() {
   // \`direction\` sets the flex axis of the group and the drag axis of every
@@ -94,7 +123,8 @@ export const usageConstraints = `import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
-import { Sidebar, Editor } from "./panels";
+
+${sidebarPanes}
 
 export default function ConstrainedSidebar() {
   return (

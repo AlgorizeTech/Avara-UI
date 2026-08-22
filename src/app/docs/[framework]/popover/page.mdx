@@ -48,12 +48,39 @@ export default function AccountMenu() {
   );
 }`;
 
+export const dimensionsPanel = `// The panel body, lifted out so both examples can render the same content.
+function DimensionsPanel() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div>
+        <h4 className="text-sm font-semibold">Dimensions</h4>
+        <p className="text-xs text-zinc-500">Set the size of the layer.</p>
+      </div>
+      {[
+        { label: "Width", value: "100%" },
+        { label: "Max width", value: "640px" },
+        { label: "Height", value: "auto" },
+      ].map((row) => (
+        <div key={row.label} className="grid grid-cols-3 items-center gap-3">
+          <label className="text-sm text-zinc-600 dark:text-zinc-400">{row.label}</label>
+          <input
+            defaultValue={row.value}
+            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-2 text-sm"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}`;
+
 export const usageOffset = `import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
 import { Settings2 } from "lucide-react";
+
+${dimensionsPanel}
 
 export default function OffsetPopover() {
   return (
@@ -67,7 +94,6 @@ export default function OffsetPopover() {
 
       {/* sideOffset pushes the panel further from the trigger (default 8) */}
       <PopoverContent side="right" align="start" sideOffset={24}>
-        {/* the same Dimensions panel as the first example */}
         <DimensionsPanel />
       </PopoverContent>
     </Popover>

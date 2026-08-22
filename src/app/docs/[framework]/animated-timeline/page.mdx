@@ -11,10 +11,7 @@ Unlike standard static timelines, this `AnimatedTimelineBlock` uses native brows
 
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
-export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { Rocket, Zap } from "lucide-react";
-
-const EVENTS = [
+export const timelineEvents = `const EVENTS = [
   { id: "1", title: "Project Start", date: "Q1", icon: Zap },
   {
     id: "2",
@@ -23,7 +20,12 @@ const EVENTS = [
     description: "Shipped to 100 users.",
   },
   { id: "3", title: "Global Scaling", date: "Q3", icon: Rocket },
-];
+];`;
+
+export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function CompanyHistory() {
   return (
@@ -34,7 +36,9 @@ export default function CompanyHistory() {
 }`;
 
 export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { EVENTS } from "./events";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function LeftTimeline() {
   // Rail on the left, every card on the same side — the compact layout for
@@ -47,7 +51,9 @@ export default function LeftTimeline() {
 }`;
 
 export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { EVENTS } from "./events";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function RightTimeline() {
   return (
@@ -58,7 +64,9 @@ export default function RightTimeline() {
 }`;
 
 export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { EVENTS } from "./events";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function FadeUpTimeline() {
   return (
@@ -69,7 +77,9 @@ export default function FadeUpTimeline() {
 }`;
 
 export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { EVENTS } from "./events";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function ZoomTimeline() {
   return (
@@ -80,7 +90,9 @@ export default function ZoomTimeline() {
 }`;
 
 export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-import { EVENTS } from "./events";
+import { Rocket, Zap } from "lucide-react";
+
+${timelineEvents}
 
 export default function BlurTimeline() {
   return (

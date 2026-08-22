@@ -11,42 +11,46 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
+export const timelineEvents = `const events = [
+  {
+    id: "1",
+    title: "Order Placed",
+    date: "10:24 AM",
+    icon: Package,
+    status: "completed",
+    action: <button className="border rounded px-3 py-1">Invoice</button>,
+  },
+  {
+    id: "2",
+    title: "Out for Delivery",
+    date: "10:25 AM",
+    icon: Truck,
+    status: "current",
+    // \`content\` expands behind a grid transition when the row is opened.
+    content: <p>Driver is 4 stops away.</p>,
+  },
+  {
+    id: "3",
+    title: "Delivered",
+    date: "Pending",
+    icon: CheckCircle2,
+    status: "upcoming",
+  },
+];`;
+
 export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 import { CheckCircle2, Package, Truck } from "lucide-react";
 
-export default function OrderTracker() {
-  const events = [
-    {
-      id: "1",
-      title: "Order Placed",
-      date: "10:24 AM",
-      icon: Package,
-      status: "completed",
-      action: <button className="border rounded px-3 py-1">Invoice</button>,
-    },
-    {
-      id: "2",
-      title: "Out for Delivery",
-      date: "10:25 AM",
-      icon: Truck,
-      status: "current",
-      // \`content\` expands behind a grid transition when the row is opened.
-      content: <p>Driver is 4 stops away.</p>,
-    },
-    {
-      id: "3",
-      title: "Delivered",
-      date: "Pending",
-      icon: CheckCircle2,
-      status: "upcoming",
-    },
-  ];
+${timelineEvents}
 
+export default function OrderTracker() {
   return <TimelineBlock items={events} layout="left" />;
 }`;
 
 export const usageCenter = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { events } from "./events";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+${timelineEvents}
 
 export default function CenterTimeline() {
   // Zig-zags the cards once the timeline itself is at least 576px wide, and
@@ -56,14 +60,18 @@ export default function CenterTimeline() {
 }`;
 
 export const usageRight = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { events } from "./events";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+${timelineEvents}
 
 export default function RightTimeline() {
   return <TimelineBlock items={events} layout="right" />;
 }`;
 
 export const usageMinimal = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { events } from "./events";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+${timelineEvents}
 
 export default function MinimalTimeline() {
   // Drops the card surface; the rail and type carry the structure.
@@ -71,7 +79,9 @@ export default function MinimalTimeline() {
 }`;
 
 export const usageGlass = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { events } from "./events";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+${timelineEvents}
 
 export default function GlassTimeline() {
   return (
@@ -89,7 +99,9 @@ export default function GlassTimeline() {
 }`;
 
 export const usageNoAnimation = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
-import { events } from "./events";
+import { CheckCircle2, Package, Truck } from "lucide-react";
+
+${timelineEvents}
 
 export default function StaticTimeline() {
   // Renders in place — no staggered GSAP entrance.
