@@ -289,7 +289,7 @@ const StackCard: React.FC<{
             <button
               onClick={item.onButtonClick}
               type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-md transition-all duration-200 cursor-pointer active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-primary-foreground dark:text-zinc-900 bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-md transition-all duration-200 cursor-pointer active:scale-95"
             >
               <span>{item.buttonText}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -384,7 +384,7 @@ export const StickyScrollStack = React.forwardRef<
                   <button
                     onClick={onHeaderButtonClick}
                     type="button"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm text-white bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm text-primary-foreground dark:text-zinc-900 bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
                   >
                     <span>{headerButtonText}</span>
                     <ArrowRight className="w-4 h-4" />

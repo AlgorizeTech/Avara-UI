@@ -99,7 +99,7 @@ export default function ColoredMap() {
             "is the default: it paints each matched country polygon in the accent colour and dims the rest.",
         },
       ],
-      props: { variant: "fill", zoomable: false },
+      props: { variant: "fill", zoomable: false, mapId: "map-fill" },
       usage: usageFill,
       code: extractCode("src/components/custom/blocks/DataMapsBlock.tsx"),
     },
@@ -114,7 +114,7 @@ export default function ColoredMap() {
             "to swap the fills for pulsing centroid markers — the same data read as points rather than areas, which is easier when regions are small or crowded.",
         },
       ],
-      props: { variant: "dots", zoomable: false },
+      props: { variant: "dots", zoomable: false, mapId: "map-dots" },
       usage: usageDots,
     },
     {
@@ -135,7 +135,7 @@ export default function ColoredMap() {
           effect: "and `maxZoom` bound how far the reader can go; `zoom` is the starting level.",
         },
       ],
-      props: { variant: "dots", zoomable: true },
+      props: { variant: "dots", zoomable: true, mapId: "map-zoomable" },
       usage: usageZoomable,
     },
     {
@@ -157,7 +157,7 @@ export default function ColoredMap() {
             "on an individual entry in `dataPoints` overrides both for that country alone.",
         },
       ],
-      props: { variant: "fill", zoomable: false, color: "#10b981" },
+      props: { variant: "fill", zoomable: false, color: "#10b981", mapId: "map-colors" },
       usage: usageColors,
     },
   ]}

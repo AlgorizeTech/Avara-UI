@@ -389,7 +389,7 @@ export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
         if (actionVariant === "primary")
           return cn(
             theme.bg,
-            "text-white shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
+            "text-primary-foreground dark:text-zinc-900 shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
           );
         if (actionVariant === "outline")
           return "bg-zinc-900/10 dark:bg-white/10 border border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white hover:bg-zinc-900/20 dark:hover:bg-white/20 backdrop-blur-md hover:scale-[1.03] active:scale-95 shadow-sm transition-all duration-300";

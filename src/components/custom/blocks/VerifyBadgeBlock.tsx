@@ -63,7 +63,7 @@ export const VerifyBadge = React.forwardRef<HTMLDivElement, VerifyBadgeProps>(
         {/* Checkmark inside */}
         <Check
           className={cn(
-            "relative z-10 stroke-[4] text-white",
+            "relative z-10 stroke-[4] text-primary-foreground dark:text-zinc-900",
             iconSizeClasses[size]
           )}
         />

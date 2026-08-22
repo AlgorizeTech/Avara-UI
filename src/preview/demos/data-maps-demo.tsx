@@ -80,10 +80,12 @@ export default function DataMapsDemo({
   variant = "fill",
   color = "primary",
   zoomable = false,
+  mapId,
 }: {
   variant?: "fill" | "dots";
   color?: string;
   zoomable?: boolean;
+  mapId?: string;
 }) {
   return (
     <div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
@@ -96,6 +98,7 @@ export default function DataMapsDemo({
         center={[30, 0]}
         className="flex-1"
         highlightColor={getHexForColor(color)}
+        mapId={mapId}
       />
     </div>
   );
