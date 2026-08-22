@@ -72,6 +72,7 @@ export const sandboxNames = [
   "pagination",
   "popover",
   "pricing",
+  "product-details",
   "progress",
   "qr-code",
   "resizable",
