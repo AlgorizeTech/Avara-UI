@@ -54,6 +54,8 @@ export default function HorizontalTabs() {
 
 export const usageHorizontalBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 
+${usageTabsData}
+
 export default function HorizontalRail() {
   // Every variant works in both orientations — \`bordered\` just moves its
   // divider from the right edge of the rail to the bottom.

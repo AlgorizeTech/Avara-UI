@@ -8,14 +8,24 @@ This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.
 
 One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
 
-export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-
-const revenue = [
+export const chartData = `const revenue = [
   { label: "Jan", value: 1200 },
   { label: "Feb", value: 1900 },
   { label: "Mar", value: 1500 },
   { label: "Apr", value: 2400 },
-];
+  { label: "May", value: 2100 },
+  { label: "Jun", value: 3200 },
+  { label: "Jul", value: 2800 },
+  { label: "Aug", value: 3800 },
+  { label: "Sep", value: 3400 },
+  { label: "Oct", value: 4200 },
+  { label: "Nov", value: 3900 },
+  { label: "Dec", value: 4800 },
+];`;
+
+export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+${chartData}
 
 export default function RevenueChart() {
   return (
@@ -24,6 +34,8 @@ export default function RevenueChart() {
 }`;
 
 export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+${chartData}
 
 export default function RevenueLine() {
   // Bezier-smoothed stroke, no fill.
@@ -34,6 +46,8 @@ export default function RevenueLine() {
 
 export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
+${chartData}
+
 export default function RevenuePie() {
   // Pie and donut render in a 1:1 container, so they never stretch into
   // ovals, and shade each slice from a single theme color.
@@ -43,6 +57,8 @@ export default function RevenuePie() {
 }`;
 
 export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+${chartData}
 
 export default function RevenueDonut() {
   return (

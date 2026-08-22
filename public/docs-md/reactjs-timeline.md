@@ -8,40 +8,44 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
+export const timelineEvents = `const events = [
+  {
+    id: "1",
+    title: "Order Placed",
+    date: "10:24 AM",
+    icon: Package,
+    status: "completed",
+    action: Invoice,
+  },
+  {
+    id: "2",
+    title: "Out for Delivery",
+    date: "10:25 AM",
+    icon: Truck,
+    status: "current",
+    // \`content\` expands behind a grid transition when the row is opened.
+    content: Driver is 4 stops away.,
+  },
+  {
+    id: "3",
+    title: "Delivered",
+    date: "Pending",
+    icon: CheckCircle2,
+    status: "upcoming",
+  },
+];`;
+
 export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
-export default function OrderTracker() {
-  const events = [
-    {
-      id: "1",
-      title: "Order Placed",
-      date: "10:24 AM",
-      icon: Package,
-      status: "completed",
-      action: Invoice,
-    },
-    {
-      id: "2",
-      title: "Out for Delivery",
-      date: "10:25 AM",
-      icon: Truck,
-      status: "current",
-      // \`content\` expands behind a grid transition when the row is opened.
-      content: Driver is 4 stops away.,
-    },
-    {
-      id: "3",
-      title: "Delivered",
-      date: "Pending",
-      icon: CheckCircle2,
-      status: "upcoming",
-    },
-  ];
+${timelineEvents}
 
+export default function OrderTracker() {
   return ;
 }`;
 
 export const usageCenter = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function CenterTimeline() {
   // Zig-zags the cards once the timeline itself is at least 576px wide, and
@@ -52,11 +56,15 @@ export default function CenterTimeline() {
 
 export const usageRight = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
+${timelineEvents}
+
 export default function RightTimeline() {
   return ;
 }`;
 
 export const usageMinimal = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function MinimalTimeline() {
   // Drops the card surface; the rail and type carry the structure.
@@ -65,6 +73,8 @@ export default function MinimalTimeline() {
 
 export const usageGlass = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
 
+${timelineEvents}
+
 export default function GlassTimeline() {
   return (
 
@@ -72,6 +82,8 @@ export default function GlassTimeline() {
 }`;
 
 export const usageNoAnimation = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function StaticTimeline() {
   // Renders in place — no staggered GSAP entrance.

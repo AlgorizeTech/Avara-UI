@@ -31,11 +31,33 @@ export default function AccountMenu() {
   );
 }`;
 
+export const dimensionsPanel = `// The panel body, lifted out so both examples can render the same content.
+function DimensionsPanel() {
+  return (
+
+        Dimensions
+        Set the size of the layer.
+      
+      {[
+        { label: "Width", value: "100%" },
+        { label: "Max width", value: "640px" },
+        { label: "Height", value: "auto" },
+      ].map((row) => (
+        
+          {row.label}
+
+      ))}
+    
+  );
+}`;
+
 export const usageOffset = `import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
+
+${dimensionsPanel}
 
 export default function OffsetPopover() {
   return (
@@ -43,8 +65,6 @@ export default function OffsetPopover() {
           Configure Settings
 
       {/* sideOffset pushes the panel further from the trigger (default 8) */}
-      
-        {/* the same Dimensions panel as the first example */}
 
   );
 }`;

@@ -10,13 +10,46 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
+export const masonryData = `const items = [
+  { id: "1", height: "h-56", title: "Design Engineering" },
+  {
+    id: "2",
+    height: "h-[28rem]",
+    image:
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+  },
+  { id: "3", height: "h-40", title: "Fluid Animations" },
+  {
+    id: "4",
+    height: "h-[22rem]",
+    image:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+  },
+  { id: "5", height: "h-60", title: "Systems Design" },
+  {
+    id: "6",
+    height: "h-52",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+];
+
+// The grid only handles the column flow — every tile is yours to render.
+function Tile({ height, title, image }) {
+  return (
+    
+      {title && (
+        
+          {title}
+        
+      )}
+    
+  );
+}`;
+
 export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-const items = [
-  { id: "1", height: "h-56", title: "Design Engineering" },
-  { id: "2", height: "h-[28rem]", image: "/photos/studio.jpg" },
-  { id: "3", height: "h-40", title: "Fluid Animations" },
-];
+${masonryData}
 
 export default function Gallery() {
   return (
@@ -26,6 +59,8 @@ export default function Gallery() {
 }`;
 
 export const usageColumns = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+${masonryData}
 
 export default function ColumnCounts() {
   // Column counts are Tailwind classes, so every breakpoint is yours to set.
@@ -37,6 +72,8 @@ export default function ColumnCounts() {
 
 export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
+${masonryData}
+
 export default function CustomGap() {
   return (
      }
@@ -45,6 +82,8 @@ export default function CustomGap() {
 }`;
 
 export const usageStagger = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+${masonryData}
 
 export default function SlowerStagger() {
   // \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
@@ -55,6 +94,8 @@ export default function SlowerStagger() {
 }`;
 
 export const usageNoAnimation = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+
+${masonryData}
 
 export default function StaticGrid() {
   // Renders immediately — right for content that is already above the fold,
