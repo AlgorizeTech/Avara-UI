@@ -21,6 +21,8 @@ import {
   Tablet,
   Terminal,
   Maximize2,
+  MoveHorizontal,
+  X,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
 import {
@@ -101,6 +103,8 @@ export interface SandboxOptions {
   fit?: boolean;
   /** @deprecated Renamed to `fit` when the zoom cycle became a single action. */
   zoom?: boolean;
+  /** Fullscreen button — opens the demo in a chrome-free full-viewport modal. */
+  fullscreen?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
 }
@@ -122,6 +126,44 @@ function useIsDesktopScreen() {
   }, []);
 
   return isDesktop;
+}
+
+/**
+ * The page-level duties of the fullscreen preview: nothing behind it scrolls,
+ * Escape leaves, focus moves to the close button and returns to whatever
+ * opened it. Kept out of the render path so the overlay itself is just CSS on
+ * the preview the reader was already looking at.
+ */
+function useFullscreenOverlay(
+  active: boolean,
+  closeRef: React.RefObject<HTMLButtonElement | null>,
+  onExit: () => void,
+) {
+  const onExitRef = useRef(onExit);
+  onExitRef.current = onExit;
+
+  useEffect(() => {
+    if (!active) return;
+
+    const opener = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onExitRef.current();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      opener?.focus?.();
+    };
+  }, [active, closeRef]);
 }
 
 /**
@@ -153,6 +195,7 @@ export function Sandbox({
 }) {
   const {
     fit: fitOption = options.zoom ?? true,
+    fullscreen: fullscreenOption = true,
     deviceSwitcher = true,
     reset = true,
   } = options;
@@ -176,7 +219,26 @@ export function Sandbox({
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const areaRef = useRef<HTMLDivElement>(null);
+  const closeFullscreenRef = useRef<HTMLButtonElement>(null);
+
+  /**
+   * Height the card holds on to while its preview is away being fullscreen.
+   * The preview leaves the flow, so without this the page behind would shrink
+   * by the height of every open card — and a shorter document clamps the
+   * scroll position, which the reader would land on when they close it.
+   */
+  const [parkedHeight, setParkedHeight] = useState<number | null>(null);
+
+  useFullscreenOverlay(isFullscreen, closeFullscreenRef, () =>
+    setIsFullscreen(false),
+  );
+
+  const openFullscreen = () => {
+    setParkedHeight(areaRef.current?.offsetHeight ?? null);
+    setIsFullscreen(true);
+  };
 
   // Highlight every code tab while the reader is still on the preview, so
   // opening Usage or Code paints coloured on its first frame instead of
@@ -314,6 +376,12 @@ export function Sandbox({
   // Visual box of the (possibly scaled) frame
   const visualWidth =
     viewportWidth === null ? null : Math.round(viewportWidth * visualScale);
+
+  /** Fit lands on the desktop floor rather than a true 100% — say so. */
+  const fitLandsOnDesktopFloor =
+    availableWidth !== null &&
+    fluidFloor > MIN_PREVIEW_WIDTH &&
+    availableWidth < fluidFloor;
   const isPreviewActive = activeTab === (previewTab?.id ?? "preview");
   const currentTab = tabs.find((t) => t.id === activeTab);
   const currentLang = currentTab?.lang ?? "tsx";
@@ -409,7 +477,7 @@ export function Sandbox({
             {/* Snaps back to the 100% fit-to-screen view from whatever device
                 or drag width is active — and reads as selected while the
                 preview is in that state, which is how every preview opens. */}
-            {fitOption && (
+            {false && (
               <button
                 onClick={() => setPreviewWidth("100%")}
                 className={cn(
@@ -419,14 +487,30 @@ export function Sandbox({
                     : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
                 )}
                 title={
-                  fluidFloor > MIN_PREVIEW_WIDTH &&
-                  availableWidth !== null &&
-                  availableWidth < fluidFloor
+                  fitLandsOnDesktopFloor
                     ? `Fit to screen (${fluidFloor}px desktop viewport)`
                     : "Fit to screen (100%)"
                 }
                 aria-label="Fit preview to screen"
                 aria-pressed={isFitted}
+              >
+                <MoveHorizontal className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Fullscreen: the SAME running preview expands to a chrome-free
+                overlay at the real window size — the frame stays put in the
+                DOM and only its wrapper changes, so the demo is never torn
+                down and reloaded. The in-card preview is always a fraction of
+                the window and often scaled; this is the only view that shows
+                the component at true screen scale. */}
+            {fullscreenOption && (
+              <button
+                onClick={openFullscreen}
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                title="Open fullscreen preview"
+                aria-label="Open fullscreen preview"
+                aria-haspopup="dialog"
               >
                 <Maximize2 className="w-4 h-4" />
               </button>
@@ -457,7 +541,9 @@ export function Sandbox({
             "bg-zinc-50/50 dark:bg-[#020202]",
             !isPreviewActive && "hidden",
           )}
-          style={{ minHeight }}
+          style={{
+            minHeight: isFullscreen ? (parkedHeight ?? minHeight) : minHeight,
+          }}
         >
             {/* Dashed Grid Background */}
             <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
@@ -488,61 +574,106 @@ export function Sandbox({
             </div>
 
             <div
+              /* Fullscreen is this same element pinned to the viewport: the
+                 frame below keeps its place in the DOM, so the demo is resized
+                 rather than reloaded. */
+              role={isFullscreen ? "dialog" : undefined}
+              aria-modal={isFullscreen ? true : undefined}
+              aria-label={isFullscreen ? `${name} fullscreen preview` : undefined}
               /* +1px compensates the right border so the inner viewport is exact */
-              style={{
-                width:
-                  isFitted
-                    ? "100%"
-                    : visualWidth === null
-                      ? "100%"
-                      : `${visualWidth + 1}px`,
-                maxWidth: "100%",
-              }}
+              style={
+                isFullscreen
+                  ? undefined
+                  : {
+                      width:
+                        isFitted
+                          ? "100%"
+                          : visualWidth === null
+                            ? "100%"
+                            : `${visualWidth + 1}px`,
+                      maxWidth: "100%",
+                    }
+              }
               className={cn(
-                "relative flex justify-center items-start transition-[width] ease-out",
-                isDragging ? "duration-0" : "duration-300",
-                "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
-                isFitted
-                  ? "rounded-b-xl"
-                  : "rounded-bl-xl rounded-r-none",
+                "flex justify-center bg-white dark:bg-[#09090b]",
+                isFullscreen
+                  ? "fixed inset-0 z-[9999] w-screen h-screen items-stretch"
+                  : [
+                      "relative items-start transition-[width] ease-out",
+                      isDragging ? "duration-0" : "duration-300",
+                      "border-r border-zinc-200 dark:border-zinc-800",
+                      isFitted ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none",
+                    ],
               )}
             >
               <div
                 className={cn(
                   "w-full overflow-hidden",
-                  isFitted ? "rounded-b-xl" : "rounded-bl-xl",
-                  isDragging && "pointer-events-none select-none",
+                  isFullscreen
+                    ? "h-full"
+                    : [
+                        isFitted ? "rounded-b-xl" : "rounded-bl-xl",
+                        isDragging && "pointer-events-none select-none",
+                      ],
                 )}
               >
                 <SandboxFrame
                   name={name}
                   sandboxProps={sandboxProps}
-                  viewportWidth={viewportWidth}
-                  scale={visualScale}
+                  viewportWidth={isFullscreen ? null : viewportWidth}
+                  scale={isFullscreen ? 1 : visualScale}
                   resetKey={resetKey}
                   minHeight={minHeight}
                   maxHeight={maxHeight}
+                  fill={isFullscreen}
+                  className={isFullscreen ? "h-full" : undefined}
                 />
               </div>
 
-              {/* Drag Handle */}
-              <div
-                role="separator"
-                aria-orientation="vertical"
-                aria-label="Resize preview"
-                aria-valuemin={MIN_PREVIEW_WIDTH}
-                aria-valuemax={areaWidth ? Math.round(areaWidth) : undefined}
-                aria-valuenow={viewportWidth ? Math.round(viewportWidth) : undefined}
-                tabIndex={0}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerEnd}
-                onPointerCancel={handlePointerEnd}
-                onKeyDown={handleResizeKeyDown}
-                className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
-              </div>
+              {/* The only chrome in fullscreen. transform-gpu gives it its own
+                  compositing layer, which an iframe whose document composites
+                  (GSAP, video, transforms) cannot paint over. */}
+              {isFullscreen && (
+                <button
+                  ref={closeFullscreenRef}
+                  type="button"
+                  onClick={() => setIsFullscreen(false)}
+                  className={cn(
+                    "fixed top-4 right-4 z-10 transform-gpu h-10 w-10 flex items-center justify-center rounded-full backdrop-blur-md shadow-lg transition-all active:scale-95 cursor-pointer",
+                    // The stage behind is the demo's own surface — near-white
+                    // or near-black — so the button carries its own contrast
+                    // rather than borrowing any.
+                    "bg-zinc-100/90 border border-zinc-300 text-zinc-700 hover:bg-white hover:text-zinc-900",
+                    "dark:bg-zinc-800/90 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-white",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
+                  )}
+                  title="Close fullscreen preview (Esc)"
+                  aria-label="Close fullscreen preview"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+
+              {/* Drag Handle — a width to drag is a card idea, not a screen one. */}
+              {!isFullscreen && (
+                <div
+                  role="separator"
+                  aria-orientation="vertical"
+                  aria-label="Resize preview"
+                  aria-valuemin={MIN_PREVIEW_WIDTH}
+                  aria-valuemax={areaWidth ? Math.round(areaWidth) : undefined}
+                  aria-valuenow={viewportWidth ? Math.round(viewportWidth) : undefined}
+                  tabIndex={0}
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerEnd}
+                  onPointerCancel={handlePointerEnd}
+                  onKeyDown={handleResizeKeyDown}
+                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
+                </div>
+              )}
             </div>
           </div>
 
