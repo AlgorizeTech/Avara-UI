@@ -75,12 +75,33 @@ export const usagePixel8 = `import { GooglePixel8Mockup } from "@/components/cus
 
 export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
+// Any React tree works inside the frame — swap this for your own screen.
+function YourApp() {
+  return (
+    <div className="min-h-full bg-white dark:bg-zinc-950 p-5 space-y-3">
+      <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Today</h1>
+      {["Stand-up at 9:30", "Design review", "Ship the release"].map((task) => (
+        <div
+          key={task}
+          className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-3 text-sm text-zinc-600 dark:text-zinc-400"
+        >
+          {task}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // Interactive children scroll if you give the wrapper overflow-y-auto.
-<GooglePixel10Mockup>
-  <div className="w-full h-full overflow-y-auto">
-    <YourApp />
-  </div>
-</GooglePixel10Mockup>`;
+export default function Pixel10Showcase() {
+  return (
+    <GooglePixel10Mockup>
+      <div className="w-full h-full overflow-y-auto">
+        <YourApp />
+      </div>
+    </GooglePixel10Mockup>
+  );
+}`;
 
 <ExampleShowcase
   name="mobile-mockup"

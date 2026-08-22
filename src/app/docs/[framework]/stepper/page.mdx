@@ -11,6 +11,45 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 
 `Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
+export const stepperPanels = `// The three step bodies — swap them for your own fields.
+function Field({ label, placeholder }) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</span>
+      <input
+        placeholder={placeholder}
+        className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm"
+      />
+    </label>
+  );
+}
+
+function ProfileForm() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <Field label="Full name" placeholder="Ada Lovelace" />
+      <Field label="Email" placeholder="ada@example.com" />
+    </div>
+  );
+}
+
+function WorkspaceForm() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <Field label="Company" placeholder="Acme Corp" />
+      <Field label="Team size" placeholder="1–10" />
+    </div>
+  );
+}
+
+function ReviewPanel() {
+  return (
+    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 text-sm text-zinc-600 dark:text-zinc-400">
+      Everything looks good — hit Submit to finish setting up your workspace.
+    </div>
+  );
+}`;
+
 export const usageFlow = `"use client";
 
 import { useState } from "react";
@@ -19,6 +58,8 @@ import {
   Stepper,
   StepperContent,
 } from "@/components/custom/blocks/StepperBlock";
+
+${stepperPanels}
 
 export default function OnboardingWizard() {
   const [step, setStep] = useState(0);

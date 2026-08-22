@@ -11,7 +11,22 @@ Unlike basic tab replacements, this engine applies dynamic mathematical depth tw
 
 `SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const splitSteps = `// Card bodies — swap these for your own screens.
+function MockLandingView() {
+  return (
+    <div className="flex h-full items-center justify-center rounded-2xl bg-zinc-900 text-amber-400">
+      <span className="text-sm font-medium">Landing preview</span>
+    </div>
+  );
+}
+
+function MockSaaSView() {
+  return (
+    <div className="flex h-full items-center justify-center rounded-2xl bg-zinc-900 text-indigo-400">
+      <span className="text-sm font-medium">SaaS dashboard preview</span>
+    </div>
+  );
+}
 
 const steps = [
   {
@@ -34,7 +49,11 @@ const steps = [
     color: "bg-[#090a14] border-indigo-500/20",
     cardContent: <MockSaaSView />,
   },
-];
+];`;
+
+export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function ServicesSection() {
   return (
@@ -46,12 +65,16 @@ export default function ServicesSection() {
 
 export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
 
+${splitSteps}
+
 export default function ServicesSectionMirrored() {
   // stickySide moves the sticky card deck to the other column.
   return <SplitStepper steps={steps} stickySide="left" />;
 }`;
 
 export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function DeepDeck() {
   // cardOffset is the vertical gap (px) between stacked cards;
@@ -62,6 +85,8 @@ export default function DeepDeck() {
 }`;
 
 export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function BrandedSplitStepper() {
   // color drives the active step's rail, number badge, arrow and tint.

@@ -11,6 +11,58 @@ This engine separates data flow layout orchestration from canvas tracking. By co
 
 Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
 
+export const pipelineNodes = `function PipelineNodes() {
+  return (
+    <>
+      {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
+      <FlowCanvas>
+        <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
+        <FlowConnection id="success-path" path="M 580 114 L 640 114" />
+        <FlowConnection id="fail-path" path="M 280 200 L 310 200 L 310 284 L 340 284" />
+        <FlowConnection id="fail-path" path="M 580 284 L 640 284" />
+      </FlowCanvas>
+
+      {/* Nodes are absolutely positioned, so the ports line up with the paths */}
+      <FlowNode
+        id="webhook"
+        title="Webhook Trigger"
+        description="Inbound secure POST"
+        icon={Webhook}
+        connectedPaths={["success-path", "fail-path"]}
+        className="left-[40px] top-[166px]"
+      />
+      <FlowNode
+        id="transform"
+        title="Transform Payload"
+        icon={Cpu}
+        connectedPaths={["success-path"]}
+        className="left-[340px] top-[80px]"
+      />
+      <FlowNode
+        id="error"
+        title="Validation Check"
+        icon={Terminal}
+        connectedPaths={["fail-path"]}
+        className="left-[340px] top-[250px]"
+      />
+      <FlowNode
+        id="success"
+        title="Sync Database"
+        icon={CheckCircle2}
+        connectedPaths={["success-path"]}
+        className="left-[640px] top-[80px]"
+      />
+      <FlowNode
+        id="fail"
+        title="Dead Letter Queue"
+        icon={AlertCircle}
+        connectedPaths={["fail-path"]}
+        className="left-[640px] top-[250px]"
+      />
+    </>
+  );
+}`;
+
 export const usageDefault = `import {
   FlowCanvas,
   Flowchart,
@@ -98,8 +150,15 @@ export default function LinearPipeline() {
   );
 }`;
 
-export const usageIdle = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
-import { PipelineNodes } from "./nodes";
+export const usageIdle = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+
+${pipelineNodes}
 
 export default function IdlePipeline() {
   // Pass null and nothing streams until the reader picks a node.
@@ -110,8 +169,15 @@ export default function IdlePipeline() {
   );
 }`;
 
-export const usageColor = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
-import { PipelineNodes } from "./nodes";
+export const usageColor = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+
+${pipelineNodes}
 
 export default function AccentedPipeline() {
   // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
