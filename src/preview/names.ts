@@ -40,6 +40,7 @@ export const sandboxNames = [
   "fleet",
   "floating-contact-button",
   "flowchart",
+  "footer",
   "form",
   "globe",
   "half-stars",

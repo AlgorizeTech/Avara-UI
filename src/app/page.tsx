@@ -993,6 +993,7 @@ type PreviewCardItem = {
 		| "magic-bento"
 		| "network-graph"
 		| "globe"
+		| "footer"
 		| "sidebar"
 		| "marquee"
 		| "dashboard"

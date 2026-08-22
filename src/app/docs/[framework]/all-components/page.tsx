@@ -10,6 +10,7 @@ import {
 	LayoutTemplate,
 	ArrowRight,
 	LayoutGrid,
+	Globe,
 } from "lucide-react";
 /* ═══════════════════════════════════════════════
    PREVIEW CARD DATA MODEL & ITEMS (EXACT HOMEPAGE DATA)
@@ -597,6 +598,13 @@ const componentPreviewData: PreviewCategoryGroup[] = [
 				slug: "support-dashboard",
 				badge: "Core",
 				illustrationType: "dashboard",
+			},
+			{
+				title: "Footer",
+				countText: "4 Responsive Variants",
+				slug: "footer",
+				badge: "New",
+				illustrationType: "footer",
 			},
 		],
 	},
@@ -1281,6 +1289,39 @@ function MiniatureIllustration({
 							</div>
 							<div className="absolute -top-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-blue-400 shadow-md shadow-blue-400" />
 							<div className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-emerald-400 shadow-md shadow-emerald-400" />
+						</div>
+					</div>
+				)}
+
+				{type === "footer" && (
+					<div className="w-full h-full p-2 flex flex-col justify-between my-auto overflow-hidden bg-card rounded-xl border border-border">
+						<div className="w-full flex justify-between items-center opacity-60">
+							<div className="size-2 rounded-full bg-primary" />
+							<div className="flex gap-1">
+								<div className="w-3 h-1 rounded bg-muted-foreground/40" />
+								<div className="w-3 h-1 rounded bg-muted-foreground/40" />
+							</div>
+						</div>
+						<div className="grid grid-cols-3 gap-1 my-1">
+							<div className="space-y-0.5">
+								<div className="w-4 h-1 rounded bg-primary/60" />
+								<div className="w-6 h-0.5 rounded bg-muted-foreground/30" />
+								<div className="w-5 h-0.5 rounded bg-muted-foreground/30" />
+							</div>
+							<div className="space-y-0.5">
+								<div className="w-4 h-1 rounded bg-primary/60" />
+								<div className="w-5 h-0.5 rounded bg-muted-foreground/30" />
+								<div className="w-6 h-0.5 rounded bg-muted-foreground/30" />
+							</div>
+							<div className="space-y-0.5">
+								<div className="w-4 h-1 rounded bg-primary/60" />
+								<div className="w-6 h-0.5 rounded bg-muted-foreground/30" />
+								<div className="w-4 h-0.5 rounded bg-muted-foreground/30" />
+							</div>
+						</div>
+						<div className="w-full border-t border-border/40 pt-1 flex justify-between items-center text-[6px] text-muted-foreground">
+							<span>© 2026</span>
+							<span className="size-1.5 rounded-full bg-emerald-500" />
 						</div>
 					</div>
 				)}
