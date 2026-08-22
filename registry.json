@@ -1005,6 +1005,30 @@
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
     },
     {
+      "name": "globe",
+      "type": "registry:component",
+      "title": "Globe",
+      "author": "AlgorizeTech",
+      "description": "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "maps"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GlobeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GlobeBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color."
+    },
+    {
       "name": "half-stars",
       "type": "registry:component",
       "title": "Half Stars",

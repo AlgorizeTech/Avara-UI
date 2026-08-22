@@ -992,6 +992,7 @@ type PreviewCardItem = {
 		| "scroll-stack"
 		| "magic-bento"
 		| "network-graph"
+		| "globe"
 		| "sidebar"
 		| "marquee"
 		| "dashboard"

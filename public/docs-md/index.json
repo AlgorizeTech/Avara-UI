@@ -1,10 +1,6 @@
 {
-<<<<<<< HEAD
-  "generatedAt": "2026-08-20T09:55:18.020Z",
-=======
-  "generatedAt": "2026-08-20T06:55:11.729Z",
->>>>>>> 68e29ef83549c9af4a5f7804bb27d275e89b39c4
-  "totalFiles": 199,
+  "generatedAt": "2026-08-22T02:05:30.408Z",
+  "totalFiles": 201,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -275,6 +271,12 @@
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "nextjs/globe",
+      "path": "/docs/nextjs-globe.md",
+      "url": "/docs/nextjs/globe",
+      "originalMdx": "[framework]\\globe\\page.mdx"
     },
     {
       "name": "nextjs/half-stars",
@@ -875,6 +877,12 @@
       "path": "/docs/reactjs-form.md",
       "url": "/docs/reactjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "reactjs/globe",
+      "path": "/docs/reactjs-globe.md",
+      "url": "/docs/reactjs/globe",
+      "originalMdx": "[framework]\\globe\\page.mdx"
     },
     {
       "name": "reactjs/half-stars",
