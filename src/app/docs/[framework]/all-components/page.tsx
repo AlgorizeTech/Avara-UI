@@ -606,6 +606,13 @@ const componentPreviewData: PreviewCategoryGroup[] = [
 				badge: "New",
 				illustrationType: "footer",
 			},
+			{
+				title: "Product Details",
+				countText: "4 Unique Layouts",
+				slug: "product-details",
+				badge: "New",
+				illustrationType: "product-details",
+			},
 		],
 	},
 ];

@@ -386,6 +386,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "navigation", "layout"],
     docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
+  "product-details": {
+    description:
+      "A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
+    categories: ["commerce", "marketing", "layout"],
+    docs: "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports.",
+  },
   flowchart: {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",

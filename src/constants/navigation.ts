@@ -166,6 +166,7 @@ export const navigation: NavigationItem[] = [
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
       { label: "Footer", slug: "footer", badge: "New" },
+      { label: "Product Details", slug: "product-details", badge: "New" },
     ],
   },
 ];
