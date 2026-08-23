@@ -195,7 +195,7 @@
           "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
         }
       ],
-      "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
+      "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
     },
     {
       "name": "auth-form",
@@ -1825,6 +1825,32 @@
         }
       ],
       "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items."
+    },
+    {
+      "name": "product-details",
+      "type": "registry:component",
+      "title": "Product Details",
+      "author": "AlgorizeTech",
+      "description": "A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
+      "categories": [
+        "commerce",
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProductDetailsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProductDetailsBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
     },
     {
       "name": "progress",

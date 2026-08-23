@@ -28,7 +28,9 @@ export const usageDefault = `import { VerifyBadge } from "@/components/custom/bl
 export default function ProfileName() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-semibold text-lg">AlgorizeSystem</span>
+      <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+        AlgorizeSystem
+      </span>
       <VerifyBadge color="#1d9bf0" size="md" animate />
     </div>
   );
@@ -50,7 +52,14 @@ export default function BadgeSizes() {
 export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
 export default function StaticBadge() {
-  return <VerifyBadge size="md" animate={false} />;
+  return (
+    <div className="flex items-center gap-2">
+      <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+        AlgorizeSystem
+      </span>
+      <VerifyBadge color="#1d9bf0" size="md" animate={false} />
+    </div>
+  );
 }`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";

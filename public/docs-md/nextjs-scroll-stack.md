@@ -11,29 +11,105 @@ export const stackItems = `const items = [
     id: "1",
     title: "Real-time Synchronization",
     description:
-      "Instantly sync state across clients without writing WebSocket logic.",
+      "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
     icon: Zap,
+    content: (
+
+            sync-stream.ts
+
+            CONNECTED
+
+            &gt; Latency benchmark:
+            12ms (Ultra Fast)
+
+            Payload: &#123; user_id: 894, status: &quot;active&quot; &#125;
+            240B
+
+            Streaming 1.4k ops/sec
+          
+          v2.4.0
+
+    ),
   },
   {
     id: "2",
-    title: "Composable Blocks",
+    title: "Layered Architecture",
     description:
-      "Every block is a plain React component you own — fork it, don't fight it.",
-    icon: Blocks,
+      "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
+    icon: Layers,
+    content: (
+
+              API
+
+              Presentation Layer
+              GraphQL & REST Endpoints
+
+          200 OK
+
+              CORE
+
+              Business Logic Service
+              Decoupled Domain Engine
+
+              DB
+
+              Persistence & Cache
+              PostgreSQL + Redis Cluster
+
+          0.4ms
+
+    ),
   },
   {
     id: "3",
-    title: "Layered by Default",
+    title: "Composable UI Blocks",
     description:
-      "Depth, gap and scale are props, so the deck reads the same at any density.",
-    icon: Layers,
+      "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
+    icon: Blocks,
+    content: (
+
+          Component Gallery
+          42 Blocks
+
+                Card
+              
+              Ready
+
+                Nav
+              
+              Ready
+
+                ✨
+
+                Scroll Stack
+                Interactive GSAP Widget
+
+              Insert
+
+          Accessible (WCAG 2.1)
+          100% Tailwind
+
+    ),
   },
   {
     id: "4",
-    title: "Type Safe",
+    title: "Enterprise Security",
     description:
-      "Item shapes are exported, so a malformed card is a build error, not a bug.",
+      "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
     icon: ShieldCheck,
+    content: (
+
+          SECURITY_CHECK // PASSED
+          
+            AES-256
+
+          SOC2 & ISO-27001 Certified
+          Zero trust architecture with continuous runtime vulnerability scanning.
+
+          Encryption Status
+          ACTIVE
+
+    ),
   },
 ];`;
 
@@ -105,42 +181,98 @@ export default function TunedStickyStack() {
 
 ## Split stack
 
-export const splitItems = `const items = [
+export const splitItems = `// Card bodies — the four screens the preview renders.
+const MockLandingView = () => (
+
+        High-Converting UI
+
+          CTA Button
+
+);
+
+const MockSaaSView = () => (
+
+        SaaS Dashboard Architecture
+
+          MRR Growth
+        
+        +148.2%
+
+          Active Users
+        
+        24,892
+
+);
+
+const MockAIView = () => (
+
+        AI & LLM Integration
+
+        TERMINAL // AI_ENGINE
+        STATUS: ACTIVE
+      
+      &gt; Initializing RAG pipeline...
+      &gt; Vector embeddings synced (1.2ms)
+      
+        &gt; Ready for token streaming_
+
+);
+
+const MockMobileView = () => (
+
+          Mobile First
+
+        Silky 60fps native performance across iOS and Android ecosystems.
+
+);
+
   {
-    id: "discover",
+    id: "landing",
     stepNumber: "01",
-    title: "Discover",
-    description: "We map the problem before a single pixel is drawn.",
-    tags: ["Research", "Audit"],
-    cardContent: (
-      
-        Discovery
-      
-    ),
+    title: "Landing Page Design",
+    description:
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with scroll-triggered GSAP animations that capture attention.",
+    tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: ,
   },
   {
-    id: "design",
+    id: "saas",
     stepNumber: "02",
-    title: "Design",
-    description: "Flows, states and tokens — reviewed against the real content.",
-    tags: ["UX", "UI"],
-    cardContent: (
-      
-        Design
-      
-    ),
+    title: "SaaS Product Development",
+    description:
+      "Every successful SaaS product starts with a complex problem. We build modular, multi-tenant web applications designed to scale cleanly to millions of requests.",
+    tags: [
+      "Multi-Tenant Architecture",
+      "Stripe Integration",
+      "Real-Time Sync",
+    ],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: ,
   },
   {
-    id: "build",
+    id: "ai",
     stepNumber: "03",
-    title: "Build",
-    description: "Typed React components, shipped behind tests.",
-    tags: ["React", "Tests"],
-    cardContent: (
-      
-        Build
-      
-    ),
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about just plugging in an API. We fine-tune custom LLM models, engineer vector RAG pipelines, and build streaming chat UIs.",
+    tags: [
+      "LLM API Integration",
+      "Vector RAG Setup",
+      "Custom Model Training",
+    ],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: ,
+  },
+  {
+    id: "mobile",
+    stepNumber: "04",
+    title: "Mobile App Development",
+    description:
+      "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified architectures with silky native device performance.",
+    tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: ,
   },
 ];`;
 

@@ -28,23 +28,23 @@ export default function NotificationCard() {
       </CardHeader>
 
       <CardContent className="grid gap-4">
-        <div className="flex items-center gap-4 p-3 rounded-lg border bg-zinc-50">
+        <div className="flex items-center gap-4 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/20">
           <Bell className="w-5 h-5 text-indigo-500" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">System Update</p>
-            <p className="text-xs text-zinc-500">A new version is available.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">A new version is available.</p>
           </div>
         </div>
-        <div className="flex items-center gap-4 p-3 rounded-lg border bg-zinc-50">
+        <div className="flex items-center gap-4 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/20">
           <Settings className="w-5 h-5 text-rose-500" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">Account Notice</p>
-            <p className="text-xs text-zinc-500">Please verify your email address.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Please verify your email address.</p>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="border-t pt-6">
+      <CardFooter className="border-t border-zinc-100 dark:border-zinc-800/50 pt-6">
         <button className="w-full py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
           Mark all as read
         </button>
@@ -59,13 +59,15 @@ import { Download, Upload } from "lucide-react";
 export default function ClickableCards() {
   // interactive adds hover elevation, a lift, and an active press scale.
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
       <Card variant="bordered" interactive onClick={() => console.log("Download")}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Download className="w-5 h-5 text-emerald-500" /> Download Report
           </CardTitle>
-          <CardDescription>Export your analytics data as a CSV file.</CardDescription>
+          <CardDescription>
+            Export your analytics data as a CSV file for external processing.
+          </CardDescription>
         </CardHeader>
       </Card>
 
@@ -74,7 +76,9 @@ export default function ClickableCards() {
           <CardTitle className="flex items-center gap-2">
             <Upload className="w-5 h-5 text-indigo-500" /> Import Data
           </CardTitle>
-          <CardDescription>Upload legacy customer profiles into your CRM.</CardDescription>
+          <CardDescription>
+            Upload legacy customer profiles to merge into your active CRM.
+          </CardDescription>
         </CardHeader>
       </Card>
     </div>

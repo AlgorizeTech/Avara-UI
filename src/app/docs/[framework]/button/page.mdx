@@ -17,7 +17,7 @@ export const usageVariants = `import Button from "@/components/custom/blocks/But
 
 export default function ButtonVariants() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-4">
       <Button variant="default">Default</Button>
       <Button variant="destructive">Destructive</Button>
       <Button variant="outline">Outline</Button>
@@ -32,7 +32,7 @@ export const usageSizes = `import Button from "@/components/custom/blocks/Button
 
 export default function ButtonSizes() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-4">
       <Button size="sm">Small</Button>
       <Button size="default">Default</Button>
       <Button size="lg">Large</Button>
@@ -43,18 +43,39 @@ export default function ButtonSizes() {
 export const usageLoading = `import Button from "@/components/custom/blocks/Button";
 
 export default function ButtonLoading() {
-  return <Button loading>Please wait</Button>;
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Button loading>Please wait</Button>
+      <Button variant="outline" loading>
+        Please wait
+      </Button>
+      <Button variant="secondary" loading>
+        Please wait
+      </Button>
+    </div>
+  );
 }`;
 
 export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
-import { ArrowRightIcon, MailIcon } from "@/components/custom/blocks/Icons";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  DownloadIcon,
+  MailIcon,
+} from "@/components/custom/blocks/Icons";
 
 export default function ButtonWithIcon() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-4">
       <Button iconLeft={<MailIcon />}>Email</Button>
+      <Button variant="outline" iconLeft={<DownloadIcon />}>
+        Download
+      </Button>
       <Button variant="secondary" iconRight={<ArrowRightIcon />}>
         Continue
+      </Button>
+      <Button variant="ghost" iconRight={<CheckIcon />}>
+        Confirm
       </Button>
     </div>
   );
@@ -68,16 +89,47 @@ export default function ButtonIconOnly() {
 }`;
 
 export const usageSocial = `import Button from "@/components/custom/blocks/Button";
-import { GitHubIcon, GoogleIcon } from "@/components/custom/blocks/Icons";
+import {
+  AppleIcon,
+  EmailIcon,
+  FacebookIcon,
+  GitHubIcon,
+  GoogleIcon,
+  LinkedInIcon,
+  MicrosoftIcon,
+  SlackIcon,
+  XIcon2,
+} from "@/components/custom/blocks/Icons";
 
 export default function SocialLoginButtons() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-4 max-w-2xl">
+      <Button variant="outline" iconLeft={<EmailIcon />}>
+        Login with Email
+      </Button>
       <Button variant="outline" iconLeft={<GoogleIcon />}>
         Continue with Google
       </Button>
       <Button variant="outline" iconLeft={<GitHubIcon />}>
         Continue with GitHub
+      </Button>
+      <Button variant="outline" iconLeft={<FacebookIcon />}>
+        Login with Facebook
+      </Button>
+      <Button variant="outline" iconLeft={<XIcon2 />}>
+        Login with X
+      </Button>
+      <Button variant="outline" iconLeft={<AppleIcon />}>
+        Login with Apple
+      </Button>
+      <Button variant="outline" iconLeft={<MicrosoftIcon />}>
+        Login with Microsoft
+      </Button>
+      <Button variant="outline" iconLeft={<SlackIcon />}>
+        Login with Slack
+      </Button>
+      <Button variant="outline" iconLeft={<LinkedInIcon />}>
+        Login with LinkedIn
       </Button>
     </div>
   );

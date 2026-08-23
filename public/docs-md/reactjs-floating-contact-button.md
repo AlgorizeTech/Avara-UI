@@ -13,21 +13,21 @@ export default function SupportWidget() {
   );
 }`;
 
-export const usageLeft = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageLeft = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function LeftAnchoredWidget() {
   // Anchors to the opposite corner; the popup and its origin flip with it.
   return ;
 }`;
 
-export const usageClosed = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageClosed = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function CollapsedWidget() {
   // Start collapsed — the usual behaviour on a real page.
   return ;
 }`;
 
-export const usageBranding = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageBranding = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function BrandedWidget() {
   // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
@@ -36,7 +36,7 @@ export default function BrandedWidget() {
   );
 }`;
 
-export const usageAccent = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageAccent = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function AccentedWidget() {
   // \`defaultAccentColor\` takes a token name or any CSS color. Pass

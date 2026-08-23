@@ -597,7 +597,7 @@ export function Sandbox({
               className={cn(
                 "flex justify-center bg-white dark:bg-[#09090b]",
                 isFullscreen
-                  ? "fixed inset-0 z-[9999] w-screen h-screen items-stretch"
+                  ? "fixed inset-0 z-[9999] items-stretch"
                   : [
                       "relative items-start transition-[width] ease-out",
                       isDragging ? "duration-0" : "duration-300",

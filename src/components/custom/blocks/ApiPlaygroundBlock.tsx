@@ -115,18 +115,32 @@ export interface ApiResponse {
   data: any;
 }
 
+/** The request snapshot handed to `mockHandler` when the reader hits Send. */
+export interface ApiPlaygroundRequest {
+  method: HttpMethod;
+  url: string;
+  headers: KeyValuePair[];
+  params: KeyValuePair[];
+  body: string;
+}
+
+/**
+ * Decides how the playground answers a request. Annotate the whole handler with
+ * this type rather than the `req` parameter alone — that way the returned
+ * response shape is checked too:
+ *
+ *   const handleApiMock: ApiMockHandler = async (req) => { ... };
+ */
+export type ApiMockHandler = (
+  req: ApiPlaygroundRequest,
+) => Promise<ApiResponse>;
+
 export interface ApiPlaygroundProps
   extends React.HTMLAttributes<HTMLDivElement> {
   defaultUrl?: string;
   defaultMethod?: HttpMethod;
   color?: ApiColor;
-  mockHandler?: (req: {
-    method: HttpMethod;
-    url: string;
-    headers: KeyValuePair[];
-    params: KeyValuePair[];
-    body: string;
-  }) => Promise<ApiResponse>;
+  mockHandler?: ApiMockHandler;
 }
 
 // Helper to rebuild URL with query params

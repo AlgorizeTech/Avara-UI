@@ -27,7 +27,7 @@ export default function SplitSignupPage() {
 export const usageGlass = `import AuthForm from "@/components/custom/blocks/AuthForm";
 
 export default function GlassSignupPage() {
-  // "glass" is translucent — put it over a photo or a gradient.
+  // "glass" is translucent — it needs something behind it to read against.
   return (
 
   );

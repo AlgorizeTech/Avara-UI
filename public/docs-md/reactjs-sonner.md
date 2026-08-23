@@ -83,13 +83,22 @@ export default function StackDemo() {
   return Spawn three toasts;
 }`;
 
-export const usageExpand = `import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usageExpand = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function ExpandedStack() {
   // expand keeps the stack permanently open instead of collapsing it in 3D.
+  // Mount  once, at the root of your app.
   return (
     <>
-      {children}
+
+       {
+          toast.success("File uploaded", { description: "report-q3.pdf" });
+          setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
+          setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
+        }}
+        className="px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700"
+      >
+        Spawn three toasts
 
   );
 }`;

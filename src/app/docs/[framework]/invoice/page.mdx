@@ -50,7 +50,7 @@ export default function InvoicePage() {
   return <Invoice invoiceData={invoiceData} />;
 }`;
 
-export const usageMinimal = `import { Invoice } from "@/components/custom/blocks/Invoice";
+export const usageMinimal = `import Invoice from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
@@ -59,7 +59,7 @@ export default function MinimalInvoice() {
   return <Invoice variant="minimal" invoiceData={invoiceData} />;
 }`;
 
-export const usageGlass = `import { Invoice } from "@/components/custom/blocks/Invoice";
+export const usageGlass = `import Invoice from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
