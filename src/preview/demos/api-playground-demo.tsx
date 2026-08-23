@@ -2,6 +2,7 @@
 
 import {
   ApiColor,
+  ApiMockHandler,
   ApiPlaygroundBlock,
   HttpMethod,
 } from "@/components/custom/blocks/ApiPlaygroundBlock";
@@ -21,13 +22,7 @@ export default function ApiPlaygroundDemo({
   useMockHandler?: boolean;
 }) {
   // Advanced Mock Handler to simulate real API interactions for documentation
-  const handleCustomMock = async (req: {
-    method: string;
-    url: string;
-    headers: any[];
-    params: any[];
-    body: string;
-  }) => {
+  const handleCustomMock: ApiMockHandler = async (req) => {
     await new Promise((resolve) => setTimeout(resolve, 600)); // Network delay
 
     if (simulateError) {
@@ -64,7 +59,7 @@ export default function ApiPlaygroundDemo({
       data: {
         success: true,
         resource: req.url.split("/").pop() || "unknown",
-        received_headers: req.headers.filter((h: any) => h.enabled).length,
+        received_headers: req.headers.filter((h) => h.enabled).length,
         payload: parsedBody || "No body provided",
       },
     };

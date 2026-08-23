@@ -153,9 +153,20 @@ export type ChatThread = {
   date: string;
 };
 
+/**
+ * Roles the component understands.
+ *
+ * The `(string & {})` member keeps IDE autocomplete for "ai" and "user" while
+ * still accepting a plain `string`. That lets consumers pass an inferred array
+ * literal — `const messages = [{ id: 1, role: "ai", ... }]` — without needing
+ * `as const` or an explicit `Message[]` annotation. Any role that is not
+ * "user" is rendered as an AI message.
+ */
+export type MessageRole = "ai" | "user" | (string & {});
+
 export type Message = {
   id: number | string;
-  role: "ai" | "user";
+  role: MessageRole;
   content: string;
   time: string;
 };
@@ -166,8 +177,8 @@ export default function AIChat({
   variant = "default",
   color = "primary",
 }: {
-  chatHistory?: ChatThread[];
-  initialMessages?: Message[];
+  chatHistory?: readonly ChatThread[];
+  initialMessages?: readonly Message[];
   variant?: AIChatVariant;
   color?: AIChatColor;
 }) {
@@ -201,7 +212,7 @@ export default function AIChat({
 
   const styles = chatVariants[variant];
 
-  const [chats, setChats] = useState<ChatThread[]>(chatHistory);
+  const [chats, setChats] = useState<ChatThread[]>(() => [...chatHistory]);
   const [activeChatId, setActiveChatId] = useState<number | string | null>(
     chatHistory.length > 0 ? chatHistory[0].id : null,
   );
@@ -213,7 +224,7 @@ export default function AIChat({
     chatHistory.forEach((chat, index) => {
       map[chat.id] =
         index === 0
-          ? initialMessages
+          ? [...initialMessages]
           : [
               {
                 id: `welcome-${chat.id}`,
@@ -635,7 +646,7 @@ export default function AIChat({
                     className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                   >
                     <div className="shrink-0">
-                      {msg.role === "ai" ? (
+                      {msg.role !== "user" ? (
                         <div
                           className={cn(
                             "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-sm",
@@ -678,7 +689,7 @@ export default function AIChat({
                         <span className="text-[10px] font-medium text-zinc-400">
                           {msg.time}
                         </span>
-                        {msg.role === "ai" && (
+                        {msg.role !== "user" && (
                           <div className="flex items-center gap-1.5 text-white dark:text-zinc-900">
                             <button className="p-1 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors">
                               <Copy className="w-3.5 h-3.5" />

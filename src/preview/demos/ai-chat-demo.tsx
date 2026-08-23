@@ -33,7 +33,7 @@ const sampleInitialMessages = [
       "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\n\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
     time: "10:02 AM",
   },
-] as any;
+];
 
 export default function AIChatDemo({
   variant = "default",
