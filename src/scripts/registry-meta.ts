@@ -408,7 +408,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
     categories: ["code", "data-display"],
-    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
+    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
   },
   compute: {
     description:
