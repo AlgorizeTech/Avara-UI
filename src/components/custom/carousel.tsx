@@ -242,7 +242,7 @@ export function HeroCarousel({
     <div
       className={rootClassName}
       style={{
-        backgroundImage: `url(${String(backgroundImage)})`,
+        backgroundImage: `url(${String(currentSlide.img)})`,
         transitionDuration: `${transitionDuration}ms`,
         transitionTimingFunction: transitionEasing,
       }}
@@ -253,22 +253,6 @@ export function HeroCarousel({
           <p className={descriptionClassName}>{currentSlide.des}</p>
         </div>
       </div>
-      <div className={arrowContainerClassName}>
-        <button
-          onClick={prevSlider}
-          className={arrowClassName}
-          aria-label="Previous slide"
-        >
-          <ArrowLeft className="h-4 w-4 text-white md:h-5 md:w-5" />
-        </button>
-        <button
-          onClick={nextSlider}
-          className={arrowClassName}
-          aria-label="Next slide"
-        >
-          <ArrowRight className="h-4 w-4 text-white md:h-5 md:w-5" />
-        </button>
-      </div>
       <div className={slideContainerClassName}>
         <div
           className="flex items-center gap-4 duration-500 ease-in-out transition-transform"
@@ -276,21 +260,30 @@ export function HeroCarousel({
             transform: `translateX(-${virtualSliderIndex * slideWidth}px)`,
           }}
         >
-          {infiniteSlides.map((slide, inx) => (
-            <div
-              key={inx}
-              ref={inx === 0 ? cardRef : undefined}
-              className={slideClassName}
-            >
-              <Image
-                width={imageWidth}
-                height={imageHeight}
-                src={slide.img}
-                alt={slide.title ?? `slide-${inx}`}
-                className="h-full w-full object-cover rounded-lg"
-              />
-            </div>
-          ))}
+          {infiniteSlides.map((slide, inx) => {
+            const slideIndex = positiveModulo(inx, slides.length);
+            return (
+              <div
+                key={inx}
+                ref={inx === 0 ? cardRef : undefined}
+                onClick={() => {
+                  setCurrentSlider(inx - baseOffsetIndex);
+                  setAnimatingKey((k) => k + 1);
+                }}
+                className={`${slideClassName} cursor-pointer transition-transform hover:scale-105 ${
+                  slideIndex === activeIndex ? "ring-2 ring-white/80 shadow-lg scale-102" : "opacity-80 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  width={imageWidth}
+                  height={imageHeight}
+                  src={slide.img}
+                  alt={slide.title ?? `slide-${inx}`}
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
