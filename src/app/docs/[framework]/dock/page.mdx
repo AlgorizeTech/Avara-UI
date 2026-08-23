@@ -10,7 +10,7 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
 export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Compass, Home, Mail, Settings, Terminal } from "lucide-react";
+import { Compass, FolderGit2, Github, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
 import { useState } from "react";
 
 export default function BottomNav() {
@@ -22,6 +22,9 @@ export default function BottomNav() {
     { id: "compass", label: "Explore", icon: <Compass className="w-full h-full" />, isActive: active === "compass", onClick: () => setActive("compass") },
     { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
     { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "projects", label: "Repositories", icon: <FolderGit2 className="w-full h-full" />, isActive: active === "projects", onClick: () => setActive("projects") },
+    { id: "ai", label: "AI Assistant", icon: <Sparkles className="w-full h-full text-amber-500" />, isActive: active === "ai", onClick: () => setActive("ai") },
+    { id: "github", label: "GitHub", icon: <Github className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
     { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
