@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
     }
   ],
-  "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
+  "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
   "categories": [
     "code",
     "data-display"
