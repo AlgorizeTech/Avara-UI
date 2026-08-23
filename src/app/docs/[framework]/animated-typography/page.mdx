@@ -113,6 +113,54 @@ export default function WordBounceShowcase() {
   );
 }`;
 
+export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordZoomShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-start text-left">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-zoom"
+        align="left"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordSlideShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-start text-left">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-slide"
+        align="left"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function CharWaveShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-start text-left">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="char-wave"
+        align="left"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="animated-typography"
   colorControl
@@ -169,6 +217,39 @@ export default function WordBounceShowcase() {
       ],
       props: { singleVariant: "word-bounce", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
       usage: usageWordBounce,
+    },
+    {
+      title: "Word Zoom",
+      subheading: "Cinematic blur-fade zoom transition scaling words seamlessly into focus.",
+      propNotes: [
+        { prop: "variant", value: '"word-zoom"', effect: "zooms and fades words in out of a 12px blur filter." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"left"', effect: "aligns the text and animation container to the left." },
+      ],
+      props: { singleVariant: "word-zoom", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordZoom,
+    },
+    {
+      title: "Word Slide",
+      subheading: "Smooth horizontal slide transition moving words in and out with blur filtering.",
+      propNotes: [
+        { prop: "variant", value: '"word-slide"', effect: "slides words horizontally in and out with blur reveal." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"left"', effect: "aligns the text and animation container to the left." },
+      ],
+      props: { singleVariant: "word-slide", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordSlide,
+    },
+    {
+      title: "Character Wave (Homepage Hero Style)",
+      subheading: "Staggered kinetic wave transition popping words in letter-by-letter on a spring curve.",
+      propNotes: [
+        { prop: "variant", value: '"char-wave"', effect: "animates characters in a staggered kinetic wave." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"left"', effect: "aligns the text and animation container to the left." },
+      ],
+      props: { singleVariant: "char-wave", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageCharWave,
     },
   ]}
 />
