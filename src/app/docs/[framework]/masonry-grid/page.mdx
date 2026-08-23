@@ -11,7 +11,7 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
-export const masonryShared = `import { ArrowUpRight, Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
+export const masonryShared = `import { ArrowUpRight } from "lucide-react";
 
 type GridItem = {
   id: string;
@@ -92,6 +92,8 @@ export const usageDefault = `import { MasonryGrid } from "@/components/custom/bl
 
 ${masonryShared}
 
+import { Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
+
 const items: GridItem[] = [
   { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
   { id: "2", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
@@ -117,6 +119,8 @@ export default function PhotoWall() {
 export const usageColumns = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
 ${masonryShared}
+
+import { Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "c1", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" },
@@ -145,6 +149,8 @@ export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks
 
 ${masonryShared}
 
+import { Cpu, Layers, Sparkles } from "lucide-react";
+
 const items: GridItem[] = [
   { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: <Sparkles className="w-5 h-5" />, theme: "purple" },
   { id: "g2", type: "image", height: "h-[26rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
@@ -169,6 +175,8 @@ export default function TighterWall() {
 export const usageStagger = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
 ${masonryShared}
+
+import { Layers, Sparkles, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "s1", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
@@ -195,6 +203,8 @@ export default function SlowStaggerWall() {
 export const usageStatic = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
 ${masonryShared}
+
+import { Cpu, Layers, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },

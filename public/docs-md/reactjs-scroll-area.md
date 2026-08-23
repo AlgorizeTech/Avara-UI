@@ -332,7 +332,7 @@ export const usageHorizontal = `import { ScrollAreaBlock } from "@/components/cu
 ${artworkSource}
 
 export default function ArtworkScroller() {
-  // A horizontal area needs content wider than the box — `w-max` on the row.
+  // A horizontal area needs content wider than the box - w-max on the row.
   return (
 
   );
@@ -371,7 +371,7 @@ ${scrollAccent}
 ${messagesSource}
 
 export default function GlassScroller() {
-  // `glass` is translucent by design — put it over an image or a gradient.
+  // The glass variant is translucent by design - put it over an image or a gradient.
   return (
 
   );
@@ -384,7 +384,7 @@ ${scrollAccent}
 ${messagesSource}
 
 export default function AutoHideScroller() {
-  // `autoHide` fades the bar until you scroll or hover; `hideTrack` drops the groove.
+  // autoHide fades the bar until you scroll or hover; hideTrack drops the groove.
   return (
 
   );

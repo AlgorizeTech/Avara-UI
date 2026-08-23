@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-22T02:05:30.408Z",
-  "totalFiles": 201,
+  "generatedAt": "2026-08-23T16:45:46.873Z",
+  "totalFiles": 205,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -267,6 +267,12 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "nextjs/footer",
+      "path": "/docs/nextjs-footer.md",
+      "url": "/docs/nextjs/footer",
+      "originalMdx": "[framework]\\footer\\page.mdx"
+    },
+    {
       "name": "nextjs/form",
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
@@ -427,6 +433,12 @@
       "path": "/docs/nextjs-pricing.md",
       "url": "/docs/nextjs/pricing",
       "originalMdx": "[framework]\\pricing\\page.mdx"
+    },
+    {
+      "name": "nextjs/product-details",
+      "path": "/docs/nextjs-product-details.md",
+      "url": "/docs/nextjs/product-details",
+      "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
       "name": "nextjs/progress",
@@ -873,6 +885,12 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "reactjs/footer",
+      "path": "/docs/reactjs-footer.md",
+      "url": "/docs/reactjs/footer",
+      "originalMdx": "[framework]\\footer\\page.mdx"
+    },
+    {
       "name": "reactjs/form",
       "path": "/docs/reactjs-form.md",
       "url": "/docs/reactjs/form",
@@ -1033,6 +1051,12 @@
       "path": "/docs/reactjs-pricing.md",
       "url": "/docs/reactjs/pricing",
       "originalMdx": "[framework]\\pricing\\page.mdx"
+    },
+    {
+      "name": "reactjs/product-details",
+      "path": "/docs/reactjs-product-details.md",
+      "url": "/docs/reactjs/product-details",
+      "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
       "name": "reactjs/progress",

@@ -8,7 +8,9 @@ This `DataGridBlock` is built **100% dependency-free**. It manages focus through
 
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
-export const gridSchema = `const COLUMNS = [
+export const gridSchema = `import { type GridColumn } from "@/components/custom/blocks/DataGridBlock";
+
+const COLUMNS: GridColumn[] = [
   { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
   { field: "customer", headerName: "Customer Name", width: 200 },
   { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },

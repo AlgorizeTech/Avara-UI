@@ -8,7 +8,7 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
-export const masonryShared = `import { ArrowUpRight, Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
+export const masonryShared = `import { ArrowUpRight } from "lucide-react";
 
 type GridItem = {
   id: string;
