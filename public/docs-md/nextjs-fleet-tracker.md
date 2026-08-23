@@ -23,7 +23,7 @@ export const fleetData = `const fleet = [
   },
 ];`;
 
-export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
 
 // Leaflet touches \`window\` on import, so the map is deferred until after mount
 // — the component handles that itself, in every framework.
@@ -34,7 +34,7 @@ export default function FleetDashboard() {
   return ;
 }`;
 
-export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
 
 ${fleetData}
 
@@ -43,7 +43,7 @@ export default function MinimalFleet() {
   return ;
 }`;
 
-export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
 
 ${fleetData}
 

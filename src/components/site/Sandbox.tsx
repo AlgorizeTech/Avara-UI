@@ -1075,7 +1075,7 @@ export function ExampleShowcase({
         )}
       >
         {examples.map((example) => {
-          let effectiveProps = { ...example.props, ...controlValues };
+          const effectiveProps = { ...example.props, ...controlValues };
           if (colorControl) {
             effectiveProps[colorProp] = color;
           }

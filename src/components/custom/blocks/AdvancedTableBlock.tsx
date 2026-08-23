@@ -277,7 +277,7 @@ export const AdvancedTableBlock = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "w-full flex flex-col gap-4 font-sans text-[#1a1a2e]",
+          "w-full flex flex-col gap-4 font-sans text-[#1a1a2e] dark:text-zinc-100",
           className,
         )}
         style={style}

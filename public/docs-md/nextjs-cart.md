@@ -4,7 +4,33 @@ A complete, production-ready Cart component designed for modern e-commerce appli
 
 One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
-export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usageDrawer = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+// The cart holds no data of its own. Keep the items in the parent, where the
+// rest of your app can reach them, and hand them over as initialItems.
+const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Signature Heavyweight Tee",
+    price: 45.0,
+    quantity: 1,
+    size: "L",
+    color: "Onyx Black",
+    gradient: "from-zinc-700 to-black",
+  },
+  {
+    id: "2",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+];
 
 export default function Layout() {
   return (
@@ -12,14 +38,45 @@ export default function Layout() {
   );
 }`;
 
-export const usageModal = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usageModal = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+];
 
 export default function ModalCart() {
   // Centred dialog with a blurred backdrop — same trigger, same state.
   return ;
 }`;
 
-export const usagePage = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usagePage = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+// Fetch or import your real line items here — the component holds none.
+const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+];
 
 // Full-width two-column layout for a dedicated /cart route.
 // No trigger button — the cart is the page.
@@ -57,6 +114,19 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
         Type
         Default
         Description
+
+          initialItems
+
+          CartItem[]
+
+          []
+
+          The items the cart starts with, supplied by the parent. The installed
+          component contains no sample data, so a CartBlock without
+          this prop renders its empty state. Each item is id,{" "}
+          name, price, quantity,{" "}
+          gradient, and optional size /{" "}
+          color. Quantity and removal are then handled internally.
 
           type
 

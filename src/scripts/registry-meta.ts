@@ -23,6 +23,16 @@ export type ItemMeta = {
   categories: string[];
   /** Post-install notes: exports, gotchas, required setup. Shown after `shadcn add`. */
   docs?: string;
+  /**
+   * Registry items the documented usage needs but the component source does not
+   * import, so they cannot be derived from the imports the way everything else
+   * is. Without these, `shadcn add <item>` succeeds and the copied usage then
+   * fails to resolve the module.
+   *
+   * Only for genuine usage dependencies. A component merely shown on the same
+   * page (see `carousel`) gets its own Installation block instead.
+   */
+  usageDependencies?: string[];
 };
 
 /** The controlled category vocabulary. Adding a term here is a deliberate act. */
@@ -59,7 +69,6 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "CustomCodeBlock.tsx": "custom-code-block",
   "Ai-chat.tsx": "ai-chat",
   "Fleet-map.tsx": "fleet-map",
-  "Fleet-tracker.tsx": "fleet-tracker",
   "Pricing-plan.tsx": "pricing-plan",
   "Support-dashboard.tsx": "support-dashboard",
   "DesignComponentsFolder.tsx": "design-components-folder",
@@ -69,6 +78,7 @@ export const NAME_OVERRIDES: Record<string, string> = {
 export const META: Record<string, ItemMeta> = {
   // ---- Curated in Phase 3. Verified against source. ----
   button: {
+    usageDependencies: ["icons"],
     description:
       "A button with variants, sizes, loading state, and a click ripple effect. Reach for it as the default action element anywhere in an interface.",
     categories: ["actions", "forms"],
@@ -143,6 +153,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
   },
   form: {
+    usageDependencies: ["input"],
     description:
       "Form scaffolding — wrapper, field, error and submit — with a shared color theme and a glitch error variant. Use it to keep field spacing and validation styling consistent across a form.",
     categories: ["forms"],
@@ -408,7 +419,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
     categories: ["commerce"],
-    docs: "Named exports: CartBlock, getThemeStyles. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Items carry { id, name, price, quantity, size?, color? }. Cart state is yours to own — this renders it and reports changes.",
+    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally.",
   },
   "api-playground": {
     description:
@@ -756,13 +767,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
     categories: ["maps", "data-display"],
-    docs: "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only. For the map-free list, use `fleet-tracker`.",
-  },
-  "fleet-tracker": {
-    description:
-      "A vehicle list with selection and location details, loading its map lazily. Use it as the lighter fleet view when a full map is not needed up front.",
-    categories: ["data-display"],
-    docs: "Named export: FleetTracker. Uses next/dynamic with `ssr: false` to defer the map, so it needs Next.js. Installs standalone with no registry dependencies. For the full map view, use `fleet-map`.",
+    docs: "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only.",
   },
   "data-maps": {
     description:

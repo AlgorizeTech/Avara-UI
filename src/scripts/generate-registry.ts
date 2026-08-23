@@ -341,6 +341,8 @@ const items: BuiltItem[] = sources.map((s) => {
 
   const meta = META[s.name];
   if (!meta) missingMeta.push(s.name);
+  // Usage-only dependencies cannot be derived from the source's imports.
+  for (const d of meta?.usageDependencies ?? []) registryDependencies.add(d);
   for (const c of meta?.categories ?? []) {
     if (!(CATEGORIES as readonly string[]).includes(c)) {
       badCategories.push(`${s.name}: "${c}"`);

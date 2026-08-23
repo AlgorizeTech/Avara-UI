@@ -103,7 +103,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           onChange
 
-          (newData: Record&lt;string, any&gt;[]) =&gt; void
+          (newData: T[]) =&gt; void
 
           undefined
 
