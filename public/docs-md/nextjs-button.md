@@ -40,7 +40,15 @@ export default function ButtonSizes() {
 export const usageLoading = `import Button from "@/components/custom/blocks/Button";
 
 export default function ButtonLoading() {
-  return Please wait;
+  return (
+    
+      Please wait
+      
+        Please wait
+
+        Please wait
+
+  );
 }`;
 
 export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
@@ -50,7 +58,13 @@ export default function ButtonWithIcon() {
     
       }>Email
       }>
+        Download
+      
+      }>
         Continue
+      
+      }>
+        Confirm
 
   );
 }`;
@@ -67,10 +81,31 @@ export default function SocialLoginButtons() {
   return (
     
       }>
+        Login with Email
+      
+      }>
         Continue with Google
       
       }>
         Continue with GitHub
+      
+      }>
+        Login with Facebook
+      
+      }>
+        Login with X
+      
+      }>
+        Login with Apple
+      
+      }>
+        Login with Microsoft
+      
+      }>
+        Login with Slack
+      
+      }>
+        Login with LinkedIn
 
   );
 }`;

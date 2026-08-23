@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-22T12:38:25.860Z
-**Total files:** 203
+**Generated at:** 2026-08-23T08:27:19.417Z
+**Total files:** 205
 
 ## Available Files
 
@@ -79,6 +79,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
+- [nextjs/product-details](/docs/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [nextjs/progress](/docs/nextjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [nextjs/qr-code-generator](/docs/nextjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
@@ -181,6 +182,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/popover](/docs/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [reactjs/pricing](/docs/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
+- [reactjs/product-details](/docs/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [reactjs/progress](/docs/reactjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [reactjs/qr-code-generator](/docs/reactjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [reactjs/resizable](/docs/reactjs-resizable.md) - Source: `[framework]\resizable\page.mdx`

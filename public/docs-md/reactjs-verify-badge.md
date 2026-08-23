@@ -10,8 +10,8 @@ export const usageDefault = `import { VerifyBadge } from "@/components/custom/bl
 
 export default function ProfileName() {
   return (
-    
-      AlgorizeSystem
+
+        AlgorizeSystem
 
   );
 }`;
@@ -27,7 +27,11 @@ export default function BadgeSizes() {
 export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
 export default function StaticBadge() {
-  return ;
+  return (
+
+        AlgorizeSystem
+
+  );
 }`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";

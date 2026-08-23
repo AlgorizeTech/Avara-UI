@@ -69,14 +69,25 @@ export default function TestimonialColumn() {
 
 export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const images = ["/gallery/01.jpg", "/gallery/02.jpg", "/gallery/03.jpg"];
+const images = [
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop",
+];
 
 export default function SlowGallery() {
   return (
     // "slow" | "normal" | "fast", or a raw duration in seconds.
-    <MarqueeBlock speed="slow" gap="1.5rem" fade>
-      {images.map((src) => (
-        <img key={src} src={src} alt="" className="w-[200px] rounded-2xl" />
+    <MarqueeBlock speed="slow" gap="1.5rem" fade pauseOnHover className="w-full py-2">
+      {images.map((src, i) => (
+        <div
+          key={i}
+          className="w-[220px] h-[160px] shrink-0 rounded-2xl overflow-hidden shadow-md border border-zinc-200/60 dark:border-zinc-800"
+        >
+          <img src={src} alt="Nature landscape" className="w-full h-full object-cover" />
+        </div>
       ))}
     </MarqueeBlock>
   );

@@ -41,14 +41,14 @@ export default function ClickableCards() {
        console.log("Download")}>
 
              Download Report
-          
-          Export your analytics data as a CSV file.
+
+            Export your analytics data as a CSV file for external processing.
 
        console.log("Import")}>
 
              Import Data
-          
-          Upload legacy customer profiles into your CRM.
+
+            Upload legacy customer profiles to merge into your active CRM.
 
   );
 }`;
