@@ -60,6 +60,34 @@ export default function WordBounceShowcase() {
   );
 }`;
 
+export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordZoomShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordSlideShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function CharWaveShowcase() {
+  return (
+
+  );
+}`;
+
+## Installation
+
+## Examples
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 

@@ -55,8 +55,8 @@ export default function AnimatedTypographyDemo({
               key={`${animationKey}-${singleVariant}-${t}`}
               as={t}
               variant={singleVariant}
-              align={singleVariant === "word-bounce" ? "left" : "center"}
-              titlePrefix={singleVariant === "word-bounce" ? "Build Interactive" : undefined}
+              align={["word-bounce", "word-zoom", "word-slide", "char-wave"].includes(singleVariant) ? "left" : "center"}
+              titlePrefix={["word-bounce", "word-zoom", "word-slide", "char-wave"].includes(singleVariant) ? "Build Interactive" : undefined}
               text={customText}
               color={color}
             />

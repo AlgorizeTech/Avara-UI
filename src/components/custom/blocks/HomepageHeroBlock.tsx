@@ -233,7 +233,7 @@ export const HomepageHeroBlock = forwardRef<
 							</Link>
 						)}
 
-						{/* Dynamic Bouncing Title Word */}
+						{/* Dynamic Animated Title Word */}
 						<h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
 							<span className="shrink-0">
 								Build{" "}
@@ -245,17 +245,32 @@ export const HomepageHeroBlock = forwardRef<
 								<AnimatePresence mode="wait">
 									<motion.span
 										key={currentWord}
-										initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
-										animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-										exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
-										transition={{
-											type: "spring",
-											stiffness: 300,
-											damping: 24,
-											mass: 0.8,
+										initial="initial"
+										animate="animate"
+										exit="exit"
+										variants={{
+											initial: { opacity: 0 },
+											animate: { opacity: 1, transition: { staggerChildren: 0.04 } },
+											exit: { opacity: 0, transition: { staggerChildren: 0.02 } },
 										}}
-										className="text-foreground inline-block text-left whitespace-nowrap">
-										{currentWord}
+										className="text-foreground inline-flex text-left whitespace-nowrap">
+										{currentWord.split("").map((char, index) => (
+											<motion.span
+												key={index}
+												variants={{
+													initial: { y: 24, opacity: 0, scale: 0.5 },
+													animate: { y: 0, opacity: 1, scale: 1 },
+													exit: { y: -24, opacity: 0, scale: 0.5 },
+												}}
+												transition={{
+													type: "spring",
+													stiffness: 350,
+													damping: 25,
+												}}
+												className="inline-block">
+												{char}
+											</motion.span>
+										))}
 									</motion.span>
 								</AnimatePresence>
 							</span>
