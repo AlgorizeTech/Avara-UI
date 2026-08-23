@@ -33,17 +33,21 @@ export default function BottomNav() {
 }`;
 
 export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Home, Mail, Settings, Terminal } from "lucide-react";
+import { useState } from "react";
 
 export default function CompactNav() {
+  const [active, setActive] = useState("home");
+
   const items = [
     // isActive draws the indicator dot; badge prints a counter pill
-    { id: "home", label: "Dashboard", icon: , isActive: true },
-    { id: "mail", label: "Messages", icon: , badge: 3 },
-    { id: "terminal", label: "Terminal", icon:  },
-    { id: "settings", label: "Settings", icon:  },
+    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: active === "home", onClick: () => setActive("home") },
+    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
-  return ;
+  return <Dock items={items} />;
 }`;
 
 ## Installation
