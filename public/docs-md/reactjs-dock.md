@@ -21,6 +21,10 @@ export const usageDefault = `export default function BottomNav() {
 
   return (
 
+        Active App:{" "}
+        
+          {active}
+
   );
 }`;
 

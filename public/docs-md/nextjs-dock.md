@@ -23,6 +23,10 @@ export default function BottomNav() {
 
   return (
 
+        Active App:{" "}
+        
+          {active}
+
   );
 }`;
 

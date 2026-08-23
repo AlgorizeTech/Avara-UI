@@ -84,10 +84,6 @@ export default function CharWaveShowcase() {
   );
 }`;
 
-## Installation
-
-## Examples
-
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
