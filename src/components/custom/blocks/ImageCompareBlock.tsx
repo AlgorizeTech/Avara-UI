@@ -102,6 +102,7 @@ export function ImageCompare({
       : colorThemes[color]?.rgb || "99, 102, 241";
 
   const [sliderPos, setSliderPos] = useState(initialPosition);
+  const [sliderPosY, setSliderPosY] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -112,6 +113,11 @@ export function ImageCompare({
       const y = Math.max(0, Math.min(clientY - rect.top, rect.height));
       const percentage = (y / rect.height) * 100;
       setSliderPos(percentage);
+    } else if (variant === "circle-magnifier") {
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+      const y = Math.max(0, Math.min(clientY - rect.top, rect.height));
+      setSliderPos((x / rect.width) * 100);
+      setSliderPosY((y / rect.height) * 100);
     } else {
       const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
       const percentage = (x / rect.width) * 100;
@@ -170,6 +176,7 @@ export function ImageCompare({
         "relative w-full h-[480px] sm:h-[560px] rounded-2xl overflow-hidden select-none border transition-all duration-300 cursor-ew-resize group",
         "bg-zinc-950 border-zinc-200 dark:border-zinc-800",
         variant === "vertical-slide" && "cursor-ns-resize",
+        variant === "circle-magnifier" && "cursor-crosshair",
         className
       )}
       {...props}
@@ -189,7 +196,7 @@ export function ImageCompare({
             variant === "vertical-slide"
               ? `inset(0 0 ${100 - sliderPos}% 0)`
               : variant === "circle-magnifier"
-                ? `circle(120px at ${sliderPos}% 50%)`
+                ? `circle(120px at ${sliderPos}% ${sliderPosY}%)`
                 : `inset(0 ${100 - sliderPos}% 0 0)`,
         }}
       >
@@ -329,8 +336,8 @@ export function ImageCompare({
       {/* VARIANT 8: CIRCLE MAGNIFIER */}
       {variant === "circle-magnifier" && (
         <div
-          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-[240px] h-[240px] rounded-full border-4 shadow-2xl pointer-events-none transition-all duration-75"
-          style={{ left: `${sliderPos}%`, borderColor: activeColor }}
+          className="absolute -translate-x-1/2 -translate-y-1/2 z-30 w-[240px] h-[240px] rounded-full border-4 shadow-2xl pointer-events-none transition-all duration-75"
+          style={{ left: `${sliderPos}%`, top: `${sliderPosY}%`, borderColor: activeColor }}
         >
           <div
             className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[10px] font-black shadow-md text-primary-foreground dark:text-zinc-900"
