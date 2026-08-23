@@ -97,6 +97,22 @@ export default function TypewriterShowcase() {
 
 ## Examples
 
+export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordBounceShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-start text-left">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-bounce"
+        align="left"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="animated-typography"
   colorControl
@@ -142,6 +158,17 @@ export default function TypewriterShowcase() {
       ],
       props: { singleVariant: "typewriter" },
       usage: usageTypewriter,
+    },
+    {
+      title: "Word Bounce",
+      subheading: "Spring-animated vertical word transition cycling continuously through a list of words with optional prefix or suffix text.",
+      propNotes: [
+        { prop: "variant", value: '"word-bounce"', effect: "bounces words vertically using a spring curve." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"left"', effect: "aligns the text and animation container to the left." },
+      ],
+      props: { singleVariant: "word-bounce", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordBounce,
     },
   ]}
 />

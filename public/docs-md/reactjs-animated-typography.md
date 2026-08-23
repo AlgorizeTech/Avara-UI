@@ -48,6 +48,14 @@ export default function TypewriterShowcase() {
   );
 }`;
 
+export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordBounceShowcase() {
+  return (
+
+  );
+}`;
+
 ## Installation
 
 ## Examples

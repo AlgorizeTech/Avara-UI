@@ -55,8 +55,9 @@ export default function AnimatedTypographyDemo({
               key={`${animationKey}-${singleVariant}-${t}`}
               as={t}
               variant={singleVariant}
-              align="center"
-              text="The quick brown fox jumps over the lazy dog."
+              align={singleVariant === "word-bounce" ? "left" : "center"}
+              titlePrefix={singleVariant === "word-bounce" ? "Build Interactive" : undefined}
+              text={customText}
               color={color}
             />
           ))}
