@@ -7,29 +7,72 @@ A complete, production-ready Cart component designed for modern e-commerce appli
 
 One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
-export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const cartItems = `const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Signature Heavyweight Tee",
+    price: 45.0,
+    quantity: 1,
+    size: "L",
+    color: "Onyx Black",
+    gradient: "from-zinc-700 to-black",
+  },
+  {
+    id: "2",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+  {
+    id: "3",
+    name: "Minimalist Beanie",
+    price: 28.0,
+    quantity: 2,
+    size: "OS",
+    color: "Forest Green",
+    gradient: "from-emerald-500 to-teal-800",
+  },
+];`;
 
-export default function Layout() {
-  return (
-    <div className="relative w-full min-h-screen">
-      <CartBlock type="drawer" />
-    </div>
-  );
+export const usageDrawer = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+// The cart holds no data of its own. Keep the items in the parent, where the
+// rest of your app can reach them, and hand them over as initialItems.
+${cartItems}
+
+export default function DrawerCart() {
+  return <CartBlock type="drawer" initialItems={items} />;
 }`;
 
-export const usageModal = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usageModal = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop — same trigger, same state.
-  return <CartBlock type="modal" color="rose" />;
+  // Centred dialog with a blurred backdrop - same trigger, same state.
+  return <CartBlock type="modal" initialItems={items} />;
 }`;
 
-export const usagePage = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usagePage = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+${cartItems}
 
 // Full-width two-column layout for a dedicated /cart route.
-// No trigger button — the cart is the page.
+// No trigger button - the cart is the page.
 export default function CartPage() {
-  return <CartBlock type="page" color="zinc" />;
+  return <CartBlock type="page" initialItems={items} />;
 }`;
 
 <ExampleShowcase
@@ -46,6 +89,11 @@ export default function CartPage() {
           value: '"drawer"',
           effect:
             "is the default — the panel slides in from the right edge over a blurred overlay.",
+        },
+        {
+          prop: "initialItems",
+          effect:
+            "seeds the cart from the parent. The component ships no sample data — without it you get the empty state. Each item is `{ id, name, price, quantity, size?, color?, gradient }`.",
         },
         {
           prop: "color",
@@ -146,6 +194,25 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td>
+          <code>initialItems</code>
+        </td>
+        <td>
+          <code>CartItem[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          The items the cart starts with, supplied by the parent. The installed
+          component contains no sample data, so a <code>CartBlock</code> without
+          this prop renders its empty state. Each item is <code>id</code>,{" "}
+          <code>name</code>, <code>price</code>, <code>quantity</code>,{" "}
+          <code>gradient</code>, and optional <code>size</code> /{" "}
+          <code>color</code>. Quantity and removal are then handled internally.
+        </td>
+      </tr>
       <tr>
         <td>
           <code>type</code>

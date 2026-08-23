@@ -106,16 +106,17 @@ export interface GridColumn {
   field: string;
   headerName: string;
   width?: string | number;
-  type?: "text" | "number";
+  type?: "text" | "number" | (string & {});
   readOnly?: boolean;
 }
 
-export interface DataGridBlockProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface DataGridBlockProps<
+  T extends Record<string, any> = Record<string, any>,
+> extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   columns: GridColumn[];
-  data: Record<string, any>[];
+  data: T[];
   color?: GridColor;
-  onChange?: (newData: Record<string, any>[]) => void;
+  onChange?: (newData: T[]) => void;
   showRowNumbers?: boolean;
   readOnly?: boolean;
 }
@@ -123,7 +124,7 @@ export interface DataGridBlockProps
 // ==========================================
 // COMPONENT
 // ==========================================
-export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
+const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
   (
     {
       columns,
@@ -473,4 +474,17 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
     );
   },
 );
-DataGridBlock.displayName = "DataGridBlock";
+DataGridBlockImpl.displayName = "DataGridBlock";
+
+/**
+ * Generic over the row shape, so `data` infers T and `onChange` accepts the
+ * matching setState function without a cast:
+ *
+ *   const [rows, setRows] = useState(ROWS);
+ *   <DataGridBlock columns={COLUMNS} data={rows} onChange={setRows} />
+ */
+export const DataGridBlock = DataGridBlockImpl as <
+  T extends Record<string, any> = Record<string, any>,
+>(
+  props: DataGridBlockProps<T> & React.RefAttributes<HTMLDivElement>,
+) => React.ReactElement | null;

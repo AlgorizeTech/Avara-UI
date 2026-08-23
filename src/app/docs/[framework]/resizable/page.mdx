@@ -10,7 +10,7 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
 export const paneHelper = `// Panel bodies — swap these for your own content.
-function Pane({ label }) {
+function Pane({ label }: { label: string }) {
   return (
     <div className="flex h-full items-center justify-center bg-zinc-50 dark:bg-zinc-900">
       <span className="text-sm font-medium text-zinc-500">{label}</span>
@@ -21,8 +21,52 @@ function Pane({ label }) {
 export const studioPanes = `${paneHelper}
 
 const Explorer = () => <Pane label="Explorer" />;
-const Editor = () => <Pane label="Editor" />;
-const TerminalPane = () => <Pane label="Terminal" />;`;
+
+function Editor() {
+  return (
+    <div className="p-4 flex flex-col h-full bg-background overflow-y-auto">
+      <div className="text-xs font-bold text-foreground mb-4 border-b border-border/60 pb-2 flex items-center justify-between shrink-0">
+        <span>page.tsx</span>
+        <span className="text-[10px] text-primary font-mono bg-primary/10 px-1.5 py-0.5 rounded">
+          Active
+        </span>
+      </div>
+      <div className="space-y-2 font-mono text-xs flex-1">
+        <div>export default function Page() {"{"}</div>
+        <div className="pl-4">return (</div>
+        <div className="pl-8">
+          {'<div className="flex h-full w-full flex-col p-4">'}
+        </div>
+        <div className="pl-12">
+          {'<h2 className="text-2xl font-bold">John Doe</h2>'}
+        </div>
+        <div className="pl-12 italic text-zinc-500">
+          {"{/* Drag handle bars to resize panels live */}"}
+        </div>
+        <div className="pl-8">{"</div>"}</div>
+        <div className="pl-4">);</div>
+        <div>{"}"}</div>
+      </div>
+    </div>
+  );
+}
+
+function TerminalPane() {
+  return (
+    <div className="p-4 flex flex-col h-full bg-zinc-950 text-white border-t border-border/40">
+      <div className="text-xs font-bold uppercase tracking-wider text-primary mb-2 flex items-center justify-between">
+        <span>Terminal</span>
+        <span className="text-[9px] text-muted-foreground">bash</span>
+      </div>
+      <div className="font-mono text-xs text-zinc-300">
+        <span className="text-emerald-400 font-bold">project@app:~$</span>{" "}
+        npm run dev
+        <br />
+        <span className="text-primary font-semibold">✓ Ready in 850ms</span>
+      </div>
+    </div>
+  );
+}`;
 
 export const splitPanes = `${paneHelper}
 
@@ -44,8 +88,9 @@ ${studioPanes}
 
 export default function StudioLayout() {
   return (
-    // The outermost container must have a defined height.
-    <div className="h-[460px]">
+    // A panel group is height:100%, so it collapses to nothing unless an
+    // ancestor is sized. Use h-screen here to fill the viewport instead.
+    <div className="w-full h-[400px] sm:h-[460px] border rounded-xl overflow-hidden">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={22} minSize={15} maxSize={40}>
           <Explorer />
@@ -79,16 +124,20 @@ export const usageHorizontal = `import {
 ${splitPanes}
 
 export default function HorizontalSplit() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={40}>
-        <PanelOne />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={60}>
-        <PanelTwo />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={40}>
+          <PanelOne />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={60}>
+          <PanelTwo />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 }`;
 
@@ -103,16 +152,20 @@ ${splitPanes}
 export default function VerticalSplit() {
   // \`direction\` sets the flex axis of the group and the drag axis of every
   // handle inside it.
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-    <ResizablePanelGroup direction="vertical">
-      <ResizablePanel defaultSize={40}>
-        <PanelOne />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={60}>
-        <PanelTwo />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="vertical">
+        <ResizablePanel defaultSize={40}>
+          <PanelOne />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={60}>
+          <PanelTwo />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 }`;
 
@@ -125,18 +178,22 @@ export const usageConstraints = `import {
 ${sidebarPanes}
 
 export default function ConstrainedSidebar() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-    <ResizablePanelGroup direction="horizontal">
-      {/* Percentages of the group. The engine clamps the drag so a panel can
-          never escape its bounds. */}
-      <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
-        <Sidebar />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel>
-        <Editor />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="horizontal">
+        {/* Percentages of the group. The engine clamps the drag so a panel can
+            never escape its bounds. */}
+        <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+          <Sidebar />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel>
+          <Editor />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 }`;
 

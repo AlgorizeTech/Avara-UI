@@ -6,6 +6,7 @@
   "description": "A button with variants, sizes, loading state, and a click ripple effect. Reach for it as the default action element anywhere in an interface.",
   "dependencies": [],
   "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/icons.json",
     "utils"
   ],
   "files": [

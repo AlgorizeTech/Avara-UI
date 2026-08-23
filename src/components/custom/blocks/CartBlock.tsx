@@ -11,7 +11,15 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+/**
+ * GSAP has to write its "from" values before the browser paints, otherwise the
+ * panel is visible for one frame in its final position. useLayoutEffect does
+ * that; React warns when it runs during SSR, so fall back on the server.
+ */
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -99,36 +107,6 @@ export interface CartItem {
   color?: string;
   gradient: string;
 }
-
-const INITIAL_CART: CartItem[] = [
-  {
-    id: "1",
-    name: "Signature Heavyweight Tee",
-    price: 45.0,
-    quantity: 1,
-    size: "L",
-    color: "Onyx Black",
-    gradient: "from-zinc-700 to-black",
-  },
-  {
-    id: "2",
-    name: "Everyday Denim Jacket",
-    price: 120.0,
-    quantity: 1,
-    size: "M",
-    color: "Washed Blue",
-    gradient: "from-blue-600 to-indigo-900",
-  },
-  {
-    id: "3",
-    name: "Minimalist Beanie",
-    price: 28.0,
-    quantity: 2,
-    size: "OS",
-    color: "Forest Green",
-    gradient: "from-emerald-500 to-teal-800",
-  },
-];
 
 const ItemRow = ({
   item,
@@ -278,16 +256,34 @@ function TriggerButton({
 }
 
 export function CartBlock({
+  initialItems = [],
   type = "drawer",
   color = "primary",
 }: {
+  /**
+   * Items the cart starts with. Own this list in the parent - the component
+   * ships no sample data, so a CartBlock rendered without `initialItems`
+   * shows its empty state.
+   */
+  initialItems?: readonly CartItem[];
   type?: CartType;
   color?: CartColor;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [renderLayer, setRenderLayer] = useState(false); // Fix: Added delayed render layer for exit animations
-  const [items, setItems] = useState<CartItem[]>(INITIAL_CART);
+  /**
+   * The animated layer stays mounted for the whole open -> close cycle. It is
+   * set from the click handler, in the same update as `isOpen`, and cleared by
+   * the exit tween's onComplete, so the two can never disagree.
+   */
+  const [isLayerMounted, setIsLayerMounted] = useState(false);
+  const [items, setItems] = useState<CartItem[]>(() => [...initialItems]);
   const { theme, style } = getThemeStyles(color);
+
+  const openCart = () => {
+    setIsLayerMounted(true);
+    setIsOpen(true);
+  };
+  const closeCart = () => setIsOpen(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -313,28 +309,18 @@ export function CartBlock({
   const removeItem = (id: string) =>
     setItems(items.filter((item) => item.id !== id));
 
-  // --- ANIMATION EFFECTS & RENDER LAYER ---
-  // Opening must show the layer immediately. Adjusting state during render on a
-  // state change is React's documented alternative to an effect here, and avoids
-  // the extra render an effect would cost on every open.
-  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
-  if (prevIsOpen !== isOpen) {
-    setPrevIsOpen(isOpen);
-    if (isOpen) setRenderLayer(true);
-  }
-
-  useEffect(() => {
-    if (isOpen) return;
-    const timer = setTimeout(() => setRenderLayer(false), 350);
-    return () => clearTimeout(timer);
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (type === "page" || !renderLayer) return;
+  // --- ANIMATION ---
+  useIsomorphicLayoutEffect(() => {
+    if (type === "page" || !isLayerMounted) return;
 
     const el = containerRef.current;
     const overlay = overlayRef.current;
     if (!el) return;
+
+    // A fast toggle can leave a tween mid-flight. Killing it also cancels its
+    // onComplete, so a superseded close cannot unmount a cart that is opening
+    // again.
+    gsap.killTweensOf(overlay ? [el, overlay] : el);
 
     if (isOpen) {
       if (overlay)
@@ -344,7 +330,6 @@ export function CartBlock({
           { opacity: 1, duration: 0.3, ease: "power2.out" },
         );
 
-      // Fix: Removed opacity-0 from drawer, only animate X axis.
       if (type === "drawer")
         gsap.fromTo(
           el,
@@ -363,36 +348,49 @@ export function CartBlock({
           { opacity: 0, y: -10, scale: 0.95 },
           { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" },
         );
-    } else {
-      if (overlay)
-        gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-
-      if (type === "drawer")
-        gsap.to(el, { x: "100%", duration: 0.3, ease: "power3.in" });
-      if (type === "modal")
-        gsap.to(el, {
-          opacity: 0,
-          scale: 0.95,
-          y: 10,
-          duration: 0.3,
-          ease: "power2.in",
-        });
-      if (type === "popover")
-        gsap.to(el, {
-          opacity: 0,
-          y: -10,
-          scale: 0.95,
-          duration: 0.2,
-          ease: "power2.in",
-        });
+      return;
     }
-  }, [isOpen, renderLayer, type]);
+
+    // Unmount when the exit tween actually finishes, rather than on a fixed
+    // timer that can fire out of step with the open state.
+    const unmountLayer = () => setIsLayerMounted(false);
+
+    if (overlay)
+      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
+
+    if (type === "drawer")
+      gsap.to(el, {
+        x: "100%",
+        duration: 0.3,
+        ease: "power3.in",
+        onComplete: unmountLayer,
+      });
+    if (type === "modal")
+      gsap.to(el, {
+        opacity: 0,
+        scale: 0.95,
+        y: 10,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: unmountLayer,
+      });
+    if (type === "popover")
+      gsap.to(el, {
+        opacity: 0,
+        y: -10,
+        scale: 0.95,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: unmountLayer,
+      });
+  }, [isOpen, isLayerMounted, type]);
 
   useEffect(() => {
+    if (!isOpen) return;
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") closeCart();
     };
-    if (isOpen) document.addEventListener("keydown", handleEsc);
+    document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [isOpen]);
 
@@ -463,19 +461,16 @@ export function CartBlock({
       >
         <TriggerButton
           isOpen={isOpen}
-          onToggle={() => setIsOpen(!isOpen)}
+          onToggle={() => (isOpen ? closeCart() : openCart())}
           totalItems={totalItems}
           themeBg={theme.bg}
         />
 
-        {type === "popover" && (
+        {type === "popover" && isLayerMounted && (
           <div className="absolute top-[calc(100%+12px)] right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] pointer-events-none">
             <div
               ref={containerRef}
-              className={cn(
-                "w-[340px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0",
-                !renderLayer && "hidden",
-              )}
+              className="w-[340px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0"
             >
               <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50">
                 <span className="font-bold text-zinc-900 dark:text-white">
@@ -524,29 +519,23 @@ export function CartBlock({
         )}
       </div>
 
-      {(type === "drawer" || type === "modal") && (
+      {(type === "drawer" || type === "modal") && isLayerMounted && (
         <div
           className={cn(
             "fixed inset-0 z-[100] pointer-events-none flex",
             type === "drawer" ? "justify-end" : "justify-center items-center",
           )}
         >
-          {/* Fix: overlay uses renderLayer */}
           <div
             ref={overlayRef}
-            onClick={() => setIsOpen(false)}
-            className={cn(
-              "absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto opacity-0",
-              !renderLayer && "hidden",
-            )}
+            onClick={closeCart}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto opacity-0"
           />
 
-          {/* Fix: renderLayer instead of isOpen, and removed opacity-0 from Drawer base so it's fully visible when sliding in */}
           <div
             ref={containerRef}
             className={cn(
               "relative z-[101] bg-white dark:bg-zinc-950 flex flex-col shadow-2xl pointer-events-auto",
-              !renderLayer && "hidden",
               type === "drawer"
                 ? "w-full max-w-md h-[100dvh] border-l border-zinc-200 dark:border-zinc-800"
                 : "w-full max-w-lg max-h-[85vh] rounded-3xl border border-zinc-200 dark:border-zinc-800 opacity-0",
@@ -563,7 +552,7 @@ export function CartBlock({
                 </span>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={closeCart}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
               >
                 <X size={16} />

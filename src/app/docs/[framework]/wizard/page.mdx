@@ -52,13 +52,17 @@ export const wizardPreamble = `  // Remounting the Wizard is what resets it back
 
   // Enter submits the step's form; forwarding it to the OK button
   // is what makes keyboard progression work.
-  const submitToNext = (e) => {
+  const submitToNext = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const btn = e.currentTarget.querySelector('button[type="button"]');
+    const btn = e.currentTarget.querySelector<HTMLButtonElement>(
+      'button[type="button"]',
+    );
     if (btn) btn.click();
   };`;
 
-export const usageDefault = `import {
+export const usageDefault = `"use client";
+
+import {
   Wizard,
   WizardContainer,
   WizardDescription,
@@ -69,7 +73,7 @@ export const usageDefault = `import {
   WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
 import { CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function OnboardingFlow() {
 ${wizardPreamble}
@@ -87,7 +91,9 @@ ${wizardSteps}
   );
 }`;
 
-export const usageInitialStep = `import {
+export const usageInitialStep = `"use client";
+
+import {
   Wizard,
   WizardContainer,
   WizardDescription,
@@ -98,7 +104,7 @@ export const usageInitialStep = `import {
   WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
 import { CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function ResumedOnboarding() {
 ${wizardPreamble}
@@ -117,7 +123,9 @@ ${wizardSteps}
   );
 }`;
 
-export const usageNoProgress = `import {
+export const usageNoProgress = `"use client";
+
+import {
   Wizard,
   WizardContainer,
   WizardDescription,
@@ -127,7 +135,7 @@ export const usageNoProgress = `import {
   WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
 import { CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function BareWizard() {
 ${wizardPreamble}

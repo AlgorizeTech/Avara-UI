@@ -18,20 +18,28 @@ export const gridSchema = `const COLUMNS = [
 
 const ROWS = [
   { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
-  { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
-  { id: "TX-103", customer: "Nord Systems", amount: 890.25, status: "Paid", date: "2023-10-15" },
-  { id: "TX-104", customer: "Vertex Labs", amount: 3120, status: "Overdue", date: "2023-10-18" },
+  { id: "TX-102", customer: "Global Tech", amount: 1200.0, status: "Pending", date: "2023-10-14" },
+  { id: "TX-103", customer: "Stark Ind.", amount: 8900.25, status: "Overdue", date: "2023-09-30" },
+  { id: "TX-104", customer: "Wayne Ent.", amount: 15500.0, status: "Paid", date: "2023-10-01" },
+  { id: "TX-105", customer: "Initech", amount: 340.0, status: "Paid", date: "2023-10-15" },
+  { id: "TX-106", customer: "Soylent Corp", amount: 950.75, status: "Pending", date: "2023-10-16" },
+  { id: "TX-107", customer: "Umbrella Corp", amount: 12000.0, status: "Paid", date: "2023-10-10" },
+  { id: "TX-108", customer: "Massive Dynamic", amount: 450.0, status: "Paid", date: "2023-10-05" },
 ];`;
 
-export const usageDefault = `import { useState } from "react";
-
-${gridSchema}
+export const usageDefault = `${gridSchema}
 
 export default function Ledger() {
   const [data, setData] = useState(ROWS);
 
   return (
-    
+
+            Financial Ledger
+          
+          Double-click any cell or press Enter to edit.
+
+          Export CSV
+
   );
 }`;
 
@@ -41,7 +49,15 @@ ${gridSchema}
 
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
-  return ;
+  return (
+
+            Financial Ledger
+          
+          View mode only.
+
+          Export CSV
+
+  );
 }`;
 
 ## Installation
@@ -103,7 +119,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           onChange
 
-          (newData: Record&lt;string, any&gt;[]) =&gt; void
+          (newData: T[]) =&gt; void
 
           undefined
 

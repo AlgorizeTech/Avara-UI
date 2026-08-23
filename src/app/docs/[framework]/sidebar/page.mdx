@@ -9,7 +9,9 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-export const usageDefault = `import {
+export const usageDefault = `"use client";
+
+import {
   MobileSidebarTrigger,
   Sidebar,
   SidebarBrand,

@@ -8,15 +8,67 @@ The menu is context-driven: `NavigationMenu` publishes the open item, `variant` 
 
 export const usageMinimal = `import {
   NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
 } from "@/components/custom/blocks/NavigationMenu";
 
 export default function MinimalNav() {
   // Pill chrome removed; the indicator becomes a thin underline.
   return (
-    
-      {/* your NavigationMenuItem children */}
-    
+
+          Features
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+
+                    Lightning Fast
+
+                    Experience uncompromised performance with our edge-first
+                    architecture.
+
+                Advanced encryption protocols.
+
+                APIs & webhooks.
+
+                Tailor experience.
+
+          Resources
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+
+                Quick setup guide.
+
+                iOS & Android.
+
+          {/* Standard link wrapped in trigger-like styles without the chevron */}
+          
+            Pricing
+
+  );
+}
+
+function ListItem({
+  className,
+  title,
+  children,
+  icon: Icon,
+  ...props
+}: {
+  className?: string;
+  title: string;
+  children: ReactNode;
+  icon?: ElementType;
+} & ComponentPropsWithoutRef) {
+  return (
+
+          {Icon && }
+          {title}
+
+          {children}
+
   );
 }`;
 

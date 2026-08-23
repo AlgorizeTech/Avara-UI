@@ -9,15 +9,19 @@ This component solves that by using React state and clever absolute positioning 
 
 Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
-export const selectOptions = `const options = [
-  { label: "Engineering", value: "eng" },
-  { label: "Design", value: "design" },
+export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
+
+const options = [
+  { label: "Engineering", value: "eng", icon: Code },
+  { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },
-  { label: "Sales", value: "sales" },
-  { label: "Support", value: "support" },
+  { label: "Operations", value: "ops", icon: Box },
+  { label: "Data Science", value: "data", icon: Database },
 ];`;
 
-export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+export const usageDefault = `"use client";
+
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
 
 ${selectOptions}
@@ -31,8 +35,8 @@ export default function BasicSelect() {
       value={value}
       onChange={setValue}
       label="Department"
-      placeholder="Select an option..."
       helperText="Choose the options you wish to add."
+      placeholder="Select an option..."
     />
   );
 }`;
@@ -54,6 +58,7 @@ export default function UnderlinedSelect() {
       value={value}
       onChange={setValue}
       label="Department"
+      helperText="Choose the options you wish to add."
       placeholder="Select an option..."
     />
   );
@@ -76,12 +81,15 @@ export default function SearchableSelect() {
       value={value}
       onChange={setValue}
       label="Department"
+      helperText="Choose the options you wish to add."
       placeholder="Select an option..."
     />
   );
 }`;
 
-export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+export const usageMultiple = `"use client";
+
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
 
 ${selectOptions}
@@ -96,6 +104,7 @@ export default function MultiSelect() {
       value={values}
       onChange={setValues}
       label="Department"
+      helperText="Choose the options you wish to add."
       placeholder="Select an option..."
     />
   );

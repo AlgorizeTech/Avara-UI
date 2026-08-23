@@ -9,25 +9,49 @@ export const usageTabsData = `const tabs = [
     id: "photos",
     label: "Photos",
     icon: Camera, // the Lucide component itself, not a string
-    content: Your photo gallery, albums or image grids go here.,
+    content: (
+      
+        This is the PHOTOS tab content. Here you would display your photo
+        gallery, albums, or image collection grids. The smooth crossfade
+        animation makes navigating between these rich content areas feel
+        native.
+      
+    ),
   },
   {
     id: "music",
     label: "Music",
     icon: Music,
-    content: A playlist, audio controls or your favourite albums.,
+    content: (
+      
+        This is the MUSIC tab content. Imagine a playlist, audio player
+        controls, or your favorite albums rendered perfectly within this
+        dark-mode optimized space.
+      
+    ),
   },
   {
     id: "videos",
     label: "Videos",
     icon: Clapperboard,
-    content: Video players, stream links or watch-later lists.,
+    content: (
+      
+        This is the VIDEOS tab content. Video players, stream links, or
+        watch-later lists belong here. Notice how the active dot indicator
+        clearly shows your current location in the app structure.
+      
+    ),
   },
   {
     id: "settings",
     label: "Settings",
     icon: Settings,
-    content: Preferences, notifications and privacy controls.,
+    content: (
+      
+        Adjust your preferences, notification settings, and privacy controls
+        here.
+      
+    ),
   },
 ];`;
 

@@ -10,9 +10,7 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
-
-export default function AvatarDropzone() {
+export const usageDropzone = `export default function AvatarDropzone() {
   // accept is the native input string; maxSize is in MB and is echoed
   // in the helper text under the icon.
   return (
@@ -23,11 +21,9 @@ export default function AvatarDropzone() {
   );
 }`;
 
-export const usageStates = `import { UploadItem } from "@/components/custom/blocks/UploadBlock";
-
-// status is the state machine that drives every colour, icon and action
+export const usageStates = `// status is the state machine that drives every colour, icon and action
 // on the row. progress/timeLeft/errorMessage come along for the ride.
-const queue = [
+const queue: FileUploadState[] = [
   {
     id: "1",
     file: new File([], "quarterly-report.pdf", { type: "application/pdf" }),

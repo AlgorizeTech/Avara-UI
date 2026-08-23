@@ -52,3 +52,34 @@ export function resolveSnippet(
   if (typeof snippet === "string") return snippet;
   return snippet[framework] ?? snippet[DEFAULT_FRAMEWORK];
 }
+
+/**
+ * Drops a leading `"use client"` directive.
+ *
+ * Exported for the markdown mirror, which emits one file per framework from the
+ * same MDX source and so has to make the same edit outside React.
+ */
+export const stripUseClient = (code: string) =>
+  code.replace(/^\s*(["'])use client\1;?[ \t]*\r?\n+/, "");
+
+/**
+ * Picks the usage text for one framework.
+ *
+ * Same resolution as `resolveSnippet`, plus one thing the usage tab needs that
+ * the code tab does not: `"use client"` is a Next.js App Router directive. Vite
+ * has no server components, so outside Next it is an inert string statement —
+ * telling a React reader to paste it is telling them to paste a no-op, and it
+ * invites the question of what it does.
+ *
+ * The Code tab is deliberately left alone: it shows the file `shadcn add`
+ * writes to disk, which really does start with the directive, and a copy that
+ * quietly differs from the installed file would be worse than a redundant line.
+ */
+export function resolveUsage(
+  snippet: Snippet | undefined,
+  framework: Framework,
+): string | undefined {
+  const code = resolveSnippet(snippet, framework);
+  if (code === undefined || framework === "nextjs") return code;
+  return stripUseClient(code);
+}

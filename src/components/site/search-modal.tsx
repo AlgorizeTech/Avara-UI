@@ -300,7 +300,7 @@ User question: ${prompt}`;
     } finally {
       setIsAILoading(false);
     }
-  }, [allItems]);
+  }, [allItems, framework]);
 
   // Handle AI query submission
   const handleAIQuery = useCallback((e: React.FormEvent) => {
@@ -374,7 +374,7 @@ User question: ${prompt}`;
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, isAIMode, filteredItems, selectedIndex, onClose, handleSelectAndClose, fetchAIResponse, query, handleClearSearch]);
+  }, [isOpen, isAIMode, filteredItems, selectedIndex, onClose, handleSelectAndClose, fetchAIResponse, query, handleClearSearch, framework]);
 
   // Handle click outside
   useEffect(() => {

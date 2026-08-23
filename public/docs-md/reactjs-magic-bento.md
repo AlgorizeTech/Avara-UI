@@ -16,11 +16,43 @@ export const usageDefault = `import {
 export default function FeatureGrid() {
   return (
 
-        Analytics
+          Insights
 
-      {/* highlight adds the continuously spinning conic border */}
+            Analytics
 
-        Collaboration
+            Track user behavior
+
+          Overview
+
+            Dashboard
+
+            Centralized data view
+
+      {/* highlight keeps a conic gradient spinning behind the mask */}
+
+          Teamwork
+
+            Collaboration
+
+            Work together seamlessly across the globe
+
+          Efficiency
+
+            Automation
+
+            Streamline workflows and save thousands of hours
+
+          Connectivity
+
+            Integration
+
+            Connect favorite tools
+
+          Protection
+
+            Security
+
+            Enterprise-grade protection
 
   );
 }`;
@@ -32,14 +64,16 @@ export const usageHighlight = `import {
 
 export default function HighlightedBento() {
   return (
-    
-      {/* Without \`highlight\`, the border only lights where the cursor is. */}
-      …
 
-      {/* With it, a conic gradient spins behind the mask continuously — use it
-          on the one card you want the eye to land on first. */}
-      …
-    
+          Default card
+
+          The border track and inner glow follow the cursor.
+
+          highlight
+
+          Adds a conic gradient that keeps spinning behind the mask,
+          cursor or not.
+
   );
 }`;
 

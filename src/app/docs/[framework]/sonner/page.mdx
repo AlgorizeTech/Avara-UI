@@ -9,59 +9,82 @@ Traditional toast notifications stack in a massive, screen-blocking vertical lis
 
 Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
 
-export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usageDefault = `"use client";
 
-// 1. Mount <Toaster /> exactly once, at the root of your app.
-export function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {children}
-      <Toaster position="bottom-right" />
-    </>
-  );
-}
+import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
 
-// 2. Fire a toast from anywhere — no provider or hook needed.
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function SaveButton() {
   return (
-    <button
-      onClick={() =>
-        toast("Profile updated successfully", {
-          description: "Your changes have been saved to the database.",
-        })
-      }
-    >
-      Show toast
-    </button>
+    <>
+      <Toaster position="bottom-right" />
+
+      <button
+        className={BTN}
+        onClick={() =>
+          toast("Profile updated successfully", {
+            description: "Your changes have been saved to the database.",
+          })
+        }
+      >
+        Show toast
+      </button>
+    </>
   );
 }`;
 
-export const usageTypes = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageTypes = `"use client";
+
+import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ToastTypes() {
   return (
     <div className="flex flex-wrap gap-4">
-      <button onClick={() => toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
+      <button
+ className={BTN}
+ onClick={() => toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
         Default
       </button>
-      <button onClick={() => toast.success("Deployment Complete", { description: "Your site is now live on the production server." })}>
+      <button
+ className={BTN}
+ onClick={() => toast.success("Deployment Complete", { description: "Your site is now live on the production server." })}>
         Success
       </button>
-      <button onClick={() => toast.error("Connection Failed", { description: "Could not reach the database. Please try again later." })}>
+      <button
+ className={BTN}
+ onClick={() => toast.error("Connection Failed", { description: "Could not reach the database. Please try again later." })}>
         Error
       </button>
-      <button onClick={() => toast.info("New login detected", { description: "A new device just signed in to your account." })}>
+      <button
+ className={BTN}
+ onClick={() => toast.info("New login detected", { description: "A new device just signed in to your account." })}>
         Info
       </button>
     </div>
   );
 }`;
 
-export const usageAction = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageAction = `"use client";
+
+import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function UndoToast() {
   return (
     <button
+      className={BTN}
       onClick={() =>
         toast("Message deleted", {
           action: {
@@ -76,7 +99,13 @@ export default function UndoToast() {
   );
 }`;
 
-export const usageStack = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageStack = `"use client";
+
+import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function StackDemo() {
   // New toasts stack on top; older ones scale down and slide back in 3D.
@@ -87,10 +116,18 @@ export default function StackDemo() {
     setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
   };
 
-  return <button onClick={uploadAll}>Spawn three toasts</button>;
+  return <button
+ className={BTN}
+ onClick={uploadAll}>Spawn three toasts</button>;
 }`;
 
-export const usageExpand = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usageExpand = `"use client";
+
+import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ExpandedStack() {
   // expand keeps the stack permanently open instead of collapsing it in 3D.
@@ -100,12 +137,12 @@ export default function ExpandedStack() {
       <Toaster expand />
 
       <button
+        className={BTN}
         onClick={() => {
           toast.success("File uploaded", { description: "report-q3.pdf" });
           setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
           setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
         }}
-        className="px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700"
       >
         Spawn three toasts
       </button>
@@ -113,13 +150,20 @@ export default function ExpandedStack() {
   );
 }`;
 
-export const usageDuration = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageDuration = `"use client";
+
+import { toast } from "@/components/custom/blocks/SonnerBlock";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ToastDuration() {
   return (
     <div className="flex flex-wrap gap-4">
       {/* Infinity disables auto-dismiss — the user closes it */}
       <button
+        className={BTN}
         onClick={() =>
           toast("Syncing your workspace", {
             description: "This toast stays until you dismiss it.",
@@ -131,6 +175,7 @@ export default function ToastDuration() {
       </button>
 
       <button
+        className={BTN}
         onClick={() =>
           toast.success("Saved", {
             description: "Gone in 1.5 seconds.",
@@ -144,7 +189,9 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `import { useState } from "react";
+export const usagePosition = `"use client";
+
+import { useState } from "react";
 import { toast, Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
 
 const POSITIONS: NonNullable<ToasterProps["position"]>[] = [

@@ -6,32 +6,30 @@ Traditional toast notifications stack in a massive, screen-blocking vertical lis
 
 Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
 
-export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usageDefault = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
-// 1. Mount  exactly once, at the root of your app.
-export function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {children}
-
-  );
-}
-
-// 2. Fire a toast from anywhere — no provider or hook needed.
+//  belongs once at the root of your app. It is mounted here so this
+// file runs on its own — a root layout is a Server Component, so it cannot sit
+// in the same "use client" file as the button.
 export default function SaveButton() {
   return (
-    
-        toast("Profile updated successfully", {
-          description: "Your changes have been saved to the database.",
-        })
-      }
-    >
-      Show toast
-    
+    <>
+
+          toast("Profile updated successfully", {
+            description: "Your changes have been saved to the database.",
+          })
+        }
+      >
+        Show toast
+
   );
 }`;
 
-export const usageTypes = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageTypes = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ToastTypes() {
   return (
@@ -51,7 +49,9 @@ export default function ToastTypes() {
   );
 }`;
 
-export const usageAction = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageAction = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function UndoToast() {
   return (
@@ -69,7 +69,9 @@ export default function UndoToast() {
   );
 }`;
 
-export const usageStack = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageStack = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function StackDemo() {
   // New toasts stack on top; older ones scale down and slide back in 3D.
@@ -83,7 +85,9 @@ export default function StackDemo() {
   return Spawn three toasts;
 }`;
 
-export const usageExpand = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+export const usageExpand = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ExpandedStack() {
   // expand keeps the stack permanently open instead of collapsing it in 3D.
@@ -96,14 +100,15 @@ export default function ExpandedStack() {
           setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
           setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
         }}
-        className="px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700"
       >
         Spawn three toasts
 
   );
 }`;
 
-export const usageDuration = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageDuration = `// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
 export default function ToastDuration() {
   return (
@@ -129,9 +134,7 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `import { useState } from "react";
-
-const POSITIONS: NonNullable[] = [
+export const usagePosition = `const POSITIONS: NonNullable[] = [
   "top-left",
   "top-center",
   "top-right",

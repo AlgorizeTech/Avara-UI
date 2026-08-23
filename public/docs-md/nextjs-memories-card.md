@@ -38,9 +38,20 @@ export const memoriesData = `const memories = [
     image:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
   },
+  {
+    id: "m4",
+    tag: "Wilderness",
+    title: "Cascading Mountain Falls",
+    location: "Alberta, Canada",
+    date: "Jun 2025",
+    description:
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+  },
 ];`;
 
-export const usageOnChange = `import { useState } from "react";
+export const usageOnChange = `"use client";
 
 ${memoriesData}
 

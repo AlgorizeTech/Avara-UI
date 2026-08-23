@@ -4,48 +4,42 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
-export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Compass, FolderGit2, Github, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
-import { useState } from "react";
+export const usageDefault = `"use client";
 
 export default function BottomNav() {
   const [active, setActive] = useState("home");
 
   const items = [
     // icon is a node — give it w-full h-full so it scales with the dock
-    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: active === "home", onClick: () => setActive("home") },
-    { id: "compass", label: "Explore", icon: <Compass className="w-full h-full" />, isActive: active === "compass", onClick: () => setActive("compass") },
-    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
-    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
-    { id: "projects", label: "Repositories", icon: <FolderGit2 className="w-full h-full" />, isActive: active === "projects", onClick: () => setActive("projects") },
-    { id: "ai", label: "AI Assistant", icon: <Sparkles className="w-full h-full text-amber-500" />, isActive: active === "ai", onClick: () => setActive("ai") },
-    { id: "github", label: "GitHub", icon: <Github className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
-    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
+    { id: "home", label: "Dashboard", icon: , isActive: active === "home", onClick: () => setActive("home") },
+    { id: "compass", label: "Explore", icon: , isActive: active === "compass", onClick: () => setActive("compass") },
+    { id: "mail", label: "Messages", icon: , badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: , isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "projects", label: "Repositories", icon: , isActive: active === "projects", onClick: () => setActive("projects") },
+    { id: "ai", label: "AI Assistant", icon: , isActive: active === "ai", onClick: () => setActive("ai") },
+    { id: "github", label: "GitHub", icon: , isActive: active === "github", onClick: () => setActive("github") },
+    { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <Dock items={items} />
-    </div>
+
   );
 }`;
 
-export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Home, Mail, Settings, Terminal } from "lucide-react";
-import { useState } from "react";
+export const usageBadges = `"use client";
 
 export default function CompactNav() {
   const [active, setActive] = useState("home");
 
   const items = [
     // isActive draws the indicator dot; badge prints a counter pill
-    { id: "home", label: "Dashboard", icon: <Home className="w-full h-full" />, isActive: active === "home", onClick: () => setActive("home") },
-    { id: "mail", label: "Messages", icon: <Mail className="w-full h-full" />, badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
-    { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
-    { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
+    { id: "home", label: "Dashboard", icon: , isActive: active === "home", onClick: () => setActive("home") },
+    { id: "mail", label: "Messages", icon: , badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: , isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
-  return <Dock items={items} />;
+  return ;
 }`;
 
 ## Installation

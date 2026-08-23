@@ -8,23 +8,70 @@ Everything below runs client-side — type a new value and the SVG regenerates i
 
 ## QR generator
 
-export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+export const usageGenerator = `"use client";
+
+type Level = "L" | "M" | "Q" | "H";
 
 export default function GeneratorExample() {
+  const [value, setValue] = useState("https://algorizetech.com");
+  const [level, setLevel] = useState("L");
+
+  // Only  ships with the component — the controls around it
+  // are ordinary markup wired to your own state.
   return (
-    
+
+          Generate QR codes from text or URLs.
+
+            Value:
+          
+           setValue(e.target.value)}
+            placeholder="https://algorizetech.com"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-colors"
+          />
+
+            Correction Level:
+
+            {(["L", "M", "Q", "H"] as const).map((lvl) => (
+               setLevel(lvl)}
+                className={
+                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center " +
+                  (level === lvl
+                    ? "bg-slate-50 dark:bg-slate-900 text-zinc-900 dark:text-white"
+                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400")
+                }
+              >
+                {lvl}
+              
+            ))}
+
+            Save as PNG
+
+            Save as PDF
+
   );
 }`;
 
 export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
+const swatches = [
+  { size: 96, level: "L" as const, fgColor: "currentColor" },
+  { size: 140, level: "M" as const, fgColor: "#3b82f6" },
+  { size: 200, level: "H" as const, fgColor: "#10b981" },
+];
+
 export default function QrGallery() {
   return (
+    
+      {swatches.map((s) => (
 
+            size={s.size} · level=&quot;{s.level}&quot;
+
+      ))}
+    
   );
 }`;
 
-export const usageReader = `import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+export const usageReader = `"use client";
 
 export default function ReaderExample() {
   // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.

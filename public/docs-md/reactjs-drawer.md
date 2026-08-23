@@ -4,9 +4,7 @@ A highly animated, responsive drawer component. Built entirely from scratch usin
 
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
-export const usageDefault = `import { useState } from "react";
-
-export default function DrawerDemo() {
+export const usageDefault = `export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,9 +25,7 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageBottom = `import { useState } from "react";
-
-export default function BottomSheet() {
+export const usageBottom = `export default function BottomSheet() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -47,9 +43,7 @@ export default function BottomSheet() {
   );
 }`;
 
-export const usageControlled = `import { useEffect, useState } from "react";
-
-export default function OnboardingDrawer() {
+export const usageControlled = `export default function OnboardingDrawer() {
   // Nothing says the state has to come from a button — open it yourself
   // after a fetch, a route change, or on first mount.
   const [open, setOpen] = useState(true);

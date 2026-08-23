@@ -158,7 +158,9 @@
         "typography",
         "marketing"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "framer-motion"
+      ],
       "registryDependencies": [
         "utils"
       ],
@@ -259,6 +261,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -391,7 +394,7 @@
           "target": "components/custom/blocks/CartBlock.tsx"
         }
       ],
-      "docs": "Named exports: CartBlock, getThemeStyles. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Items carry { id, name, price, quantity, size?, color? }. Cart state is yours to own — this renders it and reports changes."
+      "docs": "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally."
     },
     {
       "name": "chart",
@@ -906,31 +909,7 @@
           "target": "components/custom/blocks/Fleet-map.tsx"
         }
       ],
-      "docs": "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only. For the map-free list, use `fleet-tracker`."
-    },
-    {
-      "name": "fleet-tracker",
-      "type": "registry:component",
-      "title": "Fleet Tracker",
-      "author": "AlgorizeTech",
-      "description": "A vehicle list with selection and location details, loading its map lazily. Use it as the lighter fleet view when a full map is not needed up front.",
-      "categories": [
-        "data-display"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/fleet-map.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/Fleet-tracker.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/Fleet-tracker.tsx"
-        }
-      ],
-      "docs": "Named export: FleetTracker. Uses next/dynamic with `ssr: false` to defer the map, so it needs Next.js. Installs standalone with no registry dependencies. For the full map view, use `fleet-map`."
+      "docs": "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only."
     },
     {
       "name": "floating-contact-button",
@@ -1019,6 +998,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/input.json",
         "utils"
       ],
       "files": [

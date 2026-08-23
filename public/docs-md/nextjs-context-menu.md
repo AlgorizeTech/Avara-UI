@@ -8,15 +8,7 @@ This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's 
 
 Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
 
-export const usageFull = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
+export const usageFull = `"use client";
 
 export default function DocumentMenu() {
   // The live preview raises a toast here; this logs instead so the snippet

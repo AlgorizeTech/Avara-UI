@@ -2,9 +2,23 @@ import fs from "fs";
 import path from "path";
 import { glob } from "glob";
 import { BUILT_FRAMEWORKS } from "../lib/framework";
+import { stripUseClient } from "../lib/snippet";
 
 /** The dynamic route segment, as it appears on disk. */
 const FRAMEWORK_SEGMENT = "[framework]";
+
+/**
+ * Applies the page's React rule to a whole markdown document.
+ *
+ * The mirror is a dump of the MDX source, so a directive shows up as the first
+ * line inside a snippet's template literal — ``usageDefault = `"use client";``.
+ * Only the opening of each literal is handed to the shared stripper, so prose
+ * that merely *mentions* the directive is never touched.
+ */
+const stripUseClientFromSnippets = (md: string) =>
+  md.replace(/(=\s*`)((?:[^\n]*\n){0,2})/g, (_match, opener: string, head: string) =>
+    opener + stripUseClient(head),
+  );
 
 /**
  * Expands one MDX file into the URL paths it is actually published at.
@@ -239,8 +253,15 @@ async function buildMdFiles(): Promise<void> {
           const outputFileName = `${cleanName}.md`;
           const outputPath = path.join(mdOutputPath, outputFileName);
 
+          // The page renders `"use client"` only for Next.js (see resolveUsage
+          // in lib/snippet.ts); the mirror has to make the same edit, or the
+          // React markdown would disagree with the React page it mirrors.
+          const frameworkContent = urlPath.startsWith("nextjs")
+            ? mdContent
+            : stripUseClientFromSnippets(mdContent);
+
           // Write the MD file
-          fs.writeFileSync(outputPath, mdContent, 'utf-8');
+          fs.writeFileSync(outputPath, frameworkContent, 'utf-8');
 
           // Add to index
           mdIndex.push({

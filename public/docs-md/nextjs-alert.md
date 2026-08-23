@@ -62,7 +62,7 @@ export default function AlertIcons() {
   );
 }`;
 
-export const usageDismissible = `import { Alert } from "@/components/custom/blocks/Alerts";
+export const usageDismissible = `"use client";
 
 export default function DismissibleAlert() {
   return (

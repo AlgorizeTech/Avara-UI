@@ -9,7 +9,9 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
-export const usageGroups = `import {
+export const usageGroups = `"use client";
+
+import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -84,7 +86,9 @@ export default function CommandPalette() {
   );
 }`;
 
-export const usageDialog = `import { useEffect, useState } from "react";
+export const usageDialog = `"use client";
+
+import { useEffect, useState } from "react";
 import {
   CommandDialog,
   CommandGroup,
@@ -110,7 +114,21 @@ export default function QuickActions() {
 
   return (
     <>
-      <button onClick={() => setOpen(true)}>Open Command Dialog</button>
+      <div className="flex flex-col items-center text-center">
+        <p className="text-sm text-zinc-500 mb-4">
+          Press{" "}
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 px-1.5 font-mono text-[10px] font-medium text-zinc-600 dark:text-zinc-400">
+            <span className="text-xs">⌘</span>K
+          </kbd>{" "}
+          or click the button to open the command menu.
+        </p>
+        <button
+          onClick={() => setOpen(true)}
+          className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
+        >
+          Open Command Dialog
+        </button>
+      </div>
 
       {/* Same children as the inline <Command>, rendered in a portal */}
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -126,7 +144,8 @@ export default function QuickActions() {
   );
 }`;
 
-export const usageNoFilter = `import { useState } from "react";
+export const usageNoFilter = `"use client";
+
 import {
   Command,
   CommandEmpty,
@@ -135,26 +154,30 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, Smile } from "lucide-react";
 
-export default function RemoteSearch() {
-  const [results, setResults] = useState<string[]>([]);
-
-  // shouldFilter={false} hands filtering back to you — required when the
-  // results come from an API instead of the DOM.
+export default function ExternalFiltering() {
+  // shouldFilter={false} hands filtering back to you. Typing no longer narrows
+  // the list on its own — swap the static items below for your own results and
+  // decide what to render.
   return (
     <Command shouldFilter={false}>
-      <CommandInput
-        placeholder="Search the server..."
-        onChange={(e) => fetchResults(e.target.value).then(setResults)}
-      />
+      <CommandInput placeholder="Search actions..." />
       <CommandList>
         <CommandEmpty>No matching records found.</CommandEmpty>
-        <CommandGroup heading="Results">
-          {results.map((result) => (
-            <CommandItem key={result} onSelect={() => console.log(result)}>
-              {result}
-            </CommandItem>
-          ))}
+        <CommandGroup heading="Suggestions">
+          <CommandItem onSelect={() => console.log("calendar")}>
+            <Calendar className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </CommandItem>
+          <CommandItem onSelect={() => console.log("emoji")}>
+            <Smile className="mr-2 h-4 w-4" />
+            <span>Search Emoji</span>
+          </CommandItem>
+          <CommandItem onSelect={() => console.log("calculator")}>
+            <Calculator className="mr-2 h-4 w-4" />
+            <span>Calculator</span>
+          </CommandItem>
         </CommandGroup>
       </CommandList>
     </Command>

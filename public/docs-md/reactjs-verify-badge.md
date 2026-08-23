@@ -36,13 +36,36 @@ export default function StaticBadge() {
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
+// The badge is the only piece that ships with the component — everything
+// around it is ordinary markup, shown here so the card matches the preview.
+const accent = "var(--primary)";
+
+function BotAvatar({ className }: { className?: string }) {
+  return (
+
+  );
+}
+
 export default function NotificationCard() {
   return (
-    
-      AlgorizeSystem
-      
-      Today at 2:34 PM
-    
+
+            AlgorizeSystem
+
+            Bot
+
+            Today at 2:34 PM
+
+          Deployment{" "}
+          
+            #421
+          {" "}
+          to production completed successfully.
+
+              Build Passed 🚀
+
+              All 142 tests passed in 12s. The latest preview is now live on
+              Vercel.
+
   );
 }`;
 

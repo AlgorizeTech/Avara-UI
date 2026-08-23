@@ -6,7 +6,7 @@ Building pagination logic from scratch is notoriously difficult. If you have 100
 
 Click through the page numbers in each preview to watch the ellipses shift.
 
-export const usageDefault = `import { useState } from "react";
+export const usageDefault = `"use client";
 
 export default function BasicPagination() {
   // You own the page state — the component only reports the new number.
@@ -17,7 +17,7 @@ export default function BasicPagination() {
   );
 }`;
 
-export const usageSiblingCount = `import { useState } from "react";
+export const usageSiblingCount = `"use client";
 
 export default function TightPagination() {
   const [currentPage, setCurrentPage] = useState(50);
@@ -29,7 +29,7 @@ export default function TightPagination() {
   );
 }`;
 
-export const usageTable = `import { useState } from "react";
+export const usageTable = `"use client";
 
 const PER_PAGE = 5;
 
