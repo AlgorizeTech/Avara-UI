@@ -41,7 +41,7 @@ type ImageCarouselProps = {
 
 export function ImageCarousel({
   images = [],
-  rootClassName = "relative h-60 w-full min-w-80 overflow-hidden md:h-[470px] lg:h-[540px]",
+  rootClassName = "relative h-60 w-full min-w-80 overflow-hidden rounded-lg md:h-[470px] md:rounded-xl lg:h-[540px]",
   slideClassName = "h-60 min-w-full bg-black/20 object-cover sm:h-96 md:h-[540px]",
   arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 hover:bg-white dark:bg-zinc-900/80 dark:hover:bg-zinc-900 shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
   dotClassName = "rounded-full bg-white duration-500 h-2",
@@ -165,7 +165,7 @@ type HeroCarouselProps = {
 
 export function HeroCarousel({
   slides = [],
-  rootClassName = "relative z-50 flex h-60 max-lg:h-[360px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] lg:gap-10 xl:flex-row",
+  rootClassName = "relative z-50 flex h-60 max-lg:h-[360px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden rounded-lg bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] md:rounded-xl lg:gap-10 xl:flex-row",
   textContainerClassName = "absolute max-lg:top-12 max-lg:pl-[15px] left-0 w-full lg:w-1/2 rounded-lg px-4 text-white drop-shadow-lg z-40",
   titleClassName = "mb-3 text-xl font-bold sm:text-2xl lg:text-3xl",
   descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg max-lg:line-clamp-2",
@@ -324,12 +324,12 @@ type CustomCarouselProps = {
 
 export function CustomCarousel({
   items = [],
-  rootClassName = "flex h-60 w-full flex-col items-center justify-center gap-5 bg-cover bg-center sm:h-96 md:h-[540px] lg:gap-10",
+  rootClassName = "flex h-60 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-lg bg-cover bg-center sm:h-96 md:h-[540px] md:rounded-xl lg:gap-10",
   textClassName = "px-5 text-center text-white drop-shadow-lg duration-300 ease-linear",
   titleClassName = "mb-3 text-xl font-semibold lg:text-3xl",
   descClassName = "text-sm md:text-base lg:text-lg",
-  thumbClassName = "h-6 w-10 bg-black/20 sm:h-8 md:h-12 md:w-20 box-content cursor-pointer rounded-md md:rounded-lg",
-  activeThumbClassName = "border-2 border-black p-px",
+  thumbClassName = "h-6 w-10 shrink-0 overflow-hidden bg-black/20 sm:h-8 md:h-12 md:w-20 cursor-pointer rounded-md md:rounded-lg",
+  activeThumbClassName = "outline-2 outline-offset-2 outline-black",
   autoPlay = true,
   interval = 5000,
   imageButtonPosition = "bottom",
@@ -349,7 +349,7 @@ export function CustomCarousel({
 
   const CarouselContent = (
     <div
-      className={`${rootClassName} relative duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50`}
+      className={`${rootClassName} relative min-w-0 duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50`}
       style={{ backgroundImage: `url(${String(items[current].img)})` }}
     >
       <div className={textClassName}>
@@ -361,7 +361,7 @@ export function CustomCarousel({
 
   const Thumbnails = (
     <div
-      className={`${imageButtonPosition === "bottom" ? "flex-row justify-center" : "flex-col justify-center"} flex items-center gap-3 p-2`}
+      className={`${imageButtonPosition === "bottom" ? "w-full flex-row flex-wrap justify-center" : "shrink-0 flex-col justify-center"} flex items-center gap-3 p-2`}
     >
       {items.map((item, index) => (
         <button
@@ -374,6 +374,7 @@ export function CustomCarousel({
             src={item.img}
             width={1200}
             height={540}
+            className="h-full w-full object-cover"
             alt={item.title ?? `thumb-${index}`}
           />
         </button>
@@ -383,20 +384,20 @@ export function CustomCarousel({
 
   if (imageButtonPosition === "left")
     return (
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         {Thumbnails}
         {CarouselContent}
       </div>
     );
   if (imageButtonPosition === "right")
     return (
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         {CarouselContent}
         {Thumbnails}
       </div>
     );
   return (
-    <div>
+    <div className="w-full">
       {CarouselContent}
       {Thumbnails}
     </div>
