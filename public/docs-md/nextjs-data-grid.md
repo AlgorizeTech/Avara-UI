@@ -34,7 +34,7 @@ export const usageDefault = `"use client";
 ${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(ROWS);
+  const [data, setData] = useState[]>(ROWS);
 
   return (
 

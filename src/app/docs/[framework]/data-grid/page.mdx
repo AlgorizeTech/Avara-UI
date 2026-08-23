@@ -41,7 +41,7 @@ import { Download } from "lucide-react";
 ${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(ROWS);
+  const [data, setData] = useState<Record<string, unknown>[]>(ROWS);
 
   return (
     <div className="w-full flex flex-col gap-2">

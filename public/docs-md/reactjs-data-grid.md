@@ -32,7 +32,7 @@ const ROWS = [
 export const usageDefault = `${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(ROWS);
+  const [data, setData] = useState[]>(ROWS);
 
   return (
 
