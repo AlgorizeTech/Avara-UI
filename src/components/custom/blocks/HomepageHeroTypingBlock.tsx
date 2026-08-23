@@ -244,9 +244,8 @@ export const HomepageHeroTypingBlock = forwardRef<
             )}
 
             {/* Dynamic Typing Title */}
-            <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1 sm:gap-x-2 whitespace-nowrap">
-                <span>{titlePrefix}</span>
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1 sm:gap-x-2">
+              <span>{titlePrefix}</span>
                 <span className="inline-flex items-center">
                   <span className="text-[var(--hero-accent-text)]">
                     {currentText}
@@ -257,7 +256,6 @@ export const HomepageHeroTypingBlock = forwardRef<
                 </span>
                 {titleSuffix && <span>{titleSuffix}</span>}
               </h1>
-            </div>
 
             {/* Subtitle Paragraph */}
             {subtitle && (

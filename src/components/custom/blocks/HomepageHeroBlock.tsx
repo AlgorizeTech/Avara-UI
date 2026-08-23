@@ -233,36 +233,34 @@ export const HomepageHeroBlock = forwardRef<
 							</Link>
 						)}
 
-						{/* Dynamic Bouncing Title Word with Locked Left Position (Single Line Guaranteed) */}
-						<div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-							<h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
-								<span className="shrink-0">
-									Build{" "}
-									<span className="text-[var(--hero-accent-text)]">
-										Interactive
-									</span>
+						{/* Dynamic Bouncing Title Word */}
+						<h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
+							<span className="shrink-0">
+								Build{" "}
+								<span className="text-[var(--hero-accent-text)]">
+									Interactive
 								</span>
-								<span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-									<AnimatePresence mode="wait">
-										<motion.span
-											key={currentWord}
-											initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
-											animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-											exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
-											transition={{
-												type: "spring",
-												stiffness: 300,
-												damping: 24,
-												mass: 0.8,
-											}}
-											className="text-foreground inline-block text-left whitespace-nowrap">
-											{currentWord}
-										</motion.span>
-									</AnimatePresence>
-								</span>
-								{titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
-							</h1>
-						</div>
+							</span>
+							<span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
+								<AnimatePresence mode="wait">
+									<motion.span
+										key={currentWord}
+										initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
+										animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+										exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
+										transition={{
+											type: "spring",
+											stiffness: 300,
+											damping: 24,
+											mass: 0.8,
+										}}
+										className="text-foreground inline-block text-left whitespace-nowrap">
+										{currentWord}
+									</motion.span>
+								</AnimatePresence>
+							</span>
+							{titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
+						</h1>
 
 						{/* Subtitle Paragraph */}
 						{subtitle && (

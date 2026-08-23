@@ -38,54 +38,177 @@ export default function LandingPage() {
 
 export const usageSplitLeft = `import {
   Hero,
-  HeroContent,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function SplitLeftHero() {
-  // The visual moves to the left column; the markup order never changes.
-  return (
-    
-      {/* your headline, copy and CTAs */}
-      {/* an , video or mockup */}
-    
-  );
-}`;
-
-export const usageCenter = `import {
-  Hero,
-  HeroContent,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function CenteredHero() {
-  // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
-  return (
-    
-      {/* your headline, copy and CTAs */}
-      {/* an , video or mockup */}
-    
-  );
-}`;
-
-export const usageLeft = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
-
-export default function LeftAlignedHero() {
-  // Single column, left aligned — no visual column at all.
-  return (
-    
-      {/* your headline, copy and CTAs */}
-    
-  );
-}`;
-
-export const usageGlass = `import {
-  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
   HeroContent,
   HeroDescription,
   HeroTitle,
   HeroVisual,
 } from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
+
+export default function SplitLeftHero() {
+  // The visual moves to the left column; the markup order never changes.
+  return (
+<<<<<<< HEAD
+    <Hero layout="split-left" pattern="grid">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+        <HeroTitle animation="blur-in">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+      <HeroVisual>
+        <img
+          src="/hero.jpg"
+          alt="Abstract gradient interface"
+          className="w-full h-full object-cover"
+        />
+      </HeroVisual>
+    </Hero>
+=======
+    
+      {/* your headline, copy and CTAs */}
+      {/* an , video or mockup */}
+    
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
+  );
+}`;
+
+export const usageCenter = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
+
+export default function CenteredHero() {
+  // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
+  return (
+<<<<<<< HEAD
+    <Hero layout="center" pattern="grid">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+        <HeroTitle animation="blur-in">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+      <HeroVisual>
+        <img
+          src="/hero.jpg"
+          alt="Abstract gradient interface"
+          className="w-full h-full object-cover"
+        />
+      </HeroVisual>
+    </Hero>
+=======
+    
+      {/* your headline, copy and CTAs */}
+      {/* an , video or mockup */}
+    
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
+  );
+}`;
+
+export const usageLeft = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
+
+export default function LeftAlignedHero() {
+  // Single column, left aligned — no visual column at all.
+  return (
+<<<<<<< HEAD
+    <Hero layout="left" pattern="none">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+        <HeroTitle animation="fade-up">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
+=======
+    
+      {/* your headline, copy and CTAs */}
+    
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
+  );
+}`;
+
+export const usageGlass = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+  HeroVisual,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
 
 export default function GlassHero() {
   // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
@@ -95,6 +218,40 @@ export default function GlassHero() {
   // background layer behind the frosted card. Leave it empty and the hero renders
   // blank, so give it an image.
   return (
+<<<<<<< HEAD
+    <Hero layout="split-right" variant="glass" color="indigo">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+        <HeroTitle animation="blur-in">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+      <HeroVisual>
+        <img
+          src="/hero.jpg"
+          alt="Abstract gradient interface"
+          className="w-full h-full object-cover"
+        />
+      </HeroVisual>
+    </Hero>
+=======
 
         Build stunning interfaces
         
@@ -102,6 +259,7 @@ export default function GlassHero() {
 
         {/* Keeps the frosted text readable over a bright photo. */}
 
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
   );
 }`;
 
@@ -116,20 +274,61 @@ export default function GlowHero() {
   // \`glow\` adds the ambient accent bloom behind the content. Pair it with
   // the matching action so the button glows too.
   return (
-
-          Start Building
-
+    <Hero layout="split-right" variant="glow" color="rose">
+      <HeroContent>
+        <HeroActions>
+          <HeroAction variant="glow">Start Building</HeroAction>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
   );
 }`;
 
-export const usagePattern = `import { Hero, HeroContent } from "@/components/custom/blocks/HeroBlock";
+export const usagePattern = `import {
+  Hero,
+  HeroAction,
+  HeroActions,
+  HeroBadge,
+  HeroContent,
+  HeroDescription,
+  HeroTitle,
+} from "@/components/custom/blocks/HeroBlock";
+import { ArrowRight, PlayCircle, Zap } from "lucide-react";
 
 export default function PatternedHero() {
   // \`pattern\` paints the backdrop: "none", "grid" or "dots".
   return (
+<<<<<<< HEAD
+    <Hero layout="center" pattern="dots">
+      <HeroContent>
+        <HeroBadge>
+          <Zap className="w-4 h-4" />
+          <span>Supercharged Components</span>
+        </HeroBadge>
+        <HeroTitle animation="blur-in">
+          Build stunning interfaces with flawless code.
+        </HeroTitle>
+        <HeroDescription>
+          Everything you need to launch a beautiful, accessible, and fast web
+          application without writing layout CSS from scratch.
+        </HeroDescription>
+        <HeroActions>
+          <HeroAction variant="primary">
+            Start Building
+            <ArrowRight className="w-4 h-4" />
+          </HeroAction>
+          <HeroAction variant="outline">
+            <PlayCircle className="w-4 h-4" />
+            Watch Demo
+          </HeroAction>
+        </HeroActions>
+      </HeroContent>
+    </Hero>
+=======
     
       {/* your headline, copy and CTAs */}
     
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
   );
 }`;
 

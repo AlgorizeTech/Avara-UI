@@ -24,60 +24,14 @@ ${cardSource}
 
 export default function AccessKeyCard() {
   return (
-    
-      {card}
-    
+    <div className="w-[340px] aspect-[3/4]">
+      <TiltedCard tiltIntensity={20} glareOpacity={0.2} scaleOnHover={1.04}>
+        <div className="w-full h-full rounded-2xl border p-8">
+          <h3 className="text-2xl font-black uppercase">Access Key</h3>
+        </div>
+      </TiltedCard>
+    </div>
   );
-}`;
-
-export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-${cardSource}
-
-export default function StrongTilt() {
-  // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
-  // card is small — past that the perspective starts to shear.
-  return {card};
-}`;
-
-export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-${cardSource}
-
-export default function SubtleTilt() {
-  // A restrained tilt for dense layouts where many cards move at once.
-  return (
-    
-      {card}
-    
-  );
-}`;
-
-export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-${cardSource}
-
-export default function StrongGlare() {
-  // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
-  // pointer. Set it to 0 to drop the reflection entirely.
-  return {card};
-}`;
-
-export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-${cardSource}
-
-export default function NoGlare() {
-  return {card};
-}`;
-
-export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-
-${cardSource}
-
-export default function LiftOnHover() {
-  // How far the card lifts toward the viewer on hover.
-  return {card};
 }`;
 
 ## Installation

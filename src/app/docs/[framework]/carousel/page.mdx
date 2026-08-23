@@ -79,10 +79,26 @@ export default function FluidShowcase() {
   return <FluidGlassSlider className="w-full rounded-xl" />;
 }`;
 
+## Examples
+
 <ExampleShowcase
   name="carousel"
   columns={1}
   examples={[
+    {
+      title: "Fluid glass slider",
+      subheading: "`FluidGlassSlider` is a GSAP-driven slider where liquid distortion tracks the pointer.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "drives the glass panel that distorts and follows the cursor between slides.",
+        },
+      ],
+      props: { carouselType: "fluid" },
+      usage: usageFluid,
+      code: extractCode("src/components/custom/ui/FluidGlassSlider.tsx"),
+    },
     {
       title: "Image carousel",
       subheading: "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
@@ -106,24 +122,9 @@ export default function FluidShowcase() {
       usage: usageImage,
       code: extractCode("src/components/custom/carousel.tsx"),
     },
-  ]}
-/>
-
-### Installation
-
-<Installation name="carousel" />
-
-### More examples
-
-`ImageCarousel`, `HeroCarousel` and `CustomCarousel` all ship in the one file you just installed.
-
-<ExampleShowcase
-  name="carousel"
-  columns={1}
-  examples={[
     {
       title: "Hero carousel",
-      subheading: "`HeroCarousel` overlays copy on a full-bleed image.",
+      subheading: "`HeroCarousel` overlays copy on a full-bleed image — click any image card to set it as the background.",
       propNotes: [
         {
           lead: "Pass",
@@ -167,33 +168,9 @@ export default function FluidShowcase() {
   ]}
 />
 
-## Fluid glass slider
-
-A separate GSAP-driven component with its own file and its own install command.
-
-<ExampleShowcase
-  name="carousel"
-  columns={1}
-  examples={[
-    {
-      title: "Fluid glass slider",
-      propNotes: [
-        {
-          prop: "items",
-          effect:
-            "drives the glass panel that distorts and follows the cursor between slides.",
-        },
-      ],
-      props: { carouselType: "fluid" },
-      usage: usageFluid,
-      code: extractCode("src/components/custom/ui/FluidGlassSlider.tsx"),
-    },
-  ]}
-/>
-
 ### Installation
 
-<Installation name="ui-fluid-glass-slider" showSetupPath={false} />
+<Installation name="carousel" />
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

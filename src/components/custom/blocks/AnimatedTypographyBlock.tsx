@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { forwardRef, useEffect, useId, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // ==========================================
 // THEME & CONFIGURATION
@@ -15,6 +16,7 @@ export type TypographyVariant =
   | "flip-up"
   | "reveal"
   | "pop-in"
+  | "word-bounce"
   | "none";
 export type TypographyTag =
   | "h1"
@@ -115,6 +117,8 @@ export interface AnimatedTypographyProps
   as?: TypographyTag;
   variant?: TypographyVariant;
   text: string;
+  titlePrefix?: string;
+  titleSuffix?: string;
   color?: TypographyColor;
   align?: TypographyAlign;
   size?: string;
@@ -134,6 +138,8 @@ export const AnimatedTypographyBlock = forwardRef<
       as: Tag = "p",
       variant = "fade-up",
       text,
+      titlePrefix,
+      titleSuffix,
       color = "primary",
       align = "left",
       size,
@@ -149,9 +155,23 @@ export const AnimatedTypographyBlock = forwardRef<
     );
     const uniqueId = useId().replace(/:/g, "");
 
-    // Typewriter State
+    // Typewriter & Word Bounce States
     const [displayedText, setDisplayedText] = useState("");
     const [isTyping, setIsTyping] = useState(false);
+    const [wordBounceIndex, setWordBounceIndex] = useState(0);
+
+    const bounceWords = React.useMemo(() => {
+      return text.split(",").map((w) => w.trim()).filter(Boolean);
+    }, [text]);
+
+    useEffect(() => {
+      if (variant === "word-bounce" && bounceWords.length > 0) {
+        const interval = setInterval(() => {
+          setWordBounceIndex((prev) => (prev + 1) % bounceWords.length);
+        }, 2400 * speed);
+        return () => clearInterval(interval);
+      }
+    }, [variant, bounceWords, speed]);
 
     useEffect(() => {
       if (variant === "typewriter") {
@@ -344,6 +364,35 @@ export const AnimatedTypographyBlock = forwardRef<
               {text}
             </span>
           );
+
+        case "word-bounce": {
+          const currentBounceWord = bounceWords[wordBounceIndex] || "";
+          return (
+            <span className="inline-flex items-center justify-start flex-wrap gap-x-2">
+              {titlePrefix && <span className="shrink-0 text-foreground">{titlePrefix}</span>}
+              <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentBounceWord}
+                    initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
+                    animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                    exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 24,
+                      mass: 0.8,
+                    }}
+                    className="inline-block text-left whitespace-nowrap"
+                  >
+                    {currentBounceWord}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              {titleSuffix && <span className="shrink-0 text-foreground">{titleSuffix}</span>}
+            </span>
+          );
+        }
 
         case "none":
         default:
