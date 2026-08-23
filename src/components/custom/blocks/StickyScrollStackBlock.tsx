@@ -19,7 +19,7 @@ export interface ScrollStackItem {
   title: string;
   badge?: string;
   icon?: React.ReactNode;
-  contentType: "list" | "image" | "split" | "custom";
+  contentType: "list" | "image" | "split" | "custom" | (string & {});
   description?: string;
   listItems?: string[];
   imageUrl?: string;

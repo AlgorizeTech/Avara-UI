@@ -7,8 +7,10 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
-export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Compass, FolderGit2, Github, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
+export const usageDefault = `"use client";
+
+import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Compass, FolderGit2, Code2, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
 import { useState } from "react";
 
 export default function BottomNav() {
@@ -22,7 +24,7 @@ export default function BottomNav() {
     { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
     { id: "projects", label: "Repositories", icon: <FolderGit2 className="w-full h-full" />, isActive: active === "projects", onClick: () => setActive("projects") },
     { id: "ai", label: "AI Assistant", icon: <Sparkles className="w-full h-full text-amber-500" />, isActive: active === "ai", onClick: () => setActive("ai") },
-    { id: "github", label: "GitHub", icon: <Github className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
+    { id: "github", label: "GitHub", icon: <Code2 className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
     { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
@@ -33,7 +35,9 @@ export default function BottomNav() {
   );
 }`;
 
-export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageBadges = `"use client";
+
+import { Dock } from "@/components/custom/blocks/DockBlock";
 import { Home, Mail, Settings, Terminal } from "lucide-react";
 import { useState } from "react";
 

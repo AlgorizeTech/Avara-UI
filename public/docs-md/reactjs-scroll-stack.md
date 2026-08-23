@@ -126,36 +126,72 @@ export default function GappedStack() {
 
 ## Sticky stack
 
-export const stickyItems = `const items = [
+export const stickyItems = `import { Palette, Smartphone, Sparkles } from "lucide-react";
+
+const items: ScrollStackItem[] = [
   {
     id: "ui-design",
     title: "UI Design",
     badge: "Visual Identity",
+    icon: ,
     contentType: "list",
-    description: "Interfaces that look deliberate at every breakpoint.",
-    listItems: ["Design tokens", "Component specs", "Motion guidelines"],
+    description:
+      "Crafting intuitive, pixel-perfect interfaces designed to engage and convert real users.",
+    listItems: [
+      "Website / Landing Pages",
+      "Mobile Apps (iOS & Android)",
+      "Web App / SaaS Dashboards",
+      "Comprehensive Design Systems",
+    ],
+    buttonText: "View UI Showcase",
   },
   {
-    id: "engineering",
-    title: "Engineering",
-    badge: "Build",
-    contentType: "list",
-    description: "Production React, shipped behind real tests.",
-    listItems: ["Design system", "Accessibility pass", "Performance budget"],
+    id: "branding",
+    title: "Branding & Identity",
+    badge: "Brand Strategy",
+    icon: ,
+    contentType: "split",
+    description:
+      "Building memorable, iconic brand identities that stand out in crowded markets.",
+    listItems: [
+      "Logo & Visual Assets",
+      "Color Palettes & Typography",
+      "Brand Guidelines & Tone",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Misty mountain forest nature landscape",
+    buttonText: "Explore Branding",
   },
   {
-    id: "launch",
-    title: "Launch",
-    badge: "Go Live",
+    id: "fullstack-dev",
+    title: "Full-Stack Development",
+    badge: "Engineering",
+    icon: ,
     contentType: "image",
-    description: "Rollout, monitoring and the handover pack.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-    imageAlt: "Launch",
+    description:
+      "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
+    imageUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Golden mountain valley sunset nature landscape",
+    buttonText: "Tech Stack Specs",
+  },
+  {
+    id: "backend",
+    title: "Backend Architecture",
+    badge: "Infrastructure",
+    icon: ,
+    contentType: "image",
+    description:
+      "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
+    imageUrl: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Lush green forest nature landscape",
+    buttonText: "View Cloud Specs",
   },
 ];`;
 
-export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+export const usageSticky = `import {
+  StickyScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/StickyScrollStackBlock";
 
 ${stickyItems}
 
@@ -165,7 +201,10 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+export const usageStickyGeometry = `import {
+  StickyScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/StickyScrollStackBlock";
 
 ${stickyItems}
 
@@ -226,6 +265,7 @@ const MockMobileView = () => (
 
 );
 
+const items: ScrollStackItem[] = [
   {
     id: "landing",
     stepNumber: "01",
@@ -276,7 +316,10 @@ const MockMobileView = () => (
   },
 ];`;
 
-export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+export const usageSplitRight = `import {
+  SplitScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/SplitScrollStackBlock";
 
 ${splitItems}
 
@@ -284,7 +327,10 @@ export default function PinnedRightStack() {
   return ;
 }`;
 
-export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+export const usageSplitLeft = `import {
+  SplitScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/SplitScrollStackBlock";
 
 ${splitItems}
 
@@ -300,11 +346,61 @@ export default function PinnedLeftStack() {
 
 ## Horizontal stack
 
-export const railSteps = `const steps = [
-  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
-  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
-  { id: "3", number: "03", title: "Build", description: "Ship it behind tests." },
-  { id: "4", number: "04", title: "Measure", description: "Watch it in the wild." },
+export const railSteps = `import {
+  Compass,
+  Cpu,
+  FileText,
+  Layers,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+
+const steps = [
+  {
+    id: "1",
+    title: "Understand",
+    description:
+      "Business goals and strategies, persona and painpoints, competitors.",
+    icon: ,
+  },
+  {
+    id: "2",
+    title: "Define",
+    description:
+      "Strategy, information architecture, user flows, moodboard, visual direction.",
+    icon: ,
+  },
+  {
+    id: "3",
+    title: "Ideate",
+    description: "Brainstorming, solution propose, sketching, wireframing.",
+    icon: ,
+  },
+  {
+    id: "4",
+    title: "Design",
+    description: "Style guide, design system, interface design",
+    icon: ,
+  },
+  {
+    id: "5",
+    title: "Test",
+    description: "User testing, feedback collection and implementation",
+    icon: ,
+  },
+  {
+    id: "6",
+    title: "Approval",
+    description: "Submission for client approval",
+    icon: ,
+  },
+  {
+    id: "7",
+    title: "Delivery",
+    description: "Asset preparation, assets exports.",
+    icon: ,
+  },
 ];`;
 
 export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";

@@ -37,7 +37,7 @@ export default function EnterpriseForm() {
   return (
     <FormWrapper
       title="Enterprise Registration"
-      description="Click inside the fields and blur away to trigger Zod validation."
+      description="Click inside the fields and immediately blur away to trigger Zod validation states."
       onSubmit={handleSubmit(async (data) => console.log(data))}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -65,7 +65,9 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageSubmitting = `import {
+export const usageSubmitting = `"use client";
+
+import {
   FormField,
   FormSubmit,
   FormWrapper,
@@ -76,7 +78,7 @@ export default function SubmittingForm() {
   return (
     <FormWrapper
       title="Newsletter Signup"
-      description="FormSubmit swaps its label for a spinner while isSubmitting is true."
+      description="FormSubmit swaps its label for a spinner and disables itself while isSubmitting is true."
       onSubmit={(e) => e.preventDefault()}
     >
       <FormField label="Email Address">

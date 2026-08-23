@@ -6,15 +6,69 @@ Unlike standard static timelines, this `AnimatedTimelineBlock` uses native brows
 
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
-export const timelineEvents = `const EVENTS = [
-  { id: "1", title: "Project Start", date: "Q1", icon: Zap },
+export const timelineEvents = `import {
+  CheckCircle2,
+  Loader2,
+  MapPin,
+  Palette,
+  Rocket,
+  Target,
+  Zap,
+} from "lucide-react";
+
+const EVENTS = [
+  {
+    id: "1",
+    title: "Project Initiation",
+    date: "Jan 2024",
+    description:
+      "The initial kickoff meeting where requirements were gathered.",
+    icon: Target,
+  },
   {
     id: "2",
-    title: "Beta Launch",
-    date: "Q2",
-    description: "Shipped to 100 users.",
+    title: "Design Phase",
+    date: "Feb 2024",
+    description:
+      "Wireframing, prototyping, and finalizing the UI kit components.",
+    icon: Palette,
   },
-  { id: "3", title: "Global Scaling", date: "Q3", icon: Rocket },
+  {
+    id: "3",
+    title: "Development",
+    date: "Mar 2024",
+    description: "Writing the core logic and React components from scratch.",
+    icon: Zap,
+  },
+  {
+    id: "4",
+    title: "Testing & QA",
+    date: "Apr 2024",
+    description:
+      "Running automated tests and squashing complex accessibility bugs.",
+    icon: Loader2,
+  },
+  {
+    id: "5",
+    title: "Production Launch",
+    date: "May 2024",
+    description: "Deploying the V1 architecture to the edge network.",
+    icon: Rocket,
+  },
+  {
+    id: "6",
+    title: "Global Expansion",
+    date: "Jun 2024",
+    description: "Reaching 100k active users globally.",
+    icon: MapPin,
+  },
+  {
+    id: "7",
+    title: "Milestone Achieved",
+    date: "Present",
+    description: "We did it.",
+    icon: CheckCircle2,
+  },
 ];`;
 
 export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";

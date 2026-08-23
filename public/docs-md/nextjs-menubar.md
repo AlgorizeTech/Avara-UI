@@ -6,13 +6,7 @@ Native application menus have complex, unwritten interaction rules. If you click
 
 Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
-export const usageDefault = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageDefault = `"use client";
 
 export default function TopNav() {
   return (
@@ -40,16 +34,7 @@ export default function TopNav() {
   );
 }`;
 
-export const usageApp = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarLabel,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageApp = `"use client";
 
 /** Every row carries one, so no row needs \`inset\` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";

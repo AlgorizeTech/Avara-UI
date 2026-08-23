@@ -27,52 +27,16 @@ const naturePhotos = [
   "1507525428034-b723cf961d3e", // Beach sunset
 ];
 
-const variantItems: Record<string, GridItem[]> = {
-  default: [
-    { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
-    { id: "2", type: "image", height: "h-[28rem]", imageId: naturePhotos[0] },
-    { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: <Wand2 className="w-5 h-5" />, theme: "purple" },
-    { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
-    { id: "5", type: "image", height: "h-52", imageId: naturePhotos[1] },
-    { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
-    { id: "7", type: "image", height: "h-[22rem]", imageId: naturePhotos[2] },
-    { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
-  ],
-  columns: [
-    { id: "c1", type: "image", height: "h-[22rem]", imageId: naturePhotos[3] },
-    { id: "c2", type: "card", height: "h-64", title: "Glacial Expedition", desc: "Tracking ice melt patterns across polar terrain.", icon: <Sparkles className="w-5 h-5" />, theme: "emerald" },
-    { id: "c3", type: "image", height: "h-[30rem]", imageId: naturePhotos[4] },
-    { id: "c4", type: "gradient", height: "h-52", title: "Sunset Horizon", desc: "Coastal light refraction studies.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
-    { id: "c5", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
-    { id: "c6", type: "card", height: "h-56", title: "Pine Forest Canopy", desc: "High resolution aerial drone mapping.", icon: <Cpu className="w-5 h-5" />, theme: "blue" },
-    { id: "c7", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
-    { id: "c8", type: "gradient", height: "h-48", title: "Lush River Flow", desc: "Freshwater aquatic ecosystem analytics.", icon: <Wand2 className="w-5 h-5" />, theme: "rose" },
-  ],
-  gap: [
-    { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: <Sparkles className="w-5 h-5" />, theme: "purple" },
-    { id: "g2", type: "image", height: "h-[26rem]", imageId: naturePhotos[6] },
-    { id: "g3", type: "gradient", height: "h-48", title: "Forest Mist Stream", desc: "Hydrological condensation research.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
-    { id: "g4", type: "image", height: "h-[22rem]", imageId: naturePhotos[7] },
-    { id: "g5", type: "card", height: "h-52", title: "Volcanic Ridge", desc: "Thermal geological formations.", icon: <Cpu className="w-5 h-5" />, theme: "rose" },
-    { id: "g6", type: "image", height: "h-[28rem]", imageId: naturePhotos[1] },
-  ],
-  stagger: [
-    { id: "s1", type: "image", height: "h-[28rem]", imageId: naturePhotos[2] },
-    { id: "s2", type: "gradient", height: "h-52", title: "Aurora Skyward", desc: "Staggered particle illumination.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
-    { id: "s3", type: "card", height: "h-64", title: "Deep Woodland", desc: "Ancient oak and redwood groves.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
-    { id: "s4", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
-    { id: "s5", type: "card", height: "h-56", title: "Coastal Breeze", desc: "Oceanic climate metrics.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
-    { id: "s6", type: "image", height: "h-[30rem]", imageId: naturePhotos[0] },
-  ],
-  static: [
-    { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
-    { id: "st2", type: "image", height: "h-[26rem]", imageId: naturePhotos[4] },
-    { id: "st3", type: "gradient", height: "h-48", title: "Timberland Grove", desc: "Pure CSS column layout flow.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
-    { id: "st4", type: "image", height: "h-[24rem]", imageId: naturePhotos[3] },
-    { id: "st5", type: "card", height: "h-60", title: "Glacial Basin", desc: "Sub-zero ice shelf monitoring.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
-    { id: "st6", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
-  ],
-};
+const items: GridItem[] = [
+  { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
+  { id: "2", type: "image", height: "h-[28rem]", imageId: naturePhotos[0] },
+  { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: <Wand2 className="w-5 h-5" />, theme: "purple" },
+  { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
+  { id: "5", type: "image", height: "h-52", imageId: naturePhotos[1] },
+  { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
+  { id: "7", type: "image", height: "h-[22rem]", imageId: naturePhotos[2] },
+  { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
+];
 
 const themeColors = {
   blue: "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20",
@@ -96,17 +60,6 @@ export default function MasonryGridDemo({
   animateIn?: boolean;
   staggerDelay?: number;
 }) {
-  // Determine variant type based on props passed from Sandbox/page.mdx
-  let items = variantItems.default;
-  if (columnsClassName.includes("lg:columns-4")) {
-    items = variantItems.columns;
-  } else if (staggerDelay === 0.25) {
-    items = variantItems.stagger;
-  } else if (animateIn === false) {
-    items = variantItems.static;
-  } else if (triggerKey === 3) {
-    items = variantItems.gap;
-  }
   return (
     <div className="w-full relative p-4 sm:p-8 md:p-12 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
 

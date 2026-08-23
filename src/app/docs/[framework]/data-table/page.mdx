@@ -11,9 +11,11 @@ Every example is live. Search for "Admin", sort by "Last Active", or tick a few 
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
-export const usageDefault = `import {
+export const usageDefault = `"use client";
+
+import {
   AdvancedTableBlock,
-  TableColumn,
+  type TableColumn,
 } from "@/components/custom/blocks/AdvancedTableBlock";
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { cn } from "@/lib/utils";

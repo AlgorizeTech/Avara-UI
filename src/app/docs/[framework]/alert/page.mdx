@@ -28,13 +28,13 @@ export const usageTypes = `import { Alert } from "@/components/custom/blocks/Ale
 export default function AlertTypes() {
   return (
     <div className="flex flex-col gap-4">
-      <Alert type="primary" variant="modern" icon="Info" title="Primary" message="A primary alert." />
-      <Alert type="secondary" variant="modern" icon="Bell" title="Secondary" message="A secondary alert." />
-      <Alert type="success" variant="modern" icon="CheckCircle2" title="Success" message="A success alert." />
-      <Alert type="danger" variant="modern" icon="XCircle" title="Danger" message="A danger alert." />
-      <Alert type="warning" variant="modern" icon="AlertTriangle" title="Warning" message="A warning alert." />
-      <Alert type="info" variant="modern" icon="Info" title="Info" message="An info alert." />
-      <Alert type="dark" variant="modern" icon="Bell" title="Dark" message="A dark alert." />
+      <Alert type="primary" variant="modern" icon="Info" title="Primary" message="A primary alert for conveying primary information." />
+      <Alert type="secondary" variant="modern" icon="Bell" title="Secondary" message="A secondary alert for conveying secondary information." />
+      <Alert type="success" variant="modern" icon="CheckCircle2" title="Success" message="A success alert for conveying success information." />
+      <Alert type="danger" variant="modern" icon="XCircle" title="Danger" message="A danger alert for conveying danger information." />
+      <Alert type="warning" variant="modern" icon="AlertTriangle" title="Warning" message="A warning alert for conveying warning information." />
+      <Alert type="info" variant="modern" icon="Info" title="Info" message="A info alert for conveying info information." />
+      <Alert type="dark" variant="modern" icon="Bell" title="Dark" message="A dark alert for conveying dark information." />
     </div>
   );
 }`;
@@ -91,18 +91,20 @@ export default function AlertIcons() {
   return (
     <div className="flex flex-col gap-4">
       {/* A name from ICON_MAP: CheckCircle2 | AlertTriangle | Info | Bell | XCircle */}
-      <Alert type="info" variant="modern" icon="Info" title="Lucide icon" message="Rendered from ICON_MAP." />
+      <Alert type="info" variant="modern" icon="Info" title="Lucide icon" message={'Pass a name from ICON_MAP, e.g. icon="Info".'} />
 
       {/* Any other string renders as text — emoji included */}
-      <Alert type="info" variant="modern" icon="🚀" title="Emoji" message="Rendered as-is." />
+      <Alert type="info" variant="modern" icon="🚀" title="Emoji" message={'Any other string renders as-is, e.g. icon="🚀".'} />
 
       {/* Omit icon (or pass null) for text only */}
-      <Alert type="info" variant="modern" title="No icon" message="Text-only alert." />
+      <Alert type="info" variant="modern" title="No icon" message="Leave icon unset (or null) for a text-only alert." />
     </div>
   );
 }`;
 
-export const usageDismissible = `import { Alert } from "@/components/custom/blocks/Alerts";
+export const usageDismissible = `"use client";
+
+import { Alert } from "@/components/custom/blocks/Alerts";
 
 export default function DismissibleAlert() {
   return (

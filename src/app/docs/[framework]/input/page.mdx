@@ -30,6 +30,7 @@ export default function FilledInput() {
       variant="filled"
       label="Email Address"
       placeholder="Enter your email..."
+      helperText="We'll never share your data."
     />
   );
 }`;
@@ -42,6 +43,7 @@ export default function UnderlinedInput() {
       variant="underlined"
       label="Email Address"
       placeholder="Enter your email..."
+      helperText="We'll never share your data."
     />
   );
 }`;
@@ -54,11 +56,14 @@ export default function PasswordInput() {
       type="password"
       label="Password"
       placeholder="Enter your password..."
+      helperText="We'll never share your data."
     />
   );
 }`;
 
-export const usageFile = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+export const usageFile = `"use client";
+
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 export default function FileUploadInput() {
   return (

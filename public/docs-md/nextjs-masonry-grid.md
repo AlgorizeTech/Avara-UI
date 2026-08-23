@@ -8,40 +8,69 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
-export const masonryData = `const items = [
-  { id: "1", height: "h-56", title: "Design Engineering" },
-  {
-    id: "2",
-    height: "h-[28rem]",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
-  },
-  { id: "3", height: "h-40", title: "Fluid Animations" },
-  {
-    id: "4",
-    height: "h-[22rem]",
-    image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-  },
-  { id: "5", height: "h-60", title: "Systems Design" },
-  {
-    id: "6",
-    height: "h-52",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-  },
+export const masonryData = `import { ArrowUpRight, Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
+
+type GridItem = {
+  id: string;
+  type: "card" | "image" | "gradient";
+  height: string;
+  title?: string;
+  desc?: string;
+  image?: string;
+  icon?: React.ReactNode;
+  theme?: "blue" | "purple" | "emerald" | "rose";
+};
+
+const themeColors = {
+  blue: "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20",
+  purple: "text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-500/10 border-purple-100 dark:border-purple-500/20",
+  emerald: "text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20",
+  rose: "text-rose-600 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
+};
+
+const items: GridItem[] = [
+  { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: , theme: "blue" },
+  { id: "2", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
+  { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: , theme: "purple" },
+  { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: , theme: "emerald" },
+  { id: "5", type: "image", height: "h-52", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" },
+  { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: , theme: "rose" },
+  { id: "7", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: , theme: "blue" },
 ];
 
 // The grid only handles the column flow — every tile is yours to render.
-function Tile({ height, title, image }) {
+function renderItem(item: GridItem) {
+  if (item.type === "image") {
+    return (
+
+          View Project
+
+    );
+  }
+
+  const accent = themeColors[item.theme ?? "blue"];
+
+  if (item.type === "gradient") {
+    return (
+
+            {item.icon}
+
+              {item.title}
+
+              {item.desc}
+
+    );
+  }
+
   return (
-    
-      {title && (
-        
-          {title}
-        
-      )}
-    
+
+        {item.icon}
+
+          {item.title}
+
+          {item.desc}
+
   );
 }`;
 
@@ -51,8 +80,7 @@ ${masonryData}
 
 export default function Gallery() {
   return (
-     }
-    />
+    
   );
 }`;
 
@@ -63,8 +91,7 @@ ${masonryData}
 export default function ColumnCounts() {
   // Column counts are Tailwind classes, so every breakpoint is yours to set.
   return (
-     }
-    />
+    
   );
 }`;
 
@@ -74,8 +101,7 @@ ${masonryData}
 
 export default function CustomGap() {
   return (
-     }
-    />
+    
   );
 }`;
 
@@ -86,8 +112,7 @@ ${masonryData}
 export default function SlowerStagger() {
   // \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
   return (
-     }
-    />
+    
   );
 }`;
 
@@ -99,8 +124,7 @@ export default function StaticGrid() {
   // Renders immediately — right for content that is already above the fold,
   // or when you want to respect reduced-motion yourself.
   return (
-     }
-    />
+    
   );
 }`;
 

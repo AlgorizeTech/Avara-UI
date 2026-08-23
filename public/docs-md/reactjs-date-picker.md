@@ -6,9 +6,7 @@ This component solves that by using native JavaScript Date math to construct a f
 
 The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
-export const usageDefault = `"use client";
-
-export default function LaunchDatePicker() {
+export const usageDefault = `export default function LaunchDatePicker() {
   const [date, setDate] = useState(null);
 
   return (
@@ -16,9 +14,7 @@ export default function LaunchDatePicker() {
   );
 }`;
 
-export const usageError = `"use client";
-
-export default function ValidatedDatePicker() {
+export const usageError = `export default function ValidatedDatePicker() {
   const [date, setDate] = useState(null);
 
   // Passing \`error\` turns the trigger red, swaps in an alert icon and

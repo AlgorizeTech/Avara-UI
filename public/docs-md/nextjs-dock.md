@@ -4,7 +4,7 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
-export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageDefault = `"use client";
 
 export default function BottomNav() {
   const [active, setActive] = useState("home");
@@ -26,7 +26,7 @@ export default function BottomNav() {
   );
 }`;
 
-export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageBadges = `"use client";
 
 export default function CompactNav() {
   const [active, setActive] = useState("home");

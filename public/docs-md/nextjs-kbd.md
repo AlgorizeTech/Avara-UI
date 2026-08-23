@@ -17,11 +17,24 @@ export const usageCombinations = `import { Kbd } from "@/components/custom/block
 export default function ShortcutList() {
   return (
     
-      Force Reload:
-      
-        ⇧
-        ⌘
-        R
+      Common Combinations
+
+        Save file:
+        
+          ⌘
+          S
+
+        Force Reload:
+        
+          ⇧
+          ⌘
+          R
+
+        Open Terminal:
+        
+          Ctrl
+          +
+          ~
 
   );
 }`;

@@ -4,14 +4,7 @@ A complete, production-ready Cart component designed for modern e-commerce appli
 
 One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
-export const usageDrawer = `import {
-  CartBlock,
-  type CartItem,
-} from "@/components/custom/blocks/CartBlock";
-
-// The cart holds no data of its own. Keep the items in the parent, where the
-// rest of your app can reach them, and hand them over as initialItems.
-const items: CartItem[] = [
+export const cartItems = `const items: CartItem[] = [
   {
     id: "1",
     name: "Signature Heavyweight Tee",
@@ -30,12 +23,28 @@ const items: CartItem[] = [
     color: "Washed Blue",
     gradient: "from-blue-600 to-indigo-900",
   },
-];
+  {
+    id: "3",
+    name: "Minimalist Beanie",
+    price: 28.0,
+    quantity: 2,
+    size: "OS",
+    color: "Forest Green",
+    gradient: "from-emerald-500 to-teal-800",
+  },
+];`;
 
-export default function Layout() {
-  return (
+export const usageDrawer = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
 
-  );
+// The cart holds no data of its own. Keep the items in the parent, where the
+// rest of your app can reach them, and hand them over as initialItems.
+${cartItems}
+
+export default function DrawerCart() {
+  return ;
 }`;
 
 export const usageModal = `import {
@@ -43,20 +52,10 @@ export const usageModal = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-const items: CartItem[] = [
-  {
-    id: "1",
-    name: "Everyday Denim Jacket",
-    price: 120.0,
-    quantity: 1,
-    size: "M",
-    color: "Washed Blue",
-    gradient: "from-blue-600 to-indigo-900",
-  },
-];
+${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop — same trigger, same state.
+  // Centred dialog with a blurred backdrop - same trigger, same state.
   return ;
 }`;
 
@@ -65,21 +64,10 @@ export const usagePage = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-// Fetch or import your real line items here — the component holds none.
-const items: CartItem[] = [
-  {
-    id: "1",
-    name: "Everyday Denim Jacket",
-    price: 120.0,
-    quantity: 1,
-    size: "M",
-    color: "Washed Blue",
-    gradient: "from-blue-600 to-indigo-900",
-  },
-];
+${cartItems}
 
 // Full-width two-column layout for a dedicated /cart route.
-// No trigger button — the cart is the page.
+// No trigger button - the cart is the page.
 export default function CartPage() {
   return ;
 }`;

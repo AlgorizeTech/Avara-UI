@@ -32,7 +32,7 @@ export default function NotificationCard() {
   );
 }`;
 
-export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+export const usageInteractive = `"use client";
 
 export default function ClickableCards() {
   // interactive adds hover elevation, a lift, and an active press scale.

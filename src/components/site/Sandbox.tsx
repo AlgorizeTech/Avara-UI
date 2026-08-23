@@ -1,7 +1,7 @@
 "use client";
 
 import { useFramework } from "@/hooks/use-framework";
-import { resolveSnippet, type Snippet } from "@/lib/snippet";
+import { resolveSnippet, resolveUsage, type Snippet } from "@/lib/snippet";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
@@ -1081,7 +1081,7 @@ export function ExampleShowcase({
           }
 
           const effectiveUsage =
-            resolveSnippet(example.usage, framework) ??
+            resolveUsage(example.usage, framework) ??
             generateFallbackUsage(name, example.title, effectiveProps);
 
           const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;

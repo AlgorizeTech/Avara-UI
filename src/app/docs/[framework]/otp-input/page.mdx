@@ -9,37 +9,128 @@ Building a multi-box input that actually feels good to use is notoriously diffic
 
 Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
-export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+export const usageDefault = `"use client";
+
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
 import { useState } from "react";
+
+const LENGTH = 6;
 
 export default function BasicOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
-    <OtpInputBlock
-      length={6}
-      value={value}
-      onChange={setValue}
-      onComplete={(code) => console.log("Submitted:", code)}
-    />
+    <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">
+          <KeyRound className="w-6 h-6" />
+        </div>
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+          Two-Step Verification
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Please enter the {LENGTH}-digit code sent to your email address.
+          <br />
+          <span className="opacity-60 text-xs mt-1 block">
+            (Try pasting a code!)
+          </span>
+        </p>
+      </div>
+
+      <OtpInputBlock
+        length={LENGTH}
+        value={value}
+        onChange={setValue}
+        onComplete={(code) => {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+      <div className="h-10 flex items-center justify-center">
+        {verified ? (
+          <div className="flex items-center gap-2 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+            <CheckCircle2 className="w-4 h-4" />
+            Verified Successfully
+          </div>
+        ) : (
+          <button
+            disabled={value.length !== LENGTH}
+            className="px-6 py-2 rounded-xl text-sm font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          >
+            Verify Code
+          </button>
+        )}
+      </div>
+    </div>
   );
 }`;
 
 export const usageUnderlined = `"use client";
 
-import { useState } from "react";
 import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
+import { useState } from "react";
+
+const LENGTH = 6;
 
 export default function UnderlinedOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
-    <OtpInputBlock
-      variant="underlined"
-      length={6}
-      value={value}
-      onChange={setValue}
-    />
+    <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">
+          <KeyRound className="w-6 h-6" />
+        </div>
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+          Two-Step Verification
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Please enter the {LENGTH}-digit code sent to your email address.
+          <br />
+          <span className="opacity-60 text-xs mt-1 block">
+            (Try pasting a code!)
+          </span>
+        </p>
+      </div>
+
+      <OtpInputBlock
+        variant="underlined"
+        length={LENGTH}
+        value={value}
+        onChange={setValue}
+        onComplete={(code) => {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+      <div className="h-10 flex items-center justify-center">
+        {verified ? (
+          <div className="flex items-center gap-2 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+            <CheckCircle2 className="w-4 h-4" />
+            Verified Successfully
+          </div>
+        ) : (
+          <button
+            disabled={value.length !== LENGTH}
+            className="px-6 py-2 rounded-xl text-sm font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          >
+            Verify Code
+          </button>
+        )}
+      </div>
+    </div>
   );
 }`;
 

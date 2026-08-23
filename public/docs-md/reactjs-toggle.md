@@ -14,9 +14,7 @@ export default function ToggleSizes() {
   );
 }`;
 
-export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function MuteToggle() {
+export const usageText = `export default function MuteToggle() {
   const [muted, setMuted] = useState(false);
 
   return (
@@ -27,9 +25,7 @@ export default function MuteToggle() {
   );
 }`;
 
-export const usageToolbar = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function FormattingToolbar() {
+export const usageToolbar = `export default function FormattingToolbar() {
   const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
 
   return (

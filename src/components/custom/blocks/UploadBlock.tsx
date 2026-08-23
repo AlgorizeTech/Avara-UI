@@ -20,7 +20,8 @@ export type UploadStatus =
   | "uploading"
   | "paused"
   | "error"
-  | "success";
+  | "success"
+  | (string & {});
 
 export interface FileUploadState {
   id: string;

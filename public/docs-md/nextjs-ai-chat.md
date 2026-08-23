@@ -8,6 +8,8 @@ export const chatData = `const chatHistory = [
   { id: 1, title: "Help with React Components", date: "Today" },
   { id: 2, title: "Write a python script for SEO", date: "Today" },
   { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
+  { id: 4, title: "Explain quantum physics", date: "Previous 7 Days" },
+  { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
 ];
 
 const initialMessages = [
@@ -21,6 +23,13 @@ const initialMessages = [
     id: 2,
     role: "user",
     content: "Can you help me build a modern dashboard UI using Tailwind CSS?",
+    time: "10:02 AM",
+  },
+  {
+    id: 3,
+    role: "ai",
+    content:
+      "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\\n\\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
     time: "10:02 AM",
   },
 ];`;

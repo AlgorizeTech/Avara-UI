@@ -6,32 +6,73 @@ Standard list animations often feel rigid. By wrapping your notification or acti
 
 Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
 
-export const listItems = `const items = [
-  { id: 1, label: "Payment Received — $129.00 via Stripe" },
-  { id: 2, label: "New Signup — alice@example.com created a Pro account" },
-  { id: 3, label: "Deployment Successful — production (v2.4.1) is live" },
-  { id: 4, label: "Server Scaled — cluster auto-scaled for a traffic spike" },
-];`;
+export const listItems = `const notifications = [
+  {
+    id: 1,
+    icon: CreditCard,
+    color: "text-emerald-500",
+    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
+    title: "Payment Received",
+    desc: "Stripe successfully processed $129.00",
+    time: "2m",
+  },
+  {
+    id: 2,
+    icon: UserPlus,
+    color: "text-blue-500",
+    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
+    title: "New Signup",
+    desc: "alice@example.com created a Pro account",
+    time: "15m",
+  },
+  {
+    id: 3,
+    icon: CheckCircle2,
+    color: "text-indigo-500",
+    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
+    title: "Deployment Successful",
+    desc: "Production deployment (v2.4.1) is live",
+    time: "1h",
+  },
+  {
+    id: 4,
+    icon: Zap,
+    color: "text-rose-500",
+    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
+    title: "Server Scaled",
+    desc: "Auto-scaled cluster to handle traffic spike",
+    time: "3h",
+  },
+];
+
+// One row. The group-hover styles work because AnimatedListItem is the group.
+function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
+  return (
+
+            {notif.title}
+
+            {notif.time}
+
+          {notif.desc}
+
+  );
+}`;
 
 export const usageDefault = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
 
+${listItems}
+
 export default function NotificationFeed() {
+  // The wrapper establishes the 3D perspective the children animate inside.
   return (
-    // The wrapper establishes the 3D perspective the children animate inside.
+    
+      {notifications.map((notif) => (
 
-            $
-
-            Payment Received
-            $129.00 via Stripe
-
-            @
-
-            New User Signup
-            alice@example.com
-
+      ))}
+    
   );
 }`;
 
@@ -43,11 +84,10 @@ export const usageFlip = `import {
 ${listItems}
 
 export default function FlipFeed() {
-  // The 3D flip is the signature entrance — children rotate in on the X axis.
   return (
     
-      {items.map((item) => (
-        {item.label}
+      {notifications.map((notif) => (
+
       ))}
     
   );
@@ -61,11 +101,10 @@ export const usageSlideUp = `import {
 ${listItems}
 
 export default function SlideUpFeed() {
-  // Slide variants come in from a direction instead of rotating.
   return (
     
-      {items.map((item) => (
-        {item.label}
+      {notifications.map((notif) => (
+
       ))}
     
   );
@@ -81,8 +120,8 @@ ${listItems}
 export default function PopFeed() {
   return (
     
-      {items.map((item) => (
-        {item.label}
+      {notifications.map((notif) => (
+
       ))}
     
   );
@@ -95,14 +134,12 @@ export const usageTiming = `import {
 
 ${listItems}
 
-export default function TunedFeed() {
-  // \`staggerDelay\` is the gap between children, \`duration\` how long each one
-  // takes, \`animationDelay\` how long the whole sequence waits before starting,
-  // and \`ease\` is any GSAP easing string.
+export default function TimedFeed() {
+  // duration is per item; staggerDelay is the gap between them.
   return (
     
-      {items.map((item) => (
-        {item.label}
+      {notifications.map((notif) => (
+
       ))}
     
   );

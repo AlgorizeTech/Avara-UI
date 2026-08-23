@@ -52,7 +52,15 @@ export const artworkSource = `const artwork = [
   },
 ];
 
-function Card({ title, artist, image }) {
+function Card({
+  title,
+  artist,
+  image,
+}: {
+  title: string;
+  artist: string;
+  image: string;
+}) {
   return (
 
         {title} —{" "}

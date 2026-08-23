@@ -31,24 +31,15 @@ export const wizardPreamble = `  // Remounting the Wizard is what resets it back
 
   // Enter submits the step's form; forwarding it to the OK button
   // is what makes keyboard progression work.
-  const submitToNext = (e) => {
+  const submitToNext = (e: FormEvent) => {
     e.preventDefault();
-    const btn = e.currentTarget.querySelector('button[type="button"]');
+    const btn = e.currentTarget.querySelector(
+      'button[type="button"]',
+    );
     if (btn) btn.click();
   };`;
 
-export const usageDefault = `import {
-  Wizard,
-  WizardContainer,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardProgress,
-  WizardStep,
-  WizardTitle,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function OnboardingFlow() {
+export const usageDefault = `export default function OnboardingFlow() {
 ${wizardPreamble}
 
   return (
@@ -62,18 +53,7 @@ ${wizardSteps}
   );
 }`;
 
-export const usageInitialStep = `import {
-  Wizard,
-  WizardContainer,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardProgress,
-  WizardStep,
-  WizardTitle,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function ResumedOnboarding() {
+export const usageInitialStep = `export default function ResumedOnboarding() {
 ${wizardPreamble}
 
   return (
@@ -88,17 +68,7 @@ ${wizardSteps}
   );
 }`;
 
-export const usageNoProgress = `import {
-  Wizard,
-  WizardContainer,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardStep,
-  WizardTitle,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function BareWizard() {
+export const usageNoProgress = `export default function BareWizard() {
 ${wizardPreamble}
 
   return (

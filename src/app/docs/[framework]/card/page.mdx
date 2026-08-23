@@ -53,7 +53,9 @@ export default function NotificationCard() {
   );
 }`;
 
-export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+export const usageInteractive = `"use client";
+
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
 import { Download, Upload } from "lucide-react";
 
 export default function ClickableCards() {

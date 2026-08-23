@@ -6,20 +6,7 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-export const usageDefault = `import {
-  MobileSidebarTrigger,
-  Sidebar,
-  SidebarBrand,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export const usageDefault = `export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (

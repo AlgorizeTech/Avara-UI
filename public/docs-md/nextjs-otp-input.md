@@ -6,24 +6,79 @@ Building a multi-box input that actually feels good to use is notoriously diffic
 
 Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
-export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+export const usageDefault = `"use client";
+
+const LENGTH = 6;
 
 export default function BasicOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
-     console.log("Submitted:", code)}
-    />
+
+          Two-Step Verification
+
+          Please enter the {LENGTH}-digit code sent to your email address.
+
+            (Try pasting a code!)
+
+       {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+        {verified ? (
+
+            Verified Successfully
+          
+        ) : (
+          
+            Verify Code
+          
+        )}
+
   );
 }`;
 
 export const usageUnderlined = `"use client";
 
+const LENGTH = 6;
+
 export default function UnderlinedOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
-    
+
+          Two-Step Verification
+
+          Please enter the {LENGTH}-digit code sent to your email address.
+
+            (Try pasting a code!)
+
+       {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+        {verified ? (
+
+            Verified Successfully
+          
+        ) : (
+          
+            Verify Code
+          
+        )}
+
   );
 }`;
 

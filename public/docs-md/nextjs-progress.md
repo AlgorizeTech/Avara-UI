@@ -12,7 +12,7 @@ export default function ProgressDemo() {
   return ;
 }`;
 
-export const usageFormatted = `import { useState } from "react";
+export const usageFormatted = `"use client";
 
 export default function StorageWidget() {
   const [usedSpace] = useState(72); // 72 GB of 100 GB

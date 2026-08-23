@@ -9,7 +9,9 @@ Native application menus have complex, unwritten interaction rules. If you click
 
 Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
-export const usageDefault = `import {
+export const usageDefault = `"use client";
+
+import {
   Menubar,
   MenubarContent,
   MenubarItem,
@@ -56,7 +58,9 @@ export default function TopNav() {
   );
 }`;
 
-export const usageApp = `import {
+export const usageApp = `"use client";
+
+import {
   Menubar,
   MenubarContent,
   MenubarItem,

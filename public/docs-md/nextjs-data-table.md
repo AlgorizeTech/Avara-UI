@@ -8,10 +8,7 @@ Every example is live. Search for "Admin", sort by "Last Active", or tick a few 
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
-export const usageDefault = `import {
-  AdvancedTableBlock,
-  TableColumn,
-} from "@/components/custom/blocks/AdvancedTableBlock";
+export const usageDefault = `"use client";
 
 const ROLE_OPTIONS = [
   { label: "— No change —", value: "" },

@@ -7,7 +7,13 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 `Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
 export const stepperPanels = `// The three step bodies — swap them for your own fields.
-function Field({ label, placeholder }) {
+function Field({
+  label,
+  placeholder,
+}: {
+  label: string;
+  placeholder: string;
+}) {
   return (
     
       {label}
@@ -35,37 +41,135 @@ function ReviewPanel() {
   );
 }`;
 
-export const usageFlow = `"use client";
+export const usageFlow = `const BACK_BTN =
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer";
+const NEXT_BTN =
+  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-indigo-600";
 
-${stepperPanels}
+// Controlled field. \`error\` is what makes a blocked Next visible to the reader.
+function Field({
+  label,
+  placeholder,
+  value,
+  onChange,
+  error,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (next: string) => void;
+  error?: string;
+}) {
+  return (
+
+        {label}
+      
+       onChange(e.target.value)}
+        placeholder={placeholder}
+        className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm outline-none focus:border-indigo-500"
+      />
+      {error && (
+        {error}
+      )}
+    
+  );
+}
+
+type FormData = {
+  fullName: string;
+  email: string;
+  company: string;
+  teamSize: string;
+  password: string;
+  confirmPassword: string;
+};
+type Errors = Partial>;
 
 export default function OnboardingWizard() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({ fullName: "", company: "" });
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    company: "",
+    teamSize: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateStep = (current) => {
-    if (current === 0 && !formData.fullName) {
-      setErrors({ fullName: "Name required" });
-      return false;
-    }
-    return true;
+  const set = (key: keyof FormData) => (next: string) =>
+    setFormData((prev) => ({ ...prev, [key]: next }));
+
+  // Returns false AND records the reason, so the blocked step explains itself.
+  const validateStep = (current: number) => {
+    const next: Errors = {};
+    if (current === 0 && !formData.fullName) next.fullName = "Name required";
+    if (current === 1 && !formData.company) next.company = "Company required";
+    if (current === 2 && !formData.password) next.password = "Password required";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) setStep((s) => s + 1);
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await fetch("/api/submit", { method: "POST", body: JSON.stringify(formData) });
+      await fetch("/api/submit", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const steps = [
-    { id: "profile", title: "Profile", description: "Personal details", icon: User, content:  },
-    { id: "workspace", title: "Workspace", description: "Organization", icon: Building2, content:  },
-    { id: "review", title: "Review", description: "Confirm & Submit", icon: CheckCircle2, content:  },
+    {
+      id: "profile",
+      title: "Profile",
+      description: "Personal details",
+      icon: User,
+      content: (
+
+            Enter your contact details to begin setting up your account.
+
+      ),
+    },
+    {
+      id: "workspace",
+      title: "Workspace",
+      description: "Organization",
+      icon: Building2,
+      content: (
+
+      ),
+    },
+    {
+      id: "security",
+      title: "Security",
+      description: "Credentials",
+      icon: ShieldCheck,
+      content: (
+
+            Create a secure password for your workspace access.
+
+      ),
+    },
+    {
+      id: "review",
+      title: "Review",
+      description: "Confirm & Submit",
+      icon: CheckCircle2,
+      content: (
+        
+          Everything looks good — hit Submit to finish setting up your workspace.
+        
+      ),
+    },
   ];
 
   return (
@@ -74,13 +178,30 @@ export default function OnboardingWizard() {
        {
           if (target 
 
-         setStep((s) => s - 1)} disabled={step === 0}>
+         setStep((s) => s - 1)}
+          disabled={step === 0 || isSubmitting}
+          className={BACK_BTN}
+        >
+          
           Back
-        
+
         {step === steps.length - 1 ? (
-          Submit
+          
+            {isSubmitting ? (
+              <>
+                
+                Submitting...
+              
+            ) : (
+              <>
+                Submit Onboarding
+
+            )}
+          
         ) : (
-           validateStep(step) && setStep((s) => s + 1)}>Next
+          
+            Next Step
+
         )}
 
   );

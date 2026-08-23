@@ -4,7 +4,7 @@ An interactive, responsive fleet management dashboard featuring a synchronized s
 
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
-export const fleetData = `const fleet = [
+export const fleetData = `const fleet: Vehicle[] = [
   {
     id: "VOL-342808",
     location: "Chelsea, NY",
@@ -21,9 +21,27 @@ export const fleetData = `const fleet = [
     status: "maintenance",
     speed: "0 mph",
   },
+  {
+    id: "VOL-342809",
+    location: "Midtown East, NY",
+    lat: 40.758,
+    lng: -73.973,
+    status: "active",
+    speed: "22 mph",
+  },
+  {
+    id: "VOL-343908",
+    location: "Hoboken, NJ",
+    lat: 40.744,
+    lng: -74.0324,
+    status: "idle",
+    speed: "0 mph",
+  },
 ];`;
 
-export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
+export const usageDefault = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
 
 // Leaflet touches \`window\` on import, so the map is deferred until after mount
 // — the component handles that itself, in every framework.
@@ -34,7 +52,9 @@ export default function FleetDashboard() {
   return ;
 }`;
 
-export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
+export const usageMinimal = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
 
 ${fleetData}
 
@@ -43,7 +63,9 @@ export default function MinimalFleet() {
   return ;
 }`;
 
-export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-map";
+export const usageModern = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
 
 ${fleetData}
 
