@@ -37,8 +37,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
     inputBg: "bg-zinc-100 dark:bg-zinc-900 border border-transparent",
     msgThem:
       "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 rounded-2xl rounded-bl-sm border border-zinc-200 dark:border-zinc-800/80 shadow-sm",
-    msgMe:
-      "text-white rounded-2xl rounded-br-sm shadow-sm border border-transparent",
+    msgMe: "rounded-2xl rounded-br-sm shadow-sm border border-transparent",
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
@@ -53,7 +52,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
       "bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800",
     msgThem:
       "bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-bl-sm",
-    msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm",
+    msgMe: "rounded-2xl rounded-br-sm shadow-sm",
   },
   glass: {
     wrapper:
@@ -69,7 +68,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
       "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md",
     msgThem:
       "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm",
-    msgMe: "text-white rounded-2xl rounded-br-sm shadow-lg",
+    msgMe: "rounded-2xl rounded-br-sm shadow-lg",
   },
 };
 
@@ -129,7 +128,7 @@ export type Contact = {
   message: string;
   date: string;
   unread: number;
-  status: "online" | "offline";
+  status: "online" | "offline" | (string & {});
   avatar?: string;
   initials?: string;
   color?: string;
@@ -137,7 +136,7 @@ export type Contact = {
 
 export type CurrentUser = {
   avatar: string;
-  status: string;
+  status: "online" | "offline" | (string & {});
   name?: string;
 };
 
@@ -218,6 +217,15 @@ export default function ChatApp({
     : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
+
+  // Text sitting on the accent colour. Read it off `theme.bg` instead of
+  // assuming white: `primary` is near-black in light mode and near-white in
+  // dark, so a hardcoded white disappears on one side or the other.
+  const onAccentText =
+    theme.bg
+      .split(" ")
+      .filter((c) => c.startsWith("text-") || c.startsWith("dark:text-"))
+      .join(" ") || "text-white dark:text-zinc-900";
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeContact, setActiveContact] = useState<Contact | null>(null);
@@ -507,7 +515,7 @@ export default function ChatApp({
                 "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-white dark:border-zinc-800 rotate-3 shrink-0 flex-none shadow-xl",
                 theme.gradient,
                 theme.shadow,
-                theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-white dark:text-zinc-900",
+                onAccentText,
               )}
             >
               <MessageCircle className="w-10 h-10 -rotate-3" />
@@ -617,7 +625,12 @@ export default function ChatApp({
                           className={cn(
                             "px-4 py-2.5",
                             isMe
-                              ? cn(styles.msgMe, theme.gradient)
+                              ? cn(
+                                  styles.msgMe,
+                                  "bg-gradient-to-br",
+                                  theme.gradient,
+                                  onAccentText,
+                                )
                               : styles.msgThem,
                           )}
                         >
