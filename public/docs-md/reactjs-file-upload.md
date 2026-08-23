@@ -30,22 +30,27 @@ export const usageStates = `import { UploadItem } from "@/components/custom/bloc
 const queue = [
   {
     id: "1",
-    file: new File([], "quarterly-report.pdf"),
+    file: new File([], "quarterly-report.pdf", { type: "application/pdf" }),
     progress: 42,
     status: "uploading",
     timeLeft: 12,
   },
-  { id: "2", file: new File([], "product-shot.png"), progress: 66, status: "paused" },
+  {
+    id: "2",
+    file: new File([], "product-shot.png", { type: "image/png" }),
+    progress: 66,
+    status: "paused",
+  },
   {
     id: "3",
-    file: new File([], "launch-teaser.mp4"),
+    file: new File([], "launch-teaser.mp4", { type: "video/mp4" }),
     progress: 89,
     status: "error",
     errorMessage: "Connection lost",
   },
   {
     id: "4",
-    file: new File([], "brand-guidelines.pdf"),
+    file: new File([], "brand-guidelines.pdf", { type: "application/pdf" }),
     progress: 100,
     status: "success",
     timeLeft: 0,
@@ -54,11 +59,16 @@ const queue = [
 
 export default function UploadStates() {
   return (
-    
+    <div className="flex flex-col gap-3">
       {queue.map((item) => (
-         {}} onRemove={() => {}} />
+        <UploadItem
+          key={item.id}
+          item={item}
+          onRetry={() => {}}
+          onRemove={() => {}}
+        />
       ))}
-    
+    </div>
   );
 }`;
 
