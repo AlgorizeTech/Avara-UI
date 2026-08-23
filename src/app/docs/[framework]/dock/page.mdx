@@ -10,7 +10,7 @@ Sweep the cursor across each dock to feel the magnification curve, and click an 
 export const usageDefault = `"use client";
 
 import { Dock } from "@/components/custom/blocks/DockBlock";
-import { Compass, FolderGit2, Code2, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
+import { Compass, FolderGit2, Github, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
 import { useState } from "react";
 
 export default function BottomNav() {
@@ -24,12 +24,19 @@ export default function BottomNav() {
     { id: "terminal", label: "Terminal", icon: <Terminal className="w-full h-full" />, isActive: active === "terminal", onClick: () => setActive("terminal") },
     { id: "projects", label: "Repositories", icon: <FolderGit2 className="w-full h-full" />, isActive: active === "projects", onClick: () => setActive("projects") },
     { id: "ai", label: "AI Assistant", icon: <Sparkles className="w-full h-full text-amber-500" />, isActive: active === "ai", onClick: () => setActive("ai") },
-    { id: "github", label: "GitHub", icon: <Code2 className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
+    { id: "github", label: "GitHub", icon: <Github className="w-full h-full" />, isActive: active === "github", onClick: () => setActive("github") },
     { id: "settings", label: "Settings", icon: <Settings className="w-full h-full" />, isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div className="relative w-full flex flex-col items-center justify-end min-h-[420px]">
+      <div className="absolute top-6 left-6 text-xs font-mono text-zinc-400 dark:text-zinc-600">
+        Active App:{" "}
+        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-bold">
+          {active}
+        </span>
+      </div>
+
       <Dock items={items} />
     </div>
   );
