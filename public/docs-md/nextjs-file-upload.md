@@ -59,16 +59,13 @@ const queue: FileUploadState[] = [
 
 export default function UploadStates() {
   return (
-    <div className="flex flex-col gap-3">
+    
       {queue.map((item) => (
-        <UploadItem
-          key={item.id}
-          item={item}
-          onRetry={() => {}}
+         {}}
           onRemove={() => {}}
         />
       ))}
-    </div>
+    
   );
 }`;
 
