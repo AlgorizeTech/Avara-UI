@@ -12,9 +12,8 @@ export const usageDefault = `"use client";
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
-//  belongs once at the root of your app. It is mounted here so this
-// file runs on its own — a root layout is a Server Component, so it cannot sit
-// in the same "use client" file as the button.
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function SaveButton() {
   return (
     <>
