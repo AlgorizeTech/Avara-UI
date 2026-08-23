@@ -74,87 +74,33 @@ export default function LiftOnHover() {
 <ExampleShowcase
   name="tilted-card"
   colorControl
+  controls={[
+    { name: "tiltIntensity", label: "Tilt Intensity", min: 0, max: 50, step: 1, defaultValue: 20 },
+    { name: "glareOpacity", label: "Glare Opacity", min: 0, max: 1, step: 0.05, defaultValue: 0.2 },
+    { name: "scaleOnHover", label: "Scale On Hover", min: 1, max: 1.2, step: 0.01, defaultValue: 1.04 },
+  ]}
   columns={1}
   examples={[
     {
-      title: "Tilted card",
-      subheading: "Wrap any content — the 3D transform, spring physics and glare layer are added without touching your markup.",
+      title: "Interactive Tilted Card",
+      subheading: "Adjust tilt intensity, glare opacity, and hover scale using the interactive controls above to test different design approaches in real-time.",
       propNotes: [
         {
-          prop: "children",
-          effect:
-            "is mapped into the 3D space as-is; the block adds no styling of its own.",
+          prop: "tiltIntensity",
+          effect: "controls the maximum rotational degree on hover.",
+        },
+        {
+          prop: "glareOpacity",
+          effect: "sets peak alpha opacity for radial light reflection.",
+        },
+        {
+          prop: "scaleOnHover",
+          effect: "defines the 3D lift scale multiplier when hovered.",
         },
       ],
       props: {},
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
-    },
-    {
-      title: "Stronger tilt",
-      propNotes: [
-        {
-          prop: "tiltIntensity",
-          value: '{35}',
-          effect:
-            "is the maximum rotation in degrees on each axis, reached at the edge of the box. Defaults to `15`; past ~25 the perspective starts to shear.",
-        },
-      ],
-      props: { tiltIntensity: 35 },
-      usage: usageIntensity,
-    },
-    {
-      title: "Subtle tilt",
-      propNotes: [
-        {
-          prop: "tiltIntensity",
-          value: '{6}',
-          effect:
-            "keeps the motion restrained for dense layouts where many cards move at once.",
-        },
-      ],
-      props: { tiltIntensity: 6, scaleOnHover: 1.01 },
-      usage: usageSubtle,
-    },
-    {
-      title: "Stronger glare",
-      propNotes: [
-        {
-          prop: "glareOpacity",
-          value: '{0.55}',
-          effect:
-            "is the peak alpha of the radial highlight that tracks the pointer.",
-        },
-      ],
-      props: { glareOpacity: 0.55 },
-      usage: usageGlare,
-    },
-    {
-      title: "Without glare",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "glareOpacity",
-          value: '{0}',
-          effect:
-            "to drop the reflection entirely — right when the card already carries its own lighting.",
-        },
-      ],
-      props: { glareOpacity: 0 },
-      usage: usageNoGlare,
-    },
-    {
-      title: "Lift on hover",
-      propNotes: [
-        {
-          prop: "scaleOnHover",
-          value: '{1.12}',
-          effect:
-            "is how far the card comes toward the viewer on hover.",
-        },
-      ],
-      props: { scaleOnHover: 1.12 },
-      usage: usageScale,
     },
   ]}
 />

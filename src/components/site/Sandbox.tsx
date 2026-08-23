@@ -726,6 +726,15 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
+export interface SliderControl {
+  name: string;
+  label: string;
+  min: number;
+  max: number;
+  step?: number;
+  defaultValue: number;
+}
+
 export function ExampleShowcase({
   name,
   examples,
@@ -738,6 +747,7 @@ export function ExampleShowcase({
   defaultColor = DEFAULT_SHOWCASE_COLOR,
   colorProp = "color",
   colorLabel = "Theme Color",
+  controls = [],
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -762,6 +772,8 @@ export function ExampleShowcase({
   /** Demo prop the color is bridged into. */
   colorProp?: string;
   colorLabel?: string;
+  /** Optional numerical range sliders for interactive property tuning. */
+  controls?: SliderControl[];
 }) {
   const shared = useShowcaseColorContext();
   const instanceId = useId();
@@ -794,16 +806,88 @@ export function ExampleShowcase({
     framework,
   );
 
+  // Numerical slider control states
+  const [controlValues, setControlValues] = useState<Record<string, number>>(() => {
+    const initial: Record<string, number> = {};
+    controls.forEach((ctrl) => {
+      initial[ctrl.name] = ctrl.defaultValue;
+    });
+    return initial;
+  });
+
+  const handleControlChange = (name: string, value: number) => {
+    setControlValues((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {ownsPicker && (
-        <div className="flex flex-col gap-6 p-3.5 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
-          <ThemeColorPicker
-            color={color}
-            onChange={setColor}
-            label={colorLabel}
-            className="sm:max-w-sm"
-          />
+      {(ownsPicker || controls.length > 0) && (
+        <div className="flex flex-col gap-5 p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          {ownsPicker && (
+            <ThemeColorPicker
+              color={color}
+              onChange={setColor}
+              label={colorLabel}
+              className="sm:max-w-sm"
+            />
+          )}
+
+          {controls.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-3 border-t border-zinc-200/80 dark:border-zinc-800">
+              {controls.map((ctrl) => {
+                const val = controlValues[ctrl.name] ?? ctrl.defaultValue;
+                const percentage = Math.min(
+                  100,
+                  Math.max(0, ((val - ctrl.min) / (ctrl.max - ctrl.min)) * 100)
+                );
+                return (
+                  <div
+                    key={ctrl.name}
+                    className="flex flex-col gap-2 p-3 bg-white dark:bg-zinc-950/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl shadow-xs transition-shadow hover:shadow-sm"
+                  >
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                        {ctrl.label}
+                      </span>
+                      <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200/60 dark:border-zinc-700/50 shadow-2xs">
+                        {val}
+                      </span>
+                    </div>
+                    <div className="relative flex items-center h-6 w-full group touch-none">
+                      {/* Custom Track Background */}
+                      <div className="absolute inset-x-0 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden pointer-events-none">
+                        <div
+                          className="h-full bg-primary transition-all duration-75"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      {/* Hidden Range Input overlay */}
+                      <input
+                        type="range"
+                        min={ctrl.min}
+                        max={ctrl.max}
+                        step={ctrl.step ?? 1}
+                        value={val}
+                        onChange={(e) =>
+                          handleControlChange(ctrl.name, parseFloat(e.target.value))
+                        }
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      {/* Custom Thumb Circle with Theme Accent Ring Glow */}
+                      <div
+                        className="absolute w-5 h-5 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary ring-4 ring-primary/25 shadow-md flex items-center justify-center pointer-events-none transition-transform duration-75 group-hover:scale-120 active:scale-125"
+                        style={{
+                          left: `calc(${percentage}% - ${(percentage / 100) * 20}px)`,
+                        }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -814,9 +898,10 @@ export function ExampleShowcase({
         )}
       >
         {examples.map((example) => {
-          const effectiveProps = colorControl
-            ? { [colorProp]: color, ...example.props }
-            : example.props;
+          let effectiveProps = { ...example.props, ...controlValues };
+          if (colorControl) {
+            effectiveProps[colorProp] = color;
+          }
 
           const effectiveUsage =
             resolveSnippet(example.usage, framework) ??
