@@ -19,11 +19,16 @@ export const usageFull = `import {
 } from "@/components/custom/blocks/ContextMenuBlock";
 
 export default function DocumentMenu() {
+  // The live preview raises a toast here; this logs instead so the snippet
+  // needs nothing beyond the context menu itself.
   const run = (action: string) => console.log(action);
 
   return (
 
-        Right-click anywhere inside this box
+            Click / Right-Click / Touch Area
+
+            Click or right-click (long-press on mobile) inside this box to open
+            the context menu.
 
         Document Actions
          run("Edit")}>
@@ -53,7 +58,7 @@ export default function DocumentMenu() {
 
         {/* className restyles a single destructive row */}
          run("Delete")}
-          className="text-red-600 focus:bg-red-50 focus:text-red-700"
+          className="text-red-600 focus:bg-red-50 dark:focus:bg-red-950 focus:text-red-700"
         >
           
           Delete

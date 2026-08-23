@@ -88,8 +88,7 @@ export default function Helpdesk() {
   return ;
 }`;
 
-export const usageTable = `import {
-  SupportDashboard,
+export const usageTable = `import SupportDashboard, {
   SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
@@ -101,8 +100,7 @@ export default function TicketTable() {
   return ;
 }`;
 
-export const usageGlass = `import {
-  SupportDashboard,
+export const usageGlass = `import SupportDashboard, {
   SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
@@ -110,7 +108,7 @@ ${supportData}
 
 export default function GlassDashboard() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    // \`glass\` is translucent by design — it needs a backdrop to read against.
 
   );
 }`;

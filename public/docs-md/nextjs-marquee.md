@@ -63,14 +63,20 @@ export default function TestimonialColumn() {
 
 export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const images = ["/gallery/01.jpg", "/gallery/02.jpg", "/gallery/03.jpg"];
+const images = [
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop",
+];
 
 export default function SlowGallery() {
   return (
     // "slow" | "normal" | "fast", or a raw duration in seconds.
     
-      {images.map((src) => (
-        
+      {images.map((src, i) => (
+
       ))}
     
   );

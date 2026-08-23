@@ -24,7 +24,7 @@ export default function AnalyticsDashboard() {
   );
 }`;
 
-export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageDots = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
 
 ${mapDataSource}
 
@@ -34,7 +34,7 @@ export default function DensityMap() {
   return ;
 }`;
 
-export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageZoomable = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
 
 ${mapDataSource}
 
@@ -47,7 +47,7 @@ export default function ZoomableMap() {
   );
 }`;
 
-export const usageColors = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageColors = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
 
 export default function ColoredMap() {
   // \`highlightColor\` sets the global accent and \`defaultColor\` paints every

@@ -36,6 +36,7 @@ export default function ShareDialog() {
 
 export const usageForm = `import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -59,7 +60,11 @@ export default function EditProfileDialog() {
 
             Username
 
-            Save changes
+        {/* DialogClose dismisses the modal without wiring up state */}
+
+              Cancel
+
+              Save changes
 
   );
 }`;

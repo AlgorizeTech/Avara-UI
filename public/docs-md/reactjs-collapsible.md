@@ -17,8 +17,9 @@ export const usageSettings = `import {
 export default function SettingsPanel() {
   return (
 
-            Push Notifications
-            Manage your alert preferences
+              Push Notifications
+
+              Manage your alert preferences
 
         {/* Swap the affordance label using the same data-state hook */}
         
@@ -26,9 +27,25 @@ export default function SettingsPanel() {
 
           Close
 
-            Email Alerts
+                Email Alerts
 
-            SMS Alerts
+                SMS Alerts
+
+      {/* Second card starts closed — defaultOpen is per-instance. */}
+
+              Security & API
+
+              Tokens and authentication
+
+        {/* Swap the affordance label using the same data-state hook */}
+        
+          Configure
+
+          Close
+
+                Production Key
+
+                  Roll
 
   );
 }`;
@@ -41,15 +58,33 @@ export const usageFileTree = `import {
 
 export default function FileTree() {
   return (
-    // Collapsibles nest freely — each level owns its own state.
+    // Collapsibles nest freely — each level owns its own open state.
 
-          src
+        {/* Level 1: src */}
 
-                app
+            src
 
-                     layout.tsx
+            {/* The before: rule draws the vertical guide line for this level. */}
+            
+              {/* Level 2: app — open on first paint */}
 
-                     page.tsx
+                  app
+
+                       layout.tsx
+
+                       page.tsx
+
+              {/* Level 2: components — closed, so no defaultOpen */}
+
+                  components
+
+                       Button.tsx
+
+                       Collapsible.tsx
+
+        {/* A root-level file, indented to line up with the tree's children. */}
+        
+           package.json
 
   );
 }`;

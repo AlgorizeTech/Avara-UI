@@ -22,9 +22,11 @@ export default function AccountMenu() {
               Andy Bernard
               andy@dundermifflin.com
 
-          View Profile
-          Billing Settings
-          Log out
+            View Profile
+
+            Billing Settings
+
+            Log out
 
   );
 }`;

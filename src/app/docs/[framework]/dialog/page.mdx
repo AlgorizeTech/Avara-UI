@@ -56,6 +56,7 @@ export default function ShareDialog() {
 
 export const usageForm = `import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -94,10 +95,16 @@ export default function EditProfileDialog() {
           </div>
         </div>
 
+        {/* DialogClose dismisses the modal without wiring up state */}
         <DialogFooter>
-          <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
-            Save changes
-          </button>
+          <div className="flex w-full sm:w-auto gap-2">
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+              Cancel
+            </DialogClose>
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+              Save changes
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

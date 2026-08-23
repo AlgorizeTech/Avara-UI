@@ -7,20 +7,26 @@ It automatically injects a dynamic, radial glare layer over the content that tra
 Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
 
 export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
+const accent = "var(--primary)";
+const onAccent = "var(--primary-foreground)";
+
 const card = (
-  
-    Access Key
-    Tap and drag to tilt.
-  
+
+        Access Key
+
+        ID // 0x8F92A
+
 );`;
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
+${cardSource}
+
 export default function AccessKeyCard() {
   return (
-
-          Access Key
-
+    
+      {card}
+    
   );
 }`;
 

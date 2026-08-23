@@ -12,7 +12,7 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageAspect = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageAspect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function CinematicHero() {
   // "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
@@ -20,20 +20,22 @@ export default function CinematicHero() {
   return ;
 }`;
 
-export const usageAspect43 = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageAspect43 = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function ClassicHero() {
   return ;
 }`;
 
-export const usageNoGlow = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNoGlow = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function FlatHero() {
   // Drops the ambient bloom behind the frame — better on busy backgrounds.
   return ;
 }`;
 
-export const usageModal = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+// Stand-in for whatever analytics client you already use.
+const track = (event: string) => console.log(event);
 
 export default function FullWidthHero() {
   // "md" | "lg" | "xl" | "full" — how wide the player modal opens.

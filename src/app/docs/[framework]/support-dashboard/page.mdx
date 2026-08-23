@@ -91,8 +91,7 @@ export default function Helpdesk() {
   return <SupportDashboard data={data} />;
 }`;
 
-export const usageTable = `import {
-  SupportDashboard,
+export const usageTable = `import SupportDashboard, {
   SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
@@ -104,8 +103,7 @@ export default function TicketTable() {
   return <SupportDashboard layout="table" data={data} />;
 }`;
 
-export const usageGlass = `import {
-  SupportDashboard,
+export const usageGlass = `import SupportDashboard, {
   SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
@@ -113,9 +111,19 @@ ${supportData}
 
 export default function GlassDashboard() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
-    <div className="p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
-      <SupportDashboard variant="glass" color="rose" data={data} />
+    // \`glass\` is translucent by design — it needs a backdrop to read against.
+    <div className="w-full relative overflow-hidden rounded-2xl p-4 sm:p-8">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+          alt="Moody nature landscape background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      </div>
+      <div className="relative z-10 w-full">
+        <SupportDashboard variant="glass" color="rose" data={data} />
+      </div>
     </div>
   );
 }`;

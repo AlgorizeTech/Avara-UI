@@ -6,22 +6,51 @@ Unlike basic tab replacements, this engine applies dynamic mathematical depth tw
 
 `SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
 
-export const splitSteps = `// Card bodies — swap these for your own screens.
-function MockLandingView() {
-  return (
-    
-      Landing preview
-    
-  );
-}
+export const splitSteps = `// Card bodies — these are the four screens the preview renders.
+const MockLandingView = () => (
 
-function MockSaaSView() {
-  return (
-    
-      SaaS dashboard preview
-    
-  );
-}
+        High-Converting UI
+
+          CTA Button
+
+);
+
+const MockSaaSView = () => (
+
+        SaaS Dashboard Architecture
+
+          MRR Growth
+
+          +148.2%
+
+          Active Users
+
+          24,892
+
+);
+
+const MockAIView = () => (
+
+        AI & LLM Integration
+
+        TERMINAL // AI_ENGINE
+        STATUS: ACTIVE
+
+        &gt; Initializing RAG pipeline...
+
+        &gt; Vector embeddings synced (1.2ms)
+
+        &gt; Ready for token streaming_
+
+);
+
+const MockMobileView = () => (
+
+          Mobile First
+
+        Silky 60fps native performance across iOS and Android ecosystems.
+
+);
 
 const steps = [
   {
@@ -29,7 +58,7 @@ const steps = [
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Framer & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: ,
@@ -39,9 +68,37 @@ const steps = [
     stepNumber: "02",
     title: "SaaS Product Development",
     description:
-      "Modular, multi-tenant web applications designed to scale to millions of requests.",
-    tags: ["Multi-Tenant Architecture", "Stripe Integration"],
+      "Every successful SaaS product starts with a complex problem. We build modular, multi-tenant web applications designed to scale to millions of requests.",
+    tags: [
+      "Multi-Tenant Architecture",
+      "Stripe Integration",
+      "Real-Time Sync",
+    ],
     color: "bg-[#090a14] border-indigo-500/20",
+    cardContent: ,
+  },
+  {
+    id: "ai",
+    stepNumber: "03",
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about just plugging in an API. We fine-tune custom LLM models, engineer vector RAG pipelines, and build streaming chat UIs.",
+    tags: [
+      "LLM API Integration",
+      "Vector RAG Setup",
+      "Custom Model Training",
+    ],
+    color: "bg-[#06100c] border-emerald-500/20",
+    cardContent: ,
+  },
+  {
+    id: "mobile",
+    stepNumber: "04",
+    title: "Mobile App Development",
+    description:
+      "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified React Native architectures with native device capabilities.",
+    tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
+    color: "bg-[#12080a] border-rose-500/20",
     cardContent: ,
   },
 ];`;

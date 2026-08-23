@@ -47,7 +47,7 @@ export default function InvoicePage() {
   return ;
 }`;
 
-export const usageMinimal = `import { Invoice } from "@/components/custom/blocks/Invoice";
+export const usageMinimal = `import Invoice from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
@@ -56,7 +56,7 @@ export default function MinimalInvoice() {
   return ;
 }`;
 
-export const usageGlass = `import { Invoice } from "@/components/custom/blocks/Invoice";
+export const usageGlass = `import Invoice from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
