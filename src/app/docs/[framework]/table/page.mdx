@@ -7,18 +7,100 @@ A highly functional, fully customizable data table component engineered for mode
 
 We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
 
-## Examples
-
 Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
+export const tableData = `const data = [
+  {
+    id: "INV-3021",
+    user: "Alice Freeman",
+    email: "alice@example.com",
+    amount: "$3,200.00",
+    status: "completed",
+    date: "Oct 24, 2023",
+    details: "Payment processed via Stripe. Invoice sent to alice@example.com.",
+  },
+  {
+    id: "INV-3022",
+    user: "Bob Smith",
+    email: "bob@example.com",
+    amount: "$850.50",
+    status: "processing",
+    date: "Oct 24, 2023",
+    details: "Waiting for bank confirmation. Usually takes 2-3 business days.",
+  },
+  {
+    id: "INV-3023",
+    user: "Carla Nguyen",
+    email: "carla@example.com",
+    amount: "$1,940.00",
+    status: "failed",
+    date: "Oct 23, 2023",
+    details: "Card declined by the issuing bank. Customer has been notified.",
+  },
+  {
+    id: "INV-3024",
+    user: "Daniel Okafor",
+    email: "daniel@example.com",
+    amount: "$420.00",
+    status: "completed",
+    date: "Oct 22, 2023",
+    details: "Paid on invoice terms, reconciled automatically.",
+  },
+];
+
+const statusStyles = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const columns = [
+  { key: "id", label: "Invoice", sortable: true },
+  {
+    key: "user",
+    label: "Customer",
+    sortable: true,
+    // \`render\` takes over the whole cell — the row object is the only argument.
+    render: (row) => (
+      <div className="flex flex-col">
+        <span className="font-bold text-zinc-900 dark:text-zinc-100">{row.user}</span>
+        <span className="text-xs text-zinc-500">{row.email}</span>
+      </div>
+    ),
+  },
+  { key: "amount", label: "Amount", sortable: true, align: "right" },
+  {
+    key: "status",
+    label: "Status",
+    sortable: true,
+    render: (row) => (
+      <span
+        className={
+          "px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider " +
+          statusStyles[row.status]
+        }
+      >
+        {row.status}
+      </span>
+    ),
+  },
+  { key: "date", label: "Date", sortable: true, align: "right" },
+  { key: "actions", label: "", align: "right" },
+];`;
+
 export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-import { columns, data } from "./table-data";
+
+${tableData}
 
 export default function MinimalTable() {
   return <TableBlock variant="minimal" data={data} columns={columns} />;
 }`;
 
 export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+${tableData}
 
 export default function ExpandableTable() {
   return (
@@ -39,7 +121,8 @@ export default function ExpandableTable() {
 }`;
 
 export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-import { columns, data } from "./table-data";
+
+${tableData}
 
 export default function PaginatedTable() {
   return (
@@ -67,6 +150,20 @@ export default function PaginatedTable() {
       usage: usageMinimal,
       code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="table" />
+
+## Examples
+
+<ExampleShowcase
+  name="table"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Expandable rows",
       propNotes: [
@@ -102,13 +199,8 @@ export default function PaginatedTable() {
   ]}
 />
 
-## Installation
-
-<Installation name="table" />
-
 ## Features
 Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

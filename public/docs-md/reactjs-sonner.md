@@ -4,8 +4,6 @@ An opinionated, dependency-free toast component that mimics the famous "Sonner" 
 
 Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
 
-## Examples
-
 Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
 
 export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
@@ -165,85 +163,12 @@ export default function PositionDemo() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
     },
-    {
-      title: "Types",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "toast.success",
-          effect:
-            "`toast.error` and `toast.info` for the semantic icon and colour. They take the same arguments as `toast()`.",
-        },
-      ],
-      props: { example: "types" },
-      usage: usageTypes,
-    },
-    {
-      title: "With action",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "action",
-          effect:
-            "as `{ label, onClick }` to add an inline button — the usual home for Undo.",
-        },
-      ],
-      props: { example: "action" },
-      usage: usageAction,
-    },
-    {
-      title: "Stacking",
-      propNotes: [
-        {
-          prop: "position",
-          effect:
-            "on the Toaster decides where they pile up; newer toasts sit on top and older ones recede until hovered.",
-        },
-      ],
-      props: { example: "stack" },
-      usage: usageStack,
-    },
-    {
-      title: "Always expanded",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "expand",
-          effect:
-            "on the Toaster to keep the stack open instead of collapsing it to a pile.",
-        },
-      ],
-      props: { example: "stack", expand: true },
-      usage: usageExpand,
-    },
-    {
-      title: "Duration",
-      propNotes: [
-        {
-          prop: "duration",
-          effect:
-            "is the auto-dismiss delay in milliseconds. Pass `Infinity` and the toast stays up until dismissed.",
-        },
-      ],
-      props: { example: "duration" },
-      usage: usageDuration,
-    },
-    {
-      title: "Position",
-      propNotes: [
-        {
-          prop: "position",
-          effect:
-            "anchors the stack to any of the six edges — `top-left` through `bottom-right`.",
-        },
-      ],
-      props: { example: "position" },
-      usage: usagePosition,
-    },
   ]}
 />
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.

@@ -4,8 +4,6 @@ A fully accessible, developer-friendly multi-box input designed for One-Time Pas
 
 Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
 
-## Examples
-
 Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
 export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
@@ -30,6 +28,8 @@ export default function UnderlinedOtp() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

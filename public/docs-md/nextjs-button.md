@@ -2,8 +2,6 @@
 
 A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
 
-## Examples
-
 Explore the different variations of the Button component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
@@ -86,6 +84,8 @@ The showcase uses a set of brand and UI icons that ship as their own registry it
 ```bash
 npx shadcn@latest add icons.json
 ```
+
+## Examples
 
 ## Features
 Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.

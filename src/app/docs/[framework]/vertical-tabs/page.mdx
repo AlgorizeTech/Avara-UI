@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
 
-## Examples
-
 Switch tabs in any preview to see the GSAP crossfade.
 
 export const usageTabsData = `const tabs = [
@@ -58,7 +56,9 @@ export default function HorizontalTabs() {
 }`;
 
 export const usageHorizontalBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-import { tabs } from "./tabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
 
 export default function HorizontalRail() {
   // Every variant works in both orientations — \`bordered\` just moves its
@@ -136,6 +136,20 @@ export default function GlassTabs() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="vertical-tabs" />
+
+## Examples
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Glass",
       propNotes: [
@@ -157,10 +171,6 @@ export default function GlassTabs() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="vertical-tabs" />
 
 ## Props Reference
 

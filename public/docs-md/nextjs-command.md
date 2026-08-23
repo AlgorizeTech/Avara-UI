@@ -4,8 +4,6 @@ A powerful, composable command menu palette for searching data and triggering qu
 
 Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
 
-## Examples
-
 Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
 export const usageGroups = `import {
@@ -104,6 +102,8 @@ export default function RemoteSearch() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.

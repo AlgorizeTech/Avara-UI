@@ -4,8 +4,6 @@ A powerful, multi-purpose Input component that natively supports advanced File U
 
 By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
 
-## Examples
-
 Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
@@ -50,6 +48,8 @@ export default function FileUploadInput() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.

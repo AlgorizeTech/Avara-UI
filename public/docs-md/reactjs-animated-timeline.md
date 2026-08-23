@@ -4,13 +4,9 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
-## Examples
-
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
-export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
-
-const EVENTS = [
+export const timelineEvents = `const EVENTS = [
   { id: "1", title: "Project Start", date: "Q1", icon: Zap },
   {
     id: "2",
@@ -19,7 +15,11 @@ const EVENTS = [
     description: "Shipped to 100 users.",
   },
   { id: "3", title: "Global Scaling", date: "Q3", icon: Rocket },
-];
+];`;
+
+export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+${timelineEvents}
 
 export default function CompanyHistory() {
   return (
@@ -28,6 +28,8 @@ export default function CompanyHistory() {
 }`;
 
 export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+${timelineEvents}
 
 export default function LeftTimeline() {
   // Rail on the left, every card on the same side — the compact layout for
@@ -39,6 +41,8 @@ export default function LeftTimeline() {
 
 export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function RightTimeline() {
   return (
 
@@ -46,6 +50,8 @@ export default function RightTimeline() {
 }`;
 
 export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+${timelineEvents}
 
 export default function FadeUpTimeline() {
   return (
@@ -55,6 +61,8 @@ export default function FadeUpTimeline() {
 
 export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function ZoomTimeline() {
   return (
 
@@ -63,6 +71,8 @@ export default function ZoomTimeline() {
 
 export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function BlurTimeline() {
   return (
 
@@ -70,6 +80,8 @@ export default function BlurTimeline() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

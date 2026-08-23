@@ -7,8 +7,6 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-## Examples
-
 Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
 
 export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
@@ -158,6 +156,24 @@ export function Providers({ children }: { children: React.ReactNode }) {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ToastBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="toast" />
+
+### Wrap your app
+
+`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
+
+## Examples
+
+<ExampleShowcase
+  name="toast"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Types",
       propNotes: [
@@ -226,17 +242,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
   ]}
 />
 
-## Installation
-
-<Installation name="toast" />
-
-### Wrap your app
-
-`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
-
 ## Features
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

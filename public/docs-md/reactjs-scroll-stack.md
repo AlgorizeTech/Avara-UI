@@ -2,24 +2,55 @@
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-## Examples
-
 Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-### Simple stack
+## Simple stack
+
+export const stackItems = `const items = [
+  {
+    id: "1",
+    title: "Real-time Synchronization",
+    description:
+      "Instantly sync state across clients without writing WebSocket logic.",
+    icon: Zap,
+  },
+  {
+    id: "2",
+    title: "Composable Blocks",
+    description:
+      "Every block is a plain React component you own — fork it, don't fight it.",
+    icon: Blocks,
+  },
+  {
+    id: "3",
+    title: "Layered by Default",
+    description:
+      "Depth, gap and scale are props, so the deck reads the same at any density.",
+    icon: Layers,
+  },
+  {
+    id: "4",
+    title: "Type Safe",
+    description:
+      "Item shapes are exported, so a malformed card is a build error, not a bug.",
+    icon: ShieldCheck,
+  },
+];`;
 
 export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+
+${stackItems}
 
 export default function GappedStack() {
   // Pixel distance between the stacked sticky cards.
   return ;
 }`;
 
-### Sticky stack
+### Installation
 
-export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+## Sticky stack
 
-const items = [
+export const stickyItems = `const items = [
   {
     id: "ui-design",
     title: "UI Design",
@@ -28,7 +59,29 @@ const items = [
     description: "Interfaces that look deliberate at every breakpoint.",
     listItems: ["Design tokens", "Component specs", "Motion guidelines"],
   },
-];
+  {
+    id: "engineering",
+    title: "Engineering",
+    badge: "Build",
+    contentType: "list",
+    description: "Production React, shipped behind real tests.",
+    listItems: ["Design system", "Accessibility pass", "Performance budget"],
+  },
+  {
+    id: "launch",
+    title: "Launch",
+    badge: "Go Live",
+    contentType: "image",
+    description: "Rollout, monitoring and the handover pack.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+    imageAlt: "Launch",
+  },
+];`;
+
+export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+
+${stickyItems}
 
 export default function ServicesSection() {
   return (
@@ -38,15 +91,62 @@ export default function ServicesSection() {
 
 export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
 
+${stickyItems}
+
 export default function TunedStickyStack() {
   // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
   // offset that keeps the earlier headers peeking out.
   return ;
 }`;
 
-### Split stack
+### Installation
+
+### More examples
+
+## Split stack
+
+export const splitItems = `const items = [
+  {
+    id: "discover",
+    stepNumber: "01",
+    title: "Discover",
+    description: "We map the problem before a single pixel is drawn.",
+    tags: ["Research", "Audit"],
+    cardContent: (
+      
+        Discovery
+      
+    ),
+  },
+  {
+    id: "design",
+    stepNumber: "02",
+    title: "Design",
+    description: "Flows, states and tokens — reviewed against the real content.",
+    tags: ["UX", "UI"],
+    cardContent: (
+      
+        Design
+      
+    ),
+  },
+  {
+    id: "build",
+    stepNumber: "03",
+    title: "Build",
+    description: "Typed React components, shipped behind tests.",
+    tags: ["React", "Tests"],
+    cardContent: (
+      
+        Build
+      
+    ),
+  },
+];`;
 
 export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
+
+${splitItems}
 
 export default function PinnedRightStack() {
   return ;
@@ -54,20 +154,30 @@ export default function PinnedRightStack() {
 
 export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
 
+${splitItems}
+
 export default function PinnedLeftStack() {
   return (
     
   );
 }`;
 
-### Horizontal stack
+### Installation
+
+### More examples
+
+## Horizontal stack
+
+export const railSteps = `const steps = [
+  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
+  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
+  { id: "3", number: "03", title: "Build", description: "Ship it behind tests." },
+  { id: "4", number: "04", title: "Measure", description: "Watch it in the wild." },
+];`;
 
 export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
 
-const steps = [
-  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
-  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
-];
+${railSteps}
 
 export default function ProcessRail() {
   return (
@@ -77,14 +187,16 @@ export default function ProcessRail() {
 
 export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
 
+${railSteps}
+
 export default function ShortRail() {
   // Fewer steps means a shorter pinned scroll distance.
   return ;
 }`;
 
-## Installation
+### Installation
 
-Each layout is its own block file. Install only the ones you use — they share no code.
+### More examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

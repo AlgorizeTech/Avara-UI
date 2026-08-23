@@ -2,16 +2,9 @@
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
-## Examples
-
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
-export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
-
-// Leaflet touches \`window\` on import, so the map is deferred until after mount
-// — the component handles that itself, in every framework.
-
-const fleet = [
+export const fleetData = `const fleet = [
   {
     id: "VOL-342808",
     location: "Chelsea, NY",
@@ -28,13 +21,22 @@ const fleet = [
     status: "maintenance",
     speed: "0 mph",
   },
-];
+];`;
+
+export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+
+// Leaflet touches \`window\` on import, so the map is deferred until after mount
+// — the component handles that itself, in every framework.
+
+${fleetData}
 
 export default function FleetDashboard() {
   return ;
 }`;
 
 export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+
+${fleetData}
 
 export default function MinimalFleet() {
   // A floating panel over a light map canvas.
@@ -43,12 +45,16 @@ export default function MinimalFleet() {
 
 export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
 
+${fleetData}
+
 export default function ModernFleet() {
   // Backdrop-blurred glass sidebar over a dark map.
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.

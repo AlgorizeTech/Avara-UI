@@ -6,8 +6,6 @@ A powerful, highly-customizable React-Leaflet based choropleth map component des
 
 It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
 
-## Examples
-
 The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
 export const mapDataSource = `const mapData = [
@@ -28,6 +26,8 @@ export default function AnalyticsDashboard() {
 
 export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
 
+${mapDataSource}
+
 export default function DensityMap() {
   // \`dots\` places a pulsing marker at each country's centroid instead of
   // filling the polygon — better when the regions are small or crowded.
@@ -35,6 +35,8 @@ export default function DensityMap() {
 }`;
 
 export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function ZoomableMap() {
   // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
@@ -56,6 +58,8 @@ export default function ColoredMap() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.

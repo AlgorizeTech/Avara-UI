@@ -7,16 +7,16 @@ A collection of highly interactive carousel components for image galleries, hero
 
 <InjectablePropNote prop="imageComponent" component="ImageCarousel" />
 
-## Examples
+Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`.
+## Carousels
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
 const images = [
-  "/photos/beach.jpg",
-  "/photos/trail.jpg",
-  "/photos/retreat.jpg",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
 ];
 
 export default function Gallery() {
@@ -29,20 +29,27 @@ export default function Gallery() {
   );
 }`;
 
-export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
-
-const slides = [
+export const carouselSlides = `const slides = [
   {
-    img: "/photos/beach.jpg",
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
     title: "Tropical Paradise",
     des: "Discover pristine beaches and crystal-clear waters.",
   },
   {
-    img: "/photos/trail.jpg",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
     title: "Peak Adventures",
     des: "Challenge yourself with epic mountain trails.",
   },
-];
+  {
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];`;
+
+export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
+
+${carouselSlides}
 
 export default function Hero() {
   return <HeroCarousel slides={slides} autoPlay />;
@@ -50,13 +57,16 @@ export default function Hero() {
 
 export const usageThumbnails = `import { CustomCarousel } from "@/components/custom/carousel";
 
+${carouselSlides}
+
 // \`imageButtonPosition\` moves the thumbnail rail: "bottom" | "left" | "right".
 export default function Showcase() {
   return <CustomCarousel items={slides} imageButtonPosition="bottom" />;
 }`;
 
 export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
-import { slides } from "./slides";
+
+${carouselSlides}
 
 export default function SideThumbnails() {
   return <CustomCarousel items={slides} imageButtonPosition="left" />;
@@ -96,6 +106,21 @@ export default function FluidShowcase() {
       usage: usageImage,
       code: extractCode("src/components/custom/carousel.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="carousel" />
+
+### More examples
+
+`ImageCarousel`, `HeroCarousel` and `CustomCarousel` all ship in the one file you just installed.
+
+<ExampleShowcase
+  name="carousel"
+  columns={1}
+  examples={[
     {
       title: "Hero carousel",
       subheading: "`HeroCarousel` overlays copy on a full-bleed image.",
@@ -139,9 +164,19 @@ export default function FluidShowcase() {
       props: { carouselType: "thumbnails", thumbPosition: "left" },
       usage: usageThumbnailsSide,
     },
+  ]}
+/>
+
+## Fluid glass slider
+
+A separate GSAP-driven component with its own file and its own install command.
+
+<ExampleShowcase
+  name="carousel"
+  columns={1}
+  examples={[
     {
       title: "Fluid glass slider",
-      subheading: "A separate GSAP-driven component — installed on its own, see Installation below.",
       propNotes: [
         {
           prop: "items",
@@ -156,14 +191,9 @@ export default function FluidShowcase() {
   ]}
 />
 
-## Installation
+### Installation
 
-Four components live on this page. The three standard carousels share one file — import `ImageCarousel`, `HeroCarousel` or `CustomCarousel` from it. The fluid glass slider is its own file, installed separately.
-
-<InstallGroup>
-  <Installation name="carousel" />
-  <Installation name="ui-fluid-glass-slider" />
-</InstallGroup>
+<Installation name="ui-fluid-glass-slider" showSetupPath={false} />
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

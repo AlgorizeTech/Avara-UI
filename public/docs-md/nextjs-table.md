@@ -4,17 +4,95 @@ A highly functional, fully customizable data table component engineered for mode
 
 We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
 
-## Examples
-
 Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
+export const tableData = `const data = [
+  {
+    id: "INV-3021",
+    user: "Alice Freeman",
+    email: "alice@example.com",
+    amount: "$3,200.00",
+    status: "completed",
+    date: "Oct 24, 2023",
+    details: "Payment processed via Stripe. Invoice sent to alice@example.com.",
+  },
+  {
+    id: "INV-3022",
+    user: "Bob Smith",
+    email: "bob@example.com",
+    amount: "$850.50",
+    status: "processing",
+    date: "Oct 24, 2023",
+    details: "Waiting for bank confirmation. Usually takes 2-3 business days.",
+  },
+  {
+    id: "INV-3023",
+    user: "Carla Nguyen",
+    email: "carla@example.com",
+    amount: "$1,940.00",
+    status: "failed",
+    date: "Oct 23, 2023",
+    details: "Card declined by the issuing bank. Customer has been notified.",
+  },
+  {
+    id: "INV-3024",
+    user: "Daniel Okafor",
+    email: "daniel@example.com",
+    amount: "$420.00",
+    status: "completed",
+    date: "Oct 22, 2023",
+    details: "Paid on invoice terms, reconciled automatically.",
+  },
+];
+
+const statusStyles = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const columns = [
+  { key: "id", label: "Invoice", sortable: true },
+  {
+    key: "user",
+    label: "Customer",
+    sortable: true,
+    // \`render\` takes over the whole cell — the row object is the only argument.
+    render: (row) => (
+      
+        {row.user}
+        {row.email}
+      
+    ),
+  },
+  { key: "amount", label: "Amount", sortable: true, align: "right" },
+  {
+    key: "status",
+    label: "Status",
+    sortable: true,
+    render: (row) => (
+      
+        {row.status}
+      
+    ),
+  },
+  { key: "date", label: "Date", sortable: true, align: "right" },
+  { key: "actions", label: "", align: "right" },
+];`;
+
 export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+${tableData}
 
 export default function MinimalTable() {
   return ;
 }`;
 
 export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+
+${tableData}
 
 export default function ExpandableTable() {
   return (
@@ -31,6 +109,8 @@ export default function ExpandableTable() {
 
 export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
 
+${tableData}
+
 export default function PaginatedTable() {
   return (
     
@@ -38,6 +118,8 @@ export default function PaginatedTable() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.

@@ -2,8 +2,6 @@
 
 A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
 
-## Examples
-
 Switch tabs in any preview to see the GSAP crossfade.
 
 export const usageTabsData = `const tabs = [
@@ -54,6 +52,8 @@ export default function HorizontalTabs() {
 
 export const usageHorizontalBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
 
+${usageTabsData}
+
 export default function HorizontalRail() {
   // Every variant works in both orientations — \`bordered\` just moves its
   // divider from the right edge of the rail to the bottom.
@@ -88,6 +88,8 @@ export default function GlassTabs() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

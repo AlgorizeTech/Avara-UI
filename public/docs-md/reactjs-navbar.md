@@ -2,8 +2,6 @@
 
 A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses GSAP to smoothly animate a beautiful slide-out drawer on mobile devices.
 
-## Examples
-
 Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer.
 
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
@@ -41,6 +39,8 @@ export default function GlassHeader() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

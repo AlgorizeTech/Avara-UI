@@ -4,8 +4,6 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-## Examples
-
 Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
 
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
@@ -55,6 +53,8 @@ export default function RootLayout({
   );
 }
 ```
+
+## Examples
 
 ## Features
 

@@ -7,13 +7,54 @@ A cinematic, expanding gallery component built with **GSAP**. It keeps one panel
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-
-## Examples
-
 Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
 
+export const accordionPanels = `const panels = [
+  {
+    id: "ocean",
+    title: "Alpine Sanctuary",
+    description:
+      "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
+    videoSrc:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    posterUrl:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "wildlife",
+    title: "Emerald Rainforest",
+    description:
+      "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
+    videoSrc:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    posterUrl:
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "soaring",
+    title: "Highland Ridge",
+    description:
+      "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
+    videoSrc:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    posterUrl:
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "nature",
+    title: "Cascading Waterfalls",
+    description:
+      "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
+    videoSrc:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    posterUrl:
+      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+  },
+];`;
+
 export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
-import { panels } from "./panels";
+
+${accordionPanels}
 
 export default function OpenedOnLoad() {
   // Land with one panel already open — good for hero sections where the
@@ -22,7 +63,8 @@ export default function OpenedOnLoad() {
 }`;
 
 export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
-import { panels } from "./panels";
+
+${accordionPanels}
 
 export default function ShortReel() {
   // Fewer, wider panels. Each one keeps a legible title strip even when
@@ -48,6 +90,19 @@ export default function ShortReel() {
       usage: usageDefaultActive,
       code: extractCode("src/components/custom/blocks/VideoAccordionBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="video-accordion" />
+
+## Examples
+
+<ExampleShowcase
+  name="video-accordion"
+  columns={1}
+  examples={[
     {
       title: "Fewer panels",
       propNotes: [
@@ -62,10 +117,6 @@ export default function ShortReel() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="video-accordion" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

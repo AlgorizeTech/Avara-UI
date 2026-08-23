@@ -8,8 +8,6 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
-## Examples
-
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
 export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
@@ -73,6 +71,8 @@ The animated-queue example additionally uses `framer-motion`. It is optional; `U
 ```bash
 npx shadcn@latest install framer-motion
 ```
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

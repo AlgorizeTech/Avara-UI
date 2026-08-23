@@ -6,8 +6,6 @@ Building a Context Menu is difficult because it involves intercepting the browse
 
 This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
 
-## Examples
-
 Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
 
 export const usageFull = `import {

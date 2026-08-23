@@ -4,11 +4,24 @@ A high-impact, interactive split-screen layout engineered exclusively with **GSA
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-## Examples
-
 `SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const splitSteps = `// Card bodies — swap these for your own screens.
+function MockLandingView() {
+  return (
+    
+      Landing preview
+    
+  );
+}
+
+function MockSaaSView() {
+  return (
+    
+      SaaS dashboard preview
+    
+  );
+}
 
 const steps = [
   {
@@ -31,7 +44,11 @@ const steps = [
     color: "bg-[#090a14] border-indigo-500/20",
     cardContent: ,
   },
-];
+];`;
+
+export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function ServicesSection() {
   return (
@@ -41,12 +58,16 @@ export default function ServicesSection() {
 
 export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
 
+${splitSteps}
+
 export default function ServicesSectionMirrored() {
   // stickySide moves the sticky card deck to the other column.
   return ;
 }`;
 
 export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function DeepDeck() {
   // cardOffset is the vertical gap (px) between stacked cards;
@@ -58,12 +79,16 @@ export default function DeepDeck() {
 
 export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
 
+${splitSteps}
+
 export default function BrandedSplitStepper() {
   // color drives the active step's rail, number badge, arrow and tint.
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

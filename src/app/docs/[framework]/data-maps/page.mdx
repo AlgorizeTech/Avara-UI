@@ -9,8 +9,6 @@ A powerful, highly-customizable React-Leaflet based choropleth map component des
 
 It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
 
-## Examples
-
 The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
 export const mapDataSource = `const mapData = [
@@ -32,7 +30,8 @@ export default function AnalyticsDashboard() {
 }`;
 
 export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
-import { mapData } from "./data";
+
+${mapDataSource}
 
 export default function DensityMap() {
   // \`dots\` places a pulsing marker at each country's centroid instead of
@@ -41,7 +40,8 @@ export default function DensityMap() {
 }`;
 
 export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
-import { mapData } from "./data";
+
+${mapDataSource}
 
 export default function ZoomableMap() {
   // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
@@ -103,6 +103,21 @@ export default function ColoredMap() {
       usage: usageFill,
       code: extractCode("src/components/custom/blocks/DataMapsBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="data-maps" />
+
+## Examples
+
+<ExampleShowcase
+  name="data-maps"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
     {
       title: "Density dots",
       propNotes: [
@@ -163,13 +178,8 @@ export default function ColoredMap() {
   ]}
 />
 
-## Installation
-
-<Installation name="data-maps" />
-
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

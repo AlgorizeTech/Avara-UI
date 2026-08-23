@@ -2,8 +2,6 @@
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Examples
-
 Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
@@ -45,6 +43,8 @@ export default function GlassModal() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

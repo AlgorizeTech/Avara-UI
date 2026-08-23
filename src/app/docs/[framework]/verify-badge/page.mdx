@@ -6,7 +6,6 @@ export const metadata = {
   description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support.",
 };
 
-
 <style dangerouslySetInnerHTML={{__html: `
   .prose h2 {
     margin-bottom: 12px !important;
@@ -16,14 +15,11 @@ export const metadata = {
   }
 `}} />
 
-
 # Verify Badge
 
 A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
 
 It includes distinct customization options to match different areas of your application.
-
-## Examples
 
 Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
 
@@ -88,6 +84,20 @@ export default function NotificationCard() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VerifyBadgeBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="verify-badge" />
+
+## Examples
+
+<ExampleShowcase
+  name="verify-badge"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Sizes",
       propNotes: [
@@ -131,13 +141,8 @@ export default function NotificationCard() {
   ]}
 />
 
-## Installation
-
-<Installation name="verify-badge" />
-
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

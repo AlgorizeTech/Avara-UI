@@ -45,6 +45,13 @@ export function SandboxClient({ name }: { name: string }) {
     null,
   );
 
+  // Fill mode: the fullscreen overlay hands this document the whole viewport,
+  // so the stage stretches to it and centres the demo in the screen instead of
+  // hugging its own content at the top edge. It arrives over postMessage
+  // rather than in the URL precisely so entering fullscreen never reloads the
+  // demo that is already running.
+  const [fill, setFill] = useState(false);
+
   useEffect(() => {
     setDemoProps((current) => {
       // A postMessage that beat this effect already has the fresher value.
@@ -104,6 +111,9 @@ export function SandboxClient({ name }: { name: string }) {
       if (data && data.type === "sandbox:props" && typeof data.props === "object") {
         setDemoProps(data.props ?? {});
       }
+      if (data && data.type === "sandbox:fill") {
+        setFill(Boolean(data.fill));
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -147,7 +157,7 @@ export function SandboxClient({ name }: { name: string }) {
   return (
     <div
       className="w-full h-full flex flex-col items-center justify-center py-6 px-4"
-      style={{ minHeight: SANDBOX_MIN_HEIGHT }}
+      style={{ minHeight: fill ? "100vh" : SANDBOX_MIN_HEIGHT }}
     >
       <SandboxErrorBoundary name={name}>
         <Suspense fallback={null}>

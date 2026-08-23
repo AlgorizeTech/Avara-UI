@@ -7,8 +7,6 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into two composable pieces: the core `<Progress />` bar for the visual fill, and the optional `<ProgressField />` wrapper which automatically handles the layout for labels and percentage text.
 
-## Examples
-
 Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
@@ -74,6 +72,21 @@ export default function WizardProgress() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ProgressBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="progress" />
+
+## Examples
+
+<ExampleShowcase
+  name="progress"
+  colorControl
+  colorLabel="Accent Brand Theme"
+  columns={1}
+  examples={[
     {
       title: "Custom value format",
       propNotes: [
@@ -103,13 +116,8 @@ export default function WizardProgress() {
   ]}
 />
 
-## Installation
-
-<Installation name="progress" />
-
 ## Features
 Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
@@ -138,7 +146,6 @@ Explore the Progress bar's features, including smooth value interpolation, indet
     <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
-
 
 ## Props Reference
 

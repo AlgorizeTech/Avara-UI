@@ -2,13 +2,9 @@
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-## Examples
-
 `Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
-export const usageCards = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
-
-const data: PricingData = {
+export const pricingData = `const data: PricingData = {
   tabs: [
     {
       id: "monthly",
@@ -36,38 +32,99 @@ const data: PricingData = {
           icon: "Zap",
           features: ["25 projects", "Custom reporting", "1-hour support"],
         },
+        {
+          id: "enterprise",
+          title: "Enterprise",
+          subtitle: "For organisations at scale.",
+          price: "$149",
+          period: "mo",
+          buttonText: "Contact Sales",
+          popular: false,
+          icon: "Building2",
+          features: ["Unlimited projects", "SSO & audit logs", "24/7 phone support"],
+        },
       ],
     },
-    { id: "annually", label: "Annually (Save 20%)", plans: [/* … */] },
+    {
+      id: "annually",
+      label: "Annually (Save 20%)",
+      plans: [
+        {
+          id: "startup",
+          title: "Startup",
+          subtitle: "Perfect for small teams.",
+          price: "$23",
+          period: "mo",
+          buttonText: "Get Started",
+          popular: false,
+          icon: "Rocket",
+          features: ["10 projects", "Basic analytics", "24-hour support"],
+        },
+        {
+          id: "pro",
+          title: "Pro",
+          subtitle: "For scaling businesses.",
+          price: "$47",
+          period: "mo",
+          buttonText: "Upgrade to Pro",
+          popular: true,
+          icon: "Zap",
+          features: ["25 projects", "Custom reporting", "1-hour support"],
+        },
+        {
+          id: "enterprise",
+          title: "Enterprise",
+          subtitle: "For organisations at scale.",
+          price: "$119",
+          period: "mo",
+          buttonText: "Contact Sales",
+          popular: false,
+          icon: "Building2",
+          features: ["Unlimited projects", "SSO & audit logs", "24/7 phone support"],
+        },
+      ],
+    },
   ],
-};
+};`;
+
+export const usageCards = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usagePremium = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function PremiumPricing() {
   // Heavier shadows, gradient price text and a scaled-up popular card.
   return ;
 }`;
 
-export const usageElegant = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageElegant = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function ElegantPricing() {
   // Soft top-border accent on the popular card, lighter type.
   return ;
 }`;
 
-export const usageMinimal = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageMinimal = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function MinimalPricing() {
   // No card chrome until hover — the popular plan is marked by a ring.
   return ;
 }`;
 
-export const usageBordered = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageBordered = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function BorderedPricing() {
   // Hard neo-brutalist edges and offset shadows.
@@ -162,6 +219,8 @@ export default function PricingMenu() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference: PricingCards
 

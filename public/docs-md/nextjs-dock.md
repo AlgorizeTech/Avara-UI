@@ -2,8 +2,6 @@
 
 A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
 
-## Examples
-
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
 export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
@@ -51,6 +49,8 @@ export default function CompactNav() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

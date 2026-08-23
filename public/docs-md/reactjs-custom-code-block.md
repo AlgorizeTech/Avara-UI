@@ -4,23 +4,35 @@ A beautiful, robust code block component with manual syntax highlighting, automa
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
-## Examples
-
 Every block ships with macOS window controls, a language badge derived from `language`, and a copy button.
 
-export const usageDefault = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
-
-const html = \`
+export const htmlSource = `const html = \`
 
     Build Faster. Scale Better.
   
-\`;
+\`;`;
+
+export const cssSource = `const css = \`.hero {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}\`;`;
+
+export const tsxSource = `const tsx = \`export function SystemStatus({ online }: { online: boolean }) {
+  return {online ? "All systems operational" : "Degraded"};
+}\`;`;
+
+export const usageDefault = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+${htmlSource}
 
 export default function Snippet() {
   return ;
 }`;
 
 export const usageTypescript = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
+
+${tsxSource}
 
 export default function TypeScriptBlock() {
   // \`language\` drives both the highlighter and the icon in the header;
@@ -43,6 +55,12 @@ export default function ShellBlock() {
 
 export const usageTabs = `import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
+${htmlSource}
+
+${cssSource}
+
+${tsxSource}
+
 // Pass \`tabs\` instead of \`code\` to switch between related files in one block.
 export default function MultiFileSnippet() {
   return (
@@ -51,6 +69,8 @@ export default function MultiFileSnippet() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.

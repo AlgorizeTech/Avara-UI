@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A complete, production-ready Authentication Block that acts as both a Login and Signup component. It features comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles, and social auth button templates.
 
-## Examples
-
 One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome.
 
 export const usageSignup = `import AuthForm from "@/components/custom/blocks/AuthForm";
@@ -67,6 +65,20 @@ export default function MinimalLoginPage() {
       usage: usageSignup,
       code: extractCode("src/components/custom/blocks/AuthForm.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="signup-form" />
+
+## Examples
+
+<ExampleShowcase
+  name="auth"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Login",
       propNotes: [
@@ -125,10 +137,6 @@ export default function MinimalLoginPage() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="signup-form" />
 
 ## Props Reference
 

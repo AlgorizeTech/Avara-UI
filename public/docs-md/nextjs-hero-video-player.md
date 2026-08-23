@@ -2,8 +2,6 @@
 
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-## Examples
-
 Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button.
 
 export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";

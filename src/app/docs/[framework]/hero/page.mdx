@@ -7,11 +7,9 @@ A collection of modern, highly composable Hero components for marketing websites
 
 <InjectablePropNote prop="linkComponent" component="HomepageHeroBlock" />
 
-## Examples
+Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections. Each has its own install command, so each one's sits with the block it installs.
 
-Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections.
-
-### Composable hero
+## Composable hero
 
 `Hero` publishes `layout`, `variant` and `color` through context, so `HeroTitle`, `HeroAction` and `HeroVisual` restyle themselves — you never repeat the theme on a child.
 
@@ -84,6 +82,7 @@ export default function SplitLeftHero() {
   // The visual moves to the left column; the markup order never changes.
   return (
     <Hero layout="split-left" pattern="grid">
+<<<<<<< HEAD
       <HeroContent>
         <HeroBadge>
           <Zap className="w-4 h-4" />
@@ -114,6 +113,10 @@ export default function SplitLeftHero() {
           className="w-full h-full object-cover"
         />
       </HeroVisual>
+=======
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+      <HeroVisual>{/* an <img>, video or mockup */}</HeroVisual>
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
     </Hero>
   );
 }`;
@@ -134,6 +137,7 @@ export default function CenteredHero() {
   // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
   return (
     <Hero layout="center" pattern="grid">
+<<<<<<< HEAD
       <HeroContent>
         <HeroBadge>
           <Zap className="w-4 h-4" />
@@ -164,6 +168,10 @@ export default function CenteredHero() {
           className="w-full h-full object-cover"
         />
       </HeroVisual>
+=======
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+      <HeroVisual>{/* an <img>, video or mockup */}</HeroVisual>
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
     </Hero>
   );
 }`;
@@ -183,6 +191,7 @@ export default function LeftAlignedHero() {
   // Single column, left aligned — no visual column at all.
   return (
     <Hero layout="left" pattern="none">
+<<<<<<< HEAD
       <HeroContent>
         <HeroBadge>
           <Zap className="w-4 h-4" />
@@ -206,6 +215,9 @@ export default function LeftAlignedHero() {
           </HeroAction>
         </HeroActions>
       </HeroContent>
+=======
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
     </Hero>
   );
 }`;
@@ -225,9 +237,14 @@ import { ArrowRight, PlayCircle, Zap } from "lucide-react";
 export default function GlassHero() {
   // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
   // \`HeroAction\` picks that up from context — no extra props on the buttons.
+  //
+  // Under \`glass\`, \`HeroVisual\` is not a side panel — it becomes the full-bleed
+  // background layer behind the frosted card. Leave it empty and the hero renders
+  // blank, so give it an image.
   return (
     <Hero layout="split-right" variant="glass" color="indigo">
       <HeroContent>
+<<<<<<< HEAD
         <HeroBadge>
           <Zap className="w-4 h-4" />
           <span>Supercharged Components</span>
@@ -249,13 +266,27 @@ export default function GlassHero() {
             Watch Demo
           </HeroAction>
         </HeroActions>
+=======
+        <HeroTitle>Build stunning interfaces</HeroTitle>
+        <HeroDescription>
+          Ship faster with production-ready blocks.
+        </HeroDescription>
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
       </HeroContent>
       <HeroVisual>
         <img
           src="/hero.jpg"
+<<<<<<< HEAD
           alt="Abstract gradient interface"
           className="w-full h-full object-cover"
         />
+=======
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        {/* Keeps the frosted text readable over a bright photo. */}
+        <div className="absolute inset-0 bg-black/20 z-0" />
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
       </HeroVisual>
     </Hero>
   );
@@ -297,6 +328,7 @@ export default function PatternedHero() {
   // \`pattern\` paints the backdrop: "none", "grid" or "dots".
   return (
     <Hero layout="center" pattern="dots">
+<<<<<<< HEAD
       <HeroContent>
         <HeroBadge>
           <Zap className="w-4 h-4" />
@@ -320,6 +352,9 @@ export default function PatternedHero() {
           </HeroAction>
         </HeroActions>
       </HeroContent>
+=======
+      <HeroContent>{/* your headline, copy and CTAs */}</HeroContent>
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
     </Hero>
   );
 }`;
@@ -365,6 +400,24 @@ export default function GlitchHero() {
       usage: usageSplitLeft,
       code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="hero" />
+
+
+### More examples
+
+Every example below is the same `HeroBlock` you just installed — only the props change.
+
+<ExampleShowcase
+  name="hero"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
     {
       title: "Centered",
       propNotes: [
@@ -410,7 +463,7 @@ export default function GlitchHero() {
   ]}
 />
 
-### Homepage hero — word bounce
+## Homepage hero — word bounce
 
 The flagship centered hero: a sparkle pill badge, a rotating word that bounces in and out, a one-click CLI copy button, and two call-to-action buttons. Every string is a prop.
 
@@ -453,7 +506,11 @@ export default function Page() {
   ]}
 />
 
-### Homepage hero — typing effect
+### Installation
+
+<Installation name="homepage-hero" showSetupPath={false} />
+
+## Homepage hero — typing effect
 
 The same layout with a character-by-character typewriter and a blinking cursor in place of the bounce.
 
@@ -492,19 +549,13 @@ export default function Page() {
   ]}
 />
 
-### Recipes
+### Installation
+
+<Installation name="homepage-hero-typing" showSetupPath={false} />
+
+## Recipes
 
 Two finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
-
-## Installation
-
-Three independent blocks live on this page. Install whichever you need — they share no files.
-
-<InstallGroup>
-  <Installation name="hero" />
-  <Installation name="homepage-hero" />
-  <Installation name="homepage-hero-typing" />
-</InstallGroup>
 
 ## Props Reference
 

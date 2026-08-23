@@ -2,13 +2,9 @@
 
 A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
 
-## Examples
-
 Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
 
-export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
-
-const items = [
+export const showcaseItems = `const items = [
   {
     id: "landing-page",
     stepNumber: "01",
@@ -29,7 +25,21 @@ const items = [
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200",
     badgeText: "SELECTED SERVICE",
   },
-];
+  {
+    id: "design-systems",
+    stepNumber: "03",
+    title: "Design Systems",
+    description:
+      "A token-driven component library your team can extend without drifting from the brand.",
+    tags: ["DESIGN TOKENS", "COMPONENT LIBRARY"],
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200",
+    badgeText: "SELECTED SERVICE",
+  },
+];`;
+
+export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function ServicesShowcase() {
   return (
@@ -39,6 +49,8 @@ export default function ServicesShowcase() {
 
 export const usageTextOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
+${showcaseItems}
+
 export default function TextOnlyShowcase() {
   // "text-only" drops the sticky image column and lets the accordion
   // run full width — useful for an FAQ or a process list.
@@ -47,12 +59,16 @@ export default function TextOnlyShowcase() {
 
 export const usageImageOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
+${showcaseItems}
+
 export default function ImageOnlyShowcase() {
   // "image-only" keeps the scroll-driven visual and hides the copy.
   return ;
 }`;
 
 export const usageDefaultIndex = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function ShowcaseStartingOnThird() {
   // defaultIndex picks which row is open before the user scrolls.
@@ -64,6 +80,8 @@ export default function ShowcaseStartingOnThird() {
 ### Accent color
 
 The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.
+
+## Examples
 
 ## Props Reference
 

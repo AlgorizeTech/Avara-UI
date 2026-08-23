@@ -4,8 +4,6 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Examples
-
 Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
 export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
@@ -60,6 +58,8 @@ export default function DisabledToggle() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

@@ -4,9 +4,17 @@ A declarative, highly sleek flowchart engine complete with custom responsive col
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-## Examples
-
 Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
+
+export const pipelineNodes = `function PipelineNodes() {
+  return (
+    <>
+      {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
+
+      {/* Nodes are absolutely positioned, so the ports line up with the paths */}
+
+  );
+}`;
 
 export const usageDefault = `import {
   FlowCanvas,
@@ -39,7 +47,14 @@ export default function LinearPipeline() {
   );
 }`;
 
-export const usageIdle = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+export const usageIdle = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+
+${pipelineNodes}
 
 export default function IdlePipeline() {
   // Pass null and nothing streams until the reader picks a node.
@@ -48,7 +63,14 @@ export default function IdlePipeline() {
   );
 }`;
 
-export const usageColor = `import { Flowchart } from "@/components/custom/blocks/FlowchartBlock";
+export const usageColor = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+
+${pipelineNodes}
 
 export default function AccentedPipeline() {
   // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
@@ -59,6 +81,8 @@ export default function AccentedPipeline() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Best Practices & Guidelines
 

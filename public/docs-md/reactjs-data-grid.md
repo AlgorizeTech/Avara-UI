@@ -6,13 +6,9 @@ Building an interactive spreadsheet is notoriously difficult. Most developers gi
 
 This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
 
-## Examples
-
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
-export const usageDefault = `import { useState } from "react";
-
-const COLUMNS = [
+export const gridSchema = `const COLUMNS = [
   { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
   { field: "customer", headerName: "Customer Name", width: 200 },
   { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
@@ -20,13 +16,19 @@ const COLUMNS = [
   { field: "date", headerName: "Date", width: 140 },
 ];
 
-const INITIAL_DATA = [
+const ROWS = [
   { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
   { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
-];
+  { id: "TX-103", customer: "Nord Systems", amount: 890.25, status: "Paid", date: "2023-10-15" },
+  { id: "TX-104", customer: "Vertex Labs", amount: 3120, status: "Overdue", date: "2023-10-18" },
+];`;
+
+export const usageDefault = `import { useState } from "react";
+
+${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(INITIAL_DATA);
+  const [data, setData] = useState(ROWS);
 
   return (
     
@@ -35,12 +37,16 @@ export default function Ledger() {
 
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 
+${gridSchema}
+
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.

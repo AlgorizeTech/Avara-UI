@@ -66,6 +66,8 @@ export default function SonarCursorDemo() {
 
 ## Installation
 
+## Examples
+
 ## Features
 
 Discover the key interactive capabilities of the `CursorAnimation` block:

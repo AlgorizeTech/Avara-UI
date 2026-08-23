@@ -6,11 +6,30 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 ---
 
-## Examples
-
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
+export const networkNodes = `const users = [
+  // Ring 1 (inner)
+  { id: "1", ring: 1, image: "https://i.pravatar.cc/150?u=1", label: "Sarah J." },
+  { id: "2", ring: 1, image: "https://i.pravatar.cc/150?u=2", label: "David B." },
+  // No image? \`fallback\` renders the initials tile instead.
+  { id: "3", ring: 1, fallback: "JW", label: "James W." },
+  { id: "4", ring: 1, image: "https://i.pravatar.cc/150?u=4", label: "Lisa M." },
+
+  // Ring 2 (outer)
+  { id: "5", ring: 2, image: "https://i.pravatar.cc/150?u=5", label: "Emma R." },
+  { id: "6", ring: 2, image: "https://i.pravatar.cc/150?u=6", label: "Noah P." },
+  { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
+  { id: "8", ring: 2, image: "https://i.pravatar.cc/150?u=8", label: "Ava T.", size: "sm" },
+  { id: "9", ring: 2, image: "https://i.pravatar.cc/150?u=9", label: "Ethan C." },
+  { id: "10", ring: 2, image: "https://i.pravatar.cc/150?u=10", label: "Olivia S.", size: "lg" },
+  { id: "11", ring: 2, image: "https://i.pravatar.cc/150?u=11", label: "Liam H." },
+  { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
+];`;
+
 export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+
+${networkNodes}
 
 export default function RingLayout() {
   // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
@@ -23,6 +42,8 @@ export default function RingLayout() {
 
 export const usageStatic = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
+${networkNodes}
+
 export default function StaticGraph() {
   // Rings hold their position — the entrance animation still plays.
   return ;
@@ -30,12 +51,16 @@ export default function StaticGraph() {
 
 export const usageSpeed = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
 
+${networkNodes}
+
 export default function FastGraph() {
   // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

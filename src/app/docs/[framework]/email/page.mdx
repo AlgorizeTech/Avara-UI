@@ -5,13 +5,9 @@ import { extractCode } from "@/lib/code";
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Examples
-
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
-export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
-
-const emails = [
+export const emailData = `const emails = [
   {
     id: 1,
     sender: "Tressa Gass",
@@ -35,14 +31,19 @@ const emails = [
     ],
     folder: "inbox",
   },
-];
+];`;
+
+export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
+
+${emailData}
 
 export default function Mailbox() {
   return <EmailApp initialEmails={emails} />;
 }`;
 
 export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
-import { emails } from "./emails";
+
+${emailData}
 
 export default function MinimalMailbox() {
   // Flattens the shell — no elevated card, lighter dividers.
@@ -50,7 +51,8 @@ export default function MinimalMailbox() {
 }`;
 
 export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
-import { emails } from "./emails";
+
+${emailData}
 
 export default function GlassMailbox() {
   return (
@@ -92,6 +94,20 @@ export default function GlassMailbox() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Email.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="email" />
+
+## Examples
+
+<ExampleShowcase
+  name="email"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -123,13 +139,8 @@ export default function GlassMailbox() {
   ]}
 />
 
-## Installation
-
-<Installation name="email" />
-
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

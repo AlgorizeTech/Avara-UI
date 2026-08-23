@@ -4,8 +4,6 @@ A set of segmented, two-state buttons that can be toggled on or off, perfect for
 
 This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `` components inside the parent `` and it handles all of the logic automatically.
 
-## Examples
-
 Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
 export const usageSingle = `import {
@@ -86,6 +84,8 @@ export default function DisabledGroup() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

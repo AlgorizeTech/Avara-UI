@@ -7,10 +7,15 @@ A deeply interactive, parallax-driven 3D tilt component. It calculates the relat
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
-
-## Examples
-
 Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
+
+export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
+const card = (
+  <div className="w-full h-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8">
+    <h3 className="text-2xl font-black uppercase">Access Key</h3>
+    <p className="mt-2 text-sm text-zinc-500">Tap and drag to tilt.</p>
+  </div>
+);`;
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
@@ -27,7 +32,8 @@ export default function AccessKeyCard() {
 }`;
 
 export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-import { card } from "./card";
+
+${cardSource}
 
 export default function StrongTilt() {
   // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
@@ -36,7 +42,8 @@ export default function StrongTilt() {
 }`;
 
 export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-import { card } from "./card";
+
+${cardSource}
 
 export default function SubtleTilt() {
   // A restrained tilt for dense layouts where many cards move at once.
@@ -48,7 +55,8 @@ export default function SubtleTilt() {
 }`;
 
 export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-import { card } from "./card";
+
+${cardSource}
 
 export default function StrongGlare() {
   // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
@@ -57,14 +65,16 @@ export default function StrongGlare() {
 }`;
 
 export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-import { card } from "./card";
+
+${cardSource}
 
 export default function NoGlare() {
   return <TiltedCard glareOpacity={0}>{card}</TiltedCard>;
 }`;
 
 export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
-import { card } from "./card";
+
+${cardSource}
 
 export default function LiftOnHover() {
   // How far the card lifts toward the viewer on hover.
@@ -102,12 +112,91 @@ export default function LiftOnHover() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
     },
+<<<<<<< HEAD
+=======
   ]}
 />
 
 ## Installation
 
 <Installation name="tilted-card" />
+
+## Examples
+
+<ExampleShowcase
+  name="tilted-card"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Stronger tilt",
+      propNotes: [
+        {
+          prop: "tiltIntensity",
+          value: '{35}',
+          effect:
+            "is the maximum rotation in degrees on each axis, reached at the edge of the box. Defaults to `15`; past ~25 the perspective starts to shear.",
+        },
+      ],
+      props: { tiltIntensity: 35 },
+      usage: usageIntensity,
+    },
+    {
+      title: "Subtle tilt",
+      propNotes: [
+        {
+          prop: "tiltIntensity",
+          value: '{6}',
+          effect:
+            "keeps the motion restrained for dense layouts where many cards move at once.",
+        },
+      ],
+      props: { tiltIntensity: 6, scaleOnHover: 1.01 },
+      usage: usageSubtle,
+    },
+    {
+      title: "Stronger glare",
+      propNotes: [
+        {
+          prop: "glareOpacity",
+          value: '{0.55}',
+          effect:
+            "is the peak alpha of the radial highlight that tracks the pointer.",
+        },
+      ],
+      props: { glareOpacity: 0.55 },
+      usage: usageGlare,
+    },
+    {
+      title: "Without glare",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "glareOpacity",
+          value: '{0}',
+          effect:
+            "to drop the reflection entirely — right when the card already carries its own lighting.",
+        },
+      ],
+      props: { glareOpacity: 0 },
+      usage: usageNoGlare,
+    },
+    {
+      title: "Lift on hover",
+      propNotes: [
+        {
+          prop: "scaleOnHover",
+          value: '{1.12}',
+          effect:
+            "is how far the card comes toward the viewer on hover.",
+        },
+      ],
+      props: { scaleOnHover: 1.12 },
+      usage: usageScale,
+    },
+>>>>>>> 10e48c0af6cd1609508c9c5879ba90ea561faaec
+  ]}
+/>
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
 
-## Examples
-
 Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
 export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
@@ -125,6 +123,20 @@ export default function LaunchCountdown() {
       usage: usageStepper,
       code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="counter" />
+
+## Examples
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Outline stepper",
       propNotes: [
@@ -206,13 +218,8 @@ export default function LaunchCountdown() {
   ]}
 />
 
-## Installation
-
-<Installation name="counter" />
-
 ## Features
 Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

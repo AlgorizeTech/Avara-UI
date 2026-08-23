@@ -2,13 +2,9 @@
 
 A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
 
-## Examples
-
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
-export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
-
-const invoiceData = {
+export const invoiceSource = `const invoiceData = {
   invoiceNumber: "#4987",
   dateIssued: "13 Mar 2026",
   dateDue: "23 Mar 2026",
@@ -41,7 +37,11 @@ const invoiceData = {
   grandTotal: "$1690",
   salesPerson: "Tommy Shelby",
   note: "It was a pleasure working with you and your team.",
-};
+};`;
+
+export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
 
 export default function InvoicePage() {
   return ;
@@ -49,12 +49,16 @@ export default function InvoicePage() {
 
 export const usageMinimal = `import { Invoice } from "@/components/custom/blocks/Invoice";
 
+${invoiceSource}
+
 export default function MinimalInvoice() {
   // Strips the card chrome down to type and rules — the print-friendly layout.
   return ;
 }`;
 
 export const usageGlass = `import { Invoice } from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
 
 export default function GlassInvoice() {
   return (
@@ -64,6 +68,8 @@ export default function GlassInvoice() {
 };`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.

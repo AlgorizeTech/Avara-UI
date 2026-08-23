@@ -7,18 +7,20 @@ A completely custom, headless-style dropdown component. Native HTML `<select>` e
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
-## Examples
-
 Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
+
+export const selectOptions = `const options = [
+  { label: "Engineering", value: "eng" },
+  { label: "Design", value: "design" },
+  { label: "Marketing", value: "mkt" },
+  { label: "Sales", value: "sales" },
+  { label: "Support", value: "support" },
+];`;
 
 export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
 
-const options = [
-  { label: "Engineering", value: "eng" },
-  { label: "Design", value: "design" },
-  { label: "Marketing", value: "mkt" },
-];
+${selectOptions}
 
 export default function BasicSelect() {
   const [value, setValue] = useState("");
@@ -39,7 +41,8 @@ export const usageUnderlined = `"use client";
 
 import { useState } from "react";
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
+
+${selectOptions}
 
 export default function UnderlinedSelect() {
   const [value, setValue] = useState("");
@@ -60,7 +63,8 @@ export const usageSearchable = `"use client";
 
 import { useState } from "react";
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-import { options } from "./options";
+
+${selectOptions}
 
 export default function SearchableSelect() {
   const [value, setValue] = useState("");
@@ -79,6 +83,8 @@ export default function SearchableSelect() {
 
 export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
+
+${selectOptions}
 
 export default function MultiSelect() {
   const [values, setValues] = useState([]);
@@ -122,6 +128,22 @@ export default function MultiSelect() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SelectBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="select" />
+
+## Examples
+
+<ExampleShowcase
+  name="select"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  minHeight={450}
+  examples={[
     {
       title: "Underlined",
       propNotes: [
@@ -165,13 +187,8 @@ export default function MultiSelect() {
   ]}
 />
 
-## Installation
-
-<Installation name="select" />
-
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

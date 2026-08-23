@@ -4,8 +4,6 @@ A high-performance record management table featuring global search, multi-column
 
 This component is the engine for SaaS dashboards and administrative panels. Unlike our spreadsheet-focused `DataGrid`, this `AdvancedTableBlock` is optimized for displaying, filtering, and manipulating large datasets with a beautiful, modern aesthetic. It perfectly replicates the UI of top-tier platforms with a floating dark-mode batch actions pill and staggered CSS entry animations.
 
-## Examples
-
 Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in.
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._

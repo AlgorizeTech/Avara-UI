@@ -4,8 +4,6 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
 
-## Examples
-
 The sub-components handle their own padding, so cards stay balanced whatever you put in them.
 
 export const usageDefault = `import {
@@ -81,6 +79,8 @@ export default function StatGrid() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.
