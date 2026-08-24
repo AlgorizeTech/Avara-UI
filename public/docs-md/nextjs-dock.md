@@ -17,7 +17,7 @@ export default function BottomNav() {
     { id: "terminal", label: "Terminal", icon: , isActive: active === "terminal", onClick: () => setActive("terminal") },
     { id: "projects", label: "Repositories", icon: , isActive: active === "projects", onClick: () => setActive("projects") },
     { id: "ai", label: "AI Assistant", icon: , isActive: active === "ai", onClick: () => setActive("ai") },
-    { id: "github", label: "GitHub", icon: , isActive: active === "github", onClick: () => setActive("github") },
+    { id: "code", label: "Code", icon: , isActive: active === "code", onClick: () => setActive("code") },
     { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
@@ -43,7 +43,13 @@ export default function CompactNav() {
     { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
-  return ;
+  return (
+
+        Active App:{" "}
+        
+          {active}
+
+  );
 }`;
 
 ## Installation

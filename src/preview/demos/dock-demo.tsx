@@ -4,7 +4,7 @@ import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
 import {
   Compass,
   FolderGit2,
-  Github,
+  Code2,
   Home,
   Mail,
   Settings,
@@ -81,11 +81,11 @@ export default function DockDemo({
       onClick: () => setActive("ai"),
     },
     {
-      id: "github",
-      label: "GitHub",
-      icon: <Github className="w-full h-full" />,
-      isActive: active === "github",
-      onClick: () => setActive("github"),
+      id: "code",
+      label: "Code",
+      icon: <Code2 className="w-full h-full" />,
+      isActive: active === "code",
+      onClick: () => setActive("code"),
     },
     {
       id: "settings",
