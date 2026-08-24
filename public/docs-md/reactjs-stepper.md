@@ -41,7 +41,17 @@ function ReviewPanel() {
   );
 }`;
 
-export const usageFlow = `const BACK_BTN =
+export const usageFlow = `// The Workspace step picks a role with the Select block:
+//   npx shadcn@latest add https://algorize-ui.vercel.app/r/select.json
+
+const PRIMARY_ROLE_OPTIONS = [
+  "Developer",
+  "Designer",
+  "Product Manager",
+  "Founder",
+].map((r) => ({ label: r, value: r }));
+
+const BACK_BTN =
   "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
   "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-indigo-600";
@@ -49,28 +59,64 @@ const NEXT_BTN =
 // Controlled field. \`error\` is what makes a blocked Next visible to the reader.
 function Field({
   label,
+  icon: Icon,
   placeholder,
   value,
   onChange,
   error,
+  type,
 }: {
   label: string;
+  icon?: LucideIcon;
   placeholder: string;
   value: string;
   onChange: (next: string) => void;
   error?: string;
+  type?: string;
 }) {
   return (
 
-        {label}
+        {label} *
+
+        {Icon && (
+
+        )}
+         onChange(e.target.value)}
+          placeholder={placeholder}
+          className={cn(
+            "w-full h-11 bg-zinc-50 dark:bg-zinc-900 border rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-all",
+            Icon && "pl-10",
+            error
+              ? "border-rose-500 focus:ring-rose-500/20"
+              : "border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600",
+          )}
+        />
       
-       onChange(e.target.value)}
-        placeholder={placeholder}
-        className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm outline-none focus:border-indigo-500"
-      />
       {error && (
-        {error}
+
+          {error}
+        
       )}
+    
+  );
+}
+
+// Every step body sits on this card — it is what the preview renders.
+function StepCard({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+}) {
+  return (
+
+        {title}
+        {subtitle}
+      
+      {children}
     
   );
 }
@@ -79,7 +125,7 @@ type FormData = {
   fullName: string;
   email: string;
   company: string;
-  teamSize: string;
+  role: string;
   password: string;
   confirmPassword: string;
 };
@@ -91,12 +137,14 @@ export default function OnboardingWizard() {
     fullName: "",
     email: "",
     company: "",
-    teamSize: "",
+    role: "Developer",
     password: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [simulateError, setSimulateError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const set = (key: keyof FormData) => (next: string) =>
     setFormData((prev) => ({ ...prev, [key]: next }));
@@ -117,11 +165,17 @@ export default function OnboardingWizard() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setSubmitError("");
     try {
+      // simulateError is the preview's DEBUG_MODE switch — it lets you see the
+      // failure branch without breaking the endpoint. Drop it in your own app.
+      if (simulateError) throw new Error("ERR_500: Database insertion failed.");
       await fetch("/api/submit", {
         method: "POST",
         body: JSON.stringify(formData),
       });
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "Submission failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -135,8 +189,6 @@ export default function OnboardingWizard() {
       icon: User,
       content: (
 
-            Enter your contact details to begin setting up your account.
-
       ),
     },
     {
@@ -145,6 +197,8 @@ export default function OnboardingWizard() {
       description: "Organization",
       icon: Building2,
       content: (
+
+                Primary Role
 
       ),
     },
@@ -155,8 +209,6 @@ export default function OnboardingWizard() {
       icon: ShieldCheck,
       content: (
 
-            Create a secure password for your workspace access.
-
       ),
     },
     {
@@ -165,9 +217,33 @@ export default function OnboardingWizard() {
       description: "Confirm & Submit",
       icon: CheckCircle2,
       content: (
-        
-          Everything looks good — hit Submit to finish setting up your workspace.
-        
+
+              Name:
+              {formData.fullName || "—"}
+
+              Email:
+              {formData.email || "—"}
+
+              Company:
+              {formData.company || "—"}
+
+              Role:
+              {formData.role || "—"}
+
+          {submitError && (
+
+                Submission Failed
+                {submitError}
+
+          )}
+
+               setSimulateError(e.target.checked)}
+                className="rounded border-zinc-300 dark:border-zinc-700 text-rose-500 focus:ring-rose-500"
+              />
+              Simulate Server Error on Submit
+            
+            DEBUG_MODE
+
       ),
     },
   ];

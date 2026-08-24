@@ -8,7 +8,21 @@ _Note: in these previews the modal is absolutely positioned so it stays inside t
 
 export const usageDefault = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
 
-export default function UserDetailsModal({ data, isOpen, onClose }) {
+type User = {
+  name?: string;
+  email?: string;
+  emailVerified?: boolean;
+  phone?: string;
+  address?: string;
+};
+
+type UserDetailsModalProps = {
+  data?: User | null;
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function UserDetailsModal({ data, isOpen, onClose }: UserDetailsModalProps) {
   return (
 
         {data && (
@@ -53,7 +67,7 @@ export default function FormModal() {
   );
 }`;
 
-export const usageConfirmation = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageConfirmation = `import { Modal, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
 
 export default function ConfirmModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,7 +103,7 @@ export default function FullscreenModal() {
   );
 }`;
 
-export const usageGlass = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageGlass = `import { Modal, ModalHeader, ModalBody } from "@/components/custom/blocks/ModalBlock";
 
 export default function GlassModal() {
   const [isOpen, setIsOpen] = useState(false);

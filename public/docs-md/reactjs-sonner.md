@@ -30,9 +30,12 @@ export const usageTypes = `// The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function ToastTypes() {
   return (
-    
+    <>
+      
        toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
         Default
       
@@ -52,19 +55,22 @@ export const usageAction = `// The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function UndoToast() {
   return (
-    
-        toast("Message deleted", {
-          action: {
-            label: "Undo",
-            onClick: () => alert("Undo clicked!"),
-          },
-        })
-      }
-    >
-      With Action
-    
+    <>
+      
+          toast("Message deleted", {
+            action: {
+              label: "Undo",
+              onClick: () => alert("Undo clicked!"),
+            },
+          })
+        }
+      >
+        With Action
+
   );
 }`;
 
@@ -72,6 +78,8 @@ export const usageStack = `// The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function StackDemo() {
   // New toasts stack on top; older ones scale down and slide back in 3D.
   // Hover the stack to expand it into a readable list.
@@ -81,7 +89,12 @@ export default function StackDemo() {
     setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
   };
 
-  return Spawn three toasts;
+  return (
+    <>
+      
+        Spawn three toasts
+
+  );
 }`;
 
 export const usageExpand = `// The trigger styling the preview uses.
@@ -109,9 +122,12 @@ export const usageDuration = `// The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
 
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function ToastDuration() {
   return (
-    
+    <>
+      
       {/* Infinity disables auto-dismiss — the user closes it */}
       
           toast("Syncing your workspace", {
@@ -133,13 +149,13 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `const POSITIONS: NonNullable[] = [
-  "top-left",
-  "top-center",
-  "top-right",
-  "bottom-left",
-  "bottom-center",
-  "bottom-right",
+export const usagePosition = `const POSITIONS: { value: NonNullable; label: string }[] = [
+  { value: "top-left", label: "Top left" },
+  { value: "top-center", label: "Top center" },
+  { value: "top-right", label: "Top right" },
+  { value: "bottom-left", label: "Bottom left" },
+  { value: "bottom-center", label: "Bottom center" },
+  { value: "bottom-right", label: "Bottom right" },
 ];
 
 export default function PositionDemo() {
@@ -151,11 +167,22 @@ export default function PositionDemo() {
 
         {POSITIONS.map((p) => (
            {
-              setPosition(p);
-              toast(p, { description: \`Stack anchored to "\${p}".\` });
+              // Clear first, then move the stack, so the new toast animates in
+              // at the new anchor instead of sliding across from the old one.
+              toast.clear();
+              setPosition(p.value);
+              setTimeout(() => {
+                toast(p.label, { description: \`Stack anchored to "\${p.value}".\` });
+              }, 50);
             }}
+            className={cn(
+              "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
+              position === p.value
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
+            )}
           >
-            {p}
+            {p.label}
           
         ))}
 
