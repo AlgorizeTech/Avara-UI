@@ -1,20 +1,50 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { SelectBlock } from "./SelectBlock";
-import gsap from "gsap";
-import { AlertCircle, Info, X } from "lucide-react";
-import React, {
+import { AlertCircle, X } from "lucide-react";
+import type * as React from "react";
+import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
+import { SelectBlock } from "./SelectBlock";
 
-// ==========================================
-// DYNAMIC THEME ENGINE & TYPES
-// ==========================================
+const ModalLabelContext = createContext<string | null>(null);
+
+let scrollLockCount = 0;
+let originalBodyOverflow = "";
+let originalBodyPaddingRight = "";
+
+function lockBodyScroll() {
+  if (typeof document === "undefined") return;
+  if (scrollLockCount === 0) {
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    originalBodyOverflow = document.body.style.overflow;
+    originalBodyPaddingRight = document.body.style.paddingRight;
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+  }
+  scrollLockCount += 1;
+}
+
+function unlockBodyScroll() {
+  if (typeof document === "undefined") return;
+  scrollLockCount = Math.max(0, scrollLockCount - 1);
+  if (scrollLockCount === 0) {
+    document.body.style.overflow = originalBodyOverflow;
+    document.body.style.paddingRight = originalBodyPaddingRight;
+  }
+}
+
 export type ModalColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type ModalVariant = "default" | "glass" | "minimal" | "bordered";
 export type ModalType = "standard" | "form" | "fullscreen" | "confirmation";
@@ -90,140 +120,174 @@ export const getThemeStyles = (color: string) => {
   return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
-// ==========================================
-// GSAP MODAL PRIMITIVE
-// ==========================================
-interface ModalContextType {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  type: ModalType;
-}
-const ModalContext = createContext<ModalContextType | null>(null);
+export type ModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
+  contentClassName?: string;
+  overlayClassName?: string;
+  primaryCloseButton?: boolean;
+  ariaLabel?: string;
+};
 
-const ModalRoot = ({
-  open,
-  onOpenChange,
-  type,
+export function Modal({
+  isOpen,
+  onClose,
   children,
-}: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-  type: ModalType;
-  children: React.ReactNode;
-}) => {
-  const [renderLayer, setRenderLayer] = useState(open);
+  contentClassName,
+  overlayClassName,
+  primaryCloseButton = false,
+  ariaLabel,
+}: ModalProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+  const isClosingRef = useRef(false);
+  const labelId = useId();
 
   useEffect(() => {
-    if (open) {
-      setRenderLayer(true);
+    if (isOpen) {
+      isClosingRef.current = false;
+      setShouldRender(true);
+      const timer = setTimeout(() => setIsVisible(true), 10);
+      return () => clearTimeout(timer);
     } else {
-      const timer = setTimeout(() => setRenderLayer(false), 300);
+      setIsVisible(false);
+      const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }
-  }, [open]);
+  }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    if (isClosingRef.current) return;
+    isClosingRef.current = true;
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  }, [onClose]);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onOpenChange(false);
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
     };
-    if (open) document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [open, onOpenChange]);
-
-  if (!renderLayer) return null;
-  return (
-    <ModalContext.Provider value={{ open, onOpenChange, type }}>
-      <div className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-        {children}
-      </div>
-    </ModalContext.Provider>
-  );
-};
-
-const ModalOverlay = ({ className }: { className?: string }) => {
-  const { open, onOpenChange } = useContext(ModalContext)!;
-  const overlayRef = useRef<HTMLDivElement>(null);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose]);
 
   useEffect(() => {
-    if (open && overlayRef.current) {
-      gsap.fromTo(
-        overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-    } else if (overlayRef.current) {
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
-      });
-    }
-  }, [open]);
+    if (!shouldRender) return;
+    lockBodyScroll();
+    return () => unlockBodyScroll();
+  }, [shouldRender]);
 
-  return (
+  if (!shouldRender) return null;
+
+  const ariaProps = ariaLabel
+    ? { "aria-label": ariaLabel }
+    : { "aria-labelledby": labelId };
+
+  const overlay = (
     <div
-      ref={overlayRef}
-      onClick={() => onOpenChange(false)}
       className={cn(
-        "absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto",
-        className,
+        "fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ease-in-out backdrop-blur-[3px]",
+        isVisible ? "bg-black/50 opacity-100" : "bg-black/0 opacity-0",
+        overlayClassName,
       )}
-    />
+      onClick={handleClose}
+      role="presentation"
+    >
+      <div
+        className={cn(
+          "relative w-full max-w-lg overflow-hidden rounded-2xl bg-background shadow-xl transition-all duration-300 ease-in-out",
+          isVisible
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 -translate-y-12 scale-95",
+          contentClassName,
+        )}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        {...ariaProps}
+      >
+        {primaryCloseButton ? (
+          <button
+            onClick={handleClose}
+            data-modal-close
+            type="button"
+            aria-label="Close"
+            className="bg-primary/10 p-1.5 rounded-md text-primary absolute top-4 right-4 cursor-pointer hover:bg-primary/20 transition-colors duration-200 z-10"
+          >
+            <X className="h-5 w-5 ml-[1px]" />
+          </button>
+        ) : (
+          <button
+            onClick={handleClose}
+            data-modal-close
+            type="button"
+            aria-label="Close"
+            className="text-muted-foreground hover:text-foreground absolute top-4 right-4 cursor-pointer transition-colors duration-200 z-10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
+        <ModalLabelContext.Provider value={labelId}>
+          <div>{children}</div>
+        </ModalLabelContext.Provider>
+      </div>
+    </div>
   );
+
+  return typeof document !== "undefined"
+    ? createPortal(overlay, document.body)
+    : overlay;
+}
+
+export type ModalSectionProps = {
+  title?: React.ReactNode;
+  className?: string;
+  children?: React.ReactNode;
 };
 
-const ModalContent = ({
-  children,
+export function ModalHeader({
+  title,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  const { open, type } = useContext(ModalContext)!;
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  const typeClasses = {
-    standard: "max-w-md w-full",
-    form: "max-w-lg w-full",
-    fullscreen: "max-w-5xl w-full h-[90vh] flex flex-col",
-    confirmation: "max-w-sm w-full",
-  };
-
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-    if (open)
-      gsap.fromTo(
-        el,
-        { opacity: 0, scale: 0.95, y: 10 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" },
-      );
-    else
-      gsap.to(el, {
-        opacity: 0,
-        scale: 0.95,
-        y: 10,
-        duration: 0.3,
-        ease: "power2.in",
-      });
-  }, [open]);
-
+  children,
+}: ModalSectionProps) {
+  const labelId = useContext(ModalLabelContext);
   return (
     <div
-      ref={contentRef}
+      id={labelId || undefined}
       className={cn(
-        "relative z-10 pointer-events-auto overflow-hidden",
-        typeClasses[type],
+        "px-6 py-4 text-lg font-semibold border-b border-border/50 flex items-center justify-between min-h-[56px]",
         className,
       )}
     >
+      <div className="flex-1 flex items-center gap-3">
+        {children ?? title}
+      </div>
+    </div>
+  );
+}
+
+export function ModalFooter({ className, children }: ModalSectionProps) {
+  return (
+    <div className={cn("flex justify-end gap-2 p-4", className)}>
       {children}
     </div>
   );
-};
+}
+
+export function ModalBody({ className, children }: ModalSectionProps) {
+  return (
+    <div className={cn("p-4 max-h-[calc(100vh-150px)] overflow-auto", className)}>
+      {children}
+    </div>
+  );
+}
 
 // ==========================================
-// MAIN COMPONENT BLOCK
+// DEMO BLOCK COMPONENT (Documentation Interactive Showcase)
 // ==========================================
 export function ModalBlock({
   type = "standard",
@@ -238,41 +302,29 @@ export function ModalBlock({
   const [inviteRole, setInviteRole] = useState("Viewer");
   const { theme, style } = getThemeStyles(color);
 
-  const variantStyles = {
-    default:
-      "bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800",
-    glass:
-      "bg-white/60 dark:bg-zinc-900/50 backdrop-blur-2xl backdrop-saturate-150 rounded-3xl shadow-2xl border border-white/40 dark:border-white/10",
+  const variantContentStyles: Record<ModalVariant, string> = {
+    default: "bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800",
+    glass: "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-zinc-950 dark:text-white",
     minimal: "bg-white dark:bg-zinc-900 rounded-xl shadow-lg border-none",
-    bordered:
-      "bg-white dark:bg-zinc-950 border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)]",
+    bordered: "bg-white dark:bg-zinc-950 border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] border-zinc-900 dark:border-zinc-100",
   };
 
-  // A backdrop-filter samples everything painted behind the element — including
-  // this overlay. With the default bg-black/60 scrim there is nothing left to
-  // frost but the scrim itself, so the glass panel composites translucent white
-  // over near-black and reads as a flat sheet of grey mud. Glass therefore gets
-  // a light scrim: it still dims the page, but the colour behind survives the blur.
-  const overlayStyles: Record<ModalVariant, string> = {
+  const variantOverlayStyles: Record<ModalVariant, string> = {
     default: "",
-    glass: "bg-zinc-950/25",
+    glass: "bg-black/50 backdrop-blur-md",
     minimal: "",
     bordered: "",
   };
 
-  const containerClass = cn(
-    variantStyles[variant],
-    variant === "bordered" ? "border-zinc-900 dark:border-zinc-100" : "",
-  );
+  const typeWidths: Record<ModalType, string> = {
+    standard: "max-w-md",
+    form: "max-w-lg",
+    fullscreen: "max-w-5xl h-[90vh]",
+    confirmation: "max-w-sm",
+  };
 
   return (
-    <div
-      className={cn(
-        "w-full flex items-center justify-center transition-all",
-        isOpen ? "absolute inset-0 z-40" : "relative z-10",
-      )}
-      style={style}
-    >
+    <div className="w-full flex items-center justify-center" style={style}>
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
@@ -283,237 +335,229 @@ export function ModalBlock({
         Open {type.charAt(0).toUpperCase() + type.slice(1)} Modal
       </button>
 
-      <ModalRoot open={isOpen} onOpenChange={setIsOpen} type={type}>
-        <ModalOverlay className={overlayStyles[variant]} />
-        <ModalContent className={containerClass}>
-          {/* --- STANDARD MODAL --- */}
-          {type === "standard" && (
-            <div className="p-6 sm:p-8">
-              <div className="flex justify-between items-start mb-4">
-                <div
-                  className={cn(
-                    "w-12 h-12 rounded-full flex items-center justify-center mb-4",
-                    theme.bgSoft,
-                  )}
-                >
-                  <Info className={cn("w-6 h-6", theme.text)} />
-                </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
-                >
-                  <X size={20} />
-                </button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        overlayClassName={variantOverlayStyles[variant]}
+        contentClassName={cn(typeWidths[type], variantContentStyles[variant])}
+      >
+        {/* --- STANDARD MODAL --- */}
+        {type === "standard" && (
+          <div className="p-2 sm:p-4">
+            <ModalHeader className="border-none p-4 pb-2 flex items-center justify-between">
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border",
+                  variant === "glass"
+                    ? "bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-zinc-900 dark:text-white"
+                    : cn(theme.bgSoft, theme.text, theme.border),
+                )}
+              >
+                <AlertCircle className="w-6 h-6" />
               </div>
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                v2.4.0 Live
+              </span>
+            </ModalHeader>
+            <ModalBody className="p-4 pt-2 space-y-2">
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
                 System Update Available
               </h2>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+              <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed text-sm sm:text-base font-normal">
                 A new software update is ready to be installed. This update
                 includes new features, performance improvements, and critical
                 security patches.
               </p>
-              <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-5 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  Remind Me Later
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity",
-                    theme.bg,
-                  )}
-                >
-                  Install Now
-                </button>
-              </div>
-            </div>
-          )}
+            </ModalBody>
+            <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors"
+              >
+                Remind Me Later
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all",
+                  theme.bg,
+                )}
+              >
+                Install Now
+              </button>
+            </ModalFooter>
+          </div>
+        )}
 
-          {/* --- FORM MODAL --- */}
-          {type === "form" && (
-            <div className="flex flex-col h-full">
-              <div className="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between">
-                <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
-                  Invite Team Member
-                </h2>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="p-6 space-y-5">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="colleague@company.com"
-                    className={cn(
-                      "w-full h-11 px-3 rounded-lg border bg-transparent focus:outline-none focus:ring-2 border-zinc-200 dark:border-zinc-800 transition-shadow",
-                      theme.ring,
-                    )}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                    Role & Permissions
-                  </label>
-                  <SelectBlock
-                    options={[
-                      { label: "Viewer", value: "Viewer" },
-                      { label: "Editor", value: "Editor" },
-                      { label: "Administrator", value: "Administrator" },
-                    ]}
-                    value={inviteRole}
-                    onChange={setInviteRole}
-                    color={color}
-                    placeholder="Select a role"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                    Personal Message (Optional)
-                  </label>
-                  <textarea
-                    placeholder="Welcome to the team!"
-                    rows={3}
-                    className={cn(
-                      "w-full p-3 rounded-lg border bg-transparent focus:outline-none focus:ring-2 border-zinc-200 dark:border-zinc-800 transition-shadow resize-none",
-                      theme.ring,
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="px-6 py-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 flex justify-end gap-3">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-5 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity",
-                    theme.bg,
-                  )}
-                >
-                  Send Invite
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* --- FULLSCREEN SHEET MODAL --- */}
-          {type === "fullscreen" && (
-            <>
-              <div className="px-5 sm:px-8 py-4 sm:py-6 border-b border-zinc-100 dark:border-zinc-800/50 flex items-start sm:items-center justify-between gap-3 shrink-0">
-                {/* min-w-0 lets the heading wrap instead of pushing the close
-                    button out from under the pointer on narrow screens. */}
-                <div className="min-w-0">
-                  <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
-                    Project Configuration
-                  </h2>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-                    Manage all global settings for your workspace.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:rotate-90 transition-all duration-300"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="p-5 sm:p-8 flex-1 overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                  <div className="space-y-6">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
-                      General
-                    </h3>
-                    <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                    <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                    <div className="h-12 w-3/4 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                  </div>
-                  <div className="space-y-6">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
-                      Security
-                    </h3>
-                    <div className="h-32 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                    <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                  </div>
-                </div>
-              </div>
-              {/* Three side-by-side buttons need ~440px of run; the sheet is
-                  ~290px wide inside its padding on a phone, so they stack.
-                  Reversed so the primary action sits on top, matching the
-                  standard modal's footer. */}
-              <div className="px-5 sm:px-8 py-4 sm:py-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 shrink-0 flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
-                >
-                  Delete Project
-                </button>
-                <div className="flex flex-col-reverse sm:flex-row gap-3">
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="px-6 py-3 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
-                  >
-                    Discard Changes
-                  </button>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "px-6 py-3 rounded-lg font-bold shadow-md transition-opacity",
-                      theme.bg,
-                    )}
-                  >
-                    Save Configuration
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* --- CONFIRMATION MODAL --- */}
-          {type === "confirmation" && (
-            <div className="p-6 text-center flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center mb-4">
-                <AlertCircle className="w-8 h-8 text-red-500" />
-              </div>
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
-                Delete permanently?
+        {/* --- FORM MODAL --- */}
+        {type === "form" && (
+          <div>
+            <ModalHeader className="border-b border-zinc-200/60 dark:border-zinc-800/60">
+              <h2 className="text-lg font-bold text-zinc-950 dark:text-white">
+                Invite Team Member
               </h2>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-8">
-                Are you sure you want to delete this item? This action cannot be
-                undone and all data will be lost.
-              </p>
-              <div className="flex gap-3 w-full">
+            </ModalHeader>
+            <ModalBody className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  placeholder="colleague@company.com"
+                  className={cn(
+                    "w-full h-11 px-3 rounded-lg border bg-white/50 dark:bg-black/40 text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:ring-2 border-zinc-300 dark:border-zinc-700 transition-shadow",
+                    theme.ring,
+                  )}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                  Role & Permissions
+                </label>
+                <SelectBlock
+                  options={[
+                    { label: "Viewer", value: "Viewer" },
+                    { label: "Editor", value: "Editor" },
+                    { label: "Administrator", value: "Administrator" },
+                  ]}
+                  value={inviteRole}
+                  onChange={setInviteRole}
+                  color={color}
+                  placeholder="Select a role"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                  Personal Message (Optional)
+                </label>
+                <textarea
+                  placeholder="Welcome to the team!"
+                  rows={3}
+                  className={cn(
+                    "w-full p-3 rounded-lg border bg-white/50 dark:bg-black/40 text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:ring-2 border-zinc-300 dark:border-zinc-700 transition-shadow resize-none",
+                    theme.ring,
+                  )}
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter className="border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="px-5 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity",
+                  theme.bg,
+                )}
+              >
+                Send Invite
+              </button>
+            </ModalFooter>
+          </div>
+        )}
+
+        {/* --- FULLSCREEN SHEET MODAL --- */}
+        {type === "fullscreen" && (
+          <div className="flex flex-col h-full">
+            <ModalHeader className="border-b border-zinc-100 dark:border-zinc-800/50 pr-12">
+              <div className="min-w-0">
+                <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
+                  Project Configuration
+                </h2>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 font-normal">
+                  Manage all global settings for your workspace.
+                </p>
+              </div>
+            </ModalHeader>
+            <ModalBody className="flex-1 max-h-none">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
+                <div className="space-y-6">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
+                    General
+                  </h3>
+                  <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                  <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                  <div className="h-12 w-3/4 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                </div>
+                <div className="space-y-6">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
+                    Security
+                  </h3>
+                  <div className="h-32 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                  <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter className="border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
+              >
+                Delete Project
+              </button>
+              <div className="flex flex-col-reverse sm:flex-row gap-3">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+                  className="px-6 py-3 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
                 >
-                  Cancel
+                  Discard Changes
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 py-2.5 rounded-lg font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+                  className={cn(
+                    "px-6 py-3 rounded-lg font-bold shadow-md transition-opacity",
+                    theme.bg,
+                  )}
                 >
-                  Delete
+                  Save Configuration
                 </button>
               </div>
+            </ModalFooter>
+          </div>
+        )}
+
+        {/* --- CONFIRMATION MODAL --- */}
+        {type === "confirmation" && (
+          <ModalBody className="p-6 sm:p-8 text-center flex flex-col items-center">
+            <div
+              className={cn(
+                "w-16 h-16 rounded-2xl flex items-center justify-center mb-5 border shadow-sm transition-colors",
+                variant === "glass"
+                  ? "bg-rose-500/20 border-rose-500/30 text-rose-500"
+                  : "bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400",
+              )}
+            >
+              <AlertCircle className="w-8 h-8" />
             </div>
-          )}
-        </ModalContent>
-      </ModalRoot>
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+              Delete permanently?
+            </h2>
+            <p className="text-sm text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed mb-8">
+              Are you sure you want to delete this item? This action cannot be
+              undone and all data will be lost.
+            </p>
+            <div className="flex gap-3 w-full">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="flex-1 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="flex-1 py-2.5 rounded-lg font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </ModalBody>
+        )}
+      </Modal>
     </div>
   );
 }
