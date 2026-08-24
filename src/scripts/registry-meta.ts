@@ -841,4 +841,9 @@ export const META: Record<string, ItemMeta> = {
     categories: ["utilities"],
     docs: "NOTE: installs to components/ui/card.tsx and will overwrite a shadcn `card` already present. Review before installing into an existing project.",
   },
+  reviews: {
+    description:
+      "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+    categories: ["marketing", "data-display"],
+  },
 };

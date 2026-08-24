@@ -1060,6 +1060,15 @@ html:not(.dark) .cube-face {
   to   { transform: translateX(-50%); }
 }
 
+@keyframes globe-rotate {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 1000px 0px; }
+}
+
+.animate-globe-spin {
+  animation: globe-rotate 20s linear infinite !important;
+}
+
 .marquee-track {
   animation: marquee-scroll 35s linear infinite;
 }

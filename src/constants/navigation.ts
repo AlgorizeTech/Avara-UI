@@ -160,6 +160,7 @@ export const navigation: NavigationItem[] = [
       { label: "Navbar", slug: "navbar", badge: "Core" },
       { label: "Pricing Section", slug: "pricing", badge: "Core" },
       { label: "Product Details", slug: "product-details", badge: "New" },
+      { label: "Review Section", slug: "reviews", badge: "New" },
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
       { label: "Sign-Up", slug: "signup-form", badge: "Core" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
