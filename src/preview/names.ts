@@ -76,6 +76,7 @@ export const sandboxNames = [
   "progress",
   "qr-code",
   "resizable",
+  "reviews",
   "scroll-accordion",
   "scroll-area",
   "scroll-stack",

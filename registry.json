@@ -1496,7 +1496,6 @@
         "overlays"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1926,6 +1925,32 @@
         }
       ],
       "docs": "Named exports: ResizablePanelGroup, ResizablePanel, ResizableHandle. Sizes are percentages — `defaultSize`, `minSize` and `maxSize` per panel. Set `withHandle` to render a visible grip. Groups nest, so a horizontal split can contain a vertical one."
+    },
+    {
+      "name": "reviews",
+      "type": "registry:component",
+      "title": "Reviews",
+      "author": "AlgorizeTech",
+      "description": "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "cobe",
+        "lucide-react",
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ReviewsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ReviewsBlock.tsx"
+        }
+      ]
     },
     {
       "name": "scroll-accordion-showcase",
