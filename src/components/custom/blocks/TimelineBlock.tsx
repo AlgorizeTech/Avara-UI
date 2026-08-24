@@ -120,7 +120,11 @@ export const getThemeStyles = (color: string) => {
 // ==========================================
 // INTERFACES
 // ==========================================
-export type TimelineStatus = "completed" | "current" | "upcoming";
+export type TimelineStatus =
+  | "completed"
+  | "current"
+  | "upcoming"
+  | (string & {});
 
 export interface TimelineItemType {
   id: string | number;

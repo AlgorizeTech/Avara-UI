@@ -9,45 +9,93 @@ Standard list animations often feel rigid. By wrapping your notification or acti
 
 Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
 
-export const listItems = `const items = [
-  { id: 1, label: "Payment Received — $129.00 via Stripe" },
-  { id: 2, label: "New Signup — alice@example.com created a Pro account" },
-  { id: 3, label: "Deployment Successful — production (v2.4.1) is live" },
-  { id: 4, label: "Server Scaled — cluster auto-scaled for a traffic spike" },
-];`;
+export const listItems = `const notifications = [
+  {
+    id: 1,
+    icon: CreditCard,
+    color: "text-emerald-500",
+    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
+    title: "Payment Received",
+    desc: "Stripe successfully processed $129.00",
+    time: "2m",
+  },
+  {
+    id: 2,
+    icon: UserPlus,
+    color: "text-blue-500",
+    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
+    title: "New Signup",
+    desc: "alice@example.com created a Pro account",
+    time: "15m",
+  },
+  {
+    id: 3,
+    icon: CheckCircle2,
+    color: "text-indigo-500",
+    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
+    title: "Deployment Successful",
+    desc: "Production deployment (v2.4.1) is live",
+    time: "1h",
+  },
+  {
+    id: 4,
+    icon: Zap,
+    color: "text-rose-500",
+    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
+    title: "Server Scaled",
+    desc: "Auto-scaled cluster to handle traffic spike",
+    time: "3h",
+  },
+];
+
+// One row. The group-hover styles work because AnimatedListItem is the group.
+function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
+  return (
+    <div className="flex items-center gap-3 min-w-0">
+      <div
+        className={[
+          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
+          notif.bg,
+          notif.color,
+        ].join(" ")}
+      >
+        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
+      </div>
+
+      <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <div className="flex items-center justify-between gap-2">
+          <h4 className="text-[13px] sm:text-[13.5px] font-bold text-zinc-900 dark:text-zinc-100 truncate">
+            {notif.title}
+          </h4>
+          <span className="text-[10px] sm:text-[10.5px] font-semibold text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+            {notif.time}
+          </span>
+        </div>
+        <p className="text-[11.5px] sm:text-[12px] font-medium text-zinc-500 dark:text-zinc-400 leading-snug break-words line-clamp-2 mt-[1px]">
+          {notif.desc}
+        </p>
+      </div>
+    </div>
+  );
+}`;
 
 export const usageDefault = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
 
 export default function NotificationFeed() {
+  // The wrapper establishes the 3D perspective the children animate inside.
   return (
-    // The wrapper establishes the 3D perspective the children animate inside.
     <AnimatedList staggerDelay={0.15}>
-      <AnimatedListItem>
-        <div className="flex items-center gap-4">
-          <div className="w-11 h-11 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            $
-          </div>
-          <div>
-            <h4 className="font-bold">Payment Received</h4>
-            <p className="text-sm text-zinc-500">$129.00 via Stripe</p>
-          </div>
-        </div>
-      </AnimatedListItem>
-
-      <AnimatedListItem>
-        <div className="flex items-center gap-4">
-          <div className="w-11 h-11 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            @
-          </div>
-          <div>
-            <h4 className="font-bold">New User Signup</h4>
-            <p className="text-sm text-zinc-500">alice@example.com</p>
-          </div>
-        </div>
-      </AnimatedListItem>
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
     </AnimatedList>
   );
 }`;
@@ -56,15 +104,17 @@ export const usageFlip = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 ${listItems}
 
 export default function FlipFeed() {
-  // The 3D flip is the signature entrance — children rotate in on the X axis.
   return (
-    <AnimatedList variant="flip" staggerDelay={0.15}>
-      {items.map((item) => (
-        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+    <AnimatedList variant="flip">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
       ))}
     </AnimatedList>
   );
@@ -74,15 +124,17 @@ export const usageSlideUp = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 ${listItems}
 
 export default function SlideUpFeed() {
-  // Slide variants come in from a direction instead of rotating.
   return (
-    <AnimatedList variant="slide-up" staggerDelay={0.15}>
-      {items.map((item) => (
-        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+    <AnimatedList variant="slide-up">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
       ))}
     </AnimatedList>
   );
@@ -92,14 +144,17 @@ export const usagePop = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 ${listItems}
 
 export default function PopFeed() {
   return (
-    <AnimatedList variant="pop" ease="elastic.out(1, 0.5)" staggerDelay={0.12}>
-      {items.map((item) => (
-        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+    <AnimatedList variant="pop">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
       ))}
     </AnimatedList>
   );
@@ -109,23 +164,18 @@ export const usageTiming = `import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 ${listItems}
 
-export default function TunedFeed() {
-  // \`staggerDelay\` is the gap between children, \`duration\` how long each one
-  // takes, \`animationDelay\` how long the whole sequence waits before starting,
-  // and \`ease\` is any GSAP easing string.
+export default function TimedFeed() {
+  // duration is per item; staggerDelay is the gap between them.
   return (
-    <AnimatedList
-      variant="slide-right"
-      staggerDelay={0.35}
-      duration={1.1}
-      animationDelay={0.3}
-      ease="power4.out"
-    >
-      {items.map((item) => (
-        <AnimatedListItem key={item.id}>{item.label}</AnimatedListItem>
+    <AnimatedList duration={0.9} staggerDelay={0.25} animationDelay={0.3}>
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
       ))}
     </AnimatedList>
   );

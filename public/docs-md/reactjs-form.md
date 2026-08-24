@@ -6,9 +6,7 @@ This engine decouples layout from state. It provides a stunning visual wrapper w
 
 `FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
-export const usageZod = `"use client";
-
-const schema = z.object({
+export const usageZod = `const schema = z.object({
   companyName: z.string().min(2, "Company name is strictly required."),
   workEmail: z.string().email("Invalid corporate email format detected."),
   password: z.string().min(8, "Security requirement: Minimum 8 characters."),
@@ -30,13 +28,7 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageSubmitting = `import {
-  FormField,
-  FormSubmit,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function SubmittingForm() {
+export const usageSubmitting = `export default function SubmittingForm() {
   return (
      e.preventDefault()}
     >

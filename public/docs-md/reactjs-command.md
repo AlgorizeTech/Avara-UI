@@ -6,18 +6,7 @@ Most robust command palettes force you to install heavy third-party libraries li
 
 Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
 
-export const usageGroups = `import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/custom/blocks/CommandBlock";
-
-export default function CommandPalette() {
+export const usageGroups = `export default function CommandPalette() {
   const run = (value: string) => console.log("Selected:", value);
 
   return (
@@ -49,9 +38,7 @@ export default function CommandPalette() {
   );
 }`;
 
-export const usageDialog = `import { useEffect, useState } from "react";
-
-export default function QuickActions() {
+export const usageDialog = `export default function QuickActions() {
   const [open, setOpen] = useState(false);
 
   // The classic ⌘K / Ctrl+K binding
@@ -68,7 +55,17 @@ export default function QuickActions() {
 
   return (
     <>
-       setOpen(true)}>Open Command Dialog
+
+          Press{" "}
+          
+            ⌘K
+          {" "}
+          or click the button to open the command menu.
+        
+         setOpen(true)}
+          className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
+        >
+          Open Command Dialog
 
       {/* Same children as the inline , rendered in a portal */}
 
@@ -78,25 +75,25 @@ export default function QuickActions() {
   );
 }`;
 
-export const usageNoFilter = `import { useState } from "react";
-
-export default function RemoteSearch() {
-  const [results, setResults] = useState([]);
-
-  // shouldFilter={false} hands filtering back to you — required when the
-  // results come from an API instead of the DOM.
+export const usageNoFilter = `export default function ExternalFiltering() {
+  // shouldFilter={false} hands filtering back to you. Typing no longer narrows
+  // the list on its own — swap the static items below for your own results and
+  // decide what to render.
   return (
-    
-       fetchResults(e.target.value).then(setResults)}
-      />
-      
+
         No matching records found.
         
-          {results.map((result) => (
-             console.log(result)}>
-              {result}
+           console.log("calendar")}>
             
-          ))}
+            Calendar
+          
+           console.log("emoji")}>
+            
+            Search Emoji
+          
+           console.log("calculator")}>
+            
+            Calculator
 
   );
 }`;

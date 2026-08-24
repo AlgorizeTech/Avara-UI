@@ -6,16 +6,73 @@ This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the
 
 You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
 
+export const marqueeLogos = `import {
+  Box,
+  Code2,
+  Command,
+  Figma,
+  Framer,
+  Github,
+  Gitlab,
+  Hexagon,
+  Layers,
+  Triangle,
+} from "lucide-react";
+
+const logos = [
+  { icon: Command, name: "Command" },
+  { icon: Figma, name: "Figma" },
+  { icon: Framer, name: "Framer" },
+  { icon: Github, name: "Github" },
+  { icon: Gitlab, name: "Gitlab" },
+  { icon: Hexagon, name: "Hexagon" },
+  { icon: Layers, name: "Layers" },
+  { icon: Triangle, name: "Triangle" },
+  { icon: Code2, name: "Code" },
+  { icon: Box, name: "Blocks" },
+];`;
+
+export const marqueeTestimonials = `const testimonials = [
+  {
+    name: "Sarah Connor",
+    role: "Product Manager",
+    text: "This component library has completely transformed our workflow. Everything just works perfectly out of the box.",
+  },
+  {
+    name: "John Wick",
+    role: "Lead Developer",
+    text: "The cleanest, most well-documented React code I have ever seen. Absolutely essential for modern web dev.",
+  },
+  {
+    name: "Ellen Ripley",
+    role: "UX Designer",
+    text: "Beautiful default styles and incredibly smooth animations. It makes prototyping high-fidelity interfaces a breeze.",
+  },
+  {
+    name: "Neo",
+    role: "Software Engineer",
+    text: "Finally, a library that gives me full control over the code without abstracting away all the important details.",
+  },
+];`;
+
+export const marqueeImages = `const images = [
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop",
+];`;
+
 export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+${marqueeLogos}
 
 export default function LogoSection() {
   return (
     
       {logos.map((logo) => (
-        
-          {logo}
+
+          {logo.name}
         
       ))}
     
@@ -24,15 +81,15 @@ export default function LogoSection() {
 
 export const usageRight = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+${marqueeLogos}
 
 export default function ReverseLogoWall() {
+  // Reverses the travel; everything else is identical.
   return (
-    // Reverses the travel; everything else is identical.
     
       {logos.map((logo) => (
-        
-          {logo}
+
+          {logo.name}
         
       ))}
     
@@ -41,21 +98,22 @@ export default function ReverseLogoWall() {
 
 export const usageVertical = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const testimonials = [
-  { name: "Ada", quote: "Shipped our landing page in an afternoon." },
-  { name: "Grace", quote: "The loop is genuinely seamless." },
-  { name: "Alan", quote: "Dropped three dependencies for this one." },
-];
+${marqueeTestimonials}
 
 export default function TestimonialColumn() {
+  // Vertical travel needs a bounded height on the block itself.
   return (
-    // Vertical marquees need a bounded height on the container.
     
       {testimonials.map((t) => (
-        
-          {t.quote}
-          {t.name}
-        
+
+            &quot;{t.text}&quot;
+
+              {t.name.charAt(0)}
+
+                {t.name}
+              
+              {t.role}
+
       ))}
     
   );
@@ -63,19 +121,13 @@ export default function TestimonialColumn() {
 
 export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const images = [
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop",
-];
+${marqueeImages}
 
 export default function SlowGallery() {
+  // speed takes "slow" | "normal" | "fast".
   return (
-    // "slow" | "normal" | "fast", or a raw duration in seconds.
     
-      {images.map((src, i) => (
+      {images.map((src) => (
 
       ))}
     
@@ -84,15 +136,15 @@ export default function SlowGallery() {
 
 export const usageBare = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+${marqueeLogos}
 
-export default function BareMarquee() {
+export default function BareLogoWall() {
+  // No fade mask and no hover pause — the plainest marquee there is.
   return (
-    // No edge mask, and the loop keeps running under the cursor.
     
       {logos.map((logo) => (
-        
-          {logo}
+
+          {logo.name}
         
       ))}
     

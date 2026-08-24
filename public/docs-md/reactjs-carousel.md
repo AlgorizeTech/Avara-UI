@@ -70,17 +70,12 @@ export default function FluidShowcase() {
   return ;
 }`;
 
-### Installation
-
-### More examples
-
-`ImageCarousel`, `HeroCarousel` and `CustomCarousel` all ship in the one file you just installed.
-
-## Fluid glass slider
-
-A separate GSAP-driven component with its own file and its own install command.
+## Examples
 
 ### Installation
+
+The three carousels above ship in one file. `FluidGlassSlider` is a separate
+item — installing `carousel` does not pull it in:
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.

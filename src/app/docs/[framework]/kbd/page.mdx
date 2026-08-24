@@ -19,12 +19,33 @@ export const usageCombinations = `import { Kbd } from "@/components/custom/block
 
 export default function ShortcutList() {
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm">Force Reload:</span>
-      <div className="flex items-center gap-1">
-        <Kbd>⇧</Kbd>
-        <Kbd>⌘</Kbd>
-        <Kbd>R</Kbd>
+    <div className="flex flex-col items-center gap-3">
+      <p className="text-sm font-medium text-zinc-500 mb-2">Common Combinations</p>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Save file:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⌘</Kbd>
+          <Kbd>S</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Force Reload:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⇧</Kbd>
+          <Kbd>⌘</Kbd>
+          <Kbd>R</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Open Terminal:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>Ctrl</Kbd>
+          <span className="text-xs text-zinc-400">+</span>
+          <Kbd>~</Kbd>
+        </div>
       </div>
     </div>
   );

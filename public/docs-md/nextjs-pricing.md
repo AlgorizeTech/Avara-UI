@@ -19,7 +19,12 @@ export const pricingData = `const data: PricingData = {
           buttonText: "Get Started",
           popular: false,
           icon: "Rocket",
-          features: ["10 projects", "Basic analytics", "24-hour support"],
+          features: [
+            "10 projects",
+            "Up to 2,000 subscribers",
+            "Basic analytics",
+            "24-hour support",
+          ],
         },
         {
           id: "pro",
@@ -30,18 +35,28 @@ export const pricingData = `const data: PricingData = {
           buttonText: "Upgrade to Pro",
           popular: true,
           icon: "Zap",
-          features: ["25 projects", "Custom reporting", "1-hour support"],
+          features: [
+            "25 projects",
+            "Up to 10,000 subscribers",
+            "Custom reporting",
+            "1-hour support",
+          ],
         },
         {
           id: "enterprise",
           title: "Enterprise",
-          subtitle: "For organisations at scale.",
-          price: "$149",
+          subtitle: "For larger organizations.",
+          price: "$99",
           period: "mo",
           buttonText: "Contact Sales",
           popular: false,
-          icon: "Building2",
-          features: ["Unlimited projects", "SSO & audit logs", "24/7 phone support"],
+          icon: "Building",
+          features: [
+            "Unlimited projects",
+            "Unlimited subscribers",
+            "Dedicated manager",
+            "24/7 support",
+          ],
         },
       ],
     },
@@ -50,44 +65,59 @@ export const pricingData = `const data: PricingData = {
       label: "Annually (Save 20%)",
       plans: [
         {
-          id: "startup",
+          id: "startup-annual",
           title: "Startup",
           subtitle: "Perfect for small teams.",
-          price: "$23",
-          period: "mo",
+          price: "$279",
+          period: "yr",
           buttonText: "Get Started",
           popular: false,
           icon: "Rocket",
-          features: ["10 projects", "Basic analytics", "24-hour support"],
+          features: [
+            "10 projects",
+            "Up to 2,000 subscribers",
+            "Basic analytics",
+            "24-hour support",
+          ],
         },
         {
-          id: "pro",
+          id: "pro-annual",
           title: "Pro",
           subtitle: "For scaling businesses.",
-          price: "$47",
-          period: "mo",
+          price: "$569",
+          period: "yr",
           buttonText: "Upgrade to Pro",
           popular: true,
           icon: "Zap",
-          features: ["25 projects", "Custom reporting", "1-hour support"],
+          features: [
+            "25 projects",
+            "Up to 10,000 subscribers",
+            "Custom reporting",
+            "1-hour support",
+          ],
         },
         {
-          id: "enterprise",
+          id: "enterprise-annual",
           title: "Enterprise",
-          subtitle: "For organisations at scale.",
-          price: "$119",
-          period: "mo",
+          subtitle: "For larger organizations.",
+          price: "$949",
+          period: "yr",
           buttonText: "Contact Sales",
           popular: false,
-          icon: "Building2",
-          features: ["Unlimited projects", "SSO & audit logs", "24/7 phone support"],
+          icon: "Building",
+          features: [
+            "Unlimited projects",
+            "Unlimited subscribers",
+            "Dedicated manager",
+            "24/7 support",
+          ],
         },
       ],
     },
   ],
 };`;
 
-export const usageCards = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+export const usageCards = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
 
@@ -95,7 +125,7 @@ export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
 
@@ -104,7 +134,7 @@ export default function PremiumPricing() {
   return ;
 }`;
 
-export const usageElegant = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
 
@@ -113,7 +143,7 @@ export default function ElegantPricing() {
   return ;
 }`;
 
-export const usageMinimal = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+export const usageMinimal = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
 
@@ -122,7 +152,7 @@ export default function MinimalPricing() {
   return ;
 }`;
 
-export const usageBordered = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
+export const usageBordered = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
 
@@ -139,7 +169,7 @@ export default function QuoteBuilder() {
   return ;
 }`;
 
-export const usageTable = `import { PricingTable, PricingTableData } from "@/components/custom/blocks/Pricing";
+export const usageTable = `import { PricingTable, type PricingTableData } from "@/components/custom/blocks/Pricing";
 
 const data: PricingTableData = {
   plans: [
@@ -200,8 +230,27 @@ const packages = [
     name: "Agency",
     price: 149,
     description: "Advanced tools for scaling design teams.",
-    features: ["10 Users", "Unlimited Projects", "Priority Support"],
+    features: [
+      "10 Users",
+      "Unlimited Projects",
+      "Priority Support",
+      "Custom Domain",
+    ],
     isFeatured: true,
+  },
+  {
+    id: "m3",
+    billingCycle: "monthly",
+    name: "Enterprise",
+    price: 499,
+    description: "Dedicated infrastructure and account management.",
+    features: [
+      "Unlimited Everything",
+      "24/7 SLA Support",
+      "SSO & SAML",
+      "Dedicated Manager",
+    ],
+    isFeatured: false,
   },
   {
     id: "y1",
@@ -210,6 +259,34 @@ const packages = [
     price: 19,
     description: "Everything you need to kickstart your portfolio.",
     features: ["1 User", "5 Projects", "Basic Support"],
+    isFeatured: false,
+  },
+  {
+    id: "y2",
+    billingCycle: "yearly",
+    name: "Agency",
+    price: 129,
+    description: "Advanced tools for scaling design teams.",
+    features: [
+      "10 Users",
+      "Unlimited Projects",
+      "Priority Support",
+      "Custom Domain",
+    ],
+    isFeatured: true,
+  },
+  {
+    id: "y3",
+    billingCycle: "yearly",
+    name: "Enterprise",
+    price: 399,
+    description: "Dedicated infrastructure and account management.",
+    features: [
+      "Unlimited Everything",
+      "24/7 SLA Support",
+      "SSO & SAML",
+      "Dedicated Manager",
+    ],
     isFeatured: false,
   },
 ];

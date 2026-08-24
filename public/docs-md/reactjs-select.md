@@ -6,17 +6,17 @@ This component solves that by using React state and clever absolute positioning 
 
 Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
-export const selectOptions = `const options = [
-  { label: "Engineering", value: "eng" },
-  { label: "Design", value: "design" },
+export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
+
+const options = [
+  { label: "Engineering", value: "eng", icon: Code },
+  { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },
-  { label: "Sales", value: "sales" },
-  { label: "Support", value: "support" },
+  { label: "Operations", value: "ops", icon: Box },
+  { label: "Data Science", value: "data", icon: Database },
 ];`;
 
-export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-
-${selectOptions}
+export const usageDefault = `${selectOptions}
 
 export default function BasicSelect() {
   const [value, setValue] = useState("");
@@ -26,9 +26,7 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageUnderlined = `"use client";
-
-${selectOptions}
+export const usageUnderlined = `${selectOptions}
 
 export default function UnderlinedSelect() {
   const [value, setValue] = useState("");
@@ -38,9 +36,7 @@ export default function UnderlinedSelect() {
   );
 }`;
 
-export const usageSearchable = `"use client";
-
-${selectOptions}
+export const usageSearchable = `${selectOptions}
 
 export default function SearchableSelect() {
   const [value, setValue] = useState("");
@@ -50,9 +46,7 @@ export default function SearchableSelect() {
   );
 }`;
 
-export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-
-${selectOptions}
+export const usageMultiple = `${selectOptions}
 
 export default function MultiSelect() {
   const [values, setValues] = useState([]);

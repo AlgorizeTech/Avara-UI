@@ -15,20 +15,107 @@ export const usageDefault = `import {
   MagicBento,
   MagicBentoCard,
 } from "@/components/custom/blocks/MagicBentoBlock";
-import { Activity, Sparkles } from "lucide-react";
+import {
+  Activity,
+  Globe2,
+  LockKeyhole,
+  Network,
+  Users,
+  Workflow,
+} from "lucide-react";
 
 export default function FeatureGrid() {
   return (
     <MagicBento className="auto-rows-[220px]">
-      <MagicBentoCard className="flex flex-col justify-between">
-        <Activity className="w-4 h-4" />
-        <h3 className="text-lg font-bold">Analytics</h3>
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Activity className="w-4 h-4" />
+          Insights
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+            Analytics
+          </h3>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            Track user behavior
+          </p>
+        </div>
       </MagicBentoCard>
 
-      {/* highlight adds the continuously spinning conic border */}
-      <MagicBentoCard highlight className="row-span-2 md:col-span-2">
-        <Sparkles className="w-4 h-4" />
-        <h3 className="text-2xl font-bold">Collaboration</h3>
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Globe2 className="w-4 h-4" />
+          Overview
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+            Dashboard
+          </h3>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            Centralized data view
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      {/* highlight keeps a conic gradient spinning behind the mask */}
+      <MagicBentoCard highlight className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Users className="w-4 h-4" />
+          Teamwork
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+            Collaboration
+          </h3>
+          <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+            Work together seamlessly across the globe
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Workflow className="w-4 h-4" />
+          Efficiency
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+            Automation
+          </h3>
+          <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+            Streamline workflows and save thousands of hours
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Network className="w-4 h-4" />
+          Connectivity
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+            Integration
+          </h3>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            Connect favorite tools
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <LockKeyhole className="w-4 h-4" />
+          Protection
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+            Security
+          </h3>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            Enterprise-grade protection
+          </p>
+        </div>
       </MagicBentoCard>
     </MagicBento>
   );
@@ -38,16 +125,31 @@ export const usageHighlight = `import {
   MagicBento,
   MagicBentoCard,
 } from "@/components/custom/blocks/MagicBentoBlock";
+import { Activity, Sparkles } from "lucide-react";
 
 export default function HighlightedBento() {
   return (
-    <MagicBento>
-      {/* Without \`highlight\`, the border only lights where the cursor is. */}
-      <MagicBentoCard>…</MagicBentoCard>
+    <MagicBento className="lg:grid-cols-2 auto-rows-[240px] max-w-3xl">
+      <MagicBentoCard className="flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Activity className="w-4 h-4" />
+          Default card
+        </div>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          The border track and inner glow follow the cursor.
+        </p>
+      </MagicBentoCard>
 
-      {/* With it, a conic gradient spins behind the mask continuously — use it
-          on the one card you want the eye to land on first. */}
-      <MagicBentoCard highlight>…</MagicBentoCard>
+      <MagicBentoCard highlight className="flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+          <Sparkles className="w-4 h-4" />
+          highlight
+        </div>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          Adds a conic gradient that keeps spinning behind the mask,
+          cursor or not.
+        </p>
+      </MagicBentoCard>
     </MagicBento>
   );
 }`;

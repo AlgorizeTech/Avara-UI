@@ -32,6 +32,7 @@ export const pipelineNodes = `function PipelineNodes() {
       <FlowNode
         id="transform"
         title="Transform Payload"
+        description="Normalizing JSON data"
         icon={Cpu}
         connectedPaths={["success-path"]}
         className="left-[340px] top-[80px]"
@@ -39,6 +40,7 @@ export const pipelineNodes = `function PipelineNodes() {
       <FlowNode
         id="error"
         title="Validation Check"
+        description="Checking metadata schema"
         icon={Terminal}
         connectedPaths={["fail-path"]}
         className="left-[340px] top-[250px]"
@@ -46,6 +48,7 @@ export const pipelineNodes = `function PipelineNodes() {
       <FlowNode
         id="success"
         title="Sync Database"
+        description="Committed to cluster"
         icon={CheckCircle2}
         connectedPaths={["success-path"]}
         className="left-[640px] top-[80px]"
@@ -53,6 +56,7 @@ export const pipelineNodes = `function PipelineNodes() {
       <FlowNode
         id="fail"
         title="Dead Letter Queue"
+        description="Retrying delivery pool"
         icon={AlertCircle}
         connectedPaths={["fail-path"]}
         className="left-[640px] top-[250px]"
@@ -92,6 +96,7 @@ export default function AutomationMap() {
       <FlowNode
         id="transform"
         title="Transform Payload"
+        description="Normalizing JSON data"
         icon={Cpu}
         connectedPaths={["success-path"]}
         className="left-[340px] top-[80px]"
@@ -99,6 +104,7 @@ export default function AutomationMap() {
       <FlowNode
         id="error"
         title="Validation Check"
+        description="Checking metadata schema"
         icon={Terminal}
         connectedPaths={["fail-path"]}
         className="left-[340px] top-[250px]"
@@ -106,6 +112,7 @@ export default function AutomationMap() {
       <FlowNode
         id="success"
         title="Sync Database"
+        description="Committed to cluster"
         icon={CheckCircle2}
         connectedPaths={["success-path"]}
         className="left-[640px] top-[80px]"
@@ -113,6 +120,7 @@ export default function AutomationMap() {
       <FlowNode
         id="fail"
         title="Dead Letter Queue"
+        description="Retrying delivery pool"
         icon={AlertCircle}
         connectedPaths={["fail-path"]}
         className="left-[640px] top-[250px]"
@@ -138,12 +146,30 @@ export default function LinearPipeline() {
         <FlowConnection id="main-route" path="M 580 200 L 640 200" />
       </FlowCanvas>
 
-      <FlowNode id="trigger" title="Webhook Trigger" icon={Webhook}
-        connectedPaths={["main-route"]} className="left-[40px] top-[166px]" />
-      <FlowNode id="compute" title="Compute Cluster" icon={Cpu}
-        connectedPaths={["main-route"]} className="left-[340px] top-[166px]" />
-      <FlowNode id="commit" title="Sync Database" icon={CheckCircle2}
-        connectedPaths={["main-route"]} className="left-[640px] top-[166px]" />
+      <FlowNode
+        id="trigger"
+        title="Webhook Trigger"
+        description="Inbound secure POST"
+        icon={Webhook}
+        connectedPaths={["main-route"]}
+        className="left-[40px] top-[166px]"
+      />
+      <FlowNode
+        id="compute"
+        title="Compute Cluster"
+        description="Normalizing JSON data"
+        icon={Cpu}
+        connectedPaths={["main-route"]}
+        className="left-[340px] top-[166px]"
+      />
+      <FlowNode
+        id="commit"
+        title="Sync Database"
+        description="Committed to cluster"
+        icon={CheckCircle2}
+        connectedPaths={["main-route"]}
+        className="left-[640px] top-[166px]"
+      />
     </Flowchart>
   );
 }`;

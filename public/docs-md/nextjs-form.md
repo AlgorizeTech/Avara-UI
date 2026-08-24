@@ -30,11 +30,7 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageSubmitting = `import {
-  FormField,
-  FormSubmit,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
+export const usageSubmitting = `"use client";
 
 export default function SubmittingForm() {
   return (

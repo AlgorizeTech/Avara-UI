@@ -7,7 +7,7 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
 export const paneHelper = `// Panel bodies — swap these for your own content.
-function Pane({ label }) {
+function Pane({ label }: { label: string }) {
   return (
     
       {label}
@@ -18,8 +18,43 @@ function Pane({ label }) {
 export const studioPanes = `${paneHelper}
 
 const Explorer = () => ;
-const Editor = () => ;
-const TerminalPane = () => ;`;
+
+function Editor() {
+  return (
+
+        page.tsx
+        
+          Active
+
+        export default function Page() {"{"}
+        return (
+        
+          {''}
+
+          {'John Doe'}
+
+          {"{/* Drag handle bars to resize panels live */}"}
+        
+        {""}
+        );
+        {"}"}
+
+  );
+}
+
+function TerminalPane() {
+  return (
+
+        Terminal
+        bash
+
+        project@app:~${" "}
+        npm run dev
+        
+        ✓ Ready in 850ms
+
+  );
+}`;
 
 export const splitPanes = `${paneHelper}
 
@@ -41,7 +76,8 @@ ${studioPanes}
 
 export default function StudioLayout() {
   return (
-    // The outermost container must have a defined height.
+    // A panel group is height:100%, so it collapses to nothing unless an
+    // ancestor is sized. Use h-screen here to fill the viewport instead.
 
           {/* Groups nest freely — this one splits the main area vertically. */}
 
@@ -57,6 +93,8 @@ export const usageHorizontal = `import {
 ${splitPanes}
 
 export default function HorizontalSplit() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
 
   );
@@ -73,6 +111,8 @@ ${splitPanes}
 export default function VerticalSplit() {
   // \`direction\` sets the flex axis of the group and the drag axis of every
   // handle inside it.
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
 
   );
@@ -87,10 +127,12 @@ export const usageConstraints = `import {
 ${sidebarPanes}
 
 export default function ConstrainedSidebar() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-    
-      {/* Percentages of the group. The engine clamps the drag so a panel can
-          never escape its bounds. */}
+
+        {/* Percentages of the group. The engine clamps the drag so a panel can
+            never escape its bounds. */}
 
   );
 }`;

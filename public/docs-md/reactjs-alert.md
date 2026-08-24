@@ -62,9 +62,7 @@ export default function AlertIcons() {
   );
 }`;
 
-export const usageDismissible = `import { Alert } from "@/components/custom/blocks/Alerts";
-
-export default function DismissibleAlert() {
+export const usageDismissible = `export default function DismissibleAlert() {
   return (
      console.log("dismissed")}
     />

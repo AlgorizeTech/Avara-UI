@@ -8,99 +8,161 @@ This premium iteration includes hardware-accelerated blur-fade entrances, `layou
 
 The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
 
-export const masonryData = `const items = [
-  { id: "1", height: "h-56", title: "Design Engineering" },
-  {
-    id: "2",
-    height: "h-[28rem]",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
-  },
-  { id: "3", height: "h-40", title: "Fluid Animations" },
-  {
-    id: "4",
-    height: "h-[22rem]",
-    image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-  },
-  { id: "5", height: "h-60", title: "Systems Design" },
-  {
-    id: "6",
-    height: "h-52",
-    image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+export const masonryShared = `import { ArrowUpRight } from "lucide-react";
 
-// The grid only handles the column flow — every tile is yours to render.
-function Tile({ height, title, image }) {
+type GridItem = {
+  id: string;
+  type: "card" | "image" | "gradient";
+  height: string;
+  title?: string;
+  desc?: string;
+  image?: string;
+  icon?: React.ReactNode;
+  theme?: "blue" | "purple" | "emerald" | "rose";
+};
+
+const themeColors = {
+  blue: "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20",
+  purple: "text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-500/10 border-purple-100 dark:border-purple-500/20",
+  emerald: "text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20",
+  rose: "text-rose-600 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
+};
+
+// The grid handles the column flow; every tile is yours to render.
+function renderItem(item: GridItem) {
+  if (item.type === "image") {
+    return (
+
+          View Project
+
+    );
+  }
+
+  const accent = themeColors[item.theme ?? "blue"];
+
+  if (item.type === "gradient") {
+    return (
+
+            {item.icon}
+
+              {item.title}
+
+              {item.desc}
+
+    );
+  }
+
   return (
-    
-      {title && (
-        
-          {title}
-        
-      )}
-    
+
+        {item.icon}
+
+          {item.title}
+
+          {item.desc}
+
   );
 }`;
 
 export const usageDefault = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-${masonryData}
+${masonryShared}
 
-export default function Gallery() {
+const items: GridItem[] = [
+  { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: , theme: "blue" },
+  { id: "2", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
+  { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: , theme: "purple" },
+  { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: , theme: "emerald" },
+  { id: "5", type: "image", height: "h-52", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" },
+  { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: , theme: "rose" },
+  { id: "7", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: , theme: "blue" },
+];
+
+export default function PhotoWall() {
   return (
-     }
-    />
+    
   );
 }`;
 
 export const usageColumns = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-${masonryData}
+${masonryShared}
 
-export default function ColumnCounts() {
-  // Column counts are Tailwind classes, so every breakpoint is yours to set.
+const items: GridItem[] = [
+  { id: "c1", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" },
+  { id: "c2", type: "card", height: "h-64", title: "Glacial Expedition", desc: "Tracking ice melt patterns across polar terrain.", icon: , theme: "emerald" },
+  { id: "c3", type: "image", height: "h-[30rem]", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=800&auto=format&fit=crop" },
+  { id: "c4", type: "gradient", height: "h-52", title: "Sunset Horizon", desc: "Coastal light refraction studies.", icon: , theme: "purple" },
+  { id: "c5", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop" },
+  { id: "c6", type: "card", height: "h-56", title: "Pine Forest Canopy", desc: "High resolution aerial drone mapping.", icon: , theme: "blue" },
+  { id: "c7", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+  { id: "c8", type: "gradient", height: "h-48", title: "Lush River Flow", desc: "Freshwater aquatic ecosystem analytics.", icon: , theme: "rose" },
+];
+
+export default function FourColumnWall() {
+  // One more column at the top breakpoint.
   return (
-     }
-    />
+    
   );
 }`;
 
 export const usageGap = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-${masonryData}
+${masonryShared}
 
-export default function CustomGap() {
+const items: GridItem[] = [
+  { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: , theme: "purple" },
+  { id: "g2", type: "image", height: "h-[26rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+  { id: "g3", type: "gradient", height: "h-48", title: "Forest Mist Stream", desc: "Hydrological condensation research.", icon: , theme: "emerald" },
+  { id: "g4", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" },
+  { id: "g5", type: "card", height: "h-52", title: "Volcanic Ridge", desc: "Thermal geological formations.", icon: , theme: "rose" },
+  { id: "g6", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" },
+];
+
+export default function TighterWall() {
+  // gapClassName drives both the column gap and the row rhythm.
   return (
-     }
-    />
+    
   );
 }`;
 
 export const usageStagger = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-${masonryData}
+${masonryShared}
 
-export default function SlowerStagger() {
-  // \`staggerDelay\` is the gap in seconds between each tile's blur-fade.
+const items: GridItem[] = [
+  { id: "s1", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "s2", type: "gradient", height: "h-52", title: "Aurora Skyward", desc: "Staggered particle illumination.", icon: , theme: "blue" },
+  { id: "s3", type: "card", height: "h-64", title: "Deep Woodland", desc: "Ancient oak and redwood groves.", icon: , theme: "emerald" },
+  { id: "s4", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop" },
+  { id: "s5", type: "card", height: "h-56", title: "Coastal Breeze", desc: "Oceanic climate metrics.", icon: , theme: "rose" },
+  { id: "s6", type: "image", height: "h-[30rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
+];
+
+export default function SlowStaggerWall() {
+  // Longer gap between each tile's entrance.
   return (
-     }
-    />
+    
   );
 }`;
 
-export const usageNoAnimation = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
+export const usageStatic = `import { MasonryGrid } from "@/components/custom/blocks/MasonryGridBlock";
 
-${masonryData}
+${masonryShared}
 
-export default function StaticGrid() {
-  // Renders immediately — right for content that is already above the fold,
-  // or when you want to respect reduced-motion yourself.
+const items: GridItem[] = [
+  { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: , theme: "emerald" },
+  { id: "st2", type: "image", height: "h-[26rem]", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=800&auto=format&fit=crop" },
+  { id: "st3", type: "gradient", height: "h-48", title: "Timberland Grove", desc: "Pure CSS column layout flow.", icon: , theme: "purple" },
+  { id: "st4", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" },
+  { id: "st5", type: "card", height: "h-60", title: "Glacial Basin", desc: "Sub-zero ice shelf monitoring.", icon: , theme: "blue" },
+  { id: "st6", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+];
+
+export default function StaticWall() {
+  // animateIn={false} renders in place — no entrance at all.
   return (
-     }
-    />
+    
   );
 }`;
 

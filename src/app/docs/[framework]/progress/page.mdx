@@ -15,7 +15,9 @@ export default function ProgressDemo() {
   return <Progress value={45} max={100} />;
 }`;
 
-export const usageFormatted = `import { useState } from "react";
+export const usageFormatted = `"use client";
+
+import { useState } from "react";
 import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
 
 export default function StorageWidget() {

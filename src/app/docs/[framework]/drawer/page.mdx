@@ -7,7 +7,9 @@ A highly animated, responsive drawer component. Built entirely from scratch usin
 
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
-export const usageDefault = `import { useState } from "react";
+export const usageDefault = `"use client";
+
+import { useState } from "react";
 import {
   Button,
   Drawer,
@@ -53,7 +55,9 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageBottom = `import { useState } from "react";
+export const usageBottom = `"use client";
+
+import { useState } from "react";
 import {
   Button,
   Drawer,
@@ -91,7 +95,9 @@ export default function BottomSheet() {
   );
 }`;
 
-export const usageControlled = `import { useEffect, useState } from "react";
+export const usageControlled = `"use client";
+
+import { useEffect, useState } from "react";
 import {
   Drawer,
   DrawerContent,

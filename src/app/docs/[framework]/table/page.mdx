@@ -9,7 +9,17 @@ We've removed the rigid, static feeling of standard HTML tables by injecting **m
 
 Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
 
-export const tableData = `const data = [
+export const tableData = `type Invoice = {
+  id: string;
+  user: string;
+  email: string;
+  amount: string;
+  status: "completed" | "processing" | "failed";
+  date: string;
+  details?: string;
+};
+
+const data: Invoice[] = [
   {
     id: "INV-3021",
     user: "Alice Freeman",
@@ -30,42 +40,59 @@ export const tableData = `const data = [
   },
   {
     id: "INV-3023",
-    user: "Carla Nguyen",
-    email: "carla@example.com",
-    amount: "$1,940.00",
+    user: "Charlie Davis",
+    email: "charlie@example.com",
+    amount: "$1,420.00",
     status: "failed",
     date: "Oct 23, 2023",
-    details: "Card declined by the issuing bank. Customer has been notified.",
+    details:
+      "Card declined by issuer. User has been notified to update payment method.",
   },
   {
     id: "INV-3024",
-    user: "Daniel Okafor",
-    email: "daniel@example.com",
-    amount: "$420.00",
+    user: "Diana Prince",
+    email: "diana@example.com",
+    amount: "$940.00",
     status: "completed",
     date: "Oct 22, 2023",
-    details: "Paid on invoice terms, reconciled automatically.",
+    details: "Payment processed via PayPal.",
+  },
+  {
+    id: "INV-3025",
+    user: "Evan Wright",
+    email: "evan@example.com",
+    amount: "$2,100.00",
+    status: "completed",
+    date: "Oct 21, 2023",
+  },
+  {
+    id: "INV-3026",
+    user: "Fiona Gallagher",
+    email: "fiona@example.com",
+    amount: "$450.00",
+    status: "processing",
+    date: "Oct 21, 2023",
+  },
+  {
+    id: "INV-3027",
+    user: "George Harris",
+    email: "george@example.com",
+    amount: "$5,500.00",
+    status: "completed",
+    date: "Oct 20, 2023",
   },
 ];
-
-const statusStyles = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const columns = [
+const columns: TableColumn<Invoice>[] = [
   { key: "id", label: "Invoice", sortable: true },
   {
     key: "user",
     label: "Customer",
     sortable: true,
-    // \`render\` takes over the whole cell — the row object is the only argument.
     render: (row) => (
       <div className="flex flex-col">
-        <span className="font-bold text-zinc-900 dark:text-zinc-100">{row.user}</span>
+        <span className="font-bold text-zinc-900 dark:text-zinc-100">
+          {row.user}
+        </span>
         <span className="text-xs text-zinc-500">{row.email}</span>
       </div>
     ),
@@ -75,22 +102,29 @@ const columns = [
     key: "status",
     label: "Status",
     sortable: true,
-    render: (row) => (
-      <span
-        className={
-          "px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider " +
-          statusStyles[row.status]
-        }
-      >
-        {row.status}
-      </span>
-    ),
+    render: (row) => {
+      const styles = {
+        completed: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+        processing: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+        failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+      };
+      return (
+        <span
+          className={"px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider " + styles[row.status]}
+        >
+          {row.status}
+        </span>
+      );
+    },
   },
   { key: "date", label: "Date", sortable: true, align: "right" },
   { key: "actions", label: "", align: "right" },
 ];`;
 
-export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+export const usageMinimal = `import {
+  TableBlock,
+  type TableColumn,
+} from "@/components/custom/blocks/TableBlock";
 
 ${tableData}
 
@@ -98,7 +132,10 @@ export default function MinimalTable() {
   return <TableBlock variant="minimal" data={data} columns={columns} />;
 }`;
 
-export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+export const usageExpandable = `import {
+  TableBlock,
+  type TableColumn,
+} from "@/components/custom/blocks/TableBlock";
 
 ${tableData}
 
@@ -120,7 +157,10 @@ export default function ExpandableTable() {
   );
 }`;
 
-export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+export const usagePagination = `import {
+  TableBlock,
+  type TableColumn,
+} from "@/components/custom/blocks/TableBlock";
 
 ${tableData}
 

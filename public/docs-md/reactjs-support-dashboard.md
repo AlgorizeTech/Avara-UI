@@ -79,7 +79,7 @@ export const supportData = `const data: SupportData = {
 };`;
 
 export const usageChat = `import SupportDashboard, {
-  SupportData,
+  type SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
 ${supportData}
@@ -89,7 +89,7 @@ export default function Helpdesk() {
 }`;
 
 export const usageTable = `import SupportDashboard, {
-  SupportData,
+  type SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
 ${supportData}
@@ -101,7 +101,7 @@ export default function TicketTable() {
 }`;
 
 export const usageGlass = `import SupportDashboard, {
-  SupportData,
+  type SupportData,
 } from "@/components/custom/blocks/Support-dashboard";
 
 ${supportData}

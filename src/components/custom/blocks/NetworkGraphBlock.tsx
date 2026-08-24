@@ -10,7 +10,7 @@ export type NetworkNode = {
   image?: string;
   fallback?: string;
   label?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | (string & {});
 };
 
 export interface NetworkGraphProps
@@ -169,7 +169,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                         <div
                           className={cn(
                             "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900",
-                            sizeMap[node.size || "md"],
+                            sizeMap[node.size as keyof typeof sizeMap] ?? sizeMap.md,
                           )}
                         >
                           {node.image ? (

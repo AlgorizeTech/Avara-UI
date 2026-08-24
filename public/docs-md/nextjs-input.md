@@ -38,7 +38,7 @@ export default function PasswordInput() {
   );
 }`;
 
-export const usageFile = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+export const usageFile = `"use client";
 
 export default function FileUploadInput() {
   return (

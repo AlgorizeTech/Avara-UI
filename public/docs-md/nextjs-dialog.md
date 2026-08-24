@@ -124,11 +124,14 @@ export default function TermsDialog() {
   );
 }`;
 
-export const usageControlled = `import { useState } from "react";
+export const usageControlled = `"use client";
 
 export default function ControlledDialog() {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Stand-in for your own request.
+  const saveToServer = () => new Promise((r) => setTimeout(r, 800));
 
   const handleSave = async () => {
     setSaving(true);

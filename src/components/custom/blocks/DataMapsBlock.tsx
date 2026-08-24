@@ -58,9 +58,9 @@ export interface DataPoint {
   id: string; // ISO 3166-1 alpha-3 country code
   name: string; // Name to display on hover
   active?: number; // Active count
-  activeTrend?: "up" | "down";
+  activeTrend?: "up" | "down" | (string & {});
   new?: number; // New count
-  newTrend?: "up" | "down";
+  newTrend?: "up" | "down" | (string & {});
   color?: string; // Optional custom fill color
   flag?: string; // Optional flag emoji
 }

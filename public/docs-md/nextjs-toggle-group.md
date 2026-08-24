@@ -6,10 +6,7 @@ This component utilizes a React Context Provider to make composition incredibly 
 
 Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
-export const usageSingle = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
+export const usageSingle = `"use client";
 
 export default function AlignmentGroup() {
   const [value, setValue] = useState("center");
@@ -60,10 +57,7 @@ export default function GroupSizes() {
   );
 }`;
 
-export const usageMultiple = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
+export const usageMultiple = `"use client";
 
 export default function FormattingGroup() {
   const [value, setValue] = useState(["bold"]);

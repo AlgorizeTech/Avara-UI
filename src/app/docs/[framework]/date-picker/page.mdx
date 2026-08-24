@@ -15,7 +15,7 @@ import { useState } from "react";
 import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function LaunchDatePicker() {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Date | null>(null);
 
   return (
     <DatePickerBlock
@@ -34,7 +34,7 @@ import { useState } from "react";
 import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function ValidatedDatePicker() {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Date | null>(null);
 
   // Passing \`error\` turns the trigger red, swaps in an alert icon and
   // replaces the helper text with your message.

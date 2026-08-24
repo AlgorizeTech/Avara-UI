@@ -11,7 +11,9 @@ This `DataGridBlock` is built **100% dependency-free**. It manages focus through
 
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
-export const gridSchema = `const COLUMNS = [
+export const gridSchema = `import { type GridColumn } from "@/components/custom/blocks/DataGridBlock";
+
+const COLUMNS: GridColumn[] = [
   { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
   { field: "customer", headerName: "Customer Name", width: 200 },
   { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
@@ -21,35 +23,71 @@ export const gridSchema = `const COLUMNS = [
 
 const ROWS = [
   { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
-  { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
-  { id: "TX-103", customer: "Nord Systems", amount: 890.25, status: "Paid", date: "2023-10-15" },
-  { id: "TX-104", customer: "Vertex Labs", amount: 3120, status: "Overdue", date: "2023-10-18" },
+  { id: "TX-102", customer: "Global Tech", amount: 1200.0, status: "Pending", date: "2023-10-14" },
+  { id: "TX-103", customer: "Stark Ind.", amount: 8900.25, status: "Overdue", date: "2023-09-30" },
+  { id: "TX-104", customer: "Wayne Ent.", amount: 15500.0, status: "Paid", date: "2023-10-01" },
+  { id: "TX-105", customer: "Initech", amount: 340.0, status: "Paid", date: "2023-10-15" },
+  { id: "TX-106", customer: "Soylent Corp", amount: 950.75, status: "Pending", date: "2023-10-16" },
+  { id: "TX-107", customer: "Umbrella Corp", amount: 12000.0, status: "Paid", date: "2023-10-10" },
+  { id: "TX-108", customer: "Massive Dynamic", amount: 450.0, status: "Paid", date: "2023-10-05" },
 ];`;
 
-export const usageDefault = `import { useState } from "react";
+export const usageDefault = `"use client";
+
+import { useState } from "react";
 import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+import { Download } from "lucide-react";
 
 ${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(ROWS);
+  const [data, setData] = useState<Record<string, unknown>[]>(ROWS);
 
   return (
-    <DataGridBlock
-      columns={COLUMNS}
-      data={data}
-      onChange={setData}
-    />
+    <div className="w-full flex flex-col gap-2">
+      <div className="flex items-center justify-between px-2 mb-2">
+        <div className="flex flex-col">
+          <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+            Financial Ledger
+          </h3>
+          <p className="text-sm text-zinc-500">Double-click any cell or press Enter to edit.</p>
+        </div>
+        <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
+          <Download className="w-3.5 h-3.5" />
+          Export CSV
+        </button>
+      </div>
+
+      <DataGridBlock columns={COLUMNS} data={data} onChange={setData} />
+    </div>
   );
 }`;
 
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+import { Download } from "lucide-react";
 
 ${gridSchema}
 
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
-  return <DataGridBlock columns={COLUMNS} data={ROWS} readOnly />;
+  return (
+    <div className="w-full flex flex-col gap-2">
+      <div className="flex items-center justify-between px-2 mb-2">
+        <div className="flex flex-col">
+          <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+            Financial Ledger
+          </h3>
+          <p className="text-sm text-zinc-500">View mode only.</p>
+        </div>
+        <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
+          <Download className="w-3.5 h-3.5" />
+          Export CSV
+        </button>
+      </div>
+
+      <DataGridBlock columns={COLUMNS} data={ROWS} readOnly />
+    </div>
+  );
 }`;
 
 <ExampleShowcase
@@ -203,7 +241,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>onChange</code>
         </td>
         <td>
-          <code>(newData: Record&lt;string, any&gt;[]) =&gt; void</code>
+          <code>(newData: T[]) =&gt; void</code>
         </td>
         <td>
           <code>undefined</code>

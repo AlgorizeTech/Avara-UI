@@ -35,7 +35,7 @@ export interface Vehicle {
   location: string;
   lat: number;
   lng: number;
-  status?: "active" | "idle" | "maintenance";
+  status?: "active" | "idle" | "maintenance" | (string & {});
   speed?: string;
 }
 

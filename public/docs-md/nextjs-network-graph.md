@@ -8,7 +8,7 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-export const networkNodes = `const users = [
+export const networkNodes = `const users: NetworkNode[] = [
   // Ring 1 (inner)
   { id: "1", ring: 1, image: "https://i.pravatar.cc/150?u=1", label: "Sarah J." },
   { id: "2", ring: 1, image: "https://i.pravatar.cc/150?u=2", label: "David B." },
@@ -25,9 +25,22 @@ export const networkNodes = `const users = [
   { id: "10", ring: 2, image: "https://i.pravatar.cc/150?u=10", label: "Olivia S.", size: "lg" },
   { id: "11", ring: 2, image: "https://i.pravatar.cc/150?u=11", label: "Liam H." },
   { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
+
+  // Ring 3 (outer)
+  { id: "13", ring: 3, image: "https://i.pravatar.cc/150?u=13", label: "Chloe D.", size: "sm" },
+  { id: "14", ring: 3, image: "https://i.pravatar.cc/150?u=14", label: "Marcus V.", size: "sm" },
+  { id: "15", ring: 3, image: "https://i.pravatar.cc/150?u=15", label: "Zoe N.", size: "md" },
+  { id: "16", ring: 3, fallback: "AJ", label: "Aaron J.", size: "sm" },
+  { id: "17", ring: 3, image: "https://i.pravatar.cc/150?u=17", label: "Nina F.", size: "sm" },
+  { id: "18", ring: 3, image: "https://i.pravatar.cc/150?u=18", label: "Owen G.", size: "sm" },
+  { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
+  { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
 ];`;
 
-export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const usageRings = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 
@@ -40,7 +53,10 @@ export default function RingLayout() {
   );
 }`;
 
-export const usageStatic = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const usageStatic = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 
@@ -49,7 +65,10 @@ export default function StaticGraph() {
   return ;
 }`;
 
-export const usageSpeed = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const usageSpeed = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 

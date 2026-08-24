@@ -21,6 +21,14 @@ export const chartData = `const revenue = [
   { label: "Dec", value: 4800 },
 ];`;
 
+export const chartHeading = `
+        
+          Annual Revenue Overview
+
+          Fiscal year 2023 performance metrics.
+        
+      `;
+
 export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
@@ -28,6 +36,8 @@ ${chartData}
 export default function RevenueChart() {
   return (
     
+      ${chartHeading}
+
   );
 }`;
 
@@ -39,6 +49,8 @@ export default function RevenueLine() {
   // Bezier-smoothed stroke, no fill.
   return (
     
+      ${chartHeading}
+
   );
 }`;
 
@@ -51,6 +63,8 @@ export default function RevenuePie() {
   // ovals, and shade each slice from a single theme color.
   return (
     
+      ${chartHeading}
+
   );
 }`;
 
@@ -61,6 +75,8 @@ ${chartData}
 export default function RevenueDonut() {
   return (
     
+      ${chartHeading}
+
   );
 }`;
 

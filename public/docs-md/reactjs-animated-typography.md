@@ -48,6 +48,10 @@ export default function TypewriterShowcase() {
   );
 }`;
 
+## Installation
+
+## Examples
+
 export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
 export default function WordBounceShowcase() {
@@ -79,10 +83,6 @@ export default function CharWaveShowcase() {
 
   );
 }`;
-
-## Installation
-
-## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

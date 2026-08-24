@@ -7,7 +7,9 @@ A premium, macOS-inspired navigation dock featuring real-time physics magnificat
 
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
-export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageDefault = `"use client";
+
+import { Dock } from "@/components/custom/blocks/DockBlock";
 import { Compass, FolderGit2, Github, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
 import { useState } from "react";
 
@@ -27,13 +29,22 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div className="relative w-full flex flex-col items-center justify-end min-h-[420px]">
+      <div className="absolute top-6 left-6 text-xs font-mono text-zinc-400 dark:text-zinc-600">
+        Active App:{" "}
+        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-bold">
+          {active}
+        </span>
+      </div>
+
       <Dock items={items} />
     </div>
   );
 }`;
 
-export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageBadges = `"use client";
+
+import { Dock } from "@/components/custom/blocks/DockBlock";
 import { Home, Mail, Settings, Terminal } from "lucide-react";
 import { useState } from "react";
 
