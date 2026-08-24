@@ -1496,7 +1496,6 @@
         "overlays"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
