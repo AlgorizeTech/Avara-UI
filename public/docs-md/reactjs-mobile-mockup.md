@@ -16,21 +16,36 @@ export default function AppShowcase() {
 
 export const usageIphone12 = `import { Iphone12ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
-`;
+export default function Iphone12Showcase() {
+  return (
+
+  );
+}`;
 
 export const usageIphone14 = `import { Iphone14ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
 // Autoplaying video works just as well as a still.
+export default function Iphone14Showcase() {
+  return (
 
-`;
+  );
+}`;
 
 export const usageSamsung = `import { SamsungS24UltraMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
-`;
+export default function SamsungShowcase() {
+  return (
+
+  );
+}`;
 
 export const usagePixel8 = `import { GooglePixel8Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
-`;
+export default function Pixel8Showcase() {
+  return (
+
+  );
+}`;
 
 export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 

@@ -211,7 +211,9 @@ ${stickyItems}
 export default function TunedStickyStack() {
   // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
   // offset that keeps the earlier headers peeking out.
-  return ;
+  return (
+    
+  );
 }`;
 
 ### Installation
