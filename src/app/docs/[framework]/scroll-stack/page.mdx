@@ -324,7 +324,18 @@ ${stickyItems}
 export default function TunedStickyStack() {
   // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
   // offset that keeps the earlier headers peeking out.
-  return <StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />;
+  return (
+    <StickyScrollStack
+      items={items}
+      scaleStep={0.08}
+      stackOffsetStep={28}
+      headerContentType="image-button"
+      headerImageUrl="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
+      headerTitle="Our Core Capabilities"
+      headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
+      headerButtonText="Request free audit"
+    />
+  );
 }`;
 
 <ExampleShowcase
