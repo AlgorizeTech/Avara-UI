@@ -9,9 +9,6 @@ Building animated text that scales responsively and doesn't break screen readers
 
 It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
 
-
-## Examples
-
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
 export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
@@ -91,6 +88,141 @@ export default function TypewriterShowcase() {
       usage: usageFlipUp,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="animated-typography" />
+
+## Examples
+
+export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordBounceShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-bounce"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="h4"
+        variant="word-bounce"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="p"
+        variant="word-bounce"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordZoomShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-zoom"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="h4"
+        variant="word-zoom"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="p"
+        variant="word-zoom"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WordSlideShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="word-slide"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="h4"
+        variant="word-slide"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="p"
+        variant="word-slide"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function CharWaveShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock
+        as="h3"
+        variant="char-wave"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="h4"
+        variant="char-wave"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+      <AnimatedTypographyBlock
+        as="p"
+        variant="char-wave"
+        align="center"
+        titlePrefix="Build Interactive"
+        text="Interfaces, Components, Experiences, Animations, Dashboards"
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="animated-typography"
+  colorControl
+  colorLabel="Text Color"
+  columns={1}
+  examples={[
     {
       title: "Fade Up Mask",
       subheading: "Words slide up out of a clipping mask while fading into view.",
@@ -131,12 +263,52 @@ export default function TypewriterShowcase() {
       props: { singleVariant: "typewriter" },
       usage: usageTypewriter,
     },
+    {
+      title: "Word Bounce",
+      subheading: "Spring-animated vertical word transition cycling continuously through a list of words with optional prefix or suffix text.",
+      propNotes: [
+        { prop: "variant", value: '"word-bounce"', effect: "bounces words vertically using a spring curve." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+      ],
+      props: { singleVariant: "word-bounce", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordBounce,
+    },
+    {
+      title: "Word Zoom",
+      subheading: "Cinematic blur-fade zoom transition scaling words seamlessly into focus.",
+      propNotes: [
+        { prop: "variant", value: '"word-zoom"', effect: "zooms and fades words in out of a 12px blur filter." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+      ],
+      props: { singleVariant: "word-zoom", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordZoom,
+    },
+    {
+      title: "Word Slide",
+      subheading: "Smooth horizontal slide transition moving words in and out with blur filtering.",
+      propNotes: [
+        { prop: "variant", value: '"word-slide"', effect: "slides words horizontally in and out with blur reveal." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+      ],
+      props: { singleVariant: "word-slide", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageWordSlide,
+    },
+    {
+      title: "Character Wave (Homepage Hero Style)",
+      subheading: "Staggered kinetic wave transition popping words in letter-by-letter on a spring curve.",
+      propNotes: [
+        { prop: "variant", value: '"char-wave"', effect: "animates characters in a staggered kinetic wave." },
+        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
+        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+      ],
+      props: { singleVariant: "char-wave", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
+      usage: usageCharWave,
+    },
   ]}
 />
-
-## Installation
-
-<Installation name="animated-typography" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

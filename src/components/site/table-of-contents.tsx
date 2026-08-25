@@ -128,7 +128,7 @@ export const TableOfContents: React.FC = () => {
       : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
 
   return (
-    <aside className="hidden lg:flex flex-col w-[190px] 2xl:w-[240px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
+    <aside className="hidden lg:flex flex-col w-[180px] xl:w-[200px] 2xl:w-[212px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
       <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
         {/* Header: Title + Progress Bar */}
         <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
@@ -170,7 +170,7 @@ export const TableOfContents: React.FC = () => {
             className="relative py-1"
           >
             {/* Static vertical track line */}
-            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="absolute left-[15px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
 
             {chapters.map((chapter, chapterIndex) => {
               const isChapterOpen = chapter === activeChapter;
@@ -187,7 +187,7 @@ export const TableOfContents: React.FC = () => {
                     <button
                       onClick={() => scrollToHeading(chapter.root!.id)}
                       data-toc-active={isRootActive || undefined}
-                      style={{ paddingLeft: "32px" }}
+                      style={{ paddingLeft: "26px" }}
                       className={cn(
                         "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
                         "py-2 mb-1 text-[13px] font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100",
@@ -198,7 +198,7 @@ export const TableOfContents: React.FC = () => {
                       {isRootActive && (
                         <motion.div
                           layoutId="active-toc-pill"
-                          className="absolute left-[18px] w-[3px] h-5 rounded-full bg-primary z-10"
+                          className="absolute left-[14px] w-[3px] h-5 rounded-full bg-primary z-10"
                           transition={{
                             type: "spring",
                             stiffness: 380,
@@ -231,7 +231,7 @@ export const TableOfContents: React.FC = () => {
                               key={item.id}
                               onClick={() => scrollToHeading(item.id)}
                               data-toc-active={isActive || undefined}
-                              style={{ paddingLeft: `${32 + indent}px` }}
+                              style={{ paddingLeft: `${26 + indent}px` }}
                               className={cn(
                                 "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
                                 isSection &&
@@ -246,7 +246,7 @@ export const TableOfContents: React.FC = () => {
                               {isActive && (
                                 <motion.div
                                   layoutId="active-toc-pill"
-                                  className="absolute left-[18px] w-[3px] h-4 rounded-full bg-primary z-10"
+                                  className="absolute left-[14px] w-[3px] h-4 rounded-full bg-primary z-10"
                                   transition={{
                                     type: "spring",
                                     stiffness: 380,

@@ -2,11 +2,9 @@
 
 A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
 
-## Examples
-
 Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
 
-export const usageDefault = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageDefault = `"use client";
 
 export default function BottomNav() {
   const [active, setActive] = useState("home");
@@ -17,48 +15,46 @@ export default function BottomNav() {
     { id: "compass", label: "Explore", icon: , isActive: active === "compass", onClick: () => setActive("compass") },
     { id: "mail", label: "Messages", icon: , badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
     { id: "terminal", label: "Terminal", icon: , isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "projects", label: "Repositories", icon: , isActive: active === "projects", onClick: () => setActive("projects") },
+    { id: "ai", label: "AI Assistant", icon: , isActive: active === "ai", onClick: () => setActive("ai") },
+    { id: "code", label: "Code", icon: , isActive: active === "code", onClick: () => setActive("code") },
     { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
   return (
 
+        Active App:{" "}
+        
+          {active}
+
   );
 }`;
 
-export const usageBadges = `import { Dock } from "@/components/custom/blocks/DockBlock";
+export const usageBadges = `"use client";
 
 export default function CompactNav() {
+  const [active, setActive] = useState("home");
+
   const items = [
     // isActive draws the indicator dot; badge prints a counter pill
-    { id: "home", label: "Dashboard", icon: , isActive: true },
-    { id: "mail", label: "Messages", icon: , badge: 3 },
-    { id: "terminal", label: "Terminal", icon:  },
-    { id: "settings", label: "Settings", icon:  },
+    { id: "home", label: "Dashboard", icon: , isActive: active === "home", onClick: () => setActive("home") },
+    { id: "mail", label: "Messages", icon: , badge: 3, isActive: active === "mail", onClick: () => setActive("mail") },
+    { id: "terminal", label: "Terminal", icon: , isActive: active === "terminal", onClick: () => setActive("terminal") },
+    { id: "settings", label: "Settings", icon: , isActive: active === "settings", onClick: () => setActive("settings") },
   ];
 
-  return ;
-}`;
-
-export const usageCompact = `import { Dock } from "@/components/custom/blocks/DockBlock";
-
-export default function SmallDock({ items }) {
-  // Smaller resting icons and a gentler peak — good for dense toolbars.
   return (
-    
-  );
-}`;
 
-export const usagePhysics = `import { Dock } from "@/components/custom/blocks/DockBlock";
+        Active App:{" "}
+        
+          {active}
 
-export default function DramaticDock({ items }) {
-  // A tall peak with a wide reach: neighbours lift long before the cursor
-  // arrives, which is what makes it feel like macOS.
-  return (
-    
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

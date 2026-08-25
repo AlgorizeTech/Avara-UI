@@ -1,12 +1,6 @@
-# Design Components
+# Components Folder
 
 An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Framer Motion and Tailwind CSS.
-
-## Examples
-
-Two components ship here: `DesignComponentsFolder`, the full hub with animated cards rising out of a frosted folder, and `DesignFolderBox`, the same folder shell with nothing inside it.
-
-### Components hub
 
 export const usageFolder = `import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 
@@ -14,15 +8,7 @@ export default function Showcase() {
   return ;
 }`;
 
-### Standalone folder box
-
-A pure frosted glass folder container without the animated cards inside — useful as a showcase box of your own.
-
-export const usageBox = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
-
-export default function Container() {
-  return ;
-}`;
+### Installation
 
 export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
 
@@ -32,9 +18,7 @@ export default function CustomLabelBox() {
   return ;
 }`;
 
-## Installation
-
-Two independent components ship here — take only the one you need.
+### Installation
 
 ## Props Reference
 

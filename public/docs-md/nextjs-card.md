@@ -4,8 +4,6 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
 
-## Examples
-
 The sub-components handle their own padding, so cards stay balanced whatever you put in them.
 
 export const usageDefault = `import {
@@ -34,41 +32,7 @@ export default function NotificationCard() {
   );
 }`;
 
-export const usageDefaultVariant = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-
-export default function ActionCards() {
-  // "default" drops the border and leans on the shadow alone.
-  return (
-
-             Download Report
-
-            Export your analytics data as a CSV file for external processing.
-
-             Import Data
-
-            Upload legacy customer profiles to merge into your active CRM.
-
-  );
-}`;
-
-export const usageFlat = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-
-export default function FlatCards() {
-  // "flat" tints the surface instead of raising it — good for nested panels.
-  return (
-
-             Download Report
-          
-          Export your analytics data as a CSV file.
-
-             Import Data
-          
-          Upload legacy customer profiles into your CRM.
-
-  );
-}`;
-
-export const usageInteractive = `import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+export const usageInteractive = `"use client";
 
 export default function ClickableCards() {
   // interactive adds hover elevation, a lift, and an active press scale.
@@ -77,14 +41,14 @@ export default function ClickableCards() {
        console.log("Download")}>
 
              Download Report
-          
-          Export your analytics data as a CSV file.
+
+            Export your analytics data as a CSV file for external processing.
 
        console.log("Import")}>
 
              Import Data
-          
-          Upload legacy customer profiles into your CRM.
+
+            Upload legacy customer profiles to merge into your active CRM.
 
   );
 }`;
@@ -115,6 +79,8 @@ export default function StatGrid() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.

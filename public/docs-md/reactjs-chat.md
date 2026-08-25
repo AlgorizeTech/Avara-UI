@@ -2,13 +2,9 @@
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 
-## Examples
-
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
-export const usageDefault = `import ChatApp from "@/components/custom/blocks/Chat";
-
-const currentUser = {
+export const chatData = `const currentUser = {
   avatar: "https://i.pravatar.cc/150?u=current",
   status: "online",
 };
@@ -34,13 +30,38 @@ const contactsData = [
     initials: "AG",
     color: "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400",
   },
-];
+  {
+    id: 3,
+    name: "Zenia Jacobs",
+    message: "Thank you, looking forward to it.",
+    date: "Dec 13",
+    unread: 0,
+    status: "online",
+    initials: "ZJ",
+    color: "bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400",
+  },
+  {
+    id: 4,
+    name: "Miguel Guelff",
+    message: "Can we schedule a meeting for tomorrow?",
+    date: "Dec 11",
+    unread: 0,
+    status: "online",
+    avatar: "https://i.pravatar.cc/150?u=4",
+  },
+];`;
+
+export const usageDefault = `import ChatApp from "@/components/custom/blocks/Chat";
+
+${chatData}
 
 export default function Messages() {
   return ;
 }`;
 
 export const usageMinimal = `import ChatApp from "@/components/custom/blocks/Chat";
+
+${chatData}
 
 export default function MinimalChat() {
   // Borders and shadows stripped back for embedding inside an existing panel.
@@ -51,14 +72,18 @@ export default function MinimalChat() {
 
 export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat";
 
+${chatData}
+
 export default function GlassChat() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    // \`glass\` is translucent by design — give it a background image or rich pattern to sit on.
 
   );
-}`;
+};`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.

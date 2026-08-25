@@ -44,7 +44,7 @@ export function ThemeColorPicker({
 							onClick={() => onChange(c.id)}
 							className={`w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-full transition-all duration-200 outline-none flex items-center justify-center cursor-pointer ${c.bg} ${
 								color === c.id
-									? "ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500 scale-110"
+									? "ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-zinc-800 dark:ring-zinc-200 scale-110"
 									: "hover:scale-110 opacity-85 hover:opacity-100"
 							}`}
 							title={c.id}
@@ -57,7 +57,7 @@ export function ThemeColorPicker({
 					<div
 						className={`relative flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-full overflow-hidden border transition-all cursor-pointer ${
 							color.startsWith("#")
-								? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-indigo-500"
+								? "border-zinc-900 dark:border-white scale-110 ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-zinc-100 dark:ring-offset-zinc-900 ring-zinc-800 dark:ring-zinc-200"
 								: "border-zinc-300 dark:border-zinc-700 hover:scale-110"
 						}`}>
 						<input

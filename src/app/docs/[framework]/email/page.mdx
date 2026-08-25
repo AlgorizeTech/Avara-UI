@@ -5,15 +5,32 @@ import { extractCode } from "@/lib/code";
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 
-## Examples
-
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
-export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
-
-const emails = [
+export const emailData = `const emails = [
   {
     id: 1,
+    sender: "Tommy Sicilia",
+    email: "tommy@example.com",
+    subject: "How to Succeed with Your Shopify Store",
+    time: "01:46 PM",
+    fullDate: "Dec 10, 2026, 01:46 PM",
+    isStarred: false,
+    isRead: false,
+    avatar: "https://i.pravatar.cc/150?u=tommy",
+    labels: [
+      {
+        color: "bg-rose-500",
+        name: "Private",
+        pill: "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+      },
+    ],
+    body: "Hello,\\n\\nI hope you are doing well.\\n\\nHere are some top tips to succeed with your new store. Let me know if you want to schedule a call.",
+    attachments: [],
+    folder: "inbox",
+  },
+  {
+    id: 2,
     sender: "Tressa Gass",
     email: "tressag@mail.com",
     subject: "Please find attached the latest Company Report",
@@ -21,7 +38,7 @@ const emails = [
     fullDate: "Dec 10, 2026, 01:55 PM",
     isStarred: true,
     isRead: true,
-    avatar: "/avatars/tressa.jpg",
+    avatar: "https://i.pravatar.cc/150?u=tressa",
     labels: [
       {
         color: "bg-indigo-500",
@@ -29,20 +46,47 @@ const emails = [
         pill: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
       },
     ],
-    body: "Hello John,\\n\\nI am sending over the company report.",
+    body: "Hello John,\\n\\nI hope you are doing well.\\n\\nI am sending over a company report for company. It is a PDF file.\\n\\nPlease let me know if you want to schedule a call or any other questions.\\n\\nRegards\\nTressa Gass",
     attachments: [
       { name: "Q3-Financial-Report.pdf", type: "pdf", size: "2.4 MB" },
     ],
     folder: "inbox",
   },
-];
+  {
+    id: 3,
+    sender: "Louetta Esses",
+    email: "louetta@mail.com",
+    subject: "Update Can Change Your Personal Life",
+    time: "03:04 PM",
+    fullDate: "Dec 10, 2026, 03:04 PM",
+    isStarred: false,
+    isRead: false,
+    initials: "LE",
+    color: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400",
+    labels: [
+      {
+        color: "bg-amber-500",
+        name: "Important",
+        pill: "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+      },
+    ],
+    body: "Hi there,\\n\\nDon't miss out on this life-changing update. Check the link below.",
+    attachments: [],
+    folder: "inbox",
+  },
+];`;
+
+export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
+
+${emailData}
 
 export default function Mailbox() {
   return <EmailApp initialEmails={emails} />;
 }`;
 
 export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
-import { emails } from "./emails";
+
+${emailData}
 
 export default function MinimalMailbox() {
   // Flattens the shell — no elevated card, lighter dividers.
@@ -50,7 +94,8 @@ export default function MinimalMailbox() {
 }`;
 
 export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
-import { emails } from "./emails";
+
+${emailData}
 
 export default function GlassMailbox() {
   return (
@@ -92,6 +137,20 @@ export default function GlassMailbox() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Email.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="email" />
+
+## Examples
+
+<ExampleShowcase
+  name="email"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -123,13 +182,8 @@ export default function GlassMailbox() {
   ]}
 />
 
-## Installation
-
-<Installation name="email" />
-
 ## Features
 Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

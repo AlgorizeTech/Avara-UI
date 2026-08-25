@@ -4,39 +4,9 @@ A high-fidelity Form toolkit engineered for both simple landing pages and comple
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
-## Examples
-
 `FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
-export const usageNative = `"use client";
-
-export default function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!email.includes("@")) {
-      setError("Please provide a valid email address.");
-      return;
-    }
-    setError("");
-    // Submit logic...
-  };
-
-  return (
-
-         setEmail(e.target.value)}
-        />
-
-      Subscribe Now
-    
-  );
-}`;
-
-export const usageZod = `"use client";
-
-const schema = z.object({
+export const usageZod = `const schema = z.object({
   companyName: z.string().min(2, "Company name is strictly required."),
   workEmail: z.string().email("Invalid corporate email format detected."),
   password: z.string().min(8, "Security requirement: Minimum 8 characters."),
@@ -58,30 +28,7 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageErrorStyles = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function ErrorStyles() {
-  const message = "Invalid corporate email format detected.";
-
-  return (
-    
-      {/* "glitch" is the default — animated RGB-split text */}
-
-      {/* "default" is the quiet, static variant */}
-
-  );
-}`;
-
-export const usageSubmitting = `import {
-  FormField,
-  FormSubmit,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function SubmittingForm() {
+export const usageSubmitting = `export default function SubmittingForm() {
   return (
      e.preventDefault()}
     >
@@ -92,92 +39,6 @@ export default function SubmittingForm() {
   );
 }`;
 
-export const usageBare = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function SettingsPanel() {
-  // No title/description = no header. No onSubmit = a , not a ,
-  // so the wrapper can nest inside a form you already own.
-  return (
-
-  );
-}`;
-
-`, otherwise a plain ``.",
-        },
-        {
-          prop: "error",
-          effect:
-            "on `FormField` renders below the input and turns the label red. A falsy value renders nothing.",
-        },
-      ],
-      props: { demoType: "native" },
-      usage: usageNative,
-      code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
-    },
-    {
-      title: "React Hook Form + Zod",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "onSubmit",
-          effect:
-            "the result of RHF's `handleSubmit()` directly — `FormWrapper` never breaks child `ref`s, so `register()` just works.",
-        },
-      ],
-      props: { demoType: "zod" },
-      usage: usageZod,
-    },
-    {
-      title: "Error styles",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "errorVariant",
-          value: '"glitch"',
-          effect:
-            "for the animated RGB-split error text. It is the default; `\"default\"` is the static, quieter one.",
-        },
-      ],
-      props: { showAll: "error-styles" },
-      usage: usageErrorStyles,
-    },
-    {
-      title: "Submitting",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "isSubmitting",
-          effect:
-            "to `FormSubmit` to swap the label for a spinner and disable the button, which is what blocks double submits.",
-        },
-      ],
-      props: { showAll: "submitting" },
-      usage: usageSubmitting,
-    },
-    {
-      title: "Without a header",
-      propNotes: [
-        {
-          lead: "Omit",
-          prop: "title",
-          effect:
-            "and `description` to drop the header and divider entirely.",
-        },
-        {
-          prop: "color",
-          effect:
-            "still drives the animated border, focus ring and submit button — any named key or hex.",
-        },
-      ],
-      props: { showAll: "bare" },
-      usage: usageBare,
-    },
-  ]}
-/>
-
 ## Installation
 
 ### Optional — schema validation
@@ -187,6 +48,8 @@ The form primitives are unopinionated about validation; the native example uses 
 ```bash
 npx shadcn@latest install react-hook-form zod @hookform/resolvers
 ```
+
+## Examples
 
 ## Features
 Explore the Form component's validation integration, accessible error messages, and loading state management.

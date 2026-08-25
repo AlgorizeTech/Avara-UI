@@ -25,7 +25,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
 
     return (
       <div className="flex flex-col gap-1.5 w-full">
-        <label className="text-[13px] font-semibold text-zinc-700 dark:text-zinc-300 ml-1">
+        <label className="text-[13px] font-semibold text-foreground ml-1">
           {label} {required && <span className="text-indigo-500">*</span>}
         </label>
 
@@ -46,16 +46,16 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
 
           <div
             className={cn(
-              "relative flex items-center w-full bg-zinc-50 dark:bg-zinc-900/50 border rounded-lg transition-colors overflow-hidden",
+              "relative flex items-center w-full bg-muted border rounded-lg transition-colors overflow-hidden",
               error
                 ? "border-rose-500/50"
                 : isFocused
                   ? "border-indigo-500/50"
-                  : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700",
+                  : "border-border hover:border-border",
             )}
           >
             {Icon && (
-              <div className="pl-3.5 text-zinc-400 dark:text-zinc-500 flex-shrink-0 transition-colors group-focus-within:text-indigo-500">
+              <div className="pl-3.5 text-muted-foreground flex-shrink-0 transition-colors group-focus-within:text-indigo-500">
                 <Icon className="w-4 h-4" />
               </div>
             )}
@@ -82,7 +82,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="pr-3.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors focus:outline-none"
+                className="pr-3.5 text-muted-foreground hover:text-muted-foreground transition-colors focus:outline-none"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -143,7 +143,7 @@ const PremiumCheckbox = ({
                 ? "bg-indigo-500 border-indigo-500"
                 : error
                   ? "border-rose-500 bg-rose-50 dark:bg-rose-500/10"
-                  : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 group-hover:border-indigo-400",
+                  : "border-border bg-card group-hover:border-indigo-400",
             )}
           >
             <AnimatePresence>
@@ -172,7 +172,7 @@ const PremiumCheckbox = ({
             </AnimatePresence>
           </div>
         </div>
-        <span className="text-[13px] font-medium text-zinc-700 dark:text-zinc-300 leading-snug">
+        <span className="text-[13px] font-medium text-foreground leading-snug">
           {label} {required && <span className="text-indigo-500">*</span>}
         </span>
       </label>
@@ -211,7 +211,7 @@ const PasswordStrength = ({ password }: { password: string }) => {
 
   const segments = Array.from({ length: 4 });
   const getSegmentColor = (index: number) => {
-    if (index >= strength) return "bg-zinc-200 dark:bg-zinc-800";
+    if (index >= strength) return "bg-muted";
     if (strength <= 1) return "bg-rose-500";
     if (strength === 2) return "bg-orange-500";
     if (strength === 3) return "bg-yellow-500";
@@ -241,7 +241,7 @@ const PasswordStrength = ({ password }: { password: string }) => {
           />
         ))}
       </div>
-      <div className="flex justify-between items-center text-[11px] font-medium text-zinc-500">
+      <div className="flex justify-between items-center text-[11px] font-medium text-muted-foreground">
         <span>Password strength</span>
         <span
           className={cn(
@@ -359,9 +359,9 @@ export const SignupForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto relative overflow-hidden bg-white dark:bg-[#0a0a0a] rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-zinc-200 dark:border-zinc-800 w-full">
+    <div className="max-w-md mx-auto relative overflow-hidden bg-white dark:bg-[#0a0a0a] rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-border w-full">
       {/* Top Completion Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-zinc-100 dark:bg-zinc-800/50">
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-muted">
         <motion.div
           className="h-full bg-indigo-500"
           initial={{ width: 0 }}
@@ -379,10 +379,10 @@ export const SignupForm = () => {
           <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-100 dark:border-indigo-500/20">
             <User className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <h2 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl font-black text-foreground tracking-tight">
             Create Account
           </h2>
-          <p className="text-[13.5px] text-zinc-500 mt-1.5">
+          <p className="text-[13.5px] text-muted-foreground mt-1.5">
             Join thousands of developers building the future.
           </p>
         </motion.div>
@@ -476,7 +476,7 @@ export const SignupForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="relative w-full h-12 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold text-[15px] overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-transform active:scale-[0.98]"
+              className="relative w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-[15px] overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-transform active:scale-[0.98]"
             >
               {/* Button Hover Shine */}
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
@@ -501,7 +501,7 @@ export const SignupForm = () => {
           transition={{ delay: 0.6 }}
           className="mt-8 text-center"
         >
-          <p className="text-[13px] text-zinc-500 font-medium">
+          <p className="text-[13px] text-muted-foreground font-medium">
             Already have an account?{" "}
             <a
               href="#"

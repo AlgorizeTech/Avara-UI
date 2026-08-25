@@ -62,7 +62,7 @@ export default function VerifyBadgeDemo({
         {/* Desktop Bot Avatar */}
         <div className="hidden sm:flex flex-shrink-0 mt-0.5">
           <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center text-white transition-colors"
+            className="w-11 h-11 rounded-2xl flex items-center justify-center text-primary-foreground dark:text-zinc-900 transition-colors"
             style={{ backgroundColor: activeHex }}
           >
             <svg
@@ -90,7 +90,7 @@ export default function VerifyBadgeDemo({
           <div className="flex items-center gap-2 flex-wrap min-w-0 w-full">
             {/* Mobile Bot Avatar */}
             <div
-              className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-white shrink-0"
+              className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-primary-foreground dark:text-zinc-900 shrink-0"
               style={{ backgroundColor: activeHex }}
             >
               <svg

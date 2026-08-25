@@ -75,18 +75,18 @@ const pricingVariants: any = {
   },
   elegant: {
     container: "w-full p-8",
-    card: "relative transition-all duration-500 bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1 dark:from-slate-800 dark:to-slate-900 dark:border-slate-700/60 dark:hover:shadow-xl dark:hover:shadow-slate-900/40",
+    card: "relative transition-all duration-500 bg-gradient-to-b from-slate-50 to-white border border-border/60 hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1 dark:from-slate-800 dark:to-slate-900 dark:hover:shadow-xl dark:hover:shadow-slate-900/40",
     cardPopular:
       "border-slate-300 shadow-xl shadow-slate-200/60 scale-105 bg-gradient-to-b from-slate-100 to-white dark:border-slate-600 dark:shadow-slate-900/60 dark:from-slate-700 dark:to-slate-800",
     cardHeader:
-      "text-center pb-6 border-b border-slate-200/60 mb-6 dark:border-slate-700/60",
+      "text-center pb-6 border-b border-border/60 mb-6",
     price:
-      "text-3xl font-light text-slate-800 tracking-tight dark:text-slate-200",
+      "text-3xl font-light text-foreground tracking-tight",
     button: "w-full mb-8 font-medium tracking-wide transition-all duration-300",
     buttonPopular:
       "bg-slate-800 hover:bg-slate-700 text-white shadow-lg hover:shadow-xl dark:bg-slate-700 dark:hover:bg-slate-600",
     featuresTitle:
-      "font-medium text-xs text-slate-600 uppercase tracking-[0.1em] border-b border-slate-200/60 pb-3 mb-4 dark:text-slate-400 dark:border-slate-700/60",
+      "font-medium text-xs text-muted-foreground uppercase tracking-[0.1em] border-b border-border/60 pb-3 mb-4",
     featureIcon: "rounded-full p-1 mr-3 mt-0.5 transition-all duration-200",
     featureIconPopular:
       "bg-slate-800 shadow-sm dark:bg-slate-700 dark:shadow-slate-800",
@@ -246,7 +246,7 @@ export function BasicPricingPlan({
                   className={cn(
                     "text-sm",
                     variant === "elegant"
-                      ? "text-slate-600 dark:text-slate-400"
+                      ? "text-muted-foreground"
                       : "text-muted-foreground",
                   )}
                 >
@@ -259,7 +259,7 @@ export function BasicPricingPlan({
                       className={cn(
                         "ml-1",
                         variant === "elegant"
-                          ? "text-slate-500 dark:text-slate-400"
+                          ? "text-muted-foreground"
                           : "text-muted-foreground",
                       )}
                     >
@@ -301,7 +301,7 @@ export function BasicPricingPlan({
                               variant === "elegant"
                                 ? plan.popular
                                   ? "text-white"
-                                  : "text-slate-600 dark:text-slate-400"
+                                  : "text-muted-foreground"
                                 : plan.popular
                                   ? "text-primary-foreground"
                                   : "text-foreground",
@@ -312,7 +312,7 @@ export function BasicPricingPlan({
                           className={cn(
                             "text-sm leading-relaxed",
                             variant === "elegant"
-                              ? "text-slate-700 dark:text-slate-300"
+                              ? "text-foreground"
                               : "",
                           )}
                         >
@@ -573,7 +573,7 @@ export function SliderPricingPlan({
   return (
     <div
       className={cn(
-        "w-full max-w-2xl mx-auto p-6 bg-gray-50 dark:bg-transparent",
+        "w-full max-w-2xl mx-auto p-6 bg-muted dark:bg-transparent",
         classNames.container,
         className,
       )}
@@ -582,7 +582,7 @@ export function SliderPricingPlan({
         <div className="flex justify-center mb-6">
           <div
             className={cn(
-              "bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-700 px-4 py-2 rounded-lg text-sm font-medium",
+              "bg-primary text-white dark:text-gray-700 px-4 py-2 rounded-lg text-sm font-medium",
               classNames.eventBadge,
             )}
           >
@@ -593,7 +593,7 @@ export function SliderPricingPlan({
         <div className="relative mb-8">
           <div
             className={cn(
-              "flex justify-between text-sm text-gray-600 dark:text-gray-500 mb-4 px-2",
+              "flex justify-between text-sm text-muted-foreground mb-4 px-2",
               classNames.sliderLabels,
             )}
           >
@@ -618,7 +618,7 @@ export function SliderPricingPlan({
 
       <Card
         className={cn(
-          "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl overflow-hidden",
+          "bg-card border-border text-foreground rounded-2xl overflow-hidden",
           classNames.card,
         )}
       >
@@ -626,7 +626,7 @@ export function SliderPricingPlan({
           <div className="flex justify-center pt-8 pb-6">
             <div
               className={cn(
-                "inline-flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 p-1.5 gap-1",
+                "inline-flex items-center justify-center rounded-xl bg-muted p-1.5 gap-1",
                 classNames.tabContainer,
               )}
             >
@@ -638,11 +638,11 @@ export function SliderPricingPlan({
                     "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-6 py-2.5 text-sm font-medium transition-all",
                     billingPeriod === period.id
                       ? cn(
-                          "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm",
+                          "bg-card text-foreground shadow-sm",
                           classNames.tabButtonActive,
                         )
                       : cn(
-                          "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white",
+                          "text-muted-foreground hover:text-foreground",
                           classNames.tabButton,
                         ),
                   )}
@@ -669,7 +669,7 @@ export function SliderPricingPlan({
             <div className="flex items-baseline justify-start mb-2">
               <span
                 className={cn(
-                  "text-5xl font-bold text-gray-900 dark:text-white",
+                  "text-5xl font-bold text-foreground",
                   classNames.price,
                 )}
               >
@@ -677,7 +677,7 @@ export function SliderPricingPlan({
               </span>
               <span
                 className={cn(
-                  "text-2xl font-bold text-gray-900 dark:text-white",
+                  "text-2xl font-bold text-foreground",
                   classNames.priceDecimal,
                 )}
               >
@@ -686,7 +686,7 @@ export function SliderPricingPlan({
             </div>
             <div
               className={cn(
-                "text-sm text-gray-600 dark:text-gray-400",
+                "text-sm text-muted-foreground",
                 classNames.pricePeriod,
               )}
             >
@@ -723,7 +723,7 @@ export function SliderPricingPlan({
                 </div>
                 <span
                   className={cn(
-                    "text-sm text-gray-700 dark:text-gray-300",
+                    "text-sm text-foreground",
                     classNames.featureText,
                   )}
                 >
@@ -747,7 +747,7 @@ export function SliderPricingPlan({
           {footerText && (
             <p
               className={cn(
-                "text-center text-sm text-gray-600 dark:text-gray-400",
+                "text-center text-sm text-muted-foreground",
                 classNames.footerText,
               )}
             >

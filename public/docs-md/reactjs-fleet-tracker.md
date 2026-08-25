@@ -2,16 +2,9 @@
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
-## Examples
-
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
-export const usageDefault = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
-
-// Leaflet touches \`window\` on import, so the map is deferred until after mount
-// — the component handles that itself, in every framework.
-
-const fleet = [
+export const fleetData = `const fleet: Vehicle[] = [
   {
     id: "VOL-342808",
     location: "Chelsea, NY",
@@ -28,20 +21,53 @@ const fleet = [
     status: "maintenance",
     speed: "0 mph",
   },
-];
+  {
+    id: "VOL-342809",
+    location: "Midtown East, NY",
+    lat: 40.758,
+    lng: -73.973,
+    status: "active",
+    speed: "22 mph",
+  },
+  {
+    id: "VOL-343908",
+    location: "Hoboken, NJ",
+    lat: 40.744,
+    lng: -74.0324,
+    status: "idle",
+    speed: "0 mph",
+  },
+];`;
+
+export const usageDefault = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
+
+// Leaflet touches \`window\` on import, so the map is deferred until after mount
+// — the component handles that itself, in every framework.
+
+${fleetData}
 
 export default function FleetDashboard() {
   return ;
 }`;
 
-export const usageMinimal = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+export const usageMinimal = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
+
+${fleetData}
 
 export default function MinimalFleet() {
   // A floating panel over a light map canvas.
   return ;
 }`;
 
-export const usageModern = `import FleetTracker from "@/components/custom/blocks/Fleet-tracker";
+export const usageModern = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
+
+${fleetData}
 
 export default function ModernFleet() {
   // Backdrop-blurred glass sidebar over a dark map.
@@ -49,6 +75,8 @@ export default function ModernFleet() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.

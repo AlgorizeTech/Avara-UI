@@ -4,67 +4,138 @@ An interactive, 100% full-width and responsive custom cursor component with 10 d
 
 `CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
 
-export const usageGlow = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageGlow = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function GlowCursorDemo() {
-  return ;
+  return (
+
+            Glow Cursor Animation
+            Hover and move mouse around to see the soft glow trail
+
+  );
 }`;
 
-export const usageMagnetic = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageMagnetic = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function MagneticCursorDemo() {
-  return ;
+  return (
+
+            Magnetic Target Cursor
+            Interactive target cursor with fluid magnetic physics
+
+  );
 }`;
 
-export const usageTrail = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageTrail = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function TrailCursorDemo() {
-  return ;
+  return (
+
+            Particle Trail Cursor
+            Dense particle stream following pointer motion
+
+  );
 }`;
 
-export const usageBadge = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageBadge = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function BadgeCursorDemo() {
-  return ;
+  return (
+
+            Floating Pill Badge Cursor
+            Interactive floating text badge tracking the pointer
+
+  );
 }`;
 
-export const usageSpotlight = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageSpotlight = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function SpotlightCursorDemo() {
-  return ;
+  return (
+
+            Radial Spotlight Mask Cursor
+            Darkens container backdrop outside the cursor focus area
+
+  );
 }`;
 
-export const usageExpand = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageExpand = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function ExpandCursorDemo() {
-  return ;
+  return (
+
+            Inverted Expand Scaling Cursor
+            Scales inverted backdrop circle on hover and click
+
+  );
 }`;
 
-export const usageCrosshair = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageCrosshair = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function CrosshairCursorDemo() {
-  return ;
+  return (
+
+            Precision Crosshair Guide Lines
+            Draws full-width and full-height guide lines through pointer
+
+  );
 }`;
 
-export const usageRing = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageRing = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function RingCursorDemo() {
-  return ;
+  return (
+
+            Smooth Ring Cursor
+            Minimal lerped tracking ring that contracts on click
+
+  );
 }`;
 
-export const usagePulse = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usagePulse = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function PulseCursorDemo() {
-  return ;
+  return (
+
+            Radial Aura Pulse Cursor
+            Radial aura that pulses around the pointer
+
+  );
 }`;
 
-export const usageSonar = `import { CursorAnimation } from "@/components/custom/blocks/CursorAnimationBlock";
+export const usageSonar = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 export default function SonarCursorDemo() {
-  return ;
+  return (
+
+            Sonar Wave Concentric Rings
+            Two concentric rings sweeping outward in sync with movement
+
+  );
+}`;
+
+export const usageImageTrail = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+
+const sampleImages = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=80",
+  "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=300&q=80",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&q=80",
+  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=300&q=80",
+  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=80",
+];
+
+export default function ImageTrailCursorDemo() {
+  return (
+
+            Custom Image Trail Cursor
+            Move pointer around to spawn custom image cards
+
+  );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 

@@ -4,21 +4,35 @@ A deeply interactive, parallax-driven 3D tilt component. It calculates the relat
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
-## Examples
-
 Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
+
+export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
+const accent = "var(--primary)";
+const onAccent = "var(--primary-foreground)";
+
+const card = (
+
+        Access Key
+
+        ID // 0x8F92A
+
+);`;
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
+${cardSource}
+
 export default function AccessKeyCard() {
   return (
-
-          Access Key
-
+    
+      {card}
+    
   );
 }`;
 
 export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
 
 export default function StrongTilt() {
   // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
@@ -27,6 +41,8 @@ export default function StrongTilt() {
 }`;
 
 export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
 
 export default function SubtleTilt() {
   // A restrained tilt for dense layouts where many cards move at once.
@@ -39,6 +55,8 @@ export default function SubtleTilt() {
 
 export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
+${cardSource}
+
 export default function StrongGlare() {
   // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
   // pointer. Set it to 0 to drop the reflection entirely.
@@ -47,11 +65,15 @@ export default function StrongGlare() {
 
 export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
+${cardSource}
+
 export default function NoGlare() {
   return {card};
 }`;
 
 export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
 
 export default function LiftOnHover() {
   // How far the card lifts toward the viewer on hover.
@@ -59,6 +81,8 @@ export default function LiftOnHover() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

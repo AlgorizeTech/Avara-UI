@@ -8,54 +8,9 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
 5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
 
-## Examples
-
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-export const usageFlow = `"use client";
-
-export default function DocumentUploader() {
-  const [queue, setQueue] = useState([]);
-
-  const handleFilesAdded = (nativeFiles) => {
-    // 1. Turn raw files into your own state objects
-    const newItems = nativeFiles.map((file) => ({
-      id: crypto.randomUUID(),
-      file,
-      progress: 0,
-      status: "idle",
-      // Instant client-side thumbnail for images
-      previewUrl: file.type.startsWith("image/")
-        ? URL.createObjectURL(file)
-        : undefined,
-    }));
-
-    setQueue((prev) => [...newItems, ...prev]);
-
-    // 2. Kick off your real POST per file and update each item's
-    //    progress/status from the XHR upload-progress listener.
-  };
-
-  return (
-
-      {queue.length > 0 && (
-        
-          {queue.map((item) => (
-             console.log("Retry upload for", id)}
-              onRemove={(id) =>
-                setQueue((prev) => prev.filter((q) => q.id !== id))
-              }
-            />
-          ))}
-        
-      )}
-    
-  );
-}`;
-
-export const usageDropzone = `import { Dropzone } from "@/components/custom/blocks/UploadBlock";
-
-export default function AvatarDropzone() {
+export const usageDropzone = `export default function AvatarDropzone() {
   // accept is the native input string; maxSize is in MB and is echoed
   // in the helper text under the icon.
   return (
@@ -66,29 +21,32 @@ export default function AvatarDropzone() {
   );
 }`;
 
-export const usageStates = `import { UploadItem } from "@/components/custom/blocks/UploadBlock";
-
-// status is the state machine that drives every colour, icon and action
+export const usageStates = `// status is the state machine that drives every colour, icon and action
 // on the row. progress/timeLeft/errorMessage come along for the ride.
-const queue = [
+const queue: FileUploadState[] = [
   {
     id: "1",
-    file: new File([], "quarterly-report.pdf"),
+    file: new File([], "quarterly-report.pdf", { type: "application/pdf" }),
     progress: 42,
     status: "uploading",
     timeLeft: 12,
   },
-  { id: "2", file: new File([], "product-shot.png"), progress: 66, status: "paused" },
+  {
+    id: "2",
+    file: new File([], "product-shot.png", { type: "image/png" }),
+    progress: 66,
+    status: "paused",
+  },
   {
     id: "3",
-    file: new File([], "launch-teaser.mp4"),
+    file: new File([], "launch-teaser.mp4", { type: "video/mp4" }),
     progress: 89,
     status: "error",
     errorMessage: "Connection lost",
   },
   {
     id: "4",
-    file: new File([], "brand-guidelines.pdf"),
+    file: new File([], "brand-guidelines.pdf", { type: "application/pdf" }),
     progress: 100,
     status: "success",
     timeLeft: 0,
@@ -99,20 +57,9 @@ export default function UploadStates() {
   return (
     
       {queue.map((item) => (
-         {}} onRemove={() => {}} />
-      ))}
-    
-  );
-}`;
-
-export const usageAnimated = `"use client";
-
-// UploadItem is layout-agnostic, so wrap each row to animate the queue.
-export default function AnimatedQueue({ queue, onRetry, onRemove }) {
-  return (
-    
-      {queue.map((item) => (
-
+         {}}
+          onRemove={() => {}}
+        />
       ))}
     
   );
@@ -127,6 +74,8 @@ The animated-queue example additionally uses `framer-motion`. It is optional; `U
 ```bash
 npx shadcn@latest install framer-motion
 ```
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -4,8 +4,6 @@ A completely custom, dependency-free Date Picker component. Native HTML `` eleme
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-## Examples
-
 The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
 export const usageDefault = `"use client";
@@ -15,26 +13,6 @@ export default function LaunchDatePicker() {
 
   return (
     
-  );
-}`;
-
-export const usageVariants = `"use client";
-
-export default function DatePickerVariants() {
-  const [date, setDate] = useState(null);
-
-  return (
-
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-export default function DatePickerSizes() {
-  const [date, setDate] = useState(null);
-
-  return (
-
   );
 }`;
 
@@ -50,15 +28,9 @@ export default function ValidatedDatePicker() {
   );
 }`;
 
-export const usageDisabled = `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
-
-export default function DisabledDatePicker() {
-  return (
-    
-  );
-}`;
-
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.

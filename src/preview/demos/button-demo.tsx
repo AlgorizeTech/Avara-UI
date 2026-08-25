@@ -45,228 +45,115 @@ type LayoutType =
 export default function ButtonDemo({
   layout = "basic",
 }: {
-  layout?: LayoutType;
+  layout?: "basic" | "slide-icon" | "slide-text";
 }) {
   return (
-    <div className="w-full flex items-center justify-center min-h-[350px]">
-      {layout === "default" && <Button>Button</Button>}
-
-      {/* Every variant in one frame — the visual styles side by side. */}
-      {layout === "variants" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button variant="default">Default</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
-        </div>
-      )}
-
-      {/* Scalar prop — all steps share a single preview. */}
-      {layout === "sizes" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
-          <Button size="lg">Large</Button>
-        </div>
-      )}
-
-      {layout === "loading" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button loading>Please wait</Button>
-          <Button variant="outline" loading>
-            Please wait
-          </Button>
-          <Button variant="secondary" loading>
-            Please wait
-          </Button>
-        </div>
-      )}
-
-      {layout === "with-icon" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button iconLeft={<MailIcon />}>Email</Button>
-          <Button variant="outline" iconLeft={<DownloadIcon />}>
-            Download
-          </Button>
-          <Button variant="secondary" iconRight={<ArrowRightIcon />}>
-            Continue
-          </Button>
-          <Button variant="ghost" iconRight={<CheckIcon />}>
-            Confirm
-          </Button>
-        </div>
-      )}
-
+    <div className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0">
       {layout === "basic" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default">Default</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link</Button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" size="sm">
-                Small
-              </Button>
-              <Button variant="default" size="lg">
-                Large
-              </Button>
-              <Button variant="default" loading>
-                Loading
-              </Button>
-              <Button variant="outline" loading>
-                Loading
-              </Button>
-            </div>
-          </div>
+        <div className="w-full h-full flex flex-wrap items-center justify-center gap-8 m-0 py-12">
+          {/* 1. Single Conic Spinning Border */}
+          <Button variant="outline" iconRight={<ArrowRightIcon />}>
+            Spinning Border
+          </Button>
+
+          {/* 2. Smooth Aura Beacon Pulse */}
+          <Button variant="beacon-radar-pulse" iconRight={<DownloadIcon />}>
+            Beacon Pulse
+          </Button>
+
+          {/* 3. Glossy Shine Sweep */}
+          <Button variant="shine-sweep" iconLeft={<BellIcon />}>
+            Shine Sweep
+          </Button>
         </div>
       )}
 
-      {layout === "commerce" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" iconLeft={<ShoppingCartIcon />}>
-                Buy Now
-              </Button>
-              <Button variant="outline" iconLeft={<HeartIcon />}>
-                Save for Later
-              </Button>
-              <Button variant="secondary" iconLeft={<StarIcon />}>
-                Write Review
-              </Button>
-              <Button variant="ghost" iconLeft={<ShareIcon />}>
-                Share Product
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {layout === "slide-icon" && (
+        <div className="flex flex-wrap items-center justify-center gap-4 max-w-4xl mx-auto py-2">
+          {/* 1. Icon Radial Expand */}
+          <Button variant="expand-icon" iconLeft={<ArrowRightIcon />}>
+            Radial Expand
+          </Button>
 
-      {layout === "social" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4 max-w-2xl">
-              <Button variant="outline" iconLeft={<EmailIcon />}>
-                Login with Email
-              </Button>
-              <Button variant="outline" iconLeft={<GoogleIcon />}>
-                Continue with Google
-              </Button>
-              <Button variant="outline" iconLeft={<GitHubIcon />}>
-                Continue with GitHub
-              </Button>
-              <Button variant="outline" iconLeft={<FacebookIcon />}>
-                Login with Facebook
-              </Button>
-              <Button variant="outline" iconLeft={<XIcon2 />}>
-                Login with X
-              </Button>
-              <Button variant="outline" iconLeft={<AppleIcon />}>
-                Login with Apple
-              </Button>
-              <Button variant="outline" iconLeft={<MicrosoftIcon />}>
-                Login with Microsoft
-              </Button>
-              <Button variant="outline" iconLeft={<SlackIcon />}>
-                Login with Slack
-              </Button>
-              <Button variant="outline" iconLeft={<LinkedInIcon />}>
-                Login with LinkedIn
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+          {/* 2. Sliding Rounded Icon */}
+          <Button variant="slide-icon" iconRight={<ArrowRightIcon />}>
+            Sliding Icon
+          </Button>
 
-      {layout === "icon-only" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="outline" size="sm" iconLeft={<SearchIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<BellIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<MailIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<PhoneIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<SettingsIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<PlusIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<MinusIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<XIcon />} />
-            </div>
-          </div>
-        </div>
-      )}
+          {/* 3. Horizontal Background Slide */}
+          <Button variant="slide-bg" iconRight={<DownloadIcon />}>
+            Background Wipe
+          </Button>
 
-      {layout === "right-icon" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" iconRight={<ArrowRightIcon />}>
-                Next
-              </Button>
-              <Button variant="outline" iconRight={<ArrowRightIcon />}>
-                Continue
-              </Button>
-              <Button variant="secondary" iconRight={<CheckIcon />}>
-                Confirm
-              </Button>
-              <Button variant="ghost" iconRight={<SettingsIcon />}>
-                Settings
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+          {/* 4. Top to Bottom Slide */}
+          <Button variant="slide-bg-top" iconLeft={<MailIcon />}>
+            Slide Top
+          </Button>
 
-      {layout === "others" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="outline" iconLeft={<ArrowLeftIcon />}>
-                Previous
-              </Button>
-              <Button variant="default" iconRight={<ArrowRightIcon />}>
-                Next
-              </Button>
-              <Button variant="secondary" iconLeft={<ArrowLeftIcon />}>
-                Back
-              </Button>
-              <Button variant="ghost" iconRight={<ArrowRightIcon />}>
-                Forward
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4 mt-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button
-                className="bg-emerald-500 dark:bg-emerald-600 text-white hover:bg-emerald-600 dark:hover:bg-emerald-700"
-                variant="default"
-                iconLeft={<CheckIcon />}
-              >
-                Success
-              </Button>
-              <Button variant="destructive" iconLeft={<XIcon />}>
-                Delete
-              </Button>
-              <Button variant="outline" iconLeft={<CheckIcon />}>
-                Approve
-              </Button>
-              <Button
-                className="bg-red-500 hover:bg-red-600 text-white"
-                variant="secondary"
-                iconLeft={<XIcon />}
-              >
-                Reject
-              </Button>
-            </div>
-          </div>
+          {/* 5. Bottom to Top Slide */}
+          <Button variant="slide-bg-bottom" iconRight={<ArrowRightIcon />}>
+            Slide Bottom
+          </Button>
+
+          {/* 6. Right to Left Slide */}
+          <Button variant="slide-bg-right" iconLeft={<SettingsIcon />}>
+            Slide Right
+          </Button>
+
+          {/* 7. Center Scale Pop */}
+          <Button variant="scale-up" iconRight={<StarIcon />}>
+            Scale Pop
+          </Button>
+
+          {/* 9. Skewed Diagonal Slide */}
+          <Button variant="skew-slide" iconLeft={<PlusIcon />}>
+            Skew Slide
+          </Button>
+
+          {/* 11. Border Ring Expansion */}
+          <Button variant="border-expand" iconRight={<CheckIcon />}>
+            Border Expand
+          </Button>
+
+          {/* 12. Icon Rotate Spin */}
+          <Button variant="icon-rotate" iconLeft={<SettingsIcon />}>
+            Icon Rotate
+          </Button>
+
+          {/* 13. Icon Spring Bounce */}
+          <Button variant="icon-bounce" iconRight={<ArrowRightIcon />}>
+            Icon Bounce
+          </Button>
+
+          {/* 14. Icon Continuous Spin */}
+          <Button variant="icon-spin" iconLeft={<SettingsIcon />}>
+            Icon Spin
+          </Button>
+
+          {/* 15. Vertical Curtain Reveal */}
+          <Button variant="curtain-reveal" iconRight={<ShareIcon />}>
+            Curtain Reveal
+          </Button>
+
+          {/* 17. Spring Bounce Roll */}
+          <Button variant="slide-text-bounce">
+            Spring Bounce
+          </Button>
+
+          {/* 18. Upward Text Roll */}
+          <Button variant="slide-text" iconRight={<ArrowRightIcon />}>
+            Upward Roll
+          </Button>
+
+          {/* 19. Downward Text Roll */}
+          <Button variant="slide-text-down" iconLeft={<MailIcon />}>
+            Downward Roll
+          </Button>
+
+          {/* 20. Liquid Wave Fill */}
+          <Button variant="liquid-fill" iconLeft={<MailIcon />}>
+            Liquid Fill
+          </Button>
         </div>
       )}
     </div>

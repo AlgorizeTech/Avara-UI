@@ -62,7 +62,7 @@ export function SkeletonBlock({
 }: SkeletonBlockProps) {
   // Base shapes for the atomic components
   const baseClasses = cn(
-    "relative overflow-hidden bg-zinc-200 dark:bg-zinc-800/80",
+    "relative overflow-hidden bg-muted",
     animation === "pulse" && "animate-pulse",
   );
 
@@ -115,7 +115,7 @@ export function SkeletonBlock({
     return (
       <div
         className={cn(
-          "flex flex-col gap-3 w-full max-w-sm p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-[#050505]",
+          "flex flex-col gap-3 w-full max-w-sm p-4 border border-border rounded-2xl bg-white dark:bg-[#050505]",
           className,
         )}
         style={style}

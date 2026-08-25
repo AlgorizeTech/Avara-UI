@@ -235,19 +235,19 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
     const variantStyles = {
       default:
-        "bg-white dark:bg-[#0d1117] border border-zinc-200 dark:border-zinc-800 shadow-xl",
+        "bg-white dark:bg-[#0d1117] border border-border shadow-xl",
       glass:
-        "bg-white/80 dark:bg-[#0d1117]/80 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10 shadow-2xl",
-      minimal: "bg-transparent border border-zinc-200 dark:border-zinc-800",
+        "bg-white/80 dark:bg-[#0d1117]/80 backdrop-blur-xl border border-border/80 shadow-2xl",
+      minimal: "bg-transparent border border-border",
     };
 
     const headerStyles = {
       default:
-        "bg-zinc-100/80 dark:bg-white/5 border-b border-zinc-200 dark:border-white/5",
+        "bg-zinc-100/80 dark:bg-white/5 border-b border-border",
       glass:
-        "bg-zinc-100/60 dark:bg-white/5 border-b border-zinc-200/80 dark:border-white/10",
+        "bg-zinc-100/60 dark:bg-white/5 border-b border-border/80",
       minimal:
-        "bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800",
+        "bg-muted border-b border-border",
     };
 
     const highlightedCode = highlightCode(code, language);
@@ -284,7 +284,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
           <div className="flex items-center justify-center w-1/3">
             {filename && (
-              <span className="text-xs font-medium font-mono text-zinc-600 dark:text-zinc-400">
+              <span className="text-xs font-medium font-mono text-muted-foreground">
                 {filename}
               </span>
             )}
@@ -306,7 +306,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {copyable && (
               <button
                 onClick={handleCopy}
-                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400"
+                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-zinc-200 dark:hover:bg-white/10 text-muted-foreground"
                 title="Copy code"
               >
                 {copied ? (
@@ -323,7 +323,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
         <div className="p-4 md:p-6 overflow-x-auto">
           <pre className="m-0 bg-transparent p-0 w-max min-w-full">
             <code
-              className="font-mono text-sm leading-relaxed text-zinc-800 dark:text-zinc-300"
+              className="font-mono text-sm leading-relaxed text-foreground"
               dangerouslySetInnerHTML={{ __html: highlightedCode }}
             />
           </pre>

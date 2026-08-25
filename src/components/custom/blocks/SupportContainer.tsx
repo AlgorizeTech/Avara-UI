@@ -104,7 +104,7 @@ export default function SupportContainer() {
   );
 
   return (
-    <div className="min-h-screen font-sans bg-gray-50 dark:bg-[#09090b] pt-10 transition-colors duration-200">
+    <div className="min-h-screen font-sans bg-muted dark:bg-[#09090b] pt-10 transition-colors duration-200">
       <main className="pb-10 px-4 md:px-8 max-w-[1600px] mx-auto h-[90vh] flex flex-col">
         <div className="bg-[#f9fbff] dark:bg-[#121217] border border-[#dcedff] dark:border-zinc-800 rounded-lg shadow-sm flex flex-col flex-1 overflow-hidden transition-colors">
           {/* ==========================================
@@ -114,7 +114,7 @@ export default function SupportContainer() {
             <List className="w-5 h-5 text-[#0070e0] dark:text-[#3b82f6]" />
             <h2 className="text-base font-medium text-[#031849] dark:text-zinc-100">
               {DASHBOARD_DATA.header.title}:{" "}
-              <span className="text-gray-500 dark:text-zinc-400 font-normal">
+              <span className="text-muted-foreground font-normal">
                 {DASHBOARD_DATA.header.subtitle}
               </span>
             </h2>
@@ -132,9 +132,9 @@ export default function SupportContainer() {
                   return (
                     <button
                       key={filter.id}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#4f4f4f] dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/50 whitespace-nowrap transition-colors flex-1 justify-center"
+                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#4f4f4f] dark:text-zinc-300 hover:bg-muted whitespace-nowrap transition-colors flex-1 justify-center"
                     >
-                      <Icon className="w-4 h-4 text-gray-400 dark:text-zinc-500" />
+                      <Icon className="w-4 h-4 text-muted-foreground" />
                       {filter.label}{" "}
                       {filter.count !== null && `(${filter.count})`}
                       <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
@@ -152,10 +152,10 @@ export default function SupportContainer() {
                     <div
                       key={ticket.id}
                       onClick={() => setSelectedTicketId(ticket.id)}
-                      className={`flex items-start p-4 border-b border-gray-100 dark:border-zinc-800/50 cursor-pointer transition-colors ${
+                      className={`flex items-start p-4 border-b border-border cursor-pointer transition-colors ${
                         isActive
                           ? "bg-[#eff5ff] dark:bg-[#3b82f6]/10 border-l-4 border-l-[#0070e0] dark:border-l-[#3b82f6]"
-                          : "hover:bg-gray-50 dark:hover:bg-zinc-800/50 border-l-4 border-l-transparent"
+                          : "hover:bg-muted border-l-4 border-l-transparent"
                       }`}
                     >
                       <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0 mt-1">
@@ -172,7 +172,7 @@ export default function SupportContainer() {
                           >
                             {ticket.title}
                           </div>
-                          <span className="text-xs text-gray-400 dark:text-zinc-500 shrink-0 mt-0.5">
+                          <span className="text-xs text-muted-foreground shrink-0 mt-0.5">
                             {ticket.time}
                           </span>
                         </div>
@@ -197,7 +197,7 @@ export default function SupportContainer() {
                 /* Dynamic Empty State */
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                   <div className="max-w-md flex flex-col items-center">
-                    <div className="w-24 h-24 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center shadow-sm mb-6 text-[#0070e0] dark:text-[#3b82f6] transition-colors">
+                    <div className="w-24 h-24 bg-card rounded-full flex items-center justify-center shadow-sm mb-6 text-[#0070e0] dark:text-[#3b82f6] transition-colors">
                       <LifeBuoy className="w-12 h-12" strokeWidth={1.5} />
                     </div>
                     <h2 className="text-3xl font-normal text-[#031849] dark:text-zinc-100 mb-3">
@@ -227,12 +227,12 @@ export default function SupportContainer() {
                         <User className="w-4 h-4" />
                         <span>{selectedTicket.author}</span>
                       </div>
-                      <div className="w-1 h-1 bg-gray-300 dark:bg-zinc-700 rounded-full" />
+                      <div className="w-1 h-1 bg-muted rounded-full" />
                       <div className="flex items-center gap-1.5">
                         <LifeBuoy className="w-4 h-4" />
                         <span>{selectedTicket.company}</span>
                       </div>
-                      <div className="w-1 h-1 bg-gray-300 dark:bg-zinc-700 rounded-full" />
+                      <div className="w-1 h-1 bg-muted rounded-full" />
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-4 h-4" />
                         <span>
@@ -257,17 +257,17 @@ export default function SupportContainer() {
                   </div>
 
                   <div className="bg-white dark:bg-[#121217] p-4 border-t border-[#dcedff] dark:border-zinc-800 shrink-0 transition-colors">
-                    <div className="border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden focus-within:border-[#0070e0] dark:focus-within:border-[#3b82f6] focus-within:ring-1 focus-within:ring-[#0070e0] dark:focus-within:ring-[#3b82f6] transition-shadow bg-transparent">
+                    <div className="border border-border rounded-lg overflow-hidden focus-within:border-[#0070e0] dark:focus-within:border-[#3b82f6] focus-within:ring-1 focus-within:ring-[#0070e0] dark:focus-within:ring-[#3b82f6] transition-shadow bg-transparent">
                       <textarea
                         className="w-full p-3 h-24 text-sm outline-none resize-none bg-transparent text-[#333] dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500"
                         placeholder={DASHBOARD_DATA.detailView.replyPlaceholder}
                       />
-                      <div className="bg-gray-50 dark:bg-zinc-900/50 p-2 flex justify-between items-center border-t border-gray-200 dark:border-zinc-700 transition-colors">
+                      <div className="bg-muted p-2 flex justify-between items-center border-t border-border transition-colors">
                         <div className="flex gap-2">
-                          <button className="p-2 text-gray-500 dark:text-zinc-400 hover:text-[#0070e0] dark:hover:text-[#3b82f6] hover:bg-[#eff5ff] dark:hover:bg-[#3b82f6]/10 rounded transition-colors">
+                          <button className="p-2 text-muted-foreground hover:text-[#0070e0] dark:hover:text-[#3b82f6] hover:bg-[#eff5ff] dark:hover:bg-[#3b82f6]/10 rounded transition-colors">
                             <MessageSquare className="w-4 h-4" />
                           </button>
-                          <button className="p-2 text-gray-500 dark:text-zinc-400 hover:text-[#0070e0] dark:hover:text-[#3b82f6] hover:bg-[#eff5ff] dark:hover:bg-[#3b82f6]/10 rounded transition-colors">
+                          <button className="p-2 text-muted-foreground hover:text-[#0070e0] dark:hover:text-[#3b82f6] hover:bg-[#eff5ff] dark:hover:bg-[#3b82f6]/10 rounded transition-colors">
                             <Mail className="w-4 h-4" />
                           </button>
                         </div>

@@ -4,143 +4,224 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-## Examples
-
 Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
 
-export const usageDefault = `import { ToastProvider, useToast } from "@/components/custom/blocks/ToastBlock";
+export const usageDefault = `function Triggers() {
+  const { toast } = useToast();
 
-// 1. Wrap your app (usually layout.tsx) once.
-export function Providers({ children }: { children: React.ReactNode }) {
-  return {children};
+  return (
+
+          toast({
+            title: "Message sent",
+            description: "We'll let you know as soon as they reply.",
+          })
+        }
+        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl transition-colors shadow-sm"
+      >
+        Show toast
+
+  );
 }
 
-// 2. Fire toasts from any child component.
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
 export default function SendMessage() {
-  const { toast } = useToast();
-
   return (
-    
-        toast({
-          title: "Message sent",
-          description: "We'll let you know as soon as they reply.",
-        })
-      }
-    >
-      Show toast
-    
+
   );
 }`;
 
-export const usageTypes = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+export const usageTypes = `const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
 
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+  ] as const;
+
+  return (
+    
+      {types.map((t) => (
+        
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        
+      ))}
+    
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
 export default function ToastTypes() {
-  const { toast } = useToast();
-
   return (
-    
-       toast({ type: "success", title: "Action completed", description: "Your file has been uploaded successfully." })}>
-        Success
-      
-       toast({ type: "error", title: "Connection failed", description: "Could not connect to the database." })}>
-        Error
-      
-       toast({ type: "warning", title: "Storage almost full", description: "You've used 92% of your quota." })}>
-        Warning
-      
-       toast({ type: "info", title: "Update available", description: "A new version is ready to install." })}>
-        Info
-      
-       toast({ type: "default", title: "Message sent" })}>
-        Default
 
   );
 }`;
 
-export const usageAction = `import { useToast } from "@/components/custom/blocks/ToastBlock";
+export const usageAction = `const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
 
-export default function ActionToast() {
+function Triggers() {
   const { toast } = useToast();
 
   return (
-    
-        toast({
-          type: "info",
-          title: "Update available",
-          description: "A new version of the app is ready to install.",
-          action: {
-            label: "Install Now",
-            onClick: () => console.log("Installing..."),
-          },
-        })
-      }
-    >
-      Toast with action
-    
-  );
-}`;
 
-export const usageDuration = `import { useToast } from "@/components/custom/blocks/ToastBlock";
-
-export default function ToastDuration() {
-  const { toast } = useToast();
-
-  return (
-    
-      {/* duration: 0 disables auto-dismiss — the user must close it */}
-      
           toast({
+            title: "Update available",
+            description: "A new version of the app is ready to install.",
             type: "info",
+            action: {
+              label: "Install Now",
+              onClick: () => console.log("Installing..."),
+            },
+          })
+        }
+        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
+      >
+        Toast with action
+
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function ToastWithAction() {
+  return (
+
+  );
+}`;
+
+export const usageDuration = `const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+
+function Triggers() {
+  const { toast } = useToast();
+
+  return (
+
+          toast({
             title: "Upload in progress",
             description: "This toast stays until you dismiss it.",
+            type: "info",
             duration: 0,
           })
         }
+        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
       >
         Persistent toast
 
           toast({
-            type: "success",
             title: "Saved",
             description: "This one disappears after 1.5 seconds.",
+            type: "success",
             duration: 1500,
           })
         }
+        className={\`\${TRIGGER} bg-emerald-600 hover:bg-emerald-700\`}
       >
         Quick toast
 
   );
-}`;
+}
 
-export const usageGlow = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
-
-export function Providers({ children }: { children: React.ReactNode }) {
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function ToastDuration() {
   return (
-    
-      {children}
-    
+
   );
 }`;
 
-export const usageGlass = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+export const usageGlow = `const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  // Glass leans on a backdrop blur — best over photos or rich backgrounds.
-  return {children};
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+  ] as const;
+
+  return (
+    
+      {types.map((t) => (
+        
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        
+      ))}
+    
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function GlowToasts() {
+  return (
+    // variant lives on the provider, so every toast it renders picks it up.
+
+  );
 }`;
 
-export const usageMinimal = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+export const usageMinimal = `const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  return {children};
-}`;
+function Triggers() {
+  const { toast } = useToast();
 
-export const usagePosition = `import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+  const types = [
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+  ] as const;
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  // "top-right" | "top-left" | "top-center"
-  // "bottom-right" | "bottom-left" | "bottom-center"
-  return {children};
+  return (
+    
+      {types.map((t) => (
+        
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        
+      ))}
+    
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function MinimalToasts() {
+  return (
+    // variant lives on the provider, so every toast it renders picks it up.
+
+  );
 }`;
 
 ## Installation
@@ -148,6 +229,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
 ### Wrap your app
 
 `ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
+
+## Examples
 
 ## Features
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.

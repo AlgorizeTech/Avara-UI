@@ -4,23 +4,23 @@ import { cn } from "@/lib/utils";
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import {
   Box,
+  Boxes,
   Code2,
   Command,
-  Figma,
-  Framer,
-  Github,
-  Gitlab,
   Hexagon,
   Layers,
+  Network,
+  Palette,
+  Sparkles,
   Triangle,
 } from "lucide-react";
 
 const logos = [
   { icon: Command, name: "Command" },
-  { icon: Figma, name: "Figma" },
-  { icon: Framer, name: "Framer" },
-  { icon: Github, name: "Github" },
-  { icon: Gitlab, name: "Gitlab" },
+  { icon: Palette, name: "Palette" },
+  { icon: Sparkles, name: "Motion" },
+  { icon: Boxes, name: "Packages" },
+  { icon: Network, name: "Network" },
   { icon: Hexagon, name: "Hexagon" },
   { icon: Layers, name: "Layers" },
   { icon: Triangle, name: "Triangle" },

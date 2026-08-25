@@ -13,16 +13,16 @@ export const Iphone14ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps
       <div 
         ref={ref}
         className={cn(
-          "relative mx-auto w-[330px] h-[680px] rounded-[3.5rem] border-[4px] border-slate-300 dark:border-slate-700 bg-black flex-shrink-0",
+          "relative mx-auto w-[330px] h-[680px] rounded-[3.5rem] border-[4px] border-border bg-black flex-shrink-0",
           "ring-[8px] ring-slate-100 dark:ring-slate-800",
           className
         )}
         {...props}
       >
-        <div className="absolute -left-[14px] top-[120px] w-[6px] h-[28px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[14px] top-[170px] w-[6px] h-[55px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[14px] top-[240px] w-[6px] h-[55px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -right-[14px] top-[190px] w-[6px] h-[80px] bg-slate-300 dark:bg-slate-700 rounded-r-md"></div>
+        <div className="absolute -left-[14px] top-[120px] w-[6px] h-[28px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[14px] top-[170px] w-[6px] h-[55px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[14px] top-[240px] w-[6px] h-[55px] bg-muted rounded-l-md"></div>
+        <div className="absolute -right-[14px] top-[190px] w-[6px] h-[80px] bg-muted rounded-r-md"></div>
 
         <div className="relative w-full h-full rounded-[3.2rem] border-[10px] border-black bg-black overflow-hidden z-10">
           <div className="absolute top-2 inset-x-0 mx-auto w-[110px] h-[32px] bg-black rounded-full z-20 flex justify-end items-center px-4 shadow-inner">
@@ -33,7 +33,7 @@ export const Iphone14ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps
             </div>
           </div>
 
-          <div className="relative w-full h-full rounded-[2.6rem] overflow-hidden bg-white dark:bg-slate-950">
+          <div className="relative w-full h-full rounded-[2.6rem] overflow-hidden bg-background">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (
@@ -55,16 +55,16 @@ export const Iphone12ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps
       <div 
         ref={ref}
         className={cn(
-          "relative mx-auto w-[330px] h-[680px] rounded-[3.5rem] border-[4px] border-slate-300 dark:border-slate-700 bg-black flex-shrink-0",
+          "relative mx-auto w-[330px] h-[680px] rounded-[3.5rem] border-[4px] border-border bg-black flex-shrink-0",
           "ring-[8px] ring-slate-100 dark:ring-slate-800",
           className
         )}
         {...props}
       >
-        <div className="absolute -left-[14px] top-[120px] w-[6px] h-[28px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[14px] top-[170px] w-[6px] h-[55px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[14px] top-[240px] w-[6px] h-[55px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -right-[14px] top-[190px] w-[6px] h-[80px] bg-slate-300 dark:bg-slate-700 rounded-r-md"></div>
+        <div className="absolute -left-[14px] top-[120px] w-[6px] h-[28px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[14px] top-[170px] w-[6px] h-[55px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[14px] top-[240px] w-[6px] h-[55px] bg-muted rounded-l-md"></div>
+        <div className="absolute -right-[14px] top-[190px] w-[6px] h-[80px] bg-muted rounded-r-md"></div>
 
         <div className="relative w-full h-full rounded-[3.2rem] border-[10px] border-black bg-black overflow-hidden z-10">
           <div className="absolute top-0 inset-x-0 mx-auto w-[150px] h-[30px] bg-black rounded-b-3xl z-20 flex justify-center items-center gap-4">
@@ -74,7 +74,7 @@ export const Iphone12ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps
             </div>
           </div>
 
-          <div className="relative w-full h-full rounded-[2.6rem] overflow-hidden bg-white dark:bg-slate-950">
+          <div className="relative w-full h-full rounded-[2.6rem] overflow-hidden bg-background">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (
@@ -97,16 +97,16 @@ export const Iphone5Mockup = React.forwardRef<HTMLDivElement, MockupProps>(
       <div 
         ref={ref}
         className={cn(
-          "relative mx-auto w-[280px] h-[580px] rounded-[2.5rem] border-[4px] border-slate-300 dark:border-slate-700 bg-black flex-shrink-0",
+          "relative mx-auto w-[280px] h-[580px] rounded-[2.5rem] border-[4px] border-border bg-black flex-shrink-0",
           "ring-[6px] ring-slate-200 dark:ring-slate-800",
           className
         )}
         {...props}
       >
-        <div className="absolute -left-[10px] top-[80px] w-[4px] h-[24px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[10px] top-[130px] w-[4px] h-[24px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute -left-[10px] top-[170px] w-[4px] h-[24px] bg-slate-300 dark:bg-slate-700 rounded-l-md"></div>
-        <div className="absolute top-[10px] right-[50px] w-[40px] h-[4px] bg-slate-300 dark:bg-slate-700 rounded-t-md"></div>
+        <div className="absolute -left-[10px] top-[80px] w-[4px] h-[24px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[10px] top-[130px] w-[4px] h-[24px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[10px] top-[170px] w-[4px] h-[24px] bg-muted rounded-l-md"></div>
+        <div className="absolute top-[10px] right-[50px] w-[40px] h-[4px] bg-muted rounded-t-md"></div>
 
         <div className="relative w-full h-full rounded-[2.2rem] border-[4px] border-black bg-black overflow-hidden z-10 flex flex-col justify-between">
           <div className="w-full h-[75px] bg-black flex justify-center items-center gap-3 relative shrink-0">
@@ -114,7 +114,7 @@ export const Iphone5Mockup = React.forwardRef<HTMLDivElement, MockupProps>(
              <div className="w-[45px] h-[6px] bg-zinc-800 rounded-full"></div>
           </div>
           
-          <div className="relative w-full h-full bg-white dark:bg-slate-950 overflow-hidden">
+          <div className="relative w-full h-full bg-background overflow-hidden">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (
@@ -157,7 +157,7 @@ export const SamsungS24UltraMockup = React.forwardRef<HTMLDivElement, MockupProp
             <div className="w-[5px] h-[5px] bg-blue-900/60 rounded-full"></div>
           </div>
           
-          <div className="relative w-full h-full rounded-[0.5rem] overflow-hidden bg-white dark:bg-slate-950">
+          <div className="relative w-full h-full rounded-[0.5rem] overflow-hidden bg-background">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (
@@ -193,7 +193,7 @@ export const GooglePixel8Mockup = React.forwardRef<HTMLDivElement, MockupProps>(
             <div className="w-[6px] h-[6px] bg-blue-900/60 rounded-full"></div>
           </div>
           
-          <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-white dark:bg-slate-950">
+          <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-background">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (
@@ -229,7 +229,7 @@ export const GooglePixel10Mockup = React.forwardRef<HTMLDivElement, MockupProps>
             <div className="w-[5px] h-[5px] bg-blue-900/60 rounded-full"></div>
           </div>
           
-          <div className="relative w-full h-full rounded-[1.9rem] overflow-hidden bg-white dark:bg-slate-950">
+          <div className="relative w-full h-full rounded-[1.9rem] overflow-hidden bg-background">
             {videoSrc ? (
               <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
             ) : src ? (

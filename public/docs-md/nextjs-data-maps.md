@@ -6,17 +6,18 @@ A powerful, highly-customizable React-Leaflet based choropleth map component des
 
 It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
 
-## Examples
-
 The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
-export const mapDataSource = `const mapData = [
+export const mapDataSource = `const mapData: DataPoint[] = [
   { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
   { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
   { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
 ];`;
 
-export const usageFill = `import { DataMaps } from "@/components/custom/blocks/DataMapsBlock";
+export const usageFill = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
 
 ${mapDataSource}
 
@@ -26,7 +27,12 @@ export default function AnalyticsDashboard() {
   );
 }`;
 
-export const usageDots = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageDots = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function DensityMap() {
   // \`dots\` places a pulsing marker at each country's centroid instead of
@@ -34,7 +40,12 @@ export default function DensityMap() {
   return ;
 }`;
 
-export const usageZoomable = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageZoomable = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function ZoomableMap() {
   // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
@@ -45,7 +56,15 @@ export default function ZoomableMap() {
   );
 }`;
 
-export const usageColors = `import DataMaps from "@/components/custom/blocks/DataMapsBlock";
+export const usageColors = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+const points: DataPoint[] = [
+  { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down" },
+  { id: "BRA", name: "Brazil", flag: "🇧🇷", active: 5.1, activeTrend: "up", color: "#e11d48" },
+];
 
 export default function ColoredMap() {
   // \`highlightColor\` sets the global accent and \`defaultColor\` paints every
@@ -56,6 +75,8 @@ export default function ColoredMap() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.

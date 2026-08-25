@@ -1,7 +1,7 @@
 "use client";
 
 import { useFramework } from "@/hooks/use-framework";
-import { resolveSnippet, type Snippet } from "@/lib/snippet";
+import { resolveSnippet, resolveUsage, type Snippet } from "@/lib/snippet";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
@@ -21,6 +21,8 @@ import {
   Tablet,
   Terminal,
   Maximize2,
+  MoveHorizontal,
+  X,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
 import {
@@ -55,6 +57,15 @@ type Device = "desktop" | "tablet" | "mobile";
  * The Fit button returns to the fluid "100%" state at any time.
  */
 const DESKTOP_PRESET_WIDTH = 1280;
+
+/**
+ * Floor for the fluid "100%" state on a desktop-class screen. A desktop visitor
+ * should land on the desktop tab even when the docs column is narrower than a
+ * desktop viewport, so the fluid state never drops below this: a column wider
+ * than 1080 still fills edge to edge at a true 100%, a narrower one keeps a
+ * real 1080px viewport and lets the scale-to-fit math shrink it.
+ */
+const DESKTOP_MIN_PREVIEW_WIDTH = 1080;
 
 const DEVICE_PRESETS: Record<Device, number> = {
   desktop: DESKTOP_PRESET_WIDTH,
@@ -92,8 +103,67 @@ export interface SandboxOptions {
   fit?: boolean;
   /** @deprecated Renamed to `fit` when the zoom cycle became a single action. */
   zoom?: boolean;
+  /** Fullscreen button — opens the demo in a chrome-free full-viewport modal. */
+  fullscreen?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
+}
+
+/**
+ * Whether the VISITOR's screen is desktop-class — not the preview area, which
+ * is only ever a fraction of it. Null until the first client effect so the
+ * server render and first paint stay neutral.
+ */
+function useIsDesktopScreen() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia(`(min-width: ${DESKTOP_MIN_WIDTH}px)`);
+    const sync = () => setIsDesktop(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  return isDesktop;
+}
+
+/**
+ * The page-level duties of the fullscreen preview: nothing behind it scrolls,
+ * Escape leaves, focus moves to the close button and returns to whatever
+ * opened it. Kept out of the render path so the overlay itself is just CSS on
+ * the preview the reader was already looking at.
+ */
+function useFullscreenOverlay(
+  active: boolean,
+  closeRef: React.RefObject<HTMLButtonElement | null>,
+  onExit: () => void,
+) {
+  const onExitRef = useRef(onExit);
+  onExitRef.current = onExit;
+
+  useEffect(() => {
+    if (!active) return;
+
+    const opener = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onExitRef.current();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      opener?.focus?.();
+    };
+  }, [active, closeRef]);
 }
 
 /**
@@ -125,6 +195,7 @@ export function Sandbox({
 }) {
   const {
     fit: fitOption = options.zoom ?? true,
+    fullscreen: fullscreenOption = true,
     deviceSwitcher = true,
     reset = true,
   } = options;
@@ -137,16 +208,37 @@ export function Sandbox({
   const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
-  // Every preview opens fitted: fluid "100%", unscaled, filling the card edge
-  // to edge. That is the visitor's OWN viewport, so the first thing they see is
-  // the component exactly as it renders on the device they arrived on — no
-  // preset width, no shrink-to-fit. The device buttons are there for anyone who
-  // wants to check a class other than their own.
+  // Every preview opens fitted: fluid "100%", filling the card edge to edge.
+  // That is the visitor's OWN viewport, so the first thing they see is the
+  // component as it renders on the device they arrived on — except on a desktop
+  // screen, where the fluid state is floored at DESKTOP_MIN_PREVIEW_WIDTH so a
+  // desktop visitor lands on a real desktop viewport (and the desktop tab)
+  // even though the docs column is narrower than one. The device buttons are
+  // there for anyone who wants to check a class other than their own.
   const [previewWidth, setPreviewWidth] = useState<number | "100%">("100%");
   const [areaWidth, setAreaWidth] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const areaRef = useRef<HTMLDivElement>(null);
+  const closeFullscreenRef = useRef<HTMLButtonElement>(null);
+
+  /**
+   * Height the card holds on to while its preview is away being fullscreen.
+   * The preview leaves the flow, so without this the page behind would shrink
+   * by the height of every open card — and a shorter document clamps the
+   * scroll position, which the reader would land on when they close it.
+   */
+  const [parkedHeight, setParkedHeight] = useState<number | null>(null);
+
+  useFullscreenOverlay(isFullscreen, closeFullscreenRef, () =>
+    setIsFullscreen(false),
+  );
+
+  const openFullscreen = () => {
+    setParkedHeight(areaRef.current?.offsetHeight ?? null);
+    setIsFullscreen(true);
+  };
 
   // Highlight every code tab while the reader is still on the preview, so
   // opening Usage or Code paints coloured on its first frame instead of
@@ -173,11 +265,20 @@ export function Sandbox({
   }, []);
 
   const availableWidth = areaWidth === null ? null : Math.max(areaWidth - 1, 0);
+  const isDesktopScreen = useIsDesktopScreen();
+
+  // Floor for the fluid state. A desktop visitor gets a desktop viewport even
+  // when the docs column is narrower than one; every other screen keeps the
+  // hard 350px floor and its own column width.
+  const fluidFloor = isDesktopScreen
+    ? DESKTOP_MIN_PREVIEW_WIDTH
+    : MIN_PREVIEW_WIDTH;
+
   const viewportWidth =
     previewWidth === "100%"
       ? availableWidth === null
         ? null
-        : Math.max(availableWidth, MIN_PREVIEW_WIDTH)
+        : Math.max(availableWidth, fluidFloor)
       : (previewWidth as number);
 
   // Wide device on a narrow area → keep the true viewport, shrink visually.
@@ -186,8 +287,9 @@ export function Sandbox({
       ? availableWidth / viewportWidth
       : 1;
   const visualScale = fitScale;
-  /** The fluid state — the only one that fills the card edge to edge. On a
-   *  sub-floor screen it is scaled rather than unscaled, but still edge to edge. */
+  /** The fluid state — the only one that fills the card edge to edge. When the
+   *  column is narrower than the floor (a sub-350px phone, or any column under
+   *  1080 on desktop) it is scaled rather than unscaled, but still edge to edge. */
   const isFitted = previewWidth === "100%";
 
   // Derived from the MEASURED width, including the fluid "100%" state — so on
@@ -274,6 +376,12 @@ export function Sandbox({
   // Visual box of the (possibly scaled) frame
   const visualWidth =
     viewportWidth === null ? null : Math.round(viewportWidth * visualScale);
+
+  /** Fit lands on the desktop floor rather than a true 100% — say so. */
+  const fitLandsOnDesktopFloor =
+    availableWidth !== null &&
+    fluidFloor > MIN_PREVIEW_WIDTH &&
+    availableWidth < fluidFloor;
   const isPreviewActive = activeTab === (previewTab?.id ?? "preview");
   const currentTab = tabs.find((t) => t.id === activeTab);
   const currentLang = currentTab?.lang ?? "tsx";
@@ -369,7 +477,7 @@ export function Sandbox({
             {/* Snaps back to the 100% fit-to-screen view from whatever device
                 or drag width is active — and reads as selected while the
                 preview is in that state, which is how every preview opens. */}
-            {fitOption && (
+            {false && (
               <button
                 onClick={() => setPreviewWidth("100%")}
                 className={cn(
@@ -378,9 +486,31 @@ export function Sandbox({
                     ? "bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-600"
                     : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
                 )}
-                title="Fit to screen (100%)"
+                title={
+                  fitLandsOnDesktopFloor
+                    ? `Fit to screen (${fluidFloor}px desktop viewport)`
+                    : "Fit to screen (100%)"
+                }
                 aria-label="Fit preview to screen"
                 aria-pressed={isFitted}
+              >
+                <MoveHorizontal className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Fullscreen: the SAME running preview expands to a chrome-free
+                overlay at the real window size — the frame stays put in the
+                DOM and only its wrapper changes, so the demo is never torn
+                down and reloaded. The in-card preview is always a fraction of
+                the window and often scaled; this is the only view that shows
+                the component at true screen scale. */}
+            {fullscreenOption && (
+              <button
+                onClick={openFullscreen}
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                title="Open fullscreen preview"
+                aria-label="Open fullscreen preview"
+                aria-haspopup="dialog"
               >
                 <Maximize2 className="w-4 h-4" />
               </button>
@@ -411,7 +541,9 @@ export function Sandbox({
             "bg-zinc-50/50 dark:bg-[#020202]",
             !isPreviewActive && "hidden",
           )}
-          style={{ minHeight }}
+          style={{
+            minHeight: isFullscreen ? (parkedHeight ?? minHeight) : minHeight,
+          }}
         >
             {/* Dashed Grid Background */}
             <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
@@ -442,61 +574,106 @@ export function Sandbox({
             </div>
 
             <div
+              /* Fullscreen is this same element pinned to the viewport: the
+                 frame below keeps its place in the DOM, so the demo is resized
+                 rather than reloaded. */
+              role={isFullscreen ? "dialog" : undefined}
+              aria-modal={isFullscreen ? true : undefined}
+              aria-label={isFullscreen ? `${name} fullscreen preview` : undefined}
               /* +1px compensates the right border so the inner viewport is exact */
-              style={{
-                width:
-                  isFitted
-                    ? "100%"
-                    : visualWidth === null
-                      ? "100%"
-                      : `${visualWidth + 1}px`,
-                maxWidth: "100%",
-              }}
+              style={
+                isFullscreen
+                  ? undefined
+                  : {
+                      width:
+                        isFitted
+                          ? "100%"
+                          : visualWidth === null
+                            ? "100%"
+                            : `${visualWidth + 1}px`,
+                      maxWidth: "100%",
+                    }
+              }
               className={cn(
-                "relative flex justify-center items-start transition-[width] ease-out",
-                isDragging ? "duration-0" : "duration-300",
-                "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]",
-                isFitted
-                  ? "rounded-b-xl"
-                  : "rounded-bl-xl rounded-r-none",
+                "flex justify-center bg-white dark:bg-[#09090b]",
+                isFullscreen
+                  ? "fixed inset-0 z-[9999] items-stretch"
+                  : [
+                      "relative items-start transition-[width] ease-out",
+                      isDragging ? "duration-0" : "duration-300",
+                      "border-r border-zinc-200 dark:border-zinc-800",
+                      isFitted ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none",
+                    ],
               )}
             >
               <div
                 className={cn(
                   "w-full overflow-hidden",
-                  isFitted ? "rounded-b-xl" : "rounded-bl-xl",
-                  isDragging && "pointer-events-none select-none",
+                  isFullscreen
+                    ? "h-full"
+                    : [
+                        isFitted ? "rounded-b-xl" : "rounded-bl-xl",
+                        isDragging && "pointer-events-none select-none",
+                      ],
                 )}
               >
                 <SandboxFrame
                   name={name}
                   sandboxProps={sandboxProps}
-                  viewportWidth={viewportWidth}
-                  scale={visualScale}
+                  viewportWidth={isFullscreen ? null : viewportWidth}
+                  scale={isFullscreen ? 1 : visualScale}
                   resetKey={resetKey}
                   minHeight={minHeight}
                   maxHeight={maxHeight}
+                  fill={isFullscreen}
+                  className={isFullscreen ? "h-full" : undefined}
                 />
               </div>
 
-              {/* Drag Handle */}
-              <div
-                role="separator"
-                aria-orientation="vertical"
-                aria-label="Resize preview"
-                aria-valuemin={MIN_PREVIEW_WIDTH}
-                aria-valuemax={areaWidth ? Math.round(areaWidth) : undefined}
-                aria-valuenow={viewportWidth ? Math.round(viewportWidth) : undefined}
-                tabIndex={0}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerEnd}
-                onPointerCancel={handlePointerEnd}
-                onKeyDown={handleResizeKeyDown}
-                className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
-              </div>
+              {/* The only chrome in fullscreen. transform-gpu gives it its own
+                  compositing layer, which an iframe whose document composites
+                  (GSAP, video, transforms) cannot paint over. */}
+              {isFullscreen && (
+                <button
+                  ref={closeFullscreenRef}
+                  type="button"
+                  onClick={() => setIsFullscreen(false)}
+                  className={cn(
+                    "fixed top-4 right-4 z-10 transform-gpu h-10 w-10 flex items-center justify-center rounded-full backdrop-blur-md shadow-lg transition-all active:scale-95 cursor-pointer",
+                    // The stage behind is the demo's own surface — near-white
+                    // or near-black — so the button carries its own contrast
+                    // rather than borrowing any.
+                    "bg-zinc-100/90 border border-zinc-300 text-zinc-700 hover:bg-white hover:text-zinc-900",
+                    "dark:bg-zinc-800/90 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-white",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
+                  )}
+                  title="Close fullscreen preview (Esc)"
+                  aria-label="Close fullscreen preview"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+
+              {/* Drag Handle — a width to drag is a card idea, not a screen one. */}
+              {!isFullscreen && (
+                <div
+                  role="separator"
+                  aria-orientation="vertical"
+                  aria-label="Resize preview"
+                  aria-valuemin={MIN_PREVIEW_WIDTH}
+                  aria-valuemax={areaWidth ? Math.round(areaWidth) : undefined}
+                  aria-valuenow={viewportWidth ? Math.round(viewportWidth) : undefined}
+                  tabIndex={0}
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerEnd}
+                  onPointerCancel={handlePointerEnd}
+                  onKeyDown={handleResizeKeyDown}
+                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
+                </div>
+              )}
             </div>
           </div>
 
@@ -726,6 +903,15 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
+export interface SliderControl {
+  name: string;
+  label: string;
+  min: number;
+  max: number;
+  step?: number;
+  defaultValue: number;
+}
+
 export function ExampleShowcase({
   name,
   examples,
@@ -738,6 +924,7 @@ export function ExampleShowcase({
   defaultColor = DEFAULT_SHOWCASE_COLOR,
   colorProp = "color",
   colorLabel = "Theme Color",
+  controls = [],
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -762,6 +949,8 @@ export function ExampleShowcase({
   /** Demo prop the color is bridged into. */
   colorProp?: string;
   colorLabel?: string;
+  /** Optional numerical range sliders for interactive property tuning. */
+  controls?: SliderControl[];
 }) {
   const shared = useShowcaseColorContext();
   const instanceId = useId();
@@ -794,16 +983,88 @@ export function ExampleShowcase({
     framework,
   );
 
+  // Numerical slider control states
+  const [controlValues, setControlValues] = useState<Record<string, number>>(() => {
+    const initial: Record<string, number> = {};
+    controls.forEach((ctrl) => {
+      initial[ctrl.name] = ctrl.defaultValue;
+    });
+    return initial;
+  });
+
+  const handleControlChange = (name: string, value: number) => {
+    setControlValues((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {ownsPicker && (
-        <div className="flex flex-col gap-6 p-3.5 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
-          <ThemeColorPicker
-            color={color}
-            onChange={setColor}
-            label={colorLabel}
-            className="sm:max-w-sm"
-          />
+      {(ownsPicker || controls.length > 0) && (
+        <div className="flex flex-col gap-5 p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          {ownsPicker && (
+            <ThemeColorPicker
+              color={color}
+              onChange={setColor}
+              label={colorLabel}
+              className="sm:max-w-sm"
+            />
+          )}
+
+          {controls.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-3 border-t border-zinc-200/80 dark:border-zinc-800">
+              {controls.map((ctrl) => {
+                const val = controlValues[ctrl.name] ?? ctrl.defaultValue;
+                const percentage = Math.min(
+                  100,
+                  Math.max(0, ((val - ctrl.min) / (ctrl.max - ctrl.min)) * 100)
+                );
+                return (
+                  <div
+                    key={ctrl.name}
+                    className="flex flex-col gap-2 p-3 bg-white dark:bg-zinc-950/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl shadow-xs transition-shadow hover:shadow-sm"
+                  >
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                        {ctrl.label}
+                      </span>
+                      <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200/60 dark:border-zinc-700/50 shadow-2xs">
+                        {val}
+                      </span>
+                    </div>
+                    <div className="relative flex items-center h-6 w-full group touch-none">
+                      {/* Custom Track Background */}
+                      <div className="absolute inset-x-0 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden pointer-events-none">
+                        <div
+                          className="h-full bg-primary transition-all duration-75"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      {/* Hidden Range Input overlay */}
+                      <input
+                        type="range"
+                        min={ctrl.min}
+                        max={ctrl.max}
+                        step={ctrl.step ?? 1}
+                        value={val}
+                        onChange={(e) =>
+                          handleControlChange(ctrl.name, parseFloat(e.target.value))
+                        }
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      {/* Custom Thumb Circle with Theme Accent Ring Glow */}
+                      <div
+                        className="absolute w-5 h-5 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary ring-4 ring-primary/25 shadow-md flex items-center justify-center pointer-events-none transition-transform duration-75 group-hover:scale-120 active:scale-125"
+                        style={{
+                          left: `calc(${percentage}% - ${(percentage / 100) * 20}px)`,
+                        }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -814,12 +1075,13 @@ export function ExampleShowcase({
         )}
       >
         {examples.map((example) => {
-          const effectiveProps = colorControl
-            ? { [colorProp]: color, ...example.props }
-            : example.props;
+          const effectiveProps = { ...example.props, ...controlValues };
+          if (colorControl) {
+            effectiveProps[colorProp] = color;
+          }
 
           const effectiveUsage =
-            resolveSnippet(example.usage, framework) ??
+            resolveUsage(example.usage, framework) ??
             generateFallbackUsage(name, example.title, effectiveProps);
 
           const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;

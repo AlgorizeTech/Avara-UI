@@ -9,9 +9,14 @@ export interface CurvedCarouselCard {
   image: string;
 }
 
+export type CurvedCarouselVariant = "arc-sweep" | "infinite-marquee";
+
 export interface CurvedCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: CurvedCarouselVariant;
   autoPlay?: boolean;
   speed?: number;
+  color?: string;
+  items?: CurvedCarouselCard[];
   className?: string;
 }
 
@@ -163,16 +168,21 @@ const CAROUSEL_ITEMS: CurvedCarouselCard[] = [
 ];
 
 export function CurvedCarousel({
+  variant = "arc-sweep",
   autoPlay: _autoPlay = true,
   speed: _speed = 1,
+  color = "primary",
+  items,
   className,
   ...props
 }: CurvedCarouselProps) {
+  const carouselItems = items || CAROUSEL_ITEMS;
   const [rotationAngle, setRotationAngle] = useState(0);
+  const [marqueeAngle, setMarqueeAngle] = useState(0);
   const [windowWidth, setWindowWidth] = useState(1200);
   const sweepDirection = useRef<1 | -1>(1);
 
-  const total = CAROUSEL_ITEMS.length;
+  const total = carouselItems.length;
 
   useEffect(() => {
     // Track screen width dynamically for fluid scaling:
@@ -182,7 +192,7 @@ export function CurvedCarousel({
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Oscillates the giant wheel ring back and forth smoothly between -10° and +10°
+    // Oscillates the giant wheel ring back and forth smoothly between -10° and +10° for arc-sweep
     const timer = setInterval(() => {
       setRotationAngle((prev) => {
         if (prev >= 10) {
@@ -195,7 +205,11 @@ export function CurvedCarousel({
         }
         return prev + 0.08 * sweepDirection.current;
       });
+
+      // All-time continuous right-to-left marquee motion (decreases angle perpetually)
+      setMarqueeAngle((prev) => (prev - 0.12) % 360);
     }, 20);
+
     return () => {
       clearInterval(timer);
       window.removeEventListener("resize", handleResize);
@@ -203,17 +217,103 @@ export function CurvedCarousel({
   }, []);
 
   // Fluid responsive parameters according to screen size:
-  // Mobile (<640px), Tablet (640px-1024px), Desktop (>1024px)
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
   const baseRadius = isMobile ? 520 : isTablet ? 720 : 960;
   const baseCenterOffset = isMobile ? 480 : isTablet ? 660 : 880;
 
+  // Custom styling for color support
+  const activeColorStyle = color && color !== "primary" ? { borderColor: color } : {};  if (variant === "infinite-marquee") {
+    // 100% Constant Linear Speed Marquee Track with Strict 12px Card Spacing
+    const cardWidth = isMobile ? 140 : isTablet ? 195 : 245;
+    const gap = 12;
+    const itemTotalWidth = cardWidth + gap;
+    const totalTrackWidth = carouselItems.length * itemTotalWidth;
+
+    // Linear continuous pixel offset for constant linear speed across entire track
+    const currentOffset = (marqueeAngle * 10) % totalTrackWidth;
+
+    return (
+      <div
+        className={cn(
+          "relative w-full h-[400px] sm:h-[480px] md:h-[560px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-muted dark:bg-[#0a0a0c] border border-border",
+          "flex items-center justify-center p-0 m-0 isolation-auto",
+          className
+        )}
+        {...props}
+      >
+        {/* Soft edge fade vignettes */}
+        <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-r from-zinc-100 dark:from-[#0a0a0c] via-zinc-100/90 dark:via-[#0a0a0c]/90 to-transparent z-40 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-l from-zinc-100 dark:from-[#0a0a0c] via-zinc-100/90 dark:via-[#0a0a0c]/90 to-transparent z-40 pointer-events-none" />
+
+        {/* Constant Linear Speed 3D Concave Track */}
+        <div
+          className="relative w-full h-full flex items-center justify-center overflow-hidden"
+          style={{ perspective: "1100px" }}
+        >
+          {carouselItems.map((item, index) => {
+            let posX = index * itemTotalWidth + currentOffset;
+
+            // Seamless infinite wrap around total track width
+            while (posX > totalTrackWidth / 2) posX -= totalTrackWidth;
+            while (posX < -totalTrackWidth / 2) posX += totalTrackWidth;
+
+            // Visible range filter
+            const maxVisibleRange = windowWidth / 2 + cardWidth;
+            if (Math.abs(posX) > maxVisibleRange) return null;
+
+            // Ultra Smooth Subtle Linear Side Height Scaling (No 30-40px big jumps):
+            const normRatio = posX / (windowWidth * 0.5);
+            const translateZ = (1 - Math.cos(normRatio * (Math.PI / 3))) * 180;
+            const rotateY = -normRatio * 18;
+            
+            // Ultra subtle linear growth (~8-12px gradual total height transition)
+            const scaleY = 1 + Math.abs(normRatio) * 0.12;
+
+            return (
+              <div
+                key={`${item.id}-${index}`}
+                style={{
+                  transform: `translate3d(${posX}px, 0px, ${translateZ}px) rotateY(${rotateY}deg) scaleY(${scaleY})`,
+                  transformOrigin: "center center",
+                  width: `${cardWidth}px`,
+                  zIndex: Math.round(1000 - Math.abs(posX)),
+                  ...activeColorStyle,
+                }}
+                className={cn(
+                  "absolute h-[200px] sm:h-[280px] md:h-[350px] rounded-2xl overflow-hidden cursor-default shadow-xl pointer-events-none border border-black/80 dark:border-white/80",
+                  "bg-zinc-900"
+                )}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Sleek Label */}
+        <div className="absolute bottom-6 sm:bottom-8 z-40 flex flex-col items-center pointer-events-none">
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-[1.5px] bg-foreground/30" />
+            <span className="text-foreground font-mono text-xs tracking-[0.25em] uppercase font-bold">
+              Continuous Curved Marquee
+            </span>
+            <span className="w-8 h-[1.5px] bg-foreground/30" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(
-        "relative w-full h-[440px] sm:h-[560px] md:h-[660px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800",
+        "relative w-full h-[440px] sm:h-[560px] md:h-[660px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-background border border-border",
         "flex flex-col items-center justify-center p-0 m-0",
         className
       )}
@@ -221,7 +321,7 @@ export function CurvedCarousel({
     >
       {/* FLUID RESPONSIVE 360-DEGREE GIANT WHEEL RING */}
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        {CAROUSEL_ITEMS.map((item, index) => {
+        {carouselItems.map((item, index) => {
           // 15-degree step angle (360 / 24 = 15 deg)
           const spokeAngle = index * (360 / total);
           const currentAngle = spokeAngle + rotationAngle;
@@ -241,12 +341,12 @@ export function CurvedCarousel({
               style={{
                 transform: `translate3d(${translateX}px, ${translateY}px, 0px) rotate(${rotateZ}deg)`,
                 transformOrigin: "50% 50%",
-                borderColor: "var(--primary)",
                 zIndex: zIndex,
+                ...activeColorStyle,
               }}
               className={cn(
                 "absolute w-[150px] sm:w-[210px] md:w-[280px] h-[210px] sm:h-[300px] md:h-[410px] rounded-xl sm:rounded-2xl overflow-hidden cursor-default shadow-none transition-none",
-                "bg-zinc-900 border border-primary/50"
+                "bg-zinc-900 border border-black/80 dark:border-white/80"
               )}
             >
               {/* Pure Image Only */}
@@ -263,11 +363,11 @@ export function CurvedCarousel({
       {/* SLEEK MINIMAL TYPOGRAPHY LABEL */}
       <div className="absolute bottom-8 sm:bottom-12 z-40 flex flex-col items-center pointer-events-none">
         <div className="flex items-center gap-3">
-          <span className="w-8 h-[1.5px] bg-primary/60" />
-          <span className="text-zinc-900 dark:text-white font-mono text-xs sm:text-sm tracking-[0.25em] uppercase font-bold">
+          <span className="w-8 h-[1.5px] bg-foreground/30" />
+          <span className="text-foreground font-mono text-xs sm:text-sm tracking-[0.25em] uppercase font-bold">
             Curved Carousel
           </span>
-          <span className="w-8 h-[1.5px] bg-primary/60" />
+          <span className="w-8 h-[1.5px] bg-foreground/30" />
         </div>
       </div>
     </div>

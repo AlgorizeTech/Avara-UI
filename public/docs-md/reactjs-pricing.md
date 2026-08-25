@@ -2,13 +2,9 @@
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-## Examples
-
 `Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
-export const usageCards = `import { PricingCards, PricingData } from "@/components/custom/blocks/Pricing";
-
-const data: PricingData = {
+export const pricingData = `const data: PricingData = {
   tabs: [
     {
       id: "monthly",
@@ -23,7 +19,12 @@ const data: PricingData = {
           buttonText: "Get Started",
           popular: false,
           icon: "Rocket",
-          features: ["10 projects", "Basic analytics", "24-hour support"],
+          features: [
+            "10 projects",
+            "Up to 2,000 subscribers",
+            "Basic analytics",
+            "24-hour support",
+          ],
         },
         {
           id: "pro",
@@ -34,40 +35,126 @@ const data: PricingData = {
           buttonText: "Upgrade to Pro",
           popular: true,
           icon: "Zap",
-          features: ["25 projects", "Custom reporting", "1-hour support"],
+          features: [
+            "25 projects",
+            "Up to 10,000 subscribers",
+            "Custom reporting",
+            "1-hour support",
+          ],
+        },
+        {
+          id: "enterprise",
+          title: "Enterprise",
+          subtitle: "For larger organizations.",
+          price: "$99",
+          period: "mo",
+          buttonText: "Contact Sales",
+          popular: false,
+          icon: "Building",
+          features: [
+            "Unlimited projects",
+            "Unlimited subscribers",
+            "Dedicated manager",
+            "24/7 support",
+          ],
         },
       ],
     },
-    { id: "annually", label: "Annually (Save 20%)", plans: [/* … */] },
+    {
+      id: "annually",
+      label: "Annually (Save 20%)",
+      plans: [
+        {
+          id: "startup-annual",
+          title: "Startup",
+          subtitle: "Perfect for small teams.",
+          price: "$279",
+          period: "yr",
+          buttonText: "Get Started",
+          popular: false,
+          icon: "Rocket",
+          features: [
+            "10 projects",
+            "Up to 2,000 subscribers",
+            "Basic analytics",
+            "24-hour support",
+          ],
+        },
+        {
+          id: "pro-annual",
+          title: "Pro",
+          subtitle: "For scaling businesses.",
+          price: "$569",
+          period: "yr",
+          buttonText: "Upgrade to Pro",
+          popular: true,
+          icon: "Zap",
+          features: [
+            "25 projects",
+            "Up to 10,000 subscribers",
+            "Custom reporting",
+            "1-hour support",
+          ],
+        },
+        {
+          id: "enterprise-annual",
+          title: "Enterprise",
+          subtitle: "For larger organizations.",
+          price: "$949",
+          period: "yr",
+          buttonText: "Contact Sales",
+          popular: false,
+          icon: "Building",
+          features: [
+            "Unlimited projects",
+            "Unlimited subscribers",
+            "Dedicated manager",
+            "24/7 support",
+          ],
+        },
+      ],
+    },
   ],
-};
+};`;
+
+export const usageCards = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function PremiumPricing() {
   // Heavier shadows, gradient price text and a scaled-up popular card.
   return ;
 }`;
 
-export const usageElegant = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function ElegantPricing() {
   // Soft top-border accent on the popular card, lighter type.
   return ;
 }`;
 
-export const usageMinimal = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageMinimal = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function MinimalPricing() {
   // No card chrome until hover — the popular plan is marked by a ring.
   return ;
 }`;
 
-export const usageBordered = `import { PricingCards } from "@/components/custom/blocks/Pricing";
+export const usageBordered = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
 
 export default function BorderedPricing() {
   // Hard neo-brutalist edges and offset shadows.
@@ -82,7 +169,7 @@ export default function QuoteBuilder() {
   return ;
 }`;
 
-export const usageTable = `import { PricingTable, PricingTableData } from "@/components/custom/blocks/Pricing";
+export const usageTable = `import { PricingTable, type PricingTableData } from "@/components/custom/blocks/Pricing";
 
 const data: PricingTableData = {
   plans: [
@@ -143,8 +230,27 @@ const packages = [
     name: "Agency",
     price: 149,
     description: "Advanced tools for scaling design teams.",
-    features: ["10 Users", "Unlimited Projects", "Priority Support"],
+    features: [
+      "10 Users",
+      "Unlimited Projects",
+      "Priority Support",
+      "Custom Domain",
+    ],
     isFeatured: true,
+  },
+  {
+    id: "m3",
+    billingCycle: "monthly",
+    name: "Enterprise",
+    price: 499,
+    description: "Dedicated infrastructure and account management.",
+    features: [
+      "Unlimited Everything",
+      "24/7 SLA Support",
+      "SSO & SAML",
+      "Dedicated Manager",
+    ],
+    isFeatured: false,
   },
   {
     id: "y1",
@@ -155,6 +261,34 @@ const packages = [
     features: ["1 User", "5 Projects", "Basic Support"],
     isFeatured: false,
   },
+  {
+    id: "y2",
+    billingCycle: "yearly",
+    name: "Agency",
+    price: 129,
+    description: "Advanced tools for scaling design teams.",
+    features: [
+      "10 Users",
+      "Unlimited Projects",
+      "Priority Support",
+      "Custom Domain",
+    ],
+    isFeatured: true,
+  },
+  {
+    id: "y3",
+    billingCycle: "yearly",
+    name: "Enterprise",
+    price: 399,
+    description: "Dedicated infrastructure and account management.",
+    features: [
+      "Unlimited Everything",
+      "24/7 SLA Support",
+      "SSO & SAML",
+      "Dedicated Manager",
+    ],
+    isFeatured: false,
+  },
 ];
 
 export default function PricingMenu() {
@@ -162,6 +296,8 @@ export default function PricingMenu() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference: PricingCards
 

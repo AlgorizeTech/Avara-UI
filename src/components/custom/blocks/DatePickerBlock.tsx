@@ -253,7 +253,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "opacity-50 cursor-not-allowed border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50",
+            "opacity-50 cursor-not-allowed border border-border bg-muted",
           ),
           active: "",
         };
@@ -273,15 +273,15 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl",
+              "bg-muted border border-transparent rounded-xl",
             ),
-            active: cn("bg-white dark:bg-zinc-950 ring-4", theme.ring),
+            active: cn("bg-background ring-4", theme.ring),
           };
         case "underlined":
           return {
             wrapper: cn(
               baseWrapper,
-              "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0",
+              "border-b-2 border-border bg-transparent rounded-none px-0",
             ),
             active: theme.ring.split(" ")[1],
           };
@@ -289,7 +289,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -298,7 +298,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -318,7 +318,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           <label
             className={cn(
               "text-sm font-bold",
-              hasError ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+              hasError ? "text-red-500" : "text-foreground",
               disabled && "opacity-50",
             )}
           >
@@ -336,7 +336,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           <div className="flex items-center gap-2 overflow-hidden w-full">
             <div
               className={cn(
-                "shrink-0 text-zinc-400 dark:text-zinc-500",
+                "shrink-0 text-muted-foreground",
                 isOpen && theme.text,
               )}
             >
@@ -348,7 +348,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                 s.text,
                 !value
                   ? "text-zinc-400 dark:text-zinc-600"
-                  : "text-zinc-900 dark:text-zinc-100",
+                  : "text-foreground",
               )}
             >
               {value ? formatDate(value) : placeholder}
@@ -363,7 +363,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         {/* Calendar Popover */}
         <div
           className={cn(
-            "absolute left-0 z-50 overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-all duration-200 ease-out origin-top w-72",
+            "absolute left-0 z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl transition-all duration-200 ease-out origin-top w-72",
             variant === "underlined" ? "top-[100%]" : "top-[calc(100%+8px)]",
             isOpen
               ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
@@ -375,16 +375,16 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={handlePrevMonth}
-                className="p-1.5 rounded-md text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <div className="text-sm font-bold text-zinc-900 dark:text-white">
+              <div className="text-sm font-bold text-foreground">
                 {MONTH_NAMES[currentMonth]} {currentYear}
               </div>
               <button
                 onClick={handleNextMonth}
-                className="p-1.5 rounded-md text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -395,7 +395,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
               {DAY_NAMES.map((day) => (
                 <div
                   key={day}
-                  className="text-center text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500"
+                  className="text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
                 >
                   {day}
                 </div>
@@ -426,10 +426,10 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                         ? cn(theme.bg, "font-bold shadow-sm scale-110")
                         : isToday
                           ? cn(
-                              "font-bold bg-zinc-100 dark:bg-zinc-800",
+                              "font-bold bg-muted",
                               theme.text,
                             )
-                          : "text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                          : "text-foreground font-medium hover:bg-muted",
                     )}
                   >
                     {day}
@@ -447,7 +447,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           </p>
         )}
         {helperText && !error && (
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs font-medium text-muted-foreground mt-0.5">
             {helperText}
           </p>
         )}

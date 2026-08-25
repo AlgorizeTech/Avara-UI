@@ -4,8 +4,6 @@ A specialized typography component used to display keyboard buttons, shortcuts, 
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Examples
-
 Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
@@ -14,28 +12,29 @@ export default function BasicKbd() {
   return ⌘;
 }`;
 
-export const usageSizes = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
-
-export default function KbdSizes() {
-  return (
-    
-      ⌘
-      ⌘
-      ⌘
-    
-  );
-}`;
-
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
 export default function ShortcutList() {
   return (
     
-      Force Reload:
-      
-        ⇧
-        ⌘
-        R
+      Common Combinations
+
+        Save file:
+        
+          ⌘
+          S
+
+        Force Reload:
+        
+          ⇧
+          ⌘
+          R
+
+        Open Terminal:
+        
+          Ctrl
+          +
+          ~
 
   );
 }`;
@@ -63,48 +62,12 @@ export default function InlineShortcut() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
     },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          effect:
-            "to set height, padding and font-size — `sm` (the default), `md` or `lg`.",
-        },
-      ],
-      props: { example: "sizes" },
-      usage: usageSizes,
-    },
-    {
-      title: "Combinations",
-      propNotes: [
-        {
-          prop: "children",
-          effect:
-            "holds one key each — sequence several `Kbd` elements side by side to spell out a shortcut.",
-        },
-      ],
-      props: {},
-      usage: usageCombinations,
-    },
-    {
-      title: "Inline in text",
-      propNotes: [
-        {
-          prop: "size",
-          value: '"sm"',
-          effect:
-            "keeps keys on the text baseline so they read naturally inside prose.",
-        },
-      ],
-      props: { example: "inline" },
-      usage: usageInline,
-    },
   ]}
 />
 
 ## Installation
+
+## Examples
 
 ## Usage
 

@@ -5,8 +5,6 @@ import { extractCode } from "@/lib/code";
 
 An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-## Examples
-
 Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button.
 
 export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
@@ -14,17 +12,17 @@ export const usageDefault = `import { HeroVideoPlayer } from "@/components/custo
 export default function HeroSection() {
   return (
     <HeroVideoPlayer
-      badge="Platform v2.4"
-      title="Experience the Architecture in Action"
-      subtitle="Watch how our engine transforms your workflow in under 3 minutes."
-      playButtonLabel="Watch 4K Demo"
-      videoUrl="https://www.youtube.com/embed/VIDEO_ID?autoplay=1"
-      thumbnailUrl="/photos/hero-still.jpg"
+      badge="Nature 4K"
+      title="Wilderness Unbound"
+      subtitle="A cinematic journey through serene mountain vistas and ancient forests."
+      playButtonLabel="Watch Film"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
     />
   );
 }`;
 
-export const usageAspect = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageAspect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function CinematicHero() {
   // "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
@@ -32,21 +30,22 @@ export default function CinematicHero() {
   return <HeroVideoPlayer aspectRatio="21/9" thumbnailUrl="/photos/hero-still.jpg" />;
 }`;
 
-export const usageAspect43 = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageAspect43 = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function ClassicHero() {
   return <HeroVideoPlayer aspectRatio="4/3" thumbnailUrl="/photos/hero-still.jpg" />;
 }`;
 
-export const usageNoGlow = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNoGlow = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function FlatHero() {
   // Drops the ambient bloom behind the frame — better on busy backgrounds.
   return <HeroVideoPlayer enableGlow={false} />;
 }`;
 
-export const usageModal = `import HeroVideoPlayer from "@/components/custom/blocks/HeroVideoPlayerBlock";
-import { track } from "@/lib/analytics";
+export const usageModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+// Stand-in for whatever analytics client you already use.
+const track = (event: string) => console.log(event);
 
 export default function FullWidthHero() {
   // "md" | "lg" | "xl" | "full" — how wide the player modal opens.
@@ -93,7 +92,6 @@ export default function FullWidthHero() {
 ## Features
 
 Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

@@ -103,7 +103,7 @@ export const HeroVideoPlayer = React.forwardRef<
         <motion.div
           transition={{ duration: 0.4, ease: "easeOut" }}
           className={cn(
-            "relative z-10 w-full min-h-[220px] sm:min-h-[280px] lg:min-h-0 overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-900 shadow-2xl group cursor-pointer flex flex-col justify-between",
+            "relative z-10 w-full min-h-[220px] sm:min-h-[280px] lg:min-h-0 overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-border/80 bg-zinc-900 shadow-2xl group cursor-pointer flex flex-col justify-between",
             aspectRatios[aspectRatio],
           )}
           onClick={handleOpen}
@@ -139,7 +139,7 @@ export const HeroVideoPlayer = React.forwardRef<
                 <div
                   className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg transition-colors duration-200 shrink-0 bg-[var(--theme-color,var(--primary))]"
                 >
-                  <Play className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white fill-white ml-0.5" />
+                  <Play className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-primary-foreground dark:text-zinc-900 fill-primary-foreground dark:fill-zinc-900 ml-0.5" />
                 </div>
                 <span className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight pr-1 sm:pr-2">
                   {playButtonLabel}

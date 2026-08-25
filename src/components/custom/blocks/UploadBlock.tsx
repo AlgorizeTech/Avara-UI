@@ -20,7 +20,8 @@ export type UploadStatus =
   | "uploading"
   | "paused"
   | "error"
-  | "success";
+  | "success"
+  | (string & {});
 
 export interface FileUploadState {
   id: string;
@@ -208,7 +209,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700/50 flex flex-col items-center justify-center py-12 px-6 cursor-pointer transition-colors overflow-hidden group bg-white/50 dark:bg-transparent",
+          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer transition-colors overflow-hidden group bg-white/50 dark:bg-transparent",
           className,
         )}
         {...props}
@@ -225,7 +226,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         {/* pointer-events-none prevents drag events from bubbling and glitching the hover state */}
         <div
           ref={iconRef}
-          className="text-zinc-400 dark:text-zinc-500 mb-4 transition-colors pointer-events-none"
+          className="text-muted-foreground mb-4 transition-colors pointer-events-none"
         >
           <UploadCloud className="w-10 h-10" strokeWidth={1.5} />
         </div>
@@ -234,12 +235,12 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
           ref={textRef}
           className="flex flex-col items-center text-center pointer-events-none"
         >
-          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-200">
+          <h3 className="text-base font-semibold text-foreground">
             {isDragging
               ? "Release to upload"
               : "Drop your files here or click to browse"}
           </h3>
-          <p className="text-[13px] text-zinc-500 mt-1">
+          <p className="text-[13px] text-muted-foreground mt-1">
             PNG, JPG, PDF, MP4 — up to {maxSize} MB
           </p>
         </div>
@@ -324,7 +325,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
       ? "text-rose-500"
       : isSuccess
         ? "text-emerald-500"
-        : "text-zinc-500 dark:text-zinc-400";
+        : "text-muted-foreground";
 
     // Extract file extension for badge
     const fileExtension = file.name.split(".").pop()?.toUpperCase() || "FILE";
@@ -340,7 +341,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
             ? "border-rose-200 dark:border-rose-900/50"
             : isSuccess
               ? "border-emerald-200 dark:border-emerald-900/30"
-              : "border-zinc-200 dark:border-zinc-800/80",
+              : "border-border",
         )}
       >
         {/* Spotlight Overlay Layer */}
@@ -353,7 +354,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
           {/* Signal 04: Upload Preview */}
           <div
             className={cn(
-              "rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden relative shadow-sm",
+              "rounded-xl bg-muted border border-border flex items-center justify-center flex-shrink-0 overflow-hidden relative shadow-sm",
               previewUrl && isImage ? "w-14 h-14" : "w-12 h-12",
             )}
           >
@@ -380,27 +381,27 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
 
           <div className="flex-1 min-w-0 flex flex-col justify-center pt-0.5">
             <div className="flex items-center justify-between gap-4">
-              <h4 className="text-[14px] font-bold text-zinc-900 dark:text-zinc-200 truncate pr-2">
+              <h4 className="text-[14px] font-bold text-foreground truncate pr-2">
                 {file.name}
               </h4>
-              <span className="text-[13px] font-bold text-zinc-700 dark:text-zinc-100 flex-shrink-0">
+              <span className="text-[13px] font-bold text-foreground flex-shrink-0">
                 {Math.round(progress)}%
               </span>
             </div>
 
             {/* Badges / File Info */}
             <div className="flex items-center gap-2 mt-1 mb-2">
-              <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-zinc-200 dark:border-transparent">
+              <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-border dark:border-transparent">
                 {fileExtension}
               </span>
-              <span className="text-[11px] font-semibold text-zinc-500">
+              <span className="text-[11px] font-semibold text-muted-foreground">
                 {formatBytes(file.size)}
               </span>
             </div>
 
             {/* Honest Progress & Inline Retry Messaging */}
             <div className="flex items-center justify-between mt-auto h-5">
-              <div className="flex items-center gap-2 text-[12px] font-semibold text-zinc-500 truncate">
+              <div className="flex items-center gap-2 text-[12px] font-semibold text-muted-foreground truncate">
                 {isError ? (
                   <span className="flex items-center text-rose-500 gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" />
@@ -421,7 +422,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
                 {(isError || isPaused) && onRetry && (
                   <button
                     onClick={() => onRetry(item.id)}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[11px] font-bold transition-colors border border-zinc-200 dark:border-transparent"
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted text-foreground text-[11px] font-bold transition-colors border border-border dark:border-transparent"
                   >
                     <RefreshCw className="w-3 h-3" /> Retry
                   </button>
@@ -429,7 +430,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
                 {onRemove && (
                   <button
                     onClick={() => onRemove(item.id)}
-                    className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -440,7 +441,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         </div>
 
         {/* Progress Bar Track */}
-        <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-full overflow-hidden relative z-10">
+        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden relative z-10">
           <div
             ref={progressRef}
             className={cn(

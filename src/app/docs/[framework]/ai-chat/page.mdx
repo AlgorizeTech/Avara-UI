@@ -5,16 +5,14 @@ import { extractCode } from "@/lib/code";
 
 A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
 
-## Examples
-
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
-export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
-
-const chatHistory = [
+export const chatData = `const chatHistory = [
   { id: 1, title: "Help with React Components", date: "Today" },
   { id: 2, title: "Write a python script for SEO", date: "Today" },
   { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
+  { id: 4, title: "Explain quantum physics", date: "Previous 7 Days" },
+  { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
 ];
 
 const initialMessages = [
@@ -30,7 +28,18 @@ const initialMessages = [
     content: "Can you help me build a modern dashboard UI using Tailwind CSS?",
     time: "10:02 AM",
   },
-];
+  {
+    id: 3,
+    role: "ai",
+    content:
+      "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\\n\\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
+    time: "10:02 AM",
+  },
+];`;
+
+export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
 
 export default function Assistant() {
   return (
@@ -41,7 +50,8 @@ export default function Assistant() {
 }`;
 
 export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
-import { chatHistory, initialMessages } from "./data";
+
+${chatData}
 
 export default function MinimalAssistant() {
   return (
@@ -57,7 +67,8 @@ export default function MinimalAssistant() {
 }`;
 
 export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
-import { chatHistory, initialMessages } from "./data";
+
+${chatData}
 
 export default function GlassAssistant() {
   return (
@@ -109,6 +120,20 @@ export default function GlassAssistant() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Ai-chat.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="ai-chat" />
+
+## Examples
+
+<ExampleShowcase
+  name="ai-chat"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -145,13 +170,8 @@ export default function GlassAssistant() {
   ]}
 />
 
-## Installation
-
-<Installation name="ai-chat" />
-
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

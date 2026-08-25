@@ -3,83 +3,68 @@ import { extractCode } from "@/lib/code";
 
 # Button
 
-A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
+An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
 
-## Examples
-
-Explore the different variations of the Button component — each example shows a live preview with the exact code to copy.
+The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, SettingsIcon } from "@/components/custom/blocks/Icons";
 
-export default function ButtonDemo() {
-  return <Button>Button</Button>;
-}`;
-
-export const usageVariants = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonVariants() {
+export default function GlowingBorderButtonDemo() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button variant="default">Default</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
-    </div>
-  );
-}`;
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 1. Continuous 4-Edge Conic Spinning Border Line */}
+      <Button variant="outline" iconRight={<ArrowRightIcon />}>
+        Spinning Border
+      </Button>
 
-export const usageSizes = `import Button from "@/components/custom/blocks/Button";
+      {/* 2. Continuous Radar Ping Waves */}
+      <Button variant="radar-ping" iconLeft={<SettingsIcon />}>
+        Radar Ping
+      </Button>
 
-export default function ButtonSizes() {
-  return (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button size="sm">Small</Button>
-      <Button size="default">Default</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  );
-}`;
-
-export const usageLoading = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonLoading() {
-  return <Button loading>Please wait</Button>;
-}`;
-
-export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
-import { ArrowRightIcon, MailIcon } from "@/components/custom/blocks/Icons";
-
-export default function ButtonWithIcon() {
-  return (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button iconLeft={<MailIcon />}>Email</Button>
-      <Button variant="secondary" iconRight={<ArrowRightIcon />}>
-        Continue
+      {/* 3. Continuous Cosmic Orbit Light Ring */}
+      <Button variant="cosmic-orbit" iconLeft={<SettingsIcon />}>
+        Cosmic Orbit
       </Button>
     </div>
   );
-}`;
+};`;
 
-export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
-import { SearchIcon } from "@/components/custom/blocks/Icons";
+export const usageSlideIcon = `import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, DownloadIcon, MailIcon } from "@/components/custom/blocks/Icons";
 
-export default function ButtonIconOnly() {
-  return <Button variant="outline" size="sm" iconLeft={<SearchIcon />} />;
-}`;
-
-export const usageSocial = `import Button from "@/components/custom/blocks/Button";
-import { GitHubIcon, GoogleIcon } from "@/components/custom/blocks/Icons";
-
-export default function SocialLoginButtons() {
+export default function MotionButtonDemo() {
   return (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button variant="outline" iconLeft={<GoogleIcon />}>
-        Continue with Google
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 1. Icon Left Radial Expanding Background Fill */}
+      <Button variant="expand-icon" iconLeft={<ArrowRightIcon />}>
+        Send Message
       </Button>
-      <Button variant="outline" iconLeft={<GitHubIcon />}>
-        Continue with GitHub
+
+      {/* 2. Interactive Sliding Rounded Icon Physics */}
+      <Button variant="slide-icon" iconRight={<ArrowRightIcon />}>
+        Explore Features
+      </Button>
+
+      {/* 3. Horizontal Left to Right Background Wipe */}
+      <Button variant="slide-bg" iconRight={<DownloadIcon />}>
+        Download Assets
+      </Button>
+
+      {/* 4. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
+      <Button variant="slide-text-bounce">
+        Spring Bounce
+      </Button>
+
+      {/* 5. Upward Text Roll */}
+      <Button variant="slide-text" iconRight={<ArrowRightIcon />}>
+        Upward Roll
+      </Button>
+
+      {/* 6. Downward Text Roll */}
+      <Button variant="slide-text-down" iconLeft={<MailIcon />}>
+        Downward Roll
       </Button>
     </div>
   );
@@ -87,97 +72,27 @@ export default function SocialLoginButtons() {
 
 <ExampleShowcase
   name="button"
+  colorControl
   columns={1}
   examples={[
     {
-      title: "Button",
-      subheading: "The default button, with its built-in click ripple.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "children",
-          effect: "for the label — everything else has a default.",
-        },
-      ],
-      props: { layout: "default" },
+      title: "4-Side Spinning Glowing Line Animated Button",
+      propNotes: [{ lead: "Feature", prop: "variant", value: '"outline"', effect: "renders a continuous spinning conic-gradient glowing line with solid white/black bg and hover theme fill." }],
+      props: { layout: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
     {
-      title: "Variants",
+      title: "Interactive Sliding Icon & Text Motion Variants",
       propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          effect:
-            "to change the visual style — `default`, `destructive`, `outline`, `secondary`, `ghost` or `link`.",
-        },
+        { lead: "Icon Expand", prop: "variant", value: '"expand-icon"', effect: "radial color expansion fills button from icon center." },
+        { lead: "Icon Slide", prop: "variant", value: '"slide-icon"', effect: "rounded icon slides out to right while new icon enters from left." },
+        { lead: "Background Wipe", prop: "variant", value: '"slide-bg"', effect: "background wipes horizontally from left to right." },
+        { lead: "Text Roll Motion", prop: "variant", value: '"slide-text" | "slide-text-down" | "slide-text-bounce"', effect: "vertical text sliding and hero spring character bounce." }
       ],
-      props: { layout: "variants" },
-      usage: usageVariants,
-    },
-    {
-      title: "Sizes",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "size",
-          effect: "to change the height and padding — `sm`, `default` or `lg`.",
-        },
-      ],
-      props: { layout: "sizes" },
-      usage: usageSizes,
-    },
-    {
-      title: "Loading",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "loading",
-          effect:
-            "to swap the content for a spinner and block interaction, so you don't need a separate `disabled`.",
-        },
-      ],
-      props: { layout: "loading" },
-      usage: usageLoading,
-    },
-    {
-      title: "With icon",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "iconLeft",
-          effect: "to put an icon before the label.",
-        },
-        { prop: "iconRight", effect: "puts one after it. Both take a node, not a name." },
-      ],
-      props: { layout: "with-icon" },
-      usage: usageWithIcon,
-    },
-    {
-      title: "Icon only",
-      propNotes: [
-        {
-          lead: "Omit",
-          prop: "children",
-          effect:
-            "and the button collapses to a square icon target — pass only `iconLeft`.",
-        },
-      ],
-      props: { layout: "icon-only" },
-      usage: usageIconOnly,
-    },
-    {
-      title: "Social login",
-      propNotes: [
-        {
-          prop: "iconLeft",
-          effect:
-            "also takes the bundled brand SVGs — `GoogleIcon`, `GitHubIcon` and friends from the icon set.",
-        },
-      ],
-      props: { layout: "social" },
-      usage: usageSocial,
+      props: { layout: "slide-icon" },
+      usage: usageSlideIcon,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
   ]}
 />
@@ -186,43 +101,14 @@ export default function SocialLoginButtons() {
 
 <Installation name="button" />
 
-### Optional — the icon set
-
-The showcase uses a set of brand and UI icons that ship as their own registry item. The button does not need them.
-
-<Cli command={`add icons.json`} />
-
 ## Features
-Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
 
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
-## Best Practices & Guidelines
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </div>
-</div>
+- **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
+- **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
+- **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
+- **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
+- **Loading Spinners**: Built-in async state handling with interactive disabled states.
+- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
 
 ## Props Reference
 
@@ -242,15 +128,12 @@ Discover the versatility of Modern Buttons with support for various variants, si
           <code>variant</code>
         </td>
         <td>
-          <code>
-            "default" | "destructive" | "outline" | "secondary" | "ghost" |
-            "link"
-          </code>
+          <code>"outline" | "slide-icon" | "slide-text"</code>
         </td>
         <td>
-          <code>"default"</code>
+          <code>"outline"</code>
         </td>
-        <td>The visual style to apply to the button.</td>
+        <td>Choose between 4-side border glow, sliding rounded icon, or vertical text roll variant.</td>
       </tr>
       <tr>
         <td>
@@ -275,8 +158,7 @@ Discover the versatility of Modern Buttons with support for various variants, si
           <code>false</code>
         </td>
         <td>
-          If true, replaces the leading icon with a spinner and disables user
-          interaction.
+          If true, replaces the leading icon with a spinner and disables user interaction.
         </td>
       </tr>
       <tr>

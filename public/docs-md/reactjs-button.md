@@ -1,111 +1,71 @@
 # Button
 
-A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
+An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
 
-## Examples
-
-Explore the different variations of the Button component — each example shows a live preview with the exact code to copy.
+The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
 
-export default function ButtonDemo() {
-  return Button;
-}`;
-
-export const usageVariants = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonVariants() {
+export default function GlowingBorderButtonDemo() {
   return (
     
-      Default
-      Destructive
-      Outline
-      Secondary
-      Ghost
-      Link
-    
-  );
-}`;
-
-export const usageSizes = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonSizes() {
-  return (
-    
-      Small
-      Default
-      Large
-    
-  );
-}`;
-
-export const usageLoading = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonLoading() {
-  return Please wait;
-}`;
-
-export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonWithIcon() {
-  return (
-    
-      }>Email
+      {/* 1. Continuous 4-Edge Conic Spinning Border Line */}
       }>
-        Continue
+        Spinning Border
+
+      {/* 2. Continuous Radar Ping Waves */}
+      }>
+        Radar Ping
+
+      {/* 3. Continuous Cosmic Orbit Light Ring */}
+      }>
+        Cosmic Orbit
 
   );
-}`;
+};`;
 
-export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
+export const usageSlideIcon = `import Button from "@/components/custom/blocks/Button";
 
-export default function ButtonIconOnly() {
-  return } />;
-}`;
-
-export const usageSocial = `import Button from "@/components/custom/blocks/Button";
-
-export default function SocialLoginButtons() {
+export default function MotionButtonDemo() {
   return (
     
+      {/* 1. Icon Left Radial Expanding Background Fill */}
       }>
-        Continue with Google
+        Send Message
+
+      {/* 2. Interactive Sliding Rounded Icon Physics */}
+      }>
+        Explore Features
+
+      {/* 3. Horizontal Left to Right Background Wipe */}
+      }>
+        Download Assets
+
+      {/* 4. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
       
+        Spring Bounce
+
+      {/* 5. Upward Text Roll */}
       }>
-        Continue with GitHub
+        Upward Roll
+
+      {/* 6. Downward Text Roll */}
+      }>
+        Downward Roll
 
   );
 }`;
 
 ## Installation
 
-### Optional — the icon set
-
-The showcase uses a set of brand and UI icons that ship as their own registry item. The button does not need them.
-
-```bash
-npx shadcn@latest add icons.json
-```
-
 ## Features
-Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
+- **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
+- **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
+- **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
+- **Loading Spinners**: Built-in async state handling with interactive disabled states.
+- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
 
 ## Props Reference
 
@@ -116,12 +76,11 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
           variant
 
-            "default" | "destructive" | "outline" | "secondary" | "ghost" |
-            "link"
+          "outline" | "slide-icon" | "slide-text"
 
-          "default"
+          "outline"
         
-        The visual style to apply to the button.
+        Choose between 4-side border glow, sliding rounded icon, or vertical text roll variant.
 
           size
 
@@ -137,8 +96,7 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
           false
 
-          If true, replaces the leading icon with a spinner and disables user
-          interaction.
+          If true, replaces the leading icon with a spinner and disables user interaction.
 
           iconLeft
 

@@ -213,7 +213,7 @@ export function PaginationItem({
           "flex h-8 w-8 items-center justify-center rounded-md text-sm font-medium transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] sm:h-9 sm:w-9",
           isActive
             ? "bg-[var(--theme-color,var(--primary))]/10 text-[var(--theme-color,var(--primary))] border border-[var(--theme-color,var(--primary))]/30 shadow-sm"
-            : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 border border-transparent",
+            : "text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent",
           className,
         )}
         {...props}
@@ -243,7 +243,7 @@ export function PaginationPrevious({
           "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-2.5 pr-3",
           disabled
             ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
-            : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50",
+            : "text-foreground hover:bg-muted hover:text-foreground",
           className,
         )}
         {...props}
@@ -270,7 +270,7 @@ export function PaginationNext({
           "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-3 pr-2.5",
           disabled
             ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
-            : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50",
+            : "text-foreground hover:bg-muted hover:text-foreground",
           className,
         )}
         {...props}
@@ -290,7 +290,7 @@ export function PaginationEllipsis({
     <li aria-hidden className="list-none m-0 p-0">
       <span
         className={cn(
-          "flex h-8 w-8 items-center justify-center text-zinc-500 dark:text-zinc-400 sm:h-9 sm:w-9",
+          "flex h-8 w-8 items-center justify-center text-muted-foreground sm:h-9 sm:w-9",
           className,
         )}
         {...props}

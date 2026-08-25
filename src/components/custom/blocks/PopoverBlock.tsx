@@ -339,7 +339,7 @@ export function PopoverContent({
         // padding buy back the height that would otherwise have to be scrolled.
         // Width stays a single class so an overriding `className="w-48"` wins at
         // every breakpoint instead of only below lg.
-        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-zinc-950 dark:text-zinc-50 bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
+        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-foreground bg-white dark:bg-[#050505] border border-border rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
         className,
       )}
       style={{ top: coords.top, left: coords.left }}

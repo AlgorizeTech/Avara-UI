@@ -2,13 +2,9 @@
 
 A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
-## Examples
-
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
-export const usageDefault = `import { useState } from "react";
-
-export default function DrawerDemo() {
+export const usageDefault = `export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -29,36 +25,7 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageSides = `import { useState } from "react";
-
-type Side = "top" | "bottom" | "left" | "right";
-
-function DrawerTile({ side }: { side: Side }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-       setOpen(true)}>
-        {side}
-
-            side="{side}"
-            
-              The drawer slides in from the {side} edge and sizes itself to match.
-
-             setOpen(false)}>Close
-
-  );
-}
-
-export default function DrawerSides() {
-  return (
-
-  );
-}`;
-
-export const usageBottom = `import { useState } from "react";
-
-export default function BottomSheet() {
+export const usageBottom = `export default function BottomSheet() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -76,9 +43,7 @@ export default function BottomSheet() {
   );
 }`;
 
-export const usageControlled = `import { useEffect, useState } from "react";
-
-export default function OnboardingDrawer() {
+export const usageControlled = `export default function OnboardingDrawer() {
   // Nothing says the state has to come from a button — open it yourself
   // after a fetch, a route change, or on first mount.
   const [open, setOpen] = useState(true);
@@ -95,6 +60,8 @@ export default function OnboardingDrawer() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.

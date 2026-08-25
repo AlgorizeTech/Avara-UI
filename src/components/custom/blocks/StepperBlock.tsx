@@ -66,7 +66,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
     return (
       <div ref={ref} className={cn("relative w-full", className)} {...props}>
         {/* Background Track Line — sits on the circle centre (16px on mobile, 20px from sm up) */}
-        <div className="absolute top-4 sm:top-5 left-0 w-full h-[2px] bg-zinc-200 dark:bg-zinc-800 -translate-y-1/2 z-0 rounded-full overflow-hidden">
+        <div className="absolute top-4 sm:top-5 left-0 w-full h-[2px] bg-muted -translate-y-1/2 z-0 rounded-full overflow-hidden">
           {/* Animated Foreground Progress Line */}
           <div
             ref={progressRef}
@@ -99,7 +99,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     "relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full border-2 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950",
                     isCompleted || isActive
                       ? cn("border-transparent text-white", !isCssColor && color)
-                      : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600",
+                      : "border-border bg-card text-zinc-400 dark:text-zinc-600",
                     onStepChange
                       ? "cursor-pointer hover:scale-110 active:scale-95"
                       : "cursor-default",
@@ -129,16 +129,16 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     className={cn(
                       "text-[11px] sm:text-sm font-bold leading-tight break-words hyphens-auto transition-colors duration-300",
                       isActive
-                        ? "text-zinc-900 dark:text-white"
+                        ? "text-foreground"
                         : isCompleted
-                          ? "text-zinc-700 dark:text-zinc-300"
+                          ? "text-foreground"
                           : "text-zinc-400 dark:text-zinc-600",
                     )}
                   >
                     {step.title}
                   </span>
                   {step.description && (
-                    <span className="text-[11px] font-medium text-zinc-500 hidden sm:block mt-0.5 max-w-[120px] leading-tight">
+                    <span className="text-[11px] font-medium text-muted-foreground hidden sm:block mt-0.5 max-w-[120px] leading-tight">
                       {step.description}
                     </span>
                   )}

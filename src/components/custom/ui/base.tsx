@@ -3,7 +3,7 @@ import React from "react";
 
 export function ComponentCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-sm transition-all duration-300 hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 overflow-hidden ${className}`}>
+    <div className={`rounded-xl border border-border bg-white dark:bg-[#09090b] shadow-sm transition-all duration-300 hover:shadow-md hover:border-border overflow-hidden ${className}`}>
       {children}
     </div>
   );
@@ -18,7 +18,7 @@ export function ToggleSwitch({ active, onChange }: { active: boolean; onChange: 
         active ? "bg-zinc-900 dark:bg-zinc-50" : "bg-zinc-200 dark:bg-zinc-800"
       }`}
     >
-      <div className={`size-4 rounded-full bg-white dark:bg-zinc-950 shadow-sm transform transition-transform duration-200 ${active ? "translate-x-4" : "translate-x-0"}`} />
+      <div className={`size-4 rounded-full bg-background shadow-sm transform transition-transform duration-200 ${active ? "translate-x-4" : "translate-x-0"}`} />
     </button>
   );
 }

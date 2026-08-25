@@ -4,8 +4,6 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into two composable pieces: the core `` bar for the visual fill, and the optional `` wrapper which automatically handles the layout for labels and percentage text.
 
-## Examples
-
 Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
@@ -14,33 +12,7 @@ export default function ProgressDemo() {
   return ;
 }`;
 
-export const usageField = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function LabelledProgress() {
-  return (
-
-  );
-}`;
-
-export const usageVariants = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressVariants() {
-  return (
-
-  );
-}`;
-
-export const usageSizes = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function ProgressSizes() {
-  return (
-
-  );
-}`;
-
-export const usageFormatted = `import { useState } from "react";
-
-export default function StorageWidget() {
+export const usageFormatted = `export default function StorageWidget() {
   const [usedSpace] = useState(72); // 72 GB of 100 GB
 
   return (
@@ -63,6 +35,8 @@ export default function WizardProgress() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.

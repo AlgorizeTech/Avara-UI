@@ -9,15 +9,17 @@ This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or 
 
 Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
 
-## Examples
-
 Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
-export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+export const usageDefault = `import {
+  ApiPlaygroundBlock,
+  type ApiMockHandler,
+} from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 export default function UsersEndpointDocs() {
-  // Decide how the playground responds to whatever the reader types.
-  const handleApiMock = async (req) => {
+  // Decide how the playground responds to whatever the reader types. Typing the
+  // handler checks both the request it receives and the response it returns.
+  const handleApiMock: ApiMockHandler = async (req) => {
     await new Promise((resolve) => setTimeout(resolve, 500)); // latency
 
     if (req.method === "POST") {
@@ -102,9 +104,18 @@ Explore the interactive API Playground component capabilities designed to elevat
 ## Props Reference
 
 mockHandler Object Signatures
-When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object.
+When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
-The Request Object (Passed to your function):
+```tsx
+import type { ApiMockHandler } from "@/components/custom/blocks/ApiPlaygroundBlock";
+
+const handleApiMock: ApiMockHandler = async (req) => {
+  // req is an ApiPlaygroundRequest; the return value must be an ApiResponse.
+  return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+};
+```
+
+The Request Object — exported as `ApiPlaygroundRequest` (passed to your function):
 
 ```tsx
 {
@@ -116,7 +127,7 @@ The Request Object (Passed to your function):
 }
 ```
 
-The Response Object (Required return type):
+The Response Object — exported as `ApiResponse` (required return type):
 
 ```tsx
 {

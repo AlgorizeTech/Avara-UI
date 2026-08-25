@@ -35,7 +35,7 @@ export interface Vehicle {
   location: string;
   lat: number;
   lng: number;
-  status?: "active" | "idle" | "maintenance";
+  status?: "active" | "idle" | "maintenance" | (string & {});
   speed?: string;
 }
 
@@ -51,36 +51,36 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-border/80 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-zinc-50 dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20",
+      "w-full md:w-[320px] lg:w-[380px] bg-muted dark:bg-[#121217] border-r border-border/80 shrink-0 flex flex-col h-full z-20",
     mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
-    itemActive: "bg-white dark:bg-zinc-900 border-l-[3px] shadow-sm",
+    itemActive: "bg-card border-l-[3px] shadow-sm",
     itemInactive:
-      "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 border-l-[3px] border-transparent",
+      "hover:bg-muted border-l-[3px] border-transparent",
   },
   minimal: {
     wrapper:
-      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-zinc-200/80 dark:border-zinc-800 [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row relative rounded-2xl overflow-hidden shadow-lg border border-border/80 [&_.leaflet-control-attribution]:hidden",
     // Mobile: a plain full-width panel in normal flow (same as `default`).
     // md+: the floating glass panel this variant is known for.
     sidebar:
-      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-zinc-200/80 dark:border-zinc-800 z-20 shrink-0 flex flex-col overflow-hidden",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-border/80 z-20 shrink-0 flex flex-col overflow-hidden",
     mapContainer: "flex-1 w-full h-full relative z-0 min-w-0 overflow-hidden rounded-2xl",
-    itemActive: "bg-zinc-100 dark:bg-zinc-900 rounded-lg mx-3 my-1",
+    itemActive: "bg-muted rounded-lg mx-3 my-1",
     itemInactive:
-      "hover:bg-zinc-50 dark:hover:bg-zinc-900/50 rounded-lg mx-3 my-1 border border-transparent",
+      "hover:bg-muted rounded-lg mx-3 my-1 border border-transparent",
   },
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row bg-muted border border-border/80 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-zinc-200/80 dark:border-zinc-800 shrink-0 flex flex-col h-full z-20 overflow-hidden",
+      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-border/80 shrink-0 flex flex-col h-full z-20 overflow-hidden",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-sm",
-    itemActive: "bg-zinc-50 dark:bg-zinc-900/80 border-l-[3px]",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-border/80 shadow-sm",
+    itemActive: "bg-muted border-l-[3px]",
     itemInactive:
-      "hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40 border-l-[3px] border-transparent transition-colors",
+      "hover:bg-muted/50 border-l-[3px] border-transparent transition-colors",
   },
 };
 
@@ -459,13 +459,13 @@ export default function FleetTracker({
       case "maintenance":
         return "text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10";
       default:
-        return "text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800";
+        return "text-muted-foreground bg-muted";
     }
   };
 
   if (!mounted)
     return (
-      <div className="w-full h-[600px] md:h-[700px] bg-zinc-100 dark:bg-zinc-900 rounded-2xl animate-pulse border border-zinc-200 dark:border-zinc-800" />
+      <div className="w-full h-[600px] md:h-[700px] bg-muted rounded-2xl animate-pulse border border-border" />
     );
 
   return (
@@ -486,7 +486,7 @@ export default function FleetTracker({
           aria-label="Show vehicle list"
           onClick={() => setIsMobileSidebarOpen(true)}
           className={cn(
-            "md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800",
+            "md:hidden absolute top-4 left-4 z-[40] p-3 rounded-xl shadow-lg border border-border",
             theme.bg,
           )}
         >
@@ -501,7 +501,7 @@ export default function FleetTracker({
           isMobileSidebarOpen ? "flex" : "hidden md:flex",
         )}
       >
-        <div className="p-5 shrink-0 border-b border-zinc-100 dark:border-zinc-800/50">
+        <div className="p-5 shrink-0 border-b border-border">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <div
@@ -510,13 +510,13 @@ export default function FleetTracker({
                   theme.bg,
                 )}
               >
-                <Navigation2 className="w-5 h-5 text-white" />
+                <Navigation2 className={cn("w-5 h-5", theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground")} />
               </div>
               <div>
-                <h2 className="font-bold text-lg text-zinc-900 dark:text-white leading-tight">
+                <h2 className="font-bold text-lg text-foreground leading-tight">
                   Fleet Command
                 </h2>
-                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs font-medium text-muted-foreground">
                   {filteredVehicles.length} Vehicles Active
                 </p>
               </div>
@@ -525,7 +525,7 @@ export default function FleetTracker({
             <button
               type="button"
               aria-label="Show map"
-              className="md:hidden text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              className="md:hidden text-muted-foreground hover:text-foreground"
               onClick={() => setIsMobileSidebarOpen(false)}
             >
               <MapIcon className="w-5 h-5" />
@@ -534,17 +534,17 @@ export default function FleetTracker({
 
           <div
             className={cn(
-              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all shadow-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
+              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all shadow-sm bg-card border border-border",
               theme.focusRing,
             )}
           >
-            <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+            <Search className="w-4 h-4 text-muted-foreground shrink-0" />
             <input
               type="text"
               placeholder="Search vehicles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-transparent border-none focus:outline-none text-sm ml-2 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500"
+              className="flex-1 bg-transparent border-none focus:outline-none text-sm ml-2 text-foreground placeholder:text-muted-foreground"
             />
           </div>
         </div>
@@ -576,15 +576,15 @@ export default function FleetTracker({
                     "p-2.5 rounded-lg shrink-0 transition-colors shadow-sm",
                     isActive
                       ? theme.bg
-                      : "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700",
+                      : "bg-card border border-border",
                   )}
                 >
                   <Truck
                     className={cn(
                       "w-5 h-5",
                       isActive
-                        ? "text-white"
-                        : "text-zinc-500 dark:text-zinc-400",
+                        ? theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground"
+                        : "text-muted-foreground",
                     )}
                   />
                 </div>
@@ -596,8 +596,8 @@ export default function FleetTracker({
                         isActive
                           ? variant === "default"
                             ? theme.text
-                            : "text-zinc-900 dark:text-white"
-                          : "text-zinc-700 dark:text-zinc-200",
+                            : "text-foreground"
+                          : "text-foreground",
                       )}
                     >
                       {vehicle.id}
@@ -611,12 +611,12 @@ export default function FleetTracker({
                       {vehicle.status || "Active"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mb-1.5">
+                  <div className="flex items-center gap-1.5 text-muted-foreground mb-1.5">
                     <MapPin className="w-3 h-3 shrink-0" />
                     <p className="text-xs truncate">{vehicle.location}</p>
                   </div>
                   {vehicle.speed && (
-                    <p className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
+                    <p className="text-[11px] font-medium text-muted-foreground">
                       Speed: {vehicle.speed}
                     </p>
                   )}
@@ -683,10 +683,10 @@ export default function FleetTracker({
                 >
                   <rl.Popup className="font-sans">
                     <div className="text-center">
-                      <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50 m-0 leading-tight">
+                      <h3 className="font-bold text-sm text-foreground m-0 leading-tight">
                         {vehicle.id}
                       </h3>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 m-0">
+                      <p className="text-xs text-muted-foreground mt-1 m-0">
                         {vehicle.location}
                       </p>
                     </div>

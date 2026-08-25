@@ -4,8 +4,6 @@ A high-performance visual placeholder system used to reduce perceived loading ti
 
 While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
 
-## Examples
-
 Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
 
 export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
@@ -59,6 +57,8 @@ export default function CustomSkeleton() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

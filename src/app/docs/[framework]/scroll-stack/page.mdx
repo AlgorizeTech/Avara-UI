@@ -5,15 +5,200 @@ import { extractCode } from "@/lib/code";
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-
-## Examples
-
 Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-### Simple stack
+## Simple stack
+
+export const stackItems = `const items = [
+  {
+    id: "1",
+    title: "Real-time Synchronization",
+    description:
+      "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
+    icon: Zap,
+    content: (
+      <div className="w-full h-full flex flex-col justify-between p-6 bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden group">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-rose-500" />
+            <div className="w-3 h-3 rounded-full bg-amber-500" />
+            <div className="w-3 h-3 rounded-full bg-emerald-500" />
+            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 ml-2">sync-stream.ts</span>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--theme-color,var(--primary))]/15 text-[var(--theme-color,var(--primary))] font-bold border border-[var(--theme-color,var(--primary))]/30">
+            CONNECTED
+          </span>
+        </div>
+
+        <div className="my-4 font-mono text-xs space-y-2">
+          <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
+            <span>&gt; Latency benchmark:</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold">12ms (Ultra Fast)</span>
+          </div>
+          <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
+            <div className="bg-[var(--theme-color,var(--primary))] h-full w-[88%] rounded-full animate-pulse" />
+          </div>
+          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-[11px] text-zinc-700 dark:text-zinc-300 flex items-center justify-between shadow-xs">
+            <span>Payload: &#123; user_id: 894, status: &quot;active&quot; &#125;</span>
+            <span className="text-zinc-400 dark:text-zinc-500">240B</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800 pt-3">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[var(--theme-color,var(--primary))] animate-ping" />
+            <span>Streaming 1.4k ops/sec</span>
+          </div>
+          <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-300">v2.4.0</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "2",
+    title: "Layered Architecture",
+    description:
+      "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
+    icon: Layers,
+    content: (
+      <div className="w-full h-full flex flex-col justify-center gap-3 p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white relative overflow-hidden">
+        <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-bold text-xs">
+              API
+            </div>
+            <div>
+              <div className="text-xs font-bold text-zinc-900 dark:text-white">Presentation Layer</div>
+              <div className="text-[10px] text-zinc-500 dark:text-zinc-400">GraphQL & REST Endpoints</div>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 font-semibold">200 OK</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-between shadow-md">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold flex items-center justify-center text-xs shadow-md">
+              CORE
+            </div>
+            <div>
+              <div className="text-xs font-bold text-zinc-900 dark:text-white">Business Logic Service</div>
+              <div className="text-[10px] text-[var(--theme-color,var(--primary))] font-medium">Decoupled Domain Engine</div>
+            </div>
+          </div>
+          <div className="w-2 h-2 rounded-full bg-[var(--theme-color,var(--primary))] animate-pulse" />
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+              DB
+            </div>
+            <div>
+              <div className="text-xs font-bold text-zinc-900 dark:text-white">Persistence & Cache</div>
+              <div className="text-[10px] text-zinc-500 dark:text-zinc-400">PostgreSQL + Redis Cluster</div>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400">0.4ms</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "3",
+    title: "Composable UI Blocks",
+    description:
+      "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
+    icon: Blocks,
+    content: (
+      <div className="w-full h-full p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white flex flex-col justify-between">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300 tracking-wide uppercase">Component Gallery</span>
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-[var(--theme-color,var(--primary))] font-semibold">42 Blocks</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="w-6 h-6 rounded-md bg-[var(--theme-color,var(--primary))]/10 flex items-center justify-center text-[var(--theme-color,var(--primary))] text-[10px] font-bold">
+                Card
+              </div>
+              <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">Ready</span>
+            </div>
+            <div className="w-3/4 h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full" />
+            <div className="w-1/2 h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+          </div>
+
+          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="w-6 h-6 rounded-md bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
+                Nav
+              </div>
+              <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">Ready</span>
+            </div>
+            <div className="w-3/4 h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full" />
+            <div className="w-1/2 h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
+          </div>
+
+          <div className="col-span-2 p-3.5 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold flex items-center justify-center text-xs shadow-md">
+                ✨
+              </div>
+              <div>
+                <div className="text-xs font-bold text-zinc-900 dark:text-white">Scroll Stack</div>
+                <div className="text-[10px] text-[var(--theme-color,var(--primary))]">Interactive GSAP Widget</div>
+              </div>
+            </div>
+            <div className="px-2.5 py-1 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold text-[10px] shadow-xs">
+              Insert
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800 pt-2.5">
+          <span>Accessible (WCAG 2.1)</span>
+          <span className="text-[var(--theme-color,var(--primary))] font-semibold">100% Tailwind</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "4",
+    title: "Enterprise Security",
+    description:
+      "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
+    icon: ShieldCheck,
+    content: (
+      <div className="w-full h-full p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white flex flex-col justify-between items-center text-center">
+        <div className="w-full flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">SECURITY_CHECK // PASSED</span>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 font-bold">
+            AES-256
+          </span>
+        </div>
+
+        <div className="my-3 flex flex-col items-center">
+          <div className="w-20 h-20 rounded-2xl bg-[var(--theme-color,var(--primary))]/10 border-2 border-[var(--theme-color,var(--primary))]/30 flex items-center justify-center shadow-lg relative">
+            <ShieldCheck className="w-10 h-10 text-[var(--theme-color,var(--primary))]" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900" />
+          </div>
+          <h4 className="text-sm font-bold mt-3 text-zinc-900 dark:text-white">SOC2 & ISO-27001 Certified</h4>
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px]">Zero trust architecture with continuous runtime vulnerability scanning.</p>
+        </div>
+
+        <div className="w-full p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs font-mono shadow-xs">
+          <span className="text-zinc-500 dark:text-zinc-400">Encryption Status</span>
+          <span className="text-emerald-600 dark:text-emerald-400 font-bold">ACTIVE</span>
+        </div>
+      </div>
+    ),
+  },
+];`;
 
 export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
-import { items } from "./items";
+import { Blocks, Layers, ShieldCheck, Zap } from "lucide-react";
+
+${stackItems}
 
 export default function GappedStack() {
   // Pixel distance between the stacked sticky cards.
@@ -42,39 +227,115 @@ export default function GappedStack() {
   ]}
 />
 
-### Sticky stack
+### Installation
 
-export const usageSticky = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
+<Installation name="scroll-stack" />
 
-const items = [
+## Sticky stack
+
+export const stickyItems = `import { Palette, Smartphone, Sparkles } from "lucide-react";
+
+const items: ScrollStackItem[] = [
   {
     id: "ui-design",
     title: "UI Design",
     badge: "Visual Identity",
+    icon: <Palette className="w-5 h-5" />,
     contentType: "list",
-    description: "Interfaces that look deliberate at every breakpoint.",
-    listItems: ["Design tokens", "Component specs", "Motion guidelines"],
+    description:
+      "Crafting intuitive, pixel-perfect interfaces designed to engage and convert real users.",
+    listItems: [
+      "Website / Landing Pages",
+      "Mobile Apps (iOS & Android)",
+      "Web App / SaaS Dashboards",
+      "Comprehensive Design Systems",
+    ],
+    buttonText: "View UI Showcase",
   },
-];
+  {
+    id: "branding",
+    title: "Branding & Identity",
+    badge: "Brand Strategy",
+    icon: <Sparkles className="w-5 h-5" />,
+    contentType: "split",
+    description:
+      "Building memorable, iconic brand identities that stand out in crowded markets.",
+    listItems: [
+      "Logo & Visual Assets",
+      "Color Palettes & Typography",
+      "Brand Guidelines & Tone",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Misty mountain forest nature landscape",
+    buttonText: "Explore Branding",
+  },
+  {
+    id: "fullstack-dev",
+    title: "Full-Stack Development",
+    badge: "Engineering",
+    icon: <Smartphone className="w-5 h-5" />,
+    contentType: "image",
+    description:
+      "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
+    imageUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Golden mountain valley sunset nature landscape",
+    buttonText: "Tech Stack Specs",
+  },
+  {
+    id: "backend",
+    title: "Backend Architecture",
+    badge: "Infrastructure",
+    icon: <Smartphone className="w-5 h-5" />,
+    contentType: "image",
+    description:
+      "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
+    imageUrl: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Lush green forest nature landscape",
+    buttonText: "View Cloud Specs",
+  },
+];`;
+
+export const usageSticky = `import {
+  StickyScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/StickyScrollStackBlock";
+
+${stickyItems}
 
 export default function ServicesSection() {
   return (
     <StickyScrollStack
       items={items}
-      headerTitle="What we do"
+      headerTitle="Our Core Capabilities"
+      headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
       headerContentType="text-button"
-      headerButtonText="Book a call"
+      headerButtonText="Request free audit"
     />
   );
 }`;
 
-export const usageStickyGeometry = `import { StickyScrollStack } from "@/components/custom/blocks/StickyScrollStackBlock";
-import { items } from "./items";
+export const usageStickyGeometry = `import {
+  StickyScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/StickyScrollStackBlock";
+
+${stickyItems}
 
 export default function TunedStickyStack() {
   // \`scaleStep\` shrinks each covered card; \`stackOffsetStep\` is the pixel
   // offset that keeps the earlier headers peeking out.
-  return <StickyScrollStack items={items} scaleStep={0.08} stackOffsetStep={28} />;
+  return (
+    <StickyScrollStack
+      items={items}
+      scaleStep={0.08}
+      stackOffsetStep={28}
+      headerContentType="image-button"
+      headerImageUrl="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
+      headerTitle="Our Core Capabilities"
+      headerSubtitle="We emphasize user-centric design, ensuring that every project we undertake prioritizes the needs and goals of your real audience."
+      headerButtonText="Request free audit"
+    />
+  );
 }`;
 
 <ExampleShowcase
@@ -96,6 +357,20 @@ export default function TunedStickyStack() {
       usage: usageSticky,
       code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="sticky-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="sticky-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Stack geometry",
       propNotes: [
@@ -118,17 +393,171 @@ export default function TunedStickyStack() {
   ]}
 />
 
-### Split stack
+## Split stack
 
-export const usageSplitRight = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
-import { items } from "./items";
+export const splitItems = `// Card bodies — the four screens the preview renders.
+const MockLandingView = () => (
+  <div className="w-full h-full flex flex-col gap-3 justify-center">
+    <div className="flex items-center gap-2 mb-2">
+      <LayoutTemplate className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+        High-Converting UI
+      </span>
+    </div>
+    <div className="w-full h-24 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-4 flex flex-col justify-between relative overflow-hidden shadow-inner">
+      <div className="w-2/3 h-3 bg-zinc-300 dark:bg-white/20 rounded-full" />
+      <div className="w-1/2 h-2.5 bg-zinc-200 dark:bg-white/10 rounded-full" />
+      <div className="flex gap-2 mt-auto">
+        <div className="h-6 w-20 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-bold text-amber-600 dark:text-amber-300">
+          CTA Button
+        </div>
+        <div className="h-6 w-16 rounded-md bg-zinc-200 dark:bg-white/10" />
+      </div>
+    </div>
+  </div>
+);
+
+const MockSaaSView = () => (
+  <div className="w-full h-full flex flex-col gap-3 justify-center">
+    <div className="flex items-center gap-2 mb-1">
+      <BarChart3 className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
+      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+        SaaS Dashboard Architecture
+      </span>
+    </div>
+    <div className="grid grid-cols-2 gap-3 w-full">
+      <div className="h-20 rounded-xl bg-indigo-500/10 border border-indigo-500/20 p-3 flex flex-col justify-between">
+        <span className="text-[10px] text-indigo-600 dark:text-indigo-300 font-mono uppercase">
+          MRR Growth
+        </span>
+        <span className="text-xl font-black text-zinc-900 dark:text-white">+148.2%</span>
+      </div>
+      <div className="h-20 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-3 flex flex-col justify-between">
+        <span className="text-[10px] text-zinc-500 dark:text-white/50 font-mono uppercase">
+          Active Users
+        </span>
+        <span className="text-xl font-black text-zinc-900 dark:text-white">24,892</span>
+      </div>
+    </div>
+  </div>
+);
+
+const MockAIView = () => (
+  <div className="w-full h-full flex flex-col gap-3 justify-center">
+    <div className="flex items-center gap-2 mb-1">
+      <Cpu className="w-8 h-8 text-emerald-500 dark:text-emerald-400" />
+      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+        AI & LLM Integration
+      </span>
+    </div>
+    <div className="w-full rounded-xl bg-zinc-100 dark:bg-black/40 border border-emerald-500/30 p-3.5 font-mono text-xs text-emerald-600 dark:text-emerald-400/90 flex flex-col gap-1.5 shadow-sm">
+      <div className="flex items-center justify-between text-[10px] text-emerald-600/80 dark:text-emerald-500/60 border-b border-emerald-500/20 pb-1">
+        <span>TERMINAL // AI_ENGINE</span>
+        <span>STATUS: ACTIVE</span>
+      </div>
+      <p className="mt-1 text-[11px]">&gt; Initializing RAG pipeline...</p>
+      <p className="text-[11px]">&gt; Vector embeddings synced (1.2ms)</p>
+      <p className="text-emerald-700 dark:text-white font-bold animate-pulse">
+        &gt; Ready for token streaming_
+      </p>
+    </div>
+  </div>
+);
+
+const MockMobileView = () => (
+  <div className="w-full h-full flex items-center justify-between gap-4">
+    <div className="flex flex-col justify-center gap-2">
+      <div className="flex items-center gap-2">
+        <Smartphone className="w-8 h-8 text-rose-500 dark:text-rose-400" />
+        <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+          Mobile First
+        </span>
+      </div>
+      <p className="text-xs text-zinc-600 dark:text-white/60 max-w-[180px] leading-relaxed">
+        Silky 60fps native performance across iOS and Android ecosystems.
+      </p>
+    </div>
+    <div className="w-28 h-36 rounded-2xl bg-zinc-100 dark:bg-black/60 border-2 border-zinc-300 dark:border-white/20 p-2 flex flex-col gap-2 shadow-lg flex-shrink-0 relative">
+      <div className="w-8 h-1.5 bg-zinc-300 dark:bg-white/20 rounded-full mx-auto" />
+      <div className="w-full h-12 rounded-lg bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 mt-1 flex items-center justify-center">
+        <Sparkles className="w-5 h-5 text-rose-500 dark:text-rose-400 animate-spin" />
+      </div>
+      <div className="w-3/4 h-2 bg-zinc-200 dark:bg-white/20 rounded-full mt-auto" />
+      <div className="w-1/2 h-2 bg-zinc-200 dark:bg-white/10 rounded-full" />
+    </div>
+  </div>
+);
+
+const items: ScrollStackItem[] = [
+  {
+    id: "landing",
+    stepNumber: "01",
+    title: "Landing Page Design",
+    description:
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with scroll-triggered GSAP animations that capture attention.",
+    tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: <MockLandingView />,
+  },
+  {
+    id: "saas",
+    stepNumber: "02",
+    title: "SaaS Product Development",
+    description:
+      "Every successful SaaS product starts with a complex problem. We build modular, multi-tenant web applications designed to scale cleanly to millions of requests.",
+    tags: [
+      "Multi-Tenant Architecture",
+      "Stripe Integration",
+      "Real-Time Sync",
+    ],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: <MockSaaSView />,
+  },
+  {
+    id: "ai",
+    stepNumber: "03",
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about just plugging in an API. We fine-tune custom LLM models, engineer vector RAG pipelines, and build streaming chat UIs.",
+    tags: [
+      "LLM API Integration",
+      "Vector RAG Setup",
+      "Custom Model Training",
+    ],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: <MockAIView />,
+  },
+  {
+    id: "mobile",
+    stepNumber: "04",
+    title: "Mobile App Development",
+    description:
+      "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified architectures with silky native device performance.",
+    tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
+    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    cardContent: <MockMobileView />,
+  },
+];`;
+
+export const usageSplitRight = `import {
+  SplitScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/SplitScrollStackBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
+
+${splitItems}
 
 export default function PinnedRightStack() {
   return <SplitScrollStack items={items} stickySide="right" />;
 }`;
 
-export const usageSplitLeft = `import { SplitScrollStack } from "@/components/custom/blocks/SplitScrollStackBlock";
-import { items } from "./items";
+export const usageSplitLeft = `import {
+  SplitScrollStack,
+  type ScrollStackItem,
+} from "@/components/custom/blocks/SplitScrollStackBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
+
+${splitItems}
 
 export default function PinnedLeftStack() {
   return (
@@ -161,6 +590,20 @@ export default function PinnedLeftStack() {
       usage: usageSplitRight,
       code: extractCode("src/components/custom/blocks/SplitScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="split-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="split-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Pinned left",
       propNotes: [
@@ -183,14 +626,68 @@ export default function PinnedLeftStack() {
   ]}
 />
 
-### Horizontal stack
+## Horizontal stack
+
+export const railSteps = `import {
+  Compass,
+  Cpu,
+  FileText,
+  Layers,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+
+const steps = [
+  {
+    id: "1",
+    title: "Understand",
+    description:
+      "Business goals and strategies, persona and painpoints, competitors.",
+    icon: <Compass className="w-6 h-6" />,
+  },
+  {
+    id: "2",
+    title: "Define",
+    description:
+      "Strategy, information architecture, user flows, moodboard, visual direction.",
+    icon: <FileText className="w-6 h-6" />,
+  },
+  {
+    id: "3",
+    title: "Ideate",
+    description: "Brainstorming, solution propose, sketching, wireframing.",
+    icon: <Sparkles className="w-6 h-6" />,
+  },
+  {
+    id: "4",
+    title: "Design",
+    description: "Style guide, design system, interface design",
+    icon: <Layers className="w-6 h-6" />,
+  },
+  {
+    id: "5",
+    title: "Test",
+    description: "User testing, feedback collection and implementation",
+    icon: <ShieldCheck className="w-6 h-6" />,
+  },
+  {
+    id: "6",
+    title: "Approval",
+    description: "Submission for client approval",
+    icon: <Cpu className="w-6 h-6" />,
+  },
+  {
+    id: "7",
+    title: "Delivery",
+    description: "Asset preparation, assets exports.",
+    icon: <Rocket className="w-6 h-6" />,
+  },
+];`;
 
 export const usageHorizontal = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
 
-const steps = [
-  { id: "1", number: "01", title: "Understand", description: "Map the problem." },
-  { id: "2", number: "02", title: "Design", description: "Shape the solution." },
-];
+${railSteps}
 
 export default function ProcessRail() {
   return (
@@ -203,7 +700,8 @@ export default function ProcessRail() {
 }`;
 
 export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
-import { steps } from "./steps";
+
+${railSteps}
 
 export default function ShortRail() {
   // Fewer steps means a shorter pinned scroll distance.
@@ -229,6 +727,20 @@ export default function ShortRail() {
       usage: usageHorizontal,
       code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="horizontal-scroll-stack" showSetupPath={false} />
+
+### More examples
+
+<ExampleShowcase
+  name="horizontal-scroll-stack"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Shorter rail",
       propNotes: [
@@ -243,17 +755,6 @@ export default function ShortRail() {
     },
   ]}
 />
-
-## Installation
-
-Each layout is its own block file. Install only the ones you use — they share no code.
-
-<InstallGroup>
-  <Installation name="scroll-stack" />
-  <Installation name="sticky-scroll-stack" />
-  <Installation name="split-scroll-stack" />
-  <Installation name="horizontal-scroll-stack" />
-</InstallGroup>
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

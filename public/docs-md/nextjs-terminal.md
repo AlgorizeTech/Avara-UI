@@ -4,9 +4,25 @@ A beautiful, dependency-free code display block inspired by Mac OS windows.
 
 If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
 
-## Examples
-
 Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button.
+
+export const pythonSource = `const source = \`import httpx
+
+def fetch(url: str) -> dict:
+    response = httpx.get(url, timeout=10)
+    response.raise_for_status()
+    return response.json()
+
+if __name__ == "__main__":
+    print(fetch("https://api.example.com/status"))\`;`;
+
+export const tsxSource = `const source = \`import { cn } from "@/lib/utils";
+
+export function Button({ className, ...props }) {
+  return (
+    
+  );
+}\`;`;
 
 export const usageDefault = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 
@@ -22,6 +38,8 @@ export default function Docs() {
 
 export const usageLanguages = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 
+${pythonSource}
+
 export default function PythonTerminal() {
   // \`language\` drives the badge; the block never ships a heavyweight
   // highlighter, so any language string is safe to pass.
@@ -29,6 +47,8 @@ export default function PythonTerminal() {
 }`;
 
 export const usageGlass = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+${tsxSource}
 
 export default function GlassTerminal() {
   return (
@@ -39,6 +59,8 @@ export default function GlassTerminal() {
 
 export const usageMinimal = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 
+${tsxSource}
+
 export default function MinimalTerminal() {
   // Drops the window controls and the border for inline snippets.
   return ;
@@ -46,12 +68,16 @@ export default function MinimalTerminal() {
 
 export const usageBare = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 
+${tsxSource}
+
 export default function BareTerminal() {
   // No filename header, no copy button — just the code.
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

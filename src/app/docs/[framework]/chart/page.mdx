@@ -7,63 +7,95 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
-## Examples
-
 One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
 
-export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-
-const revenue = [
+export const chartData = `const revenue = [
   { label: "Jan", value: 1200 },
   { label: "Feb", value: 1900 },
   { label: "Mar", value: 1500 },
   { label: "Apr", value: 2400 },
-];
+  { label: "May", value: 2100 },
+  { label: "Jun", value: 3200 },
+  { label: "Jul", value: 2800 },
+  { label: "Aug", value: 3800 },
+  { label: "Sep", value: 3400 },
+  { label: "Oct", value: 4200 },
+  { label: "Nov", value: 3900 },
+  { label: "Dec", value: 4800 },
+];`;
+
+export const chartHeading = `<div className="mb-8">
+        <h3 className="text-xl font-black text-zinc-900 dark:text-white">
+          Annual Revenue Overview
+        </h3>
+        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-1">
+          Fiscal year 2023 performance metrics.
+        </p>
+      </div>`;
+
+export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+${chartData}
 
 export default function RevenueChart() {
   return (
-    <ChartBlock
-      data={revenue}
-      type="bar"
-      valuePrefix="$"
-      height={300}
-    />
+    <div className="w-full max-w-4xl mx-auto">
+      ${chartHeading}
+      <ChartBlock
+        data={revenue}
+        type="bar"
+        valuePrefix="$"
+        height={300}
+      />
+    </div>
   );
 }`;
 
 export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-import { revenue } from "./data";
+
+${chartData}
 
 export default function RevenueLine() {
   // Bezier-smoothed stroke, no fill.
   return (
-    <ChartBlock
-      data={revenue}
-      type="line"
-      showArea={false}
-      valuePrefix="$"
-      height={300}
-    />
+    <div className="w-full max-w-4xl mx-auto">
+      ${chartHeading}
+      <ChartBlock
+        data={revenue}
+        type="line"
+        showArea={false}
+        valuePrefix="$"
+        height={300}
+      />
+    </div>
   );
 }`;
 
 export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-import { revenue } from "./data";
+
+${chartData}
 
 export default function RevenuePie() {
   // Pie and donut render in a 1:1 container, so they never stretch into
   // ovals, and shade each slice from a single theme color.
   return (
-    <ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />
+    <div className="w-full max-w-4xl mx-auto">
+      ${chartHeading}
+      <ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />
+    </div>
   );
 }`;
 
 export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
-import { revenue } from "./data";
+
+${chartData}
 
 export default function RevenueDonut() {
   return (
-    <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
+    <div className="w-full max-w-4xl mx-auto">
+      ${chartHeading}
+      <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
+    </div>
   );
 }`;
 
@@ -98,6 +130,20 @@ export default function RevenueDonut() {
       usage: usageBar,
       code: extractCode("src/components/custom/blocks/ChartBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="chart" />
+
+## Examples
+
+<ExampleShowcase
+  name="chart"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Line chart",
       propNotes: [
@@ -146,13 +192,8 @@ export default function RevenueDonut() {
   ]}
 />
 
-## Installation
-
-<Installation name="chart" />
-
 ## Features
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

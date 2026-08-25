@@ -4,8 +4,6 @@ A navigational aid that helps users understand their current location within a w
 
 This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
 
-## Examples
-
 You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
 export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
@@ -34,20 +32,6 @@ export default function BreadcrumbWithIcons() {
   return ;
 }`;
 
-export const usageVariants = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const items = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
-];
-
-export default function BreadcrumbVariants() {
-  return (
-
-  );
-}`;
-
 export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
 
 const deepPath = [
@@ -65,23 +49,9 @@ export default function DeepBreadcrumb() {
   return ;
 }`;
 
-export const usageMaxItems = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const deepPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
-  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
-];
-
-export default function WideBreadcrumb() {
-  // Raise maxItems past the item count and nothing collapses.
-  return ;
-}`;
-
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
@@ -146,6 +116,17 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
 
           The maximum number of links to display before automatically truncating
           the middle of the path.
+
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The element each item renders as. It defaults to a plain{" "}
+          &lt;a&gt; so one source works in any React app — pass{" "}
+          Link from next/link to get client-side
+          navigation and prefetching back.
 
 ---
 

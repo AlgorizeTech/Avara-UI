@@ -6,13 +6,11 @@ Building an interactive spreadsheet is notoriously difficult. Most developers gi
 
 This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
 
-## Examples
-
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
-export const usageDefault = `import { useState } from "react";
+export const gridSchema = `import { type GridColumn } from "@/components/custom/blocks/DataGridBlock";
 
-const COLUMNS = [
+const COLUMNS: GridColumn[] = [
   { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
   { field: "customer", headerName: "Customer Name", width: 200 },
   { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
@@ -20,58 +18,55 @@ const COLUMNS = [
   { field: "date", headerName: "Date", width: 140 },
 ];
 
-const INITIAL_DATA = [
+const ROWS = [
   { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
-  { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
-];
+  { id: "TX-102", customer: "Global Tech", amount: 1200.0, status: "Pending", date: "2023-10-14" },
+  { id: "TX-103", customer: "Stark Ind.", amount: 8900.25, status: "Overdue", date: "2023-09-30" },
+  { id: "TX-104", customer: "Wayne Ent.", amount: 15500.0, status: "Paid", date: "2023-10-01" },
+  { id: "TX-105", customer: "Initech", amount: 340.0, status: "Paid", date: "2023-10-15" },
+  { id: "TX-106", customer: "Soylent Corp", amount: 950.75, status: "Pending", date: "2023-10-16" },
+  { id: "TX-107", customer: "Umbrella Corp", amount: 12000.0, status: "Paid", date: "2023-10-10" },
+  { id: "TX-108", customer: "Massive Dynamic", amount: 450.0, status: "Paid", date: "2023-10-05" },
+];`;
+
+export const usageDefault = `"use client";
+
+${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(INITIAL_DATA);
+  const [data, setData] = useState[]>(ROWS);
 
   return (
-    
-  );
-}`;
 
-export const usageSchema = `import { useState } from "react";
+            Financial Ledger
+          
+          Double-click any cell or press Enter to edit.
 
-// The grid is entirely column-driven: \`type\` picks the editor, \`width\`
-// pins the column, and \`readOnly\` locks it against edits.
-const COLUMNS = [
-  { field: "id", headerName: "User ID", width: 100, readOnly: true },
-  { field: "name", headerName: "Full Name", width: 250 },
-  { field: "score", headerName: "Test Score", type: "number", width: 150 },
-];
+          Export CSV
 
-const INITIAL_DATA = [
-  { id: "U-01", name: "Alice Smith", score: 95 },
-  { id: "U-02", name: "Bob Jones", score: 82 },
-];
-
-export default function Gradebook() {
-  const [data, setData] = useState(INITIAL_DATA);
-
-  return ;
-}`;
-
-export const usageNoRowNumbers = `"use client";
-
-export default function GridWithoutGutter() {
-  const [data, setData] = useState(ROWS);
-
-  return (
-    
   );
 }`;
 
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 
+${gridSchema}
+
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
-  return ;
+  return (
+
+            Financial Ledger
+          
+          View mode only.
+
+          Export CSV
+
+  );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
@@ -128,7 +123,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           onChange
 
-          (newData: Record&lt;string, any&gt;[]) =&gt; void
+          (newData: T[]) =&gt; void
 
           undefined
 

@@ -23,6 +23,16 @@ export type ItemMeta = {
   categories: string[];
   /** Post-install notes: exports, gotchas, required setup. Shown after `shadcn add`. */
   docs?: string;
+  /**
+   * Registry items the documented usage needs but the component source does not
+   * import, so they cannot be derived from the imports the way everything else
+   * is. Without these, `shadcn add <item>` succeeds and the copied usage then
+   * fails to resolve the module.
+   *
+   * Only for genuine usage dependencies. A component merely shown on the same
+   * page (see `carousel`) gets its own Installation block instead.
+   */
+  usageDependencies?: string[];
 };
 
 /** The controlled category vocabulary. Adding a term here is a deliberate act. */
@@ -59,7 +69,6 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "CustomCodeBlock.tsx": "custom-code-block",
   "Ai-chat.tsx": "ai-chat",
   "Fleet-map.tsx": "fleet-map",
-  "Fleet-tracker.tsx": "fleet-tracker",
   "Pricing-plan.tsx": "pricing-plan",
   "Support-dashboard.tsx": "support-dashboard",
   "DesignComponentsFolder.tsx": "design-components-folder",
@@ -69,6 +78,7 @@ export const NAME_OVERRIDES: Record<string, string> = {
 export const META: Record<string, ItemMeta> = {
   // ---- Curated in Phase 3. Verified against source. ----
   button: {
+    usageDependencies: ["icons"],
     description:
       "A button with variants, sizes, loading state, and a click ripple effect. Reach for it as the default action element anywhere in an interface.",
     categories: ["actions", "forms"],
@@ -143,6 +153,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
   },
   form: {
+    usageDependencies: ["input"],
     description:
       "Form scaffolding — wrapper, field, error and submit — with a shared color theme and a glitch error variant. Use it to keep field spacing and validation styling consistent across a form.",
     categories: ["forms"],
@@ -202,11 +213,17 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "navigation"],
     docs: "Named exports: Wizard, WizardProgress, WizardContainer, WizardStep, WizardTitle, WizardDescription, useWizard. Wizard owns the step state; children read `currentStep`, `nextStep` and `prevStep` from the useWizard hook. `onComplete` fires on the final step. Unlike `stepper`, this manages navigation for you.",
   },
-  "auth-form": {
+  "login-form": {
     description:
-      "A sign-in and sign-up form with social buttons, password reveal and four layout variants. Use it as the entry point of an authenticated app.",
+      "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Named exports: AuthForm, getThemeStyles. `type` is login | signup; `variant` is default | split | glass | minimal — split renders a gradient side panel. Presentation only: no auth provider is wired in, so connect your own submit handler.",
+    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+  },
+  "register-form": {
+    description:
+      "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
+    categories: ["authentication", "forms"],
+    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
@@ -328,15 +345,15 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4C: data display ----
   table: {
     description:
-      "A generic data table with sortable columns, custom cell renderers and GSAP row animation. Use it for straightforward tabular data that needs sorting but not filtering.",
+      "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
     categories: ["data-display"],
-    docs: "Named exports: TableBlock, getThemeStyles. Generic over your row type — `columns` take { key, label, sortable?, align?, render? }, where `render` receives the whole row. Variants: default | minimal | glass; sizes sm | md | lg. For search, filtering, pagination and column resizing, use `advanced-table`.",
+    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
   },
   "advanced-table": {
     description:
-      "A data table with search, per-column filtering, pagination, column sizing and typed sorting. Reach for it when a plain table is no longer enough.",
+      "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
     categories: ["data-display"],
-    docs: "Named exports: AdvancedTableBlock, getThemeStyles. `columns` take { key, header, sortable?, width?, sortType?, render? } — set `sortType` to number so numeric columns do not sort lexically. Depends on `select` for the page-size control. For a simpler table, use `table`.",
+    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, useDataTable, resolveAccessor. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
   },
   "data-grid": {
     description:
@@ -374,6 +391,24 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
   },
+  globe: {
+    description:
+      "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
+    categories: ["data-display", "marketing", "maps"],
+    docs: "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color.",
+  },
+  footer: {
+    description:
+      "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+    categories: ["marketing", "navigation", "layout"],
+    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
+  },
+  "product-details": {
+    description:
+      "A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
+    categories: ["commerce", "marketing", "layout"],
+    docs: "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports.",
+  },
   flowchart: {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",
@@ -390,13 +425,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
     categories: ["commerce"],
-    docs: "Named exports: CartBlock, getThemeStyles. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Items carry { id, name, price, quantity, size?, color? }. Cart state is yours to own — this renders it and reports changes.",
+    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally.",
   },
   "api-playground": {
     description:
       "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
     categories: ["code", "data-display"],
-    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
+    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
   },
   compute: {
     description:
@@ -738,13 +773,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
     categories: ["maps", "data-display"],
-    docs: "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only. For the map-free list, use `fleet-tracker`.",
-  },
-  "fleet-tracker": {
-    description:
-      "A vehicle list with selection and location details, loading its map lazily. Use it as the lighter fleet view when a full map is not needed up front.",
-    categories: ["data-display"],
-    docs: "Named export: FleetTracker. Uses next/dynamic with `ssr: false` to defer the map, so it needs Next.js. Installs standalone with no registry dependencies. For the full map view, use `fleet-map`.",
+    docs: "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only.",
   },
   "data-maps": {
     description:
@@ -817,5 +846,10 @@ export const META: Record<string, ItemMeta> = {
       "The card surface primitive that the pricing-plan block composes.",
     categories: ["utilities"],
     docs: "NOTE: installs to components/ui/card.tsx and will overwrite a shadcn `card` already present. Review before installing into an existing project.",
+  },
+  reviews: {
+    description:
+      "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+    categories: ["marketing", "data-display"],
   },
 };

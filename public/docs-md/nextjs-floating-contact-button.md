@@ -2,34 +2,32 @@
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
-## Examples
-
 Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
 
-export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageDefault = `"use client";
 
 export default function SupportWidget() {
   return (
-     sendToInbox(message)}
+     console.log("Send to your inbox:", message)}
     />
   );
 }`;
 
-export const usageLeft = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageLeft = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function LeftAnchoredWidget() {
   // Anchors to the opposite corner; the popup and its origin flip with it.
   return ;
 }`;
 
-export const usageClosed = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageClosed = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function CollapsedWidget() {
   // Start collapsed — the usual behaviour on a real page.
   return ;
 }`;
 
-export const usageBranding = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageBranding = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function BrandedWidget() {
   // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
@@ -38,7 +36,7 @@ export default function BrandedWidget() {
   );
 }`;
 
-export const usageAccent = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageAccent = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function AccentedWidget() {
   // \`defaultAccentColor\` takes a token name or any CSS color. Pass
@@ -49,6 +47,8 @@ export default function AccentedWidget() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

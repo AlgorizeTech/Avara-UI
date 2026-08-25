@@ -2,8 +2,6 @@
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
 
-## Examples
-
 `CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
 
 export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
@@ -41,21 +39,15 @@ const m = new Date().getMonth() + 1;
 const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
 
 export default function GlassCalendar() {
-  // "glass" is translucent — give it a colored surface to sit on.
+  // "glass" is translucent — intended to sit on a background image or rich pattern.
   return (
 
   );
 }`;
 
-export const usageEmpty = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
-
-export default function EmptyCalendar() {
-  // mockEvents defaults to {} — the dashboard starts clean and you add
-  // events through its own UI.
-  return ;
-}`;
-
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.

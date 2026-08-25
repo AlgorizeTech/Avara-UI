@@ -6,82 +6,7 @@ While tooltips are meant for small text hints on hover, Popovers are designed to
 
 The same goes for the screen edge. `side` and `align` are *preferences*: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport when it still overhangs, and caps its own width and height to the screen — so a `w-72` panel opened `side="left"` next to a phone-width trigger stays fully readable instead of running off the edge. Pass `avoidCollisions={false}` to opt out.
 
-## Examples
-
 Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
-
-export const usageDefault = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverDemo() {
-  return (
-
-          Configure Settings
-
-            Dimensions
-            Set the dimensions for the layer.
-
-              Width
-
-              Height
-
-  );
-}`;
-
-export const usageSides = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverSides() {
-  return (
-
-            top
-
-          Rendered on the top side of the trigger.
-
-            right
-
-          Rendered on the right side of the trigger.
-
-            bottom
-
-          Rendered on the bottom side of the trigger.
-
-            left
-
-          Rendered on the left side of the trigger.
-
-  );
-}`;
-
-export const usageAlign = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverAlign() {
-  return (
-
-            align="start"
-
-          Aligned to the start edge.
-
-            align="center"
-
-          Aligned to the center edge.
-
-            align="end"
-
-          Aligned to the end edge.
-
-  );
-}`;
 
 export const usageMenu = `import {
   Popover,
@@ -97,10 +22,32 @@ export default function AccountMenu() {
               Andy Bernard
               andy@dundermifflin.com
 
-          View Profile
-          Billing Settings
-          Log out
+            View Profile
 
+            Billing Settings
+
+            Log out
+
+  );
+}`;
+
+export const dimensionsPanel = `// The panel body, lifted out so both examples can render the same content.
+function DimensionsPanel() {
+  return (
+
+        Dimensions
+        Set the size of the layer.
+      
+      {[
+        { label: "Width", value: "100%" },
+        { label: "Max width", value: "640px" },
+        { label: "Height", value: "auto" },
+      ].map((row) => (
+        
+          {row.label}
+
+      ))}
+    
   );
 }`;
 
@@ -110,19 +57,21 @@ export const usageOffset = `import {
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
 
+${dimensionsPanel}
+
 export default function OffsetPopover() {
   return (
 
           Configure Settings
 
       {/* sideOffset pushes the panel further from the trigger (default 8) */}
-      
-        {/* the same Dimensions panel as the first example */}
 
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.

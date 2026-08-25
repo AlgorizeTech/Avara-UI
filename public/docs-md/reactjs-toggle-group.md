@@ -4,16 +4,9 @@ A set of segmented, two-state buttons that can be toggled on or off, perfect for
 
 This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `` components inside the parent `` and it handles all of the logic automatically.
 
-## Examples
-
 Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
-export const usageSingle = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-
-export default function AlignmentGroup() {
+export const usageSingle = `export default function AlignmentGroup() {
   const [value, setValue] = useState("center");
 
   return (
@@ -21,9 +14,7 @@ export default function AlignmentGroup() {
   );
 }`;
 
-export const usageOutline = `"use client";
-
-export default function OutlineGroup() {
+export const usageOutline = `export default function OutlineGroup() {
   const [value, setValue] = useState("left");
 
   return (
@@ -31,9 +22,7 @@ export default function OutlineGroup() {
   );
 }`;
 
-export const usageGhost = `"use client";
-
-export default function GhostGroup() {
+export const usageGhost = `export default function GhostGroup() {
   const [value, setValue] = useState("left");
 
   return (
@@ -41,9 +30,7 @@ export default function GhostGroup() {
   );
 }`;
 
-export const usageSizes = `"use client";
-
-const items = (
+export const usageSizes = `const items = (
   <>
 
 );
@@ -62,12 +49,7 @@ export default function GroupSizes() {
   );
 }`;
 
-export const usageMultiple = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-
-export default function FormattingGroup() {
+export const usageMultiple = `export default function FormattingGroup() {
   const [value, setValue] = useState(["bold"]);
 
   return (
@@ -75,9 +57,7 @@ export default function FormattingGroup() {
   );
 }`;
 
-export const usageDisabled = `"use client";
-
-export default function DisabledGroup() {
+export const usageDisabled = `export default function DisabledGroup() {
   const [value, setValue] = useState("left");
 
   return (
@@ -86,6 +66,8 @@ export default function DisabledGroup() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

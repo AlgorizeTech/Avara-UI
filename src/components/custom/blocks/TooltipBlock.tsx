@@ -6,11 +6,22 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+
+/**
+ * Positioning has to happen before the browser paints, or the tooltip shows up
+ * at its placeholder coordinates for one frame and then jumps into place.
+ * useLayoutEffect warns when it runs on the server, and TooltipContent renders
+ * nothing until the trigger has committed, so falling back to useEffect there
+ * costs nothing.
+ */
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // 1. CONTEXT
@@ -140,9 +151,15 @@ export function TooltipContent({
 
   const { open, trigger: triggerEl } = context;
   const [coords, setCoords] = useState({ top: -9999, left: -9999 });
+  // Stale coordinates from the previous open would otherwise paint first.
+  const [positioned, setPositioned] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!open) setPositioned(false);
+  }, [open]);
+
+  useIsomorphicLayoutEffect(() => {
     if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
@@ -176,6 +193,7 @@ export function TooltipContent({
       }
 
       setCoords({ top: top + win.scrollY, left: left + win.scrollX });
+      setPositioned(true);
     };
 
     updatePosition();
@@ -200,10 +218,14 @@ export function TooltipContent({
       ref={contentRef}
       role="tooltip"
       className={cn(
-        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-white dark:text-zinc-900 bg-zinc-900 dark:bg-white rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
+        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
         className,
       )}
-      style={{ top: coords.top, left: coords.left }}
+      style={{
+        top: coords.top,
+        left: coords.left,
+        visibility: positioned ? "visible" : "hidden",
+      }}
       {...props}
     >
       {children}

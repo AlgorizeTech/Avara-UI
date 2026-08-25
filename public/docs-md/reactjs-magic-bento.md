@@ -6,8 +6,6 @@ This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
 to track pointer coordinates without triggering heavy React state re-renders,
 ensuring the volumetric glows remain silky smooth.
 
-## Examples
-
 Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
@@ -18,11 +16,43 @@ export const usageDefault = `import {
 export default function FeatureGrid() {
   return (
 
-        Analytics
+          Insights
 
-      {/* highlight adds the continuously spinning conic border */}
+            Analytics
 
-        Collaboration
+            Track user behavior
+
+          Overview
+
+            Dashboard
+
+            Centralized data view
+
+      {/* highlight keeps a conic gradient spinning behind the mask */}
+
+          Teamwork
+
+            Collaboration
+
+            Work together seamlessly across the globe
+
+          Efficiency
+
+            Automation
+
+            Streamline workflows and save thousands of hours
+
+          Connectivity
+
+            Integration
+
+            Connect favorite tools
+
+          Protection
+
+            Security
+
+            Enterprise-grade protection
 
   );
 }`;
@@ -34,35 +64,22 @@ export const usageHighlight = `import {
 
 export default function HighlightedBento() {
   return (
-    
-      {/* Without \`highlight\`, the border only lights where the cursor is. */}
-      …
 
-      {/* With it, a conic gradient spins behind the mask continuously — use it
-          on the one card you want the eye to land on first. */}
-      …
-    
-  );
-}`;
+          Default card
 
-export const usageSpans = `import {
-  MagicBento,
-  MagicBentoCard,
-} from "@/components/custom/blocks/MagicBentoBlock";
+          The border track and inner glow follow the cursor.
 
-export default function BentoSpans() {
-  // The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-  // layout with span utilities on each card.
-  return (
-    
-      …
-      …
-      …
-    
+          highlight
+
+          Adds a conic gradient that keeps spinning behind the mask,
+          cursor or not.
+
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

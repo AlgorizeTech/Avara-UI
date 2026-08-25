@@ -1,258 +1,241 @@
 # Table
 
-A highly functional, fully customizable data table component engineered for modern dashboards.
+A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
 
-We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
+There is **no column config and no required row shape**. Whatever your API returns — nested objects, snake_case keys, `_id` instead of `id` — you map it straight into JSX. Nothing has to be flattened or transformed first.
 
-## Examples
+Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
-Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
+## Anatomy
 
-export const usageDefault = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+```tsx
 
-const columns = [
-  { key: "id", label: "Invoice", sortable: true },
-  { key: "user", label: "Customer", sortable: true },
-  { key: "amount", label: "Amount", sortable: true, align: "right" },
-  { key: "date", label: "Date", sortable: true, align: "right" },
-  { key: "actions", label: "", align: "right" },
-];
+        Customer
 
-const data = [
-  { id: "INV-3021", user: "Alice Freeman", amount: "$3,200.00", date: "Oct 24, 2023" },
-  { id: "INV-3022", user: "Bob Smith", amount: "$850.50", date: "Oct 24, 2023" },
-];
+        Alice Freeman
 
-export default function TransactionsTable() {
+  …
+
+```
+
+`Table` is the card. `TableContent` renders the scroll container and the `` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
+
+export const invoiceType = `type Invoice = {
+  reference: string;
+  customer: { name: string; email: string }; // nested — no flattening needed
+  amount: number;
+  status: "completed" | "processing" | "failed";
+  issuedAt: string;
+};`;
+
+export const usageBasic = `"use client";
+
+${invoiceType}
+
+export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
   return (
-     console.log("Edit", row)}
-      onDelete={(row) => console.log("Delete", row)}
-    />
+
+            Invoice
+            Customer
+            Amount
+
+          {invoices.map((invoice) => (
+            
+              {invoice.reference}
+
+              {/* Reach as deep into the row as you like */}
+
+                  {invoice.customer.name}
+                  
+                    {invoice.customer.email}
+
+              {invoice.amount}
+            
+          ))}
+
   );
 }`;
 
-export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+export const usageMinimal = `
 
-export default function MinimalTable() {
-  return ;
-}`;
+        Invoice
 
-export const usageGlass = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function GlassTable() {
-  return (
-    // Pair the glass variant with a colored backdrop so the blur has
-    // something to refract.
-
-  );
-}`;
-
-export const usageSizes = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function TableSizes() {
-  return (
-
-  );
-}`;
-
-export const usageSelectable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function SelectableTable() {
-  return (
-     console.log(rows.length, "selected")}
-    />
-  );
-}`;
-
-export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function ExpandableTable() {
-  return (
-     (
+      {invoices.map((invoice) => (
         
-          Transaction Summary
-          
-            {row.details ?? "No additional transaction history provided."}
+          {invoice.reference}
+        
+      ))}
 
-      )}
-    />
+`;
+
+export const usageSorting = `// Sorting is controlled — the table renders the affordance, you own the state.
+const [sort, setSort] = useState(null);
+
+const toggleSort = (key: string) =>
+  setSort((prev) =>
+    prev && prev.key === key
+      ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
+      : { key, direction: "asc" },
   );
-}`;
 
-export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
+const sorted = useMemo(() => {
+  if (!sort) return invoices;
+  const factor = sort.direction === "asc" ? 1 : -1;
+  return [...invoices].sort((a, b) =>
+    factor * String(a[sort.key]).localeCompare(String(b[sort.key])),
+  );
+}, [invoices, sort]);
 
-export default function PaginatedTable() {
-  return (
+ toggleSort("customer")}
+>
+  Customer
+`;
+
+export const usageExpandable = `const [open, setOpen] = useState>(new Set());
+
+const toggle = (id: string) =>
+  setOpen((prev) => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+
+  {invoices.map((invoice) => (
+
+           toggle(invoice.reference)}
+          />
+        
+        {invoice.reference}
+
+        {invoice.note}
+
+  ))}
+`;
+
+export const usagePagination = `// The primitives do not paginate for you — slice the array and fill the footer.
+// Want it built in? Use the Data Table component instead.
+const pageSize = 4;
+const [page, setPage] = useState(1);
+const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
+const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
+
+  {/* … rows … */}
+
+    Page {page} of {totalPages}
     
-  );
-}`;
+       setPage((p) => Math.max(1, p - 1))}>Prev
+       setPage((p) => Math.min(totalPages, p + 1))}>Next
+
+`;
+
+export const usageActions = `// TableRow sets a group class, so TableRowActions can reveal on row hover.
+
+     edit(invoice)}>Edit
+     remove(invoice)}>Delete
+  
+`;
+
+export const usageEmpty = `
+  {rows.length === 0 ? (
+    No invoices yet.
+  ) : (
+    rows.map((invoice) => {/* … */})
+  )}
+`;
 
 ## Installation
 
+## Examples
+
+## Density
+
+…
+…
+…`,
+    },
+  ]}
+/>
+
 ## Features
-Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    Any data shape
+    No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    Real table markup
+    Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Themed by context
+    Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    Stateless by default
+    Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+    Reach for the Data Table instead
+    These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.
+
+    Keep colSpan honest
+    TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.
 
 ## Props Reference
 
-Main Component Props
+### Components
 
-        Prop
-        Type
-        Default
-        Description
+      ComponentRendersPurpose
 
-          data
+      TabledivThe card wrapper. Provides variant, size and colour by context.
+      TableHeadingdivTitle bar above the table. Children align to the right as an action slot.
+      TableContentdiv &gt; tableHorizontal scroll container plus the table element.
+      TableHeadertheadPlain pass-through.
+      TableBodytbodyOptional staggered entrance animation.
+      TableRowtrBody row, or a header row with isHeader.
+      TableHeadthHeader cell, optionally sortable.
+      TableCelltdBody cell.
+      TableFooterdivFooter bar below the table — pagers, totals, bulk controls.
+      TableEmptytr &gt; tdFull-width empty state row.
+      TableExpandedRowtr &gt; tdAnimated detail panel beneath a row.
+      TableExpandTogglebuttonRotating chevron for the row above.
+      TableRowActionsdivReveals its buttons on row hover or keyboard focus.
 
-          T[]
+### `Table`
 
-          Required
+      PropTypeDefaultDescription
 
-          An array of objects representing your rows.{" "}
-          
-            Every object must contain a unique id property.
+      variant"default" | "minimal" | "glass""default"Bordered card, bare table, or frosted glass panel.
+      size"sm" | "md" | "lg""md"Row density — cell padding and text size.
+      color"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)"primary"Accent for selected rows and interactive affordances. Any #rrggbb works.
 
-          columns
+### `TableHead`
 
-          TableColumn[]
+      PropTypeDefaultDescription
 
-          Required
+      align"left" | "center" | "right""left"Text alignment.
+      sortablebooleanfalseRenders the header as a sort button.
+      sortDirection"asc" | "desc" | nullnullControlled — drives the chevron and aria-sort.
+      onSort() =&gt; void—Fired on click. You reorder the data.
 
-          Defines the headers and data mapping (see Column Definition below).
+### `TableRow`, `TableCell`, `TableBody`
 
-          variant
+      ComponentPropTypeDescription
 
-          "default" | "minimal" | "glass"
+      TableRowisHeaderbooleanApplies header styling instead of body row styling.
+      TableRowselectedbooleanApplies the selected background and sets data-selected.
+      TableCellalign"left" | "center" | "right"Text alignment.
+      TableBodyanimatebooleanStaggered GSAP entrance for direct child rows. Off by default.
+      TableBodyanimateKeyReact.KeyChange it to replay the entrance — e.g. on sort or page change.
 
-          "default"
-        
-        The surface treatment: a bordered card, a bare table, or a frosted glass panel.
+### `TableExpandedRow`, `TableEmpty`, `TableRowActions`
 
-          color
+      ComponentPropTypeDescription
 
-            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
+      TableExpandedRowopenbooleanGrid-animates the panel open or closed.
+      TableExpandedRowcolSpannumberRequired. Must match your column count.
+      TableEmptycolSpannumberRequired. Defaults its text to &ldquo;No data available.&rdquo;
+      TableRowActionsalign"left" | "center" | "right"Horizontal alignment inside the cell. Defaults to "right".
+      TableRowActionsalwaysVisiblebooleanSkip the hover reveal and keep the buttons visible.
 
-          "primary"
-
-          Theme color for checkboxes, selected rows and the active page button.
-          Any #rrggbb value is accepted.
-
-          tableSize
-
-          "sm" | "md" | "lg"
-
-          "md"
-        
-        Row density — controls cell padding and text size.
-
-          expandable
-
-          boolean
-
-          false
-
-          If true, rows become clickable. Clicking a row expands it to show the
-          content returned by renderExpanded.
-
-          renderExpanded
-
-          (row: T) =&gt; ReactNode
-
-          undefined
-
-          A function that returns the JSX to render inside the expanded
-          accordion area beneath a row.
-
-          selectable
-
-          boolean
-
-          false
-
-          If true, injects a column of checkboxes allowing users to select rows.
-
-          pagination
-
-          &#123; itemsPerPage: number &#125;
-
-          undefined
-
-          If provided, automatically chunks the data and displays a pagination
-          bar at the bottom.
-
-          onSelectionChange
-
-          (rows: T[]) =&gt; void
-
-          undefined
-
-          Callback returning an array of the currently selected row objects.
-
-          onEdit / onDelete
-
-          (row: T) =&gt; void
-
-          undefined
-
-          If provided (and an "actions" column exists),
-          automatically renders Edit and Trash icons mapped to these functions.
-
-Column Definition (TableColumn&lt;T&gt;)
-
-        Property
-        Type
-        Description
-
-          key
-
-          keyof T | "actions"
-
-          The object key to map to this column. Use "actions" to
-          render the edit/delete buttons.
-
-          label
-
-          string
-        
-        The text displayed in the table header.
-
-          sortable
-
-          boolean
-
-          If true, the column header becomes clickable, automatically sorting
-          the data alphabetically or numerically based on that key.
-
-          align
-
-          "left" | "center" | "right"
-
-          Controls text alignment for both the header and the cells in this
-          column. Defaults to left.
-
-          render
-
-          (row: T) =&gt; ReactNode
-
-          An optional function to override the default text rendering, allowing
-          you to insert React components (badges, avatars, multiple fields) into
-          the cell.
+Every primitive also forwards its ref and accepts the native attributes of the element it renders.
 
 ---
 

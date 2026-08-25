@@ -5,55 +5,43 @@ import { extractCode } from "@/lib/code";
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Examples
-
 Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
 export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ModalDemo() {
+export default function Page() {
+  // ModalBlock ships the trigger, the open state and the content shown here.
   return <ModalBlock type="standard" variant="default" />;
 }`;
 
 export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FormModal() {
-  // "form" swaps the body for a labelled input layout with a submit action.
+export default function Page() {
+  // "form" swaps the body for the invite fields and widens the panel.
   return <ModalBlock type="form" variant="default" />;
 }`;
 
 export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ConfirmModal() {
-  // "confirmation" is the compact are-you-sure shape with two actions.
+export default function Page() {
+  // "confirmation" is the narrow destructive-action layout.
   return <ModalBlock type="confirmation" variant="default" />;
 }`;
 
 export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FullscreenModal() {
-  // "fullscreen" fills the viewport — good for editors and media views.
+export default function Page() {
+  // "fullscreen" fills the viewport for settings-style panels.
   return <ModalBlock type="fullscreen" variant="default" />;
 }`;
 
 export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function GlassModal() {
-  // Nature wallpaper backdrop for glass refraction
-  return (
-    <div
-      className="p-8 rounded-2xl bg-cover bg-center relative"
-      style={{
-        backgroundImage:
-          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
-      }}
-    >
-      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
-      <ModalBlock type="standard" variant="glass" />
-    </div>
-  );
+export default function Page() {
+  // "glass" is a surface treatment — it composes with any \`type\`.
+  return <ModalBlock type="standard" variant="glass" />;
 }`;
 
 <ExampleShowcase
@@ -76,6 +64,20 @@ export default function GlassModal() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="modal" />
+
+## Examples
+
+<ExampleShowcase
+  name="modal"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Form",
       propNotes: [
@@ -135,13 +137,57 @@ export default function GlassModal() {
   ]}
 />
 
-## Installation
+## Composing your own content
 
-<Installation name="modal" />
+Every preview above is `ModalBlock` — the ready-made component, content included.
+When you need your own content instead, the same file exports the parts it is
+built from. There is no preview for this section on purpose: what it renders is
+whatever you put inside it, so a screenshot here would show our copy rather than
+yours.
+
+```tsx
+"use client";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
+export default function ConfirmDeleteModal() {
+  // Modal is controlled: you own `isOpen`, it renders against it.
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Delete project</button>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-sm"
+      >
+        <ModalHeader title="Delete project" />
+        <ModalBody>
+          <p className="text-sm text-muted-foreground">
+            This permanently removes the project and everything in it. This
+            cannot be undone.
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <button onClick={() => setIsOpen(false)}>Cancel</button>
+          <button onClick={() => setIsOpen(false)}>Delete</button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}
+```
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

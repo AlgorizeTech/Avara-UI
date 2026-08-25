@@ -4,16 +4,14 @@ A versatile verified badge component that can be customized with various styles 
 
 It includes distinct customization options to match different areas of your application.
 
-## Examples
-
 Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
 
 export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
 export default function ProfileName() {
   return (
-    
-      AlgorizeSystem
+
+        AlgorizeSystem
 
   );
 }`;
@@ -29,22 +27,51 @@ export default function BadgeSizes() {
 export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
 export default function StaticBadge() {
-  return ;
+  return (
+
+        AlgorizeSystem
+
+  );
 }`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
+// The badge is the only piece that ships with the component — everything
+// around it is ordinary markup, shown here so the card matches the preview.
+const accent = "var(--primary)";
+
+function BotAvatar({ className }: { className?: string }) {
+  return (
+
+  );
+}
+
 export default function NotificationCard() {
   return (
-    
-      AlgorizeSystem
-      
-      Today at 2:34 PM
-    
+
+            AlgorizeSystem
+
+            Bot
+
+            Today at 2:34 PM
+
+          Deployment{" "}
+          
+            #421
+          {" "}
+          to production completed successfully.
+
+              Build Passed 🚀
+
+              All 142 tests passed in 12s. The latest preview is now live on
+              Vercel.
+
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.

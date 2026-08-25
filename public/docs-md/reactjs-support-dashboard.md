@@ -7,15 +7,9 @@ It now features a **dual-layout system**:
 1. **Chat View:** A highly detailed 3-pane layout for resolving individual customer tickets. Features a sortable inbox, a responsive chat thread, and a collapsible metadata pane.
 2. **Table View:** A macro-level Ticket System layout. Automatically calculates top-level metrics (Total, Open, High Priority) based on the exact same data object, and displays an elegant, sortable list view.
 
-## Examples
-
 Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
-export const usageChat = `import SupportDashboard, {
-  SupportData,
-} from "@/components/custom/blocks/Support-dashboard";
-
-const data: SupportData = {
+export const supportData = `const data: SupportData = {
   header: { title: "Sales Tickets", subtitle: "All Open" },
   filters: [
     { id: "status", label: "Open", count: 99, icon: "Inbox" },
@@ -82,13 +76,23 @@ const data: SupportData = {
       ],
     },
   ],
-};
+};`;
+
+export const usageChat = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function Helpdesk() {
   return ;
 }`;
 
-export const usageTable = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+export const usageTable = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function TicketTable() {
   // Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
@@ -96,16 +100,22 @@ export default function TicketTable() {
   return ;
 }`;
 
-export const usageGlass = `import { SupportDashboard } from "@/components/custom/blocks/Support-dashboard";
+export const usageGlass = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function GlassDashboard() {
   return (
-    // \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+    // \`glass\` is translucent by design — it needs a backdrop to read against.
 
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

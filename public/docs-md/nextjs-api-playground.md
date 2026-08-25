@@ -6,15 +6,17 @@ This is the hallmark of top-tier developer platforms (like Stripe, Supabase, or 
 
 Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not blindly send network requests (which usually fail due to CORS in documentation environments). Instead, you define exactly how the component should respond to different inputs, creating a safe, curated learning experience.
 
-## Examples
-
 Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
-export const usageDefault = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
+export const usageDefault = `import {
+  ApiPlaygroundBlock,
+  type ApiMockHandler,
+} from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 export default function UsersEndpointDocs() {
-  // Decide how the playground responds to whatever the reader types.
-  const handleApiMock = async (req) => {
+  // Decide how the playground responds to whatever the reader types. Typing the
+  // handler checks both the request it receives and the response it returns.
+  const handleApiMock: ApiMockHandler = async (req) => {
     await new Promise((resolve) => setTimeout(resolve, 500)); // latency
 
     if (req.method === "POST") {
@@ -29,71 +31,42 @@ export default function UsersEndpointDocs() {
   );
 }`;
 
-export const usageGet = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-export default function GetPlayground() {
-  // \`defaultMethod\` and \`defaultUrl\` seed the request the reader lands on.
-  return (
-    
-  );
-}`;
-
-export const usageError = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-// Any non-2xx status you return is formatted as an error response.
-const handleApiMock = async () => ({
-  status: 401,
-  timeMs: 45,
-  data: {
-    error: "unauthorized",
-    message: "Invalid API key provided in Authorization header.",
-  },
-});
-
-export default function ErrorPlayground() {
-  return (
-    
-  );
-}`;
-
-export const usageNoMock = `import { ApiPlaygroundBlock } from "@/components/custom/blocks/ApiPlaygroundBlock";
-
-export default function SketchPlayground() {
-  // Omit \`mockHandler\` and the block answers with its own canned response —
-  // handy while you are still sketching the endpoint.
-  return (
-    
-  );
-}`;
-
 ## Installation
 
-## Features
-Discover how the API Playground component enables developers to test endpoints, view JSON responses, and debug requests directly from the UI.
+## Features & Core Capabilities
+Explore the interactive API Playground component capabilities designed to elevate API documentation:
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    Split-Pane Architecture
+    Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    CORS-Safe Mock Handler
+    Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Full Header & Query Params Editor
+    Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    JSON Body Payload & Syntax Highlighting
+    Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.
 
 ## Best Practices & Guidelines
 
     Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+    Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
 
 ## Props Reference
 
 mockHandler Object Signatures
-When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object.
+When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
-The Request Object (Passed to your function):
+```tsx
+
+const handleApiMock: ApiMockHandler = async (req) => {
+  // req is an ApiPlaygroundRequest; the return value must be an ApiResponse.
+  return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+};
+```
+
+The Request Object — exported as `ApiPlaygroundRequest` (passed to your function):
 
 ```tsx
 {
@@ -105,7 +78,7 @@ The Request Object (Passed to your function):
 }
 ```
 
-The Response Object (Required return type):
+The Response Object — exported as `ApiResponse` (required return type):
 
 ```tsx
 {

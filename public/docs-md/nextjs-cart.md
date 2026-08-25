@@ -2,34 +2,79 @@
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-## Examples
-
 One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
 
-export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const cartItems = `const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Signature Heavyweight Tee",
+    price: 45.0,
+    quantity: 1,
+    size: "L",
+    color: "Onyx Black",
+    gradient: "from-zinc-700 to-black",
+  },
+  {
+    id: "2",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+  {
+    id: "3",
+    name: "Minimalist Beanie",
+    price: 28.0,
+    quantity: 2,
+    size: "OS",
+    color: "Forest Green",
+    gradient: "from-emerald-500 to-teal-800",
+  },
+];`;
 
-export default function Layout() {
-  return (
+export const usageDrawer = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
 
-  );
-}`;
+// The cart holds no data of its own. Keep the items in the parent, where the
+// rest of your app can reach them, and hand them over as initialItems.
+${cartItems}
 
-export const usageModal = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
-
-export default function ModalCart() {
-  // Centred dialog with a blurred backdrop — same trigger, same state.
+export default function DrawerCart() {
   return ;
 }`;
 
-export const usagePage = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usageModal = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+${cartItems}
+
+export default function ModalCart() {
+  // Centred dialog with a blurred backdrop - same trigger, same state.
+  return ;
+}`;
+
+export const usagePage = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+${cartItems}
 
 // Full-width two-column layout for a dedicated /cart route.
-// No trigger button — the cart is the page.
+// No trigger button - the cart is the page.
 export default function CartPage() {
   return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
@@ -57,6 +102,19 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
         Type
         Default
         Description
+
+          initialItems
+
+          CartItem[]
+
+          []
+
+          The items the cart starts with, supplied by the parent. The installed
+          component contains no sample data, so a CartBlock without
+          this prop renders its empty state. Each item is id,{" "}
+          name, price, quantity,{" "}
+          gradient, and optional size /{" "}
+          color. Quantity and removal are then handled internally.
 
           type
 

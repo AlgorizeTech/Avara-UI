@@ -58,9 +58,9 @@ export interface DataPoint {
   id: string; // ISO 3166-1 alpha-3 country code
   name: string; // Name to display on hover
   active?: number; // Active count
-  activeTrend?: "up" | "down";
+  activeTrend?: "up" | "down" | (string & {});
   new?: number; // New count
-  newTrend?: "up" | "down";
+  newTrend?: "up" | "down" | (string & {});
   color?: string; // Optional custom fill color
   flag?: string; // Optional flag emoji
 }
@@ -77,6 +77,7 @@ export interface DataMapsProps extends React.HTMLAttributes<HTMLDivElement> {
   highlightColor?: string;
   defaultColor?: string;
   mapGeoJsonUrl?: string;
+  mapId?: string;
 }
 
 const alpha3ToAlpha2: Record<string, string> = {"AFG":"AF","ALA":"AX","ALB":"AL","DZA":"DZ","ASM":"AS","AND":"AD","AGO":"AO","AIA":"AI","ATA":"AQ","ATG":"AG","ARG":"AR","ARM":"AM","ABW":"AW","AUS":"AU","AUT":"AT","AZE":"AZ","BHS":"BS","BHR":"BH","BGD":"BD","BRB":"BB","BLR":"BY","BEL":"BE","BLZ":"BZ","BEN":"BJ","BMU":"BM","BTN":"BT","BOL":"BO","BES":"BQ","BIH":"BA","BWA":"BW","BVT":"BV","BRA":"BR","IOT":"IO","BRN":"BN","BGR":"BG","BFA":"BF","BDI":"BI","CPV":"CV","KHM":"KH","CMR":"CM","CAN":"CA","CYM":"KY","CAF":"CF","TCD":"TD","CHL":"CL","CHN":"CN","CXR":"CX","CCK":"CC","COL":"CO","COM":"KM","COG":"CG","COD":"CD","COK":"CK","CRI":"CR","CIV":"CI","HRV":"HR","CUB":"CU","CUW":"CW","CYP":"CY","CZE":"CZ","DNK":"DK","DJI":"DJ","DMA":"DM","DOM":"DO","ECU":"EC","EGY":"EG","SLV":"SV","GNQ":"GQ","ERI":"ER","EST":"EE","SWZ":"SZ","ETH":"ET","FLK":"FK","FRO":"FO","FJI":"FJ","FIN":"FI","FRA":"FR","GUF":"GF","PYF":"PF","ATF":"TF","GAB":"GA","GMB":"GM","GEO":"GE","DEU":"DE","GHA":"GH","GIB":"GI","GRC":"GR","GRL":"GL","GRD":"GD","GLP":"GP","GUM":"GU","GTM":"GT","GGY":"GG","GIN":"GN","GNB":"GW","GUY":"GY","HTI":"HT","HMD":"HM","VAT":"VA","HND":"HN","HKG":"HK","HUN":"HU","ISL":"IS","IND":"IN","IDN":"ID","IRN":"IR","IRQ":"IQ","IRL":"IE","IMN":"IM","ISR":"IL","ITA":"IT","JAM":"JM","JPN":"JP","JEY":"JE","JOR":"JO","KAZ":"KZ","KEN":"KE","KIR":"KI","PRK":"KP","KOR":"KR","KWT":"KW","KGZ":"KG","LAO":"LA","LVA":"LV","LBN":"LB","LSO":"LS","LBR":"LR","LBY":"LY","LIE":"LI","LTU":"LT","LUX":"LU","MAC":"MO","MDG":"MG","MWI":"MW","MYS":"MY","MDV":"MV","MLI":"ML","MLT":"MT","MHL":"MH","MTQ":"MQ","MRT":"MR","MUS":"MU","MYT":"YT","MEX":"MX","FSM":"FM","MDA":"MD","MCO":"MC","MNG":"MN","MNE":"ME","MSR":"MS","MAR":"MA","MOZ":"MZ","MMR":"MM","NAM":"NA","NRU":"NR","NPL":"NP","NLD":"NL","NCL":"NC","NZL":"NZ","NIC":"NI","NER":"NE","NGA":"NG","NIU":"NU","NFK":"NF","MKD":"MK","MNP":"MP","NOR":"NO","OMN":"OM","PAK":"PK","PLW":"PW","PSE":"PS","PAN":"PA","PNG":"PG","PRY":"PY","PER":"PE","PHL":"PH","PCN":"PN","POL":"PL","PRT":"PT","PRI":"PR","QAT":"QA","REU":"RE","ROU":"RO","RUS":"RU","RWA":"RW","BLM":"BL","SHN":"SH","KNA":"KN","LCA":"LC","MAF":"MF","SPM":"PM","VCT":"VC","WSM":"WS","SMR":"SM","STP":"ST","SAU":"SA","SEN":"SN","SRB":"RS","SYC":"SC","SLE":"SL","SGP":"SG","SXM":"SX","SVK":"SK","SVN":"SI","SLB":"SB","SOM":"SO","ZAF":"ZA","SGS":"GS","SSD":"SS","ESP":"ES","LKA":"LK","SDN":"SD","SUR":"SR","SJM":"SJ","SWE":"SE","CHE":"CH","SYR":"SY","TWN":"TW","TJK":"TJ","TZA":"TZ","THA":"TH","TLS":"TL","TGO":"TG","TKL":"TK","TON":"TO","TTO":"TT","TUN":"TN","TUR":"TR","TKM":"TM","TCA":"TC","TUV":"TV","UGA":"UG","UKR":"UA","ARE":"AE","GBR":"GB","USA":"US","UMI":"UM","URY":"UY","UZB":"UZ","VUT":"VU","VEN":"VE","VNM":"VN","VGB":"VG","VIR":"VI","WLF":"WF","ESH":"EH","YEM":"YE","ZMB":"ZM","ZWE":"ZW"};
@@ -113,12 +114,14 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       highlightColor = "var(--primary, #2563eb)",
       defaultColor: _defaultColor = "#cbd5e1",
       mapGeoJsonUrl = "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
+      mapId,
       className,
       ...props
     },
     ref
   ) => {
     const isMounted = useIsMounted();
+    const instanceId = React.useId();
     const [geoData, setGeoData] = useState<any>(null);
     const mapRef = useRef<any>(null);
     const mapWrapperRef = useRef<HTMLDivElement>(null);
@@ -236,6 +239,22 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         .catch((err) => console.error("Error loading map GeoJSON:", err));
     }, [mapGeoJsonUrl]);
 
+    useEffect(() => {
+      return () => {
+        if (mapRef.current) {
+          try {
+            mapRef.current.remove();
+          } catch {
+            // Ignore
+          }
+          mapRef.current = null;
+        }
+        if (mapWrapperRef.current) {
+          mapWrapperRef.current.innerHTML = "";
+        }
+      };
+    }, []);
+
     // Leaflet sizes its canvas once at creation — refit whenever the wrapper
     // resizes (responsive preview, layout changes) so the full map stays visible.
     useEffect(() => {
@@ -252,14 +271,14 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
 
     if (!isMounted || !geoData) {
       return (
-        <div ref={ref} className={cn("w-full h-full min-h-[250px] sm:min-h-[400px] bg-slate-50 dark:bg-slate-900/50 rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
-          <p className="text-slate-400 text-sm">Loading Maps...</p>
+        <div ref={ref} className={cn("w-full h-full min-h-[250px] sm:min-h-[400px] bg-muted rounded-lg animate-pulse flex items-center justify-center", className)} {...props}>
+          <p className="text-muted-foreground text-sm">Loading Maps...</p>
         </div>
       );
     }
 
       return (
-        <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[250px] sm:min-h-[400px] overflow-hidden rounded-lg bg-slate-50 dark:bg-slate-900/50 map-wrapper", className)} {...props}>
+        <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[250px] sm:min-h-[400px] overflow-hidden rounded-lg bg-muted map-wrapper", className)} {...props}>
         <style dangerouslySetInnerHTML={{__html: `
           .map-wrapper {
             --map-default-fill: #e2e8f0;
@@ -311,8 +330,9 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         `}} />
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
           {rl && (
-          <rl.MapContainer
-            ref={mapRef}
+            <rl.MapContainer
+              key={mapId ?? `${instanceId}-${variant}-${center.join(",")}-${zoom}`}
+              ref={mapRef}
             center={center}
             zoom={zoom}
             minZoom={minZoom}
@@ -354,25 +374,25 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                   const newTrendIcon = dataPoint.newTrend === "up" ? upArrow : (dataPoint.newTrend === "down" ? downArrow : "");
 
                   layer.bindTooltip(`
-                    <div class="font-sans flex flex-col gap-1.5 min-w-[130px] w-max p-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-xl">
+                    <div class="font-sans flex flex-col gap-1.5 min-w-[130px] w-max p-3 bg-card border border-border rounded-xl shadow-xl">
                       <div class="flex items-center gap-2 mb-1 whitespace-nowrap">
                         ${flagHtml}
-                        <strong class="text-slate-800 dark:text-slate-100 text-base font-medium pr-1">${dataPoint.name}</strong>
+                        <strong class="text-foreground text-base font-medium pr-1">${dataPoint.name}</strong>
                       </div>
                       ${dataPoint.active !== undefined ? `
                         <div class="flex items-center justify-between text-sm pr-1">
-                          <span class="text-slate-500 dark:text-slate-400">Active:</span>
+                          <span class="text-muted-foreground">Active:</span>
                           <div class="flex items-center gap-1">
-                            <span class="font-medium text-slate-700 dark:text-slate-200">${dataPoint.active}</span>
+                            <span class="font-medium text-foreground">${dataPoint.active}</span>
                             ${activeTrendIcon}
                           </div>
                         </div>
                       ` : ""}
                       ${dataPoint.new !== undefined ? `
                         <div class="flex items-center justify-between text-sm pr-1">
-                          <span class="text-slate-500 dark:text-slate-400">New:</span>
+                          <span class="text-muted-foreground">New:</span>
                           <div class="flex items-center gap-1">
-                            <span class="font-medium text-slate-700 dark:text-slate-200">${dataPoint.new}</span>
+                            <span class="font-medium text-foreground">${dataPoint.new}</span>
                             ${newTrendIcon}
                           </div>
                         </div>
@@ -384,9 +404,9 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                   });
                 } else if (feature?.properties?.name) {
                   layer.bindTooltip(`
-                    <div class="font-sans flex items-center gap-2 text-sm py-2 px-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-lg shadow-md whitespace-nowrap w-max">
+                    <div class="font-sans flex items-center gap-2 text-sm py-2 px-3 bg-card border border-border rounded-lg shadow-md whitespace-nowrap w-max">
                       ${flagHtml}
-                      <span class="text-slate-700 dark:text-slate-300 font-medium pr-1">${feature.properties.name}</span>
+                      <span class="text-foreground font-medium pr-1">${feature.properties.name}</span>
                     </div>
                   `, { 
                     sticky: true,
@@ -419,7 +439,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         </div>
         
         {variant === "dots" && (
-          <div className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-full shadow-sm z-[400] flex items-center gap-1.5">
+          <div className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-border px-3 py-2 rounded-full shadow-sm z-[400] flex items-center gap-1.5">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               width="14" 
@@ -434,7 +454,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <span className="text-xs font-semibold text-foreground">
               {dotCount} Locations Selected
             </span>
           </div>

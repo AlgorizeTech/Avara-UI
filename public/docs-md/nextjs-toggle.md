@@ -4,39 +4,7 @@ A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Examples
-
 Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
-
-export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function BasicToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
-
-export const usageOutline = `"use client";
-
-export default function OutlineToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
-
-export const usageGhost = `"use client";
-
-export default function GhostToggle() {
-  const [pressed, setPressed] = useState(false);
-
-  return (
-
-  );
-}`;
 
 export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
@@ -46,7 +14,7 @@ export default function ToggleSizes() {
   );
 }`;
 
-export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+export const usageText = `"use client";
 
 export default function MuteToggle() {
   const [muted, setMuted] = useState(false);
@@ -59,7 +27,7 @@ export default function MuteToggle() {
   );
 }`;
 
-export const usageToolbar = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+export const usageToolbar = `"use client";
 
 export default function FormattingToolbar() {
   const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
@@ -90,6 +58,8 @@ export default function DisabledToggle() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

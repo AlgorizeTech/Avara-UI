@@ -6,31 +6,43 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 ---
 
-## Examples
-
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-export const usageDefault = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const networkNodes = `const users: NetworkNode[] = [
+  // Ring 1 (inner)
+  { id: "1", ring: 1, image: "https://i.pravatar.cc/150?u=1", label: "Sarah J." },
+  { id: "2", ring: 1, image: "https://i.pravatar.cc/150?u=2", label: "David B." },
+  // No image? \`fallback\` renders the initials tile instead.
+  { id: "3", ring: 1, fallback: "JW", label: "James W." },
+  { id: "4", ring: 1, image: "https://i.pravatar.cc/150?u=4", label: "Lisa M." },
 
-export default function CommunityMap() {
-  const users = [
-    // Inner ring — spaced evenly by count, so 3 nodes sit 120° apart
-    { id: "1", ring: 1, image: "/avatars/user1.jpg", label: "Sarah" },
-    { id: "2", ring: 1, image: "/avatars/user2.jpg", label: "David" },
-    { id: "3", ring: 1, fallback: "JW", label: "James" },
+  // Ring 2 (outer)
+  { id: "5", ring: 2, image: "https://i.pravatar.cc/150?u=5", label: "Emma R." },
+  { id: "6", ring: 2, image: "https://i.pravatar.cc/150?u=6", label: "Noah P." },
+  { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
+  { id: "8", ring: 2, image: "https://i.pravatar.cc/150?u=8", label: "Ava T.", size: "sm" },
+  { id: "9", ring: 2, image: "https://i.pravatar.cc/150?u=9", label: "Ethan C." },
+  { id: "10", ring: 2, image: "https://i.pravatar.cc/150?u=10", label: "Olivia S.", size: "lg" },
+  { id: "11", ring: 2, image: "https://i.pravatar.cc/150?u=11", label: "Liam H." },
+  { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
 
-    // Outer ring
-    { id: "4", ring: 2, image: "/avatars/user4.jpg", size: "sm" },
-    { id: "5", ring: 2, fallback: "MK", size: "sm" },
-    { id: "6", ring: 2, image: "/avatars/user6.jpg", size: "sm" },
-  ];
+  // Ring 3 (outer)
+  { id: "13", ring: 3, image: "https://i.pravatar.cc/150?u=13", label: "Chloe D.", size: "sm" },
+  { id: "14", ring: 3, image: "https://i.pravatar.cc/150?u=14", label: "Marcus V.", size: "sm" },
+  { id: "15", ring: 3, image: "https://i.pravatar.cc/150?u=15", label: "Zoe N.", size: "md" },
+  { id: "16", ring: 3, fallback: "AJ", label: "Aaron J.", size: "sm" },
+  { id: "17", ring: 3, image: "https://i.pravatar.cc/150?u=17", label: "Nina F.", size: "sm" },
+  { id: "18", ring: 3, image: "https://i.pravatar.cc/150?u=18", label: "Owen G.", size: "sm" },
+  { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
+  { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
+];`;
 
-  return (
-    
-  );
-}`;
+export const usageRings = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
 
-export const usageRings = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+${networkNodes}
 
 export default function RingLayout() {
   // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
@@ -41,28 +53,33 @@ export default function RingLayout() {
   );
 }`;
 
-export const usageStatic = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const usageStatic = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
+
+${networkNodes}
 
 export default function StaticGraph() {
   // Rings hold their position — the entrance animation still plays.
   return ;
 }`;
 
-export const usageSpeed = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+export const usageSpeed = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
+
+${networkNodes}
 
 export default function FastGraph() {
   // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
   return ;
 }`;
 
-export const usageNoCenter = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
-
-export default function HublessGraph() {
-  // Omit \`centerNode\` and the rings orbit an empty hub.
-  return ;
-}`;
-
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -4,68 +4,83 @@ A fully accessible, developer-friendly multi-box input designed for One-Time Pas
 
 Building a multi-box input that actually feels good to use is notoriously difficult. This `OtpInputBlock` handles it all automatically: seamless copy/pasting, `ArrowLeft` and `ArrowRight` navigation, intuitive `Backspace` handling that smoothly shifts focus backward, and built-in hooks for both `onChange` and `onComplete`.
 
-## Examples
-
 Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
-export const usageDefault = `import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+export const usageDefault = `const LENGTH = 6;
 
 export default function BasicOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
-     console.log("Submitted:", code)}
-    />
+
+          Two-Step Verification
+
+          Please enter the {LENGTH}-digit code sent to your email address.
+
+            (Try pasting a code!)
+
+       {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+        {verified ? (
+
+            Verified Successfully
+          
+        ) : (
+          
+            Verify Code
+          
+        )}
+
   );
 }`;
 
-export const usageFilled = `"use client";
-
-export default function FilledOtp() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
-export const usageUnderlined = `"use client";
+export const usageUnderlined = `const LENGTH = 6;
 
 export default function UnderlinedOtp() {
   const [value, setValue] = useState("");
+  const [verified, setVerified] = useState(false);
 
-  return (
-    
-  );
-}`;
-
-export const usageLengths = `"use client";
-
-export default function OtpLengths() {
-  const [value, setValue] = useState("");
-
+  // The card around the input is ordinary markup — only OtpInputBlock ships
+  // with the component.
   return (
 
+          Two-Step Verification
+
+          Please enter the {LENGTH}-digit code sent to your email address.
+
+            (Try pasting a code!)
+
+       {
+          console.log("Submitted:", code);
+          setVerified(true);
+        }}
+        disabled={verified}
+      />
+
+        {verified ? (
+
+            Verified Successfully
+          
+        ) : (
+          
+            Verify Code
+          
+        )}
+
   );
-}`;
-
-export const usageMasked = `"use client";
-
-export default function MaskedOtp() {
-  const [value, setValue] = useState("");
-
-  return ;
-}`;
-
-export const usageDisabled = `"use client";
-
-export default function DisabledOtp() {
-  const [value, setValue] = useState("123456");
-
-  return ;
 }`;
 
 ## Installation
+
+## Examples
 
 ## Usage
 

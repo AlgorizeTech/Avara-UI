@@ -4,17 +4,9 @@ A visually persistent, OS-style menu component that provides quick access to a c
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Examples
-
 Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
-export const usageDefault = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageDefault = `"use client";
 
 export default function TopNav() {
   return (
@@ -42,149 +34,107 @@ export default function TopNav() {
   );
 }`;
 
-export const usageShortcuts = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageApp = `"use client";
 
+/** Every row carries one, so no row needs \`inset\` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";
-
-export default function EditMenu() {
-  return (
-
-        Edit
-        
-          {/* MenubarShortcut right-aligns itself inside the item */}
-          
-             Undo ⌘Z
-
-             Redo ⇧⌘Z
-
-             Cut ⌘X
-
-             Copy ⌘C
-
-             Paste{" "}
-            ⌘V
-
-  );
-}`;
-
-export const usageIcons = `import { useState } from "react";
-
-const icon = "w-4 h-4 mr-2 shrink-0";
-/* A check reads as "active" in the width a word would overflow */
-const mark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
-
-export default function ViewMenu() {
-  const [theme, setTheme] = useState("System");
-
-  return (
-
-        View
-        
-          {/* Give every row an icon and the label can sit flush left — no inset
-              gutter to reserve, nothing indented past its neighbours */}
-          Theme Options
-
-           setTheme("Light")}>
-             Light Mode
-            {theme === "Light" && }
-          
-           setTheme("Dark")}>
-             Dark Mode
-            {theme === "Dark" && }
-          
-           setTheme("System")}>
-             System Default
-            {theme === "System" && }
-
-  );
-}`;
-
-export const usageDisabled = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
-
-const icon = "w-4 h-4 mr-2 shrink-0";
-
-export default function FileMenu() {
-  return (
-
-        File
-
-             Save
-
-          {/* disabled dims the row and kills pointer events + onClick */}
-          
-             Save All
-
-          {/* className styles a single destructive row */}
-          
-             Quit Nexus ⌘Q
-
-  );
-}`;
-
-export const usageApp = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarLabel,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
-
-const icon = "w-4 h-4 mr-2 shrink-0";
+/** Marks the active theme; ml-auto keeps it clear of the label. */
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
 
 export default function AppWindow() {
-  return (
-    {/* No overflow-hidden here: it would crop any menu that opens past the
-        window. The header rounds its own top corners instead. */}
-    
-      {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
+  const [theme, setTheme] = useState("System");
 
+  // No overflow-hidden on the frame: it would crop any menu taller or wider
+  // than the window. The header rounds its own top corners instead.
+  return (
+    
+      {/* Native OS-style Application Header */}
+
+          {/* 1. FILE MENU */}
+          
             Nexus UI
 
                  About Nexus
 
-                 Preferences…{" "}
+                 Preferences...{" "}
                 ⌘,
 
+                 Hide Nexus{" "}
+                ⌘H
+
+                 Hide Others{" "}
+                ⇧⌘H
+
+                 Show All
+
+                 Quit Nexus{" "}
+                ⌘Q
+
+          {/* 2. EDIT MENU */}
+          
             Edit
 
-                 Undo ⌘Z
+                 Undo{" "}
+                ⌘Z
 
+                 Redo{" "}
+                ⇧⌘Z
+
+                 Cut{" "}
+                ⌘X
+
+                 Copy{" "}
+                ⌘C
+
+                 Paste{" "}
+                ⌘V
+
+          {/* 3. VIEW (THEME) MENU */}
+          
+            View
+            
+              {/* Labels sit flush left; the rows carry the icon gutter. */}
+              Theme Options
+               setTheme("Light")}>
+                 Light Mode
+                {theme === "Light" && }
+              
+               setTheme("Dark")}>
+                 Dark Mode
+                {theme === "Dark" && }
+              
+               setTheme("System")}>
+                 System Default
+                {theme === "System" && }
+
+                 Toggle Fullscreen{" "}
+                F11
+
+          {/* 4. PROFILES MENU */}
+          
             Profiles
-            {/* align anchors the dropdown to the trigger: start | center | end */}
             
               Active Account
               
                  Andy Bernard
 
-                 Add Account…
+                 Add Account...
 
                  Manage Profiles
 
-      {/* your app canvas */}
-    
+      {/* Fake App Body */}
+
+          Application Canvas
+
+          Click the menus at the top to test the interaction states and
+          cross-menu hover switching.
+
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.

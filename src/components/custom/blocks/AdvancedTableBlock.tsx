@@ -1,623 +1,825 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Check, ChevronLeft, ChevronRight, Minus, Search, X } from "lucide-react";
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { SelectBlock } from "./SelectBlock";
 import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Edit2,
-  Minus,
-  Search,
-  Trash2,
-  X,
-} from "lucide-react";
-import React, { forwardRef, useEffect, useMemo, useState } from "react";
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableEmpty,
+  TableExpandToggle,
+  TableExpandedRow,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+  getThemeStyles,
+  type TableAlign,
+  type TableColor,
+  type TableSize,
+  type TableVariant,
+} from "./TableBlock";
+
+export { getThemeStyles };
+export type { TableAlign, TableColor, TableSize, TableVariant };
 
 // ==========================================
-// THEME & CONFIGURATION
+// DATA ACCESS — deliberately shape-agnostic
 // ==========================================
-export type TableColor =
-  | "indigo"
-  | "rose"
-  | "emerald"
-  | "blue"
-  | "zinc"
-  | (string & {});
+/** A column value is read either by dot-path or by your own function. */
+export type Accessor<T> = string | ((row: T) => unknown);
 
-const colorThemes: Record<string, Record<string, string>> = {
-  indigo: {
-    bg: "bg-indigo-600",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-600",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    ring: "focus:border-indigo-600 focus:ring-indigo-600/10",
-    headerBg: "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300",
-  },
-  rose: {
-    bg: "bg-rose-600",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-600",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    ring: "focus:border-rose-600 focus:ring-rose-600/10",
-    headerBg: "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300",
-  },
-  emerald: {
-    bg: "bg-emerald-600",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-600",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    ring: "focus:border-emerald-600 focus:ring-emerald-600/10",
-    headerBg: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300",
-  },
-  blue: {
-    bg: "bg-blue-600",
-    text: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-600",
-    bgSoft: "bg-blue-50 dark:bg-blue-500/10",
-    ring: "focus:border-blue-600 focus:ring-blue-600/10",
-    headerBg: "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300",
-  },
-  zinc: {
-    bg: "bg-zinc-900 dark:bg-zinc-100",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    ring: "focus:border-zinc-900 focus:ring-zinc-900/10",
-    headerBg: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
-  },
-};
+export type SortType = "auto" | "string" | "number" | "date";
 
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color?: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--table-color)]",
-        text: "text-[var(--table-color)]",
-        border: "border-[var(--table-color)]",
-        bgSoft: "bg-[rgba(var(--table-rgb),0.1)]",
-        ring: "focus:border-[var(--table-color)] focus:ring-[rgba(var(--table-rgb),0.1)]",
-        headerBg: "bg-[rgba(var(--table-rgb),0.12)] text-[var(--table-color)]",
-      },
-      style: {
-        "--table-color": color,
-        "--table-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  if (color && colorThemes[color]) {
-    return { theme: colorThemes[color], style: {} };
-  }
-  // Default to dynamic site primary theme color
-  return {
-    theme: {
-      bg: "bg-primary text-primary-foreground",
-      text: "text-primary",
-      border: "border-primary",
-      bgSoft: "bg-primary/10",
-      ring: "focus:border-primary focus:ring-primary/20",
-      headerBg: "bg-primary/10 dark:bg-primary/20 text-primary",
-    },
-    style: {},
-  };
-};
-
-// ==========================================
-// INTERFACES
-// ==========================================
-export interface TableColumn<T> {
-  key: keyof T | string;
-  header: string;
-  sortable?: boolean;
-  width?: string;
-  render?: (row: T) => React.ReactNode;
-  sortType?: "string" | "number";
+/** Reads "user.profile.name" as well as a plain "name". */
+export function resolveAccessor<T>(row: T, accessor: Accessor<T>): unknown {
+  if (typeof accessor === "function") return accessor(row);
+  return accessor
+    .split(".")
+    .reduce<any>((acc, key) => (acc == null ? acc : acc[key]), row);
 }
 
-export interface AdvancedTableProps<T>
+/** Flattens any nested row into one searchable string. */
+function defaultSearchText(value: unknown): string {
+  if (value == null) return "";
+  if (typeof value !== "object") return String(value);
+  if (Array.isArray(value)) return value.map(defaultSearchText).join(" ");
+  return Object.values(value as Record<string, unknown>)
+    .map(defaultSearchText)
+    .join(" ");
+}
+
+/** Works with SQL `id`, Mongo `_id` and anything you map yourself. */
+function defaultGetRowId(row: any): string | number {
+  return row?.id ?? row?._id ?? row?.uuid ?? row?.key;
+}
+
+function compareValues(a: unknown, b: unknown, type: SortType): number {
+  if (type === "number") return Number(a) - Number(b);
+  if (type === "date")
+    return new Date(String(a)).getTime() - new Date(String(b)).getTime();
+  if (type === "auto" && typeof a === "number" && typeof b === "number")
+    return a - b;
+  const as = String(a ?? "").toLowerCase();
+  const bs = String(b ?? "").toLowerCase();
+  return as < bs ? -1 : as > bs ? 1 : 0;
+}
+
+// ==========================================
+// CONTEXT
+// ==========================================
+interface SortState<T> {
+  id: string;
+  direction: "asc" | "desc";
+  accessor: Accessor<T>;
+  type: SortType;
+}
+
+export interface DataTableContextValue<T = any> {
+  /** Exactly what you passed in. */
+  sourceRows: T[];
+  /** After search + sort, before paging. */
+  filteredRows: T[];
+  /** The current page — what you render. */
+  rows: T[];
+  getRowId: (row: T) => string | number;
+
+  search: string;
+  setSearch: (value: string) => void;
+
+  sort: { id: string; direction: "asc" | "desc" } | null;
+  toggleSort: (id: string, accessor: Accessor<T>, type: SortType) => void;
+
+  page: number;
+  setPage: (page: number) => void;
+  pageSize: number;
+  setPageSize: (size: number) => void;
+  pageSizeOptions: number[];
+  totalPages: number;
+  total: number;
+  from: number;
+  to: number;
+
+  selectedIds: Set<string | number>;
+  selectedRows: T[];
+  isSelected: (id: string | number) => boolean;
+  toggleRow: (id: string | number) => void;
+  toggleAllOnPage: () => void;
+  clearSelection: () => void;
+  isAllPageSelected: boolean;
+  isSomePageSelected: boolean;
+
+  isExpanded: (id: string | number) => boolean;
+  toggleExpanded: (id: string | number) => void;
+
+  theme: Record<string, string>;
+}
+
+const DataTableContext = createContext<DataTableContextValue | null>(null);
+
+/** Escape hatch — build your own toolbar, pager or empty state on this. */
+export function useDataTable<T = any>(): DataTableContextValue<T> {
+  const ctx = useContext(DataTableContext);
+  if (!ctx) {
+    throw new Error("useDataTable must be used inside <DataTable>.");
+  }
+  return ctx as DataTableContextValue<T>;
+}
+
+const RowContext = createContext<{ rowId: string | number } | null>(null);
+const useRowId = () => useContext(RowContext)?.rowId;
+
+// ==========================================
+// ROOT
+// ==========================================
+export interface DataTableProps<T>
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
   data: T[];
-  columns: TableColumn<T>[];
+  /** Defaults to `id`, then `_id`, then `uuid`. */
+  getRowId?: (row: T) => string | number;
+  /** Override how a row is flattened for the search box. */
+  getSearchText?: (row: T) => string;
+  variant?: TableVariant;
   color?: TableColor;
-  searchable?: boolean;
-  selectable?: boolean;
-  primaryKey: keyof T;
-  onBatchDelete?: (selectedIds: string[]) => void;
-  onBatchEdit?: (selectedIds: string[]) => void;
-  itemsPerPageOptions?: number[];
-  batchActions?: (
-    selectedIds: string[],
-    clearSelection: () => void,
-  ) => React.ReactNode;
+  size?: TableSize;
+  initialSort?: { id: string; direction?: "asc" | "desc"; type?: SortType };
+  pageSize?: number;
+  pageSizeOptions?: number[];
+  /** Fires whenever the selection changes, with the full row objects. */
+  onSelectionChange?: (rows: T[]) => void;
 }
 
-// ==========================================
-// COMPONENT
-// ==========================================
-export const AdvancedTableBlock = forwardRef<
-  HTMLDivElement,
-  AdvancedTableProps<any>
->(
-  (
-    {
-      data,
-      columns,
-      color,
-      searchable = true,
-      selectable = true,
-      primaryKey,
-      onBatchDelete,
-      onBatchEdit,
-      itemsPerPageOptions = [5, 10, 25, 50],
-      batchActions,
-      className,
-      ...props
-    },
-    ref,
-  ) => {
-    const { theme, style } = getThemeStyles(color as string);
+function DataTableImpl<T>({
+  data,
+  getRowId = defaultGetRowId,
+  getSearchText,
+  variant = "default",
+  color = "primary",
+  size = "md",
+  initialSort,
+  pageSize: pageSizeProp,
+  pageSizeOptions = [5, 10, 25, 50],
+  onSelectionChange,
+  className,
+  children,
+  ...props
+}: DataTableProps<T>) {
+  const { theme } = getThemeStyles(color as string);
 
-    // State
-    const [search, setSearch] = useState("");
-    const [sortConfig, setSortConfig] = useState<{
-      key: string;
-      direction: "asc" | "desc";
-      type: "string" | "number";
-    } | null>(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(
-      itemsPerPageOptions[1] || 10,
-    );
-    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-
-    // 1. Filter
-    const filteredData = useMemo(() => {
-      if (!search) return data;
-      const lowerSearch = search.toLowerCase();
-      return data.filter((row) =>
-        Object.entries(row).some(([, val]) =>
-          String(val).toLowerCase().includes(lowerSearch),
-        ),
-      );
-    }, [data, search]);
-
-    // 2. Sort
-    const sortedData = useMemo(() => {
-      if (!sortConfig) return filteredData;
-      return [...filteredData].sort((a, b) => {
-        let aVal = a[sortConfig.key];
-        let bVal = b[sortConfig.key];
-
-        if (sortConfig.type === "number") {
-          return sortConfig.direction === "asc"
-            ? Number(aVal) - Number(bVal)
-            : Number(bVal) - Number(aVal);
+  const [search, setSearchState] = useState("");
+  const [sort, setSort] = useState<SortState<T> | null>(
+    initialSort
+      ? {
+          id: initialSort.id,
+          direction: initialSort.direction ?? "asc",
+          accessor: initialSort.id,
+          type: initialSort.type ?? "auto",
         }
+      : null,
+  );
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSizeState] = useState(
+    pageSizeProp ?? pageSizeOptions[1] ?? 10,
+  );
+  const [selectedIds, setSelectedIds] = useState<Set<string | number>>(
+    new Set(),
+  );
+  const [expandedIds, setExpandedIds] = useState<Set<string | number>>(
+    new Set(),
+  );
 
-        aVal = String(aVal).toLowerCase();
-        bVal = String(bVal).toLowerCase();
-        if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
-        if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
-        return 0;
-      });
-    }, [filteredData, sortConfig]);
+  // 1. Search
+  const searchedRows = useMemo(() => {
+    if (!search.trim()) return data;
+    const needle = search.toLowerCase();
+    return data.filter((row) =>
+      (getSearchText ? getSearchText(row) : defaultSearchText(row))
+        .toLowerCase()
+        .includes(needle),
+    );
+  }, [data, search, getSearchText]);
 
-    // 3. Paginate
-    const totalPages = Math.ceil(sortedData.length / itemsPerPage) || 1;
-    const paginatedData = useMemo(() => {
-      const start = (currentPage - 1) * itemsPerPage;
-      return sortedData.slice(start, start + itemsPerPage);
-    }, [sortedData, currentPage, itemsPerPage]);
+  // 2. Sort
+  const filteredRows = useMemo(() => {
+    if (!sort) return searchedRows;
+    const factor = sort.direction === "asc" ? 1 : -1;
+    return [...searchedRows].sort(
+      (a, b) =>
+        factor *
+        compareValues(
+          resolveAccessor(a, sort.accessor),
+          resolveAccessor(b, sort.accessor),
+          sort.type,
+        ),
+    );
+  }, [searchedRows, sort]);
 
-    // Bounds check
-    useEffect(() => {
-      if (currentPage > totalPages) setCurrentPage(totalPages);
-    }, [totalPages, currentPage]);
+  // 3. Paginate
+  const total = filteredRows.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const rows = useMemo(
+    () => filteredRows.slice((page - 1) * pageSize, page * pageSize),
+    [filteredRows, page, pageSize],
+  );
 
-    // Handlers
-    const handleSort = (key: string, type: "string" | "number" = "string") => {
-      let direction: "asc" | "desc" = "asc";
-      if (sortConfig && sortConfig.key === key) {
-        direction = sortConfig.direction === "asc" ? "desc" : "asc";
-      } else if (type === "number") {
-        direction = "desc"; // Default descending for numbers/dates
-      }
-      setSortConfig({ key, direction, type });
-    };
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
 
-    const toggleSelection = (id: string) => {
-      const newSet = new Set(selectedIds);
-      if (newSet.has(id)) newSet.delete(id);
-      else newSet.add(id);
-      setSelectedIds(newSet);
-    };
+  const setSearch = useCallback((value: string) => {
+    setSearchState(value);
+    setPage(1);
+  }, []);
 
-    const toggleAllPageSelection = () => {
-      const pageIds = paginatedData.map((row) => String(row[primaryKey]));
+  const setPageSize = useCallback((next: number) => {
+    setPageSizeState(next);
+    setPage(1);
+  }, []);
+
+  const toggleSort = useCallback(
+    (id: string, accessor: Accessor<T>, type: SortType) => {
+      setSort((prev) =>
+        prev && prev.id === id
+          ? {
+              id,
+              accessor,
+              type,
+              direction: prev.direction === "asc" ? "desc" : "asc",
+            }
+          : { id, accessor, type, direction: "asc" },
+      );
+    },
+    [],
+  );
+
+  const selectedRows = useMemo(
+    () => data.filter((row) => selectedIds.has(getRowId(row))),
+    [data, selectedIds, getRowId],
+  );
+
+  // Keyed off `selectedIds` only: `getRowId` is usually an inline arrow, so
+  // `selectedRows` gets a fresh identity every render and depending on it here
+  // would re-fire the callback on every render — an infinite loop for any
+  // parent that calls setState in `onSelectionChange`.
+  const selectionCallbackRef = React.useRef(onSelectionChange);
+  selectionCallbackRef.current = onSelectionChange;
+  const selectedRowsRef = React.useRef(selectedRows);
+  selectedRowsRef.current = selectedRows;
+
+  useEffect(() => {
+    selectionCallbackRef.current?.(selectedRowsRef.current);
+  }, [selectedIds]);
+
+  const toggleRow = useCallback((id: string | number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const pageIds = useMemo(() => rows.map(getRowId), [rows, getRowId]);
+
+  const isAllPageSelected =
+    pageIds.length > 0 && pageIds.every((id) => selectedIds.has(id));
+  const isSomePageSelected =
+    !isAllPageSelected && pageIds.some((id) => selectedIds.has(id));
+
+  const toggleAllOnPage = useCallback(() => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
       const allSelected =
-        pageIds.length > 0 && pageIds.every((id) => selectedIds.has(id));
+        pageIds.length > 0 && pageIds.every((id) => next.has(id));
+      pageIds.forEach((id) => (allSelected ? next.delete(id) : next.add(id)));
+      return next;
+    });
+  }, [pageIds]);
 
-      const newSet = new Set(selectedIds);
-      if (allSelected) {
-        pageIds.forEach((id) => newSet.delete(id));
-      } else {
-        pageIds.forEach((id) => newSet.add(id));
-      }
-      setSelectedIds(newSet);
-    };
+  const clearSelection = useCallback(() => setSelectedIds(new Set()), []);
 
-    const clearSelection = () => setSelectedIds(new Set());
+  const toggleExpanded = useCallback((id: string | number) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
 
-    const isAllPageSelected =
-      paginatedData.length > 0 &&
-      paginatedData.every((row) => selectedIds.has(String(row[primaryKey])));
-    const isSomePageSelected =
-      paginatedData.length > 0 &&
-      paginatedData.some((row) => selectedIds.has(String(row[primaryKey]))) &&
-      !isAllPageSelected;
+  const value: DataTableContextValue<T> = {
+    sourceRows: data,
+    filteredRows,
+    rows,
+    getRowId,
+    search,
+    setSearch,
+    sort: sort ? { id: sort.id, direction: sort.direction } : null,
+    toggleSort,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    pageSizeOptions,
+    totalPages,
+    total,
+    from: total === 0 ? 0 : (page - 1) * pageSize + 1,
+    to: Math.min(page * pageSize, total),
+    selectedIds,
+    selectedRows,
+    isSelected: (id) => selectedIds.has(id),
+    toggleRow,
+    toggleAllOnPage,
+    clearSelection,
+    isAllPageSelected,
+    isSomePageSelected,
+    isExpanded: (id) => expandedIds.has(id),
+    toggleExpanded,
+    theme,
+  };
 
-    // Unique ID for scoped keyframes
-    const tableId = React.useId().replace(/:/g, "");
-
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "w-full flex flex-col gap-4 font-sans text-[#1a1a2e]",
-          className,
-        )}
-        style={style}
+  return (
+    <DataTableContext.Provider value={value as DataTableContextValue}>
+      <Table
+        variant={variant}
+        color={color}
+        size={size}
+        className={cn("relative", className)}
         {...props}
       >
-        <style>{`
-          @keyframes fadeUp-${tableId} {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        `}</style>
+        {children}
+      </Table>
+    </DataTableContext.Provider>
+  );
+}
 
-        {/* --- TOOLBAR --- */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
-          {searchable ? (
-            <div className="relative w-full sm:w-[260px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Search all columns…"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className={cn(
-                  "w-full pl-9 pr-3 py-2 text-[13px] bg-white dark:bg-zinc-950 dark:text-white border-[1.5px] border-zinc-200 dark:border-zinc-800 rounded-lg outline-none transition-all shadow-sm",
-                  theme.ring,
-                  "focus:ring-[3px]",
-                )}
-              />
-            </div>
-          ) : (
-            <div />
-          )}
+/** Generic over the row shape, so `data` infers T everywhere downstream. */
+export const DataTable = DataTableImpl as <T>(
+  props: DataTableProps<T>,
+) => React.ReactElement | null;
 
-          <div className="flex items-center gap-2 relative h-10 min-w-[180px] sm:min-w-[220px] justify-end overflow-visible">
-            {/* Entries Dropdown */}
-            <div
-              className={cn(
-                "flex items-center gap-1.5 text-[13px] text-zinc-500 transition-opacity duration-200",
-                selectedIds.size > 0
-                  ? "opacity-0 pointer-events-none hidden"
-                  : "opacity-100 pointer-events-auto",
-              )}
-            >
-              Show
-              <SelectBlock
-                options={itemsPerPageOptions.map((opt) => ({
-                  label: String(opt),
-                  value: String(opt),
-                }))}
-                value={String(itemsPerPage)}
-                onChange={(v) => {
-                  setItemsPerPage(Number(v));
-                  setCurrentPage(1);
-                }}
-                color={color as string}
-                inputSize="sm"
-                className="w-[72px] shrink-0"
-              />
-              entries
-            </div>
+// ==========================================
+// PASS-THROUGH LAYOUT (unchanged from Table)
+// ==========================================
+export const DataTableHeading = TableHeading;
+export const DataTableContent = TableContent;
+export const DataTableHeader = TableHeader;
+export const DataTableCell = TableCell;
+export const DataTableFooter = TableFooter;
+export const DataTableEmpty = TableEmpty;
 
-            {/* Floating Batch Actions Pill - Dynamic Theme Color & Perfectly Aligned */}
-            <div
-              className={cn(
-                "flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-xl shadow-lg border border-primary-foreground/20 overflow-hidden transition-all duration-300 ease-out z-20",
-                selectedIds.size > 0
-                  ? "opacity-100 pointer-events-auto translate-y-0 scale-100 flex"
-                  : "opacity-0 pointer-events-none -translate-y-2 scale-95 hidden",
-              )}
-            >
-              <span className="text-[11px] sm:text-[12px] font-black whitespace-nowrap pl-0.5">
-                {selectedIds.size} selected
-              </span>
-              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
+// ==========================================
+// WIRED PARTS
+// ==========================================
+export const DataTableToolbar = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full",
+      className,
+    )}
+    {...props}
+  >
+    {children}
+  </div>
+));
+DataTableToolbar.displayName = "DataTableToolbar";
 
-              {batchActions ? (
-                batchActions(Array.from(selectedIds), clearSelection)
-              ) : (
-                <div className="flex items-center gap-1">
-                  {onBatchEdit && (
-                    <button
-                      onClick={() => onBatchEdit(Array.from(selectedIds))}
-                      className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors whitespace-nowrap active:scale-95 text-primary-foreground"
-                    >
-                      <Edit2 className="w-3 h-3" /> <span className="hidden sm:inline">Edit</span>
-                    </button>
-                  )}
-                  {onBatchDelete && (
-                    <button
-                      onClick={() => {
-                        onBatchDelete(Array.from(selectedIds));
-                        clearSelection();
-                      }}
-                      className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-rose-500/80 text-white hover:bg-rose-600 transition-colors whitespace-nowrap active:scale-95"
-                    >
-                      <Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Delete</span>
-                    </button>
-                  )}
-                </div>
-              )}
+export interface DataTableSearchProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
+  placeholder?: string;
+}
 
-              <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
-              <button
-                onClick={clearSelection}
-                className="p-1 text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0"
-                title="Clear selection"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        </div>
+export const DataTableSearch = forwardRef<
+  HTMLInputElement,
+  DataTableSearchProps
+>(({ placeholder = "Search…", className, ...props }, ref) => {
+  const { search, setSearch, theme } = useDataTable();
+  return (
+    <div className={cn("relative w-full sm:w-[260px]", className)}>
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+      <input
+        ref={ref}
+        type="search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder={placeholder}
+        className={cn(
+          "w-full pl-9 pr-3 py-2 text-[13px] bg-background text-foreground border-[1.5px] border-border rounded-lg outline-none transition-all shadow-sm focus:ring-[3px]",
+          theme.focusRing,
+        )}
+        {...props}
+      />
+    </div>
+  );
+});
+DataTableSearch.displayName = "DataTableSearch";
 
-        {/* --- TABLE CONTAINER --- */}
-        <div className="w-full overflow-x-auto overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]">
-          <table className="w-full text-[13px] sm:text-[13.5px] text-left border-collapse whitespace-nowrap">
-            <thead
-              className={cn(
-                "border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md transition-colors duration-150",
-                theme.headerBg,
-              )}
-            >
-              <tr>
-                {selectable && (
-                  <th className="w-11 px-4 py-[11px] text-center">
-                    <div className="flex items-center justify-center">
-                      <button
-                        onClick={toggleAllPageSelection}
-                        className={cn(
-                          "w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-colors shrink-0",
-                          isAllPageSelected || isSomePageSelected
-                            ? cn(theme.bg, theme.border)
-                            : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950",
-                        )}
-                      >
-                        {isAllPageSelected && (
-                          <Check
-                            className="w-2.5 h-2.5 text-white"
-                            strokeWidth={3}
-                          />
-                        )}
-                        {isSomePageSelected && (
-                          <Minus
-                            className="w-2.5 h-2.5 text-white"
-                            strokeWidth={3}
-                          />
-                        )}
-                      </button>
-                    </div>
-                  </th>
-                )}
-                {columns.map((col) => (
-                  <th
-                    key={String(col.key)}
-                    className={cn(
-                      "px-4 py-[11px] font-semibold text-[12px] text-zinc-500 uppercase tracking-[0.04em]",
-                      col.sortable &&
-                        cn(
-                          "cursor-pointer select-none group hover:",
-                          theme.text,
-                        ),
-                    )}
-                    style={{ width: col.width }}
-                    onClick={() =>
-                      col.sortable && handleSort(String(col.key), col.sortType)
-                    }
-                  >
-                    <div className="flex items-center gap-1.5">
-                      {col.header}
-                      {col.sortable && (
-                        <div className="flex flex-col opacity-50 group-hover:opacity-100 transition-opacity">
-                          {sortConfig?.key === String(col.key) ? (
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              className={cn("w-3 h-3 block", theme.text)}
-                            >
-                              <path
-                                d={
-                                  sortConfig.direction === "asc"
-                                    ? "M12 19V5M5 12l7-7 7 7"
-                                    : "M12 5v14M5 12l7 7 7-7"
-                                }
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              className="w-3 h-3 text-zinc-400"
-                            >
-                              <path d="M7 15l5 5 5-5M7 9l5-5 5 5" />
-                            </svg>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
+export interface DataTablePageSizeProps {
+  label?: string;
+  suffix?: string;
+  color?: TableColor;
+  className?: string;
+}
 
-            <tbody>
-              {paginatedData.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={columns.length + (selectable ? 1 : 0)}
-                    className="py-12 text-center text-[14px] text-zinc-400"
-                  >
-                    No results found.
-                  </td>
-                </tr>
-              ) : (
-                paginatedData.map((row, rowIndex) => {
-                  const id = String(row[primaryKey]);
-                  const isSelected = selectedIds.has(id);
+export function DataTablePageSize({
+  label = "Show",
+  suffix = "entries",
+  color,
+  className,
+}: DataTablePageSizeProps) {
+  const { pageSize, setPageSize, pageSizeOptions } = useDataTable();
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-1.5 text-[13px] text-muted-foreground",
+        className,
+      )}
+    >
+      {label}
+      <SelectBlock
+        options={pageSizeOptions.map((opt) => ({
+          label: String(opt),
+          value: String(opt),
+        }))}
+        value={String(pageSize)}
+        onChange={(v) => setPageSize(Number(v))}
+        color={color as string}
+        inputSize="sm"
+        className="w-[72px] shrink-0"
+      />
+      {suffix}
+    </div>
+  );
+}
 
-                  return (
-                    <tr
-                      key={id}
-                      className={cn(
-                        "border-b border-zinc-100 dark:border-zinc-800/60 transition-all duration-150",
-                        isSelected
-                          ? "bg-zinc-100/80 dark:bg-zinc-800/60"
-                          : "hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
-                      )}
-                      style={{
-                        animation: `fadeUp-${tableId} 0.2s ease ${rowIndex * 30}ms both`,
-                      }}
-                    >
-                      {selectable && (
-                        <td className="px-4 py-3 text-center">
-                          <div className="flex items-center justify-center">
-                            <button
-                              onClick={() => toggleSelection(id)}
-                              className={cn(
-                                "w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-colors shrink-0",
-                                isSelected
-                                  ? cn(theme.bg, theme.border)
-                                  : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950",
-                              )}
-                            >
-                              {isSelected && (
-                                <Check
-                                  className="w-2.5 h-2.5 text-white"
-                                  strokeWidth={3}
-                                />
-                              )}
-                            </button>
-                          </div>
-                        </td>
-                      )}
-                      {columns.map((col) => (
-                        <td
-                          key={String(col.key)}
-                          className="px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-[13.5px] text-zinc-800 dark:text-zinc-200"
-                        >
-                          {col.render
-                            ? col.render(row)
-                            : String(row[col.key] || "")}
-                        </td>
-                      ))}
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+/**
+ * Children receive the current page of rows. Falling back to plain children
+ * keeps `useDataTable()` viable for people who want to map rows themselves.
+ */
+export interface DataTableBodyProps<T = any>
+  extends Omit<React.HTMLAttributes<HTMLTableSectionElement>, "children"> {
+  children: ((rows: T[]) => React.ReactNode) | React.ReactNode;
+  animate?: boolean;
+}
 
-        {/* --- FOOTER / PAGINATION --- */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-1">
-          <div className="text-[13px] text-zinc-500">
-            Showing{" "}
-            <strong className="font-semibold text-[#111827] dark:text-zinc-100">
-              {sortedData.length === 0
-                ? 0
-                : (currentPage - 1) * itemsPerPage + 1}
-            </strong>{" "}
-            to{" "}
-            <strong className="font-semibold text-[#111827] dark:text-zinc-100">
-              {Math.min(currentPage * itemsPerPage, sortedData.length)}
-            </strong>{" "}
-            of{" "}
-            <strong className="font-semibold text-[#111827] dark:text-zinc-100">
-              {sortedData.length}
-            </strong>{" "}
-            results
-          </div>
+function DataTableBodyImpl<T>({
+  children,
+  animate = false,
+  ...props
+}: DataTableBodyProps<T>) {
+  const { rows, page, sort, search } = useDataTable<T>();
+  return (
+    <TableBody
+      animate={animate}
+      animateKey={`${page}-${sort?.id ?? ""}-${sort?.direction ?? ""}-${search}`}
+      {...props}
+    >
+      {typeof children === "function"
+        ? (children as (rows: T[]) => React.ReactNode)(rows)
+        : children}
+    </TableBody>
+  );
+}
 
-          <div className="flex items-center gap-[3px]">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="w-8 h-8 rounded-lg border-[1.5px] border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 flex items-center justify-center disabled:opacity-35 disabled:cursor-not-allowed hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
-            </button>
+export const DataTableBody = DataTableBodyImpl as <T = any>(
+  props: DataTableBodyProps<T>,
+) => React.ReactElement | null;
 
-            {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
-              let pageNum = i + 1;
-              if (totalPages > 5 && currentPage > 3) {
-                pageNum = currentPage - 2 + i;
-                if (pageNum > totalPages) pageNum = totalPages - (4 - i);
-              }
+export interface DataTableRowProps<T = any>
+  extends React.HTMLAttributes<HTMLTableRowElement> {
+  /** Pass the row and selection/expansion wire themselves up. */
+  row?: T;
+  /** Or pass the id directly. */
+  rowId?: string | number;
+  isHeader?: boolean;
+}
 
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={cn(
-                    "w-8 h-8 rounded-lg text-[13px] font-medium border-[1.5px] flex items-center justify-center transition-all",
-                    currentPage === pageNum
-                      ? cn(theme.bg, theme.border, "font-bold text-white")
-                      : "border-transparent text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-200 dark:hover:border-zinc-700",
-                  )}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
+function DataTableRowImpl<T>({
+  row,
+  rowId: rowIdProp,
+  isHeader = false,
+  children,
+  ...props
+}: DataTableRowProps<T>) {
+  const { getRowId, isSelected } = useDataTable<T>();
+  const rowId =
+    rowIdProp ?? (row !== undefined ? getRowId(row) : (undefined as any));
 
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages || totalPages === 0}
-              className="w-8 h-8 rounded-lg border-[1.5px] border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 flex items-center justify-center disabled:opacity-35 disabled:cursor-not-allowed hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-            >
-              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  },
-);
-AdvancedTableBlock.displayName = "AdvancedTableBlock";
+  const content = (
+    <TableRow
+      isHeader={isHeader}
+      selected={rowId !== undefined && isSelected(rowId)}
+      {...props}
+    >
+      {children}
+    </TableRow>
+  );
+
+  if (rowId === undefined) return content;
+  return (
+    <RowContext.Provider value={{ rowId }}>{content}</RowContext.Provider>
+  );
+}
+
+export const DataTableRow = DataTableRowImpl as <T = any>(
+  props: DataTableRowProps<T>,
+) => React.ReactElement | null;
+
+export interface DataTableHeadProps<T = any>
+  extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "align"> {
+  align?: TableAlign;
+  /** Dot-path or accessor function. Presence of this makes the header sortable. */
+  sortBy?: Accessor<T>;
+  /** Required only when `sortBy` is a function. */
+  sortId?: string;
+  sortType?: SortType;
+}
+
+function DataTableHeadImpl<T>({
+  align = "left",
+  sortBy,
+  sortId,
+  sortType = "auto",
+  children,
+  ...props
+}: DataTableHeadProps<T>) {
+  const { sort, toggleSort } = useDataTable<T>();
+  const autoId = React.useId();
+  const id =
+    typeof sortBy === "string" ? sortBy : (sortId ?? autoId);
+
+  return (
+    <TableHead
+      align={align}
+      sortable={sortBy !== undefined}
+      sortDirection={sort?.id === id ? sort.direction : null}
+      onSort={() => sortBy !== undefined && toggleSort(id, sortBy, sortType)}
+      {...props}
+    >
+      {children}
+    </TableHead>
+  );
+}
+
+export const DataTableHead = DataTableHeadImpl as <T = any>(
+  props: DataTableHeadProps<T>,
+) => React.ReactElement | null;
+
+// ------------------------------------------
+// Selection
+// ------------------------------------------
+function CheckBox({
+  checked,
+  indeterminate,
+  onClick,
+  label,
+}: {
+  checked: boolean;
+  indeterminate?: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  const { theme } = useDataTable();
+  const active = checked || indeterminate;
+  return (
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={indeterminate ? "mixed" : checked}
+      aria-label={label}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      className={cn(
+        "w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-colors shrink-0",
+        active ? cn(theme.bg, theme.border) : "border-border bg-background",
+      )}
+    >
+      {indeterminate ? (
+        <Minus className="w-2.5 h-2.5" strokeWidth={3} />
+      ) : checked ? (
+        <Check className="w-2.5 h-2.5" strokeWidth={3} />
+      ) : null}
+    </button>
+  );
+}
+
+export function DataTableSelectAll({ className }: { className?: string }) {
+  const { isAllPageSelected, isSomePageSelected, toggleAllOnPage } =
+    useDataTable();
+  return (
+    <div className={cn("flex items-center justify-center", className)}>
+      <CheckBox
+        checked={isAllPageSelected}
+        indeterminate={isSomePageSelected}
+        onClick={toggleAllOnPage}
+        label="Select all rows on this page"
+      />
+    </div>
+  );
+}
+
+export function DataTableSelect({ className }: { className?: string }) {
+  const { isSelected, toggleRow } = useDataTable();
+  const rowId = useRowId();
+  if (rowId === undefined) return null;
+  return (
+    <div className={cn("flex items-center justify-center", className)}>
+      <CheckBox
+        checked={isSelected(rowId)}
+        onClick={() => toggleRow(rowId)}
+        label="Select row"
+      />
+    </div>
+  );
+}
+
+// ------------------------------------------
+// Expansion
+// ------------------------------------------
+export function DataTableExpandToggle({ className }: { className?: string }) {
+  const { isExpanded, toggleExpanded } = useDataTable();
+  const rowId = useRowId();
+  if (rowId === undefined) return null;
+  return (
+    <TableExpandToggle
+      open={isExpanded(rowId)}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleExpanded(rowId);
+      }}
+      className={className}
+    />
+  );
+}
+
+export interface DataTableExpandedRowProps
+  extends React.HTMLAttributes<HTMLTableRowElement> {
+  rowId: string | number;
+  colSpan: number;
+}
+
+export function DataTableExpandedRow({
+  rowId,
+  colSpan,
+  children,
+  ...props
+}: DataTableExpandedRowProps) {
+  const { isExpanded } = useDataTable();
+  return (
+    <TableExpandedRow open={isExpanded(rowId)} colSpan={colSpan} {...props}>
+      {children}
+    </TableExpandedRow>
+  );
+}
+
+// ------------------------------------------
+// Batch actions
+// ------------------------------------------
+export interface DataTableBatchBarProps {
+  /** Receives the selected rows and a way to clear them. */
+  children?:
+    | ((args: {
+        selectedRows: any[];
+        selectedIds: (string | number)[];
+        clearSelection: () => void;
+      }) => React.ReactNode)
+    | React.ReactNode;
+  /** Floats over the table instead of sitting inline. */
+  floating?: boolean;
+  className?: string;
+}
+
+export function DataTableBatchBar({
+  children,
+  floating = true,
+  className,
+}: DataTableBatchBarProps) {
+  const { selectedIds, selectedRows, clearSelection } = useDataTable();
+  const count = selectedIds.size;
+
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-xl shadow-lg border border-primary-foreground/20 transition-all duration-300 ease-out z-30",
+        floating &&
+          "absolute left-1/2 -translate-x-1/2 bottom-4 pointer-events-auto",
+        count > 0
+          ? "opacity-100 pointer-events-auto translate-y-0 scale-100"
+          : "opacity-0 pointer-events-none translate-y-2 scale-95",
+        className,
+      )}
+      // Keeps the pill mounted for the transition without leaving hidden
+      // buttons in the tab order.
+      inert={count === 0}
+      aria-hidden={count === 0}
+    >
+      <span className="text-[11px] sm:text-[12px] font-black whitespace-nowrap pl-0.5">
+        {count} selected
+      </span>
+      <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
+      {typeof children === "function"
+        ? children({
+            selectedRows,
+            selectedIds: Array.from(selectedIds),
+            clearSelection,
+          })
+        : children}
+      <div className="w-px h-[16px] bg-primary-foreground/30 shrink-0 mx-0.5" />
+      <button
+        type="button"
+        onClick={clearSelection}
+        title="Clear selection"
+        aria-label="Clear selection"
+        className="p-1 text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+}
+
+// ------------------------------------------
+// Footer pieces
+// ------------------------------------------
+export function DataTableInfo({ className }: { className?: string }) {
+  const { from, to, total } = useDataTable();
+  return (
+    <div className={cn("text-[13px] text-muted-foreground", className)}>
+      Showing <strong className="font-semibold text-foreground">{from}</strong>{" "}
+      to <strong className="font-semibold text-foreground">{to}</strong> of{" "}
+      <strong className="font-semibold text-foreground">{total}</strong> results
+    </div>
+  );
+}
+
+export function DataTablePagination({ className }: { className?: string }) {
+  const { page, setPage, totalPages, theme } = useDataTable();
+
+  const windowSize = Math.min(5, totalPages);
+  const start = Math.max(
+    1,
+    Math.min(page - Math.floor(windowSize / 2), totalPages - windowSize + 1),
+  );
+
+  return (
+    <div className={cn("flex items-center gap-[3px]", className)}>
+      <button
+        type="button"
+        onClick={() => setPage(Math.max(1, page - 1))}
+        disabled={page === 1}
+        aria-label="Previous page"
+        className="w-8 h-8 rounded-lg border-[1.5px] border-border bg-background text-foreground/70 flex items-center justify-center disabled:opacity-35 disabled:cursor-not-allowed hover:bg-muted transition-colors"
+      >
+        <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
+      </button>
+
+      {Array.from({ length: windowSize }).map((_, i) => {
+        const pageNum = start + i;
+        return (
+          <button
+            key={pageNum}
+            type="button"
+            onClick={() => setPage(pageNum)}
+            aria-current={page === pageNum ? "page" : undefined}
+            className={cn(
+              "w-8 h-8 rounded-lg text-[13px] font-medium border-[1.5px] flex items-center justify-center transition-all",
+              page === pageNum
+                ? cn(theme.bg, theme.border, "font-bold")
+                : "border-transparent text-foreground/70 hover:bg-muted hover:border-border",
+            )}
+          >
+            {pageNum}
+          </button>
+        );
+      })}
+
+      <button
+        type="button"
+        onClick={() => setPage(Math.min(totalPages, page + 1))}
+        disabled={page === totalPages}
+        aria-label="Next page"
+        className="w-8 h-8 rounded-lg border-[1.5px] border-border bg-background text-foreground/70 flex items-center justify-center disabled:opacity-35 disabled:cursor-not-allowed hover:bg-muted transition-colors"
+      >
+        <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
+      </button>
+    </div>
+  );
+}

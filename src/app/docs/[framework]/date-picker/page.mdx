@@ -7,8 +7,6 @@ A completely custom, dependency-free Date Picker component. Native HTML `<input 
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-## Examples
-
 The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
 export const usageDefault = `"use client";
@@ -17,7 +15,7 @@ import { useState } from "react";
 import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function LaunchDatePicker() {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Date | null>(null);
 
   return (
     <DatePickerBlock
@@ -36,7 +34,7 @@ import { useState } from "react";
 import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function ValidatedDatePicker() {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState<Date | null>(null);
 
   // Passing \`error\` turns the trigger red, swaps in an alert icon and
   // replaces the helper text with your message.
@@ -81,6 +79,21 @@ export default function ValidatedDatePicker() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="date-picker" />
+
+## Examples
+
+<ExampleShowcase
+  name="date-picker"
+  colorControl
+  columns={1}
+  minHeight={450}
+  examples={[
     {
       title: "Error",
       propNotes: [
@@ -97,13 +110,8 @@ export default function ValidatedDatePicker() {
   ]}
 />
 
-## Installation
-
-<Installation name="date-picker" />
-
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

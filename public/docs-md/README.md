@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-20T06:55:11.739Z
-**Total files:** 199
+**Generated at:** 2026-08-25T16:06:29.564Z
+**Total files:** 207
 
 ## Available Files
 
@@ -51,7 +51,9 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [nextjs/floating-contact-button](/docs/nextjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [nextjs/flowchart](/docs/nextjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
+- [nextjs/footer](/docs/nextjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
+- [nextjs/globe](/docs/nextjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
@@ -77,9 +79,11 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
+- [nextjs/product-details](/docs/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [nextjs/progress](/docs/nextjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [nextjs/qr-code-generator](/docs/nextjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
+- [nextjs/reviews](/docs/nextjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `[framework]\select\page.mdx`
@@ -151,7 +155,9 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/fleet-tracker](/docs/reactjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [reactjs/floating-contact-button](/docs/reactjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [reactjs/flowchart](/docs/reactjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
+- [reactjs/footer](/docs/reactjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
+- [reactjs/globe](/docs/reactjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [reactjs/hero-video-player](/docs/reactjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
@@ -177,9 +183,11 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/popover](/docs/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [reactjs/pricing](/docs/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
+- [reactjs/product-details](/docs/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [reactjs/progress](/docs/reactjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [reactjs/qr-code-generator](/docs/reactjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [reactjs/resizable](/docs/reactjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
+- [reactjs/reviews](/docs/reactjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [reactjs/scroll-area](/docs/reactjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [reactjs/scroll-stack](/docs/reactjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [reactjs/select](/docs/reactjs-select.md) - Source: `[framework]\select\page.mdx`

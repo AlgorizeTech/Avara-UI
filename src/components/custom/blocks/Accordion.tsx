@@ -70,43 +70,43 @@ export function Accordion({
       case "bordered":
         return {
           container: "space-y-3",
-          item: "border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden bg-white dark:bg-zinc-900/60 shadow-sm data-[state=open]:border-zinc-300 dark:data-[state=open]:border-zinc-700 transition-colors duration-200",
+          item: "border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden bg-card shadow-sm data-[state=open]:border-zinc-300 dark:data-[state=open]:border-zinc-700 transition-colors duration-200",
           trigger:
-            "px-5 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 text-zinc-900 dark:text-zinc-100 transition-colors duration-200 text-left font-semibold",
-          content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+            "px-5 py-4 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold",
+          content: "px-5 pb-5 pt-1 text-muted-foreground",
         };
       case "filled":
         return {
           container: "space-y-2",
           item: "bg-zinc-100/80 dark:bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-200/50 dark:border-zinc-800/40 data-[state=open]:bg-zinc-200/70 dark:data-[state=open]:bg-zinc-800/80 data-[state=open]:border-zinc-300 dark:data-[state=open]:border-zinc-700/60 transition-colors duration-200",
-          trigger: "px-5 py-4 text-left font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-black/5 dark:hover:bg-white/5 transition-colors",
-          content: "px-5 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+          trigger: "px-5 py-4 text-left font-semibold text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-colors",
+          content: "px-5 pb-5 pt-1 text-muted-foreground",
         };
       case "elevated":
         return {
           container: "space-y-4",
-          item: "bg-white dark:bg-zinc-900/90 rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:shadow-xl dark:shadow-black/40 border border-zinc-200/60 dark:border-zinc-800/80 transition-all duration-300 hover:-translate-y-0.5",
+          item: "bg-card rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:shadow-xl dark:shadow-black/40 border border-border/60 transition-all duration-300 hover:-translate-y-0.5",
           trigger:
-            "px-6 py-5 text-left font-bold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors",
+            "px-6 py-5 text-left font-bold text-foreground hover:bg-muted/50 transition-colors",
           content:
-            "px-6 pb-6 pt-0 text-zinc-600 dark:text-zinc-400 leading-relaxed",
+            "px-6 pb-6 pt-0 text-muted-foreground leading-relaxed",
         };
       case "ghost":
         return {
           container: "space-y-1",
           item: "rounded-lg overflow-hidden border border-transparent dark:data-[state=open]:bg-zinc-900/40 transition-colors",
           trigger:
-            "px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 transition-colors duration-200 text-left font-semibold rounded-lg",
-          content: "px-4 pb-4 pt-1 text-zinc-600 dark:text-zinc-400",
+            "px-4 py-3 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold rounded-lg",
+          content: "px-4 pb-4 pt-1 text-muted-foreground",
         };
       default:
         return {
           container:
-            "space-y-0 border border-zinc-200 dark:border-zinc-800/80 rounded-xl bg-white dark:bg-zinc-900/80 overflow-hidden shadow-sm",
-          item: "border-b border-zinc-200 dark:border-zinc-800/80 last:border-0 data-[state=open]:bg-zinc-50/50 dark:data-[state=open]:bg-zinc-900/40 transition-colors",
+            "space-y-0 border border-border rounded-xl bg-card overflow-hidden shadow-sm",
+          item: "border-b border-border last:border-0 data-[state=open]:bg-muted/50 dark:data-[state=open]:bg-zinc-900/40 transition-colors",
           trigger:
-            "px-6 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 transition-colors duration-200 text-left font-semibold",
-          content: "px-6 pb-5 pt-1 text-zinc-600 dark:text-zinc-400",
+            "px-6 py-4 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold",
+          content: "px-6 pb-5 pt-1 text-muted-foreground",
         };
     }
   };
@@ -158,7 +158,7 @@ export function Accordion({
             >
               <div className="flex items-center gap-3 w-full">
                 {item.icon && (
-                  <span className="flex-shrink-0 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors duration-200">
+                  <span className="flex-shrink-0 text-muted-foreground group-hover:text-foreground transition-colors duration-200">
                     {ItemIcon ? (
                       <ItemIcon className="w-4 h-4" />
                     ) : (

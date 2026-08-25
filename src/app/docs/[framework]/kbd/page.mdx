@@ -7,8 +7,6 @@ A specialized typography component used to display keyboard buttons, shortcuts, 
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `<kbd>` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Examples
-
 Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
@@ -21,12 +19,33 @@ export const usageCombinations = `import { Kbd } from "@/components/custom/block
 
 export default function ShortcutList() {
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm">Force Reload:</span>
-      <div className="flex items-center gap-1">
-        <Kbd>⇧</Kbd>
-        <Kbd>⌘</Kbd>
-        <Kbd>R</Kbd>
+    <div className="flex flex-col items-center gap-3">
+      <p className="text-sm font-medium text-zinc-500 mb-2">Common Combinations</p>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Save file:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⌘</Kbd>
+          <Kbd>S</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Force Reload:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⇧</Kbd>
+          <Kbd>⌘</Kbd>
+          <Kbd>R</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+        <span className="text-sm">Open Terminal:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>Ctrl</Kbd>
+          <span className="text-xs text-zinc-400">+</span>
+          <Kbd>~</Kbd>
+        </div>
       </div>
     </div>
   );
@@ -61,6 +80,19 @@ export default function InlineShortcut() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="kbd" />
+
+## Examples
+
+<ExampleShowcase
+  name="kbd"
+  columns={1}
+  examples={[
     {
       title: "Combinations",
       propNotes: [
@@ -89,10 +121,6 @@ export default function InlineShortcut() {
   ]}
 />
 
-## Installation
-
-<Installation name="kbd" />
-
 ## Usage
 
 You can use the component independently, or string multiple together to represent complex key combinations.
@@ -115,7 +143,6 @@ export default function ShortcutHint() {
 
 ## Features
 Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

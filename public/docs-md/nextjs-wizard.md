@@ -4,78 +4,93 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Examples
-
 Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
 
-export const usageDefault = `import {
-  Wizard,
-  WizardContainer,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardProgress,
-  WizardStep,
-  WizardTitle,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function OnboardingFlow() {
-  // Enter submits the step's form; forwarding it to the OK button
-  // is what makes keyboard progression work.
-  const submitToNext = (e) => {
-    e.preventDefault();
-    const btn = e.currentTarget.querySelector('button[type="button"]');
-    if (btn) btn.click();
-  };
-
-  return (
-    
-      {/* Top progress bar — reads totalSteps from context */}
-
-      {/* Overflow-hidden container the GSAP slide happens inside */}
-
+export const wizardSteps = `        
           1. What's your first name?
 
           2. What is your role?
           
             We will customize your dashboard based on this.
 
+        {/* The closing step is just markup — no input, no navigation. */}
+
+            You're all set!
+            
+              Your workspace has been successfully configured.
+            
+             setRunKey((prev) => prev + 1)}
+              className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold hover:scale-105 transition-transform"
+            >
+              Finish & Restart
+
+        `;
+
+export const wizardPreamble = `  // Remounting the Wizard is what resets it back to the first step.
+  const [runKey, setRunKey] = useState(0);
+
+  // Enter submits the step's form; forwarding it to the OK button
+  // is what makes keyboard progression work.
+  const submitToNext = (e: FormEvent) => {
+    e.preventDefault();
+    const btn = e.currentTarget.querySelector(
+      'button[type="button"]',
+    );
+    if (btn) btn.click();
+  };`;
+
+export const usageDefault = `"use client";
+
+export default function OnboardingFlow() {
+${wizardPreamble}
+
+  return (
+    
+      {/* Top progress bar — reads totalSteps from context */}
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      
+${wizardSteps}
+
   );
 }`;
 
-export const usageInitialStep = `import {
-  Wizard,
-  WizardContainer,
-  WizardProgress,
-  WizardStep,
-} from "@/components/custom/blocks/WizardBlock";
+export const usageInitialStep = `"use client";
 
 export default function ResumedOnboarding() {
-  // Open on step 2 — useful when you persist progress between sessions.
-  return (
+${wizardPreamble}
 
-      {/* ...steps... */}
+  return (
+    // Open on step 2 — useful when you persist progress between sessions.
     
+      {/* Top progress bar — reads totalSteps from context */}
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      
+${wizardSteps}
+
   );
 }`;
 
-export const usageNoProgress = `import {
-  Wizard,
-  WizardContainer,
-  WizardStep,
-} from "@/components/custom/blocks/WizardBlock";
+export const usageNoProgress = `"use client";
 
 export default function BareWizard() {
-  // WizardProgress is an independent child — omit it entirely and the
-  // steps still animate and navigate exactly the same.
+${wizardPreamble}
+
   return (
+    // WizardProgress is an independent child — omit it entirely and the
+    // steps still animate and navigate exactly the same.
     
-      {/* ...steps... */}
-    
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      
+${wizardSteps}
+
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.

@@ -162,7 +162,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
           className={cn(
             "inline-flex flex-wrap items-center gap-1",
             variant === "default" &&
-              "p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800",
+              "p-1 rounded-xl bg-muted border border-border/50",
             className,
           )}
           style={style}
@@ -234,7 +234,7 @@ export const ToggleGroupItem = forwardRef<
         case "outline":
           return cn(theme.border, "shadow-sm");
         case "ghost":
-          return cn(theme.text, "bg-zinc-100 dark:bg-zinc-800");
+          return cn(theme.text, "bg-muted");
         case "default":
         default:
           return cn(theme.bg, "shadow-md");
@@ -244,12 +244,12 @@ export const ToggleGroupItem = forwardRef<
     // Inactive states
     switch (variant) {
       case "outline":
-        return "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800";
+        return "border border-border bg-transparent text-muted-foreground hover:bg-muted";
       case "ghost":
-        return "bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800";
+        return "bg-transparent text-muted-foreground hover:bg-muted";
       case "default":
       default:
-        return "bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800";
+        return "bg-transparent text-muted-foreground hover:bg-muted/50";
     }
   };
 

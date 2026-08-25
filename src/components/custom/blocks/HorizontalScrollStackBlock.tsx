@@ -79,14 +79,14 @@ function StackCard({
         zIndex: index + 1,
       }}
       className={cn(
-        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] hover:shadow-lg hover:shadow-[var(--theme-color,var(--primary))]/15 transition-all duration-300 relative",
+        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border/80 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] hover:shadow-lg hover:shadow-[var(--theme-color,var(--primary))]/15 transition-all duration-300 relative",
         isMobile ? "w-full" : "",
       )}
     >
       <div>
         {/* Top Row: Icon & Step Number */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-white group-hover:[&_svg]:!text-white">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-primary-foreground dark:group-hover:!text-zinc-900 group-hover:[&_svg]:!text-primary-foreground dark:group-hover:[&_svg]:!text-zinc-900">
             {item.icon}
           </div>
           <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
@@ -95,16 +95,16 @@ function StackCard({
         </div>
 
         {/* Content */}
-        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-2 sm:mb-3">
+        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mb-2 sm:mb-3">
           {item.title}
         </h3>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed font-normal">
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-normal">
           {item.description}
         </p>
       </div>
 
       {/* Card Bottom Indicator line */}
-      <div className="mt-8 w-full h-1 bg-slate-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+      <div className="mt-8 w-full h-1 bg-muted rounded-full overflow-hidden">
         <div className="h-full bg-[var(--theme-color,var(--primary))] w-0 group-hover:w-full transition-all duration-500 ease-out" />
       </div>
     </motion.div>
@@ -128,7 +128,7 @@ function ProgressBarItem({
   const scaleX = useTransform(progress, [start, end], [0, 1]);
 
   return (
-    <div className="h-1.5 flex-1 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+    <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
       <motion.div
         className="h-full bg-[var(--theme-color,var(--primary))]"
         style={{ scaleX, transformOrigin: "left" }}
@@ -321,7 +321,7 @@ export function HorizontalScrollStack({
         ...style,
       }}
       className={cn(
-        "relative w-full text-slate-900 dark:text-white transition-colors duration-300",
+        "relative w-full text-foreground transition-colors duration-300",
         isMobile ? "py-12 px-4 sm:px-8" : "",
         className,
       )}
@@ -334,10 +334,10 @@ export function HorizontalScrollStack({
         <div className="w-full flex flex-col gap-6">
           {/* Section Header */}
           <div className="max-w-3xl mb-4 shrink-0">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-foreground">
               {title}
             </h2>
-            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-base mt-2 font-normal">
+            <p className="text-muted-foreground text-sm sm:text-base mt-2 font-normal">
               {subtitle}
             </p>
           </div>
@@ -367,10 +367,10 @@ export function HorizontalScrollStack({
         <div className={cn("w-full overflow-hidden flex flex-col justify-start px-4 sm:px-8 lg:px-12", isInsideIframe ? "h-full pt-4 pb-2" : "sticky top-0 h-screen pt-8")}>
           {/* Section Header */}
           <div className="max-w-3xl mb-3 sm:mb-6 shrink-0">
-            <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-foreground">
               {title}
             </h2>
-            <p className="text-slate-600 dark:text-zinc-400 text-xs sm:text-base mt-1 font-normal">
+            <p className="text-muted-foreground text-xs sm:text-base mt-1 font-normal">
               {subtitle}
             </p>
           </div>

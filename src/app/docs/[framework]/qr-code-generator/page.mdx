@@ -23,37 +23,130 @@ A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Examples
+Everything below runs client-side — type a new value and the SVG regenerates instantly. The generator and the reader are separate components with separate install commands.
 
-Everything below runs client-side — type a new value and the SVG regenerates instantly.
+## QR generator
 
-export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+export const usageGenerator = `"use client";
+
+import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+import { FileText, ImageIcon } from "lucide-react";
+import { useState } from "react";
+
+type Level = "L" | "M" | "Q" | "H";
 
 export default function GeneratorExample() {
+  const [value, setValue] = useState("https://algorizetech.com");
+  const [level, setLevel] = useState<Level>("L");
+
+  // Only <QrCodeGenerator> ships with the component — the controls around it
+  // are ordinary markup wired to your own state.
   return (
-    <QrCodeGenerator
-      value="https://algorizetech.com"
-      size={220}
-      level="L"
-      bgColor="transparent"
-      fgColor="currentColor"
-    />
+    <div className="w-full flex flex-col lg:flex-row gap-8 bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+      <div className="flex-1 flex flex-col gap-6">
+        <h3 className="text-lg font-medium text-slate-600 dark:text-slate-300">
+          Generate QR codes from text or URLs.
+        </h3>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="qr-input" className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Value:
+          </label>
+          <input
+            id="qr-input"
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="https://algorizetech.com"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-colors"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 mt-2">
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">
+            Correction Level:
+          </label>
+          <div className="grid grid-cols-4 sm:inline-flex rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-black overflow-hidden w-full sm:w-max">
+            {(["L", "M", "Q", "H"] as const).map((lvl) => (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setLevel(lvl)}
+                className={
+                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center " +
+                  (level === lvl
+                    ? "bg-slate-50 dark:bg-slate-900 text-zinc-900 dark:text-white"
+                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400")
+                }
+              >
+                {lvl}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col gap-6">
+        <div className="flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800/50 p-8 min-h-[300px]">
+          <QrCodeGenerator
+            id="qr-wrapper"
+            value={value}
+            size={220}
+            level={level}
+            bgColor="transparent"
+            fgColor="currentColor"
+            className="text-zinc-900 dark:text-white"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 w-full">
+          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 transition-colors">
+            <ImageIcon className="w-4 h-4" />
+            Save as PNG
+          </button>
+          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 rounded-xl transition-colors">
+            <FileText className="w-4 h-4" />
+            Save as PDF
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }`;
 
 export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
+const swatches = [
+  { size: 96, level: "L" as const, fgColor: "currentColor" },
+  { size: 140, level: "M" as const, fgColor: "#3b82f6" },
+  { size: 200, level: "H" as const, fgColor: "#10b981" },
+];
+
 export default function QrGallery() {
   return (
-    <div className="flex items-end gap-10">
-      <QrCodeGenerator value="https://algorizetech.com" size={96} level="L" />
-      <QrCodeGenerator value="https://algorizetech.com" size={140} level="M" fgColor="#3b82f6" />
-      <QrCodeGenerator value="https://algorizetech.com" size={200} level="H" fgColor="#10b981" />
+    <div className="flex flex-wrap items-end justify-center gap-10">
+      {swatches.map((s) => (
+        <div key={s.size} className="flex flex-col items-center gap-3">
+          <QrCodeGenerator
+            value="https://algorizetech.com"
+            size={s.size}
+            level={s.level}
+            bgColor="transparent"
+            fgColor={s.fgColor}
+            className="text-zinc-900 dark:text-white"
+          />
+          <span className="text-xs font-semibold text-zinc-500">
+            size={s.size} · level=&quot;{s.level}&quot;
+          </span>
+        </div>
+      ))}
     </div>
   );
 }`;
 
-export const usageReader = `import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+export const usageReader = `"use client";
+
+import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
 
 export default function ReaderExample() {
   // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.
@@ -81,6 +174,22 @@ export default function ReaderExample() {
       usage: usageGenerator,
       code: extractCode("src/components/custom/blocks/QrCodeGeneratorBlock.tsx"),
     },
+  ]}
+/>
+
+### Installation
+
+<Installation name="qr-code-generator" />
+
+### More examples
+
+<ExampleShowcase
+  name="qr-code"
+  colorControl
+  colorProp="themeColor"
+  colorLabel="Color Variant"
+  columns={1}
+  examples={[
     {
       title: "Sizes & levels",
       propNotes: [
@@ -104,6 +213,20 @@ export default function ReaderExample() {
       props: { example: "gallery" },
       usage: usageGallery,
     },
+  ]}
+/>
+
+## QR reader
+
+A separate component with its own dependencies — decoding happens entirely in the browser.
+
+<ExampleShowcase
+  name="qr-code"
+  colorControl
+  colorProp="themeColor"
+  colorLabel="Color Variant"
+  columns={1}
+  examples={[
     {
       title: "QR reader",
       propNotes: [
@@ -120,14 +243,9 @@ export default function ReaderExample() {
   ]}
 />
 
-## Installation
+### Installation
 
-The generator and the reader are separate components with separate dependencies.
-
-<InstallGroup>
-  <Installation name="qr-code-generator" />
-  <Installation name="qr-code-reader" />
-</InstallGroup>
+<Installation name="qr-code-reader" showSetupPath={false} />
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

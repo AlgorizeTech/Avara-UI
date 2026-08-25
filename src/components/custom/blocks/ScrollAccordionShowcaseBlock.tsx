@@ -308,7 +308,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
         {...props}
       >
         {displayMode === "image-only" && (
-          <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-4 sm:mb-8 border-b border-zinc-200 dark:border-white/10 no-scrollbar px-1">
+          <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-4 sm:mb-8 border-b border-border no-scrollbar px-1">
             {items.map((item, index) => {
               const isActive = activeIndex === index;
               return (
@@ -324,7 +324,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                     "inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-mono font-bold uppercase transition-all duration-300 border shrink-0 cursor-pointer outline-none",
                     isActive
                       ? "shadow-sm scale-105"
-                      : "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-white/20",
+                      : "bg-muted dark:bg-white/5 border-border text-muted-foreground hover:border-border",
                   )}
                 >
                   <span>{item.stepNumber}</span>
@@ -374,10 +374,10 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           : undefined,
                       }}
                       className={cn(
-                        "group relative flex flex-col justify-between p-5 sm:p-8 rounded-2xl sm:rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden bg-white dark:bg-zinc-900/80 outline-none",
+                        "group relative flex flex-col justify-between p-5 sm:p-8 rounded-2xl sm:rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden bg-card outline-none",
                         isActive
                           ? "shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
-                          : "border-zinc-200/80 dark:border-white/10 opacity-85 hover:opacity-100 hover:border-zinc-300 dark:hover:border-white/20",
+                          : "border-border/80 opacity-85 hover:opacity-100 hover:border-border",
                       )}
                     >
                       {isActive && (
@@ -403,7 +403,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                             className={cn(
                               "font-mono text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl border transition-all duration-300 shrink-0 mt-0.5 sm:mt-0",
                               !isActive &&
-                                "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400",
+                                "bg-muted dark:bg-white/5 border-border text-muted-foreground",
                             )}
                           >
                             {item.stepNumber}
@@ -412,8 +412,8 @@ export const ScrollAccordionShowcase = React.forwardRef<
                             className={cn(
                               "text-base sm:text-2xl font-bold tracking-tight transition-colors duration-300 leading-snug sm:leading-tight",
                               isActive
-                                ? "text-zinc-900 dark:text-white"
-                                : "text-zinc-600 dark:text-zinc-400",
+                                ? "text-foreground"
+                                : "text-muted-foreground",
                             )}
                           >
                             {item.title}
@@ -428,7 +428,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                             "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 mt-0.5 sm:mt-0 self-start sm:self-center",
                             isActive
                               ? "rotate-0 shadow-md font-bold"
-                              : "bg-zinc-100 dark:bg-white/5 text-zinc-400 dark:text-zinc-500 -rotate-45 group-hover:bg-zinc-200 dark:group-hover:bg-white/10 group-hover:text-zinc-700 dark:group-hover:text-zinc-200",
+                              : "bg-muted dark:bg-white/5 text-muted-foreground -rotate-45 group-hover:bg-muted dark:group-hover:bg-white/10 group-hover:text-foreground",
                           )}
                         >
                           <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
@@ -448,10 +448,10 @@ export const ScrollAccordionShowcase = React.forwardRef<
                             }}
                             className="overflow-hidden z-10"
                           >
-                            <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-zinc-100 dark:border-white/10 flex flex-col gap-4 sm:gap-6">
+                            <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-border flex flex-col gap-4 sm:gap-6">
                               {/* Inline Mobile Image for 'both' mode */}
                               {displayMode === "both" && (
-                                <div className="block lg:hidden w-full relative rounded-xl overflow-hidden aspect-[16/10] border border-zinc-200/80 dark:border-white/10 shadow-sm mt-2">
+                                <div className="block lg:hidden w-full relative rounded-xl overflow-hidden aspect-[16/10] border border-border/80 shadow-sm mt-2">
                                   <img
                                     src={item.image}
                                     alt={item.title}
@@ -459,7 +459,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                                   />
                                 </div>
                               )}
-                              <p className="text-zinc-600 dark:text-zinc-300 text-[13px] sm:text-base leading-relaxed">
+                              <p className="text-muted-foreground text-[13px] sm:text-base leading-relaxed">
                                 {item.description}
                               </p>
                               {item.tags && item.tags.length > 0 && (
@@ -514,7 +514,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
               >
                 <div
                   className={cn(
-                    "relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-white/10 bg-zinc-100 dark:bg-zinc-950 shadow-2xl transition-all duration-300",
+                    "relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 bg-muted shadow-2xl transition-all duration-300",
                     displayMode === "both"
                       ? "aspect-[16/11]"
                       : "aspect-video md:aspect-[16/9]",
@@ -538,7 +538,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                     </motion.div>
                   </AnimatePresence>
                   <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 z-10 flex items-end justify-between pointer-events-none">
-                    <div className="flex flex-col gap-1 sm:gap-1.5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 shadow-2xl max-w-sm">
+                    <div className="flex flex-col gap-1 sm:gap-1.5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-border/80 shadow-2xl max-w-sm">
                       <div className="inline-flex items-center gap-2">
                         <Sparkles
                           style={{ color: accentColor }}
@@ -558,7 +558,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -5 }}
                           transition={{ duration: 0.2 }}
-                          className="text-sm sm:text-lg font-bold text-zinc-900 dark:text-white tracking-tight leading-snug truncate"
+                          className="text-sm sm:text-lg font-bold text-foreground tracking-tight leading-snug truncate"
                         >
                           {activeItem.title}
                         </motion.p>

@@ -7,38 +7,9 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-## Examples
-
 Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
 
-export const usageDefault = `import {
-  Wizard,
-  WizardContainer,
-  WizardDescription,
-  WizardInput,
-  WizardNavigation,
-  WizardProgress,
-  WizardStep,
-  WizardTitle,
-} from "@/components/custom/blocks/WizardBlock";
-
-export default function OnboardingFlow() {
-  // Enter submits the step's form; forwarding it to the OK button
-  // is what makes keyboard progression work.
-  const submitToNext = (e) => {
-    e.preventDefault();
-    const btn = e.currentTarget.querySelector('button[type="button"]');
-    if (btn) btn.click();
-  };
-
-  return (
-    <Wizard>
-      {/* Top progress bar — reads totalSteps from context */}
-      <WizardProgress />
-
-      {/* Overflow-hidden container the GSAP slide happens inside */}
-      <WizardContainer>
-        <WizardStep index={0}>
+export const wizardSteps = `        <WizardStep index={0}>
           <WizardTitle>1. What's your first name?</WizardTitle>
           <form onSubmit={submitToNext}>
             <WizardInput placeholder="Type your answer here..." autoFocus />
@@ -56,40 +27,127 @@ export default function OnboardingFlow() {
             <WizardNavigation />
           </form>
         </WizardStep>
+
+        {/* The closing step is just markup — no input, no navigation. */}
+        <WizardStep index={2}>
+          <div className="flex flex-col items-center text-center animate-in fade-in zoom-in duration-500 delay-300">
+            <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 flex items-center justify-center mb-8">
+              <CheckCircle2 className="w-10 h-10" />
+            </div>
+            <WizardTitle>You're all set!</WizardTitle>
+            <WizardDescription>
+              Your workspace has been successfully configured.
+            </WizardDescription>
+            <button
+              onClick={() => setRunKey((prev) => prev + 1)}
+              className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold hover:scale-105 transition-transform"
+            >
+              Finish & Restart
+            </button>
+          </div>
+        </WizardStep>`;
+
+export const wizardPreamble = `  // Remounting the Wizard is what resets it back to the first step.
+  const [runKey, setRunKey] = useState(0);
+
+  // Enter submits the step's form; forwarding it to the OK button
+  // is what makes keyboard progression work.
+  const submitToNext = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const btn = e.currentTarget.querySelector<HTMLButtonElement>(
+      'button[type="button"]',
+    );
+    if (btn) btn.click();
+  };`;
+
+export const usageDefault = `"use client";
+
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
+export default function OnboardingFlow() {
+${wizardPreamble}
+
+  return (
+    <Wizard key={runKey}>
+      {/* Top progress bar — reads totalSteps from context */}
+      <WizardProgress />
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
       </WizardContainer>
     </Wizard>
   );
 }`;
 
-export const usageInitialStep = `import {
+export const usageInitialStep = `"use client";
+
+import {
   Wizard,
   WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
   WizardProgress,
   WizardStep,
+  WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 export default function ResumedOnboarding() {
-  // Open on step 2 — useful when you persist progress between sessions.
+${wizardPreamble}
+
   return (
-    <Wizard initialStep={1}>
+    // Open on step 2 — useful when you persist progress between sessions.
+    <Wizard key={runKey} initialStep={1}>
+      {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
-      <WizardContainer>{/* ...steps... */}</WizardContainer>
+
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
+      </WizardContainer>
     </Wizard>
   );
 }`;
 
-export const usageNoProgress = `import {
+export const usageNoProgress = `"use client";
+
+import {
   Wizard,
   WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
   WizardStep,
+  WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 export default function BareWizard() {
-  // WizardProgress is an independent child — omit it entirely and the
-  // steps still animate and navigate exactly the same.
+${wizardPreamble}
+
   return (
-    <Wizard>
-      <WizardContainer>{/* ...steps... */}</WizardContainer>
+    // WizardProgress is an independent child — omit it entirely and the
+    // steps still animate and navigate exactly the same.
+    <Wizard key={runKey}>
+      {/* Overflow-hidden container the GSAP slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
+      </WizardContainer>
     </Wizard>
   );
 }`;
@@ -118,6 +176,20 @@ export default function BareWizard() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="wizard" />
+
+## Examples
+
+<ExampleShowcase
+  name="wizard"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Starting step",
       propNotes: [
@@ -146,13 +218,8 @@ export default function BareWizard() {
   ]}
 />
 
-## Installation
-
-<Installation name="wizard" />
-
 ## Features
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">

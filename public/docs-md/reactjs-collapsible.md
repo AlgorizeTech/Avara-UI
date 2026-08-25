@@ -6,50 +6,7 @@ Traditional collapsible components rely on Javascript (like `Element.scrollHeigh
 
 The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
 
-## Examples
-
 From a bare disclosure to a nested file tree — the same three parts every time.
-
-export const usageDefault = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function BasicUsage() {
-  return (
-
-        Click to Expand
-
-        This content was hidden!
-
-  );
-}`;
-
-export const usageFaq = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function Faq() {
-  return (
-    
-      {/* defaultOpen renders this one expanded on first paint */}
-      
-        {/* "group" + group-data-[state=open] rotates the chevron for free */}
-        
-          Can I use this UI kit in open source?
-
-            Absolutely! This code is completely dependency-free and yours to own.
-
-          How does the animation work?
-
-            It transitions grid-template-rows from 0fr to 1fr — smooth height
-            animation with no JavaScript measuring.
-
-  );
-}`;
 
 export const usageSettings = `import {
   Collapsible,
@@ -60,8 +17,9 @@ export const usageSettings = `import {
 export default function SettingsPanel() {
   return (
 
-            Push Notifications
-            Manage your alert preferences
+              Push Notifications
+
+              Manage your alert preferences
 
         {/* Swap the affordance label using the same data-state hook */}
         
@@ -69,9 +27,25 @@ export default function SettingsPanel() {
 
           Close
 
-            Email Alerts
+                Email Alerts
 
-            SMS Alerts
+                SMS Alerts
+
+      {/* Second card starts closed — defaultOpen is per-instance. */}
+
+              Security & API
+
+              Tokens and authentication
+
+        {/* Swap the affordance label using the same data-state hook */}
+        
+          Configure
+
+          Close
+
+                Production Key
+
+                  Roll
 
   );
 }`;
@@ -84,37 +58,40 @@ export const usageFileTree = `import {
 
 export default function FileTree() {
   return (
-    // Collapsibles nest freely — each level owns its own state.
+    // Collapsibles nest freely — each level owns its own open state.
 
-          src
+        {/* Level 1: src */}
 
-                app
+            src
 
-                     layout.tsx
+            {/* The before: rule draws the vertical guide line for this level. */}
+            
+              {/* Level 2: app — open on first paint */}
 
-                     page.tsx
+                  app
 
-  );
-}`;
+                       layout.tsx
 
-export const usageDisabled = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
+                       page.tsx
 
-export default function LockedSection() {
-  return (
-    // disabled makes the trigger ignore clicks and sets data-disabled.
+              {/* Level 2: components — closed, so no defaultOpen */}
 
-        Billing history (locked on the free plan)
+                  components
 
-          You will never see this — the trigger ignores clicks.
+                       Button.tsx
+
+                       Collapsible.tsx
+
+        {/* A root-level file, indented to line up with the tree's children. */}
+        
+           package.json
 
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.

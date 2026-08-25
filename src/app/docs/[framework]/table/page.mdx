@@ -3,49 +3,230 @@ import { extractCode } from "@/lib/code";
 
 # Table
 
-A highly functional, fully customizable data table component engineered for modern dashboards.
+A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
 
-We've removed the rigid, static feeling of standard HTML tables by injecting **motion and interaction**. This component features **GSAP Staggered Entrances**, **Expandable Accordion Rows**, Column Sorting, Pagination, and Action Buttons, all while seamlessly adapting to your dynamic theme colors.
+There is **no column config and no required row shape**. Whatever your API returns — nested objects, snake_case keys, `_id` instead of `id` — you map it straight into JSX. Nothing has to be flattened or transformed first.
+
+Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
+
+## Anatomy
+
+```tsx
+<Table>
+  <TableHeading title="Invoices" />
+  <TableContent>
+    <TableHeader>
+      <TableRow isHeader>
+        <TableHead>Customer</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Alice Freeman</TableCell>
+      </TableRow>
+    </TableBody>
+  </TableContent>
+  <TableFooter>…</TableFooter>
+</Table>
+```
+
+`Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
+
+export const invoiceType = `type Invoice = {
+  reference: string;
+  customer: { name: string; email: string }; // nested — no flattening needed
+  amount: number;
+  status: "completed" | "processing" | "failed";
+  issuedAt: string;
+};`;
+
+export const usageBasic = `"use client";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+
+${invoiceType}
+
+export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
+  return (
+    <Table>
+      <TableHeading title="Invoices" description="Latest activity" />
+
+      <TableContent>
+        <TableHeader>
+          <TableRow isHeader>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Customer</TableHead>
+            <TableHead align="right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {invoices.map((invoice) => (
+            <TableRow key={invoice.reference}>
+              <TableCell>{invoice.reference}</TableCell>
+
+              {/* Reach as deep into the row as you like */}
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-semibold">{invoice.customer.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {invoice.customer.email}
+                  </span>
+                </div>
+              </TableCell>
+
+              <TableCell align="right">{invoice.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableContent>
+    </Table>
+  );
+}`;
+
+export const usageMinimal = `<Table variant="minimal">
+  <TableContent>
+    <TableHeader>
+      <TableRow isHeader>
+        <TableHead>Invoice</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {invoices.map((invoice) => (
+        <TableRow key={invoice.reference}>
+          <TableCell>{invoice.reference}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </TableContent>
+</Table>`;
+
+export const usageSorting = `// Sorting is controlled — the table renders the affordance, you own the state.
+const [sort, setSort] = useState<{ key: string; direction: "asc" | "desc" } | null>(null);
+
+const toggleSort = (key: string) =>
+  setSort((prev) =>
+    prev && prev.key === key
+      ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
+      : { key, direction: "asc" },
+  );
+
+const sorted = useMemo(() => {
+  if (!sort) return invoices;
+  const factor = sort.direction === "asc" ? 1 : -1;
+  return [...invoices].sort((a, b) =>
+    factor * String(a[sort.key]).localeCompare(String(b[sort.key])),
+  );
+}, [invoices, sort]);
+
+<TableHead
+  sortable
+  sortDirection={sort?.key === "customer" ? sort.direction : null}
+  onSort={() => toggleSort("customer")}
+>
+  Customer
+</TableHead>`;
+
+export const usageExpandable = `const [open, setOpen] = useState<Set<string>>(new Set());
+
+const toggle = (id: string) =>
+  setOpen((prev) => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+
+<TableBody>
+  {invoices.map((invoice) => (
+    <React.Fragment key={invoice.reference}>
+      <TableRow>
+        <TableCell>
+          <TableExpandToggle
+            open={open.has(invoice.reference)}
+            onClick={() => toggle(invoice.reference)}
+          />
+        </TableCell>
+        <TableCell>{invoice.reference}</TableCell>
+      </TableRow>
+
+      <TableExpandedRow open={open.has(invoice.reference)} colSpan={2}>
+        <p>{invoice.note}</p>
+      </TableExpandedRow>
+    </React.Fragment>
+  ))}
+</TableBody>`;
+
+export const usagePagination = `// The primitives do not paginate for you — slice the array and fill the footer.
+// Want it built in? Use the Data Table component instead.
+const pageSize = 4;
+const [page, setPage] = useState(1);
+const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
+const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
+
+<Table>
+  <TableContent>{/* … rows … */}</TableContent>
+
+  <TableFooter>
+    <span>Page {page} of {totalPages}</span>
+    <div className="flex gap-1">
+      <button onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
+      <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>Next</button>
+    </div>
+  </TableFooter>
+</Table>`;
+
+export const usageActions = `// TableRow sets a group class, so TableRowActions can reveal on row hover.
+<TableCell align="right">
+  <TableRowActions>
+    <button onClick={() => edit(invoice)}>Edit</button>
+    <button onClick={() => remove(invoice)}>Delete</button>
+  </TableRowActions>
+</TableCell>`;
+
+export const usageEmpty = `<TableBody>
+  {rows.length === 0 ? (
+    <TableEmpty colSpan={6}>No invoices yet.</TableEmpty>
+  ) : (
+    rows.map((invoice) => <TableRow key={invoice.reference}>{/* … */}</TableRow>)
+  )}
+</TableBody>`;
+
+<ExampleShowcase
+  name="table"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Composable table",
+      propNotes: [
+        {
+          lead: "Map",
+          prop: "rows",
+          effect:
+            "straight into JSX — nested values like customer.email need no transformation.",
+        },
+      ],
+      props: { sortable: true, expandable: true },
+      usage: usageBasic,
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="table" />
 
 ## Examples
-
-Every example below is live: click a column header (like _Customer_ or _Amount_) to trigger the GSAP row-reordering animation, and hover the right edge of a row to reveal the Edit/Delete actions.
-
-export const usageMinimal = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-import { columns, data } from "./table-data";
-
-export default function MinimalTable() {
-  return <TableBlock variant="minimal" data={data} columns={columns} />;
-}`;
-
-export const usageExpandable = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-
-export default function ExpandableTable() {
-  return (
-    <TableBlock
-      data={data}
-      columns={columns}
-      expandable
-      renderExpanded={(row) => (
-        <div className="flex flex-col gap-2">
-          <h4 className="text-sm font-bold">Transaction Summary</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            {row.details ?? "No additional transaction history provided."}
-          </p>
-        </div>
-      )}
-    />
-  );
-}`;
-
-export const usagePagination = `import { TableBlock } from "@/components/custom/blocks/TableBlock";
-import { columns, data } from "./table-data";
-
-export default function PaginatedTable() {
-  return (
-    <TableBlock data={data} columns={columns} pagination={{ itemsPerPage: 5 }} />
-  );
-}`;
 
 <ExampleShowcase
   name="table"
@@ -63,69 +244,112 @@ export default function PaginatedTable() {
             "to drop the card wrapper so the table sits directly on the page.",
         },
       ],
-      props: { variant: "minimal", isSelectable: false, isPaginated: false, isExpandable: false },
+      props: { variant: "minimal", expandable: false, sortable: false },
       usage: usageMinimal,
-      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+    {
+      title: "Sortable headers",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "sortable",
+          effect: "on a TableHead to render the sort affordance.",
+        },
+        {
+          prop: "sortDirection",
+          effect:
+            "and onSort keep it fully controlled — the table never reorders your data behind your back.",
+        },
+      ],
+      props: { sortable: true, expandable: false },
+      usage: usageSorting,
     },
     {
       title: "Expandable rows",
       propNotes: [
         {
-          lead: "Set",
-          prop: "expandable",
+          lead: "Pair",
+          prop: "TableExpandToggle",
           effect:
-            "to make rows open on click.",
-        },
-        {
-          prop: "renderExpanded",
-          effect:
-            "returns the detail panel, which grid-animates open beneath the row.",
+            "with TableExpandedRow, both driven by your own open state.",
         },
       ],
-      props: { isExpandable: true, isSelectable: false, isPaginated: false },
+      props: { expandable: true, sortable: false },
       usage: usageExpandable,
     },
     {
       title: "Pagination",
       propNotes: [
         {
-          lead: "Pass",
-          prop: "pagination",
-          value: '{{ itemsPerPage: 5 }}',
+          lead: "Fill",
+          prop: "TableFooter",
           effect:
-            "and the table chunks the data and renders its own pager — you keep passing the full array.",
+            "with your own pager. For pagination that is wired for you, use the Data Table.",
         },
       ],
-      props: { isPaginated: true, isSelectable: false, isExpandable: false },
+      props: { paginated: true, expandable: false, sortable: false },
       usage: usagePagination,
+    },
+    {
+      title: "Row actions",
+      propNotes: [
+        {
+          lead: "Wrap",
+          prop: "TableRowActions",
+          effect:
+            "around your buttons to fade them in on row hover and on keyboard focus.",
+        },
+      ],
+      props: { sortable: false, expandable: false },
+      usage: usageActions,
     },
   ]}
 />
 
-## Installation
+## Density
 
-<Installation name="table" />
+<ExampleShowcase
+  name="table"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Sizes",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "size",
+          value: '"sm" | "md" | "lg"',
+          effect:
+            "on Table — every descendant reads it from context, so cells and headers stay in step.",
+        },
+      ],
+      props: { showAll: "sizes" },
+      usage: `<Table size="sm">…</Table>
+<Table size="md">…</Table>
+<Table size="lg">…</Table>`,
+    },
+  ]}
+/>
 
 ## Features
-Learn about the Table component's structured layout features, designed for displaying tabular data with clean borders and hover effects.
-
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Any data shape</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Real table markup</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Themed by context</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Stateless by default</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
   </div>
 </div>
 
@@ -133,260 +357,105 @@ Learn about the Table component's structured layout features, designed for displ
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Reach for the Data Table instead</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Keep colSpan honest</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>
   </div>
 </div>
 
 ## Props Reference
 
-Main Component Props
+### Components
 
 <div className="overflow-x-auto">
   <table>
     <thead>
-      <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
+      <tr><th>Component</th><th>Renders</th><th>Purpose</th></tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <code>data</code>
-        </td>
-        <td>
-          <code>T[]</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          An array of objects representing your rows.{" "}
-          <strong>
-            Every object must contain a unique <code>id</code> property.
-          </strong>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>columns</code>
-        </td>
-        <td>
-          <code>TableColumn[]</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          Defines the headers and data mapping (see Column Definition below).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>variant</code>
-        </td>
-        <td>
-          <code>"default" | "minimal" | "glass"</code>
-        </td>
-        <td>
-          <code>"default"</code>
-        </td>
-        <td>The surface treatment: a bordered card, a bare table, or a frosted glass panel.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>color</code>
-        </td>
-        <td>
-          <code>
-            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
-          </code>
-        </td>
-        <td>
-          <code>"primary"</code>
-        </td>
-        <td>
-          Theme color for checkboxes, selected rows and the active page button.
-          Any <code>#rrggbb</code> value is accepted.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>tableSize</code>
-        </td>
-        <td>
-          <code>"sm" | "md" | "lg"</code>
-        </td>
-        <td>
-          <code>"md"</code>
-        </td>
-        <td>Row density — controls cell padding and text size.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>expandable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          If true, rows become clickable. Clicking a row expands it to show the
-          content returned by <code>renderExpanded</code>.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>renderExpanded</code>
-        </td>
-        <td>
-          <code>(row: T) =&gt; ReactNode</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          A function that returns the JSX to render inside the expanded
-          accordion area beneath a row.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>selectable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          If true, injects a column of checkboxes allowing users to select rows.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>pagination</code>
-        </td>
-        <td>
-          <code>&#123; itemsPerPage: number &#125;</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          If provided, automatically chunks the data and displays a pagination
-          bar at the bottom.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>onSelectionChange</code>
-        </td>
-        <td>
-          <code>(rows: T[]) =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Callback returning an array of the currently selected row objects.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>onEdit / onDelete</code>
-        </td>
-        <td>
-          <code>(row: T) =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          If provided (and an <code>"actions"</code> column exists),
-          automatically renders Edit and Trash icons mapped to these functions.
-        </td>
-      </tr>
+      <tr><td><code>Table</code></td><td><code>div</code></td><td>The card wrapper. Provides variant, size and colour by context.</td></tr>
+      <tr><td><code>TableHeading</code></td><td><code>div</code></td><td>Title bar above the table. Children align to the right as an action slot.</td></tr>
+      <tr><td><code>TableContent</code></td><td><code>div &gt; table</code></td><td>Horizontal scroll container plus the table element.</td></tr>
+      <tr><td><code>TableHeader</code></td><td><code>thead</code></td><td>Plain pass-through.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>tbody</code></td><td>Optional staggered entrance animation.</td></tr>
+      <tr><td><code>TableRow</code></td><td><code>tr</code></td><td>Body row, or a header row with <code>isHeader</code>.</td></tr>
+      <tr><td><code>TableHead</code></td><td><code>th</code></td><td>Header cell, optionally sortable.</td></tr>
+      <tr><td><code>TableCell</code></td><td><code>td</code></td><td>Body cell.</td></tr>
+      <tr><td><code>TableFooter</code></td><td><code>div</code></td><td>Footer bar below the table — pagers, totals, bulk controls.</td></tr>
+      <tr><td><code>TableEmpty</code></td><td><code>tr &gt; td</code></td><td>Full-width empty state row.</td></tr>
+      <tr><td><code>TableExpandedRow</code></td><td><code>tr &gt; td</code></td><td>Animated detail panel beneath a row.</td></tr>
+      <tr><td><code>TableExpandToggle</code></td><td><code>button</code></td><td>Rotating chevron for the row above.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>div</code></td><td>Reveals its buttons on row hover or keyboard focus.</td></tr>
     </tbody>
   </table>
 </div>
 
-Column Definition (<code>TableColumn&lt;T&gt;</code>)
+### `Table`
 
-<div className="overflow-x-auto mt-4">
+<div className="overflow-x-auto">
   <table>
     <thead>
-      <tr>
-        <th>Property</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <code>key</code>
-        </td>
-        <td>
-          <code>keyof T | "actions"</code>
-        </td>
-        <td>
-          The object key to map to this column. Use <code>"actions"</code> to
-          render the edit/delete buttons.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>label</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>The text displayed in the table header.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>sortable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          If true, the column header becomes clickable, automatically sorting
-          the data alphabetically or numerically based on that key.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>align</code>
-        </td>
-        <td>
-          <code>"left" | "center" | "right"</code>
-        </td>
-        <td>
-          Controls text alignment for both the header and the cells in this
-          column. Defaults to left.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>render</code>
-        </td>
-        <td>
-          <code>(row: T) =&gt; ReactNode</code>
-        </td>
-        <td>
-          An optional function to override the default text rendering, allowing
-          you to insert React components (badges, avatars, multiple fields) into
-          the cell.
-        </td>
-      </tr>
+      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, or frosted glass panel.</td></tr>
+      <tr><td><code>size</code></td><td><code>"sm" | "md" | "lg"</code></td><td><code>"md"</code></td><td>Row density — cell padding and text size.</td></tr>
+      <tr><td><code>color</code></td><td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)</code></td><td><code>"primary"</code></td><td>Accent for selected rows and interactive affordances. Any <code>#rrggbb</code> works.</td></tr>
     </tbody>
   </table>
 </div>
+
+### `TableHead`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td><code>"left"</code></td><td>Text alignment.</td></tr>
+      <tr><td><code>sortable</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Renders the header as a sort button.</td></tr>
+      <tr><td><code>sortDirection</code></td><td><code>"asc" | "desc" | null</code></td><td><code>null</code></td><td>Controlled — drives the chevron and <code>aria-sort</code>.</td></tr>
+      <tr><td><code>onSort</code></td><td><code>() =&gt; void</code></td><td>—</td><td>Fired on click. You reorder the data.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `TableRow`, `TableCell`, `TableBody`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Prop</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TableRow</code></td><td><code>isHeader</code></td><td><code>boolean</code></td><td>Applies header styling instead of body row styling.</td></tr>
+      <tr><td><code>TableRow</code></td><td><code>selected</code></td><td><code>boolean</code></td><td>Applies the selected background and sets <code>data-selected</code>.</td></tr>
+      <tr><td><code>TableCell</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Text alignment.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>animate</code></td><td><code>boolean</code></td><td>Staggered GSAP entrance for direct child rows. Off by default.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>animateKey</code></td><td><code>React.Key</code></td><td>Change it to replay the entrance — e.g. on sort or page change.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `TableExpandedRow`, `TableEmpty`, `TableRowActions`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Prop</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TableExpandedRow</code></td><td><code>open</code></td><td><code>boolean</code></td><td>Grid-animates the panel open or closed.</td></tr>
+      <tr><td><code>TableExpandedRow</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Must match your column count.</td></tr>
+      <tr><td><code>TableEmpty</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Defaults its text to &ldquo;No data available.&rdquo;</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Horizontal alignment inside the cell. Defaults to <code>"right"</code>.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+Every primitive also forwards its ref and accepts the native attributes of the element it renders.

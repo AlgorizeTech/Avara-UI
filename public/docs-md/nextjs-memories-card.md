@@ -2,21 +2,19 @@
 
 A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
 
-## Examples
+Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
 
-Hover the front card for the 3D tilt, then drag or swipe it left or right to send it to the back of the deck.
-
-export const usageDefault = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
-
-const memories = [
+export const memoriesData = `const memories = [
   {
     id: "m1",
     tag: "Highlight",
-    title: "Kyoto Lantern Festival",
-    location: "Kyoto, Japan",
+    title: "Alpine Forest Lake",
+    location: "Swiss Alps",
     date: "Oct 2025",
-    description: "Thousands of paper lanterns lighting the Gion district.",
-    image: "/photos/kyoto.jpg",
+    description:
+      "Serene pine forests reflecting over calm turquoise mountain waters at sunrise.",
+    image:
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "m2",
@@ -24,28 +22,38 @@ const memories = [
     title: "Dolomites Alpine Ridge",
     location: "South Tyrol, Italy",
     date: "Aug 2025",
-    image: "/photos/dolomites.jpg",
+    description:
+      "Reaching the summit just as the morning sun cast jagged shadows across the limestone peaks.",
+    image:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
   },
-];
+  {
+    id: "m3",
+    tag: "Sanctuary",
+    title: "Emerald Forest Stream",
+    location: "Pacific Northwest",
+    date: "Jul 2025",
+    description:
+      "A tranquil river winding through dense ancient rainforests and mossy rocks.",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    id: "m4",
+    tag: "Wilderness",
+    title: "Cascading Mountain Falls",
+    location: "Alberta, Canada",
+    date: "Jun 2025",
+    description:
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+  },
+];`;
 
-export default function TravelDeck() {
-  return ;
-}`;
+export const usageOnChange = `"use client";
 
-export const usageMinimal = `import { MemoriesCard } from "@/components/custom/blocks/MemoriesCardBlock";
-
-// Everything except \`id\`, \`title\` and \`image\` is optional — drop the
-// metadata and the overlay collapses to just the title.
-const memories = [
-  { id: "m1", title: "Kyoto Lantern Festival", image: "/photos/kyoto.jpg" },
-  { id: "m2", title: "Dolomites Alpine Ridge", image: "/photos/dolomites.jpg" },
-];
-
-export default function PhotoDeck() {
-  return ;
-}`;
-
-export const usageOnChange = `import { useState } from "react";
+${memoriesData}
 
 export default function TravelDeck() {
   const [active, setActive] = useState(0);
@@ -111,8 +119,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           undefined
 
-          Optional callback function fired whenever a card is swiped to the back
-          and the stack cycles to a new front card.
+          Callback function triggered on every card swipe gesture. It receives the new active card index (`number`), allowing you to dynamically sync external captions, counter indicators, or trigger custom analytics events.
 
           MemoriesCard
 

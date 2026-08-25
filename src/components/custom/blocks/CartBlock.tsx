@@ -11,7 +11,15 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+/**
+ * GSAP has to write its "from" values before the browser paints, otherwise the
+ * panel is visible for one frame in its final position. useLayoutEffect does
+ * that; React warns when it runs during SSR, so fall back on the server.
+ */
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -100,36 +108,6 @@ export interface CartItem {
   gradient: string;
 }
 
-const INITIAL_CART: CartItem[] = [
-  {
-    id: "1",
-    name: "Signature Heavyweight Tee",
-    price: 45.0,
-    quantity: 1,
-    size: "L",
-    color: "Onyx Black",
-    gradient: "from-zinc-700 to-black",
-  },
-  {
-    id: "2",
-    name: "Everyday Denim Jacket",
-    price: 120.0,
-    quantity: 1,
-    size: "M",
-    color: "Washed Blue",
-    gradient: "from-blue-600 to-indigo-900",
-  },
-  {
-    id: "3",
-    name: "Minimalist Beanie",
-    price: 28.0,
-    quantity: 2,
-    size: "OS",
-    color: "Forest Green",
-    gradient: "from-emerald-500 to-teal-800",
-  },
-];
-
 const ItemRow = ({
   item,
   updateQty,
@@ -140,7 +118,7 @@ const ItemRow = ({
   removeItem: (id: string) => void;
   theme: any;
 }) => (
-  <div className="flex gap-4 py-4 border-b border-zinc-100 dark:border-zinc-800/50">
+  <div className="flex gap-4 py-4 border-b border-border">
     <div
       className={cn(
         "w-20 h-24 rounded-lg bg-gradient-to-br shrink-0 shadow-inner",
@@ -150,22 +128,22 @@ const ItemRow = ({
     <div className="flex flex-col flex-1 justify-between">
       <div className="flex justify-between items-start gap-2">
         <div>
-          <h4 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight">
+          <h4 className="text-sm font-bold text-foreground leading-tight">
             {item.name}
           </h4>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {item.color} | Size: {item.size}
           </p>
         </div>
-        <span className="text-sm font-bold text-zinc-900 dark:text-white shrink-0">
+        <span className="text-sm font-bold text-foreground shrink-0">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
       </div>
       <div className="flex items-center justify-between mt-3">
-        <div className="flex items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md p-0.5">
+        <div className="flex items-center bg-muted border border-border rounded-md p-0.5">
           <button
             onClick={() => updateQty(item.id, -1)}
-            className="w-6 h-6 flex items-center justify-center rounded text-zinc-500 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors active:scale-95"
+            className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:bg-card hover:text-foreground transition-colors active:scale-95"
           >
             <Minus size={14} strokeWidth={2.5} />
           </button>
@@ -174,14 +152,14 @@ const ItemRow = ({
           </span>
           <button
             onClick={() => updateQty(item.id, 1)}
-            className="w-6 h-6 flex items-center justify-center rounded text-zinc-500 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors active:scale-95"
+            className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:bg-card hover:text-foreground transition-colors active:scale-95"
           >
             <Plus size={14} strokeWidth={2.5} />
           </button>
         </div>
         <button
           onClick={() => removeItem(item.id)}
-          className="text-zinc-400 hover:text-red-500 transition-colors p-1"
+          className="text-muted-foreground hover:text-red-500 transition-colors p-1"
         >
           <Trash2 size={16} />
         </button>
@@ -203,28 +181,28 @@ const Summary = ({
     className={cn(
       "flex flex-col gap-3",
       isPage
-        ? "p-6 sm:p-8 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-800"
+        ? "p-6 sm:p-8 bg-muted rounded-2xl border border-border"
         : "",
     )}
   >
-    <div className="flex justify-between text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="flex justify-between text-sm text-muted-foreground">
       <span>Subtotal</span>
-      <span className="font-medium text-zinc-900 dark:text-white">
+      <span className="font-medium text-foreground">
         ${subtotal.toFixed(2)}
       </span>
     </div>
-    <div className="flex justify-between text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="flex justify-between text-sm text-muted-foreground">
       <span>Shipping</span>
-      <span className="font-medium text-zinc-900 dark:text-white">
+      <span className="font-medium text-foreground">
         Calculated at checkout
       </span>
     </div>
-    <div className="border-t border-zinc-200 dark:border-zinc-800 my-1" />
+    <div className="border-t border-border my-1" />
     <div className="flex justify-between items-end mb-4">
-      <span className="text-base font-bold text-zinc-900 dark:text-white">
+      <span className="text-base font-bold text-foreground">
         Total
       </span>
-      <span className="text-2xl font-black text-zinc-900 dark:text-white">
+      <span className="text-2xl font-black text-foreground">
         ${subtotal.toFixed(2)}
       </span>
     </div>
@@ -258,8 +236,8 @@ function TriggerButton({
     <button
       onClick={onToggle}
       className={cn(
-        "relative flex items-center justify-center p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all active:scale-95 text-zinc-700 dark:text-zinc-200",
-        isOpen && "bg-zinc-100 dark:bg-zinc-800",
+        "relative flex items-center justify-center p-3 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all active:scale-95 text-foreground",
+        isOpen && "bg-muted",
       )}
     >
       <ShoppingBag size={22} />
@@ -278,16 +256,34 @@ function TriggerButton({
 }
 
 export function CartBlock({
+  initialItems = [],
   type = "drawer",
   color = "primary",
 }: {
+  /**
+   * Items the cart starts with. Own this list in the parent - the component
+   * ships no sample data, so a CartBlock rendered without `initialItems`
+   * shows its empty state.
+   */
+  initialItems?: readonly CartItem[];
   type?: CartType;
   color?: CartColor;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [renderLayer, setRenderLayer] = useState(false); // Fix: Added delayed render layer for exit animations
-  const [items, setItems] = useState<CartItem[]>(INITIAL_CART);
+  /**
+   * The animated layer stays mounted for the whole open -> close cycle. It is
+   * set from the click handler, in the same update as `isOpen`, and cleared by
+   * the exit tween's onComplete, so the two can never disagree.
+   */
+  const [isLayerMounted, setIsLayerMounted] = useState(false);
+  const [items, setItems] = useState<CartItem[]>(() => [...initialItems]);
   const { theme, style } = getThemeStyles(color);
+
+  const openCart = () => {
+    setIsLayerMounted(true);
+    setIsOpen(true);
+  };
+  const closeCart = () => setIsOpen(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -313,28 +309,18 @@ export function CartBlock({
   const removeItem = (id: string) =>
     setItems(items.filter((item) => item.id !== id));
 
-  // --- ANIMATION EFFECTS & RENDER LAYER ---
-  // Opening must show the layer immediately. Adjusting state during render on a
-  // state change is React's documented alternative to an effect here, and avoids
-  // the extra render an effect would cost on every open.
-  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
-  if (prevIsOpen !== isOpen) {
-    setPrevIsOpen(isOpen);
-    if (isOpen) setRenderLayer(true);
-  }
-
-  useEffect(() => {
-    if (isOpen) return;
-    const timer = setTimeout(() => setRenderLayer(false), 350);
-    return () => clearTimeout(timer);
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (type === "page" || !renderLayer) return;
+  // --- ANIMATION ---
+  useIsomorphicLayoutEffect(() => {
+    if (type === "page" || !isLayerMounted) return;
 
     const el = containerRef.current;
     const overlay = overlayRef.current;
     if (!el) return;
+
+    // A fast toggle can leave a tween mid-flight. Killing it also cancels its
+    // onComplete, so a superseded close cannot unmount a cart that is opening
+    // again.
+    gsap.killTweensOf(overlay ? [el, overlay] : el);
 
     if (isOpen) {
       if (overlay)
@@ -344,7 +330,6 @@ export function CartBlock({
           { opacity: 1, duration: 0.3, ease: "power2.out" },
         );
 
-      // Fix: Removed opacity-0 from drawer, only animate X axis.
       if (type === "drawer")
         gsap.fromTo(
           el,
@@ -363,36 +348,49 @@ export function CartBlock({
           { opacity: 0, y: -10, scale: 0.95 },
           { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" },
         );
-    } else {
-      if (overlay)
-        gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-
-      if (type === "drawer")
-        gsap.to(el, { x: "100%", duration: 0.3, ease: "power3.in" });
-      if (type === "modal")
-        gsap.to(el, {
-          opacity: 0,
-          scale: 0.95,
-          y: 10,
-          duration: 0.3,
-          ease: "power2.in",
-        });
-      if (type === "popover")
-        gsap.to(el, {
-          opacity: 0,
-          y: -10,
-          scale: 0.95,
-          duration: 0.2,
-          ease: "power2.in",
-        });
+      return;
     }
-  }, [isOpen, renderLayer, type]);
+
+    // Unmount when the exit tween actually finishes, rather than on a fixed
+    // timer that can fire out of step with the open state.
+    const unmountLayer = () => setIsLayerMounted(false);
+
+    if (overlay)
+      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
+
+    if (type === "drawer")
+      gsap.to(el, {
+        x: "100%",
+        duration: 0.3,
+        ease: "power3.in",
+        onComplete: unmountLayer,
+      });
+    if (type === "modal")
+      gsap.to(el, {
+        opacity: 0,
+        scale: 0.95,
+        y: 10,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: unmountLayer,
+      });
+    if (type === "popover")
+      gsap.to(el, {
+        opacity: 0,
+        y: -10,
+        scale: 0.95,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: unmountLayer,
+      });
+  }, [isOpen, isLayerMounted, type]);
 
   useEffect(() => {
+    if (!isOpen) return;
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") closeCart();
     };
-    if (isOpen) document.addEventListener("keydown", handleEsc);
+    document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [isOpen]);
 
@@ -402,18 +400,18 @@ export function CartBlock({
       <div className="w-full max-w-5xl mx-auto p-4 sm:p-8" style={style}>
         <div className="flex items-center gap-3 mb-8">
           <ShoppingCart className={cn("w-8 h-8", theme.text)} />
-          <h2 className="text-3xl font-black text-zinc-900 dark:text-white">
+          <h2 className="text-3xl font-black text-foreground">
             Your Cart
           </h2>
-          <span className="ml-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-sm font-bold text-zinc-600 dark:text-zinc-400">
+          <span className="ml-2 px-3 py-1 rounded-full bg-muted text-sm font-bold text-muted-foreground">
             {totalItems} Items
           </span>
         </div>
 
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl">
+          <div className="flex flex-col items-center justify-center py-24 bg-background border border-border rounded-3xl">
             <ShoppingBag className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" />
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+            <h3 className="text-xl font-bold text-foreground mb-2">
               Your cart is empty
             </h3>
             <button
@@ -427,8 +425,8 @@ export function CartBlock({
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-sm">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 border-b border-zinc-100 dark:border-zinc-800/50 pb-4">
+            <div className="flex-1 bg-background border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h3 className="text-lg font-bold text-foreground mb-4 border-b border-border pb-4">
                 Order Items
               </h3>
               {items.map((item) => (
@@ -463,28 +461,25 @@ export function CartBlock({
       >
         <TriggerButton
           isOpen={isOpen}
-          onToggle={() => setIsOpen(!isOpen)}
+          onToggle={() => (isOpen ? closeCart() : openCart())}
           totalItems={totalItems}
           themeBg={theme.bg}
         />
 
-        {type === "popover" && (
+        {type === "popover" && isLayerMounted && (
           <div className="absolute top-[calc(100%+12px)] right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] pointer-events-none">
             <div
               ref={containerRef}
-              className={cn(
-                "w-[340px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0",
-                !renderLayer && "hidden",
-              )}
+              className="w-[340px] bg-background border border-border rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0"
             >
-              <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50">
-                <span className="font-bold text-zinc-900 dark:text-white">
+              <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-muted/50">
+                <span className="font-bold text-foreground">
                   Cart ({totalItems})
                 </span>
               </div>
               <div className="max-h-[300px] overflow-y-auto px-4 py-2">
                 {items.length === 0 ? (
-                  <p className="text-center text-sm text-zinc-500 py-8">
+                  <p className="text-center text-sm text-muted-foreground py-8">
                     Your cart is empty.
                   </p>
                 ) : (
@@ -500,12 +495,12 @@ export function CartBlock({
                 )}
               </div>
               {items.length > 0 && (
-                <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div className="p-4 border-t border-border bg-muted/50">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-zinc-500">
+                    <span className="text-sm font-medium text-muted-foreground">
                       Subtotal
                     </span>
-                    <span className="text-lg font-bold text-zinc-900 dark:text-white">
+                    <span className="text-lg font-bold text-foreground">
                       ${subtotal.toFixed(2)}
                     </span>
                   </div>
@@ -524,47 +519,41 @@ export function CartBlock({
         )}
       </div>
 
-      {(type === "drawer" || type === "modal") && (
+      {(type === "drawer" || type === "modal") && isLayerMounted && (
         <div
           className={cn(
             "fixed inset-0 z-[100] pointer-events-none flex",
             type === "drawer" ? "justify-end" : "justify-center items-center",
           )}
         >
-          {/* Fix: overlay uses renderLayer */}
           <div
             ref={overlayRef}
-            onClick={() => setIsOpen(false)}
-            className={cn(
-              "absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto opacity-0",
-              !renderLayer && "hidden",
-            )}
+            onClick={closeCart}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto opacity-0"
           />
 
-          {/* Fix: renderLayer instead of isOpen, and removed opacity-0 from Drawer base so it's fully visible when sliding in */}
           <div
             ref={containerRef}
             className={cn(
-              "relative z-[101] bg-white dark:bg-zinc-950 flex flex-col shadow-2xl pointer-events-auto",
-              !renderLayer && "hidden",
+              "relative z-[101] bg-background flex flex-col shadow-2xl pointer-events-auto",
               type === "drawer"
-                ? "w-full max-w-md h-[100dvh] border-l border-zinc-200 dark:border-zinc-800"
-                : "w-full max-w-lg max-h-[85vh] rounded-3xl border border-zinc-200 dark:border-zinc-800 opacity-0",
+                ? "w-full max-w-md h-[100dvh] border-l border-border"
+                : "w-full max-w-lg max-h-[85vh] rounded-3xl border border-border opacity-0",
             )}
           >
-            <div className="px-6 py-5 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between shrink-0">
+            <div className="px-6 py-5 border-b border-border flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <ShoppingBag className={cn("w-5 h-5", theme.text)} />
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+                <h3 className="text-lg font-bold text-foreground">
                   Shopping Cart
                 </h3>
-                <span className="ml-2 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">
+                <span className="ml-2 px-2 py-0.5 rounded-full bg-muted text-xs font-bold text-muted-foreground">
                   {totalItems}
                 </span>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                onClick={closeCart}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X size={16} />
               </button>
@@ -572,7 +561,7 @@ export function CartBlock({
 
             <div className="flex-1 overflow-y-auto p-6">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-zinc-500 space-y-4">
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-4">
                   <ShoppingCart size={48} className="opacity-20" />
                   <p>Your cart is empty.</p>
                 </div>
@@ -592,7 +581,7 @@ export function CartBlock({
             </div>
 
             {items.length > 0 && (
-              <div className="p-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50 shrink-0">
+              <div className="p-6 border-t border-border bg-muted/50 shrink-0">
                 <Summary subtotal={subtotal} theme={theme} />
               </div>
             )}

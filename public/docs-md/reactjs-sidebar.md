@@ -4,24 +4,9 @@ A powerful, composable sidebar component that automatically manages mobile flyou
 
 Building a good sidebar is one of the hardest parts of dashboard development. It requires managing state across completely different structural elements, handling viewport resizing, and animating complex CSS properties smoothly. This `SidebarBlock` utilizes React Context to handle all of this internally.
 
-## Examples
-
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-export const usageDefault = `import {
-  MobileSidebarTrigger,
-  Sidebar,
-  SidebarBrand,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export const usageDefault = `export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
@@ -83,6 +68,8 @@ export default function RailLayout({ children }: { children: React.ReactNode }) 
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 

@@ -187,7 +187,7 @@ function AnimatedTimelineNode({
       {!isLast && (
         <div
           className={cn(
-            "absolute w-[2px] bg-zinc-200 dark:bg-zinc-800 transition-all duration-1000 origin-top",
+            "absolute w-[2px] bg-muted transition-all duration-1000 origin-top",
             "left-[19px] sm:left-auto top-10 bottom-[-32px] sm:bottom-[-48px]",
             layout === "left" && "sm:left-[19px]",
             layout === "right" && "sm:right-[19px]",
@@ -207,7 +207,7 @@ function AnimatedTimelineNode({
           layout === "center" && "sm:left-1/2 sm:-translate-x-1/2",
           isVisible
             ? cn(theme.border, theme.glow, "scale-100 opacity-100")
-            : "border-zinc-200 dark:border-zinc-800 scale-50 opacity-0",
+            : "border-border scale-50 opacity-0",
         )}
       >
         {Icon ? (
@@ -221,7 +221,7 @@ function AnimatedTimelineNode({
           <div
             className={cn(
               "w-3 h-3 rounded-full transition-colors duration-500 delay-300",
-              isVisible ? theme.bg : "bg-zinc-300 dark:bg-zinc-700",
+              isVisible ? theme.bg : "bg-muted",
             )}
           />
         )}
@@ -242,7 +242,7 @@ function AnimatedTimelineNode({
       >
         <div
           className={cn(
-            "flex flex-col gap-2 p-5 rounded-2xl bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-zinc-300 dark:hover:border-zinc-700",
+            "flex flex-col gap-2 p-5 rounded-2xl bg-white dark:bg-[#09090b] border border-border shadow-sm hover:border-border",
             getAnimationClasses(),
           )}
           style={{ transitionDelay: "100ms" }}
@@ -256,7 +256,7 @@ function AnimatedTimelineNode({
           >
             <h3
               className={cn(
-                "text-base font-bold text-zinc-900 dark:text-zinc-100 transition-colors",
+                "text-base font-bold text-foreground transition-colors",
                 "group-hover:text-[var(--atl-color)]",
               )}
             >
@@ -264,7 +264,7 @@ function AnimatedTimelineNode({
             </h3>
             <span
               className={cn(
-                "text-xs font-semibold px-2.5 py-1 rounded-md shrink-0 w-max bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition-colors duration-500",
+                "text-xs font-semibold px-2.5 py-1 rounded-md shrink-0 w-max bg-muted text-muted-foreground transition-colors duration-500",
                 isVisible && theme.text,
               )}
             >
@@ -272,7 +272,7 @@ function AnimatedTimelineNode({
             </span>
           </div>
           {item.description && (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm text-muted-foreground">
               {item.description}
             </p>
           )}

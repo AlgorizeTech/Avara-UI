@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-20T06:55:11.729Z",
-  "totalFiles": 199,
+  "generatedAt": "2026-08-25T16:06:29.509Z",
+  "totalFiles": 207,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -267,10 +267,22 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "nextjs/footer",
+      "path": "/docs/nextjs-footer.md",
+      "url": "/docs/nextjs/footer",
+      "originalMdx": "[framework]\\footer\\page.mdx"
+    },
+    {
       "name": "nextjs/form",
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "nextjs/globe",
+      "path": "/docs/nextjs-globe.md",
+      "url": "/docs/nextjs/globe",
+      "originalMdx": "[framework]\\globe\\page.mdx"
     },
     {
       "name": "nextjs/half-stars",
@@ -423,6 +435,12 @@
       "originalMdx": "[framework]\\pricing\\page.mdx"
     },
     {
+      "name": "nextjs/product-details",
+      "path": "/docs/nextjs-product-details.md",
+      "url": "/docs/nextjs/product-details",
+      "originalMdx": "[framework]\\product-details\\page.mdx"
+    },
+    {
       "name": "nextjs/progress",
       "path": "/docs/nextjs-progress.md",
       "url": "/docs/nextjs/progress",
@@ -439,6 +457,12 @@
       "path": "/docs/nextjs-resizable.md",
       "url": "/docs/nextjs/resizable",
       "originalMdx": "[framework]\\resizable\\page.mdx"
+    },
+    {
+      "name": "nextjs/reviews",
+      "path": "/docs/nextjs-reviews.md",
+      "url": "/docs/nextjs/reviews",
+      "originalMdx": "[framework]\\reviews\\page.mdx"
     },
     {
       "name": "nextjs/scroll-area",
@@ -867,10 +891,22 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "reactjs/footer",
+      "path": "/docs/reactjs-footer.md",
+      "url": "/docs/reactjs/footer",
+      "originalMdx": "[framework]\\footer\\page.mdx"
+    },
+    {
       "name": "reactjs/form",
       "path": "/docs/reactjs-form.md",
       "url": "/docs/reactjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "reactjs/globe",
+      "path": "/docs/reactjs-globe.md",
+      "url": "/docs/reactjs/globe",
+      "originalMdx": "[framework]\\globe\\page.mdx"
     },
     {
       "name": "reactjs/half-stars",
@@ -1023,6 +1059,12 @@
       "originalMdx": "[framework]\\pricing\\page.mdx"
     },
     {
+      "name": "reactjs/product-details",
+      "path": "/docs/reactjs-product-details.md",
+      "url": "/docs/reactjs/product-details",
+      "originalMdx": "[framework]\\product-details\\page.mdx"
+    },
+    {
       "name": "reactjs/progress",
       "path": "/docs/reactjs-progress.md",
       "url": "/docs/reactjs/progress",
@@ -1039,6 +1081,12 @@
       "path": "/docs/reactjs-resizable.md",
       "url": "/docs/reactjs/resizable",
       "originalMdx": "[framework]\\resizable\\page.mdx"
+    },
+    {
+      "name": "reactjs/reviews",
+      "path": "/docs/reactjs-reviews.md",
+      "url": "/docs/reactjs/reviews",
+      "originalMdx": "[framework]\\reviews\\page.mdx"
     },
     {
       "name": "reactjs/scroll-area",

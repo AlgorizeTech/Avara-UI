@@ -5,12 +5,11 @@ import { extractCode } from "@/lib/code";
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
-
-## Examples
-
 Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
 
-export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageDefault = `"use client";
+
+import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function SupportWidget() {
   return (
@@ -18,26 +17,26 @@ export default function SupportWidget() {
       title="Chat with us"
       subtitle="We typically reply in a few minutes"
       position="bottom-right"
-      onSendMessage={(message) => sendToInbox(message)}
+      onSendMessage={(message) => console.log("Send to your inbox:", message)}
     />
   );
 }`;
 
-export const usageLeft = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageLeft = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function LeftAnchoredWidget() {
   // Anchors to the opposite corner; the popup and its origin flip with it.
   return <FloatingContactButtonBlock position="bottom-left" />;
 }`;
 
-export const usageClosed = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageClosed = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function CollapsedWidget() {
   // Start collapsed — the usual behaviour on a real page.
   return <FloatingContactButtonBlock defaultOpen={false} />;
 }`;
 
-export const usageBranding = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageBranding = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function BrandedWidget() {
   // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
@@ -50,7 +49,7 @@ export default function BrandedWidget() {
   );
 }`;
 
-export const usageAccent = `import FloatingContactButtonBlock from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageAccent = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function AccentedWidget() {
   // \`defaultAccentColor\` takes a token name or any CSS color. Pass
@@ -94,6 +93,21 @@ export default function AccentedWidget() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/FloatingContactButtonBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="floating-contact-button" />
+
+## Examples
+
+<ExampleShowcase
+  name="floating-contact-button"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
     {
       title: "Bottom left",
       propNotes: [
@@ -148,10 +162,6 @@ export default function AccentedWidget() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="floating-contact-button" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -274,7 +284,6 @@ Discover the key capabilities that make this component an excellent choice for m
   </section>
 
 <hr />
-
 
   <section class="props-section">
     <h3>ChatMessage Interface</h3>

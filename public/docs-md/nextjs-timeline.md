@@ -4,44 +4,78 @@ A robust, multi-layout vertical timeline component for tracking complex events, 
 
 This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
 
-## Examples
-
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
-export const usageDefault = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const timelineEvents = `import { CheckCircle2, Download, MapPin, Package, Truck } from "lucide-react";
+
+const events: TimelineItemType[] = [
+  {
+    id: "1",
+    title: "Order Placed",
+    date: "Oct 12, 10:24 AM",
+    description: "We have received your order #ORD-4021.",
+    icon: Package,
+    status: "completed",
+    action: (
+
+        Receipt
+      
+    ),
+  },
+  {
+    id: "2",
+    title: "Payment Processed",
+    date: "Oct 12, 10:25 AM",
+    description: "Payment successful via Credit Card.",
+    icon: CheckCircle2,
+    status: "completed",
+  },
+  {
+    id: "3",
+    title: "Out for Delivery",
+    date: "Oct 14, 08:30 AM",
+    description: "Your package is on the way.",
+    icon: Truck,
+    status: "current",
+    // The content field expands behind a grid transition when the row opens.
+    content: (
+
+          Driver is currently 4 stops away. Estimated arrival between 1:00 PM
+          and 3:00 PM.
+
+          Tracking: FX-992184-US
+          
+          Carrier: FedEx Express
+
+    ),
+  },
+  {
+    id: "4",
+    title: "Delivered",
+    date: "Pending",
+    description: "Package will be left at front porch.",
+    icon: MapPin,
+    status: "upcoming",
+  },
+];`;
+
+export const usageDefault = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function OrderTracker() {
-  const events = [
-    {
-      id: "1",
-      title: "Order Placed",
-      date: "10:24 AM",
-      icon: Package,
-      status: "completed",
-      action: Invoice,
-    },
-    {
-      id: "2",
-      title: "Out for Delivery",
-      date: "10:25 AM",
-      icon: Truck,
-      status: "current",
-      // \`content\` expands behind a grid transition when the row is opened.
-      content: Driver is 4 stops away.,
-    },
-    {
-      id: "3",
-      title: "Delivered",
-      date: "Pending",
-      icon: CheckCircle2,
-      status: "upcoming",
-    },
-  ];
-
   return ;
 }`;
 
-export const usageCenter = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const usageCenter = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function CenterTimeline() {
   // Zig-zags the cards once the timeline itself is at least 576px wide, and
@@ -50,20 +84,35 @@ export default function CenterTimeline() {
   return ;
 }`;
 
-export const usageRight = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const usageRight = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function RightTimeline() {
   return ;
 }`;
 
-export const usageMinimal = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const usageMinimal = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function MinimalTimeline() {
   // Drops the card surface; the rail and type carry the structure.
   return ;
 }`;
 
-export const usageGlass = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const usageGlass = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function GlassTimeline() {
   return (
@@ -71,7 +120,12 @@ export default function GlassTimeline() {
   );
 }`;
 
-export const usageNoAnimation = `import { TimelineBlock } from "@/components/custom/blocks/TimelineBlock";
+export const usageNoAnimation = `import {
+  TimelineBlock,
+  type TimelineItemType,
+} from "@/components/custom/blocks/TimelineBlock";
+
+${timelineEvents}
 
 export default function StaticTimeline() {
   // Renders in place — no staggered GSAP entrance.
@@ -83,6 +137,8 @@ export default function StaticTimeline() {
 ### Requires Tailwind CSS v4
 
 The breakpoints are **container queries** (`@container/timeline`, `@container/tlcard`) rather than media queries, so the rail reacts to the width of the column it is dropped into instead of the width of the window — a timeline in a 600px sidebar behaves the same whether the browser is 800px or 2560px wide. Container queries are built into Tailwind v4; on v3 the rail will not respond.
+
+## Examples
 
 ## Props Reference
 

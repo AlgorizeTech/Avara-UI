@@ -4,9 +4,67 @@ A high-performance system for building resizable panel layouts, complete with ke
 
 Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
 
-## Examples
-
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
+
+export const paneHelper = `// Panel bodies — swap these for your own content.
+function Pane({ label }: { label: string }) {
+  return (
+    
+      {label}
+    
+  );
+}`;
+
+export const studioPanes = `${paneHelper}
+
+const Explorer = () => ;
+
+function Editor() {
+  return (
+
+        page.tsx
+        
+          Active
+
+        export default function Page() {"{"}
+        return (
+        
+          {''}
+
+          {'John Doe'}
+
+          {"{/* Drag handle bars to resize panels live */}"}
+        
+        {""}
+        );
+        {"}"}
+
+  );
+}
+
+function TerminalPane() {
+  return (
+
+        Terminal
+        bash
+
+        project@app:~${" "}
+        npm run dev
+        
+        ✓ Ready in 850ms
+
+  );
+}`;
+
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => ;
+const PanelTwo = () => ;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => ;
+const Editor = () => ;`;
 
 export const usageDefault = `import {
   ResizableHandle,
@@ -14,9 +72,12 @@ export const usageDefault = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${studioPanes}
+
 export default function StudioLayout() {
   return (
-    // The outermost container must have a defined height.
+    // A panel group is height:100%, so it collapses to nothing unless an
+    // ancestor is sized. Use h-screen here to fill the viewport instead.
 
           {/* Groups nest freely — this one splits the main area vertically. */}
 
@@ -29,7 +90,11 @@ export const usageHorizontal = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${splitPanes}
+
 export default function HorizontalSplit() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
 
   );
@@ -41,25 +106,14 @@ export const usageVertical = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${splitPanes}
+
 export default function VerticalSplit() {
   // \`direction\` sets the flex axis of the group and the drag axis of every
   // handle inside it.
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-
-  );
-}`;
-
-export const usageNoGrip = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-export default function HairlineDivider() {
-  return (
-
-      {/* Omit \`withHandle\` for a bare 1px divider — still draggable, still
-          keyboard accessible, just without the visible grip. */}
 
   );
 }`;
@@ -70,16 +124,22 @@ export const usageConstraints = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${sidebarPanes}
+
 export default function ConstrainedSidebar() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
   return (
-    
-      {/* Percentages of the group. The engine clamps the drag so a panel can
-          never escape its bounds. */}
+
+        {/* Percentages of the group. The engine clamps the drag so a panel can
+            never escape its bounds. */}
 
   );
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.

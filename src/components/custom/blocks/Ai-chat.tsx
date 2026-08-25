@@ -39,30 +39,30 @@ export type AIChatColor =
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 shadow-none rounded-2xl",
+      "bg-muted dark:bg-[#09090b] border border-border shadow-none rounded-2xl",
     sidebar:
-      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
+      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-border",
     main: "bg-white dark:bg-[#09090b]",
     header:
-      "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl",
+      "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
     input:
-      "bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800",
+      "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-sm",
     msgAi:
-      "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-2xl rounded-tl-sm shadow-sm",
+      "bg-card text-foreground border border-border rounded-2xl rounded-tl-sm shadow-sm",
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
     sidebar:
-      "bg-zinc-50/50 dark:bg-zinc-900/30 rounded-2xl border border-zinc-100 dark:border-zinc-800/50 lg:mr-4",
+      "bg-muted/50 rounded-2xl border border-border lg:mr-4",
     main: "bg-transparent",
     header:
-      "bg-transparent border-b border-zinc-200 dark:border-zinc-800/50 mb-2",
+      "bg-transparent border-b border-border mb-2",
     input:
-      "bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800",
+      "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-br-sm shadow-sm",
     msgAi:
-      "bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-bl-sm",
+      "bg-muted text-foreground rounded-2xl rounded-bl-sm",
   },
   glass: {
     wrapper:
@@ -76,7 +76,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
       "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md",
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-lg",
     msgAi:
-      "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-tl-sm",
+      "bg-white/50 dark:bg-black/50 backdrop-blur-md text-foreground border border-white/30 dark:border-white/10 rounded-2xl rounded-tl-sm",
   },
 };
 
@@ -153,9 +153,20 @@ export type ChatThread = {
   date: string;
 };
 
+/**
+ * Roles the component understands.
+ *
+ * The `(string & {})` member keeps IDE autocomplete for "ai" and "user" while
+ * still accepting a plain `string`. That lets consumers pass an inferred array
+ * literal — `const messages = [{ id: 1, role: "ai", ... }]` — without needing
+ * `as const` or an explicit `Message[]` annotation. Any role that is not
+ * "user" is rendered as an AI message.
+ */
+export type MessageRole = "ai" | "user" | (string & {});
+
 export type Message = {
   id: number | string;
-  role: "ai" | "user";
+  role: MessageRole;
   content: string;
   time: string;
 };
@@ -166,8 +177,8 @@ export default function AIChat({
   variant = "default",
   color = "primary",
 }: {
-  chatHistory?: ChatThread[];
-  initialMessages?: Message[];
+  chatHistory?: readonly ChatThread[];
+  initialMessages?: readonly Message[];
   variant?: AIChatVariant;
   color?: AIChatColor;
 }) {
@@ -201,7 +212,7 @@ export default function AIChat({
 
   const styles = chatVariants[variant];
 
-  const [chats, setChats] = useState<ChatThread[]>(chatHistory);
+  const [chats, setChats] = useState<ChatThread[]>(() => [...chatHistory]);
   const [activeChatId, setActiveChatId] = useState<number | string | null>(
     chatHistory.length > 0 ? chatHistory[0].id : null,
   );
@@ -213,7 +224,7 @@ export default function AIChat({
     chatHistory.forEach((chat, index) => {
       map[chat.id] =
         index === 0
-          ? initialMessages
+          ? [...initialMessages]
           : [
               {
                 id: `welcome-${chat.id}`,
@@ -392,21 +403,21 @@ export default function AIChat({
           styles.sidebar,
         )}
       >
-        <div className="p-5 border-b border-zinc-100 dark:border-zinc-800/50 shrink-0">
+        <div className="p-5 border-b border-border shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden">
-            <h2 className="font-bold text-zinc-900 dark:text-zinc-100">
+            <h2 className="font-bold text-foreground">
               History
             </h2>
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="text-zinc-500"
+              className="text-muted-foreground"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
           <button
             onClick={handleNewChat}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary text-primary-foreground rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer"
           >
             <Plus className="w-4 h-4" /> New Chat
           </button>
@@ -419,7 +430,7 @@ export default function AIChat({
 
             return (
               <div key={dateGroup} className="mb-6">
-                <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-2 px-3">
+                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-3">
                   {dateGroup}
                 </p>
                 <div className="space-y-0.5">
@@ -434,7 +445,7 @@ export default function AIChat({
                         className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group ${
                           isActive
                             ? cn("font-semibold", theme.lightBg)
-                            : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 font-medium"
+                            : "text-muted-foreground hover:bg-muted font-medium"
                         }`}
                       >
                         {isEditing ? (
@@ -459,7 +470,7 @@ export default function AIChat({
                                 if (e.key === "Escape") cancelEditChat(e);
                               }}
                               className={cn(
-                                "flex-1 bg-white dark:bg-zinc-950 border rounded px-2 py-0.5 text-xs outline-none text-zinc-900 dark:text-zinc-100 cursor-text",
+                                "flex-1 bg-background border rounded px-2 py-0.5 text-xs outline-none text-foreground cursor-text",
                                 theme.inputBorder,
                                 theme.focusRing,
                               )}
@@ -489,7 +500,7 @@ export default function AIChat({
                               <button
                                 onClick={(e) => startEditingChat(chat, e)}
                                 className={cn(
-                                  "p-1.5 text-zinc-400 rounded-md transition-colors cursor-pointer",
+                                  "p-1.5 text-muted-foreground rounded-md transition-colors cursor-pointer",
                                   theme.primaryHover,
                                 )}
                               >
@@ -513,21 +524,22 @@ export default function AIChat({
           })}
         </div>
 
-        <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 shrink-0 flex items-center justify-between cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+        <div className="p-4 border-t border-border shrink-0 flex items-center justify-between cursor-pointer hover:bg-muted transition-colors">
           <div className="flex items-center gap-3">
             <div
               className={cn(
-                "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center text-white font-bold text-xs shadow-sm",
+                "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
                 theme.gradient,
+                theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
               )}
             >
               JM
             </div>
-            <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+            <span className="text-sm font-bold text-foreground">
               Joel M.
             </span>
           </div>
-          <Settings className="w-4 h-4 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200" />
+          <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
         </div>
       </aside>
 
@@ -556,16 +568,16 @@ export default function AIChat({
             >
               <Bot className="w-10 h-10 text-white -rotate-3" />
             </div>
-            <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               How can I help you today?
             </h2>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm max-w-md mb-8">
+            <p className="text-muted-foreground text-sm max-w-md mb-8">
               Select a conversation from the sidebar or start a new one to begin
               chatting.
             </p>
             <div className="flex items-center gap-4">
               <button
-                className="lg:hidden px-6 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
+                className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
                 onClick={() => setIsSidebarOpen(true)}
               >
                 View History
@@ -592,7 +604,7 @@ export default function AIChat({
             >
               <div className="flex items-center gap-3">
                 <button
-                  className="lg:hidden text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors shrink-0"
+                  className="lg:hidden text-muted-foreground hover:text-foreground transition-colors shrink-0"
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   <Menu className="w-5 h-5" />
@@ -600,15 +612,16 @@ export default function AIChat({
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      "w-9 h-9 bg-gradient-to-br rounded-xl flex items-center justify-center text-white shadow-sm",
+                      "w-9 h-9 bg-gradient-to-br rounded-xl flex items-center justify-center shadow-sm",
                       theme.gradient,
                       theme.shadow,
+                      theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
                     )}
                   >
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+                    <h2 className="text-sm font-bold text-foreground leading-tight">
                       AI Assistant
                     </h2>
                     <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mt-0.5">
@@ -617,7 +630,7 @@ export default function AIChat({
                   </div>
                 </div>
               </div>
-              <button className="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
+              <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
                 <MoreVertical className="w-5 h-5" />
               </button>
             </header>
@@ -633,17 +646,24 @@ export default function AIChat({
                     className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                   >
                     <div className="shrink-0">
-                      {msg.role === "ai" ? (
+                      {msg.role !== "user" ? (
                         <div
                           className={cn(
-                            "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center text-white shadow-sm",
+                            "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-sm",
                             theme.gradient,
+                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
                           )}
                         >
                           <Bot className="w-5 h-5" />
                         </div>
                       ) : (
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-600 flex items-center justify-center text-zinc-600 dark:text-zinc-300 font-bold text-xs shadow-sm">
+                        <div
+                          className={cn(
+                            "w-8 h-8 rounded-lg bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
+                            theme.gradient,
+                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
+                          )}
+                        >
                           JM
                         </div>
                       )}
@@ -666,12 +686,12 @@ export default function AIChat({
                       <div
                         className={`flex items-center gap-3 mt-1 px-1 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <span className="text-[10px] font-medium text-zinc-400">
+                        <span className="text-[10px] font-medium text-muted-foreground">
                           {msg.time}
                         </span>
-                        {msg.role === "ai" && (
-                          <div className="flex items-center gap-1.5 text-zinc-400">
-                            <button className="p-1 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors">
+                        {msg.role !== "user" && (
+                          <div className="flex items-center gap-1.5 text-primary-foreground">
+                            <button className="p-1 hover:text-foreground hover:bg-muted rounded transition-colors">
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <button className="p-1 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded transition-colors">
@@ -724,7 +744,7 @@ export default function AIChat({
                 >
                   <button
                     type="button"
-                    className="p-2.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0 rounded-xl hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
+                    className="p-2.5 text-muted-foreground hover:text-foreground transition-colors shrink-0 rounded-xl hover:bg-muted/50"
                   >
                     <Paperclip className="w-5 h-5" />
                   </button>
@@ -734,7 +754,7 @@ export default function AIChat({
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Message the AI Assistant..."
-                    className="flex-1 max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text"
+                    className="flex-1 max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text"
                     rows={1}
                     style={{ minHeight: "48px" }}
                   />
@@ -743,7 +763,7 @@ export default function AIChat({
                     <button
                       type="button"
                       className={cn(
-                        "p-2 text-zinc-400 rounded-xl transition-colors",
+                        "p-2 text-muted-foreground rounded-xl transition-colors",
                         theme.primaryHover,
                       )}
                     >
@@ -761,7 +781,7 @@ export default function AIChat({
                     </button>
                   </div>
                 </form>
-                <p className="text-center text-[11px] font-medium text-zinc-400 mt-3 cursor-default">
+                <p className="text-center text-[11px] font-medium text-muted-foreground mt-3 cursor-default">
                   AI can make mistakes. Consider verifying important
                   information.
                 </p>

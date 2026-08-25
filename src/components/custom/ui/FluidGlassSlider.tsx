@@ -14,16 +14,23 @@ const slidesData: Slide[] = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2574&auto=format&fit=crop",
-    title: "Set within a peaceful rural garden plot in Braughing",
-    subtitle: "HAY STREET",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2574&auto=format&fit=crop",
+    title: "Discover pristine tropical beaches and crystal-clear waters",
+    subtitle: "TROPICAL PARADISE",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2574&auto=format&fit=crop",
-    title: "Rusty House exemplifies the art of transformation",
-    subtitle: "RUSTY HOUSE",
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2574&auto=format&fit=crop",
+    title: "Escape to the serene mountain heights and wilderness trails",
+    subtitle: "MOUNTAIN ADVENTURES",
+  },
+  {
+    id: 3,
+    image:
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2574&auto=format&fit=crop",
+    title: "Surround yourself with majestic peaks and alpine lakes",
+    subtitle: "ALPINE RETREAT",
   },
 ];
 

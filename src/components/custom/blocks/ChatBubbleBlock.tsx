@@ -77,6 +77,18 @@ export interface ChatAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
   ({ src, fallback, className, ...props }, ref) => {
     const { variant, layout } = useChat();
+    const [imgFailed, setImgFailed] = React.useState(false);
+    const imgRef = useRef<HTMLImageElement>(null);
+
+    // `onError` alone is not enough under SSR: the browser starts loading the
+    // server-rendered <img> before React hydrates, so a 404 fires its error event
+    // with no handler attached and the initials never appear. Re-check the element
+    // on mount — a finished load with zero intrinsic width is a failed load.
+    React.useEffect(() => {
+      setImgFailed(false);
+      const node = imgRef.current;
+      if (node?.complete && node.naturalWidth === 0) setImgFailed(true);
+    }, [src]);
 
     // Hide avatar visually if it's in the middle or top of a group to keep alignment clean
     const isHidden = layout === "group-top" || layout === "group-middle";
@@ -88,13 +100,21 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
           "flex-shrink-0 w-8 h-8 rounded-full overflow-hidden flex items-center justify-center text-xs font-semibold select-none mt-auto",
           variant === "sent" ? "order-2" : "order-1",
           isHidden ? "invisible" : "visible",
-          "bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300",
+          "bg-muted text-muted-foreground",
           className,
         )}
         {...props}
       >
-        {src ? (
-          <img src={src} alt="Avatar" className="w-full h-full object-cover" />
+        {src && !imgFailed ? (
+          <img
+            ref={imgRef}
+            src={src}
+            alt="Avatar"
+            className="w-full h-full object-cover"
+            // Without this the initials never appear: a 404 or offline image leaves a
+            // broken <img> in place, and `fallback` only rendered when `src` was absent.
+            onError={() => setImgFailed(true)}
+          />
         ) : (
           fallback
         )}
@@ -116,14 +136,22 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
     // Forward ref manually while keeping local ref for GSAP
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
 
+    // The pop-in is an enhancement, never a prerequisite for being visible. The bubble
+    // renders opaque by default and GSAP animates *from* transparent, so a blocked or
+    // failed animation leaves a readable message rather than a blank row.
     useEffect(() => {
-      if (nodeRef.current) {
-        gsap.fromTo(
-          nodeRef.current,
-          { opacity: 0, scale: 0.95, y: 10 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" },
-        );
+      if (!nodeRef.current) return;
+      if (
+        typeof window !== "undefined" &&
+        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+      ) {
+        return;
       }
+      gsap.fromTo(
+        nodeRef.current,
+        { opacity: 0, scale: 0.95, y: 10 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" },
+      );
     }, []);
 
     // Theming logic for sent messages
@@ -166,11 +194,11 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
         <div
           ref={nodeRef}
           className={cn(
-            "px-4 py-2.5 text-[15px] leading-relaxed shadow-sm opacity-0",
+            "px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
             getBorderRadius(),
             isSent
               ? sentColors[color] || sentColors.default
-              : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-700/50",
+              : "bg-muted text-foreground border border-border/50",
             className,
           )}
           {...props}
@@ -198,7 +226,7 @@ export const ChatTimestamp = forwardRef<HTMLDivElement, ChatTimestampProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 select-none",
+          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium text-muted-foreground select-none",
           isSent ? "justify-end" : "justify-start",
           className,
         )}
@@ -231,7 +259,15 @@ export const ChatTypingIndicator = forwardRef<
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
   useEffect(() => {
-    // Pop-in animation for the bubble
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    // Pop-in animation for the bubble. It animates *from* transparent; the resting state
+    // is opaque, so a failed animation still leaves the dots visible.
     if (containerRef.current) {
       gsap.fromTo(
         containerRef.current,
@@ -241,7 +277,9 @@ export const ChatTypingIndicator = forwardRef<
     }
 
     // Staggered bounce for the dots
-    gsap.to(dotsRef.current, {
+    const dots = dotsRef.current.filter(Boolean);
+    if (!dots.length) return;
+    const bounce = gsap.to(dots, {
       y: -4,
       duration: 0.4,
       stagger: 0.15,
@@ -249,16 +287,22 @@ export const ChatTypingIndicator = forwardRef<
       repeat: -1,
       ease: "sine.inOut",
     });
+    return () => {
+      bounce.kill();
+    };
   }, []);
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        "flex items-center gap-1 px-4 py-3.5 rounded-2xl w-max shadow-sm opacity-0",
+        "flex items-center gap-1 px-4 py-3.5 rounded-2xl w-max shadow-sm",
+        // Matches ChatMessage. Without an explicit order the indicator defaults to
+        // order-0 and sorts *before* the avatar's order-1, flipping a received row.
+        variant === "sent" ? "order-1" : "order-2",
         variant === "sent"
-          ? "bg-zinc-900 dark:bg-zinc-100 rounded-br-sm"
-          : "bg-zinc-100 dark:bg-zinc-800/80 rounded-bl-sm border border-zinc-200/50 dark:border-zinc-700/50",
+          ? "bg-primary rounded-br-sm"
+          : "bg-muted rounded-bl-sm border border-border/50",
         className,
       )}
       {...props}

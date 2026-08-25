@@ -4,22 +4,76 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
-## Examples
-
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
+
+export const timelineEvents = `import {
+  CheckCircle2,
+  Loader2,
+  MapPin,
+  Palette,
+  Rocket,
+  Target,
+  Zap,
+} from "lucide-react";
+
+const EVENTS = [
+  {
+    id: "1",
+    title: "Project Initiation",
+    date: "Jan 2024",
+    description:
+      "The initial kickoff meeting where requirements were gathered.",
+    icon: Target,
+  },
+  {
+    id: "2",
+    title: "Design Phase",
+    date: "Feb 2024",
+    description:
+      "Wireframing, prototyping, and finalizing the UI kit components.",
+    icon: Palette,
+  },
+  {
+    id: "3",
+    title: "Development",
+    date: "Mar 2024",
+    description: "Writing the core logic and React components from scratch.",
+    icon: Zap,
+  },
+  {
+    id: "4",
+    title: "Testing & QA",
+    date: "Apr 2024",
+    description:
+      "Running automated tests and squashing complex accessibility bugs.",
+    icon: Loader2,
+  },
+  {
+    id: "5",
+    title: "Production Launch",
+    date: "May 2024",
+    description: "Deploying the V1 architecture to the edge network.",
+    icon: Rocket,
+  },
+  {
+    id: "6",
+    title: "Global Expansion",
+    date: "Jun 2024",
+    description: "Reaching 100k active users globally.",
+    icon: MapPin,
+  },
+  {
+    id: "7",
+    title: "Milestone Achieved",
+    date: "Present",
+    description: "We did it.",
+    icon: CheckCircle2,
+  },
+];`;
 
 export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
-const EVENTS = [
-  { id: "1", title: "Project Start", date: "Q1", icon: Zap },
-  {
-    id: "2",
-    title: "Beta Launch",
-    date: "Q2",
-    description: "Shipped to 100 users.",
-  },
-  { id: "3", title: "Global Scaling", date: "Q3", icon: Rocket },
-];
+${timelineEvents}
 
 export default function CompanyHistory() {
   return (
@@ -28,6 +82,8 @@ export default function CompanyHistory() {
 }`;
 
 export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+${timelineEvents}
 
 export default function LeftTimeline() {
   // Rail on the left, every card on the same side — the compact layout for
@@ -39,6 +95,8 @@ export default function LeftTimeline() {
 
 export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function RightTimeline() {
   return (
 
@@ -46,6 +104,8 @@ export default function RightTimeline() {
 }`;
 
 export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+
+${timelineEvents}
 
 export default function FadeUpTimeline() {
   return (
@@ -55,6 +115,8 @@ export default function FadeUpTimeline() {
 
 export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function ZoomTimeline() {
   return (
 
@@ -63,6 +125,8 @@ export default function ZoomTimeline() {
 
 export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
+${timelineEvents}
+
 export default function BlurTimeline() {
   return (
 
@@ -70,6 +134,8 @@ export default function BlurTimeline() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

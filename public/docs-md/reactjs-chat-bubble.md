@@ -6,8 +6,6 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 ---
 
-## Examples
-
 These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
 export const usageConversation = `import {
@@ -15,17 +13,32 @@ export const usageConversation = `import {
   ChatBubble,
   ChatMessage,
   ChatTimestamp,
-  ChatTypingIndicator,
 } from "@/components/custom/blocks/ChatBubbleBlock";
 
 export default function ChatInterface() {
   return (
+    
+      {/* Header — plain markup, not part of the block */}
 
-        Hey! Did you check out the new Docs UI kit?
+            Sarah Jenkins
 
-          It has a really clean compound component pattern.
+            Online
+
+      {/* Messages — \`layout\` is what rounds the stacked corners for you */}
+
+          Hey! Did you check out the new Docs UI kit?
+
+            I heard it has a really clean compound component pattern for
+            chat interfaces.
 
           Yeah, I'm playing with it right now.
+
+            The grouping logic is built right into the context, so the
+            border radius adjusts automatically when messages stack.
+
+      {/* Composer — also plain markup */}
+
+          Type a message...
 
   );
 }`;
@@ -98,6 +111,8 @@ export default function TypingIndicator() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

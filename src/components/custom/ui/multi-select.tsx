@@ -273,8 +273,8 @@ export default function MultiSelect({
             selected
               ? "bg-primary/5 text-primary"
               : highlightedIndex === indexForOption
-                ? "bg-gray-100 dark:bg-gray-700"
-                : "hover:bg-gray-100 dark:hover:bg-gray-700",
+                ? "bg-muted"
+                : "hover:bg-muted",
           )}
           style={{ paddingLeft: `${level * 20 + 12}px` }}
         >
@@ -326,7 +326,7 @@ export default function MultiSelect({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="relative border-b border-border">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
           ref={searchInputRef}
           type="text"
@@ -435,7 +435,7 @@ export default function MultiSelect({
                       {item.label}
                       <button
                         onClick={(e) => handleRemoveValue(e, item)}
-                        className="ml-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
+                        className="ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -447,7 +447,7 @@ export default function MultiSelect({
                       {value[0].label}
                       <button
                         onClick={(e) => handleRemoveValue(e, value[0])}
-                        className="ml-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
+                        className="ml-1 text-muted-foreground hover:text-foreground cursor-pointer"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -459,25 +459,25 @@ export default function MultiSelect({
                 )}
               </div>
             ) : (
-              <span className="text-gray-500">{placeholder}</span>
+              <span className="text-muted-foreground">{placeholder}</span>
             )
           ) : value && !Array.isArray(value) ? (
             <span>{value.label}</span>
           ) : (
-            <span className="text-gray-500">{placeholder}</span>
+            <span className="text-muted-foreground">{placeholder}</span>
           )}
         </div>
         <div className="flex items-center">
           {isClearable && hasValue && !loading && (
             <button
               onClick={handleClear}
-              className="mr-1 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer hover:text-gray-500 dark:hover:text-gray-300"
+              className="mr-1 rounded-full p-1 text-muted-foreground hover:bg-muted cursor-pointer hover:text-muted-foreground"
             >
               <X className="h-3 w-3" />
             </button>
           )}
           {loading ? (
-            <Loader2 className="h-4 w-4 animate-spin ml-2 text-gray-400" />
+            <Loader2 className="h-4 w-4 animate-spin ml-2 text-muted-foreground" />
           ) : (
             <ChevronDown
               className={`h-4 w-4 transition-transform ml-2 ${isOpen ? "rotate-180" : ""}`}

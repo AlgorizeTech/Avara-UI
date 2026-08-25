@@ -1,77 +1,221 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Advanced Table
+# Data Table
 
-A high-performance record management table featuring global search, multi-column sorting, pagination, and an animated batch-action toolbar.
+The same composable primitives as the [Table](../table), plus a state provider that wires up **search, sorting, pagination, row selection and batch actions** for you.
 
-This component is the engine for SaaS dashboards and administrative panels. Unlike our spreadsheet-focused `DataGrid`, this `AdvancedTableBlock` is optimized for displaying, filtering, and manipulating large datasets with a beautiful, modern aesthetic. It perfectly replicates the UI of top-tier platforms with a floating dark-mode batch actions pill and staggered CSS entry animations.
+You still write every row yourself, so the data shape stays yours: nested objects, `_id` instead of `id`, values that are computed rather than stored. `DataTable` never asks you to reshape a response before rendering it.
 
-## Examples
-
-Every example is live. Search for "Admin", sort by "Last Active", or tick a few rows to watch the **floating batch actions toolbar** slide in.
+Every example is live. Search for &ldquo;Admin&rdquo;, sort by **Last Active**, or tick a few rows to bring up the floating batch-actions pill.
 
 _Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
 
-export const usageDefault = `import { AdvancedTableBlock } from "@/components/custom/blocks/AdvancedTableBlock";
+## Anatomy
 
-// The \`render\` prop overrides the default text output, so a column can
-// return badges, avatars or any other React node.
-const COLUMNS = [
-  { key: "name", header: "Full Name", sortable: true },
-  { key: "role", header: "Role", sortable: true },
-  {
-    key: "lastActiveTs",
-    header: "Last Active",
-    sortable: true,
-    sortType: "number", // number sorting for timestamps
-    render: (row) => <span className="text-zinc-500">{row.lastActive}</span>,
-  },
-];
+```tsx
+<DataTable data={users} getRowId={(u) => u._id}>
+  <DataTableHeading title="Users">
+    <DataTableSearch />
+    <DataTablePageSize />
+  </DataTableHeading>
 
-const DATA = [
-  { id: 1, name: "Alice", role: "Admin", lastActive: "2 min ago", lastActiveTs: 1690000000 },
-  { id: 2, name: "Bob", role: "Editor", lastActive: "1 hr ago", lastActiveTs: 1680000000 },
-];
+  <DataTableContent>
+    <DataTableHeader>
+      <DataTableRow isHeader>
+        <DataTableHead><DataTableSelectAll /></DataTableHead>
+        <DataTableHead sortBy="profile.name">Name</DataTableHead>
+      </DataTableRow>
+    </DataTableHeader>
 
-export default function UserManagement() {
+    <DataTableBody>
+      {(rows) =>                          // already searched, sorted and paged
+        rows.map((user) => (
+          <DataTableRow key={user._id} row={user}>
+            <DataTableCell><DataTableSelect /></DataTableCell>
+            <DataTableCell>{user.profile.name}</DataTableCell>
+          </DataTableRow>
+        ))
+      }
+    </DataTableBody>
+  </DataTableContent>
+
+  <DataTableFooter>
+    <DataTableInfo />
+    <DataTablePagination />
+  </DataTableFooter>
+
+  <DataTableBatchBar>
+    {({ selectedRows, clearSelection }) => <button>Delete</button>}
+  </DataTableBatchBar>
+</DataTable>
+```
+
+`DataTableBody` takes a render function and hands you the current page of rows. Everything else is either a layout primitive re-exported from `Table`, or a small wired control that reads the provider.
+
+export const usageBasic = `"use client";
+
+import {
+  DataTable,
+  DataTableBody,
+  DataTableCell,
+  DataTableContent,
+  DataTableEmpty,
+  DataTableFooter,
+  DataTableHead,
+  DataTableHeader,
+  DataTableHeading,
+  DataTableInfo,
+  DataTablePageSize,
+  DataTablePagination,
+  DataTableRow,
+  DataTableSearch,
+} from "@/components/custom/blocks/AdvancedTableBlock";
+
+// Straight off the wire — nested, and keyed by _id.
+type User = {
+  _id: string;
+  profile: { name: string; email: string };
+  role: string;
+  lastActiveTs: number;
+  lastActive: string;
+};
+
+export default function UserTable({ users }: { users: User[] }) {
   return (
-    <div className="w-full max-w-5xl mx-auto p-4">
-      <AdvancedTableBlock
-        columns={COLUMNS}
-        data={DATA}
-        primaryKey="id"
-        onBatchDelete={(ids) => console.log("Deleting:", ids)}
-        onBatchEdit={(ids) => console.log("Editing:", ids)}
-      />
-    </div>
+    <DataTable data={users} getRowId={(user) => user._id}>
+      <DataTableHeading title="Team members">
+        <DataTableSearch placeholder="Search all columns…" />
+        <DataTablePageSize />
+      </DataTableHeading>
+
+      <DataTableContent>
+        <DataTableHeader>
+          <DataTableRow isHeader>
+            {/* Dot paths reach into nested objects */}
+            <DataTableHead sortBy="profile.name">Name</DataTableHead>
+            <DataTableHead sortBy="role">Role</DataTableHead>
+
+            {/* Sort on the timestamp while the cell shows prose */}
+            <DataTableHead
+              sortBy={(user) => user.lastActiveTs}
+              sortId="lastActive"
+              sortType="number"
+            >
+              Last Active
+            </DataTableHead>
+          </DataTableRow>
+        </DataTableHeader>
+
+        <DataTableBody>
+          {(rows) =>
+            rows.length === 0 ? (
+              <DataTableEmpty colSpan={3}>No users found.</DataTableEmpty>
+            ) : (
+              rows.map((user) => (
+                <DataTableRow key={user._id} row={user}>
+                  <DataTableCell>{user.profile.name}</DataTableCell>
+                  <DataTableCell>{user.role}</DataTableCell>
+                  <DataTableCell>{user.lastActive}</DataTableCell>
+                </DataTableRow>
+              ))
+            )
+          }
+        </DataTableBody>
+      </DataTableContent>
+
+      <DataTableFooter>
+        <DataTableInfo />
+        <DataTablePagination />
+      </DataTableFooter>
+    </DataTable>
   );
 }`;
+
+export const usageSelection = `// Add the two checkbox controls and the floating pill. Selection state,
+// select-all-on-page and the indeterminate state are all handled for you.
+<DataTableRow isHeader>
+  <DataTableHead className="w-11">
+    <DataTableSelectAll />
+  </DataTableHead>
+  <DataTableHead sortBy="name">Name</DataTableHead>
+</DataTableRow>
+
+// …and in each body row — DataTableSelect finds its id from the row prop.
+<DataTableRow key={user.id} row={user}>
+  <DataTableCell className="w-11">
+    <DataTableSelect />
+  </DataTableCell>
+  <DataTableCell>{user.name}</DataTableCell>
+</DataTableRow>
+
+<DataTableBatchBar>
+  {({ selectedRows, selectedIds, clearSelection }) => (
+    <button onClick={() => archive(selectedIds)}>
+      Archive {selectedRows.length}
+    </button>
+  )}
+</DataTableBatchBar>`;
+
+export const usageBatch = `// The pill is yours to fill. It floats over the table by default —
+// pass floating={false} to place it inline in the heading instead.
+<DataTableBatchBar>
+  {({ selectedIds, clearSelection }) => (
+    <>
+      <button onClick={() => exportCsv(selectedIds)}>Export CSV</button>
+      <button onClick={clearSelection}>Clear</button>
+    </>
+  )}
+</DataTableBatchBar>`;
+
+export const usageSearch = `// By default every value in the row — however deeply nested — is searchable.
+<DataTable data={users}>…</DataTable>
+
+// Narrow it when you only want certain fields to match:
+<DataTable
+  data={users}
+  getSearchText={(user) => user.profile.name + " " + user.profile.email}
+>
+  …
+</DataTable>`;
+
+export const usageHook = `// Everything the wired controls use is available to you directly.
+import { useDataTable } from "@/components/custom/blocks/AdvancedTableBlock";
+
+function ResultCount() {
+  const { total, filteredRows, selectedRows, clearSelection } = useDataTable();
+
+  return (
+    <span>
+      {total} matching · {selectedRows.length} selected
+    </span>
+  );
+}
+
+// Render it anywhere inside <DataTable>.`;
 
 <ExampleShowcase
   name="advanced-table"
   colorControl
-  colorLabel="Accent Color"
   columns={1}
   examples={[
     {
-      title: "Advanced table",
-      subheading: "Search, sort and pagination come for free once the schema is declared.",
+      title: "Search, sort, page and select",
       propNotes: [
         {
-          lead: "Declare the schema in",
-          prop: "columns",
-          effect: ", then pass the rows as `data`.",
+          lead: "Pass",
+          prop: "data",
+          effect:
+            "and getRowId — everything else is composition. No column config.",
         },
         {
-          prop: "primaryKey",
-          value: '"id"',
+          prop: "sortBy",
           effect:
-            "names the unique field — it is what selection and batch actions identify rows by.",
+            "takes a dot path or an accessor function, so nested and computed values sort correctly.",
         },
       ],
-      props: {},
-      usage: usageDefault,
+      props: { searchable: true, selectable: true },
+      usage: usageBasic,
       code: extractCode("src/components/custom/blocks/AdvancedTableBlock.tsx"),
     },
   ]}
@@ -81,26 +225,73 @@ export default function UserManagement() {
 
 <Installation name="advanced-table" />
 
-## Features
-Learn about the Data Table's robust functionality, featuring built-in sorting, filtering, row selection, and responsive layouts.
+## Examples
 
+<ExampleShowcase
+  name="advanced-table"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Row selection",
+      propNotes: [
+        {
+          lead: "Drop in",
+          prop: "DataTableSelectAll",
+          effect:
+            "and DataTableSelect — the provider tracks ids, select-all-on-page and the indeterminate state.",
+        },
+      ],
+      props: { selectable: true, searchable: true },
+      usage: usageSelection,
+    },
+    {
+      title: "Custom batch actions",
+      propNotes: [
+        {
+          lead: "Give",
+          prop: "DataTableBatchBar",
+          effect:
+            "a render function and it hands you the selected rows, their ids, and a way to clear them.",
+        },
+      ],
+      props: { example: "custom-batch-actions", selectable: true },
+      usage: usageBatch,
+    },
+    {
+      title: "Without search",
+      propNotes: [
+        {
+          lead: "Omit",
+          prop: "DataTableSearch",
+          effect:
+            "and there is no search — the controls are opt-in, not flags to switch off.",
+        },
+      ],
+      props: { searchable: false, selectable: true },
+      usage: usageSearch,
+    },
+  ]}
+/>
+
+## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No data transformation</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Opt-in controls</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Typed sorting</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Escape hatch</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.</p>
   </div>
 </div>
 
@@ -108,340 +299,99 @@ Learn about the Data Table's robust functionality, featuring built-in sorting, f
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Give rows a stable id</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Client-side by design</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Give a function sortBy an id</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.</p>
   </div>
 </div>
 
 ## Props Reference
 
-<div className="overflow-x-auto mb-8">
-  <table>
-    <thead>
-      <tr>
-        <th>Component</th>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>data</code>
-        </td>
-        <td>
-          <code>T[]</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>The array of data objects to display in the table.</td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>columns</code>
-        </td>
-        <td>
-          <code>TableColumn[]</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          Defines the headers, data keys, and custom rendering logic for the
-          table columns. See the TableColumn object reference below.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>primaryKey</code>
-        </td>
-        <td>
-          <code>keyof T</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          The unique identifier field in your data objects (e.g.,{" "}
-          <code>"id"</code> or <code>"uuid"</code>). This is strictly required
-          to ensure robust row selection and stable React keys.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>color</code>
-        </td>
-        <td>
-          <code>"indigo" | "rose" | "emerald" | "blue" | "zinc" | string</code>
-        </td>
-        <td>
-          <code>"indigo"</code>
-        </td>
-        <td>
-          The dynamic accent color applied to the search focus ring, selected
-          row backgrounds, active checkboxes, and pagination buttons. Fully
-          supports custom hex codes.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>searchable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>true</code>
-        </td>
-        <td>
-          If true, renders a global fuzzy-search input above the table that
-          automatically filters the dataset across all stringified object
-          values.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>selectable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>true</code>
-        </td>
-        <td>
-          If true, renders a far-left column of custom checkboxes allowing users
-          to select individual rows, or select all rows currently visible on the
-          page.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>itemsPerPageOptions</code>
-        </td>
-        <td>
-          <code>number[]</code>
-        </td>
-        <td>
-          <code>[5, 10, 25, 50]</code>
-        </td>
-        <td>
-          An array of numbers that populates the "Show entries" dropdown
-          selector in the top-right toolbar.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>onBatchDelete</code>
-        </td>
-        <td>
-          <code>(ids: string[]) =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          If provided, automatically renders a red Trash icon in the floating
-          batch toolbar whenever rows are selected. Returns an array of the
-          selected <code>primaryKey</code> strings.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>onBatchEdit</code>
-        </td>
-        <td>
-          <code>(ids: string[]) =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          If provided, automatically renders an Edit icon in the floating batch
-          toolbar whenever rows are selected. Returns an array of the selected{" "}
-          <code>primaryKey</code> strings.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AdvancedTableBlock</code>
-        </td>
-        <td>
-          <code>batchActions</code>
-        </td>
-        <td>
-          <code>
-            (selectedIds: string[], clearSelection: () =&gt; void) =&gt;
-            ReactNode
-          </code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          If provided, overrides the default Edit/Delete buttons inside the
-          floating toolbar, allowing you to inject completely custom action
-          buttons or menus.
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### TableColumn Object
+### `DataTable`
 
 <div className="overflow-x-auto">
   <table>
     <thead>
-      <tr>
-        <th>Object</th>
-        <th>Property</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>key</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          The object key to look up in your <code>data</code> array to populate
-          this specific column's default text value.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>header</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          The human-readable text title displayed inside the sticky table header
-          for this column.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>sortable</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          If true, adds chevron icons and makes the column header clickable,
-          allowing the user to toggle ascending and descending sorts.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>sortType</code>
-        </td>
-        <td>
-          <code>"string" | "number"</code>
-        </td>
-        <td>
-          <code>"string"</code>
-        </td>
-        <td>
-          Determines the comparison math used when sorting this column. Set this
-          to <code>"number"</code> for integers, floats, or parsed timestamps to
-          ensure accurate sorting.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>width</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          An optional fixed CSS width for the column (e.g., <code>"250px"</code>{" "}
-          or <code>"20%"</code>) to prevent layout shifts during pagination.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>TableColumn</code>
-        </td>
-        <td>
-          <code>render</code>
-        </td>
-        <td>
-          <code>(row: T) =&gt; ReactNode</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          An optional function that allows you to override the default text
-          output. Receives the full row object and lets you return custom React
-          nodes (like Avatars, formatted Badges, or complex layouts).
-        </td>
-      </tr>
+      <tr><td><code>data</code></td><td><code>T[]</code></td><td><strong>Required</strong></td><td>Your rows, in whatever shape they arrive.</td></tr>
+      <tr><td><code>getRowId</code></td><td><code>(row: T) =&gt; string | number</code></td><td><code>id → _id → uuid</code></td><td>How a row is identified for selection and expansion.</td></tr>
+      <tr><td><code>getSearchText</code></td><td><code>(row: T) =&gt; string</code></td><td>all values</td><td>Override what the search box matches against.</td></tr>
+      <tr><td><code>initialSort</code></td><td><code>{`{ id, direction?, type? }`}</code></td><td><code>undefined</code></td><td>Sort applied on first render.</td></tr>
+      <tr><td><code>pageSize</code></td><td><code>number</code></td><td>2nd option</td><td>Starting page size.</td></tr>
+      <tr><td><code>pageSizeOptions</code></td><td><code>number[]</code></td><td><code>[5, 10, 25, 50]</code></td><td>Choices offered by <code>DataTablePageSize</code>.</td></tr>
+      <tr><td><code>onSelectionChange</code></td><td><code>(rows: T[]) =&gt; void</code></td><td>—</td><td>Fires when the selection changes, with the full row objects.</td></tr>
+      <tr><td><code>variant</code> / <code>size</code> / <code>color</code></td><td>—</td><td>—</td><td>Passed through to <code>Table</code>.</td></tr>
     </tbody>
   </table>
 </div>
+
+### `DataTableHead`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>sortBy</code></td><td><code>string | ((row: T) =&gt; unknown)</code></td><td>—</td><td>A dot path such as <code>"profile.name"</code>, or an accessor function. Its presence makes the header sortable.</td></tr>
+      <tr><td><code>sortId</code></td><td><code>string</code></td><td>the path</td><td>Required only when <code>sortBy</code> is a function.</td></tr>
+      <tr><td><code>sortType</code></td><td><code>"auto" | "string" | "number" | "date"</code></td><td><code>"auto"</code></td><td><code>auto</code> compares numbers numerically and everything else as text.</td></tr>
+      <tr><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td><code>"left"</code></td><td>Text alignment.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### Wired components
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>DataTableBody</code></td><td>Children are a function receiving the current page of rows. Also takes <code>animate</code>.</td></tr>
+      <tr><td><code>DataTableRow</code></td><td>Pass <code>row</code> (or <code>rowId</code>) so selection and expansion resolve. Highlights itself when selected.</td></tr>
+      <tr><td><code>DataTableSearch</code></td><td>Debounce-free controlled input. Resets to page 1 on change. Accepts <code>placeholder</code>.</td></tr>
+      <tr><td><code>DataTablePageSize</code></td><td>Page-size picker. Accepts <code>label</code>, <code>suffix</code>, <code>color</code>.</td></tr>
+      <tr><td><code>DataTableSelectAll</code> / <code>DataTableSelect</code></td><td>Header and row checkboxes. Select-all applies to the current page.</td></tr>
+      <tr><td><code>DataTableBatchBar</code></td><td>Floating pill shown while a selection exists. Render function receives <code>{`{ selectedRows, selectedIds, clearSelection }`}</code>. Set <code>floating={`{false}`}</code> for inline.</td></tr>
+      <tr><td><code>DataTableInfo</code></td><td>The &ldquo;Showing 1 to 10 of 42 results&rdquo; line.</td></tr>
+      <tr><td><code>DataTablePagination</code></td><td>Prev / next plus a five-page window.</td></tr>
+      <tr><td><code>DataTableExpandToggle</code> / <code>DataTableExpandedRow</code></td><td>Row expansion, tracked by row id.</td></tr>
+      <tr><td><code>DataTableHeading</code>, <code>DataTableContent</code>, <code>DataTableHeader</code>, <code>DataTableCell</code>, <code>DataTableFooter</code>, <code>DataTableEmpty</code></td><td>Re-exported unchanged from <code>Table</code>.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `useDataTable()`
+
+<ExampleShowcase
+  name="advanced-table"
+  columns={1}
+  examples={[
+    {
+      title: "Building on the provider",
+      propNotes: [
+        {
+          lead: "Call",
+          prop: "useDataTable",
+          effect:
+            "anywhere inside DataTable to read rows, search, sort, paging and selection state.",
+        },
+      ],
+      props: { searchable: true, selectable: true },
+      usage: usageHook,
+    },
+  ]}
+/>
+
+Returns `sourceRows`, `filteredRows`, `rows`, `getRowId`, `search` / `setSearch`, `sort` / `toggleSort`, `page` / `setPage`, `pageSize` / `setPageSize`, `pageSizeOptions`, `totalPages`, `total`, `from`, `to`, `selectedIds`, `selectedRows`, `isSelected`, `toggleRow`, `toggleAllOnPage`, `clearSelection`, `isAllPageSelected`, `isSomePageSelected`, `isExpanded`, `toggleExpanded` and `theme`.

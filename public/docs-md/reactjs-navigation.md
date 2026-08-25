@@ -4,11 +4,9 @@ A highly composable, accessible, and smoothly animated navigation menu built for
 
 This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
 
-## Examples
-
 The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
 
-export const usageDefault = `import {
+export const usageMinimal = `import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuIndicator,
@@ -18,47 +16,58 @@ export const usageDefault = `import {
   NavigationMenuTrigger,
 } from "@/components/custom/blocks/NavigationMenu";
 
-export default function TopNav() {
-  return (
-
-          Features
-
-                Security
-
-                Developers
-
-            Pricing
-
-        {/* Sits last in the list — it measures its siblings. */}
-
-  );
-}`;
-
-export const usageMinimal = `import {
-  NavigationMenu,
-  NavigationMenuList,
-} from "@/components/custom/blocks/NavigationMenu";
-
 export default function MinimalNav() {
   // Pill chrome removed; the indicator becomes a thin underline.
   return (
-    
-      {/* … */}
-    
+
+          Features
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+
+                    Lightning Fast
+
+                    Experience uncompromised performance with our edge-first
+                    architecture.
+
+                Advanced encryption protocols.
+
+                APIs & webhooks.
+
+                Tailor experience.
+
+          Resources
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+
+                Quick setup guide.
+
+                iOS & Android.
+
+          {/* Standard link wrapped in trigger-like styles without the chevron */}
+          
+            Pricing
+
   );
-}`;
+}
 
-export const usageGlass = `import {
-  NavigationMenu,
-  NavigationMenuList,
-} from "@/components/custom/blocks/NavigationMenu";
-
-export default function GlassNav() {
+function ListItem({
+  className,
+  title,
+  children,
+  icon: Icon,
+  ...props
+}: {
+  className?: string;
+  title: string;
+  children: ReactNode;
+  icon?: ElementType;
+} & ComponentPropsWithoutRef) {
   return (
-    // Translucent and backdrop-blurred — meant to sit over a colored surface, so
-    // give it something to blur.
 
-        {/* … */}
+          {Icon && }
+          {title}
+
+          {children}
 
   );
 }`;

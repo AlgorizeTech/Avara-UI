@@ -2,63 +2,81 @@
 
 A highly animated, dynamic Modal component. Built from scratch using `gsap` for butter-smooth scaling and fading animations. It includes distinct visual variants and content types to handle alerts, forms, and complex interfaces.
 
-## Examples
-
 Click the trigger in each preview to open that modal. The `type` prop swaps the layout inside the modal; `variant` restyles the container.
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
 export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ModalDemo() {
+export default function Page() {
+  // ModalBlock ships the trigger, the open state and the content shown here.
   return ;
 }`;
 
 export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FormModal() {
-  // "form" swaps the body for a labelled input layout with a submit action.
+export default function Page() {
+  // "form" swaps the body for the invite fields and widens the panel.
   return ;
 }`;
 
 export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ConfirmModal() {
-  // "confirmation" is the compact are-you-sure shape with two actions.
+export default function Page() {
+  // "confirmation" is the narrow destructive-action layout.
   return ;
 }`;
 
 export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FullscreenModal() {
-  // "fullscreen" fills the viewport — good for editors and media views.
+export default function Page() {
+  // "fullscreen" fills the viewport for settings-style panels.
   return ;
 }`;
 
 export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function GlassModal() {
-  // Glass leans on a heavy backdrop blur — best over a colorful page.
-  return (
-
-  );
-}`;
-
-export const usageMinimal = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function MinimalModal() {
-  // No border, softer shadow, tighter radius.
-  return ;
-}`;
-
-export const usageBordered = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
-
-export default function BorderedModal() {
-  // Square corners, 2px border and a hard offset shadow.
+export default function Page() {
+  // "glass" is a surface treatment — it composes with any \`type\`.
   return ;
 }`;
 
 ## Installation
+
+## Examples
+
+## Composing your own content
+
+Every preview above is `ModalBlock` — the ready-made component, content included.
+When you need your own content instead, the same file exports the parts it is
+built from. There is no preview for this section on purpose: what it renders is
+whatever you put inside it, so a screenshot here would show our copy rather than
+yours.
+
+```tsx
+"use client";
+
+export default function ConfirmDeleteModal() {
+  // Modal is controlled: you own `isOpen`, it renders against it.
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+       setIsOpen(true)}>Delete project
+
+       setIsOpen(false)}
+        contentClassName="max-w-sm"
+      >
+
+            This permanently removes the project and everything in it. This
+            cannot be undone.
+
+           setIsOpen(false)}>Cancel
+           setIsOpen(false)}>Delete
+
+  );
+}
+```
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

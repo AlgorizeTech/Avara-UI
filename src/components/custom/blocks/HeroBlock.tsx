@@ -117,7 +117,7 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(
       children,
       layout = "center",
       variant = "default",
-      color = "indigo",
+      color = "primary",
       pattern = "none",
       className,
       ...props
@@ -245,7 +245,7 @@ export const HeroBadge = forwardRef<
       className={cn(
         "inline-flex items-center gap-2 px-3 py-1 mb-4 sm:mb-8 rounded-2xl text-xs sm:text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
         variant === "glass"
-          ? "bg-zinc-900/10 dark:bg-white/10 border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white shadow-sm"
+          ? "bg-primary/10 border-primary/20 text-foreground shadow-sm"
           : cn(theme.bgSoft, theme.border, "shadow-sm"),
         className,
       )}
@@ -270,7 +270,7 @@ export const HeroBadgeText = ({
     <span
       className={cn(
         "text-[10px] uppercase tracking-wider rounded-2xl px-2 py-0.5 mr-1 font-bold",
-        variant === "glass" ? "bg-zinc-900/20 dark:bg-white/20 text-zinc-900 dark:text-white" : theme.bg,
+        variant === "glass" ? "bg-primary/20 text-foreground" : theme.bg,
         className,
       )}
     >
@@ -307,8 +307,8 @@ export const HeroTitle = forwardRef<HTMLHeadingElement, HeroTitleProps>(
           className={cn(
             "text-[1.75rem] xs:text-3xl sm:text-[3.5rem] lg:text-[4.5rem] font-black tracking-tighter leading-[1.1]",
             variant === "glass"
-              ? "text-zinc-900 dark:text-white"
-              : "text-zinc-900 dark:text-zinc-50",
+              ? "text-foreground"
+              : "text-foreground",
             animation === "glitch" && `hero-glitch-${uniqueId}`,
             animation === "blur-in" &&
               "animate-[hero-blur-in_1s_ease-out_both]",
@@ -339,8 +339,8 @@ export const HeroDescription = forwardRef<
           ? "max-w-2xl mx-auto"
           : "max-w-xl",
         variant === "glass"
-          ? "text-zinc-600 dark:text-zinc-300"
-          : "text-zinc-600 dark:text-zinc-400",
+          ? "text-muted-foreground"
+          : "text-muted-foreground",
         className,
       )}
       {...props}
@@ -389,10 +389,10 @@ export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
         if (actionVariant === "primary")
           return cn(
             theme.bg,
-            "text-white shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
+            "text-primary-foreground dark:text-zinc-900 shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
           );
         if (actionVariant === "outline")
-          return "bg-zinc-900/10 dark:bg-white/10 border border-zinc-900/20 dark:border-white/20 text-zinc-900 dark:text-white hover:bg-zinc-900/20 dark:hover:bg-white/20 backdrop-blur-md hover:scale-[1.03] active:scale-95 shadow-sm transition-all duration-300";
+          return "bg-primary/10 border border-primary/20 text-foreground hover:bg-primary/20 backdrop-blur-md hover:scale-[1.03] active:scale-95 shadow-sm transition-all duration-300";
       }
 
       switch (actionVariant) {
@@ -405,11 +405,11 @@ export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
         case "primary":
           return cn(theme.bg, "shadow-md hover:scale-[1.02] active:scale-95");
         case "secondary":
-          return "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-md hover:scale-[1.02] active:scale-95";
+          return "bg-primary text-primary-foreground shadow-md hover:scale-[1.02] active:scale-95";
         case "outline":
-          return "bg-transparent border border-zinc-200/80 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:scale-[1.02] active:scale-95 shadow-sm";
+          return "bg-transparent border border-border/80 text-foreground hover:bg-muted hover:scale-[1.02] active:scale-95 shadow-sm";
         case "ghost":
-          return "bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 active:scale-95";
+          return "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground active:scale-95";
       }
     };
 
@@ -443,12 +443,12 @@ export const HeroVisual = forwardRef<
 
   const visualStyles = {
     center:
-      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-right":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
     "split-left":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
+      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
   };
 
   return (
@@ -481,7 +481,7 @@ export const HeroSocialProof = forwardRef<HTMLDivElement, HeroSocialProofProps>(
       <div
         ref={ref}
         className={cn(
-          "mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800 sm:flex sm:items-center",
+          "mt-8 pt-8 border-t border-border sm:flex sm:items-center",
           layout === "center" && "justify-center border-t-0 pt-0",
           className,
         )}
@@ -499,7 +499,7 @@ export const HeroSocialProof = forwardRef<HTMLDivElement, HeroSocialProofProps>(
         </div>
         <div
           className={cn(
-            "mt-3 sm:mt-0 sm:ml-5 text-sm font-medium text-zinc-600 dark:text-zinc-400",
+            "mt-3 sm:mt-0 sm:ml-5 text-sm font-medium text-muted-foreground",
             layout === "center" && "text-center",
           )}
         >

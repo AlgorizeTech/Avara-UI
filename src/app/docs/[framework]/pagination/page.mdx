@@ -7,11 +7,11 @@ A complex navigation component that intelligently handles page rendering, ellips
 
 Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
 
-## Examples
-
 Click through the page numbers in each preview to watch the ellipses shift.
 
-export const usageDefault = `import { useState } from "react";
+export const usageDefault = `"use client";
+
+import { useState } from "react";
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function BasicPagination() {
@@ -27,7 +27,9 @@ export default function BasicPagination() {
   );
 }`;
 
-export const usageSiblingCount = `import { useState } from "react";
+export const usageSiblingCount = `"use client";
+
+import { useState } from "react";
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function TightPagination() {
@@ -45,7 +47,9 @@ export default function TightPagination() {
   );
 }`;
 
-export const usageTable = `import { useState } from "react";
+export const usageTable = `"use client";
+
+import { useState } from "react";
 import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 const PER_PAGE = 5;
@@ -102,6 +106,20 @@ export default function CustomerDirectory() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="pagination" />
+
+## Examples
+
+<ExampleShowcase
+  name="pagination"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Sibling count",
       propNotes: [
@@ -129,10 +147,6 @@ export default function CustomerDirectory() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="pagination" />
 
 ## Props Reference
 

@@ -4,13 +4,9 @@ A complex navigation component that intelligently handles page rendering, ellips
 
 Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
 
-## Examples
-
 Click through the page numbers in each preview to watch the ellipses shift.
 
-export const usageDefault = `import { useState } from "react";
-
-export default function BasicPagination() {
+export const usageDefault = `export default function BasicPagination() {
   // You own the page state — the component only reports the new number.
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -19,21 +15,7 @@ export default function BasicPagination() {
   );
 }`;
 
-export const usageManyPages = `import { useState } from "react";
-
-export default function DeepPagination() {
-  const [currentPage, setCurrentPage] = useState(50);
-
-  // With 100 pages the block renders 1 … 48 49 [50] 51 52 … 100 and keeps
-  // the window centred as you move.
-  return (
-    
-  );
-}`;
-
-export const usageSiblingCount = `import { useState } from "react";
-
-export default function TightPagination() {
+export const usageSiblingCount = `export default function TightPagination() {
   const [currentPage, setCurrentPage] = useState(50);
 
   // siblingCount is how many numbers sit either side of the active page.
@@ -43,20 +25,7 @@ export default function TightPagination() {
   );
 }`;
 
-export const usageNoEdges = `import { useState } from "react";
-
-export default function NumbersOnlyPagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // showEdges={false} drops the Previous / Next controls.
-  return (
-    
-  );
-}`;
-
-export const usageTable = `import { useState } from "react";
-
-const PER_PAGE = 5;
+export const usageTable = `const PER_PAGE = 5;
 
 export default function CustomerDirectory() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -76,6 +45,8 @@ export default function CustomerDirectory() {
 }`;
 
 ## Installation
+
+## Examples
 
 ## Props Reference
 
