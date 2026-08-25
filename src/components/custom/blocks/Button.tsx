@@ -83,8 +83,43 @@ type ButtonVariant =
   | "beacon-radar-pulse"
   | "dual-ring-pulse"
   | "square-frame-pulse"
-  | "corner-dash-pulse";
+  | "corner-dash-pulse"
+  | "horizontal-shutter-split"
+  | "diagonal-slash-fill"
+  | "corner-cross-bracket"
+  | "inset-box-shadow-fill"
+  | "glowing-line-trace"
+  | "prism-reflection-shimmer"
+  | "dual-spin-border"
+  // The plain shadcn-style surfaces. Everything above is an animated
+  // treatment; these five are the ordinary buttons most pages actually need,
+  // and the docs have always advertised them.
+  | "default"
+  | "destructive"
+  | "secondary"
+  | "ghost"
+  | "link";
 type ButtonSize = "default" | "sm" | "lg";
+
+/**
+ * The plain variants, styled from theme tokens so they follow whatever palette
+ * the consumer has in globals.css.
+ *
+ * `outline` is deliberately absent: it is the default value and already has its
+ * own treatment further down, so listing it here would silently restyle every
+ * button that never passed a variant.
+ */
+const PLAIN_VARIANTS: Record<string, string> = {
+  default:
+    "bg-primary text-primary-foreground border-transparent hover:bg-primary/90",
+  destructive:
+    "bg-destructive text-white border-transparent hover:bg-destructive/90",
+  secondary:
+    "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80",
+  ghost:
+    "bg-transparent text-foreground border-transparent shadow-none hover:bg-accent hover:text-accent-foreground",
+  link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
+};
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -170,10 +205,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant === "slide-text" ||
       variant === "slide-text-down" ||
       variant === "slide-text-bounce"
-        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-white dark:bg-black text-black dark:text-white border border-zinc-200 dark:border-zinc-800 hover:bg-primary hover:text-primary-foreground shadow-xs overflow-hidden"
+        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border hover:bg-primary hover:text-primary-foreground shadow-xs overflow-hidden"
         : variant === "expand-icon" || variant === "slide-bg"
-        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-white dark:bg-black text-black dark:text-white border border-zinc-200 dark:border-zinc-800 shadow-xs overflow-hidden"
-        : "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-white dark:bg-black text-black dark:text-white border border-zinc-200 dark:border-zinc-800 hover:bg-primary hover:text-primary-foreground shadow-xs";
+        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border shadow-xs overflow-hidden"
+        : "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border hover:bg-primary hover:text-primary-foreground shadow-xs";
 
     const sizeClasses = {
       default: iconOnly ? "h-12 w-12 p-0" : "h-12 py-2.5 px-6",
@@ -184,6 +219,58 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const rippleColor = "bg-primary/10 dark:bg-white/10";
 
     const activeIcon = iconRight || iconLeft;
+
+    // The plain surfaces short-circuit ahead of every animated variant: they
+    // share one render and differ only by the token classes above.
+    if (PLAIN_VARIANTS[variant]) {
+      return (
+        <button
+          className={cn(
+            "relative inline-flex items-center justify-center rounded-xl border text-sm font-semibold transition-all duration-300 shadow-xs overflow-hidden cursor-pointer",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]",
+            sizeClasses[size],
+            PLAIN_VARIANTS[variant],
+            className,
+          )}
+          onClick={createRipple}
+          disabled={loading}
+          ref={ref}
+          {...props}
+        >
+          <span className="relative z-10 inline-flex items-center justify-center gap-2">
+            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {!loading && iconLeft && (
+              <span className="inline-flex items-center">{iconLeft}</span>
+            )}
+            {children}
+            {!loading && iconRight && (
+              <span className="inline-flex items-center">{iconRight}</span>
+            )}
+          </span>
+
+          {!loading && (
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">
+              {ripples.map((ripple) => (
+                <span
+                  key={ripple.id}
+                  className={cn(
+                    "absolute rounded-full animate-ripple",
+                    rippleColor,
+                  )}
+                  style={{
+                    left: ripple.x,
+                    top: ripple.y,
+                    width: ripple.size,
+                    height: ripple.size,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </button>
+      );
+    }
 
     // Style 1: Upwards Text Roll (Initial text goes UP, duplicate comes from BOTTOM)
     if (variant === "slide-text") {
@@ -611,16 +698,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Continuous Auto-Sweeping White Glare Beam */}
           <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/70 to-transparent -skew-x-12 animate-[shine-sweep-keyframe_2.5s_infinite] pointer-events-none z-10" />
 
-          <style jsx>{`
-            @keyframes shine-sweep-keyframe {
-              0% {
-                transform: translateX(-150%) skewX(-12deg);
-              }
-              100% {
-                transform: translateX(350%) skewX(-12deg);
-              }
-            }
-          `}</style>
+          {/* Plain <style> rather than styled-jsx, which only compiles under
+              Next.js — everywhere else React rejects its unknown attribute and
+              TypeScript fails the build. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes shine-sweep-keyframe {
+  0% { transform: translateX(-150%) skewX(-12deg); }
+  100% { transform: translateX(350%) skewX(-12deg); }
+}`,
+            }}
+          />
 
           <span className="relative z-20 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
@@ -898,7 +986,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-black text-white dark:bg-white dark:text-black border-2 border-primary shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-2 border-primary shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
             className,
           )}
           onClick={createRipple}
@@ -925,7 +1013,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto bg-white dark:bg-black",
+              "relative z-10 w-max h-auto bg-background",
               className,
             )}
             onClick={createRipple}
@@ -1027,7 +1115,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max overflow-hidden px-5 py-2.5 bg-black text-white dark:bg-white dark:text-black",
+            "relative z-10 w-max overflow-hidden px-5 py-2.5 bg-primary text-primary-foreground",
             className,
           )}
           onClick={createRipple}
@@ -1055,7 +1143,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto bg-white dark:bg-black",
+              "relative z-10 w-max h-auto bg-background",
               className,
             )}
             onClick={createRipple}
@@ -1107,7 +1195,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg text-black dark:text-white hover:bg-white/20 transition-all duration-300",
+            "relative z-10 w-max px-5 py-2.5 bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg text-foreground hover:bg-white/20 transition-all duration-300",
             className,
           )}
           onClick={createRipple}
@@ -1157,7 +1245,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black transition-transform duration-300 hover:scale-[1.05] active:scale-[0.95]",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground transition-transform duration-300 hover:scale-[1.05] active:scale-[0.95]",
             className,
           )}
           onClick={createRipple}
@@ -1408,7 +1496,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
 
           {/* Initial Right Icon (slides out to right on hover) */}
-          <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 group-hover:translate-x-10 group-hover:opacity-0 transition-all duration-300 ease-out">
+          <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-muted text-foreground group-hover:translate-x-10 group-hover:opacity-0 transition-all duration-300 ease-out">
             {loading ? <Loader2 className="h-4 w-4" /> : activeIcon}
           </span>
 
@@ -1719,7 +1807,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto bg-white dark:bg-black text-black dark:text-white border border-zinc-200 dark:border-zinc-800 shadow-sm",
+              "relative z-10 w-max h-auto bg-background text-foreground border border-border shadow-sm",
               className,
             )}
             onClick={createRipple}
@@ -1797,7 +1885,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto bg-white dark:bg-black text-black dark:text-white border border-zinc-200 dark:border-zinc-800",
+              "relative z-10 w-max h-auto bg-background text-foreground border border-border",
               className,
             )}
             onClick={createRipple}
@@ -1879,7 +1967,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border-0",
+              "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border-0",
               className,
             )}
             onClick={createRipple}
@@ -1922,7 +2010,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border border-primary/60",
+              "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border border-primary/60",
               className,
             )}
             onClick={createRipple}
@@ -1962,7 +2050,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border border-primary/50",
+              "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border border-primary/50",
               className,
             )}
             onClick={createRipple}
@@ -2003,7 +2091,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border border-primary/60",
+              "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border border-primary/60",
               className,
             )}
             onClick={createRipple}
@@ -2044,7 +2132,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className={cn(
               baseClasses,
               sizeClasses[size],
-              "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border border-primary/50",
+              "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border border-primary/50",
               className,
             )}
             onClick={createRipple}
@@ -2073,7 +2161,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <div className="relative inline-flex items-center justify-center group p-[2px] rounded-xl overflow-hidden isolation-auto bg-zinc-200 dark:bg-zinc-800">
+      <div className="relative inline-flex items-center justify-center group p-[2px] rounded-xl overflow-hidden isolation-auto bg-muted">
         {/* Conic Spinning Beam layer that spins exactly over the border frame */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350%] aspect-square bg-[conic-gradient(from_0deg,transparent_70%,var(--primary,#3b82f6)_100%)] group-hover:opacity-0 animate-[spin_3s_linear_infinite] opacity-100 transition-opacity duration-300 pointer-events-none" />
 
@@ -2081,7 +2169,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max h-auto overflow-hidden bg-white dark:bg-black text-black dark:text-white border-0",
+            "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border-0",
             className,
           )}
           onClick={createRipple}

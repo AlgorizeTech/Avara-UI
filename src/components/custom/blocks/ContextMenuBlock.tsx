@@ -235,7 +235,7 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
         opacity: visible ? 1 : 0,
       }}
       className={cn(
-        "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150 text-xs sm:text-sm",
+        "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border border-border bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150 text-xs sm:text-sm",
         className
       )}
       onClick={(e) => e.stopPropagation()}
@@ -275,7 +275,7 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
       className={cn(
         "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
         inset && "pl-8",
-        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : "hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 text-zinc-950 dark:text-zinc-50",
+        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : "hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 text-foreground",
         className
       )}
       {...props}
@@ -286,13 +286,13 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
 }
 
 export function ContextMenuSeparator({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800", className)} {...props} />;
+  return <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />;
 }
 
 export function ContextMenuShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-  return <span className={cn("ml-auto text-xs tracking-widest text-zinc-500 dark:text-zinc-400", className)} {...props} />;
+  return <span className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)} {...props} />;
 }
 
 export function ContextMenuLabel({ className, inset, ...props }: React.HTMLAttributes<HTMLDivElement> & { inset?: boolean }) {
-  return <div className={cn("px-2 py-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400", inset && "pl-8", className)} {...props} />;
+  return <div className={cn("px-2 py-1.5 text-xs font-semibold text-muted-foreground", inset && "pl-8", className)} {...props} />;
 }

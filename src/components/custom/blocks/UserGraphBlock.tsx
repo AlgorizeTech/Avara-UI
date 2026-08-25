@@ -72,8 +72,8 @@ function getColorDetails(colorKey: string) {
     case "zinc":
       return {
         hex: "#71717a",
-        bgClass: "bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900",
-        textClass: "text-zinc-800 dark:text-zinc-200",
+        bgClass: "bg-primary text-primary-foreground",
+        textClass: "text-foreground",
         ringClass: "ring-zinc-500",
         borderClass: "border-zinc-500",
       };
@@ -148,7 +148,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     percentX: 30,
     svgX: 300,
     apps: [
-      { id: "web", name: "Website", icon: Globe, bgColor: "bg-slate-100 dark:bg-zinc-900", textColor: "text-slate-700 dark:text-zinc-300", borderColor: "border-slate-300 dark:border-zinc-700" },
+      { id: "web", name: "Website", icon: Globe, bgColor: "bg-muted", textColor: "text-foreground", borderColor: "border-border" },
       { id: "analytics", name: "Analytics", icon: BarChart3, bgColor: "bg-blue-50 dark:bg-blue-950/80", textColor: "text-blue-600 dark:text-blue-400", borderColor: "border-blue-300 dark:border-blue-700" },
       { id: "mailchimp", name: "Mailchimp", icon: Send, bgColor: "bg-purple-50 dark:bg-purple-950/80", textColor: "text-purple-600 dark:text-purple-400", borderColor: "border-purple-300 dark:border-purple-700" },
     ],
@@ -163,7 +163,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     percentX: 50,
     svgX: 500,
     apps: [
-      { id: "notion", name: "Notion", icon: BookOpen, bgColor: "bg-slate-100 dark:bg-zinc-900", textColor: "text-slate-700 dark:text-zinc-300", borderColor: "border-slate-300 dark:border-zinc-700" },
+      { id: "notion", name: "Notion", icon: BookOpen, bgColor: "bg-muted", textColor: "text-foreground", borderColor: "border-border" },
       { id: "zendesk", name: "Zendesk", icon: Database, bgColor: "bg-rose-50 dark:bg-rose-950/80", textColor: "text-rose-600 dark:text-rose-400", borderColor: "border-rose-300 dark:border-rose-700", customText: "Z" },
       { id: "intercom", name: "Intercom", icon: MessageSquare, bgColor: "bg-pink-50 dark:bg-pink-950/80", textColor: "text-pink-600 dark:text-pink-400", borderColor: "border-pink-300 dark:border-pink-700" },
     ],
@@ -195,7 +195,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     apps: [
       { id: "drive", name: "Google Drive", icon: Database, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700" },
       { id: "sheets", name: "Sheets", icon: BarChart3, bgColor: "bg-emerald-50 dark:bg-emerald-950/80", textColor: "text-emerald-600 dark:text-emerald-400", borderColor: "border-emerald-300 dark:border-emerald-700" },
-      { id: "github", name: "GitHub", icon: GitHubIcon, bgColor: "bg-slate-100 dark:bg-blue-950/80", textColor: "text-slate-800 dark:text-blue-400", borderColor: "border-slate-300 dark:border-blue-700" },
+      { id: "github", name: "GitHub", icon: GitHubIcon, bgColor: "bg-muted dark:bg-blue-950/80", textColor: "text-slate-800 dark:text-blue-400", borderColor: "border-border dark:border-blue-700" },
     ],
   },
 ];
@@ -267,7 +267,7 @@ export function UserGraph({
       {...props}
     >
           {/* Theme Dynamic Canvas */}
-          <div className="relative w-full rounded-none bg-slate-50 dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-slate-200 dark:border-zinc-800/80 flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="relative w-full rounded-none bg-muted dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-border flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* Ambient Dynamic Theme Glow */}
             <div
               className={cn(
@@ -281,10 +281,10 @@ export function UserGraph({
               {/* TOP TIER: Concentric Circles & Dashed Orbit Ring */}
               <div className="relative size-[210px] sm:size-[250px] flex items-center justify-center my-0 z-10 scale-95 sm:scale-100">
                 {/* Outer Dashed Orbit Circle */}
-                <div className="absolute size-[170px] sm:size-[210px] rounded-full border border-dashed border-slate-300 dark:border-zinc-700/60" />
+                <div className="absolute size-[170px] sm:size-[210px] rounded-full border border-dashed border-border" />
 
                 {/* Concentric Outer Solid Circle */}
-                <div className="absolute size-[100px] sm:size-[125px] rounded-full border border-slate-300 dark:border-zinc-700/50 flex items-center justify-center" />
+                <div className="absolute size-[100px] sm:size-[125px] rounded-full border border-border flex items-center justify-center" />
 
                 {/* Concentric Inner Ring */}
                 <div
@@ -328,7 +328,7 @@ export function UserGraph({
                           "size-6 sm:size-8 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
                           isSelected
                             ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 dark:ring-offset-zinc-900", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
-                            : "bg-white dark:bg-[#181c2b] border-slate-200 dark:border-zinc-700/80 text-slate-600 dark:text-zinc-400 hover:border-slate-400 dark:hover:border-zinc-500"
+                            : "bg-white dark:bg-[#181c2b] border-border text-muted-foreground hover:border-slate-400 dark:hover:border-zinc-500"
                         )}
                       >
                         <tool.icon className="size-3 sm:size-3.5" />
@@ -341,7 +341,7 @@ export function UserGraph({
                           <div className="w-0 h-0 border-x-[5px] border-x-transparent border-b-[5px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
                           
                           {/* Tooltip Content Badge */}
-                          <div className="px-2 py-0.5 rounded-md bg-slate-800 text-white dark:bg-zinc-200 dark:text-slate-900 text-[9px] font-bold whitespace-nowrap shadow-md">
+                          <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-bold whitespace-nowrap shadow-md">
                             {tool.name}
                           </div>
                         </div>
@@ -438,8 +438,8 @@ export function UserGraph({
                     </div>
                     {/* Shuvo Sarkar Info Text */}
                     <div className="mt-1 text-center">
-                      <h4 className="text-xs font-bold text-slate-900 dark:text-white tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
-                      <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400 whitespace-nowrap">{orchestrator.role}</p>
+                      <h4 className="text-xs font-bold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
+                      <p className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{orchestrator.role}</p>
                     </div>
                   </div>
 
@@ -472,7 +472,7 @@ export function UserGraph({
                           </div>
 
                           {/* Sub-Agent Title Header BELOW Avatar Image */}
-                          <span className="text-[11px] font-bold text-slate-900 dark:text-white text-center leading-tight mb-5 whitespace-nowrap">
+                          <span className="text-[11px] font-bold text-foreground text-center leading-tight mb-5 whitespace-nowrap">
                             {agent.title}
                           </span>
 
@@ -509,14 +509,14 @@ export function UserGraph({
                         />
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                       </div>
-                      <div className="flex flex-col bg-white dark:bg-[#181c2b] p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs grow">
+                      <div className="flex flex-col bg-white dark:bg-[#181c2b] p-2.5 rounded-xl border border-border shadow-xs grow">
                         <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold text-slate-900 dark:text-white">{orchestrator.name}</h4>
+                          <h4 className="text-xs font-bold text-foreground">{orchestrator.name}</h4>
                           <span className="px-1.5 py-0.5 text-[9px] font-semibold rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                             Active Lead
                           </span>
                         </div>
-                        <p className="text-[10px] font-medium text-slate-500 dark:text-zinc-400">{orchestrator.role}</p>
+                        <p className="text-[10px] font-medium text-muted-foreground">{orchestrator.role}</p>
                       </div>
                     </div>
 
@@ -544,25 +544,25 @@ export function UserGraph({
                                 )}
                               />
                               {/* Step Index Badge */}
-                              <span className="absolute -top-1 -left-1 size-4 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-[8px] font-black flex items-center justify-center shadow-xs">
+                              <span className="absolute -top-1 -left-1 size-4 rounded-full bg-primary text-primary-foreground text-[8px] font-black flex items-center justify-center shadow-xs">
                                 {index + 1}
                               </span>
                             </div>
 
                             {/* Agent Content Box */}
-                            <div className="flex flex-col bg-white dark:bg-[#181c2b] p-3 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs grow">
+                            <div className="flex flex-col bg-white dark:bg-[#181c2b] p-3 rounded-xl border border-border shadow-xs grow">
                               <div className="flex items-center justify-between mb-1.5">
-                                <span className="text-xs font-bold text-slate-900 dark:text-white">
+                                <span className="text-xs font-bold text-foreground">
                                   {agent.title}
                                 </span>
-                                <span className="text-[9px] font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
+                                <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">
                                   Agent 0{index + 1}
                                 </span>
                               </div>
 
                               {/* Connected Apps Badges */}
-                              <div className="flex items-center gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800/80">
-                                <span className="text-[9px] font-medium text-slate-400 dark:text-zinc-500 mr-1">Apps:</span>
+                              <div className="flex items-center gap-2 pt-1 border-t border-border">
+                                <span className="text-[9px] font-medium text-muted-foreground mr-1">Apps:</span>
                                 {appList(agent.apps)}
                               </div>
                             </div>
@@ -589,7 +589,7 @@ function appList(apps: SubApp[]) {
         "size-7 sm:size-8 rounded-full border flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-xs shrink-0",
         app.bgColor,
         app.textColor,
-        app.borderColor || "border-slate-200 dark:border-zinc-700/60"
+        app.borderColor || "border-border"
       )}
       title={app.name}
     >

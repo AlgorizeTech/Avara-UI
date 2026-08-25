@@ -272,7 +272,7 @@ function TimelineNode({
             layout === "center" &&
               "@xl/timeline:left-1/2 @xl/timeline:-translate-x-1/2",
             // Colors based on status
-            isGlass ? "bg-white/10" : "bg-zinc-200 dark:bg-zinc-800",
+            isGlass ? "bg-white/10" : "bg-muted",
             isCompleted && theme.bg, // Fill the line if this node is completed
           )}
         />
@@ -296,7 +296,7 @@ function TimelineNode({
             ? theme.border
             : isGlass
               ? "border-white/20"
-              : "border-zinc-200 dark:border-zinc-800",
+              : "border-border",
           isCurrent && theme.glow,
           // Hover effects
           !isUpcoming && "group-hover:scale-110",
@@ -317,7 +317,7 @@ function TimelineNode({
               "w-3 h-3 rounded-full transition-colors",
               isCompleted || isCurrent
                 ? theme.bg
-                : "bg-zinc-300 dark:bg-zinc-700",
+                : "bg-muted",
               isCurrent && "animate-pulse",
             )}
           />
@@ -351,7 +351,7 @@ function TimelineNode({
             !isMinimal && "p-5 border shadow-sm",
             !isMinimal &&
               !isGlass &&
-              "bg-white dark:bg-[#09090b] border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700",
+              "bg-white dark:bg-[#09090b] border-border hover:border-border",
             isGlass &&
               "bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10",
             isMinimal && "p-1 hover:-translate-y-1",
@@ -376,7 +376,7 @@ function TimelineNode({
               <h3
                 className={cn(
                   "text-base font-bold transition-colors",
-                  isGlass ? "text-white" : "text-zinc-900 dark:text-zinc-100",
+                  isGlass ? "text-white" : "text-foreground",
                   "group-hover:text-[var(--timeline-color)]",
                 )}
               >
@@ -388,7 +388,7 @@ function TimelineNode({
                     "text-sm",
                     isGlass
                       ? "text-zinc-300"
-                      : "text-zinc-500 dark:text-zinc-400",
+                      : "text-muted-foreground",
                   )}
                 >
                   {item.description}
@@ -413,7 +413,7 @@ function TimelineNode({
                     ? theme.bg
                     : isGlass
                       ? "bg-white/10 text-zinc-300"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300",
+                      : "bg-muted text-muted-foreground",
                   isCurrent && theme.on,
                   isCurrent && "shadow-sm",
                 )}
@@ -426,7 +426,7 @@ function TimelineNode({
                     "p-1.5 rounded-full transition-all",
                     isGlass
                       ? "hover:bg-white/10 text-zinc-300"
-                      : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500",
+                      : "hover:bg-muted text-muted-foreground",
                   )}
                 >
                   <ChevronDown
@@ -468,7 +468,7 @@ function TimelineNode({
                     "pt-4 border-t",
                     isGlass
                       ? "border-white/10"
-                      : "border-zinc-100 dark:border-zinc-800/50",
+                      : "border-border",
                   )}
                 >
                   {item.content}

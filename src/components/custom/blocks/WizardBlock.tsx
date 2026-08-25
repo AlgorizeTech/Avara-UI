@@ -232,7 +232,7 @@ export const WizardTitle = forwardRef<
     <h2
       ref={ref}
       className={cn(
-        "text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50",
+        "text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground",
         className,
       )}
       {...props}
@@ -251,7 +251,7 @@ export const WizardDescription = forwardRef<
     <p
       ref={ref}
       className={cn(
-        "text-lg sm:text-xl text-zinc-500 dark:text-zinc-400 mt-2",
+        "text-lg sm:text-xl text-muted-foreground mt-2",
         className,
       )}
       {...props}
@@ -282,7 +282,7 @@ export const WizardInput = forwardRef<
     <input
       ref={ref}
       className={cn(
-        "w-full bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800 py-4 text-2xl sm:text-3xl text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition-colors",
+        "w-full bg-transparent border-b-2 border-border py-4 text-2xl sm:text-3xl text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition-colors",
         !isHex && (focusColors[color] || focusColors.indigo),
         className,
       )}
@@ -306,7 +306,7 @@ export const WizardNavigation = forwardRef<
     blue: "bg-blue-600 hover:bg-blue-700 text-white",
     rose: "bg-rose-600 hover:bg-rose-700 text-white",
     emerald: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    zinc: "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-900",
+    zinc: "bg-primary hover:bg-primary text-primary-foreground",
   };
 
   return (
@@ -333,7 +333,7 @@ export const WizardNavigation = forwardRef<
         <button
           type="button"
           onClick={prevStep}
-          className="px-4 py-3 rounded-xl text-sm font-semibold text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="px-4 py-3 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
         >
           Back
         </button>

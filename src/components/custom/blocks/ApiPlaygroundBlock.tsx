@@ -365,7 +365,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "enabled", e.target.checked)
               }
-              className="w-4 h-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 shrink-0 cursor-pointer"
+              className="w-4 h-4 rounded border-border text-foreground focus:ring-zinc-900 shrink-0 cursor-pointer"
             />
             <input
               type="text"
@@ -374,7 +374,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "key", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
               disabled={!item.enabled}
             />
             <input
@@ -384,7 +384,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "value", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
               disabled={!item.enabled}
             />
             <button
@@ -398,7 +398,7 @@ export const ApiPlaygroundBlock = forwardRef<
         ))}
         <button
           onClick={() => handleAddPair(setter)}
-          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 w-max mt-2 transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground w-max mt-2 transition-colors cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5" /> Add{" "}
           {activeTab === "params" ? "Parameter" : "Header"}
@@ -419,7 +419,7 @@ export const ApiPlaygroundBlock = forwardRef<
         {/* LEFT PANE: REQUEST BUILDER */}
         <div className="flex flex-col gap-4 min-w-0">
           {/* ── RESPONSIVE URL BAR ─────────────────────────────────────── */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 bg-card border border-border rounded-xl">
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <SelectBlock
                 options={METHOD_OPTIONS}
@@ -435,7 +435,7 @@ export const ApiPlaygroundBlock = forwardRef<
                 type="text"
                 value={url}
                 onChange={(e) => handleUrlChange(e.target.value)}
-                className="w-full min-w-0 bg-transparent px-2 text-xs sm:text-sm font-mono text-zinc-700 dark:text-zinc-300 outline-none truncate"
+                className="w-full min-w-0 bg-transparent px-2 text-xs sm:text-sm font-mono text-foreground outline-none truncate"
                 placeholder="https://api.example.com..."
               />
             </div>
@@ -461,9 +461,9 @@ export const ApiPlaygroundBlock = forwardRef<
           </div>
 
           {/* Config Tabs */}
-          <div className="flex flex-col flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden min-h-[250px] min-w-0">
+          <div className="flex flex-col flex-1 bg-card border border-border rounded-xl overflow-hidden min-h-[250px] min-w-0">
             {/* ── SCROLLABLE TABS ───────────────────────────────────────── */}
-            <div className="flex items-center border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 px-2 pt-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center border-b border-border bg-muted/50 px-2 pt-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {(["params", "headers", "body"] as const).map((tab) => (
                 <button
                   key={tab}
@@ -472,7 +472,7 @@ export const ApiPlaygroundBlock = forwardRef<
                     "px-3 sm:px-4 py-2 text-xs font-bold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
                     activeTab === tab
                       ? cn("border-[var(--api-color)]", theme.text)
-                      : "border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300",
+                      : "border-transparent text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {tab}
@@ -497,7 +497,7 @@ export const ApiPlaygroundBlock = forwardRef<
                 <div className="w-full h-full flex flex-col relative group">
                   {method === "GET" && (
                     <div className="absolute inset-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
-                      <p className="text-xs sm:text-sm font-medium text-zinc-500">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                         GET requests typically do not have a body.
                       </p>
                     </div>
@@ -505,7 +505,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
-                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none transition-colors"
+                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-border rounded-lg outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none transition-colors"
                     spellCheck={false}
                   />
                 </div>
@@ -515,12 +515,12 @@ export const ApiPlaygroundBlock = forwardRef<
         </div>
 
         {/* RIGHT PANE: RESPONSE VIEWER */}
-        <div className="flex flex-col bg-white dark:bg-[#09090b] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 min-h-[300px] min-w-0">
+        <div className="flex flex-col bg-white dark:bg-[#09090b] rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
           {/* ── RESPONSIVE TERMINAL HEADER ──────────────────────────────── */}
-          <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-zinc-50/80 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-muted/80 border-b border-border">
             <div className="flex items-center gap-2">
-              <TerminalSquare className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
-              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+              <TerminalSquare className="w-4 h-4 text-muted-foreground shrink-0" />
+              <span className="text-xs font-semibold text-muted-foreground">
                 Response
               </span>
             </div>
@@ -542,7 +542,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   )}
                   Status: {response.status}
                 </div>
-                <div className="flex items-center gap-1 sm:gap-1.5 text-zinc-500 dark:text-zinc-400 border-l border-zinc-200 dark:border-zinc-800 pl-3 sm:pl-4">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-muted-foreground border-l border-border pl-3 sm:pl-4">
                   <Clock className="w-3 h-3 shrink-0" />
                   {response.timeMs}ms
                 </div>
@@ -555,18 +555,18 @@ export const ApiPlaygroundBlock = forwardRef<
             {isLoading ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/80 dark:bg-zinc-950/80">
                 <Activity className={cn("w-6 h-6 animate-pulse", theme.text)} />
-                <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 animate-pulse">
+                <span className="text-xs font-mono text-muted-foreground animate-pulse">
                   Awaiting response...
                 </span>
               </div>
             ) : response ? (
-              <pre className="text-xs sm:text-[13px] font-mono leading-relaxed text-zinc-800 dark:text-zinc-200">
+              <pre className="text-xs sm:text-[13px] font-mono leading-relaxed text-foreground">
                 <code>{JSON.stringify(response.data, null, 2)}</code>
               </pre>
             ) : (
               <div className="h-full flex flex-col items-center justify-center gap-2 opacity-50 dark:opacity-30 select-none text-center p-4">
-                <TerminalSquare className="w-10 sm:w-12 h-10 sm:h-12 text-zinc-400 dark:text-zinc-500 mb-2" />
-                <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                <TerminalSquare className="w-10 sm:w-12 h-10 sm:h-12 text-muted-foreground mb-2" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Hit Send to get a response
                 </p>
               </div>

@@ -109,7 +109,7 @@ export function Command({
         ref={setCommand}
         cmdk-root="true"
         className={cn(
-          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-white dark:bg-[#050505] text-foreground border border-border shadow-sm",
           className,
         )}
         {...props}
@@ -195,16 +195,16 @@ export function CommandInput({
 
   return (
     <div
-      className="flex items-center border-b border-zinc-200 dark:border-zinc-800 px-3"
+      className="flex items-center border-b border-border px-3"
       cmdk-input-wrapper=""
     >
-      <Search className="mr-2 h-4 w-4 shrink-0 text-zinc-500" />
+      <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
       <input
         autoFocus
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className={cn(
-          "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
         {...props}
@@ -257,7 +257,7 @@ export function CommandEmpty({
 
   return (
     <div
-      className={cn("py-6 text-center text-sm text-zinc-500", className)}
+      className={cn("py-6 text-center text-sm text-muted-foreground", className)}
       {...props}
     >
       {children}
@@ -275,7 +275,7 @@ export function CommandGroup({
     <div
       cmdk-group="true"
       className={cn(
-        "overflow-hidden p-1 text-zinc-950 dark:text-zinc-50",
+        "overflow-hidden p-1 text-foreground",
         // Magic CSS: Hide group if it contains no visible items
         "hidden [&:has([cmdk-item=true]:not([hidden]))]:block",
         className,
@@ -283,7 +283,7 @@ export function CommandGroup({
       {...props}
     >
       {heading && (
-        <div className="px-2 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
           {heading}
         </div>
       )}
@@ -298,7 +298,7 @@ export function CommandSeparator({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("-mx-1 h-px bg-zinc-200 dark:bg-zinc-800", className)}
+      className={cn("-mx-1 h-px bg-muted", className)}
       {...props}
     />
   );
@@ -361,8 +361,8 @@ export function CommandItem({
       onMouseEnter={handleMouseEnter}
       className={cn(
         "relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
-        "data-[selected=true]:bg-zinc-100 dark:data-[selected=true]:bg-zinc-800",
-        "data-[selected=true]:text-zinc-900 dark:data-[selected=true]:text-zinc-50",
+        "data-[selected=true]:bg-muted dark:data-[selected=true]:bg-zinc-800",
+        "data-[selected=true]:text-foreground dark:data-[selected=true]:text-zinc-50",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
@@ -380,7 +380,7 @@ export function CommandShortcut({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-zinc-500 dark:text-zinc-400",
+        "ml-auto text-xs tracking-widest text-muted-foreground",
         className,
       )}
       {...props}

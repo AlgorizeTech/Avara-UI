@@ -78,7 +78,7 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
         }}
         className={cn(
           "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
-          "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10",
+          "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-border/80",
           "ring-1 ring-black/5 dark:ring-white/5",
           "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
           className,
@@ -152,7 +152,7 @@ const DockIcon: React.FC<DockIconProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
             transition={{ duration: 0.15 }}
-            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border border-zinc-800 dark:border-zinc-200 z-50"
+            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-primary text-primary-foreground border border-zinc-800 dark:border-zinc-200 z-50"
           >
             {item.label}
           </motion.div>
@@ -173,8 +173,8 @@ const DockIcon: React.FC<DockIconProps> = ({
         className={cn(
           "relative flex items-center justify-center rounded-xl shadow-lg transition-colors cursor-pointer select-none shrink-0",
           "bg-gradient-to-t from-zinc-100 to-white dark:from-zinc-800 dark:to-zinc-700/80",
-          "border border-zinc-200/80 dark:border-white/10 hover:border-zinc-400 dark:hover:border-white/30",
-          "text-zinc-700 dark:text-zinc-200 active:scale-95",
+          "border border-border/80 hover:border-zinc-400 dark:hover:border-white/30",
+          "text-foreground active:scale-95",
         )}
       >
         {/* Notification Badge */}
@@ -195,7 +195,7 @@ const DockIcon: React.FC<DockIconProps> = ({
         {item.isActive && (
           <motion.div
             layoutId="active-dot"
-            className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-zinc-800 dark:bg-white shadow-sm"
+            className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary shadow-sm"
           />
         )}
       </div>

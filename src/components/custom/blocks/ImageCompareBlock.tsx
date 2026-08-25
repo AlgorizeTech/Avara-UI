@@ -174,7 +174,7 @@ export function ImageCompare({
       onTouchStart={handleMouseDown}
       className={cn(
         "relative w-full h-[480px] sm:h-[560px] rounded-2xl overflow-hidden select-none border transition-all duration-300 cursor-ew-resize group",
-        "bg-zinc-950 border-zinc-200 dark:border-zinc-800",
+        "bg-zinc-950 border-border",
         variant === "vertical-slide" && "cursor-ns-resize",
         variant === "circle-magnifier" && "cursor-crosshair",
         className
@@ -232,7 +232,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white dark:bg-zinc-900 border-2 shadow-2xl flex items-center justify-center pointer-events-auto"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card border-2 shadow-2xl flex items-center justify-center pointer-events-auto"
             style={{ borderColor: activeColor, color: activeColor }}
           >
             <ChevronsLeftRight className="w-5 h-5" />
@@ -325,7 +325,7 @@ export function ImageCompare({
           style={{ top: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white dark:bg-zinc-900 border-2 shadow-2xl flex items-center justify-center pointer-events-auto"
+            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-card border-2 shadow-2xl flex items-center justify-center pointer-events-auto"
             style={{ borderColor: activeColor, color: activeColor }}
           >
             <ChevronsLeftRight className="w-5 h-5 rotate-90" />

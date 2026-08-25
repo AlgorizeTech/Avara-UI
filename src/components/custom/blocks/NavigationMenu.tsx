@@ -183,7 +183,7 @@ export const NavigationMenuList = forwardRef<
 
   const variantStyles = {
     default:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "bg-background border border-border shadow-sm",
     glass:
       "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg",
     minimal: "bg-transparent border-none",
@@ -296,8 +296,8 @@ export const NavigationMenuTrigger = forwardRef<
       className={cn(
         "relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap",
         isActive
-          ? "text-zinc-900 dark:text-zinc-50"
-          : "text-zinc-600 dark:text-zinc-400",
+          ? "text-foreground"
+          : "text-muted-foreground",
         className,
       )}
       {...props}
@@ -325,11 +325,11 @@ export const NavigationMenuContent = forwardRef<
 
   const variantStyles = {
     default:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl",
+      "bg-background border border-border shadow-xl",
     glass:
       "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
     minimal:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg",
+      "bg-background border border-border shadow-lg",
   };
 
   return (
@@ -368,7 +368,7 @@ export const NavigationMenuLink = forwardRef<
     <a
       ref={ref}
       className={cn(
-        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer",
+        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-muted cursor-pointer",
         active && theme.bgSoft,
         className,
       )}

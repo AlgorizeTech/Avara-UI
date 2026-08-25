@@ -187,8 +187,8 @@ export const SplitScrollStack = React.forwardRef<
                 className={cn(
                   "group relative rounded-3xl p-6 sm:p-10 border transition-all duration-500 min-h-[50vh] sm:min-h-[60vh] flex flex-col justify-center",
                   isActive
-                    ? "bg-white dark:bg-zinc-900 shadow-2xl border-transparent scale-[1.01]"
-                    : "bg-zinc-50/50 dark:bg-zinc-900/30 border-zinc-200/80 dark:border-zinc-800/60 opacity-60 hover:opacity-90",
+                    ? "bg-card shadow-2xl border-transparent scale-[1.01]"
+                    : "bg-muted/50 border-border/80 opacity-60 hover:opacity-90",
                 )}
                 style={{
                   borderColor: isActive ? color : undefined,
@@ -211,8 +211,8 @@ export const SplitScrollStack = React.forwardRef<
                         isActive
                           ? "text-primary-foreground dark:text-zinc-900 border-transparent scale-110"
                           : isPassed
-                            ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-transparent"
-                            : "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 border-zinc-200 dark:border-zinc-700",
+                            ? "bg-muted text-foreground border-transparent"
+                            : "bg-muted text-muted-foreground border-border",
                       )}
                       style={{
                         backgroundColor: isActive ? color : undefined,
@@ -229,8 +229,8 @@ export const SplitScrollStack = React.forwardRef<
                       className={cn(
                         "text-2xl sm:text-3xl font-black tracking-tight transition-colors duration-300",
                         isActive
-                          ? "text-zinc-900 dark:text-white"
-                          : "text-zinc-500 dark:text-zinc-400",
+                          ? "text-foreground"
+                          : "text-muted-foreground",
                       )}
                     >
                       {item.title}
@@ -259,8 +259,8 @@ export const SplitScrollStack = React.forwardRef<
                   className={cn(
                     "mt-6 text-base sm:text-lg leading-relaxed transition-colors duration-300 pl-0 sm:pl-[58px]",
                     isActive
-                      ? "text-zinc-600 dark:text-zinc-300"
-                      : "text-zinc-400 dark:text-zinc-500",
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {item.description}
@@ -276,7 +276,7 @@ export const SplitScrollStack = React.forwardRef<
                           "px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs font-extrabold"
-                            : "bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600",
+                            : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
                         )}
                         style={{
                           backgroundColor: isActive ? (color.startsWith('#') ? `${color}15` : `color-mix(in srgb, ${color} 15%, transparent)`) : undefined,
@@ -315,7 +315,7 @@ export const SplitScrollStack = React.forwardRef<
                     className={cn(
                       "absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 border overflow-hidden shadow-xl dark:shadow-2xl flex flex-col justify-between origin-top transition-colors",
                       item.color ||
-                        "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border-zinc-200 dark:border-zinc-800",
+                        "bg-card text-foreground border-border",
                     )}
                     style={{
                       opacity: index === 0 ? 1 : 0,
@@ -327,7 +327,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     {/* Card Header */}
                     <div className="flex items-center justify-between relative z-10 mb-4">
-                      <span className="px-3.5 py-1 rounded-full bg-zinc-100 dark:bg-white/10 text-[11px] font-mono font-bold tracking-widest uppercase border border-zinc-200 dark:border-white/15 flex items-center gap-2 text-zinc-700 dark:text-white">
+                      <span className="px-3.5 py-1 rounded-full bg-muted dark:bg-white/10 text-[11px] font-mono font-bold tracking-widest uppercase border border-border flex items-center gap-2 text-foreground">
                         <Layers className="w-3.5 h-3.5" /> DECK //{" "}
                         {item.stepNumber}
                       </span>
@@ -343,11 +343,11 @@ export const SplitScrollStack = React.forwardRef<
                     </div>
 
                     {/* Card Footer */}
-                    <div className="relative z-10 pt-4 border-t border-zinc-200 dark:border-white/10 flex items-center justify-between text-xs text-zinc-500 dark:text-white/60 font-medium">
-                      <span className="truncate pr-2 font-bold text-zinc-900 dark:text-white/90">
+                    <div className="relative z-10 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground dark:text-white/60 font-medium">
+                      <span className="truncate pr-2 font-bold text-foreground dark:text-white/90">
                         {item.title}
                       </span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400 dark:text-white/40 flex-shrink-0">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground dark:text-white/40 flex-shrink-0">
                         SCROLL DRIVEN
                       </span>
                     </div>

@@ -112,12 +112,12 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
         {(label || showValue) && (
           <div className="flex justify-between items-end w-full">
             {label && (
-              <label className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
+              <label className="text-sm font-bold text-foreground">
                 {label}
               </label>
             )}
             {showValue && (
-              <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              <span className="text-sm font-bold text-foreground">
                 {valueFormat
                   ? valueFormat(value, max)
                   : `${Math.round(percentage)}%`}
@@ -169,7 +169,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
 
     const variantStyles = {
       default: {
-        track: "bg-zinc-200 dark:bg-zinc-800 border-none",
+        track: "bg-muted border-none",
         indicator: theme.bg,
       },
       glass: {
@@ -178,11 +178,11 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         indicator: cn(theme.bg, "backdrop-blur-xl"),
       },
       glow: {
-        track: "bg-zinc-200 dark:bg-zinc-900 border-none",
+        track: "bg-muted border-none",
         indicator: cn(theme.bg, theme.glow),
       },
       minimal: {
-        track: "bg-transparent border border-zinc-200 dark:border-zinc-800",
+        track: "bg-transparent border border-border",
         indicator: theme.bg,
       },
     };

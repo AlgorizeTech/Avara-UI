@@ -132,13 +132,13 @@ export default function PricingPlans({
   }, [activePlans]);
 
   return (
-    <section className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-white py-24 px-6 font-sans transition-colors duration-300">
+    <section className="min-h-screen bg-background text-foreground py-24 px-6 font-sans transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-20 space-y-6">
           <h2 className="text-6xl md:text-7xl lg:text-[80px] font-bold tracking-tight leading-tight">
             Pricing Plans
           </h2>
-          <p className="text-zinc-600 dark:text-zinc-400 text-xl md:text-2xl max-w-3xl mx-auto font-medium">
+          <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl mx-auto font-medium">
             For each plan we{" "}
             <span className="text-lime-600 dark:text-[#CCFF00]">
               Outperform
@@ -153,30 +153,30 @@ export default function PricingPlans({
               <h3 className="text-4xl md:text-5xl font-semibold mb-3 text-lime-600 dark:text-[#CCFF00]">
                 Landing Page
               </h3>
-              <p className="text-xl md:text-2xl text-zinc-700 dark:text-zinc-300 font-medium">
+              <p className="text-xl md:text-2xl text-foreground font-medium">
                 Choose what works for you
               </p>
-              <p className="text-base text-zinc-500 mt-3 leading-relaxed">
+              <p className="text-base text-muted-foreground mt-3 leading-relaxed">
                 Every business needs a landing page, if you don&apos;t like the
                 website we make, you will get a full refund.
               </p>
             </div>
 
             <div className="space-y-5 mt-10">
-              <div className="flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl transition-colors">
+              <div className="flex items-center justify-between bg-muted border border-border p-6 rounded-2xl transition-colors">
                 <div className="flex items-center gap-5">
                   <div
                     className={`p-3.5 rounded-xl transition-colors ${
                       activePlans.includes("design")
                         ? "bg-lime-100 text-lime-600 dark:bg-[#CCFF00]/20 dark:text-[#CCFF00]"
-                        : "bg-zinc-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     <PenTool size={28} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-xl text-left">Design</h4>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       Top-notch custom design
                     </p>
                   </div>
@@ -186,11 +186,11 @@ export default function PricingPlans({
                   className={`cursor-pointer w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${
                     activePlans.includes("design")
                       ? "bg-lime-500 dark:bg-[#CCFF00]"
-                      : "bg-zinc-300 dark:bg-zinc-700"
+                      : "bg-muted"
                   }`}
                 >
                   <div
-                    className={`w-6 h-6 bg-white dark:bg-black rounded-full shadow-md transform transition-transform duration-300 ${
+                    className={`w-6 h-6 bg-background rounded-full shadow-md transform transition-transform duration-300 ${
                       activePlans.includes("design")
                         ? "translate-x-6"
                         : "translate-x-0"
@@ -199,13 +199,13 @@ export default function PricingPlans({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl transition-colors">
+              <div className="flex items-center justify-between bg-muted border border-border p-6 rounded-2xl transition-colors">
                 <div className="flex items-center gap-5">
                   <div
                     className={`p-3.5 rounded-xl transition-colors ${
                       activePlans.includes("development")
                         ? "bg-lime-100 text-lime-600 dark:bg-[#CCFF00]/20 dark:text-[#CCFF00]"
-                        : "bg-zinc-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     <Code2 size={28} />
@@ -214,7 +214,7 @@ export default function PricingPlans({
                     <h4 className="font-semibold text-xl text-left">
                       Development
                     </h4>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       Full development solution
                     </p>
                   </div>
@@ -224,11 +224,11 @@ export default function PricingPlans({
                   className={`cursor-pointer w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${
                     activePlans.includes("development")
                       ? "bg-lime-500 dark:bg-[#CCFF00]"
-                      : "bg-zinc-300 dark:bg-zinc-700"
+                      : "bg-muted"
                   }`}
                 >
                   <div
-                    className={`w-6 h-6 bg-white dark:bg-black rounded-full shadow-md transform transition-transform duration-300 ${
+                    className={`w-6 h-6 bg-background rounded-full shadow-md transform transition-transform duration-300 ${
                       activePlans.includes("development")
                         ? "translate-x-6"
                         : "translate-x-0"
@@ -237,20 +237,20 @@ export default function PricingPlans({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl transition-colors">
+              <div className="flex items-center justify-between bg-muted border border-border p-6 rounded-2xl transition-colors">
                 <div className="flex items-center gap-5">
                   <div
                     className={`p-3.5 rounded-xl transition-colors ${
                       activePlans.includes("fast")
                         ? "bg-lime-100 text-lime-600 dark:bg-[#CCFF00]/20 dark:text-[#CCFF00]"
-                        : "bg-zinc-200 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     <Zap size={28} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-xl text-left">Fast</h4>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       Quick budget solution
                     </p>
                   </div>
@@ -260,11 +260,11 @@ export default function PricingPlans({
                   className={`cursor-pointer w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${
                     activePlans.includes("fast")
                       ? "bg-lime-500 dark:bg-[#CCFF00]"
-                      : "bg-zinc-300 dark:bg-zinc-700"
+                      : "bg-muted"
                   }`}
                 >
                   <div
-                    className={`w-6 h-6 bg-white dark:bg-black rounded-full shadow-md transform transition-transform duration-300 ${
+                    className={`w-6 h-6 bg-background rounded-full shadow-md transform transition-transform duration-300 ${
                       activePlans.includes("fast")
                         ? "translate-x-6"
                         : "translate-x-0"
@@ -275,10 +275,10 @@ export default function PricingPlans({
             </div>
           </div>
 
-          <div className="bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-10 shadow-xl dark:shadow-2xl relative flex flex-col justify-between min-h-[500px] transition-colors">
+          <div className="bg-card border border-border rounded-3xl p-10 shadow-xl dark:shadow-2xl relative flex flex-col justify-between min-h-[500px] transition-colors">
             <div ref={cardContentRef}>
               <div className="flex justify-between items-center mb-8">
-                <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                <h4 className="text-2xl font-bold text-foreground">
                   {cardData.title}
                 </h4>
                 {cardData.tag && (
@@ -301,7 +301,7 @@ export default function PricingPlans({
                       className="text-lime-500 dark:text-[#CCFF00] shrink-0 mt-1"
                       size={22}
                     />
-                    <span className="text-zinc-700 dark:text-zinc-300 text-lg">
+                    <span className="text-foreground text-lg">
                       {feature}
                     </span>
                   </li>

@@ -130,7 +130,7 @@ function Logo({
             contrasting foreground for every theme, including a white pick. */}
         <Command className="w-4 h-4" />
       </div>
-      <span className="font-black text-xl tracking-tight text-zinc-900 dark:text-white">
+      <span className="font-black text-xl tracking-tight text-foreground">
         {logoText}
       </span>
     </Link>
@@ -152,10 +152,10 @@ function DesktopLinks({
           <Link
             href={link.href}
             className={cn(
-              "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full transition-colors",
+              "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-full transition-colors",
               isGlass
                 ? "hover:bg-white/20 dark:hover:bg-white/10"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+                : "hover:bg-muted",
             )}
           >
             {link.name}
@@ -170,7 +170,7 @@ function DesktopLinks({
                   "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
                   isGlass
                     ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10"
-                    : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+                    : "bg-background border border-border",
                 )}
               >
                 {["Overview", "Features", "Integrations"].map((sub) => (
@@ -178,10 +178,10 @@ function DesktopLinks({
                     key={sub}
                     href="#"
                     className={cn(
-                      "px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg transition-colors",
+                      "px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg transition-colors",
                       isGlass
                         ? "hover:bg-white/20 dark:hover:bg-white/10"
-                        : "hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                        : "hover:bg-muted",
                     )}
                   >
                     {sub}
@@ -208,7 +208,7 @@ function DesktopActions({
     <div className="hidden lg:flex items-center gap-3">
       <Link
         href="#"
-        className="px-4 py-2 text-sm font-bold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
+        className="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
       >
         Sign In
       </Link>
@@ -227,7 +227,7 @@ function DesktopActions({
 
 export function NavbarBlock({
   variant = "default",
-  color = "indigo",
+  color = "primary",
   logoText = "Nexus",
   linkComponent: Link = "a",
 }: {
@@ -289,7 +289,7 @@ export function NavbarBlock({
   const getContainerStyles = () => {
     switch (variant) {
       case "floating":
-        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
+        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-border shadow-lg px-6";
       case "glass":
         return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
       case "minimal":
@@ -297,7 +297,7 @@ export function NavbarBlock({
       case "centered":
       case "default":
       default:
-        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 lg:px-12";
+        return "w-full bg-background border-b border-border px-6 lg:px-12";
     }
   };
 
@@ -328,7 +328,7 @@ export function NavbarBlock({
                 className="lg:hidden"
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <Menu className="w-6 h-6 text-zinc-900 dark:text-white" />
+                <Menu className="w-6 h-6 text-foreground" />
               </button>
             </div>
           </div>
@@ -341,7 +341,7 @@ export function NavbarBlock({
             <div className="flex items-center gap-4">
               <DesktopActions themeBg={theme.bg} linkComponent={Link} />
               <button
-                className="lg:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-300"
+                className="lg:hidden p-2 -mr-2 text-muted-foreground"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <Menu className="w-6 h-6" />
@@ -367,7 +367,7 @@ export function NavbarBlock({
             "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
             isGlass
               ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10"
-              : "bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800",
+              : "bg-background border-l border-border",
           )}
         >
           <div
@@ -375,17 +375,17 @@ export function NavbarBlock({
               "flex items-center justify-between p-6 border-b",
               isGlass
                 ? "border-white/10"
-                : "border-zinc-100 dark:border-zinc-800/50",
+                : "border-border",
             )}
           >
             <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
             <button
               onClick={() => setMobileMenuOpen(false)}
               className={cn(
-                "p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors",
+                "p-2 -mr-2 rounded-full text-muted-foreground hover:text-foreground transition-colors",
                 isGlass
                   ? "hover:bg-white/20 dark:hover:bg-white/10"
-                  : "bg-zinc-100 dark:bg-zinc-900",
+                  : "bg-muted",
               )}
             >
               <X className="w-5 h-5" />
@@ -396,7 +396,7 @@ export function NavbarBlock({
               <div key={link.name} className="flex flex-col gap-3">
                 <Link
                   href={link.href}
-                  className="text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-between"
+                  className="text-xl font-bold text-foreground flex items-center justify-between"
                 >
                   {link.name}{" "}
                   {link.hasDropdown && (
@@ -409,14 +409,14 @@ export function NavbarBlock({
                       "flex flex-col gap-3 pl-4 border-l-2",
                       isGlass
                         ? "border-white/10"
-                        : "border-zinc-100 dark:border-zinc-800",
+                        : "border-border",
                     )}
                   >
                     {["Overview", "Features", "Integrations"].map((sub) => (
                       <Link
                         key={sub}
                         href="#"
-                        className="text-base font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                        className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {sub}
                       </Link>
@@ -431,16 +431,16 @@ export function NavbarBlock({
               "p-6 flex flex-col gap-3 border-t",
               isGlass
                 ? "bg-white/10 dark:bg-white/5 border-white/10"
-                : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800/50",
+                : "bg-muted border-border",
             )}
           >
             <Link
               href="#"
               className={cn(
-                "w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border rounded-xl transition-colors",
+                "w-full py-3 px-4 text-center font-bold text-foreground border rounded-xl transition-colors",
                 isGlass
                   ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
-                  : "border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                  : "border-border hover:bg-muted",
               )}
             >
               Sign In

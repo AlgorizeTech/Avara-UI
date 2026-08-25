@@ -40,22 +40,22 @@ export function ItemBlock({
     default: cn(
       "p-4 rounded-xl",
       isClickable &&
-        "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 active:scale-[0.98]",
+        "hover:bg-muted active:scale-[0.98]",
     ),
     compact: cn(
       "p-2.5 rounded-lg gap-3",
       isClickable &&
-        "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 active:scale-[0.98]",
+        "hover:bg-muted active:scale-[0.98]",
     ),
     bordered: cn(
-      "p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] shadow-sm",
+      "p-4 rounded-xl border border-border bg-white dark:bg-[#050505] shadow-sm",
       isClickable &&
-        "hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md active:scale-[0.98]",
+        "hover:border-border hover:shadow-md active:scale-[0.98]",
     ),
     card: cn(
-      "p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] shadow-sm gap-4",
+      "p-5 rounded-2xl border border-border bg-white dark:bg-[#050505] shadow-sm gap-4",
       isClickable &&
-        "hover:shadow-md hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-zinc-700",
+        "hover:shadow-md hover:-translate-y-1 hover:border-border",
     ),
   };
 
@@ -84,7 +84,7 @@ export function ItemBlock({
       <div className="flex flex-col flex-1 min-w-0">
         <div
           className={cn(
-            "font-semibold text-zinc-900 dark:text-zinc-100 truncate",
+            "font-semibold text-foreground truncate",
             variant === "compact" ? "text-sm" : "text-base",
             isCard && "text-lg mb-1 whitespace-normal",
           )}
@@ -94,7 +94,7 @@ export function ItemBlock({
         {description && (
           <div
             className={cn(
-              "text-zinc-500 dark:text-zinc-400 mt-0.5",
+              "text-muted-foreground mt-0.5",
               variant === "compact" ? "text-xs line-clamp-1" : "text-sm",
               isCard && "line-clamp-3 mt-1",
             )}
@@ -110,7 +110,7 @@ export function ItemBlock({
           className={cn(
             "shrink-0 flex items-center gap-2",
             isCard
-              ? "w-full pt-4 mt-auto border-t border-zinc-100 dark:border-zinc-800/50"
+              ? "w-full pt-4 mt-auto border-t border-border"
               : "ml-4",
           )}
           onClick={(e) => {

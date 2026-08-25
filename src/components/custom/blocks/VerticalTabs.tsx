@@ -155,12 +155,12 @@ export function VerticalTabs({
       default: {
         container: "gap-6",
         menuBox:
-          "bg-zinc-50 dark:bg-[#121212] rounded-2xl p-3 border border-zinc-200 dark:border-zinc-800/50 shadow-sm",
+          "bg-muted dark:bg-[#121212] rounded-2xl p-3 border border-border shadow-sm",
         contentBox:
-          "bg-zinc-50 dark:bg-[#121212] rounded-2xl p-8 md:p-10 border border-zinc-200 dark:border-zinc-800/50 shadow-sm",
+          "bg-muted dark:bg-[#121212] rounded-2xl p-8 md:p-10 border border-border shadow-sm",
         activeTab: cn("shadow-md", theme.bg),
         inactiveTab:
-          "hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400",
+          "hover:bg-muted text-muted-foreground",
       },
       glass: {
         container: "gap-6",
@@ -170,7 +170,7 @@ export function VerticalTabs({
           "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
         activeTab: cn("shadow-lg backdrop-blur-md", theme.bg),
         inactiveTab:
-          "hover:bg-white/40 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-300",
+          "hover:bg-white/40 dark:hover:bg-white/10 text-foreground",
       },
       minimal: {
         container: "gap-8",
@@ -178,21 +178,21 @@ export function VerticalTabs({
         contentBox: "bg-transparent p-0 border-none",
         activeTab: cn("rounded-xl", theme.bg),
         inactiveTab:
-          "hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-xl text-zinc-600 dark:text-zinc-400",
+          "hover:bg-muted rounded-xl text-muted-foreground",
       },
       bordered: {
         container:
-          "gap-0 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b] shadow-sm",
+          "gap-0 rounded-2xl border border-border overflow-hidden bg-white dark:bg-[#09090b] shadow-sm",
         // The divider follows the rail: it separates rail from pane, so it sits
         // on the bottom edge when the rail runs across the top.
         menuBox: cn(
-          "bg-zinc-50 dark:bg-[#121212] p-4 border-zinc-200 dark:border-zinc-800 rounded-none",
+          "bg-muted dark:bg-[#121212] p-4 border-border rounded-none",
           isHorizontal ? "border-b" : "border-r",
         ),
         contentBox: "p-8 md:p-10 bg-transparent rounded-none border-none",
         activeTab: cn("rounded-xl shadow-sm", theme.bg),
         inactiveTab:
-          "hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 rounded-xl",
+          "hover:bg-muted/50 text-muted-foreground rounded-xl",
       },
     })[variant];
 
@@ -261,7 +261,7 @@ export function VerticalTabs({
                 <div
                   className={cn(
                     "w-1.5 h-1.5 rounded-full transition-all duration-300",
-                    isActive ? theme.dot : "bg-zinc-300 dark:bg-zinc-700",
+                    isActive ? theme.dot : "bg-muted",
                   )}
                 />
               )}
@@ -281,16 +281,16 @@ export function VerticalTabs({
           <div className="flex items-center gap-3 mb-6">
             {activeTab.icon && (
               <activeTab.icon
-                className="w-7 h-7 text-zinc-800 dark:text-zinc-200 opacity-80"
+                className="w-7 h-7 text-foreground opacity-80"
                 strokeWidth={2.5}
               />
             )}
-            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
               {activeTab.label}
             </h2>
           </div>
 
-          <div className="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed flex-1">
+          <div className="text-muted-foreground text-lg leading-relaxed flex-1">
             {activeTab.content}
           </div>
         </div>

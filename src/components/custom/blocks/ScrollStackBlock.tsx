@@ -129,11 +129,11 @@ export const ScrollStack = ({
             className={cn(
               "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-2xl p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
               item.color ||
-                "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:border-[var(--theme-color,var(--primary))]",
+                "bg-card border-border text-foreground hover:border-[var(--theme-color,var(--primary))]",
             )}
           >
             {/* Subtle Glass Noise Overlay */}
-            <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.03] pointer-events-none" />
+            <div className="absolute inset-0 bg-primary/[0.02]/[0.03] pointer-events-none" />
 
             <div className="flex-1 flex flex-col justify-center relative z-10">
               {item.icon && (
@@ -149,7 +149,7 @@ export const ScrollStack = ({
                   "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
                   item.color
                     ? "text-white/80"
-                    : "text-zinc-600 dark:text-white/70",
+                    : "text-muted-foreground dark:text-white/70",
                 )}
               >
                 {item.description}
@@ -158,7 +158,7 @@ export const ScrollStack = ({
 
             {/* Right-Side Content Payload */}
             {item.content && (
-              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-zinc-100/80 dark:bg-black/20 border border-zinc-200/80 dark:border-white/10 hidden md:flex items-center justify-center transition-colors">
+              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 dark:bg-black/20 border border-border/80 hidden md:flex items-center justify-center transition-colors">
                 {item.content}
               </div>
             )}

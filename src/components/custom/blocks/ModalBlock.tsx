@@ -303,10 +303,10 @@ export function ModalBlock({
   const { theme, style } = getThemeStyles(color);
 
   const variantContentStyles: Record<ModalVariant, string> = {
-    default: "bg-white dark:bg-zinc-950 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800",
-    glass: "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-zinc-950 dark:text-white",
-    minimal: "bg-white dark:bg-zinc-900 rounded-xl shadow-lg border-none",
-    bordered: "bg-white dark:bg-zinc-950 border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] border-zinc-900 dark:border-zinc-100",
+    default: "bg-background rounded-2xl shadow-xl border border-border",
+    glass: "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground",
+    minimal: "bg-card rounded-xl shadow-lg border-none",
+    bordered: "bg-background border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] border-primary",
   };
 
   const variantOverlayStyles: Record<ModalVariant, string> = {
@@ -349,7 +349,7 @@ export function ModalBlock({
                 className={cn(
                   "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border",
                   variant === "glass"
-                    ? "bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-zinc-900 dark:text-white"
+                    ? "bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-foreground"
                     : cn(theme.bgSoft, theme.text, theme.border),
                 )}
               >
@@ -360,10 +360,10 @@ export function ModalBlock({
               </span>
             </ModalHeader>
             <ModalBody className="p-4 pt-2 space-y-2">
-              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 System Update Available
               </h2>
-              <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed text-sm sm:text-base font-normal">
+              <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
                 A new software update is ready to be installed. This update
                 includes new features, performance improvements, and critical
                 security patches.
@@ -372,7 +372,7 @@ export function ModalBlock({
             <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors"
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
               >
                 Remind Me Later
               </button>
@@ -392,27 +392,27 @@ export function ModalBlock({
         {/* --- FORM MODAL --- */}
         {type === "form" && (
           <div>
-            <ModalHeader className="border-b border-zinc-200/60 dark:border-zinc-800/60">
-              <h2 className="text-lg font-bold text-zinc-950 dark:text-white">
+            <ModalHeader className="border-b border-border/60">
+              <h2 className="text-lg font-bold text-foreground">
                 Invite Team Member
               </h2>
             </ModalHeader>
             <ModalBody className="space-y-5">
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                <label className="text-sm font-semibold text-foreground">
                   Email Address
                 </label>
                 <input
                   type="email"
                   placeholder="colleague@company.com"
                   className={cn(
-                    "w-full h-11 px-3 rounded-lg border bg-white/50 dark:bg-black/40 text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:ring-2 border-zinc-300 dark:border-zinc-700 transition-shadow",
+                    "w-full h-11 px-3 rounded-lg border bg-white/50 dark:bg-black/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow",
                     theme.ring,
                   )}
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                <label className="text-sm font-semibold text-foreground">
                   Role & Permissions
                 </label>
                 <SelectBlock
@@ -428,23 +428,23 @@ export function ModalBlock({
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">
+                <label className="text-sm font-semibold text-foreground">
                   Personal Message (Optional)
                 </label>
                 <textarea
                   placeholder="Welcome to the team!"
                   rows={3}
                   className={cn(
-                    "w-full p-3 rounded-lg border bg-white/50 dark:bg-black/40 text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:ring-2 border-zinc-300 dark:border-zinc-700 transition-shadow resize-none",
+                    "w-full p-3 rounded-lg border bg-white/50 dark:bg-black/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow resize-none",
                     theme.ring,
                   )}
                 />
               </div>
             </ModalBody>
-            <ModalFooter className="border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20">
+            <ModalFooter className="border-t border-border bg-muted/50">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800 transition-colors"
+                className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
               >
                 Cancel
               </button>
@@ -464,12 +464,12 @@ export function ModalBlock({
         {/* --- FULLSCREEN SHEET MODAL --- */}
         {type === "fullscreen" && (
           <div className="flex flex-col h-full">
-            <ModalHeader className="border-b border-zinc-100 dark:border-zinc-800/50 pr-12">
+            <ModalHeader className="border-b border-border pr-12">
               <div className="min-w-0">
-                <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl font-black text-foreground">
                   Project Configuration
                 </h2>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 font-normal">
+                <p className="text-sm text-muted-foreground mt-1 font-normal">
                   Manage all global settings for your workspace.
                 </p>
               </div>
@@ -477,23 +477,23 @@ export function ModalBlock({
             <ModalBody className="flex-1 max-h-none">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
                 <div className="space-y-6">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
                     General
                   </h3>
-                  <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                  <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                  <div className="h-12 w-3/4 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                  <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
+                  <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
+                  <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
                 </div>
                 <div className="space-y-6">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
                     Security
                   </h3>
-                  <div className="h-32 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
-                  <div className="h-12 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-lg animate-pulse" />
+                  <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
+                  <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
                 </div>
               </div>
             </ModalBody>
-            <ModalFooter className="border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
+            <ModalFooter className="border-t border-border bg-muted flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
               <button
                 onClick={() => setIsOpen(false)}
                 className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
@@ -503,7 +503,7 @@ export function ModalBlock({
               <div className="flex flex-col-reverse sm:flex-row gap-3">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="px-6 py-3 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
+                  className="px-6 py-3 rounded-lg font-medium text-muted-foreground hover:bg-muted transition-colors"
                 >
                   Discard Changes
                 </button>
@@ -534,17 +534,17 @@ export function ModalBlock({
             >
               <AlertCircle className="w-8 h-8" />
             </div>
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+            <h2 className="text-xl font-bold text-foreground mb-2">
               Delete permanently?
             </h2>
-            <p className="text-sm text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed mb-8">
+            <p className="text-sm text-foreground font-medium leading-relaxed mb-8">
               Are you sure you want to delete this item? This action cannot be
               undone and all data will be lost.
             </p>
             <div className="flex gap-3 w-full">
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex-1 py-2.5 rounded-lg font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+                className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors"
               >
                 Cancel
               </button>

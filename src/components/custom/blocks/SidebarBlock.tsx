@@ -39,7 +39,7 @@ export interface SidebarProviderProps {
 export function SidebarProvider({
   children,
   defaultExpanded = true,
-  color = "indigo",
+  color = "primary",
   className,
 }: SidebarProviderProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
@@ -59,7 +59,7 @@ export function SidebarProvider({
     >
       <div
         className={cn(
-          "relative flex h-full min-h-screen w-full overflow-hidden bg-zinc-50 dark:bg-zinc-950",
+          "relative flex h-full min-h-screen w-full overflow-hidden bg-muted",
           className,
         )}
       >
@@ -105,8 +105,8 @@ export function Sidebar({
           expanded ? "w-64" : "w-16",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           variant === "attached"
-            ? "border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505]"
-            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] shadow-sm",
+            ? "border-r border-border bg-white dark:bg-[#050505]"
+            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-border bg-white dark:bg-[#050505] shadow-sm",
           // Lifted off the backdrop while it is an open drawer (mobile only state)
           isMobileOpen && "shadow-2xl",
           className,
@@ -141,7 +141,7 @@ export function SidebarHeader({
       {children}
       <button
         onClick={() => setIsMobileOpen(false)}
-        className="md:hidden p-1 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md"
+        className="md:hidden p-1 text-muted-foreground hover:bg-muted rounded-md"
       >
         <X className="w-5 h-5" />
       </button>
@@ -160,7 +160,7 @@ export function SidebarBrand({
   return (
     <div
       className={cn(
-        "flex items-center font-black text-xl text-zinc-900 dark:text-white",
+        "flex items-center font-black text-xl text-foreground",
         className,
       )}
       {...props}
@@ -188,7 +188,7 @@ export function SidebarFooter({
   return (
     <div
       className={cn(
-        "mt-auto flex shrink-0 flex-col border-t border-zinc-100 dark:border-zinc-800/50 p-3",
+        "mt-auto flex shrink-0 flex-col border-t border-border p-3",
         className,
       )}
       {...props}
@@ -232,7 +232,7 @@ export function SidebarGroup({
       {label && (
         <div
           className={cn(
-            "px-3 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 transition-all duration-300 overflow-hidden",
+            "px-3 text-xs font-bold uppercase tracking-wider text-muted-foreground transition-all duration-300 overflow-hidden",
             expanded
               ? "max-h-[20px] opacity-100 mb-1"
               : "max-h-0 opacity-0 mb-0",
@@ -270,7 +270,7 @@ export function SidebarItem({
           ? color === "primary" || color === "default" || !color
             ? "bg-primary/10 text-primary font-medium"
             : `bg-${color}-50 text-${color}-600 dark:bg-${color}-500/10 dark:text-${color}-400`
-          : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-50",
+          : "text-muted-foreground hover:bg-muted hover:text-foreground",
         className,
       )}
       {...props}
@@ -301,9 +301,9 @@ export function SidebarItem({
 
       {/* Pure CSS Native Tooltip (Shows only when collapsed on hover) */}
       {!expanded && (
-        <div className="absolute left-full ml-4 hidden rounded-md bg-zinc-900 dark:bg-white px-2 py-1 text-xs font-bold text-white dark:text-zinc-900 opacity-0 shadow-md group-hover:block group-hover:opacity-100 z-50">
+        <div className="absolute left-full ml-4 hidden rounded-md bg-primary px-2 py-1 text-xs font-bold text-primary-foreground opacity-0 shadow-md group-hover:block group-hover:opacity-100 z-50">
           {children}
-          <div className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 bg-zinc-900 dark:bg-white" />
+          <div className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 bg-primary" />
         </div>
       )}
     </button>
@@ -323,7 +323,7 @@ export function SidebarTrigger({
     <button
       onClick={() => setExpanded(!expanded)}
       className={cn(
-        "hidden md:flex p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors",
+        "hidden md:flex p-2 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
         className,
       )}
       {...props}
@@ -343,7 +343,7 @@ export function MobileSidebarTrigger({
     <button
       onClick={() => setIsMobileOpen(true)}
       className={cn(
-        "md:hidden p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors",
+        "md:hidden p-2 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
         className,
       )}
       {...props}

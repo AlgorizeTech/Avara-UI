@@ -15,9 +15,10 @@ export const usageLogin = `import LoginForm from "@/components/custom/blocks/Log
 export default function LoginPage() {
   return (
      {
-        // Call your auth provider here. Without onSubmit the block simulates
-        // a round trip so it stays demonstrable on its own.
-        await signIn({ email, password, remember });
+        // Swap this for your auth call. The button stays in its loading state
+        // until the promise settles, so return the real one.
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        console.log({ email, password, remember });
       }}
     />
   );
@@ -63,7 +64,8 @@ export default function RegisterPage() {
      {
         // values: firstName, lastName, email, password, confirmPassword,
         // agreeToTerms. Re-validate every one of them on your server.
-        await createAccount(values);
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        console.log(values);
       }}
     />
   );

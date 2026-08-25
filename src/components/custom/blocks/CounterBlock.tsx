@@ -135,7 +135,7 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center rounded-full border-2 border-zinc-200 dark:border-zinc-800 p-1 shadow-sm bg-white dark:bg-zinc-950"
+            className="flex items-center rounded-full border-2 border-border p-1 shadow-sm bg-background"
           >
             <button
               onClick={handleDec}
@@ -147,7 +147,7 @@ const StepperCounter = ({
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-14 text-center text-xl font-bold text-zinc-900 dark:text-white select-none">
+            <div className="w-14 text-center text-xl font-bold text-foreground select-none">
               {count}
             </div>
             <button
@@ -175,7 +175,7 @@ const StepperCounter = ({
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -193,7 +193,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -205,26 +205,26 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex flex-col items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm"
+            className="flex flex-col items-center bg-muted border border-border rounded-2xl overflow-hidden shadow-sm"
           >
             <button
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                "w-14 h-12 flex justify-center items-center hover:bg-muted transition-colors active:bg-muted disabled:opacity-50",
                 theme.text,
               )}
             >
               <Plus size={20} strokeWidth={2.5} />
             </button>
-            <div className="w-14 py-3 text-center font-black text-xl border-y border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black select-none">
+            <div className="w-14 py-3 text-center font-black text-xl border-y border-border bg-background select-none">
               {count}
             </div>
             <button
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                "w-14 h-12 flex justify-center items-center hover:bg-muted transition-colors active:bg-muted disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -237,7 +237,7 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden p-1"
+            className="flex items-center bg-card border border-border rounded-xl shadow-sm overflow-hidden p-1"
           >
             <button
               onClick={handleDec}
@@ -249,7 +249,7 @@ const StepperCounter = ({
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-16 text-center text-xl font-bold text-zinc-900 dark:text-white select-none">
+            <div className="w-16 text-center text-xl font-bold text-foreground select-none">
               {count}
             </div>
             <button
@@ -270,7 +270,7 @@ const StepperCounter = ({
   return (
     <div className="flex flex-col items-center gap-3" style={style}>
       {label && (
-        <span className="text-sm font-semibold text-zinc-500 uppercase tracking-widest">
+        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </span>
       )}
@@ -301,7 +301,7 @@ const AnimatedCounter = ({
 
   return (
     <div
-      className="flex flex-col items-center justify-center p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl w-full max-w-sm"
+      className="flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl shadow-xl w-full max-w-sm"
       style={style}
     >
       <div
@@ -312,7 +312,7 @@ const AnimatedCounter = ({
         {suffix}
       </div>
       {label && (
-        <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
           {label}
         </div>
       )}
@@ -376,14 +376,14 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
           />
         </svg>
         <div className="absolute flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-black tracking-tighter text-zinc-900 dark:text-white">
+          <span className="text-3xl font-black tracking-tighter text-foreground">
             {displayVal}
             {suffix}
           </span>
         </div>
       </div>
       {label && (
-        <span className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
           {label}
         </span>
       )}
@@ -425,7 +425,7 @@ const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
   return (
     <div className="flex flex-col items-center gap-8" style={style}>
       {label && (
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-bold text-zinc-600 dark:text-zinc-300">
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted border border-border text-sm font-bold text-muted-foreground">
           <Clock size={16} className={theme.text} /> {label}
         </div>
       )}
@@ -472,7 +472,7 @@ function TimeUnit({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg mb-3">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-card border border-border rounded-2xl shadow-lg mb-3">
         <span
           className={cn(
             "text-2xl sm:text-3xl font-black tracking-tighter",
@@ -482,7 +482,7 @@ function TimeUnit({
           {value.toString().padStart(2, "0")}
         </span>
       </div>
-      <span className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest">
+      <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-widest">
         {unit}
       </span>
     </div>

@@ -6,124 +6,77 @@ Click the trigger in each preview to open that modal. The `type` prop swaps the 
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
-export const usageDefault = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-type User = {
-  name?: string;
-  email?: string;
-  emailVerified?: boolean;
-  phone?: string;
-  address?: string;
-};
-
-type UserDetailsModalProps = {
-  data?: User | null;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export default function UserDetailsModal({ data, isOpen, onClose }: UserDetailsModalProps) {
-  return (
-
-        {data && (
-          
-            {/* Identity */}
-
-                  {data.name?.[0] || "U"}
-                
-                {data.emailVerified && (
-                  
-                )}
-
-                {data.name || "Unnamed user"}
-
-                  {data.email || "—"}
-
-            {/* Contact */}
-            
-              Phone: {data.phone || "—"}
-              Address: {data.address || "—"}
-
-        )}
-
-          Close
-
-  );
+export default function Page() {
+  // ModalBlock ships the trigger, the open state and the content shown here.
+  return ;
 }`;
 
-export const usageForm = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FormModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-       setIsOpen(true)}>Invite Member
-       setIsOpen(false)} contentClassName="max-w-lg">
-
-           setIsOpen(false)}>Cancel
-           setIsOpen(false)}>Send Invite
-
-  );
+export default function Page() {
+  // "form" swaps the body for the invite fields and widens the panel.
+  return ;
 }`;
 
-export const usageConfirmation = `import { Modal, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ConfirmModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-       setIsOpen(true)}>Delete Item
-       setIsOpen(false)} contentClassName="max-w-sm">
-        
-          Delete permanently?
-          This action cannot be undone.
-
-           setIsOpen(false)}>Cancel
-           setIsOpen(false)} className="bg-red-600 text-white">Delete
-
-  );
+export default function Page() {
+  // "confirmation" is the narrow destructive-action layout.
+  return ;
 }`;
 
-export const usageFullscreen = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
+export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FullscreenModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-       setIsOpen(true)}>Project Settings
-       setIsOpen(false)} contentClassName="max-w-5xl h-[90vh]">
-
-          Manage all workspace settings here.
-
-           setIsOpen(false)}>Save Changes
-
-  );
+export default function Page() {
+  // "fullscreen" fills the viewport for settings-style panels.
+  return ;
 }`;
 
-export const usageGlass = `import { Modal, ModalHeader, ModalBody } from "@/components/custom/blocks/ModalBlock";
+export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function GlassModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-       setIsOpen(true)}>Open Glass Modal
-       setIsOpen(false)}
-        overlayClassName="bg-black/30 backdrop-blur-sm"
-        contentClassName="bg-white/45 dark:bg-zinc-900/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/50 dark:border-white/20 ring-1 ring-black/5 dark:ring-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-zinc-900 dark:text-white"
-      >
-
-          Apple macOS aesthetic glassmorphism with vivid backdrop blur refraction.
-
-  );
+export default function Page() {
+  // "glass" is a surface treatment — it composes with any \`type\`.
+  return ;
 }`;
 
 ## Installation
 
 ## Examples
+
+## Composing your own content
+
+Every preview above is `ModalBlock` — the ready-made component, content included.
+When you need your own content instead, the same file exports the parts it is
+built from. There is no preview for this section on purpose: what it renders is
+whatever you put inside it, so a screenshot here would show our copy rather than
+yours.
+
+```tsx
+"use client";
+
+export default function ConfirmDeleteModal() {
+  // Modal is controlled: you own `isOpen`, it renders against it.
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+       setIsOpen(true)}>Delete project
+
+       setIsOpen(false)}
+        contentClassName="max-w-sm"
+      >
+
+            This permanently removes the project and everything in it. This
+            cannot be undone.
+
+           setIsOpen(false)}>Cancel
+           setIsOpen(false)}>Delete
+
+  );
+}
+```
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

@@ -62,13 +62,13 @@ export const MagicBentoCard = React.forwardRef<
       ref={ref}
       onMouseMove={handleMouseMove}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
+        "group relative flex flex-col overflow-hidden rounded-3xl bg-muted border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
         className,
       )}
       {...props}
     >
       {/* 1. Base Static Border */}
-      <div className="absolute inset-0 rounded-3xl bg-zinc-200 dark:bg-zinc-800/80 transition-colors" />
+      <div className="absolute inset-0 rounded-3xl bg-muted transition-colors" />
 
       {/* 2. Highlight: Continuously Spinning Conic Gradient */}
       {highlight && (

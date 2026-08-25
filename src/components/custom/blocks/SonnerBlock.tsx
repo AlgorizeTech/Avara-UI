@@ -181,7 +181,7 @@ function ToastCard({
 
   const typeStyles = {
     default:
-      "bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-800",
+      "bg-white dark:bg-[#050505] text-foreground border-border",
     success:
       "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-500/20",
     error:
@@ -223,7 +223,7 @@ function ToastCard({
               action.onClick();
               onDismiss();
             }}
-            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 transition-opacity"
+            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
             {action.label}
           </button>

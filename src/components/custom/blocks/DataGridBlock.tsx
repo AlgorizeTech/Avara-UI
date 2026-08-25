@@ -322,7 +322,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
     return (
       <div
         className={cn(
-          "w-full overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-[#09090b]",
+          "w-full overflow-hidden border border-border rounded-xl bg-white dark:bg-[#09090b]",
           className,
         )}
         style={style}
@@ -338,20 +338,20 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
             {/* HEADERS */}
             <thead
               className={cn(
-                "sticky top-0 z-20 border-b border-zinc-200 dark:border-zinc-800 shadow-xs backdrop-blur-md transition-colors duration-150",
+                "sticky top-0 z-20 border-b border-border shadow-xs backdrop-blur-md transition-colors duration-150",
                 theme.headerBg,
               )}
             >
               <tr>
                 {showRowNumbers && (
-                  <th className="w-12 px-4 py-2 border-r border-zinc-200/60 dark:border-zinc-800/60 text-center font-medium opacity-70">
+                  <th className="w-12 px-4 py-2 border-r border-border/60 text-center font-medium opacity-70">
                     #
                   </th>
                 )}
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className="px-4 py-2.5 font-semibold border-r border-zinc-200/60 dark:border-zinc-800/60 last:border-r-0"
+                    className="px-4 py-2.5 font-semibold border-r border-border/60 last:border-r-0"
                     style={{ minWidth: col.width || 120 }}
                   >
                     {col.headerName}
@@ -365,10 +365,10 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
               {data.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className="border-b border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors"
+                  className="border-b border-border hover:bg-muted/50 transition-colors"
                 >
                   {showRowNumbers && (
-                    <td className="w-12 px-4 py-2 text-center text-xs font-mono text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
+                    <td className="w-12 px-4 py-2 text-center text-xs font-mono text-muted-foreground border-r border-border bg-muted">
                       {rowIndex + 1}
                     </td>
                   )}
@@ -393,13 +393,13 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
                         onDoubleClick={() => startEditing(rowIndex, colIndex)}
                         style={isActive ? style : undefined}
                         className={cn(
-                          "relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell",
+                          "relative px-4 py-2 border-r border-border last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell",
                           isActive &&
-                            "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900",
+                            "outline outline-2 -outline-offset-2 z-10 bg-card",
                           isActive && theme.outline,
                           activeCell?.row === rowIndex &&
                             !isActive &&
-                            "bg-zinc-50/80 dark:bg-zinc-900/50",
+                            "bg-muted/80",
                           isEditingThis && "p-0",
                         )}
                       >
@@ -413,7 +413,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
                             onKeyDown={handleInputKeyDown}
                             onBlur={() => finishEditing(true)}
                             className={cn(
-                              "absolute inset-0 w-full h-full px-4 outline-none bg-white dark:bg-zinc-900 font-sans text-sm m-0 border-none shadow-xl z-20",
+                              "absolute inset-0 w-full h-full px-4 outline-none bg-card font-sans text-sm m-0 border-none shadow-xl z-20",
                               col.type === "number" && "font-mono",
                             )}
                           />
@@ -422,7 +422,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
                             className={cn(
                               "block w-full overflow-hidden text-ellipsis",
                               col.type === "number" &&
-                                "font-mono text-zinc-600 dark:text-zinc-400",
+                                "font-mono text-muted-foreground",
                               (readOnly || col.readOnly) &&
                                 "opacity-60 cursor-not-allowed",
                             )}
@@ -437,7 +437,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
                                     "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20",
                                   val === "Overdue" &&
                                     "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20",
-                                  val !== "Paid" && val !== "Pending" && val !== "Overdue" && "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                                  val !== "Paid" && val !== "Pending" && val !== "Overdue" && "bg-muted text-foreground"
                                 )}
                               >
                                 {String(val || "")}
@@ -465,7 +465,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
           </table>
 
           {data.length === 0 && (
-            <div className="py-12 text-center text-sm text-zinc-500">
+            <div className="py-12 text-center text-sm text-muted-foreground">
               No data available.
             </div>
           )}

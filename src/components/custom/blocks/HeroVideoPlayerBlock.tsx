@@ -103,7 +103,7 @@ export const HeroVideoPlayer = React.forwardRef<
         <motion.div
           transition={{ duration: 0.4, ease: "easeOut" }}
           className={cn(
-            "relative z-10 w-full min-h-[220px] sm:min-h-[280px] lg:min-h-0 overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-900 shadow-2xl group cursor-pointer flex flex-col justify-between",
+            "relative z-10 w-full min-h-[220px] sm:min-h-[280px] lg:min-h-0 overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-border/80 bg-zinc-900 shadow-2xl group cursor-pointer flex flex-col justify-between",
             aspectRatios[aspectRatio],
           )}
           onClick={handleOpen}

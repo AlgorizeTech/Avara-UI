@@ -21,45 +21,45 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   default: {
     wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "bg-card border border-border shadow-sm",
     sidebarCard:
-      "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "bg-card border border-border shadow-sm",
     tableHeader:
-      "bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800",
+      "bg-muted border-b border-border",
     tableRow:
-      "divide-zinc-100 dark:divide-zinc-800/60 hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20",
+      "divide-border hover:bg-muted/50",
     inputBg:
-      "bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+      "bg-muted border border-border",
     blockBg:
-      "bg-zinc-50 dark:bg-zinc-950/50 border border-zinc-100 dark:border-zinc-800/50",
+      "bg-muted border border-border",
   },
   minimal: {
     wrapper: "bg-transparent",
     invoicePanel: "bg-transparent border-none shadow-none",
     sidebarCard:
-      "bg-zinc-50/50 dark:bg-zinc-900/30 border border-zinc-100 dark:border-zinc-800/50 rounded-2xl",
+      "bg-muted/50 border border-border rounded-2xl",
     tableHeader:
-      "bg-transparent border-b-2 border-zinc-200 dark:border-zinc-800",
+      "bg-transparent border-b-2 border-border",
     tableRow:
-      "divide-zinc-100 dark:divide-zinc-800/60 hover:bg-zinc-50/50 dark:hover:bg-zinc-950/20",
+      "divide-border hover:bg-muted/50",
     inputBg:
-      "bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800",
+      "bg-muted/50 border border-border",
     blockBg: "bg-transparent border-none p-0",
   },
   glass: {
     wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl text-zinc-900 dark:text-zinc-100",
+      "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl text-foreground",
     sidebarCard:
       "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-xl rounded-2xl",
     tableHeader:
-      "bg-white/60 dark:bg-zinc-800/60 border-b border-zinc-200/60 dark:border-white/10 text-zinc-900 dark:text-zinc-100 font-bold",
+      "bg-white/60 dark:bg-zinc-800/60 border-b border-border/60 text-foreground font-bold",
     tableRow:
-      "divide-zinc-200/50 dark:divide-white/10 hover:bg-white/50 dark:hover:bg-white/5",
+      "divide-border/50 hover:bg-white/50 dark:hover:bg-white/5",
     inputBg:
-      "bg-white/80 dark:bg-black/60 border border-zinc-300 dark:border-white/20 backdrop-blur-md text-zinc-900 dark:text-zinc-100",
+      "bg-white/80 dark:bg-black/60 border border-border backdrop-blur-md text-foreground",
     blockBg:
-      "bg-white/60 dark:bg-zinc-800/40 border border-zinc-200/60 dark:border-white/10 backdrop-blur-md",
+      "bg-white/60 dark:bg-zinc-800/40 border border-border/60 backdrop-blur-md",
   },
 };
 
@@ -307,10 +307,10 @@ export default function Invoice({
               />
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
                 Algorize
               </h1>
-              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px] leading-relaxed break-words">
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-[220px] leading-relaxed break-words">
                 Office 149, 450 South Brand Brooklyn San Diego County, CA 91905,
                 USA
                 <br />
@@ -323,7 +323,7 @@ export default function Invoice({
             className={cn("w-full sm:w-auto p-4 sm:p-5 rounded-xl", styles.blockBg)}
           >
             <div className="flex items-center justify-between sm:justify-end gap-3 mb-3 sm:mb-4">
-              <span className="text-base sm:text-xl font-medium text-zinc-400 uppercase tracking-widest">
+              <span className="text-base sm:text-xl font-medium text-muted-foreground uppercase tracking-widest">
                 INVOICE
               </span>
               {isEditing ? (
@@ -334,20 +334,20 @@ export default function Invoice({
                     handleMainChange("invoiceNumber", e.target.value)
                   }
                   className={cn(
-                    "font-bold text-base sm:text-xl rounded-md px-2.5 py-1 w-24 sm:w-28 text-right outline-none focus:ring-2 transition-all text-zinc-900 dark:text-zinc-100",
+                    "font-bold text-base sm:text-xl rounded-md px-2.5 py-1 w-24 sm:w-28 text-right outline-none focus:ring-2 transition-all text-foreground",
                     styles.inputBg,
                     theme.focusRing,
                   )}
                 />
               ) : (
-                <span className="font-bold text-xl sm:text-2xl text-zinc-900 dark:text-zinc-100">
+                <span className="font-bold text-xl sm:text-2xl text-foreground">
                   {data.invoiceNumber}
                 </span>
               )}
             </div>
 
             <div className="grid grid-cols-[auto,1fr] gap-x-3 sm:gap-x-4 gap-y-2 text-xs sm:text-sm items-center sm:text-right text-left">
-              <span className="text-zinc-500 dark:text-zinc-400 font-medium">
+              <span className="text-muted-foreground font-medium">
                 Date Issued:
               </span>
               <EditableInput
@@ -359,9 +359,9 @@ export default function Invoice({
                   handleMainChange("dateIssued", e.target.value)
                 }
                 align="right"
-                className="text-zinc-900 dark:text-zinc-200 font-medium"
+                className="text-foreground font-medium"
               />
-              <span className="text-zinc-500 dark:text-zinc-400 font-medium">
+              <span className="text-muted-foreground font-medium">
                 Date Due:
               </span>
               <EditableInput
@@ -373,7 +373,7 @@ export default function Invoice({
                   handleMainChange("dateDue", e.target.value)
                 }
                 align="right"
-                className="text-zinc-900 dark:text-zinc-200 font-medium"
+                className="text-foreground font-medium"
               />
             </div>
           </div>
@@ -382,7 +382,7 @@ export default function Invoice({
         {/* BILLING INFO */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 mb-8 sm:mb-12">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3 block">
               Invoice To
             </span>
             <div className="space-y-1.5 text-xs sm:text-sm break-words">
@@ -395,7 +395,7 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "name", e.target.value)
                 }
                 placeholder="Name"
-                className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-zinc-100 mb-2"
+                className="font-semibold text-sm sm:text-base text-foreground mb-2"
               />
               <EditableInput
                 isEditing={isEditing}
@@ -406,7 +406,7 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "company", e.target.value)
                 }
                 placeholder="Company"
-                className="text-zinc-600 dark:text-zinc-300"
+                className="text-muted-foreground"
               />
               <EditableInput
                 isEditing={isEditing}
@@ -417,7 +417,7 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "address", e.target.value)
                 }
                 placeholder="Address"
-                className="text-zinc-600 dark:text-zinc-300"
+                className="text-muted-foreground"
               />
               <EditableInput
                 isEditing={isEditing}
@@ -428,7 +428,7 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "phone", e.target.value)
                 }
                 placeholder="Phone"
-                className="text-zinc-600 dark:text-zinc-300"
+                className="text-muted-foreground"
               />
               <EditableInput
                 isEditing={isEditing}
@@ -439,20 +439,20 @@ export default function Invoice({
                   handleNestedChange("invoiceTo", "email", e.target.value)
                 }
                 placeholder="Email"
-                className="text-zinc-600 dark:text-zinc-300 break-all"
+                className="text-muted-foreground break-all"
               />
             </div>
           </div>
 
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 block">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3 block">
               Payment Details
             </span>
             <div
               className={cn("p-3.5 sm:p-4 rounded-lg space-y-2.5 sm:space-y-3 text-xs sm:text-sm", styles.blockBg)}
             >
-              <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-zinc-200 dark:border-zinc-800">
-                <span className="font-medium text-zinc-600 dark:text-zinc-400">
+              <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-border">
+                <span className="font-medium text-muted-foreground">
                   Total Due:
                 </span>
                 <EditableInput
@@ -468,7 +468,7 @@ export default function Invoice({
                 />
               </div>
               <div className="grid grid-cols-[75px,1fr] sm:grid-cols-[100px,1fr] gap-2 items-center">
-                <span className="text-zinc-500 dark:text-zinc-400">Bank:</span>
+                <span className="text-muted-foreground">Bank:</span>
                 <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
@@ -477,9 +477,9 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "bankName", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium truncate"
+                  className="text-foreground font-medium truncate"
                 />
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   Country:
                 </span>
                 <EditableInput
@@ -490,9 +490,9 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "country", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium truncate"
+                  className="text-foreground font-medium truncate"
                 />
-                <span className="text-zinc-500 dark:text-zinc-400">IBAN:</span>
+                <span className="text-muted-foreground">IBAN:</span>
                 <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
@@ -501,9 +501,9 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "iban", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-[11px] sm:text-xs break-all"
+                  className="text-foreground font-medium font-mono text-[11px] sm:text-xs break-all"
                 />
-                <span className="text-zinc-500 dark:text-zinc-400">SWIFT:</span>
+                <span className="text-muted-foreground">SWIFT:</span>
                 <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
@@ -512,7 +512,7 @@ export default function Invoice({
                   onChange={(e: any) =>
                     handleNestedChange("billTo", "swift", e.target.value)
                   }
-                  className="text-zinc-800 dark:text-zinc-200 font-medium font-mono text-[11px] sm:text-xs break-all"
+                  className="text-foreground font-medium font-mono text-[11px] sm:text-xs break-all"
                 />
               </div>
             </div>
@@ -524,13 +524,13 @@ export default function Invoice({
           className={cn(
             "mb-8 sm:mb-10 rounded-xl w-full max-w-full overflow-hidden",
             variant !== "minimal"
-              ? "border border-zinc-200 dark:border-zinc-800"
+              ? "border border-border"
               : "",
           )}
         >
           {/* Mobile Card-style View (< sm breakpoint) */}
-          <div className="block sm:hidden divide-y divide-zinc-200 dark:divide-zinc-800">
-            <div className={cn("px-3 py-2.5 text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400", styles.tableHeader)}>
+          <div className="block sm:hidden divide-y divide-border">
+            <div className={cn("px-3 py-2.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground", styles.tableHeader)}>
               Item Details
             </div>
             {data.items.map((item, idx) => (
@@ -550,15 +550,15 @@ export default function Invoice({
                           onChange={(e) => handleItemChange(idx, "description", e.target.value)}
                           rows={2}
                           placeholder="Description"
-                          className={cn("w-full rounded-md px-2.5 py-1 text-[11px] outline-none resize-none text-zinc-500", styles.inputBg, theme.focusRing)}
+                          className={cn("w-full rounded-md px-2.5 py-1 text-[11px] outline-none resize-none text-muted-foreground", styles.inputBg, theme.focusRing)}
                         />
                       </div>
                     ) : (
                       <div>
-                        <p className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                        <p className="font-bold text-xs text-foreground">
                           {item.item}
                         </p>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight mt-0.5">
+                        <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
                           {item.description}
                         </p>
                       </div>
@@ -574,31 +574,31 @@ export default function Invoice({
                   )}
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/60 text-xs items-center">
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border text-xs items-center">
                   <div>
-                    <span className="text-[10px] text-zinc-400 block uppercase">Hours</span>
+                    <span className="text-[10px] text-muted-foreground block uppercase">Hours</span>
                     <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
                 focusRing={theme.focusRing}
                       value={item.hours}
                       onChange={(e: any) => handleItemChange(idx, "hours", e.target.value)}
-                      className="font-medium text-zinc-800 dark:text-zinc-200"
+                      className="font-medium text-foreground"
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-zinc-400 block uppercase">Qty</span>
+                    <span className="text-[10px] text-muted-foreground block uppercase">Qty</span>
                     <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
                 focusRing={theme.focusRing}
                       value={item.qty}
                       onChange={(e: any) => handleItemChange(idx, "qty", e.target.value)}
-                      className="font-medium text-zinc-800 dark:text-zinc-200"
+                      className="font-medium text-foreground"
                     />
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] text-zinc-400 block uppercase">Total</span>
+                    <span className="text-[10px] text-muted-foreground block uppercase">Total</span>
                     <EditableInput
                 isEditing={isEditing}
                 inputBg={styles.inputBg}
@@ -606,7 +606,7 @@ export default function Invoice({
                       value={item.total}
                       onChange={(e: any) => handleItemChange(idx, "total", e.target.value)}
                       align="right"
-                      className="font-bold text-zinc-900 dark:text-zinc-100"
+                      className="font-bold text-foreground"
                     />
                   </div>
                 </div>
@@ -616,10 +616,10 @@ export default function Invoice({
 
           {/* Desktop & Tablet Table View (>= sm breakpoint) */}
           <div className="hidden sm:block overflow-x-auto w-full">
-            <table className="w-full text-left text-sm text-zinc-800 dark:text-zinc-200 border-collapse">
+            <table className="w-full text-left text-sm text-foreground border-collapse">
               <thead
                 className={cn(
-                  "text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-[10px] font-bold",
+                  "text-muted-foreground uppercase tracking-wider text-[10px] font-bold",
                   styles.tableHeader,
                 )}
               >
@@ -661,7 +661,7 @@ export default function Invoice({
                             rows={2}
                             placeholder="Description"
                             className={cn(
-                              "w-full rounded-md px-3 py-1.5 outline-none resize-none text-xs text-zinc-500",
+                              "w-full rounded-md px-3 py-1.5 outline-none resize-none text-xs text-muted-foreground",
                               styles.inputBg,
                               theme.focusRing,
                             )}
@@ -669,10 +669,10 @@ export default function Invoice({
                         </div>
                       ) : (
                         <div>
-                          <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+                          <p className="font-semibold text-foreground mb-1">
                             {item.item}
                           </p>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <p className="text-xs text-muted-foreground">
                             {item.description}
                           </p>
                         </div>
@@ -712,7 +712,7 @@ export default function Invoice({
                           handleItemChange(idx, "total", e.target.value)
                         }
                         align="right"
-                        className="font-semibold text-zinc-900 dark:text-zinc-100"
+                        className="font-semibold text-foreground"
                       />
                     </td>
                     {isEditing && (
@@ -736,7 +736,7 @@ export default function Invoice({
               className={cn(
                 "p-4 border-t print:hidden",
                 variant === "minimal"
-                  ? "border-zinc-200 dark:border-zinc-800"
+                  ? "border-border"
                   : styles.blockBg,
               )}
             >
@@ -757,7 +757,7 @@ export default function Invoice({
         <footer className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
           <div className="order-2 md:order-1">
             <div className={cn("p-4 rounded-xl mb-4", styles.blockBg)}>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
                 Salesperson
               </span>
               <EditableInput
@@ -768,11 +768,11 @@ export default function Invoice({
                 onChange={(e: any) =>
                   handleMainChange("salesPerson", e.target.value)
                 }
-                className="font-semibold text-zinc-900 dark:text-zinc-100"
+                className="font-semibold text-foreground"
               />
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2 block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
                 Additional Notes
               </span>
               {isEditing ? (
@@ -780,7 +780,7 @@ export default function Invoice({
                   value={data.note}
                   onChange={(e) => handleMainChange("note", e.target.value)}
                   className={cn(
-                    "w-full rounded-md px-3 py-2 outline-none resize-none text-sm text-zinc-600 dark:text-zinc-400 focus:ring-2",
+                    "w-full rounded-md px-3 py-2 outline-none resize-none text-sm text-muted-foreground focus:ring-2",
                     styles.inputBg,
                     theme.focusRing,
                   )}
@@ -789,7 +789,7 @@ export default function Invoice({
               ) : (
                 <p
                   className={cn(
-                    "text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed p-3 rounded-lg",
+                    "text-sm text-muted-foreground leading-relaxed p-3 rounded-lg",
                     styles.blockBg,
                   )}
                 >
@@ -801,7 +801,7 @@ export default function Invoice({
 
           <div className="order-1 md:order-2 flex justify-end">
             <div className="w-full sm:w-72 space-y-3 text-sm">
-              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
+              <div className="flex justify-between items-center text-muted-foreground">
                 <span>Subtotal</span>
                 <EditableInput
                 isEditing={isEditing}
@@ -812,10 +812,10 @@ export default function Invoice({
                     handleMainChange("subtotal", e.target.value)
                   }
                   align="right"
-                  className="font-medium text-zinc-900 dark:text-zinc-100"
+                  className="font-medium text-foreground"
                 />
               </div>
-              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400">
+              <div className="flex justify-between items-center text-muted-foreground">
                 <span>Discount</span>
                 <EditableInput
                 isEditing={isEditing}
@@ -826,10 +826,10 @@ export default function Invoice({
                     handleMainChange("discount", e.target.value)
                   }
                   align="right"
-                  className="font-medium text-zinc-900 dark:text-zinc-100"
+                  className="font-medium text-foreground"
                 />
               </div>
-              <div className="flex justify-between items-center text-zinc-600 dark:text-zinc-400 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex justify-between items-center text-muted-foreground pb-4 border-b border-border">
                 <span>Tax</span>
                 <EditableInput
                 isEditing={isEditing}
@@ -838,11 +838,11 @@ export default function Invoice({
                   value={data.tax}
                   onChange={(e: any) => handleMainChange("tax", e.target.value)}
                   align="right"
-                  className="font-medium text-zinc-900 dark:text-zinc-100"
+                  className="font-medium text-foreground"
                 />
               </div>
               <div className="flex justify-between items-center pt-2">
-                <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                <span className="text-base font-semibold text-foreground">
                   Total
                 </span>
                 {isEditing ? (
@@ -890,7 +890,7 @@ export default function Invoice({
 
           <button
             onClick={handleDownload}
-            className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-zinc-100 text-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-all active:scale-[0.98]"
+            className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-muted text-foreground rounded-xl text-sm font-medium hover:bg-muted transition-all active:scale-[0.98]"
           >
             Download JSON
           </button>
@@ -898,7 +898,7 @@ export default function Invoice({
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={handlePrint}
-              className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-zinc-100 text-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-all active:scale-[0.98]"
+              className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 bg-muted text-foreground rounded-xl text-sm font-medium hover:bg-muted transition-all active:scale-[0.98]"
             >
               Print
             </button>
@@ -908,7 +908,7 @@ export default function Invoice({
                 "cursor-pointer w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all active:scale-[0.98]",
                 isEditing
                   ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400"
-                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700",
+                  : "bg-muted text-foreground hover:bg-muted",
               )}
             >
               {isEditing ? (

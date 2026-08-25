@@ -148,7 +148,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                   transition={{ type: "spring", stiffness: 260, damping: 25 }}
                   className={cn(
                     "absolute inset-0 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
-                    "bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-white/10",
+                    "bg-card border border-border/80",
                     isFront
                       ? "cursor-grab active:cursor-grabbing shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
                       : "pointer-events-none hover:border-primary/50 shadow-md shadow-zinc-300/40 dark:shadow-black/50",
@@ -218,7 +218,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
 
         {/* Action Controls & Instructions */}
         <div className="flex items-center justify-between w-full max-w-[340px] sm:max-w-[380px] mt-6 px-2 z-40">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
+          <span className="text-xs font-medium text-muted-foreground tracking-wide">
             ← Swipe card left or right to cycle →
           </span>
 

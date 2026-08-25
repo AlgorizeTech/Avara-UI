@@ -124,8 +124,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                 className={cn(
                   "group relative rounded-3xl p-5 sm:p-8 border transition-all duration-300 cursor-pointer select-none overflow-hidden",
                   isActive
-                    ? "bg-white dark:bg-zinc-900 shadow-xl border-transparent"
-                    : "bg-zinc-50/60 dark:bg-zinc-900/40 border-zinc-200/80 dark:border-zinc-800/60 hover:bg-white dark:hover:bg-zinc-900/80 hover:border-zinc-300 dark:hover:border-zinc-700",
+                    ? "bg-card shadow-xl border-transparent"
+                    : "bg-muted/60 border-border/80 hover:bg-card hover:border-border",
                 )}
                 style={{
                   borderColor: isActive && isHex ? color : undefined,
@@ -146,8 +146,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                         isActive
                           ? "text-white border-transparent shadow-md"
                           : isCompleted
-                            ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-transparent"
-                            : "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 border-zinc-200 dark:border-zinc-700",
+                            ? "bg-muted text-foreground border-transparent"
+                            : "bg-muted text-muted-foreground border-border",
                       )}
                       style={{
                         backgroundColor: isActive && isHex ? color : undefined,
@@ -164,8 +164,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                       className={cn(
                         "text-lg sm:text-2xl font-bold tracking-tight transition-colors duration-300",
                         isActive
-                          ? "text-zinc-900 dark:text-white"
-                          : "text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200",
+                          ? "text-foreground"
+                          : "text-muted-foreground group-hover:text-foreground",
                       )}
                     >
                       {step.title}
@@ -192,8 +192,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                   className={cn(
                     "mt-4 text-sm sm:text-base leading-relaxed transition-colors duration-300 pl-[48px] sm:pl-[54px]",
                     isActive
-                      ? "text-zinc-600 dark:text-zinc-300"
-                      : "text-zinc-400 dark:text-zinc-500",
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {step.description}
@@ -208,7 +208,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                           "px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs"
-                            : "bg-transparent border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600",
+                            : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
                         )}
                         style={{
                           backgroundColor: isActive ? `${color}12` : undefined,

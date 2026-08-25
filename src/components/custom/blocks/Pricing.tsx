@@ -249,7 +249,7 @@ export interface PricingData {
 export function PricingCards({
   data,
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   data: PricingData;
   variant?: PricingVariant;
@@ -276,20 +276,20 @@ export function PricingCards({
   const getVariantStyles = () =>
     ({
       default: {
-        card: "relative transition-all duration-200 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 hover:shadow-lg",
+        card: "relative transition-all duration-200 bg-background border border-border rounded-2xl p-6 hover:shadow-lg",
         cardPopular: cn("border-2 sm:scale-105 z-10", theme.border, theme.shadow),
-        price: "text-4xl font-bold text-zinc-900 dark:text-white",
+        price: "text-4xl font-bold text-foreground",
         button:
-          "w-full py-2.5 px-4 rounded-xl font-bold transition-colors border border-zinc-200 dark:border-zinc-800 ",
+          "w-full py-2.5 px-4 rounded-xl font-bold transition-colors border border-border ",
         buttonPopular: cn("border-transparent text-white shadow-md", theme.bg),
         featuresTitle:
-          "font-semibold text-sm text-zinc-500 dark:text-zinc-400 uppercase tracking-wide",
+          "font-semibold text-sm text-muted-foreground uppercase tracking-wide",
         featureIcon:
-          "rounded-full p-0.5 mr-3 mt-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+          "rounded-full p-0.5 mr-3 mt-0.5 bg-muted text-muted-foreground",
         featureIconPopular: cn("text-white", theme.bg),
       },
       premium: {
-        card: "relative transition-all duration-300 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 hover:shadow-2xl",
+        card: "relative transition-all duration-300 bg-background border border-border rounded-3xl p-8 hover:shadow-2xl",
         cardPopular: cn(
           "border-0 sm:scale-105 z-10 bg-gradient-to-b shadow-2xl",
           theme.gradientSoft,
@@ -300,61 +300,61 @@ export function PricingCards({
           theme.gradient,
         ),
         button:
-          "w-full py-3 px-4 rounded-xl font-bold transition-all border border-zinc-200 dark:border-zinc-800",
+          "w-full py-3 px-4 rounded-xl font-bold transition-all border border-border",
         buttonPopular: cn(
           "border-transparent text-white shadow-lg hover:scale-105",
           theme.bg,
           theme.shadow,
         ),
         featuresTitle:
-          "font-bold text-sm text-zinc-900 dark:text-white uppercase tracking-wide border-b border-zinc-200 dark:border-zinc-800 pb-2",
+          "font-bold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2",
         featureIcon:
-          "rounded-lg p-1 mr-3 mt-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 shadow-sm",
+          "rounded-lg p-1 mr-3 mt-0.5 bg-muted text-muted-foreground shadow-sm",
         featureIconPopular: cn("text-white", theme.bg),
       },
       elegant: {
-        card: "relative transition-all duration-500 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl p-8 hover:-translate-y-2 hover:shadow-xl",
+        card: "relative transition-all duration-500 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 border border-border/60 rounded-xl p-8 hover:-translate-y-2 hover:shadow-xl",
         cardPopular: cn("sm:scale-105 z-10 border-t-4 shadow-2xl", theme.border),
         price:
-          "text-4xl font-light text-zinc-800 dark:text-zinc-200 tracking-tight",
+          "text-4xl font-light text-foreground tracking-tight",
         button:
-          "w-full py-3 px-4 rounded-md font-medium tracking-wide transition-all border border-zinc-300 dark:border-zinc-700",
+          "w-full py-3 px-4 rounded-md font-medium tracking-wide transition-all border border-border",
         buttonPopular: cn(
           "border-transparent text-white shadow-md hover:shadow-xl",
           theme.bg,
         ),
         featuresTitle:
-          "font-medium text-xs text-zinc-500 uppercase tracking-[0.1em] border-b border-zinc-200/60 dark:border-zinc-800/60 pb-3 mb-4",
+          "font-medium text-xs text-muted-foreground uppercase tracking-[0.1em] border-b border-border/60 pb-3 mb-4",
         featureIcon:
-          "rounded-full p-1 mr-3 mt-0.5 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+          "rounded-full p-1 mr-3 mt-0.5 bg-muted text-muted-foreground",
         featureIconPopular: cn("text-white shadow-sm", theme.bg),
       },
       minimal: {
         card: "relative transition-all duration-300 bg-transparent rounded-2xl p-6",
         cardPopular: cn(
-          "bg-zinc-50 dark:bg-zinc-900/80 sm:scale-105 z-10 ring-1 shadow-sm",
+          "bg-muted sm:scale-105 z-10 ring-1 shadow-sm",
           theme.ring,
         ),
-        price: "text-4xl font-light text-zinc-900 dark:text-white",
+        price: "text-4xl font-light text-foreground",
         button:
-          "w-full py-2.5 px-4 rounded-full font-medium transition-colors border border-zinc-200 dark:border-zinc-800",
+          "w-full py-2.5 px-4 rounded-full font-medium transition-colors border border-border",
         buttonPopular: cn("border-transparent text-white shadow-md", theme.bg),
         featuresTitle:
-          "font-medium text-xs text-zinc-500 uppercase tracking-widest mb-4",
-        featureIcon: "mr-3 mt-0.5 text-zinc-400 shrink-0",
+          "font-medium text-xs text-muted-foreground uppercase tracking-widest mb-4",
+        featureIcon: "mr-3 mt-0.5 text-muted-foreground shrink-0",
         featureIconPopular: cn("shrink-0", theme.text),
       },
       bordered: {
-        card: "relative transition-all duration-200 bg-white dark:bg-zinc-950 border-2 border-zinc-900 dark:border-zinc-100 rounded-none p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]",
+        card: "relative transition-all duration-200 bg-background border-2 border-primary rounded-none p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]",
         cardPopular: cn("border-4 sm:scale-105 z-10", theme.border),
-        price: "text-4xl font-black text-zinc-900 dark:text-white uppercase",
+        price: "text-4xl font-black text-foreground uppercase",
         button:
-          "w-full py-3 px-4 font-bold border-2 border-zinc-900 dark:border-zinc-100 uppercase tracking-wider transition-colors",
+          "w-full py-3 px-4 font-bold border-2 border-primary uppercase tracking-wider transition-colors",
         buttonPopular: cn("text-white border-transparent", theme.bg),
         featuresTitle:
-          "font-black text-sm text-zinc-900 dark:text-white uppercase tracking-widest border-b-2 border-zinc-900 dark:border-zinc-100 pb-2",
+          "font-black text-sm text-foreground uppercase tracking-widest border-b-2 border-primary pb-2",
         featureIcon:
-          "mr-3 mt-0.5 text-zinc-900 dark:text-zinc-100 font-bold shrink-0",
+          "mr-3 mt-0.5 text-foreground font-bold shrink-0",
         featureIconPopular: cn("font-bold shrink-0", theme.text),
       },
     })[variant];
@@ -365,7 +365,7 @@ export function PricingCards({
           ~126px of content box, and "Annually (Save 20%)" needs ~150px, so the
           second tab wrapped onto a second line and stretched the pill. */}
       {data.tabs.length > 1 && (
-        <div className="relative flex rounded-full bg-zinc-100 dark:bg-zinc-900 p-1 mb-8 sm:mb-12 border border-zinc-200 dark:border-zinc-800 max-w-md mx-auto w-full">
+        <div className="relative flex rounded-full bg-muted p-1 mb-8 sm:mb-12 border border-border max-w-md mx-auto w-full">
           <div
             className={cn(
               "absolute top-1 bottom-1 rounded-full transition-transform duration-300 ease-out shadow-sm",
@@ -385,7 +385,7 @@ export function PricingCards({
                 "flex-1 min-w-0 relative z-10 flex items-center justify-center rounded-full px-3 sm:px-6 py-2.5 text-xs sm:text-sm font-bold transition-all duration-300 truncate",
                 activeTab === tab.id
                   ? "text-[var(--pricing-on)]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100",
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {tab.label}
@@ -430,11 +430,11 @@ export function PricingCards({
                     className={cn(
                       "p-2 mr-3",
                       variant === "bordered"
-                        ? "rounded-none border-2 border-zinc-900 dark:border-zinc-100"
+                        ? "rounded-none border-2 border-primary"
                         : "rounded-xl",
                       plan.popular
                         ? theme.bg
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+                        : "bg-muted text-muted-foreground",
                     )}
                   >
                     {/* No colour of its own: the tile above already sets one
@@ -450,19 +450,19 @@ export function PricingCards({
                       "text-xl font-bold",
                       plan.popular
                         ? theme.text
-                        : "text-zinc-900 dark:text-white",
+                        : "text-foreground",
                     )}
                   >
                     {plan.title}
                   </h3>
                 </div>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 min-h-[40px]">
+                <p className="text-sm text-muted-foreground mb-6 min-h-[40px]">
                   {plan.subtitle}
                 </p>
                 <div className="flex items-end justify-center gap-1">
                   <span className={getVariantStyles().price}>{plan.price}</span>
                   {plan.period && (
-                    <span className="text-zinc-500 dark:text-zinc-400 mb-1">
+                    <span className="text-muted-foreground mb-1">
                       /{plan.period}
                     </span>
                   )}
@@ -495,7 +495,7 @@ export function PricingCards({
                             on the near-white default accent of popular ones. */}
                         <Check className="w-3 h-3" strokeWidth={3} />
                       </div>
-                      <span className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                      <span className="text-sm text-muted-foreground leading-relaxed">
                         {feature}
                       </span>
                     </li>
@@ -602,7 +602,7 @@ const getBuilderData = (activePlans: string[]) => {
 };
 
 export function PricingBuilder({
-  color = "indigo",
+  color = "primary",
   linkComponent: Link = "a",
 }: {
   color?: PricingColor;
@@ -642,10 +642,10 @@ export function PricingBuilder({
           <h3 className={cn("text-4xl md:text-5xl font-bold mb-3", theme.text)}>
             Build Your Plan
           </h3>
-          <p className="text-xl text-zinc-700 dark:text-zinc-300 font-medium">
+          <p className="text-xl text-foreground font-medium">
             Select the services you need.
           </p>
-          <p className="text-base text-zinc-500 mt-2 leading-relaxed">
+          <p className="text-base text-muted-foreground mt-2 leading-relaxed">
             Customize your package to fit your exact requirements. The price
             updates instantly.
           </p>
@@ -653,7 +653,7 @@ export function PricingBuilder({
         <div className="space-y-4 mt-8">
           <div
             onClick={() => togglePlan("design")}
-            className="flex items-center justify-between bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
+            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
           >
             <div className="flex items-center gap-4 sm:gap-5">
               <div
@@ -661,16 +661,16 @@ export function PricingBuilder({
                   "p-3.5 rounded-xl transition-colors",
                   activePlans.includes("design")
                     ? theme.bgSoft
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200",
+                    : "bg-muted text-muted-foreground group-hover:text-foreground",
                 )}
               >
                 <PenTool size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-lg text-zinc-900 dark:text-white">
+                <h4 className="font-bold text-lg text-foreground">
                   UI/UX Design
                 </h4>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-sm text-muted-foreground mt-0.5">
                   Top-notch custom design
                 </p>
               </div>
@@ -680,7 +680,7 @@ export function PricingBuilder({
                 "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
                 activePlans.includes("design")
                   ? theme.bg
-                  : "bg-zinc-200 dark:bg-zinc-700",
+                  : "bg-muted",
               )}
             >
               <div
@@ -695,7 +695,7 @@ export function PricingBuilder({
           </div>
           <div
             onClick={() => togglePlan("development")}
-            className="flex items-center justify-between bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
+            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
           >
             <div className="flex items-center gap-4 sm:gap-5">
               <div
@@ -703,16 +703,16 @@ export function PricingBuilder({
                   "p-3.5 rounded-xl transition-colors",
                   activePlans.includes("development")
                     ? theme.bgSoft
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200",
+                    : "bg-muted text-muted-foreground group-hover:text-foreground",
                 )}
               >
                 <Code2 size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-lg text-zinc-900 dark:text-white">
+                <h4 className="font-bold text-lg text-foreground">
                   Development
                 </h4>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-sm text-muted-foreground mt-0.5">
                   Full-stack implementation
                 </p>
               </div>
@@ -722,7 +722,7 @@ export function PricingBuilder({
                 "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
                 activePlans.includes("development")
                   ? theme.bg
-                  : "bg-zinc-200 dark:bg-zinc-700",
+                  : "bg-muted",
               )}
             >
               <div
@@ -737,7 +737,7 @@ export function PricingBuilder({
           </div>
           <div
             onClick={() => togglePlan("fast")}
-            className="flex items-center justify-between bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
+            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
           >
             <div className="flex items-center gap-4 sm:gap-5">
               <div
@@ -745,16 +745,16 @@ export function PricingBuilder({
                   "p-3.5 rounded-xl transition-colors",
                   activePlans.includes("fast")
                     ? theme.bgSoft
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200",
+                    : "bg-muted text-muted-foreground group-hover:text-foreground",
                 )}
               >
                 <Zap size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-lg text-zinc-900 dark:text-white">
+                <h4 className="font-bold text-lg text-foreground">
                   Priority Delivery
                 </h4>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-sm text-muted-foreground mt-0.5">
                   Skip the queue
                 </p>
               </div>
@@ -764,7 +764,7 @@ export function PricingBuilder({
                 "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
                 activePlans.includes("fast")
                   ? theme.bg
-                  : "bg-zinc-200 dark:bg-zinc-700",
+                  : "bg-muted",
               )}
             >
               <div
@@ -780,7 +780,7 @@ export function PricingBuilder({
         </div>
       </div>
       <div className="w-full lg:w-1/2">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 sm:p-10 shadow-xl relative flex flex-col justify-between min-h-[500px] overflow-hidden">
+        <div className="bg-card border border-border rounded-3xl p-8 sm:p-10 shadow-xl relative flex flex-col justify-between min-h-[500px] overflow-hidden">
           {activePlans.length > 0 && (
             <div
               className={cn(
@@ -794,7 +794,7 @@ export function PricingBuilder({
             className="relative z-10 flex flex-col h-full"
           >
             <div className="flex justify-between items-start mb-8">
-              <h4 className="text-2xl font-bold text-zinc-900 dark:text-white max-w-[200px] leading-tight">
+              <h4 className="text-2xl font-bold text-foreground max-w-[200px] leading-tight">
                 {cardData.title}
               </h4>
               {cardData.tag && (
@@ -829,7 +829,7 @@ export function PricingBuilder({
                       "mt-1 p-1 rounded-full shrink-0",
                       activePlans.length > 0
                         ? theme.bg
-                        : "bg-zinc-200 dark:bg-zinc-800",
+                        : "bg-muted",
                     )}
                   >
                     <Check
@@ -837,12 +837,12 @@ export function PricingBuilder({
                         "w-3 h-3",
                         // Only the inactive state needs its own colour; the
                         // active tile carries the accent's own foreground.
-                        activePlans.length === 0 && "text-zinc-400",
+                        activePlans.length === 0 && "text-muted-foreground",
                       )}
                       strokeWidth={3}
                     />
                   </div>
-                  <span className="text-zinc-700 dark:text-zinc-300 font-medium">
+                  <span className="text-foreground font-medium">
                     {feature}
                   </span>
                 </li>
@@ -856,7 +856,7 @@ export function PricingBuilder({
                   ? cn("shadow-lg hover:scale-[1.02]", theme.bg)
                   : // zinc-400 on the light zinc-100 track was only 2.39:1;
                     // a disabled control should still be readable.
-                    "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 cursor-not-allowed",
+                    "bg-muted text-muted-foreground cursor-not-allowed",
               )}
             >
               Initiate Project{" "}
@@ -894,7 +894,7 @@ export interface PricingTableData {
 
 export function PricingTable({
   data,
-  color = "indigo",
+  color = "primary",
 }: {
   data: PricingTableData;
   color?: PricingColor;
@@ -908,7 +908,7 @@ export function PricingTable({
         <Minus className="w-5 h-5 text-zinc-300 dark:text-zinc-700 mx-auto" />
       );
     return (
-      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <span className="text-sm font-medium text-foreground">
         {value}
       </span>
     );
@@ -920,7 +920,7 @@ export function PricingTable({
       {feature.name}
       {feature.helpText && (
         <span className="group relative cursor-help">
-          <HelpCircle className="w-3.5 h-3.5 text-zinc-400" />
+          <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
           <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-zinc-900 text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-center block">
             {feature.helpText}
           </span>
@@ -938,7 +938,7 @@ export function PricingTable({
           // drop the theme's own choice, so the default accent rendered white
           // on `--primary` — which is near-white in dark mode (1.26:1).
           cn(theme.bg, theme.shadow)
-        : "border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 text-zinc-900 dark:text-white",
+        : "border border-border dark:bg-zinc-800 text-foreground",
     );
 
   return (
@@ -956,29 +956,29 @@ export function PricingTable({
           <div
             key={plan.id}
             className={cn(
-              "overflow-hidden rounded-2xl border bg-white dark:bg-zinc-950 shadow-sm",
+              "overflow-hidden rounded-2xl border bg-background shadow-sm",
               plan.featured
                 ? theme.border
-                : "border-zinc-200 dark:border-zinc-800",
+                : "border-border",
             )}
           >
             <div
               className={cn(
-                "p-6 border-b border-zinc-200 dark:border-zinc-800",
+                "p-6 border-b border-border",
                 plan.featured
                   ? theme.bgSoft
-                  : "bg-zinc-50 dark:bg-zinc-900/50",
+                  : "bg-muted",
               )}
             >
               <h4
                 className={cn(
                   "text-lg font-bold",
-                  plan.featured ? theme.text : "text-zinc-900 dark:text-white",
+                  plan.featured ? theme.text : "text-foreground",
                 )}
               >
                 {plan.title}
               </h4>
-              <div className="text-3xl font-black text-zinc-900 dark:text-white mb-5">
+              <div className="text-3xl font-black text-foreground mb-5">
                 {plan.price}
               </div>
               <button className={ctaClass(plan.featured)}>
@@ -987,15 +987,15 @@ export function PricingTable({
             </div>
             {data.sections.map((section, sIdx) => (
               <div key={sIdx}>
-                <div className="px-6 py-2.5 bg-zinc-50/80 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800 font-bold text-xs text-zinc-900 dark:text-white uppercase tracking-wider">
+                <div className="px-6 py-2.5 bg-muted/80 border-b border-border font-bold text-xs text-foreground uppercase tracking-wider">
                   {section.title}
                 </div>
                 {section.features.map((feature, fIdx) => (
                   <div
                     key={fIdx}
-                    className="px-6 py-3 flex items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800/50 last:border-b-0"
+                    className="px-6 py-3 flex items-center justify-between gap-4 border-b border-border last:border-b-0"
                   >
-                    <span className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 min-w-0">
+                    <span className="flex items-center gap-2 text-sm text-muted-foreground min-w-0">
                       <FeatureLabel feature={feature} />
                     </span>
                     <span className="shrink-0">
@@ -1010,7 +1010,7 @@ export function PricingTable({
       </div>
 
       {/* WIDE — the side-by-side comparison grid. */}
-      <div className="hidden @min-[52rem]/pricing:block overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950 shadow-sm">
+      <div className="hidden @min-[52rem]/pricing:block overflow-hidden border border-border rounded-2xl bg-background shadow-sm">
         {/* The min-width belongs to the CONTENT, not to the scroll container.
             With `overflow-x-auto min-w-[800px]` on the same element the box can
             never shrink below 800px, so its content never exceeds it and no
@@ -1019,9 +1019,9 @@ export function PricingTable({
             no way to reach it. */}
         <div className="overflow-x-auto">
           <div className="min-w-[800px]">
-            <div className="grid grid-cols-4 bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="grid grid-cols-4 bg-muted border-b border-border">
               <div className="p-6 flex items-end">
-                <h3 className="font-bold text-xl text-zinc-900 dark:text-white">
+                <h3 className="font-bold text-xl text-foreground">
                   Compare Plans
                 </h3>
               </div>
@@ -1029,7 +1029,7 @@ export function PricingTable({
                 <div
                   key={plan.id}
                   className={cn(
-                    "p-6 text-center border-l border-zinc-200 dark:border-zinc-800 relative",
+                    "p-6 text-center border-l border-border relative",
                     plan.featured ? theme.bgSoft : "",
                   )}
                 >
@@ -1043,12 +1043,12 @@ export function PricingTable({
                       "text-lg font-bold mb-2",
                       plan.featured
                         ? theme.text
-                        : "text-zinc-900 dark:text-white",
+                        : "text-foreground",
                     )}
                   >
                     {plan.title}
                   </h4>
-                  <div className="text-3xl font-black text-zinc-900 dark:text-white mb-6">
+                  <div className="text-3xl font-black text-foreground mb-6">
                     {plan.price}
                   </div>
                   <button className={ctaClass(plan.featured)}>
@@ -1059,27 +1059,27 @@ export function PricingTable({
             </div>
             {data.sections.map((section, sIdx) => (
               <div key={sIdx}>
-                <div className="grid grid-cols-4 bg-zinc-50/80 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800">
-                  <div className="p-4 font-bold text-sm text-zinc-900 dark:text-white uppercase tracking-wider">
+                <div className="grid grid-cols-4 bg-muted/80 border-b border-border">
+                  <div className="p-4 font-bold text-sm text-foreground uppercase tracking-wider">
                     {section.title}
                   </div>
-                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
-                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
-                  <div className="border-l border-zinc-200 dark:border-zinc-800"></div>
+                  <div className="border-l border-border"></div>
+                  <div className="border-l border-border"></div>
+                  <div className="border-l border-border"></div>
                 </div>
                 {section.features.map((feature, fIdx) => (
                   <div
                     key={fIdx}
-                    className="grid grid-cols-4 border-b border-zinc-100 dark:border-zinc-800/50  transition-colors"
+                    className="grid grid-cols-4 border-b border-border  transition-colors"
                   >
-                    <div className="p-4 flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                    <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
                       <FeatureLabel feature={feature} />
                     </div>
                     {feature.values.map((val, vIdx) => (
                       <div
                         key={vIdx}
                         className={cn(
-                          "p-4 flex items-center justify-center border-l border-zinc-100 dark:border-zinc-800/50",
+                          "p-4 flex items-center justify-center border-l border-border",
                           data.plans[vIdx].featured ? theme.bgSoft : "",
                         )}
                       >
@@ -1100,7 +1100,7 @@ export function PricingTable({
 // ==========================================
 // 4. USAGE SLIDER
 // ==========================================
-export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
+export function PricingSlider({ color = "primary" }: { color?: PricingColor }) {
   const [value, setValue] = useState(5);
   const { theme, style } = getThemeStyles(color);
   const calculatedPrice = 29 + value * 10;
@@ -1109,25 +1109,25 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
 
   return (
     <div
-      className="w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-xl text-center"
+      className="w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-xl text-center"
       style={style}
     >
-      <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white mb-2">
+      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
         Usage Based Pricing
       </h3>
-      <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 mb-6 sm:mb-10">
+      <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-10">
         Scale your pricing as your traffic grows.
       </p>
       <div className="mb-6 sm:mb-12">
-        <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-zinc-900 dark:text-white mb-2">
+        <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-foreground mb-2">
           ${calculatedPrice}
         </div>
-        <p className="text-zinc-500 font-medium tracking-wide uppercase text-xs sm:text-sm">
+        <p className="text-muted-foreground font-medium tracking-wide uppercase text-xs sm:text-sm">
           Per Month
         </p>
       </div>
       <div className="relative mb-6 sm:mb-12">
-        <div className="flex justify-between text-xs sm:text-sm font-bold text-zinc-400 mb-3 px-1 uppercase tracking-widest">
+        <div className="flex justify-between text-xs sm:text-sm font-bold text-muted-foreground mb-3 px-1 uppercase tracking-widest">
           <span>10k Views</span>
           <span className={theme.text}>{pageviews} Views</span>
           <span>1M+ Views</span>
@@ -1140,7 +1140,7 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
           value={value}
           onChange={(e) => setValue(parseInt(e.target.value))}
           className={cn(
-            "w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer",
+            "w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer",
             theme.slider,
           )}
         />
@@ -1153,7 +1153,7 @@ export function PricingSlider({ color = "indigo" }: { color?: PricingColor }) {
       >
         Start 14-Day Free Trial
       </button>
-      <p className="text-xs text-zinc-400 mt-3 sm:mt-4">
+      <p className="text-xs text-muted-foreground mt-3 sm:mt-4">
         No credit card required. Cancel anytime.
       </p>
     </div>
@@ -1175,7 +1175,7 @@ export interface PricingTypographicPlan {
 
 export function PricingTypographic({
   packages,
-  color = "indigo",
+  color = "primary",
   linkComponent: Link = "a",
 }: {
   packages: any;
@@ -1243,7 +1243,7 @@ export function PricingTypographic({
 
   if (!packages) {
     return (
-      <section className="py-16 sm:py-32 bg-white dark:bg-zinc-950 flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-3xl border border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 sm:py-32 bg-background flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-3xl border border-border">
         <div
           className={cn(
             "w-8 h-8 border-4 border-t-transparent rounded-full animate-spin",
@@ -1256,7 +1256,7 @@ export function PricingTypographic({
 
   if (!activePlans.length) {
     return (
-      <section className="py-16 sm:py-32 bg-white dark:bg-zinc-950 text-center text-zinc-500 text-sm font-mono rounded-3xl border border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 sm:py-32 bg-background text-center text-muted-foreground text-sm font-mono rounded-3xl border border-border">
         No pricing plans available.
       </section>
     );
@@ -1266,7 +1266,7 @@ export function PricingTypographic({
     <section
       style={style}
       className={cn(
-        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 bg-white dark:bg-black text-zinc-900 dark:text-white font-sans antialiased overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 w-full transition-colors duration-300 relative",
+        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 bg-background text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
@@ -1303,10 +1303,10 @@ export function PricingTypographic({
                 Pricing
               </span>
             </h2>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-3 sm:mb-5 text-zinc-900 dark:text-white">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-3 sm:mb-5 text-foreground">
               Pricing Model.
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-lg md:text-xl font-medium leading-relaxed">
+            <p className="text-muted-foreground text-sm sm:text-lg md:text-xl font-medium leading-relaxed">
               Transparent, value-driven pricing designed for high-growth brands.
               Select a tier to explore what&apos;s included.
             </p>
@@ -1324,7 +1324,7 @@ export function PricingTypographic({
                     "text-sm font-bold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300",
                     billingCycle === cycle
                       ? cn(theme.text, theme.border)
-                      : "text-zinc-400 border-transparent hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white",
+                      : "text-muted-foreground border-transparent hover:text-foreground",
                   )}
                 >
                   {cycle}
@@ -1335,9 +1335,9 @@ export function PricingTypographic({
         </div>
 
         {/* DESKTOP CANVAS */}
-        <div className="hidden lg:flex w-full border-t border-zinc-200 dark:border-white/10 min-h-[550px] transition-colors duration-300">
+        <div className="hidden lg:flex w-full border-t border-border min-h-[550px] transition-colors duration-300">
           {/* LEFT: NAVIGATION */}
-          <div className="w-[45%] border-r border-zinc-200 dark:border-white/10 py-12 pr-8 flex flex-col justify-center gap-6 transition-colors duration-300">
+          <div className="w-[45%] border-r border-border py-12 pr-8 flex flex-col justify-center gap-6 transition-colors duration-300">
             {activePlans.map((plan) => {
               const isActive = activePlanId === plan.id;
               return (
@@ -1353,7 +1353,7 @@ export function PricingTypographic({
                         "text-[10px] font-mono tracking-widest uppercase mb-2 transition-colors duration-300",
                         isActive
                           ? theme.text
-                          : "text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white",
+                          : "text-muted-foreground group-hover:text-foreground",
                       )}
                     >
                       [ Most Popular ]
@@ -1390,7 +1390,7 @@ export function PricingTypographic({
                   />
                 )}
 
-                <div className="absolute -right-4 -top-8 text-[150px] xl:text-[200px] font-black text-black/[0.03] dark:text-white/[0.02] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300">
+                <div className="absolute -right-4 -top-8 text-[150px] xl:text-[200px] font-black text-foreground/[0.03]/[0.02] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300">
                   ${activePlan.price}
                 </div>
 
@@ -1413,11 +1413,11 @@ export function PricingTypographic({
                     <span className="text-3xl font-bold text-zinc-400 dark:text-zinc-600 mb-2">
                       $
                     </span>
-                    <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-zinc-900 dark:text-white">
+                    <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-foreground">
                       <AnimatedPrice value={activePlan.price} />
                     </span>
                   </div>
-                  <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-md leading-relaxed">
+                  <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
                     {activePlan.description}
                   </p>
                 </div>
@@ -1426,7 +1426,7 @@ export function PricingTypographic({
                   {activePlan.features.map((feature: string, i: number) => (
                     <div
                       key={i}
-                      className="flex items-center gap-3 border-b border-zinc-200 dark:border-white/5 pb-3 group/feat transition-colors duration-300"
+                      className="flex items-center gap-3 border-b border-border pb-3 group/feat transition-colors duration-300"
                     >
                       <div
                         className={cn(
@@ -1434,7 +1434,7 @@ export function PricingTypographic({
                           "group-hover/feat:bg-[var(--pricing-accent)]",
                         )}
                       />
-                      <span className="text-sm lg:text-base text-zinc-600 dark:text-zinc-300 group-hover/feat:text-zinc-900 dark:group-hover/feat:text-white transition-colors">
+                      <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground dark:group-hover/feat:text-white transition-colors">
                         {feature}
                       </span>
                     </div>
@@ -1450,7 +1450,7 @@ export function PricingTypographic({
                         // text-white here let tailwind-merge drop it, painting
                         // white on the near-white default accent.
                         theme.bg
-                      : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black",
+                      : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
                   )}
                 >
                   <div
@@ -1494,13 +1494,13 @@ export function PricingTypographic({
         </div>
 
         {/* MOBILE FALLBACK */}
-        <div className="flex flex-col lg:hidden border-t border-zinc-200 dark:border-white/10 transition-colors duration-300">
+        <div className="flex flex-col lg:hidden border-t border-border transition-colors duration-300">
           {activePlans.map((plan) => {
             const isActive = activePlanId === plan.id;
             return (
               <div
                 key={plan.id}
-                className="border-b border-zinc-200 dark:border-white/10 transition-colors duration-300"
+                className="border-b border-border transition-colors duration-300"
               >
                 <button
                   onClick={() => setSelectedPlanId(isActive ? null : plan.id)}
@@ -1511,7 +1511,7 @@ export function PricingTypographic({
                       <span
                         className={cn(
                           "text-[9px] font-mono tracking-widest uppercase mb-1 transition-colors duration-300",
-                          isActive ? theme.text : "text-zinc-500",
+                          isActive ? theme.text : "text-muted-foreground",
                         )}
                       >
                         [ Most Popular ]
@@ -1560,12 +1560,12 @@ export function PricingTypographic({
                         <span className="text-xl font-bold text-zinc-400 dark:text-zinc-600 mb-1.5">
                           $
                         </span>
-                        <span className="text-5xl md:text-6xl font-black tracking-tighter text-zinc-900 dark:text-white">
+                        <span className="text-5xl md:text-6xl font-black tracking-tighter text-foreground">
                           <AnimatedPrice value={plan.price} />
                         </span>
                       </div>
 
-                      <p className="text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed mb-8 relative z-10">
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-8 relative z-10">
                         {plan.description}
                       </p>
 
@@ -1573,7 +1573,7 @@ export function PricingTypographic({
                         {plan.features.map((feature: string, i: number) => (
                           <div
                             key={i}
-                            className="flex items-start gap-3 border-b border-zinc-200 dark:border-white/5 pb-3"
+                            className="flex items-start gap-3 border-b border-border pb-3"
                           >
                             <div
                               className={cn(
@@ -1581,7 +1581,7 @@ export function PricingTypographic({
                                 theme.bg,
                               )}
                             />
-                            <span className="text-sm md:text-base text-zinc-700 dark:text-zinc-300">
+                            <span className="text-sm md:text-base text-foreground">
                               {feature}
                             </span>
                           </div>
@@ -1594,7 +1594,7 @@ export function PricingTypographic({
                           "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                           plan.isFeatured
                             ? theme.bg
-                            : "bg-zinc-100 text-zinc-900 dark:bg-white dark:text-black",
+                            : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
                         )}
                       >
                         <div

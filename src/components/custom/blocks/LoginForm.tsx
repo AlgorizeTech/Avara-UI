@@ -137,7 +137,7 @@ const Input = ({
     <div className="flex flex-col gap-1.5 w-full">
       <label
         htmlFor={id}
-        className="text-sm font-semibold text-zinc-900 dark:text-zinc-100"
+        className="text-sm font-semibold text-foreground"
       >
         {label} {props.required && <span className="text-red-500">*</span>}
       </label>
@@ -146,10 +146,10 @@ const Input = ({
           id={id}
           type={inputType}
           className={cn(
-            "flex h-11 w-full rounded-lg border bg-white/80 dark:bg-zinc-950/70 backdrop-blur-md px-3 py-2 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all shadow-sm",
+            "flex h-11 w-full rounded-lg border bg-white/80 dark:bg-zinc-950/70 backdrop-blur-md px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all shadow-sm",
             error
               ? "border-red-500 focus:ring-red-500"
-              : "border-zinc-300 dark:border-zinc-700",
+              : "border-border",
             isPassword && "pr-10",
             className,
           )}
@@ -160,14 +160,14 @@ const Input = ({
             type="button"
             aria-label={showPassword ? "Hide password" : "Show password"}
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         )}
       </div>
       {description && !error && (
-        <p className="text-[11px] text-zinc-500">{description}</p>
+        <p className="text-[11px] text-muted-foreground">{description}</p>
       )}
       {error && (
         <p className="text-[11px] text-red-500 font-semibold">{error}</p>
@@ -196,7 +196,7 @@ const Checkbox = ({
           onChange={(e) => onCheckedChange(e.target.checked)}
           className={cn(
             "peer h-4 w-4 shrink-0 rounded border-2 appearance-none cursor-pointer transition-colors outline-none",
-            error ? "border-red-500" : "border-zinc-300 dark:border-zinc-700",
+            error ? "border-red-500" : "border-border",
             checked && !error && theme.bg,
             checked && !error && theme.border,
             theme.ring,
@@ -212,7 +212,7 @@ const Checkbox = ({
       </div>
       <label
         htmlFor={id}
-        className="text-sm font-medium text-zinc-600 dark:text-zinc-400 cursor-pointer leading-tight select-none"
+        className="text-sm font-medium text-muted-foreground cursor-pointer leading-tight select-none"
       >
         {label} {props.required && <span className="text-red-500">*</span>}
       </label>
@@ -238,7 +238,7 @@ const Button = ({
       "inline-flex items-center justify-center rounded-lg text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
       variant === "default" && theme?.bg,
       variant === "outline" &&
-        "border-2 border-zinc-300/80 dark:border-zinc-700/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-white dark:hover:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs",
+        "border-2 border-border/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-card text-foreground shadow-xs",
       size === "default" && "h-11 px-4 py-2",
       className,
     )}
@@ -251,7 +251,7 @@ const Button = ({
 // --- MAIN COMPONENT ---
 export default function LoginForm({
   variant = "default",
-  color = "indigo",
+  color = "primary",
   signupHref = "#",
   forgotPasswordHref = "#",
   onSubmit,
@@ -316,10 +316,10 @@ export default function LoginForm({
   const FormContent = (
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tight mb-2">
+        <h2 className="text-3xl font-black text-foreground tracking-tight mb-2">
           Welcome back
         </h2>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+        <p className="text-sm text-muted-foreground font-medium">
           Enter your details to access your account.
         </p>
       </div>
@@ -344,11 +344,11 @@ export default function LoginForm({
       </div>
 
       <div className="relative flex items-center mb-5 sm:mb-6">
-        <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
-        <span className="flex-shrink-0 mx-3 sm:mx-4 text-zinc-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+        <div className="flex-grow border-t border-border"></div>
+        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest">
           Or continue with
         </span>
-        <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
+        <div className="flex-grow border-t border-border"></div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
@@ -407,7 +407,7 @@ export default function LoginForm({
       </form>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+        <p className="text-sm text-muted-foreground font-medium">
           Don&apos;t have an account?{" "}
           <a
             href={signupHref}
@@ -426,7 +426,7 @@ export default function LoginForm({
   if (variant === "split") {
     return (
       <div
-        className="w-full min-h-[600px] flex overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl bg-white dark:bg-zinc-950 transition-colors duration-300"
+        className="w-full min-h-[600px] flex overflow-hidden rounded-3xl border border-border shadow-2xl bg-background transition-colors duration-300"
         style={style}
       >
         <div
@@ -655,7 +655,7 @@ export default function LoginForm({
   const wrapperClass = cn(
     baseWrapper,
     variant === "default" &&
-      "bg-white dark:bg-zinc-950 rounded-3xl shadow-xl border border-zinc-200 dark:border-zinc-800",
+      "bg-background rounded-3xl shadow-xl border border-border",
     variant === "glass" &&
       "bg-white/65 dark:bg-zinc-950/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-zinc-700/50",
     variant === "minimal" && "bg-transparent",

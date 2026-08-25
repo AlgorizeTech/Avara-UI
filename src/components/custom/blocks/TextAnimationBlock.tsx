@@ -68,7 +68,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
               className={cn("flex flex-wrap gap-[0.25em]", className)}
             >
               {text.split(" ").map((word, index) => (
-                <div key={index} className="flex">
+                <span key={index} className="inline-flex">
                   {word.split("").map((char, charIndex) => (
                     <motion.span
                       key={charIndex}
@@ -78,7 +78,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
                       {char === " " ? "\u00A0" : char}
                     </motion.span>
                   ))}
-                </div>
+                </span>
               ))}
             </MotionComponent>
           );
@@ -139,7 +139,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
               className={cn("flex flex-wrap gap-[0.25em]", className)}
             >
               {text.split(" ").map((word, index) => (
-                <div key={index} className="flex">
+                <span key={index} className="inline-flex">
                   {word.split("").map((char, charIndex) => (
                     <motion.span
                       key={charIndex}
@@ -149,7 +149,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
                       {char}
                     </motion.span>
                   ))}
-                </div>
+                </span>
               ))}
             </MotionComponent>
           );
@@ -263,7 +263,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
               className={cn("flex flex-wrap gap-[0.25em]", className)}
             >
               {text.split(" ").map((word, index) => (
-                <div key={index} className="flex">
+                <span key={index} className="inline-flex">
                   {word.split("").map((char, charIndex) => (
                     <motion.span
                       key={charIndex}
@@ -273,7 +273,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
                       {char}
                     </motion.span>
                   ))}
-                </div>
+                </span>
               ))}
             </MotionComponent>
           );
