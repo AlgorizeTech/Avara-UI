@@ -2,6 +2,7 @@
 
 import {
   CursorAnimation,
+  MainContent,
   type CursorColor,
   type CursorVariant,
 } from "@/components/custom/blocks/CursorAnimationBlock";
