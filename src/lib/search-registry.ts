@@ -30,7 +30,11 @@ function getNavigationItems(): SearchableItem[] {
         slug: child.slug,
         href: child.href,
         category: section.label,
-        keywords: [child.label.toLowerCase(), section.label.toLowerCase()]
+        keywords: [
+          child.label.toLowerCase(),
+          section.label.toLowerCase(),
+          ...(child.keywords ?? []).map((keyword) => keyword.toLowerCase()),
+        ]
       });
     });
   });

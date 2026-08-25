@@ -1,19 +1,16 @@
 "use client";
 
-import AuthForm, {
-  AuthColor,
-  AuthType,
-  AuthVariant,
-} from "@/components/custom/blocks/AuthForm";
+import LoginForm, {
+  LoginColor,
+  LoginVariant,
+} from "@/components/custom/blocks/LoginForm";
 
-export default function AuthDemo({
-  type = "signup",
+export default function LoginFormDemo({
   variant = "default",
   color = "primary",
 }: {
-  type?: AuthType;
-  variant?: AuthVariant;
-  color?: AuthColor;
+  variant?: LoginVariant;
+  color?: LoginColor;
 }) {
   return (
     <div
@@ -30,9 +27,8 @@ export default function AuthDemo({
         </div>
       )}
       <div className="relative z-10 w-full flex justify-center">
-        <AuthForm
-          key={`${type}-${variant}-${color}`}
-          type={type}
+        <LoginForm
+          key={`${variant}-${color}`}
           variant={variant}
           color={color}
         />

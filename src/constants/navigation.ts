@@ -14,6 +14,13 @@ export type NavigationChild = {
   slug?: string;
   href?: string;
   badge?: string;
+  /**
+   * Extra search terms for the command palette, which otherwise indexes nothing
+   * but the label. Needed where a page is known by names its label does not
+   * contain — "Auth Forms" is what a reader searching "login" or "sign up" is
+   * looking for, and neither word appears in the label or the slug.
+   */
+  keywords?: string[];
   children?: NavigationChild[];
 };
 
@@ -154,6 +161,23 @@ export const navigation: NavigationItem[] = [
   {
     label: "Website Sections",
     children: [
+      {
+        label: "Auth Forms",
+        slug: "signup-form",
+        badge: "Core",
+        keywords: [
+          "login",
+          "log in",
+          "sign in",
+          "signin",
+          "register",
+          "registration",
+          "sign up",
+          "signup",
+          "auth",
+          "authentication",
+        ],
+      },
       { label: "Footer", slug: "footer", badge: "New" },
       { label: "Hero", slug: "hero", badge: "New" },
       { label: "Marquee", slug: "marquee", badge: "New" },
@@ -162,7 +186,6 @@ export const navigation: NavigationItem[] = [
       { label: "Product Details", slug: "product-details", badge: "New" },
       { label: "Review Section", slug: "reviews", badge: "New" },
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
-      { label: "Sign-Up", slug: "signup-form", badge: "Core" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
     ],
   },

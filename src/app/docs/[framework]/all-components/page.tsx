@@ -558,8 +558,8 @@ const componentPreviewData: PreviewCategoryGroup[] = [
 				illustrationType: "navbar",
 			},
 			{
-				title: "Sign-Up",
-				countText: "Glassmorphic Form",
+				title: "Auth Forms",
+				countText: "Login & Register",
 				slug: "signup-form",
 				badge: "Core",
 				illustrationType: "auth",

@@ -8,9 +8,18 @@ import { useState } from "react";
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type AuthColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type AuthVariant = "default" | "split" | "glass" | "minimal";
-export type AuthType = "login" | "signup";
+export type RegisterColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type RegisterVariant = "default" | "split" | "glass" | "minimal";
+export type RegisterProvider = "github" | "google";
+
+export type RegisterFormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  agreeToTerms: boolean;
+};
 
 // `panelFg` is the text colour for the split variant's gradient panel. It has
 // to be declared per theme rather than hardcoded to white: the zinc and primary
@@ -152,6 +161,7 @@ const Input = ({
         {isPassword && (
           <button
             type="button"
+            aria-label={showPassword ? "Hide password" : "Show password"}
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
           >
@@ -229,7 +239,7 @@ const Button = ({
     disabled={disabled}
     className={cn(
       "inline-flex items-center justify-center rounded-lg text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
-      variant === "default" && theme.bg,
+      variant === "default" && theme?.bg,
       variant === "outline" &&
         "border-2 border-zinc-300/80 dark:border-zinc-700/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-white dark:hover:bg-zinc-800 text-zinc-900 dark:text-white shadow-xs",
       size === "default" && "h-11 px-4 py-2",
@@ -242,19 +252,38 @@ const Button = ({
 );
 
 // --- MAIN COMPONENT ---
-export default function AuthForm({
-  type = "signup",
+export default function RegisterForm({
   variant = "default",
   color = "indigo",
+  loginHref = "#",
+  termsHref = "#",
+  privacyHref = "#",
+  minPasswordLength = 8,
+  onSubmit,
+  onSocialSignUp,
 }: {
-  type?: AuthType;
-  variant?: AuthVariant;
-  color?: AuthColor;
+  variant?: RegisterVariant;
+  color?: RegisterColor;
+  /** Where "Sign in" sends someone who already has an account. */
+  loginHref?: string;
+  termsHref?: string;
+  privacyHref?: string;
+  /**
+   * Client-side minimum only — it stops an obviously-too-short password before
+   * a round trip. Your server still has to enforce the real policy.
+   */
+  minPasswordLength?: number;
+  /**
+   * Called with the validated fields. Without it the form simulates a round
+   * trip so the block stays demonstrable on its own — wire this up to your auth
+   * provider before shipping.
+   */
+  onSubmit?: (values: RegisterFormValues) => void | Promise<void>;
+  onSocialSignUp?: (provider: RegisterProvider) => void;
 }) {
-  const [isLogin, setIsLogin] = useState(type === "login");
   const { theme, style } = getThemeStyles(color);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterFormValues>({
     firstName: "",
     lastName: "",
     email: "",
@@ -265,28 +294,33 @@ export default function AuthForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (name: string, value: string | boolean) => {
+  const handleChange = (
+    name: keyof RegisterFormValues,
+    value: string | boolean,
+  ) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!isLogin) {
-      if (!formData.firstName) newErrors.firstName = "Required";
-      if (!formData.lastName) newErrors.lastName = "Required";
-      if (!formData.confirmPassword) newErrors.confirmPassword = "Required";
-      else if (formData.password !== formData.confirmPassword)
-        newErrors.confirmPassword = "Passwords do not match";
-      if (!formData.agreeToTerms)
-        newErrors.agreeToTerms = "You must agree to the terms";
-    }
+    if (!formData.firstName) newErrors.firstName = "Required";
+    if (!formData.lastName) newErrors.lastName = "Required";
+
     if (!formData.email) newErrors.email = "Email is required";
     else if (!/^\S+@\S+\.\S+$/.test(formData.email))
       newErrors.email = "Invalid email format";
+
     if (!formData.password) newErrors.password = "Password is required";
-    else if (!isLogin && formData.password.length < 8)
-      newErrors.password = "Must be at least 8 characters";
+    else if (formData.password.length < minPasswordLength)
+      newErrors.password = `Must be at least ${minPasswordLength} characters`;
+
+    if (!formData.confirmPassword) newErrors.confirmPassword = "Required";
+    else if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+
+    if (!formData.agreeToTerms)
+      newErrors.agreeToTerms = "You must agree to the terms";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -297,8 +331,11 @@ export default function AuthForm({
     if (!validateForm()) return;
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert(`${isLogin ? "Logged in" : "Account created"} successfully!`);
+      if (onSubmit) await onSubmit(formData);
+      else {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        alert("Account created successfully!");
+      }
     } finally {
       setLoading(false);
     }
@@ -308,12 +345,10 @@ export default function AuthForm({
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
         <h2 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tight mb-2">
-          {isLogin ? "Welcome back" : "Create an account"}
+          Create an account
         </h2>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
-          {isLogin
-            ? "Enter your details to access your account."
-            : "Start your 14-day free trial. No credit card required."}
+          Start your 14-day free trial. No credit card required.
         </p>
       </div>
 
@@ -321,6 +356,7 @@ export default function AuthForm({
         <Button
           variant="outline"
           type="button"
+          onClick={() => onSocialSignUp?.("github")}
           className="w-full flex items-center justify-center gap-2"
         >
           <GitHubIcon size={18} /> <span>GitHub</span>
@@ -328,6 +364,7 @@ export default function AuthForm({
         <Button
           variant="outline"
           type="button"
+          onClick={() => onSocialSignUp?.("google")}
           className="w-full flex items-center justify-center gap-2"
         >
           <GoogleIcon size={18} /> <span>Google</span>
@@ -343,34 +380,37 @@ export default function AuthForm({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
-        {!isLogin && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-            <Input
-              label="First Name"
-              id="firstName"
-              name="firstName"
-              placeholder="Jane"
-              value={formData.firstName}
-              onChange={(e: any) => handleChange("firstName", e.target.value)}
-              error={errors.firstName}
-              className={theme.ring}
-            />
-            <Input
-              label="Last Name"
-              id="lastName"
-              name="lastName"
-              placeholder="Doe"
-              value={formData.lastName}
-              onChange={(e: any) => handleChange("lastName", e.target.value)}
-              error={errors.lastName}
-              className={theme.ring}
-            />
-          </div>
-        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+          <Input
+            label="First Name"
+            id="register-first-name"
+            name="firstName"
+            autoComplete="given-name"
+            placeholder="Jane"
+            value={formData.firstName}
+            onChange={(e: any) => handleChange("firstName", e.target.value)}
+            error={errors.firstName}
+            className={theme.ring}
+          />
+          <Input
+            label="Last Name"
+            id="register-last-name"
+            name="lastName"
+            autoComplete="family-name"
+            placeholder="Doe"
+            value={formData.lastName}
+            onChange={(e: any) => handleChange("lastName", e.target.value)}
+            error={errors.lastName}
+            className={theme.ring}
+          />
+        </div>
+
         <Input
           label="Email Address"
-          id="email"
+          id="register-email"
+          name="email"
           type="email"
+          autoComplete="email"
           placeholder="name@company.com"
           value={formData.email}
           onChange={(e: any) => handleChange("email", e.target.value)}
@@ -379,56 +419,57 @@ export default function AuthForm({
         />
         <Input
           label="Password"
-          id="password"
+          id="register-password"
+          name="password"
           type="password"
-          placeholder={isLogin ? "Enter your password" : "Create a password"}
+          autoComplete="new-password"
+          placeholder="Create a password"
+          description={`At least ${minPasswordLength} characters.`}
           value={formData.password}
           onChange={(e: any) => handleChange("password", e.target.value)}
           error={errors.password}
           className={theme.ring}
         />
+        <Input
+          label="Confirm Password"
+          id="register-confirm-password"
+          name="confirmPassword"
+          type="password"
+          autoComplete="new-password"
+          placeholder="Confirm your password"
+          value={formData.confirmPassword}
+          onChange={(e: any) => handleChange("confirmPassword", e.target.value)}
+          error={errors.confirmPassword}
+          className={theme.ring}
+        />
 
-        {!isLogin && (
-          <Input
-            label="Confirm Password"
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={(e: any) =>
-              handleChange("confirmPassword", e.target.value)
+        <div className="pt-2 pb-2">
+          <Checkbox
+            theme={theme}
+            label={
+              <>
+                I agree to the{" "}
+                <a
+                  href={termsHref}
+                  className={cn("font-bold hover:underline", theme.text)}
+                >
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a
+                  href={privacyHref}
+                  className={cn("font-bold hover:underline", theme.text)}
+                >
+                  Privacy Policy
+                </a>
+              </>
             }
-            error={errors.confirmPassword}
-            className={theme.ring}
+            id="register-agree-to-terms"
+            checked={formData.agreeToTerms}
+            onCheckedChange={(c: boolean) => handleChange("agreeToTerms", c)}
+            error={errors.agreeToTerms}
           />
-        )}
-
-        {isLogin && (
-          <div className="flex justify-end">
-            <a
-              href="#"
-              className={cn(
-                "text-xs font-bold hover:underline transition-all",
-                theme.text,
-              )}
-            >
-              Forgot password?
-            </a>
-          </div>
-        )}
-
-        {!isLogin && (
-          <div className="pt-2 pb-2">
-            <Checkbox
-              theme={theme}
-              label="I agree to the Terms of Service and Privacy Policy"
-              id="agreeToTerms"
-              checked={formData.agreeToTerms}
-              onCheckedChange={(c: boolean) => handleChange("agreeToTerms", c)}
-              error={errors.agreeToTerms}
-            />
-          </div>
-        )}
+        </div>
 
         <Button
           type="submit"
@@ -436,34 +477,22 @@ export default function AuthForm({
           className="w-full mt-4 shadow-lg shadow-black/5"
           disabled={loading}
         >
-          {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
+          {loading ? "Please wait..." : "Create Account"}
         </Button>
       </form>
 
       <div className="mt-8 text-center">
         <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            type="button"
-            onClick={() => {
-              setIsLogin(!isLogin);
-              setErrors({});
-              setFormData({
-                firstName: "",
-                lastName: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-                agreeToTerms: false,
-              });
-            }}
+          Already have an account?{" "}
+          <a
+            href={loginHref}
             className={cn(
               "font-bold hover:underline transition-all",
               theme.text,
             )}
           >
-            {isLogin ? "Sign up" : "Sign in"}
-          </button>
+            Sign in
+          </a>
         </p>
       </div>
     </div>
@@ -510,10 +539,11 @@ export default function AuthForm({
             </div>
           </div>
 
-          {/* Sign-in illustration. Drawn inline rather than loaded as a file so
+          {/* Sign-up illustration. Drawn inline rather than loaded as a file so
               the block stays copy-paste portable with no assets to ship, and it
               paints in currentColor so it inherits the panel's own foreground —
-              legible on both the light and dark gradients. */}
+              legible on both the light and dark gradients. It mirrors the form
+              beside it: a paired name row, then email, password and confirm. */}
           <div className="relative z-10 flex-1 flex items-center justify-center py-4">
             <svg
               viewBox="0 0 320 250"
@@ -541,7 +571,7 @@ export default function AuthForm({
                 opacity="0.1"
               />
 
-              {/* Sign-in card */}
+              {/* Sign-up card */}
               <rect
                 x="30"
                 y="44"
@@ -574,63 +604,96 @@ export default function AuthForm({
                 strokeWidth="1.5"
               />
 
-              {/* Avatar */}
-              <circle
-                cx="141"
-                cy="104"
-                r="18"
-                fill="currentColor"
-                opacity="0.26"
-              />
-              <circle
-                cx="141"
-                cy="99"
-                r="6.5"
-                fill="currentColor"
-                opacity="0.8"
-              />
-              <path
-                d="M130 116a11 11 0 0 1 22 0"
-                fill="currentColor"
-                opacity="0.8"
-              />
-
-              {/* Email + password fields */}
+              {/* Paired first / last name row */}
               <rect
                 x="58"
-                y="136"
-                width="166"
+                y="94"
+                width="78"
                 height="14"
                 rx="7"
                 fill="currentColor"
                 opacity="0.22"
               />
               <rect
+                x="146"
+                y="94"
+                width="78"
+                height="14"
+                rx="7"
+                fill="currentColor"
+                opacity="0.22"
+              />
+
+              {/* Email */}
+              <rect
                 x="58"
-                y="158"
+                y="116"
                 width="166"
                 height="14"
                 rx="7"
                 fill="currentColor"
                 opacity="0.22"
               />
-              <circle cx="70" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
-              <circle cx="78" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
-              <circle cx="86" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
-              <circle cx="94" cy="165" r="2.4" fill="currentColor" opacity="0.55" />
 
-              {/* Submit */}
+              {/* Password */}
               <rect
                 x="58"
-                y="180"
+                y="138"
                 width="166"
-                height="16"
-                rx="8"
+                height="14"
+                rx="7"
+                fill="currentColor"
+                opacity="0.22"
+              />
+              <circle cx="70" cy="145" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="78" cy="145" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="86" cy="145" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="94" cy="145" r="2.4" fill="currentColor" opacity="0.55" />
+
+              {/* Confirm password */}
+              <rect
+                x="58"
+                y="160"
+                width="166"
+                height="14"
+                rx="7"
+                fill="currentColor"
+                opacity="0.22"
+              />
+              <circle cx="70" cy="167" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="78" cy="167" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="86" cy="167" r="2.4" fill="currentColor" opacity="0.55" />
+              <circle cx="94" cy="167" r="2.4" fill="currentColor" opacity="0.55" />
+
+              {/* Terms checkbox, ticked */}
+              <rect
+                x="58"
+                y="182"
+                width="11"
+                height="11"
+                rx="3"
                 fill="currentColor"
                 opacity="0.55"
               />
+              <path
+                d="M60.5 187.5l2.5 2.5 4-4.5"
+                stroke="currentColor"
+                strokeOpacity="0.95"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <rect
+                x="76"
+                y="185"
+                width="98"
+                height="6"
+                rx="3"
+                fill="currentColor"
+                opacity="0.22"
+              />
 
-              {/* Padlock badge */}
+              {/* Add-a-member badge */}
               <circle
                 cx="256"
                 cy="166"
@@ -646,26 +709,23 @@ export default function AuthForm({
                 strokeOpacity="0.4"
                 strokeWidth="1.5"
               />
-              <rect
-                x="242"
-                y="163"
-                width="28"
-                height="22"
-                rx="6"
+              <circle
+                cx="250"
+                cy="158"
+                r="7.5"
                 stroke="currentColor"
                 strokeOpacity="0.9"
                 strokeWidth="2.5"
               />
               <path
-                d="M248 163v-6a8 8 0 0 1 16 0v6"
+                d="M238 180a12 12 0 0 1 24 0"
                 stroke="currentColor"
                 strokeOpacity="0.9"
                 strokeWidth="2.5"
                 strokeLinecap="round"
               />
-              <circle cx="256" cy="171" r="2.8" fill="currentColor" opacity="0.9" />
               <path
-                d="M256 173v4"
+                d="M268 158v14M261 165h14"
                 stroke="currentColor"
                 strokeOpacity="0.9"
                 strokeWidth="2.5"
