@@ -29,7 +29,7 @@ export const ThemeSwitcher = React.forwardRef<
       return (
         <div
           className={cn(
-            "h-10 w-[120px] bg-zinc-100 dark:bg-zinc-800/50 rounded-full",
+            "h-10 w-[120px] bg-muted rounded-full",
             className,
           )}
         />
@@ -38,7 +38,7 @@ export const ThemeSwitcher = React.forwardRef<
       return (
         <div
           className={cn(
-            "h-9 w-[110px] bg-zinc-100 dark:bg-zinc-800/50 rounded-lg",
+            "h-9 w-[110px] bg-muted rounded-lg",
             className,
           )}
         />
@@ -46,7 +46,7 @@ export const ThemeSwitcher = React.forwardRef<
     return (
       <div
         className={cn(
-          "h-9 w-9 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg",
+          "h-9 w-9 bg-muted rounded-lg",
           className,
         )}
       />
@@ -129,14 +129,14 @@ const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, any>(
       <div
         ref={containerRef}
         className={cn(
-          "relative flex items-center p-1 bg-zinc-100/80 dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800 backdrop-blur-md rounded-full w-max shadow-sm",
+          "relative flex items-center p-1 bg-muted/80 border border-border/50 backdrop-blur-md rounded-full w-max shadow-sm",
           className,
         )}
         {...props}
       >
         <div
           ref={indicatorRef}
-          className="absolute top-1 bottom-1 left-0 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-200/50 dark:border-zinc-700/50 pointer-events-none"
+          className="absolute top-1 bottom-1 left-0 bg-card rounded-full shadow-sm border border-border/50 pointer-events-none"
         />
         {tabs.map((tab, i) => {
           const Icon = tab.icon;
@@ -151,8 +151,8 @@ const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, any>(
               className={cn(
                 "relative z-10 flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200",
                 isActive
-                  ? "text-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300",
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
               aria-label={`Switch to ${tab.id} theme`}
             >
@@ -195,7 +195,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, any>(
       <div ref={ref} className={className} {...props}>
         <button
           onClick={toggleTheme}
-          className="flex items-center justify-center w-9 h-9 rounded-lg bg-zinc-100/80 dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800 hover:bg-zinc-200/80 dark:hover:bg-zinc-800/80 transition-colors shadow-sm"
+          className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted/80 border border-border/50 hover:bg-muted/80 transition-colors shadow-sm"
           aria-label="Toggle theme"
         >
           <div
@@ -205,7 +205,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, any>(
             {resolvedTheme === "dark" ? (
               <Moon className="w-[18px] h-[18px] text-zinc-100" />
             ) : (
-              <Sun className="w-[18px] h-[18px] text-zinc-900" />
+              <Sun className="w-[18px] h-[18px] text-foreground" />
             )}
           </div>
         </button>
@@ -281,7 +281,7 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
       >
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center gap-2 px-3.5 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors shadow-sm text-sm font-medium text-zinc-800 dark:text-zinc-200 cursor-pointer"
+          className="flex items-center gap-2 px-3.5 h-9 rounded-lg bg-muted border border-border hover:bg-muted transition-colors shadow-sm text-sm font-medium text-foreground cursor-pointer"
         >
           {resolvedTheme === "dark" ? (
             <Moon className="w-4 h-4" />
@@ -293,7 +293,7 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
 
         <div
           ref={menuRef}
-          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 hidden"
+          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-background border border-border rounded-xl shadow-xl z-50 hidden"
         >
           {[
             { id: "light", icon: Sun, label: "Light" },
@@ -313,8 +313,8 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
                 className={cn(
                   "flex items-center w-full gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer",
                   isActive
-                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-zinc-100",
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
                 )}
               >
                 <Icon className="w-4 h-4" />

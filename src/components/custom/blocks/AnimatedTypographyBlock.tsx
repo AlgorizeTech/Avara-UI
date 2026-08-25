@@ -92,7 +92,7 @@ const baseStyles: Record<TypographyTag, string> = {
   h6: "font-medium break-words",
   p: "leading-relaxed break-words",
   span: "break-words",
-  blockquote: "pl-4 sm:pl-6 italic border-l-4 border-zinc-300 dark:border-zinc-700 break-words",
+  blockquote: "pl-4 sm:pl-6 italic border-l-4 border-border break-words",
 };
 
 // Map of valid tailwind text sizes to responsive scaling classes

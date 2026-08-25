@@ -170,7 +170,7 @@ export default function SupportPage() {
   );
 
   return (
-    <div className="min-h-screen font-sans bg-gray-50 dark:bg-[#09090b] flex flex-col items-center pt-8 pb-10 transition-colors duration-200">
+    <div className="min-h-screen font-sans bg-muted dark:bg-[#09090b] flex flex-col items-center pt-8 pb-10 transition-colors duration-200">
       <main className="w-full px-4 md:px-8 max-w-[1600px] h-[90vh] flex flex-col">
         <div className="bg-[#f9fbff] dark:bg-[#121217] border border-[#dcedff] dark:border-zinc-800 rounded-lg shadow-sm flex flex-col flex-1 overflow-hidden transition-colors">
           {/* ==========================================
@@ -180,7 +180,7 @@ export default function SupportPage() {
             <List className="w-5 h-5 text-[#0070e0] dark:text-[#3b82f6]" />
             <h2 className="text-base font-medium text-[#031849] dark:text-zinc-100">
               {DASHBOARD_DATA.header.title}:{" "}
-              <span className="text-gray-500 dark:text-zinc-400 font-normal">
+              <span className="text-muted-foreground font-normal">
                 {DASHBOARD_DATA.header.subtitle}
               </span>
             </h2>
@@ -197,9 +197,9 @@ export default function SupportPage() {
                   return (
                     <button
                       key={filter.id}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#4f4f4f] dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800/50 flex-1 justify-center transition-colors"
+                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#4f4f4f] dark:text-zinc-300 hover:bg-muted flex-1 justify-center transition-colors"
                     >
-                      <Icon className="w-4 h-4 text-gray-400 dark:text-zinc-500" />
+                      <Icon className="w-4 h-4 text-muted-foreground" />
                       {filter.label}{" "}
                       {filter.count !== null && `(${filter.count})`}
                       <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
@@ -215,10 +215,10 @@ export default function SupportPage() {
                     <div
                       key={ticket.id}
                       onClick={() => setSelectedTicketId(ticket.id)}
-                      className={`flex items-start p-4 border-b border-gray-100 dark:border-zinc-800/50 cursor-pointer transition-colors ${
+                      className={`flex items-start p-4 border-b border-border cursor-pointer transition-colors ${
                         isActive
                           ? "bg-[#eff5ff] dark:bg-[#3b82f6]/10 border-l-4 border-l-[#0070e0] dark:border-l-[#3b82f6]"
-                          : "hover:bg-gray-50 dark:hover:bg-zinc-800/50 border-l-4 border-l-transparent"
+                          : "hover:bg-muted border-l-4 border-l-transparent"
                       }`}
                     >
                       <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0 mt-1">
@@ -235,7 +235,7 @@ export default function SupportPage() {
                           >
                             {ticket.title}
                           </div>
-                          <span className="text-xs text-gray-400 dark:text-zinc-500 shrink-0 mt-0.5">
+                          <span className="text-xs text-muted-foreground shrink-0 mt-0.5">
                             {ticket.time}
                           </span>
                         </div>
@@ -260,7 +260,7 @@ export default function SupportPage() {
                 // EMPTY STATE (NO TICKET SELECTED)
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                   <div className="max-w-md flex flex-col items-center">
-                    <div className="w-24 h-24 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center shadow-sm mb-6 text-[#0070e0] dark:text-[#3b82f6] transition-colors">
+                    <div className="w-24 h-24 bg-card rounded-full flex items-center justify-center shadow-sm mb-6 text-[#0070e0] dark:text-[#3b82f6] transition-colors">
                       <LifeBuoy className="w-12 h-12" strokeWidth={1.5} />
                     </div>
                     <h2 className="text-3xl font-normal text-[#031849] dark:text-zinc-100 mb-3">
@@ -312,7 +312,7 @@ export default function SupportPage() {
                               <div
                                 className={`px-4 py-3 rounded-lg max-w-[80%] text-sm ${
                                   isSent
-                                    ? "bg-white dark:bg-zinc-800 text-[#4f4f4f] dark:text-zinc-200 border border-[#e0e0e0] dark:border-zinc-700"
+                                    ? "bg-card text-[#4f4f4f] dark:text-zinc-200 border border-[#e0e0e0] dark:border-zinc-700"
                                     : "bg-[#0070e0] dark:bg-[#3b82f6] text-white border border-transparent"
                                 } transition-colors`}
                               >
@@ -399,7 +399,7 @@ export default function SupportPage() {
 
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar flex flex-col gap-4">
                       {/* Contact Details Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-white dark:bg-zinc-900 transition-colors">
+                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
                         <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
                           Contact Details
                           <span>📋</span>
@@ -433,7 +433,7 @@ export default function SupportPage() {
                       </div>
 
                       {/* SLA Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-white dark:bg-zinc-900 transition-colors">
+                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
                         <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
                           SLA
                         </div>
@@ -464,7 +464,7 @@ export default function SupportPage() {
                       </div>
 
                       {/* Ticket Properties Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-white dark:bg-zinc-900 transition-colors">
+                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
                         <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
                           Tickets
                         </div>

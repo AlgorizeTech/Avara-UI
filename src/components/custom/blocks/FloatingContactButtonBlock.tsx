@@ -292,7 +292,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
               exit={{ opacity: 0, y: 16, scale: 0.96 }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                "pointer-events-auto absolute bottom-full mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl flex flex-col transition-colors duration-300",
+                "pointer-events-auto absolute bottom-full mb-3 sm:mb-4 rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 bg-background shadow-2xl flex flex-col transition-colors duration-300",
                 modalAlignmentClasses,
                 modalWidthClass,
                 modalHeightClass,
@@ -336,10 +336,10 @@ export const FloatingContactButtonBlock = React.forwardRef<
               {/* Sandboxed scroll container ref attached directly here */}
               <div
                 ref={scrollContainerRef}
-                className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-zinc-50/50 dark:bg-zinc-900/30"
+                className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-muted/50"
               >
                 <div className="text-center my-1">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground">
                     Today
                   </span>
                 </div>
@@ -368,13 +368,13 @@ export const FloatingContactButtonBlock = React.forwardRef<
                           "px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm transition-colors duration-300 break-words whitespace-pre-wrap max-w-full",
                           isUser
                             ? "rounded-br-xs font-medium text-primary-foreground dark:text-zinc-900"
-                            : "bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-bl-xs",
+                            : "bg-card border border-border/80 text-foreground rounded-bl-xs",
                         )}
                       >
                         {msg.text}
                       </div>
                       <div className="flex items-center gap-1 mt-1 px-1">
-                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono">
+                        <span className="text-[10px] text-muted-foreground font-mono">
                           {msg.timestamp}
                         </span>
                         {isUser && (
@@ -389,9 +389,9 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="self-start flex items-center gap-2 px-4 py-3 rounded-2xl rounded-bl-xs bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm"
+                    className="self-start flex items-center gap-2 px-4 py-3 rounded-2xl rounded-bl-xs bg-card border border-border/80 shadow-sm"
                   >
-                    <Bot className="w-4 h-4 text-zinc-400 animate-bounce shrink-0" />
+                    <Bot className="w-4 h-4 text-muted-foreground animate-bounce shrink-0" />
                     <div className="flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
                       <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse delay-75" />
@@ -403,14 +403,14 @@ export const FloatingContactButtonBlock = React.forwardRef<
 
               <form
                 onSubmit={handleSend}
-                className="p-2.5 sm:p-3 bg-white dark:bg-zinc-950 border-t border-zinc-200/80 dark:border-zinc-800 flex items-center gap-2 shrink-0"
+                className="p-2.5 sm:p-3 bg-background border-t border-border/80 flex items-center gap-2 shrink-0"
               >
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Write a message..."
-                  className="flex-1 h-9 sm:h-10 px-3 sm:px-3.5 text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-900 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 rounded-xl outline-none text-zinc-900 dark:text-white placeholder:text-zinc-400 transition-all"
+                  className="flex-1 h-9 sm:h-10 px-3 sm:px-3.5 text-xs sm:text-sm bg-muted border border-transparent focus:border-border rounded-xl outline-none text-foreground placeholder:text-muted-foreground transition-all"
                 />
                 <button
                   type="submit"
@@ -424,7 +424,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                     "w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
                     inputValue.trim()
                       ? "text-primary-foreground dark:text-zinc-900 shadow-md hover:opacity-90 scale-105"
-                      : "bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed",
+                      : "bg-muted text-zinc-400 dark:text-zinc-600 cursor-not-allowed",
                   )}
                 >
                   <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />

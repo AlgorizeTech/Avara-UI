@@ -17,9 +17,9 @@ const ICON_POOL = [Zap, TrendingUp, Sparkles, Star, Shield];
 const getIcon = (index: number) => ICON_POOL[index % ICON_POOL.length];
 
 const FeatureItem = ({ text }: { text: string }) => (
-  <li className="flex items-start gap-3 text-sm text-zinc-600 dark:text-gray-300">
-    <div className="mt-0.5 flex-shrink-0 rounded-full bg-zinc-200 dark:bg-white/10 p-1">
-      <Check className="h-3 w-3 text-zinc-700 dark:text-white" />
+  <li className="flex items-start gap-3 text-sm text-muted-foreground">
+    <div className="mt-0.5 flex-shrink-0 rounded-full bg-muted dark:bg-white/10 p-1">
+      <Check className="h-3 w-3 text-foreground" />
     </div>
     <span className="leading-relaxed">{text}</span>
   </li>
@@ -47,25 +47,25 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
     <section
       ref={containerRef}
       id="pricing"
-      className="relative overflow-hidden bg-white dark:bg-black py-24 sm:py-32 transition-colors duration-300"
+      className="relative overflow-hidden bg-background py-24 sm:py-32 transition-colors duration-300"
     >
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <header className="mx-auto max-w-2xl text-center mb-16">
-          <h2 className="pricing-header-el mt-2 text-4xl font-bold text-zinc-900 dark:text-white sm:text-5xl">
+          <h2 className="pricing-header-el mt-2 text-4xl font-bold text-foreground sm:text-5xl">
             Choose your plan
           </h2>
-          <p className="pricing-header-el mt-6 text-lg text-zinc-600 dark:text-gray-400">
+          <p className="pricing-header-el mt-6 text-lg text-muted-foreground">
             Flexible options for businesses of all sizes.
           </p>
 
           <div className="pricing-header-el mt-8 flex justify-center">
-            <div className="relative flex rounded-full bg-zinc-100 dark:bg-white/5 p-1 ring-1 ring-zinc-200 dark:ring-white/10">
+            <div className="relative flex rounded-full bg-muted dark:bg-white/5 p-1 ring-1 ring-zinc-200 dark:ring-white/10">
               <button
                 onClick={() => setPricingMode("subscription")}
                 className={`relative z-10 rounded-full px-6 py-2 text-sm font-semibold transition ${
                   pricingMode === "subscription"
                     ? "text-black"
-                    : "text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white"
+                    : "text-zinc-500 dark:text-gray-400 hover:text-foreground"
                 }`}
               >
                 Subscriptions
@@ -75,7 +75,7 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
                 className={`relative z-10 rounded-full px-6 py-2 text-sm font-semibold transition ${
                   pricingMode === "product"
                     ? "text-black"
-                    : "text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white"
+                    : "text-zinc-500 dark:text-gray-400 hover:text-foreground"
                 }`}
               >
                 Project Based
@@ -103,7 +103,7 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
               return (
                 <div
                   key={plan.id}
-                  className={`pricing-card-anim flex flex-col justify-between rounded-3xl bg-zinc-50 dark:bg-white/5 p-8 ring-1 ring-zinc-200 dark:ring-white/10 transition-all duration-300 ${
+                  className={`pricing-card-anim flex flex-col justify-between rounded-3xl bg-muted dark:bg-white/5 p-8 ring-1 ring-zinc-200 dark:ring-white/10 transition-all duration-300 ${
                     plan.isFeatured
                       ? "lg:z-10 lg:scale-[1.08] ring-2 ring-lime-500 dark:ring-[#CCFF00] shadow-xl shadow-lime-500/20 dark:shadow-[0_0_60px_-15px_rgba(204,255,0,0.4)] bg-gradient-to-b from-lime-100/50 to-zinc-50 dark:from-[#CCFF00]/10 dark:to-white/5"
                       : ""
@@ -116,14 +116,14 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
                           className={`h-6 w-6 ${
                             plan.isFeatured
                               ? "text-lime-600 dark:text-[#CCFF00]"
-                              : "text-zinc-400 dark:text-gray-400"
+                              : "text-muted-foreground"
                           }`}
                         />
                         <h3
                           className={`text-lg font-semibold ${
                             plan.isFeatured
                               ? "text-lime-600 dark:text-[#CCFF00]"
-                              : "text-zinc-900 dark:text-white"
+                              : "text-foreground"
                           }`}
                         >
                           {plan.name}
@@ -136,16 +136,16 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
                       )}
                     </div>
 
-                    <p className="mt-4 text-sm text-zinc-600 dark:text-gray-400 min-h-[48px]">
+                    <p className="mt-4 text-sm text-muted-foreground min-h-[48px]">
                       {plan.description}
                     </p>
 
                     <div className="mt-6 flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-zinc-900 dark:text-white">
+                      <span className="text-4xl font-bold text-foreground">
                         {price === 0 ? "Free" : `$${price}`}
                       </span>
                       {price > 0 && (
-                        <span className="text-sm text-zinc-500 dark:text-gray-400">
+                        <span className="text-sm text-muted-foreground">
                           {pricingMode === "subscription" ? `/month` : ""}
                         </span>
                       )}
@@ -167,7 +167,7 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
 
-                    <div className="mt-8 h-px w-full bg-zinc-200 dark:bg-white/10" />
+                    <div className="mt-8 h-px w-full bg-muted dark:bg-white/10" />
 
                     <ul className="mt-8 space-y-3">
                       {plan.features?.map((feature: any, i: number) => (
@@ -179,7 +179,7 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
               );
             })
           ) : (
-            <div className="col-span-full py-12 text-center text-zinc-500 dark:text-gray-500">
+            <div className="col-span-full py-12 text-center text-muted-foreground">
               No plans available.
             </div>
           )}

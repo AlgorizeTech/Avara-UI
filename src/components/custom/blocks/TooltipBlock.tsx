@@ -218,7 +218,7 @@ export function TooltipContent({
       ref={contentRef}
       role="tooltip"
       className={cn(
-        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-white dark:text-zinc-900 bg-zinc-900 dark:bg-white rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
+        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
         className,
       )}
       style={{

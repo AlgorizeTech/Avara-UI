@@ -237,7 +237,7 @@ export function CurvedCarousel({
     return (
       <div
         className={cn(
-          "relative w-full h-[400px] sm:h-[480px] md:h-[560px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-zinc-100 dark:bg-[#0a0a0c] border border-zinc-200 dark:border-zinc-800/80",
+          "relative w-full h-[400px] sm:h-[480px] md:h-[560px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-muted dark:bg-[#0a0a0c] border border-border",
           "flex items-center justify-center p-0 m-0 isolation-auto",
           className
         )}

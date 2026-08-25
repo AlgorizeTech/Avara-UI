@@ -345,15 +345,15 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4C: data display ----
   table: {
     description:
-      "A generic data table with sortable columns, custom cell renderers and GSAP row animation. Use it for straightforward tabular data that needs sorting but not filtering.",
+      "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
     categories: ["data-display"],
-    docs: "Named exports: TableBlock, getThemeStyles. Generic over your row type — `columns` take { key, label, sortable?, align?, render? }, where `render` receives the whole row. Variants: default | minimal | glass; sizes sm | md | lg. For search, filtering, pagination and column resizing, use `advanced-table`.",
+    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
   },
   "advanced-table": {
     description:
-      "A data table with search, per-column filtering, pagination, column sizing and typed sorting. Reach for it when a plain table is no longer enough.",
+      "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
     categories: ["data-display"],
-    docs: "Named exports: AdvancedTableBlock, getThemeStyles. `columns` take { key, header, sortable?, width?, sortType?, render? } — set `sortType` to number so numeric columns do not sort lexically. Depends on `select` for the page-size control. For a simpler table, use `table`.",
+    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, useDataTable, resolveAccessor. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
   },
   "data-grid": {
     description:

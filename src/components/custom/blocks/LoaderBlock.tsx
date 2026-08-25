@@ -118,7 +118,7 @@ export function LoaderBlock({
       {text && (
         <span
           className={cn(
-            "font-medium text-zinc-500 dark:text-zinc-400 animate-pulse",
+            "font-medium text-muted-foreground animate-pulse",
             textClasses[size],
           )}
         >
@@ -213,7 +213,7 @@ function Ring({ color }: { color: string }) {
 
 function Bar({ color }: { color: string }) {
   return (
-    <div className="w-full h-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+    <div className="w-full h-full overflow-hidden rounded-full bg-muted">
       <div
         className="h-full w-[50%] rounded-full animate-indet"
         style={{ backgroundColor: color }}

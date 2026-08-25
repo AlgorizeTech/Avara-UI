@@ -134,7 +134,7 @@ export function CursorAnimation({
   const [isClicking, setIsClicking] = useState(false);
   const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const [imageTrail, setImageTrail] = useState<
-    { x: number; y: number; id: number; url: string; rotation: number }[]
+    { x: number; y: number; id: number; url: string }[]
   >([]);
 
   // High-performance RAF loop for hyper-responsive, lag-free cursor tracking
@@ -582,26 +582,19 @@ export function CursorAnimation({
                 </div>
               ))}
 
-              <style jsx>{`
-                @keyframes img-trail-pop {
-                  0% {
-                    transform: translate(-50%, -50%) scale(0);
-                    opacity: 0;
-                  }
-                  30% {
-                    transform: translate(-50%, -50%) scale(1);
-                    opacity: 1;
-                  }
-                  70% {
-                    transform: translate(-50%, -50%) scale(1);
-                    opacity: 1;
-                  }
-                  100% {
-                    transform: translate(-50%, -50%) scale(0);
-                    opacity: 0;
-                  }
-                }
-              `}</style>
+              {/* Plain <style> rather than styled-jsx, which only compiles
+                  under Next.js — everywhere else React rejects its unknown
+                  attribute and TypeScript fails the build. */}
+              <style
+                dangerouslySetInnerHTML={{
+                  __html: `@keyframes img-trail-pop {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  30% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+}`,
+                }}
+              />
 
               {/* Minimalist Precision Reticle Cursor Pointer Centered in the Image */}
               <div

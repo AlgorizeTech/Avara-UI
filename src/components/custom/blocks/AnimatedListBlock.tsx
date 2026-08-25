@@ -152,7 +152,7 @@ export const AnimatedListItem = forwardRef<
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-zinc-200/80 dark:border-zinc-800/80 p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden",
+        "relative w-full rounded-2xl bg-white dark:bg-[#0d0d12] border border-border/80 p-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] opacity-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden",
         className,
       )}
       {...props}

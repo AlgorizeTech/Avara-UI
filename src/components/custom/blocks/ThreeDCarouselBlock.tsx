@@ -125,7 +125,7 @@ function CarouselCard({
         }}
         className={cn(
           "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
-          "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10",
+          "bg-card border border-border",
           isCenter
             ? "shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
             : "hover:border-primary/50 shadow-md",
@@ -288,7 +288,7 @@ export const ThreeDCarousel = React.forwardRef<
                 "h-1.5 rounded-full transition-all duration-300",
                 idx === activeIndex
                   ? "w-8 bg-primary"
-                  : "w-1.5 bg-zinc-300 dark:bg-zinc-700 hover:bg-primary/50",
+                  : "w-1.5 bg-muted hover:bg-primary/50",
               )}
             />
           ))}

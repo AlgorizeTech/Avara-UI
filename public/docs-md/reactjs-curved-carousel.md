@@ -6,25 +6,25 @@ An interactive, 100% full-width 3D curved arc carousel featuring left-to-right o
 
 export const usageArcSweep = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
 
+const customItems = [
+  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
+  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
+  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+];
+
 export default function CurvedCarouselDemo() {
   return ;
 }`;
 
-export const usagePerspectiveFan = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageInfiniteMarquee = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-export default function PerspectiveFanDemo() {
-  return ;
-}`;
+const customItems = [
+  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
+  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
+  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+];
 
-export const usageFloatingDeck = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
-
-export default function FloatingDeckDemo() {
-  return ;
-}`;
-
-export const usageGlowingOrbit = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
-
-export default function GlowingOrbitDemo() {
+export default function InfiniteMarqueeDemo() {
   return ;
 }`;
 

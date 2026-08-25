@@ -43,11 +43,11 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
 
     const variants = {
       default:
-        "bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-200 dark:data-[state=on]:bg-zinc-700 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "bg-transparent hover:bg-muted text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted dark:data-[state=on]:bg-zinc-700 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
       outline:
-        "border border-zinc-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-100 dark:data-[state=on]:bg-zinc-800 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "border border-border bg-transparent hover:bg-muted text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted dark:data-[state=on]:bg-zinc-800 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
       ghost:
-        "bg-transparent hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-100/50 dark:data-[state=on]:bg-zinc-800/50 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "bg-transparent hover:bg-muted/50 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted/50 dark:data-[state=on]:bg-zinc-800/50 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
     };
 
     const sizes = {

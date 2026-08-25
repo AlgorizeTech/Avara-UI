@@ -51,10 +51,10 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
   };
 
   return (
-    <div ref={blockRef} className="relative group w-full bg-zinc-50 dark:bg-black border-t border-zinc-200 dark:border-zinc-800 transition-all duration-300 ease-in-out">
+    <div ref={blockRef} className="relative group w-full bg-muted dark:bg-black border-t border-border transition-all duration-300 ease-in-out">
       <button
         onClick={handleCopy}
-        className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-zinc-200 dark:border-zinc-700 backdrop-blur-xs shadow-none"
+        className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-muted text-foreground transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-border backdrop-blur-xs shadow-none"
         aria-label="Copy code"
       >
         {copied ? (
@@ -71,15 +71,15 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
       </div>
 
       {totalLines > INITIAL_LINES && (
-        <div className="relative w-full flex items-center justify-center py-4 bg-zinc-50 dark:bg-black border-t border-zinc-200/50 dark:border-zinc-800/50">
+        <div className="relative w-full flex items-center justify-center py-4 bg-muted dark:bg-black border-t border-border/50">
           {visibleLinesCount < totalLines ? (
             <button
               onClick={handleShowMore}
               disabled={isLoadingMore}
-              className="flex items-center justify-center min-w-[160px] h-9 gap-1.5 px-4 text-xs font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-700 rounded-full transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-none disabled:opacity-80 disabled:cursor-not-allowed"
+              className="flex items-center justify-center min-w-[160px] h-9 gap-1.5 px-4 text-xs font-semibold text-foreground bg-card hover:bg-muted border border-border rounded-full transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-none disabled:opacity-80 disabled:cursor-not-allowed"
             >
               {isLoadingMore ? (
-                <Loader2 className="w-4 h-4 animate-spin text-zinc-600 dark:text-zinc-300" />
+                <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
               ) : (
                 <>
                   <span>Show More ({totalLines - visibleLinesCount} lines left)</span>
@@ -91,10 +91,10 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
             <button
               onClick={handleShowLess}
               disabled={isLoadingLess}
-              className="flex items-center justify-center min-w-[120px] h-9 gap-1.5 px-4 text-xs font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-700 rounded-full transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-none disabled:opacity-80 disabled:cursor-not-allowed"
+              className="flex items-center justify-center min-w-[120px] h-9 gap-1.5 px-4 text-xs font-semibold text-foreground bg-card hover:bg-muted border border-border rounded-full transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-none disabled:opacity-80 disabled:cursor-not-allowed"
             >
               {isLoadingLess ? (
-                <Loader2 className="w-4 h-4 animate-spin text-zinc-600 dark:text-zinc-300" />
+                <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
               ) : (
                 <>
                   <span>Show Less</span>

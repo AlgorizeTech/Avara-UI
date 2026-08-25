@@ -112,13 +112,13 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   minimal: {
     wrapper: "bg-transparent border-none",
     sidebar:
-      "bg-gray-50/50 dark:bg-gray-900/30 rounded-2xl border border-gray-100 dark:border-gray-800/50 lg:mr-6",
+      "bg-muted/50 rounded-2xl border border-border lg:mr-6",
     header: "bg-transparent border-none mb-4 rounded-xl",
     gridOuter: "bg-transparent p-0",
     gridGap: "gap-2 sm:gap-3",
     gridHeader: "bg-transparent border-none pb-2",
     cellBg:
-      "bg-gray-50 dark:bg-gray-900/40 rounded-2xl border border-gray-100 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm",
+      "bg-muted rounded-2xl border border-border hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm",
   },
   glass: {
     wrapper:
@@ -656,7 +656,7 @@ function CalendarDashboard({
     <div className={`${isDark ? "dark" : ""} w-full h-full max-w-full overflow-hidden`} style={customVars}>
       <div
         className={cn(
-          "w-full max-w-full h-auto flex flex-col lg:flex-row text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300",
+          "w-full max-w-full h-auto flex flex-col lg:flex-row text-foreground font-sans transition-colors duration-300",
           styles.wrapper,
           variant !== "minimal" ? "rounded-xl" : "",
         )}
@@ -827,23 +827,23 @@ function CalendarDashboard({
             <h2 className="font-semibold text-lg">
               {monthName} {year}
             </h2>
-            <div className="flex gap-1 text-gray-400">
+            <div className="flex gap-1 text-muted-foreground">
               <button
                 onClick={prevPeriod}
-                className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
+                className="p-1 hover:bg-muted/50 rounded transition-colors"
               >
                 <ChevronLeft className="w-4 h-4 cursor-pointer" />
               </button>
               <button
                 onClick={nextPeriod}
-                className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors"
+                className="p-1 hover:bg-muted/50 rounded transition-colors"
               >
                 <ChevronRight className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
           </div>
 
-          <hr className="border-gray-200 dark:border-gray-800/50 my-6" />
+          <hr className="border-border my-6" />
 
           <div className="mb-6">
             <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
@@ -962,16 +962,16 @@ function CalendarDashboard({
                 >
                   <Menu className="w-5 h-5 cursor-pointer" />
                 </button>
-                <div className="flex gap-1 text-gray-400">
+                <div className="flex gap-1 text-muted-foreground">
                   <button
                     onClick={prevPeriod}
-                    className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors cursor-pointer"
+                    className="p-1 hover:bg-muted/50 rounded transition-colors cursor-pointer"
                   >
                     <ChevronLeft className="w-5 h-5 cursor-pointer" />
                   </button>
                   <button
                     onClick={nextPeriod}
-                    className="p-1 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 rounded transition-colors cursor-pointer"
+                    className="p-1 hover:bg-muted/50 rounded transition-colors cursor-pointer"
                   >
                     <ChevronRight className="w-5 h-5 cursor-pointer" />
                   </button>
@@ -1053,7 +1053,7 @@ function CalendarDashboard({
 
               <button
                 onClick={handleExportCSV}
-                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-gray-200 dark:border-gray-700/50 rounded-md text-xs sm:text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
               </button>
@@ -1087,9 +1087,9 @@ function CalendarDashboard({
                     <div
                       key={dayName}
                       className={cn(
-                        "py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-medium text-gray-500 dark:text-gray-400 text-center truncate",
+                        "py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-medium text-muted-foreground text-center truncate",
                         variant !== "minimal" && idx !== 6
-                          ? "border-r border-gray-200 dark:border-gray-800"
+                          ? "border-r border-border"
                           : "",
                       )}
                     >
@@ -1265,15 +1265,15 @@ function CalendarDashboard({
               "w-full max-w-md rounded-xl shadow-2xl overflow-hidden border animate-in fade-in zoom-in duration-200 cursor-default",
               variant === "glass"
                 ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
-                : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800",
+                : "bg-card border-border",
             )}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={cn(
               "flex items-center justify-between px-6 py-4 border-b",
-              variant === "glass" ? "border-white/20 dark:border-white/10" : "border-gray-100 dark:border-gray-800"
+              variant === "glass" ? "border-white/20 dark:border-white/10" : "border-border"
             )}>
-              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-gray-900 dark:text-white")}>
+              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-foreground")}>
                 {editingEvent ? "Update Event" : "Add New Event"}
               </h3>
               <button
@@ -1285,7 +1285,7 @@ function CalendarDashboard({
             </div>
             <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
               <div>
-                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
+                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
                   Event Title
                 </label>
                 <input
@@ -1298,14 +1298,14 @@ function CalendarDashboard({
                     "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                     variant === "glass"
                       ? "border-white/20 text-white placeholder:text-white/50 bg-white/10"
-                      : "border-gray-200 dark:border-gray-700 dark:text-white",
+                      : "border-border dark:text-white",
                     theme.focusRing,
                   )}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
                     Date
                   </label>
                   <input
@@ -1322,13 +1322,13 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-gray-200 dark:border-gray-700 dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
                 </div>
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
                     Time
                   </label>
                   <input
@@ -1340,7 +1340,7 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-gray-200 dark:border-gray-700 dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1348,7 +1348,7 @@ function CalendarDashboard({
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
                     Event Type
                   </label>
                   {/* Hidden input keeps this field in the form's FormData,
@@ -1364,7 +1364,7 @@ function CalendarDashboard({
                   />
                 </div>
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-gray-700 dark:text-gray-300")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
                     Platform
                   </label>
                   <input type="hidden" name="platform" value={eventPlatform} />
@@ -1386,7 +1386,7 @@ function CalendarDashboard({
                     "px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
                     variant === "glass"
                       ? "text-white/80 hover:bg-white/10 hover:text-white"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                      : "text-foreground hover:bg-muted",
                   )}
                 >
                   Cancel
@@ -1449,7 +1449,7 @@ function CalendarCell({
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
-            ? "border-gray-200 bg-gray-50 text-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-600"
+            ? "border-border bg-muted text-gray-400 dark:text-gray-600"
             : isPentest
               ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
               : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
@@ -1524,16 +1524,16 @@ function CalendarCell({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className={cn("font-semibold text-base truncate pr-4", variant === "glass" ? "text-white" : "text-gray-900 dark:text-white")}>
+                <h4 className={cn("font-semibold text-base truncate pr-4", variant === "glass" ? "text-white" : "text-foreground")}>
                   {event.title}
                 </h4>
-                <div className="flex items-center gap-2 text-gray-400 shrink-0">
+                <div className="flex items-center gap-2 text-muted-foreground shrink-0">
                   <Edit2
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditEvent(event);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors"
+                    className="w-4 h-4 cursor-pointer hover:text-foreground transition-colors"
                   />
                   <Trash2
                     onClick={(e) => {
@@ -1560,10 +1560,10 @@ function CalendarCell({
                   Pending
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <Calendar1 className="w-4 h-4" /> {dateStr} at {event.time}
               </div>
-              <button className="w-full flex items-center justify-center gap-2 py-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors cursor-pointer">
+              <button className="w-full flex items-center justify-center gap-2 py-2 bg-muted hover:bg-muted rounded-lg text-sm font-medium transition-colors cursor-pointer">
                 Join with{" "}
                 {event.platform === "meet"
                   ? "Google Meet"
@@ -1604,7 +1604,7 @@ function TimeGridCell({
     <div
       onClick={onClickCell}
       className={cn(
-        `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} text-gray-900 dark:text-gray-100 min-h-[52px]`,
+        `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} text-foreground min-h-[52px]`,
         cellClass,
       )}
     >
@@ -1680,20 +1680,20 @@ function TimeGridCell({
               }}
             />
             <div
-              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-card rounded-xl shadow-2xl border border-border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className="font-semibold text-base text-gray-900 dark:text-white truncate pr-4">
+                <h4 className="font-semibold text-base text-foreground truncate pr-4">
                   {event.title}
                 </h4>
-                <div className="flex items-center gap-2 text-gray-400 shrink-0">
+                <div className="flex items-center gap-2 text-muted-foreground shrink-0">
                   <Edit2
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditEvent(event);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors"
+                    className="w-4 h-4 cursor-pointer hover:text-foreground transition-colors"
                   />
                   <Trash2
                     onClick={(e) => {
@@ -1720,10 +1720,10 @@ function TimeGridCell({
                   Pending
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <Calendar1 className="w-4 h-4" /> {dateStr} at {event.time}
               </div>
-              <button className="w-full flex items-center justify-center gap-2 py-2 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors cursor-pointer">
+              <button className="w-full flex items-center justify-center gap-2 py-2 bg-muted hover:bg-muted rounded-lg text-sm font-medium transition-colors cursor-pointer">
                 Join with{" "}
                 {event.platform === "meet"
                   ? "Google Meet"

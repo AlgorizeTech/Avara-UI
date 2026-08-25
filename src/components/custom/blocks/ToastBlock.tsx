@@ -130,10 +130,10 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   const { icon: Icon, iconColor } = typeStyles[type];
 
   const variantStyles = {
-    default: "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl",
+    default: "bg-background border border-border shadow-xl",
     glow: cn("bg-white dark:bg-[#09090b] shadow-lg border", theme.glow),
     glass: "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
-    minimal: cn("border-l-4 rounded-l-none bg-white dark:bg-zinc-950 shadow-md", theme.border),
+    minimal: cn("border-l-4 rounded-l-none bg-background shadow-md", theme.border),
   };
 
   return (
@@ -141,8 +141,8 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
       {Icon && <Icon className={cn("mt-0.5 w-5 h-5 shrink-0", iconColor)} />}
       
       <div className="flex flex-col gap-1 w-full min-w-0">
-        <h3 className={cn("text-sm font-bold", variant === "glass" ? "text-zinc-900 dark:text-white" : "text-zinc-900 dark:text-zinc-100")}>{title}</h3>
-        {description && <p className={cn("text-sm", variant === "glass" ? "text-zinc-700 dark:text-zinc-300" : "text-zinc-500 dark:text-zinc-400")}>{description}</p>}
+        <h3 className={cn("text-sm font-bold", variant === "glass" ? "text-foreground" : "text-foreground")}>{title}</h3>
+        {description && <p className={cn("text-sm", variant === "glass" ? "text-foreground" : "text-muted-foreground")}>{description}</p>}
         
         {action && (
           <button onClick={() => { action.onClick(); handleClose(); }} className={cn("mt-2 w-max text-xs font-bold transition-colors active:scale-95", theme.text, "hover:opacity-70")}>
@@ -151,7 +151,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
         )}
       </div>
 
-      <button onClick={handleClose} className="shrink-0 p-1 rounded-md opacity-50 hover:opacity-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all">
+      <button onClick={handleClose} className="shrink-0 p-1 rounded-md opacity-50 hover:opacity-100 hover:bg-muted transition-all">
         <X className="w-4 h-4" />
       </button>
     </div>
@@ -168,7 +168,7 @@ export interface ToastProviderProps {
   position?: ToastPosition;
 }
 
-export function ToastProvider({ children, variant = "default", color = "indigo", position = "bottom-right" }: ToastProviderProps) {
+export function ToastProvider({ children, variant = "default", color = "primary", position = "bottom-right" }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastProps[]>([]);
 
   const toast = useCallback((props: Omit<ToastProps, "id">) => {

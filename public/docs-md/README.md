@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-23T16:33:33.702Z
-**Total files:** 205
+**Generated at:** 2026-08-25T16:06:29.564Z
+**Total files:** 207
 
 ## Available Files
 
@@ -83,6 +83,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/progress](/docs/nextjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [nextjs/qr-code-generator](/docs/nextjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
+- [nextjs/reviews](/docs/nextjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `[framework]\select\page.mdx`
@@ -186,6 +187,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/progress](/docs/reactjs-progress.md) - Source: `[framework]\progress\page.mdx`
 - [reactjs/qr-code-generator](/docs/reactjs-qr-code-generator.md) - Source: `[framework]\qr-code-generator\page.mdx`
 - [reactjs/resizable](/docs/reactjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
+- [reactjs/reviews](/docs/reactjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [reactjs/scroll-area](/docs/reactjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [reactjs/scroll-stack](/docs/reactjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [reactjs/select](/docs/reactjs-select.md) - Source: `[framework]\select\page.mdx`

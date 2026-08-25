@@ -191,7 +191,7 @@ export const DrawerContent = React.forwardRef<
           (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }}
       className={cn(
-        "absolute bg-white dark:bg-zinc-950 shadow-2xl pointer-events-auto flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800",
+        "absolute bg-background shadow-2xl pointer-events-auto flex flex-col overflow-hidden border border-border",
         sideConfig[side].class,
         className,
       )}
@@ -199,7 +199,7 @@ export const DrawerContent = React.forwardRef<
     >
       <button
         onClick={() => onOpenChange(false)}
-        className="absolute top-4 right-4 z-50 p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400 rounded-full transition-colors"
+        className="absolute top-4 right-4 z-50 p-2 bg-muted hover:bg-muted text-muted-foreground rounded-full transition-colors"
       >
         <X className="w-4 h-4" />
       </button>
@@ -215,7 +215,7 @@ export const DrawerHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "p-6 border-b border-zinc-100 dark:border-zinc-800/50 shrink-0",
+      "p-6 border-b border-border shrink-0",
       className,
     )}
     {...props}
@@ -228,7 +228,7 @@ export const DrawerTitle = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h2
     className={cn(
-      "text-lg font-semibold text-zinc-900 dark:text-white",
+      "text-lg font-semibold text-foreground",
       className,
     )}
     {...props}
@@ -240,7 +240,7 @@ export const DrawerDescription = ({
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) => (
   <p
-    className={cn("text-sm text-zinc-500 dark:text-zinc-400 mt-1.5", className)}
+    className={cn("text-sm text-muted-foreground mt-1.5", className)}
     {...props}
   />
 );
@@ -251,7 +251,7 @@ export const DrawerFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "p-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/20 shrink-0 flex items-center justify-end gap-3",
+      "p-6 border-t border-border bg-muted shrink-0 flex items-center justify-end gap-3",
       className,
     )}
     {...props}
@@ -269,8 +269,8 @@ export const Button = React.forwardRef<
     className={cn(
       "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2",
       variant === "outline"
-        ? "border border-zinc-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white"
-        : "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200",
+        ? "border border-border bg-transparent hover:bg-muted text-foreground"
+        : "bg-primary text-primary-foreground hover:bg-primary",
       className,
     )}
     {...props}

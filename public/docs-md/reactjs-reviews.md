@@ -1,24 +1,12 @@
 # Review Section
 
-A high-converting Review / Testimonial website section featuring a 3D rotating background globe, smooth right-to-left marquee card transitions, client rating badges, and avatar profiles.
+A high-converting Review / Testimonial website section featuring a 3D WebGL rotating background globe, smooth right-to-left marquee card transitions, client rating badges, and avatar profiles.
 
-Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact.
+Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
 
 export const usageGlobeMarquee = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
 
 export default function GlobeMarqueeDemo() {
-  return ;
-}`;
-
-export const usageGridCards = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
-
-export default function GridCardsDemo() {
-  return ;
-}`;
-
-export const usageStackedCarousel = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
-
-export default function StackedCarouselDemo() {
   return ;
 }`;
 
@@ -28,11 +16,11 @@ export default function StackedCarouselDemo() {
 
 Discover the key capabilities of the `ReviewsBlock` component:
 
-- **3D Rotating Globe Canvas**: Custom HTML5 Canvas 3D sphere with glowing neon orbit ring and ambient light field.
-- **Right-to-Left Infinite Marquee**: Continuous smooth marquee movement with hover-to-pause interaction.
+- **3D Rotating WebGL Globe Canvas**: Interactive COBE WebGL 3D sphere with dynamic accent glow and light field.
+- **Right-to-Left Infinite Marquee**: Continuous smooth right-to-left marquee motion with hover-to-pause interaction.
 - **Client Rating Badges & Score**: Built-in 5-star ratings (`★★★★★ 5.0`) with customer avatar, name, and designation.
-- **Multiple Layout Variants**: Includes `globe-marquee`, `grid-cards`, and `stacked-carousel`.
-- **Full Customizability**: Customizable speed (`slow`, `normal`, `fast`), title, subtitle, reviews data array, and glow color accents.
+- **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
+- **Full Customizability**: Pass custom `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
 
 ---
 

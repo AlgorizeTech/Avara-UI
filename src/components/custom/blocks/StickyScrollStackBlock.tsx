@@ -171,17 +171,17 @@ const StackCard: React.FC<{
     >
       <motion.div
         style={{ scale, opacity }}
-        className="w-full origin-top rounded-2xl md:rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 p-5 sm:p-6 md:p-7 shadow-xl shadow-zinc-200/50 dark:shadow-black/50 transition-colors duration-300 mt-5"
+        className="w-full origin-top rounded-2xl md:rounded-3xl bg-card border border-border/80 p-5 sm:p-6 md:p-7 shadow-xl shadow-zinc-200/50 dark:shadow-black/50 transition-colors duration-300 mt-5"
       >
-        <div className="flex items-center justify-between gap-3 mb-4 pb-4 border-b border-zinc-100 dark:border-zinc-800/60">
+        <div className="flex items-center justify-between gap-3 mb-4 pb-4 border-b border-border">
           <div className="flex items-center gap-3">
             {item.icon && (
-              <div className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/50">
+              <div className="p-2 rounded-xl bg-muted border border-border/60">
                 {item.icon}
               </div>
             )}
             <div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
                 {item.title}
               </h3>
               {item.badge && (
@@ -192,7 +192,7 @@ const StackCard: React.FC<{
             </div>
           </div>
 
-          <span className="font-mono text-xs font-semibold text-zinc-400 dark:text-zinc-500">
+          <span className="font-mono text-xs font-semibold text-muted-foreground">
             0{index + 1} / 0{total}
           </span>
         </div>
@@ -200,7 +200,7 @@ const StackCard: React.FC<{
         {item.contentType === "list" && (
           <div className="space-y-4">
             {item.description && (
-              <p className="text-xs sm:text-sm md:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
                 {item.description}
               </p>
             )}
@@ -209,7 +209,7 @@ const StackCard: React.FC<{
                 {item.listItems.map((listItem, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                    className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-foreground"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                     <span>{listItem}</span>
@@ -223,12 +223,12 @@ const StackCard: React.FC<{
         {item.contentType === "image" && (
           <div className="space-y-4">
             {item.description && (
-              <p className="text-xs sm:text-sm md:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
                 {item.description}
               </p>
             )}
             {item.imageUrl && (
-              <div className="relative w-full h-44 sm:h-52 rounded-xl overflow-hidden border border-zinc-200/60 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800">
+              <div className="relative w-full h-44 sm:h-52 rounded-xl overflow-hidden border border-border/60 bg-muted">
                 <img
                   src={item.imageUrl}
                   alt={item.imageAlt || item.title}
@@ -244,7 +244,7 @@ const StackCard: React.FC<{
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
             <div className="space-y-3">
               {item.description && (
-                <p className="text-xs sm:text-sm md:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
                   {item.description}
                 </p>
               )}
@@ -253,7 +253,7 @@ const StackCard: React.FC<{
                   {item.listItems.map((listItem, i) => (
                     <li
                       key={i}
-                      className="flex items-center gap-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-foreground"
                     >
                       <CheckCircle2 className="w-4 h-4 text-[var(--theme-color,var(--primary))] shrink-0" />
                       <span>{listItem}</span>
@@ -263,7 +263,7 @@ const StackCard: React.FC<{
               )}
             </div>
             {item.imageUrl && (
-              <div className="relative w-full h-40 sm:h-48 md:h-full min-h-[160px] rounded-xl overflow-hidden border border-zinc-200/60 dark:border-zinc-800">
+              <div className="relative w-full h-40 sm:h-48 md:h-full min-h-[160px] rounded-xl overflow-hidden border border-border/60">
                 <img
                   src={item.imageUrl}
                   alt={item.imageAlt || item.title}
@@ -277,7 +277,7 @@ const StackCard: React.FC<{
 
         {item.contentType === "custom" && (
           <div className="space-y-4">
-            <p className="text-xs sm:text-sm md:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
               {item.description ||
                 "Custom content layout section tailored for specialized workflows."}
             </p>
@@ -285,7 +285,7 @@ const StackCard: React.FC<{
         )}
 
         {item.buttonText && (
-          <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800/60 flex justify-end">
+          <div className="mt-6 pt-4 border-t border-border flex justify-end">
             <button
               onClick={item.onButtonClick}
               type="button"
@@ -354,16 +354,16 @@ export const StickyScrollStack = React.forwardRef<
               </div>
             )}
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.15] mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-[1.15] mb-4">
               {headerTitle}
             </h2>
 
-            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 max-w-md">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-md">
               {headerSubtitle}
             </p>
 
             {headerContentType === "image-button" && headerImageUrl && (
-              <div className="mb-6 relative w-full max-w-md h-48 sm:h-56 rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 shadow-md bg-zinc-100 dark:bg-zinc-800">
+              <div className="mb-6 relative w-full max-w-md h-48 sm:h-56 rounded-2xl overflow-hidden border border-border/80 shadow-md bg-muted">
                 <img
                   src={headerImageUrl}
                   alt={headerImageAlt || headerTitle}

@@ -221,14 +221,14 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
         case "filled":
           return cn(
             base,
-            "border border-transparent bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800",
-            "focus:bg-white dark:focus:bg-zinc-950 focus:ring-2",
+            "border border-transparent bg-muted hover:bg-muted",
+            "focus:bg-background focus:ring-2",
             theme.focusRing,
           );
         case "underlined":
           return cn(
             base,
-            "rounded-none border-0 border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent px-0",
+            "rounded-none border-0 border-b-2 border-border bg-transparent px-0",
             "focus:ring-0",
             theme.border,
           );
@@ -236,7 +236,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
         default:
           return cn(
             base,
-            "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-sm",
+            "border border-border bg-white dark:bg-[#09090b] shadow-sm",
             "focus:ring-2",
             theme.focusRing,
           );
@@ -274,7 +274,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
             disabled={disabled}
             className={cn(
               inputClasses,
-              digit ? theme.text : "text-zinc-900 dark:text-zinc-100",
+              digit ? theme.text : "text-foreground",
               disabled && "opacity-50 cursor-not-allowed",
             )}
             aria-label={`Digit ${index + 1} of ${length}`}

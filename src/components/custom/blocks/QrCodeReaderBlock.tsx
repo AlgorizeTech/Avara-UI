@@ -117,7 +117,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
   return (
     <div 
       className={cn(
-        "w-full max-w-md mx-auto flex flex-col items-center bg-white dark:bg-zinc-900 border dark:border-zinc-800 rounded-2xl shadow-sm p-6 overflow-hidden",
+        "w-full max-w-md mx-auto flex flex-col items-center bg-card border dark:border-zinc-800 rounded-2xl shadow-sm p-6 overflow-hidden",
         className
       )}
       {...props}
@@ -131,7 +131,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
             "w-full h-64 border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-all duration-200",
             dragActive 
               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/10" 
-              : "border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              : "border-border hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-muted"
           )}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -146,13 +146,13 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
             onChange={handleChange} 
             className="hidden" 
           />
-          <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4 text-zinc-500 dark:text-zinc-400">
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4 text-muted-foreground">
             <UploadCloud size={24} />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-1">
+          <h3 className="text-sm font-semibold text-foreground mb-1">
             Click or drag image here
           </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[200px]">
+          <p className="text-xs text-muted-foreground max-w-[200px]">
             Upload a QR code image to scan and extract the embedded link or text.
           </p>
         </div>
@@ -161,7 +161,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
       {/* Image Preview & Results */}
       {imagePreview && (
         <div className="w-full flex flex-col gap-4">
-          <div className="relative w-full h-48 bg-zinc-100 dark:bg-zinc-950 rounded-xl overflow-hidden border dark:border-zinc-800 flex items-center justify-center p-4">
+          <div className="relative w-full h-48 bg-muted rounded-xl overflow-hidden border dark:border-zinc-800 flex items-center justify-center p-4">
             <img 
               src={imagePreview} 
               alt="Uploaded QR Code" 
@@ -177,12 +177,12 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
                 <span className="text-sm">Scan Successful</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-white dark:bg-black border border-green-200 dark:border-green-900/50 rounded-lg p-2.5 overflow-x-auto custom-scrollbar text-sm text-zinc-800 dark:text-zinc-200 whitespace-nowrap">
+                <div className="flex-1 bg-background border border-green-200 dark:border-green-900/50 rounded-lg p-2.5 overflow-x-auto custom-scrollbar text-sm text-foreground whitespace-nowrap">
                   {result}
                 </div>
                 <button 
                   onClick={copyToClipboard}
-                  className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-black border border-green-200 dark:border-green-900/50 text-zinc-600 dark:text-zinc-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                  className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-background border border-green-200 dark:border-green-900/50 text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-colors"
                   title="Copy to clipboard"
                 >
                   {copied ? <CheckCircle2 size={16} className="text-green-500" /> : <Copy size={16} />}
@@ -203,7 +203,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
 
           <button 
             onClick={resetState}
-            className="w-full py-2.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-lg transition-colors mt-2"
+            className="w-full py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground bg-muted hover:bg-muted rounded-lg transition-colors mt-2"
           >
             Scan Another Image
           </button>

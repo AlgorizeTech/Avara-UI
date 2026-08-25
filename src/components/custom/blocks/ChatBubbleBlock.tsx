@@ -100,7 +100,7 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
           "flex-shrink-0 w-8 h-8 rounded-full overflow-hidden flex items-center justify-center text-xs font-semibold select-none mt-auto",
           variant === "sent" ? "order-2" : "order-1",
           isHidden ? "invisible" : "visible",
-          "bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300",
+          "bg-muted text-muted-foreground",
           className,
         )}
         {...props}
@@ -198,7 +198,7 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
             getBorderRadius(),
             isSent
               ? sentColors[color] || sentColors.default
-              : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-700/50",
+              : "bg-muted text-foreground border border-border/50",
             className,
           )}
           {...props}
@@ -226,7 +226,7 @@ export const ChatTimestamp = forwardRef<HTMLDivElement, ChatTimestampProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 select-none",
+          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium text-muted-foreground select-none",
           isSent ? "justify-end" : "justify-start",
           className,
         )}
@@ -301,8 +301,8 @@ export const ChatTypingIndicator = forwardRef<
         // order-0 and sorts *before* the avatar's order-1, flipping a received row.
         variant === "sent" ? "order-1" : "order-2",
         variant === "sent"
-          ? "bg-zinc-900 dark:bg-zinc-100 rounded-br-sm"
-          : "bg-zinc-100 dark:bg-zinc-800/80 rounded-bl-sm border border-zinc-200/50 dark:border-zinc-700/50",
+          ? "bg-primary rounded-br-sm"
+          : "bg-muted rounded-bl-sm border border-border/50",
         className,
       )}
       {...props}

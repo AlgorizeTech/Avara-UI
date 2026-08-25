@@ -38,7 +38,7 @@ export function useFlowchart() {
 
 export interface FlowchartProps extends React.HTMLAttributes<HTMLDivElement> {
   initialActivePath?: string | null;
-  color?: "blue" | "indigo" | "rose" | "emerald" | "zinc";
+  color?: "primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc";
 }
 
 export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
@@ -46,7 +46,7 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
     {
       children,
       initialActivePath = null,
-      color = "indigo",
+      color = "primary",
       className,
       ...props
     },
@@ -61,7 +61,7 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
         <div
           ref={ref}
           className={cn(
-            "w-full overflow-x-auto bg-[#fafafa] dark:bg-[#050505] border border-zinc-200/80 dark:border-zinc-900 rounded-2xl select-none shadow-inner custom-scrollbar",
+            "w-full overflow-x-auto bg-[#fafafa] dark:bg-[#050505] border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
             className,
           )}
           {...props}
@@ -144,14 +144,22 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
         iconBg: "bg-emerald-500 text-white border-emerald-400",
       },
       zinc: {
-        ring: "ring-zinc-900 dark:ring-white",
+        ring: "ring-primary",
         glow: "shadow-[0_0_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_-5px_rgba(255,255,255,0.15)]",
         iconBg:
-          "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-700",
+          "bg-primary text-primary-foreground border-zinc-700",
+      },
+      // The default. Unlike the fixed palettes above it follows whatever
+      // --primary the consumer's theme sets, so a flowchart matches the rest of
+      // their app without being told which colour to use.
+      primary: {
+        ring: "ring-primary/80",
+        glow: "shadow-[0_0_30px_-5px_var(--primary)]",
+        iconBg: "bg-primary text-primary-foreground border-primary",
       },
     };
 
-    const currentTheme = colorThemes[color] || colorThemes.indigo;
+    const currentTheme = colorThemes[color] || colorThemes.primary;
 
     return (
       <div
@@ -168,7 +176,7 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
                 currentTheme.ring,
                 currentTheme.glow,
               )
-            : "bg-white/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 hover:bg-white/80 dark:hover:bg-zinc-900/80 hover:scale-[1.01] shadow-sm z-20",
+            : "bg-white/50 dark:bg-zinc-900/40 border border-border/80 hover:bg-white/80 dark:hover:bg-zinc-900/80 hover:scale-[1.01] shadow-sm z-20",
           className,
         )}
         {...props}
@@ -179,18 +187,18 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
               "w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center border transition-all duration-300",
               isActiveNode
                 ? currentTheme.iconBg
-                : "bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 text-zinc-400",
+                : "bg-muted border-border text-muted-foreground",
             )}
           >
             <Icon className="w-[18px] h-[18px]" />
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <h4 className="text-[13.5px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
+          <h4 className="text-[13.5px] font-bold tracking-tight text-foreground truncate">
             {title}
           </h4>
           {description && (
-            <p className="text-[11.5px] font-medium text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
+            <p className="text-[11.5px] font-medium text-muted-foreground truncate mt-0.5">
               {description}
             </p>
           )}
@@ -261,13 +269,16 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
     }, []);
 
     const strokeColors: Record<string, string> = {
+      // A var() rather than a hex: SVG stroke resolves it, so the active
+      // connector tracks the consumer's theme like the nodes do.
+      primary: "var(--primary)",
       indigo: "#6366f1",
       blue: "#3b82f6",
       rose: "#f43f5e",
       emerald: "#10b981",
       zinc: "#71717a",
     };
-    const activeStroke = strokeColors[color] || strokeColors.indigo;
+    const activeStroke = strokeColors[color] || strokeColors.primary;
 
     return (
       <>

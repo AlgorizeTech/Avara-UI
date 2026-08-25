@@ -292,7 +292,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "opacity-50 cursor-not-allowed border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50",
+            "opacity-50 cursor-not-allowed border border-border bg-muted",
           ),
           active: "",
         };
@@ -312,15 +312,15 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl",
+              "bg-muted border border-transparent rounded-xl",
             ),
-            active: cn("bg-white dark:bg-zinc-950 ring-4", theme.ring),
+            active: cn("bg-background ring-4", theme.ring),
           };
         case "underlined":
           return {
             wrapper: cn(
               baseWrapper,
-              "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0",
+              "border-b-2 border-border bg-transparent rounded-none px-0",
             ),
             active: theme.ring.split(" ")[1],
           };
@@ -328,7 +328,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -345,7 +345,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -392,7 +392,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             s.text,
             !singleOption
               ? variant === "glass" ? "text-white/60" : "text-zinc-400 dark:text-zinc-600"
-              : variant === "glass" ? "text-white font-medium" : "text-zinc-900 dark:text-zinc-100",
+              : variant === "glass" ? "text-white font-medium" : "text-foreground",
           )}
         >
           {singleOption ? singleOption.label : placeholder}
@@ -410,7 +410,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           <label
             className={cn(
               "text-sm font-bold",
-              hasError ? "text-red-500" : variant === "glass" ? "text-white/90" : "text-zinc-700 dark:text-zinc-300",
+              hasError ? "text-red-500" : variant === "glass" ? "text-white/90" : "text-foreground",
               disabled && "opacity-50",
             )}
           >
@@ -433,7 +433,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             {icon && (
               <div
                 className={cn(
-                  "shrink-0 text-zinc-400 dark:text-zinc-500",
+                  "shrink-0 text-muted-foreground",
                   isOpen && theme.text,
                 )}
               >
@@ -448,7 +448,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             <ChevronDown
               className={cn(
                 s.icon,
-                variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500",
+                variant === "glass" ? "text-white/70" : "text-muted-foreground",
                 "transition-transform duration-300",
                 isOpen && "rotate-180",
                 isOpen && theme.text,
@@ -464,7 +464,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
             variant === "glass"
               ? "bg-white/40 dark:bg-black/50 backdrop-blur-2xl border-white/30 text-white shadow-2xl"
-              : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800",
+              : "bg-background border-border",
             dropUp
               ? cn(
                   "origin-bottom",
@@ -487,16 +487,16 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           )}
         >
           {searchable && (
-            <div className="p-2 border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20">
+            <div className="p-2 border-b border-border bg-muted/50">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   ref={searchInputRef}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
                   placeholder="Search options..."
-                  className="w-full pl-9 pr-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground outline-none focus:ring-2 focus:border-transparent transition-all"
                   style={{ "--tw-ring-color": `var(--theme-color)` } as any}
                 />
               </div>
@@ -505,7 +505,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
 
           <div className="max-h-60 overflow-y-auto p-1 flex flex-col gap-0.5 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
             {Object.keys(groupedOptions).length === 0 ? (
-              <div className="px-4 py-3 text-sm text-zinc-500 text-center">
+              <div className="px-4 py-3 text-sm text-muted-foreground text-center">
                 No results found
               </div>
             ) : (
@@ -513,7 +513,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                 <div key={group} className="flex flex-col gap-0.5">
                   {/* Group Header */}
                   {group !== "ungrouped" && (
-                    <div className="px-3 py-2 mt-1 text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                    <div className="px-3 py-2 mt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                       {group}
                     </div>
                   )}
@@ -538,7 +538,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                               : "text-white/90 hover:bg-white/20"
                             : isSelected
                               ? theme.bgSoft
-                              : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                              : "text-foreground hover:bg-muted",
                         )}
                       >
                         <div className="flex items-center gap-2">
@@ -548,7 +548,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                                 "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors",
                                 isSelected
                                   ? cn(theme.bg, "border-transparent")
-                                  : "border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900",
+                                  : "border-zinc-300 dark:border-zinc-600 bg-card",
                               )}
                             >
                               {/* No hardcoded colour: theme.bg already carries the
@@ -585,7 +585,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           </p>
         )}
         {helperText && !error && (
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs font-medium text-muted-foreground mt-0.5">
             {helperText}
           </p>
         )}

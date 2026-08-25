@@ -62,18 +62,40 @@ const registry = JSON.parse(read(REGISTRY)) as {
 
 const NEXT_IMPORT = /^\s*import\s[^;]*?from\s+["']next\/[^"']+["']/m;
 
+/**
+ * `<style jsx>` is styled-jsx, which only Next.js compiles. Anywhere else the
+ * `jsx` attribute reaches a plain <style> element: React logs a non-boolean
+ * attribute warning and `tsc` fails outright, because the prop is not on
+ * StyleHTMLAttributes. It is an import-less framework coupling, so the check
+ * above cannot see it — this repo IS a Next app, so it builds green here and
+ * only breaks in the consumer's project. Use
+ * `<style dangerouslySetInnerHTML={{ __html: ... }} />` instead.
+ */
+const STYLED_JSX = /<style\s+jsx\b/;
+
 for (const item of registry.items) {
   for (const file of item.files ?? []) {
     const abs = path.join(ROOT, file.path);
     if (!fs.existsSync(abs)) continue;
+    const source = read(abs);
 
-    const match = read(abs).match(NEXT_IMPORT);
+    const match = source.match(NEXT_IMPORT);
     if (match) {
       fail(
         `${file.path} imports from next/* (${match[0].trim()}). Shipped components ` +
           `must work in any React app — take the element as a prop instead ` +
           `(linkComponent / imageComponent), or defer it with React.lazy behind a ` +
           `mount gate. Item: ${item.name}`,
+      );
+    }
+
+    if (STYLED_JSX.test(source)) {
+      fail(
+        `${file.path} uses <style jsx> (styled-jsx). It compiles only under ` +
+          `Next.js — every other consumer gets a React unknown-prop warning and ` +
+          `a TypeScript error. Use ` +
+          `<style dangerouslySetInnerHTML={{ __html: \`...\` }} /> instead. ` +
+          `Item: ${item.name}`,
       );
     }
   }

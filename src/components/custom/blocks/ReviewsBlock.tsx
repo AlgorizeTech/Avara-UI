@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
 
@@ -79,7 +79,6 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 
 import createGlobe from "cobe";
 import { useTheme } from "next-themes";
-import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 
 // ==========================================
 // ULTRA-REALISTIC COBE WEBGL 3D GLOBE
@@ -89,15 +88,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 	const { resolvedTheme } = useTheme();
 	const isDarkMode = resolvedTheme !== "light";
 	const [themeTick, setThemeTick] = useState(0);
-
-	// Try reading customizer context if available
-	let activePreset: unknown = null;
-	try {
-		const customizer = useThemeCustomizer();
-		activePreset = customizer?.activePreset;
-	} catch {
-		// safe fallback if not wrapped
-	}
 
 	// Listen for live DOM style/class changes (when theme colors update without reload)
 	useEffect(() => {
@@ -229,7 +219,7 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 			cancelAnimationFrame(animId);
 			globe.destroy();
 		};
-	}, [isDarkMode, glowColor, activePreset, themeTick]);
+	}, [isDarkMode, glowColor, themeTick]);
 
 	return (
 		<div className="relative flex items-center justify-center pointer-events-none overflow-hidden">

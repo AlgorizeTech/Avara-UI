@@ -137,13 +137,13 @@ function BarChart({
       <div className="absolute inset-0 top-6 bottom-8 left-12 right-4 flex flex-col justify-between pointer-events-none z-0">
         {gridLines.map((ratio, i) => (
           <div key={i} className="flex items-center w-full relative">
-            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-zinc-400">
+            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-muted-foreground">
               {prefix}
               {Math.round(maxVal * ratio)}
               {suffix}
             </span>
             {showGrid && (
-              <div className="w-full border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+              <div className="w-full border-t border-dashed border-border" />
             )}
           </div>
         ))}
@@ -158,12 +158,12 @@ function BarChart({
           >
             {/* Tooltip */}
             <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
-              <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
+              <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
                 {d.label}: {prefix}
                 {d.value}
                 {suffix}
               </div>
-              <div className="w-2 h-2 bg-zinc-900 dark:bg-white rotate-45 -mt-1" />
+              <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
             </div>
 
             {/* Flat-Bottom Bar */}
@@ -179,7 +179,7 @@ function BarChart({
             </div>
 
             {/* X-Axis Label */}
-            <span className="absolute -bottom-6 text-[10px] font-medium text-zinc-500 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+            <span className="absolute -bottom-6 text-[10px] font-medium text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
               {d.label}
             </span>
           </div>
@@ -239,13 +239,13 @@ function SmoothLineChart({
       <div className="absolute inset-0 top-6 bottom-8 left-12 right-4 flex flex-col justify-between pointer-events-none z-0">
         {[1, 0.5, 0].map((ratio, i) => (
           <div key={i} className="flex items-center w-full relative h-0">
-            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-zinc-400">
+            <span className="absolute -left-3 -translate-x-full text-[10px] font-medium text-muted-foreground">
               {prefix}
               {Math.round(maxVal * ratio)}
               {suffix}
             </span>
             {showGrid && (
-              <div className="w-full border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+              <div className="w-full border-t border-dashed border-border" />
             )}
           </div>
         ))}
@@ -311,7 +311,7 @@ function SmoothLineChart({
             {/* HTML Dot positioned accurately over the SVG path */}
             <div
               className={cn(
-                "absolute w-3 h-3 rounded-full bg-white dark:bg-black border-2 transition-all duration-200 pointer-events-none shadow-sm",
+                "absolute w-3 h-3 rounded-full bg-background border-2 transition-all duration-200 pointer-events-none shadow-sm",
                 hoveredIndex === i
                   ? "scale-100 opacity-100"
                   : "scale-50 opacity-0",
@@ -332,17 +332,17 @@ function SmoothLineChart({
                     : "opacity-0 scale-95",
                 )}
               >
-                <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
+                <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
                   {data[i].label}: {prefix}
                   {data[i].value}
                   {suffix}
                 </div>
-                <div className="w-2 h-2 bg-zinc-900 dark:bg-white rotate-45 -mt-1" />
+                <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
               </div>
             </div>
 
             {/* X-Axis Label */}
-            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-zinc-500 whitespace-nowrap">
+            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-muted-foreground whitespace-nowrap">
               {data[i].label}
             </span>
           </div>
@@ -467,8 +467,8 @@ function CircularChart({
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
-              <div className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 {slices[hoveredIndex].label}
               </div>
               <div>
@@ -483,8 +483,8 @@ function CircularChart({
         {/* Donut Center Total Label */}
         {type === "donut" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-xs font-medium text-zinc-500">Total</span>
-            <span className="text-xl font-black text-zinc-900 dark:text-white">
+            <span className="text-xs font-medium text-muted-foreground">Total</span>
+            <span className="text-xl font-black text-foreground">
               {prefix}
               {total}
               {suffix}

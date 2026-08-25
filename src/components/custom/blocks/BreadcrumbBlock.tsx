@@ -151,9 +151,9 @@ export function BreadcrumbBlock({
           isActive
             ? cn("shadow-sm", theme.bg)
             : cn(
-                "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+                "bg-muted text-muted-foreground",
                 !isEllipsis &&
-                  "hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white",
+                  "hover:bg-muted hover:text-foreground",
               ),
         );
       case "ghost":
@@ -162,10 +162,10 @@ export function BreadcrumbBlock({
           isActive
             ? cn(theme.bgSoft)
             : cn(
-                "text-zinc-500 dark:text-zinc-400",
+                "text-muted-foreground",
                 !isEllipsis &&
                   cn(
-                    "hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+                    "hover:bg-muted",
                     theme.hoverText,
                   ),
               ),
@@ -178,7 +178,7 @@ export function BreadcrumbBlock({
           isActive
             ? theme.text
             : cn(
-                "text-zinc-500 dark:text-zinc-400",
+                "text-muted-foreground",
                 !isEllipsis && theme.hoverText,
               ),
         );

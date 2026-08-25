@@ -9,156 +9,39 @@ Click the trigger in each preview to open that modal. The `type` prop swaps the 
 
 _Note: in these previews the modal is absolutely positioned so it stays inside the box. In your app it covers the whole viewport._
 
-export const usageDefault = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
-import { Mail, BadgeCheck } from "lucide-react";
+export const usageDefault = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-type User = {
-  name?: string;
-  email?: string;
-  emailVerified?: boolean;
-  phone?: string;
-  address?: string;
-};
-
-type UserDetailsModalProps = {
-  data?: User | null;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export default function UserDetailsModal({ data, isOpen, onClose }: UserDetailsModalProps) {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} contentClassName="max-w-2xl">
-      <ModalHeader title="User Details" className="border-b border-border" />
-      <ModalBody>
-        {data && (
-          <div className="divide-y divide-border space-y-4">
-            {/* Identity */}
-            <div className="flex items-start gap-4 pb-5">
-              <div className="relative shrink-0">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white font-bold">
-                  {data.name?.[0] || "U"}
-                </div>
-                {data.emailVerified && (
-                  <BadgeCheck className="absolute -bottom-0.5 -right-0.5 h-5 w-5 fill-green-500 text-white" />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <h2 className="text-lg font-semibold">{data.name || "Unnamed user"}</h2>
-                <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Mail className="h-3.5 w-3.5" />
-                  <span>{data.email || "—"}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Contact */}
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div><span className="font-semibold">Phone:</span> {data.phone || "—"}</div>
-              <div><span className="font-semibold">Address:</span> {data.address || "—"}</div>
-            </div>
-          </div>
-        )}
-      </ModalBody>
-      <ModalFooter className="border-t border-border">
-        <button onClick={onClose} className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md">
-          Close
-        </button>
-      </ModalFooter>
-    </Modal>
-  );
+export default function Page() {
+  // ModalBlock ships the trigger, the open state and the content shown here.
+  return <ModalBlock type="standard" variant="default" />;
 }`;
 
-export const usageForm = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
-import { useState } from "react";
+export const usageForm = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FormModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setIsOpen(true)}>Invite Member</button>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} contentClassName="max-w-lg">
-        <ModalHeader title="Invite Team Member" />
-        <ModalBody className="space-y-4">
-          <input type="email" placeholder="colleague@company.com" className="w-full p-2 border rounded-md" />
-        </ModalBody>
-        <ModalFooter>
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button onClick={() => setIsOpen(false)}>Send Invite</button>
-        </ModalFooter>
-      </Modal>
-    </>
-  );
+export default function Page() {
+  // "form" swaps the body for the invite fields and widens the panel.
+  return <ModalBlock type="form" variant="default" />;
 }`;
 
-export const usageConfirmation = `import { Modal, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
-import { useState } from "react";
+export const usageConfirmation = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function ConfirmModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setIsOpen(true)}>Delete Item</button>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} contentClassName="max-w-sm">
-        <ModalBody className="text-center">
-          <h3 className="text-lg font-bold">Delete permanently?</h3>
-          <p className="text-sm text-gray-500">This action cannot be undone.</p>
-        </ModalBody>
-        <ModalFooter>
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button onClick={() => setIsOpen(false)} className="bg-red-600 text-white">Delete</button>
-        </ModalFooter>
-      </Modal>
-    </>
-  );
+export default function Page() {
+  // "confirmation" is the narrow destructive-action layout.
+  return <ModalBlock type="confirmation" variant="default" />;
 }`;
 
-export const usageFullscreen = `import { Modal, ModalHeader, ModalBody, ModalFooter } from "@/components/custom/blocks/ModalBlock";
-import { useState } from "react";
+export const usageFullscreen = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function FullscreenModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setIsOpen(true)}>Project Settings</button>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} contentClassName="max-w-5xl h-[90vh]">
-        <ModalHeader title="Project Configuration" />
-        <ModalBody className="flex-1">
-          <p>Manage all workspace settings here.</p>
-        </ModalBody>
-        <ModalFooter>
-          <button onClick={() => setIsOpen(false)}>Save Changes</button>
-        </ModalFooter>
-      </Modal>
-    </>
-  );
+export default function Page() {
+  // "fullscreen" fills the viewport for settings-style panels.
+  return <ModalBlock type="fullscreen" variant="default" />;
 }`;
 
-export const usageGlass = `import { Modal, ModalHeader, ModalBody } from "@/components/custom/blocks/ModalBlock";
-import { useState } from "react";
+export const usageGlass = `import { ModalBlock } from "@/components/custom/blocks/ModalBlock";
 
-export default function GlassModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setIsOpen(true)}>Open Glass Modal</button>
-      <Modal 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
-        overlayClassName="bg-black/30 backdrop-blur-sm"
-        contentClassName="bg-white/45 dark:bg-zinc-900/45 backdrop-blur-2xl backdrop-saturate-200 border border-white/50 dark:border-white/20 ring-1 ring-black/5 dark:ring-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-zinc-900 dark:text-white"
-      >
-        <ModalHeader title="Glassmorphic Modal" />
-        <ModalBody>
-          <p>Apple macOS aesthetic glassmorphism with vivid backdrop blur refraction.</p>
-        </ModalBody>
-      </Modal>
-    </>
-  );
+export default function Page() {
+  // "glass" is a surface treatment — it composes with any \`type\`.
+  return <ModalBlock type="standard" variant="glass" />;
 }`;
 
 <ExampleShowcase
@@ -253,6 +136,55 @@ export default function GlassModal() {
     },
   ]}
 />
+
+## Composing your own content
+
+Every preview above is `ModalBlock` — the ready-made component, content included.
+When you need your own content instead, the same file exports the parts it is
+built from. There is no preview for this section on purpose: what it renders is
+whatever you put inside it, so a screenshot here would show our copy rather than
+yours.
+
+```tsx
+"use client";
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
+export default function ConfirmDeleteModal() {
+  // Modal is controlled: you own `isOpen`, it renders against it.
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Delete project</button>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-sm"
+      >
+        <ModalHeader title="Delete project" />
+        <ModalBody>
+          <p className="text-sm text-muted-foreground">
+            This permanently removes the project and everything in it. This
+            cannot be undone.
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <button onClick={() => setIsOpen(false)}>Cancel</button>
+          <button onClick={() => setIsOpen(false)}>Delete</button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}
+```
 
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.

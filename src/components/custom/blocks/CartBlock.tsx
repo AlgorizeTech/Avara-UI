@@ -118,7 +118,7 @@ const ItemRow = ({
   removeItem: (id: string) => void;
   theme: any;
 }) => (
-  <div className="flex gap-4 py-4 border-b border-zinc-100 dark:border-zinc-800/50">
+  <div className="flex gap-4 py-4 border-b border-border">
     <div
       className={cn(
         "w-20 h-24 rounded-lg bg-gradient-to-br shrink-0 shadow-inner",
@@ -128,22 +128,22 @@ const ItemRow = ({
     <div className="flex flex-col flex-1 justify-between">
       <div className="flex justify-between items-start gap-2">
         <div>
-          <h4 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight">
+          <h4 className="text-sm font-bold text-foreground leading-tight">
             {item.name}
           </h4>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {item.color} | Size: {item.size}
           </p>
         </div>
-        <span className="text-sm font-bold text-zinc-900 dark:text-white shrink-0">
+        <span className="text-sm font-bold text-foreground shrink-0">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
       </div>
       <div className="flex items-center justify-between mt-3">
-        <div className="flex items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md p-0.5">
+        <div className="flex items-center bg-muted border border-border rounded-md p-0.5">
           <button
             onClick={() => updateQty(item.id, -1)}
-            className="w-6 h-6 flex items-center justify-center rounded text-zinc-500 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors active:scale-95"
+            className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:bg-card hover:text-foreground transition-colors active:scale-95"
           >
             <Minus size={14} strokeWidth={2.5} />
           </button>
@@ -152,14 +152,14 @@ const ItemRow = ({
           </span>
           <button
             onClick={() => updateQty(item.id, 1)}
-            className="w-6 h-6 flex items-center justify-center rounded text-zinc-500 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors active:scale-95"
+            className="w-6 h-6 flex items-center justify-center rounded text-muted-foreground hover:bg-card hover:text-foreground transition-colors active:scale-95"
           >
             <Plus size={14} strokeWidth={2.5} />
           </button>
         </div>
         <button
           onClick={() => removeItem(item.id)}
-          className="text-zinc-400 hover:text-red-500 transition-colors p-1"
+          className="text-muted-foreground hover:text-red-500 transition-colors p-1"
         >
           <Trash2 size={16} />
         </button>
@@ -181,28 +181,28 @@ const Summary = ({
     className={cn(
       "flex flex-col gap-3",
       isPage
-        ? "p-6 sm:p-8 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-800"
+        ? "p-6 sm:p-8 bg-muted rounded-2xl border border-border"
         : "",
     )}
   >
-    <div className="flex justify-between text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="flex justify-between text-sm text-muted-foreground">
       <span>Subtotal</span>
-      <span className="font-medium text-zinc-900 dark:text-white">
+      <span className="font-medium text-foreground">
         ${subtotal.toFixed(2)}
       </span>
     </div>
-    <div className="flex justify-between text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="flex justify-between text-sm text-muted-foreground">
       <span>Shipping</span>
-      <span className="font-medium text-zinc-900 dark:text-white">
+      <span className="font-medium text-foreground">
         Calculated at checkout
       </span>
     </div>
-    <div className="border-t border-zinc-200 dark:border-zinc-800 my-1" />
+    <div className="border-t border-border my-1" />
     <div className="flex justify-between items-end mb-4">
-      <span className="text-base font-bold text-zinc-900 dark:text-white">
+      <span className="text-base font-bold text-foreground">
         Total
       </span>
-      <span className="text-2xl font-black text-zinc-900 dark:text-white">
+      <span className="text-2xl font-black text-foreground">
         ${subtotal.toFixed(2)}
       </span>
     </div>
@@ -236,8 +236,8 @@ function TriggerButton({
     <button
       onClick={onToggle}
       className={cn(
-        "relative flex items-center justify-center p-3 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all active:scale-95 text-zinc-700 dark:text-zinc-200",
-        isOpen && "bg-zinc-100 dark:bg-zinc-800",
+        "relative flex items-center justify-center p-3 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all active:scale-95 text-foreground",
+        isOpen && "bg-muted",
       )}
     >
       <ShoppingBag size={22} />
@@ -400,18 +400,18 @@ export function CartBlock({
       <div className="w-full max-w-5xl mx-auto p-4 sm:p-8" style={style}>
         <div className="flex items-center gap-3 mb-8">
           <ShoppingCart className={cn("w-8 h-8", theme.text)} />
-          <h2 className="text-3xl font-black text-zinc-900 dark:text-white">
+          <h2 className="text-3xl font-black text-foreground">
             Your Cart
           </h2>
-          <span className="ml-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-sm font-bold text-zinc-600 dark:text-zinc-400">
+          <span className="ml-2 px-3 py-1 rounded-full bg-muted text-sm font-bold text-muted-foreground">
             {totalItems} Items
           </span>
         </div>
 
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl">
+          <div className="flex flex-col items-center justify-center py-24 bg-background border border-border rounded-3xl">
             <ShoppingBag className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" />
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+            <h3 className="text-xl font-bold text-foreground mb-2">
               Your cart is empty
             </h3>
             <button
@@ -425,8 +425,8 @@ export function CartBlock({
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-sm">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 border-b border-zinc-100 dark:border-zinc-800/50 pb-4">
+            <div className="flex-1 bg-background border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h3 className="text-lg font-bold text-foreground mb-4 border-b border-border pb-4">
                 Order Items
               </h3>
               {items.map((item) => (
@@ -470,16 +470,16 @@ export function CartBlock({
           <div className="absolute top-[calc(100%+12px)] right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] pointer-events-none">
             <div
               ref={containerRef}
-              className="w-[340px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0"
+              className="w-[340px] bg-background border border-border rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0"
             >
-              <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-900/50">
-                <span className="font-bold text-zinc-900 dark:text-white">
+              <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-muted/50">
+                <span className="font-bold text-foreground">
                   Cart ({totalItems})
                 </span>
               </div>
               <div className="max-h-[300px] overflow-y-auto px-4 py-2">
                 {items.length === 0 ? (
-                  <p className="text-center text-sm text-zinc-500 py-8">
+                  <p className="text-center text-sm text-muted-foreground py-8">
                     Your cart is empty.
                   </p>
                 ) : (
@@ -495,12 +495,12 @@ export function CartBlock({
                 )}
               </div>
               {items.length > 0 && (
-                <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div className="p-4 border-t border-border bg-muted/50">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-zinc-500">
+                    <span className="text-sm font-medium text-muted-foreground">
                       Subtotal
                     </span>
-                    <span className="text-lg font-bold text-zinc-900 dark:text-white">
+                    <span className="text-lg font-bold text-foreground">
                       ${subtotal.toFixed(2)}
                     </span>
                   </div>
@@ -535,25 +535,25 @@ export function CartBlock({
           <div
             ref={containerRef}
             className={cn(
-              "relative z-[101] bg-white dark:bg-zinc-950 flex flex-col shadow-2xl pointer-events-auto",
+              "relative z-[101] bg-background flex flex-col shadow-2xl pointer-events-auto",
               type === "drawer"
-                ? "w-full max-w-md h-[100dvh] border-l border-zinc-200 dark:border-zinc-800"
-                : "w-full max-w-lg max-h-[85vh] rounded-3xl border border-zinc-200 dark:border-zinc-800 opacity-0",
+                ? "w-full max-w-md h-[100dvh] border-l border-border"
+                : "w-full max-w-lg max-h-[85vh] rounded-3xl border border-border opacity-0",
             )}
           >
-            <div className="px-6 py-5 border-b border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between shrink-0">
+            <div className="px-6 py-5 border-b border-border flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <ShoppingBag className={cn("w-5 h-5", theme.text)} />
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+                <h3 className="text-lg font-bold text-foreground">
                   Shopping Cart
                 </h3>
-                <span className="ml-2 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">
+                <span className="ml-2 px-2 py-0.5 rounded-full bg-muted text-xs font-bold text-muted-foreground">
                   {totalItems}
                 </span>
               </div>
               <button
                 onClick={closeCart}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X size={16} />
               </button>
@@ -561,7 +561,7 @@ export function CartBlock({
 
             <div className="flex-1 overflow-y-auto p-6">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-zinc-500 space-y-4">
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-4">
                   <ShoppingCart size={48} className="opacity-20" />
                   <p>Your cart is empty.</p>
                 </div>
@@ -581,7 +581,7 @@ export function CartBlock({
             </div>
 
             {items.length > 0 && (
-              <div className="p-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50 shrink-0">
+              <div className="p-6 border-t border-border bg-muted/50 shrink-0">
                 <Summary subtotal={subtotal} theme={theme} />
               </div>
             )}

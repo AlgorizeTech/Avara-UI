@@ -86,7 +86,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                   delay: ring * 0.1,
                   ease: "easeOut",
                 }}
-                className="absolute rounded-full border border-black/[0.08] dark:border-white/[0.08]"
+                className="absolute rounded-full border border-primary/[0.08]/[0.08]"
                 style={{
                   width: `${radius * 2}%`,
                   height: `${radius * 2}%`,
@@ -168,7 +168,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                       >
                         <div
                           className={cn(
-                            "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-white dark:bg-zinc-900",
+                            "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-card",
                             sizeMap[node.size as keyof typeof sizeMap] ?? sizeMap.md,
                           )}
                         >
@@ -179,14 +179,14 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
+                            <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">
                               {node.fallback}
                             </span>
                           )}
                         </div>
 
                         {node.label && (
-                          <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                          <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-primary text-primary-foreground text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                             {node.label}
                           </div>
                         )}
@@ -208,7 +208,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="relative group cursor-pointer"
             >
-              <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-[3px] sm:border-[5px] border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden bg-white dark:bg-zinc-900 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-[3px] sm:border-[5px] border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden bg-card flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                 {centerNode.image ? (
                   <img
                     src={centerNode.image}
@@ -216,13 +216,13 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-xs sm:text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase">
+                  <span className="text-xs sm:text-sm font-bold text-muted-foreground uppercase">
                     {centerNode.fallback}
                   </span>
                 )}
               </div>
               {centerNode.label && (
-                <div className="absolute top-[calc(100%+10px)] sm:top-[calc(100%+14px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 sm:py-1.5 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[10px] sm:text-xs font-bold shadow-sm z-50">
+                <div className="absolute top-[calc(100%+10px)] sm:top-[calc(100%+14px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 sm:py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold shadow-sm z-50">
                   {centerNode.label}
                 </div>
               )}
