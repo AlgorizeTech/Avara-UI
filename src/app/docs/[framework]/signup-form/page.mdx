@@ -1,35 +1,44 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Authentication Block
+# Authentication Forms
 
-A complete, production-ready Authentication Block that acts as both a Login and Signup component. It features comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles, and social auth button templates.
+Two production-ready authentication blocks: a **Login Form** for returning users and a **Register Form** for new ones. Both ship comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles and social auth button templates.
 
-One component covers both halves of your auth flow: `type` swaps the fields and validation rules, `variant` swaps the surrounding chrome.
+They are separate components on purpose. Sign-in and sign-up are different pages with different fields, different validation rules and different autofill hints — a browser password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a given route needs; each has its own install command, and each command sits with the block it installs.
 
-export const usageSignup = `import AuthForm from "@/components/custom/blocks/AuthForm";
+Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work.
 
-export default function SignupPage() {
-  return <AuthForm type="signup" />;
-}`;
+## Login form
 
-export const usageLogin = `import AuthForm from "@/components/custom/blocks/AuthForm";
+Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.
+
+export const usageLogin = `import LoginForm from "@/components/custom/blocks/LoginForm";
 
 export default function LoginPage() {
-  // "login" drops the name fields, the confirm-password field and the terms checkbox.
-  return <AuthForm type="login" />;
+  return (
+    <LoginForm
+      signupHref="/register"
+      forgotPasswordHref="/forgot-password"
+      onSubmit={async ({ email, password, remember }) => {
+        // Call your auth provider here. Without onSubmit the block simulates
+        // a round trip so it stays demonstrable on its own.
+        await signIn({ email, password, remember });
+      }}
+    />
+  );
 }`;
 
-export const usageSplit = `import AuthForm from "@/components/custom/blocks/AuthForm";
+export const usageLoginSplit = `import LoginForm from "@/components/custom/blocks/LoginForm";
 
-export default function SplitSignupPage() {
+export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return <AuthForm type="signup" variant="split" />;
+  return <LoginForm variant="split" signupHref="/register" />;
 }`;
 
-export const usageGlass = `import AuthForm from "@/components/custom/blocks/AuthForm";
+export const usageLoginGlass = `import LoginForm from "@/components/custom/blocks/LoginForm";
 
-export default function GlassSignupPage() {
+export default function GlassLoginPage() {
   // "glass" is translucent — it needs something behind it to read against.
   return (
     <div className="w-full flex items-center justify-center min-h-[600px] relative overflow-hidden rounded-2xl p-4 sm:p-8">
@@ -42,69 +51,58 @@ export default function GlassSignupPage() {
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
       </div>
       <div className="relative z-10 w-full flex justify-center">
-        <AuthForm type="signup" variant="glass" />
+        <LoginForm variant="glass" />
       </div>
     </div>
   );
 }`;
 
-export const usageMinimal = `import AuthForm from "@/components/custom/blocks/AuthForm";
+export const usageLoginMinimal = `import LoginForm from "@/components/custom/blocks/LoginForm";
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return <AuthForm type="login" variant="minimal" />;
+  return <LoginForm variant="minimal" />;
 }`;
 
 <ExampleShowcase
-  name="auth"
-  colorControl
-  columns={1}
-  examples={[
-    {
-      title: "Signup",
-      subheading: "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
-      propNotes: [
-        {
-          prop: "type",
-          value: '"signup"',
-          effect:
-            "is the default, and picks both the layout and the validation rules.",
-        },
-      ],
-      props: { type: "signup", variant: "default" },
-      usage: usageSignup,
-      code: extractCode("src/components/custom/blocks/AuthForm.tsx"),
-    },
-  ]}
-/>
-
-## Installation
-
-<Installation name="auth-form" />
-
-## Examples
-
-<ExampleShowcase
-  name="auth"
+  name="login-form"
   colorControl
   columns={1}
   examples={[
     {
       title: "Login",
+      subheading:
+        "Email and password with a remember-me checkbox and a forgot-password link, all validated on submit.",
       propNotes: [
         {
-          lead: "Set",
-          prop: "type",
-          value: '"login"',
+          prop: "onSubmit",
           effect:
-            "to collapse down to email and password with a forgot-password link.",
+            "receives the validated credentials. Leave it off and the block simulates a round trip, so the preview works before any auth provider exists.",
         },
       ],
-      props: { type: "login", variant: "default" },
+      props: { variant: "default" },
       usage: usageLogin,
+      code: extractCode("src/components/custom/blocks/LoginForm.tsx"),
     },
+  ]}
+/>
+
+### Install the login form
+
+<Installation name="login-form" />
+
+### More login examples
+
+Every example below is the same `LoginForm` you just installed — only the props change.
+
+<ExampleShowcase
+  name="login-form"
+  colorControl
+  columns={1}
+  examples={[
     {
-      title: "Split",
+      title: "Login — split",
+      id: "login-split",
       propNotes: [
         {
           lead: "Set",
@@ -114,11 +112,12 @@ export default function MinimalLoginPage() {
             "to pair the form with a full-height marketing panel on large screens.",
         },
       ],
-      props: { type: "signup", variant: "split" },
-      usage: usageSplit,
+      props: { variant: "split" },
+      usage: usageLoginSplit,
     },
     {
-      title: "Glass",
+      title: "Login — glass",
+      id: "login-glass",
       propNotes: [
         {
           lead: "Set",
@@ -128,11 +127,12 @@ export default function MinimalLoginPage() {
             "to go translucent — intended to sit over a photo or gradient.",
         },
       ],
-      props: { type: "signup", variant: "glass" },
-      usage: usageGlass,
+      props: { variant: "glass" },
+      usage: usageLoginGlass,
     },
     {
-      title: "Minimal",
+      title: "Login — minimal",
+      id: "login-minimal",
       propNotes: [
         {
           lead: "Set",
@@ -142,15 +142,157 @@ export default function MinimalLoginPage() {
             "to strip the card away and leave the fields on your own background.",
         },
       ],
-      props: { type: "login", variant: "minimal" },
-      usage: usageMinimal,
+      props: { variant: "minimal" },
+      usage: usageLoginMinimal,
+    },
+  ]}
+/>
+
+## Register form
+
+Paired name fields, email, password with confirmation, and a terms checkbox whose links you point at your own policies. `loginHref` closes the loop back to the login form.
+
+export const usageRegister = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function RegisterPage() {
+  return (
+    <RegisterForm
+      loginHref="/login"
+      termsHref="/legal/terms"
+      privacyHref="/legal/privacy"
+      onSubmit={async (values) => {
+        // values: firstName, lastName, email, password, confirmPassword,
+        // agreeToTerms. Re-validate every one of them on your server.
+        await createAccount(values);
+      }}
+    />
+  );
+}`;
+
+export const usageRegisterSplit = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function SplitRegisterPage() {
+  // "split" pairs the form with a full-height marketing panel on large screens.
+  return <RegisterForm variant="split" loginHref="/login" />;
+}`;
+
+export const usageRegisterGlass = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function GlassRegisterPage() {
+  // "glass" is translucent — it needs something behind it to read against.
+  return (
+    <div className="w-full flex items-center justify-center min-h-[600px] relative overflow-hidden rounded-2xl p-4 sm:p-8">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+          alt="Moody lake sunset landscape"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
+      </div>
+      <div className="relative z-10 w-full flex justify-center">
+        <RegisterForm variant="glass" />
+      </div>
+    </div>
+  );
+}`;
+
+export const usageRegisterMinimal = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function MinimalRegisterPage() {
+  // "minimal" strips the card, leaving just the fields on your own background.
+  return <RegisterForm variant="minimal" />;
+}`;
+
+<ExampleShowcase
+  name="register-form"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Register",
+      subheading:
+        "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
+      propNotes: [
+        {
+          prop: "minPasswordLength",
+          effect:
+            "sets the client-side minimum (8 by default). It stops an obviously-too-short password before a round trip — your server still enforces the real policy.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageRegister,
+      code: extractCode("src/components/custom/blocks/RegisterForm.tsx"),
+    },
+  ]}
+/>
+
+### Install the register form
+
+<Installation name="register-form" showSetupPath={false} />
+
+### More register examples
+
+Every example below is the same `RegisterForm` you just installed — only the props change.
+
+<ExampleShowcase
+  name="register-form"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Register — split",
+      id: "register-split",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"split"',
+          effect:
+            "to pair the form with a full-height marketing panel on large screens. The illustration mirrors the fields beside it.",
+        },
+      ],
+      props: { variant: "split" },
+      usage: usageRegisterSplit,
+    },
+    {
+      title: "Register — glass",
+      id: "register-glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit over a photo or gradient.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageRegisterGlass,
+    },
+    {
+      title: "Register — minimal",
+      id: "register-minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the card away and leave the fields on your own background.",
+        },
+      ],
+      props: { variant: "minimal" },
+      usage: usageRegisterMinimal,
     },
   ]}
 />
 
 ## Props Reference
 
-<div className="overflow-x-auto">
+### LoginForm
+
+<div className="overflow-x-auto mb-8">
   <table>
     <thead>
       <tr>
@@ -161,18 +303,6 @@ export default function MinimalLoginPage() {
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <code>type</code>
-        </td>
-        <td>
-          <code>"login" | "signup"</code>
-        </td>
-        <td>
-          <code>"signup"</code>
-        </td>
-        <td>Determines the active layout and validation rules of the form.</td>
-      </tr>
       <tr>
         <td>
           <code>variant</code>
@@ -200,9 +330,193 @@ export default function MinimalLoginPage() {
           <code>"indigo"</code>
         </td>
         <td>
-          Applies global color themes to the primary buttons, focus rings, and
-          checkbox active states. Accepts valid hex codes (e.g.{" "}
+          Applies global color themes to the primary button, focus rings and the
+          remember-me checkbox. Accepts valid hex codes (e.g.{" "}
           <code>"#00FF00"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>signupHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#"</code>
+        </td>
+        <td>
+          Where the "Sign up" link at the foot of the form sends someone without
+          an account — normally your <code>RegisterForm</code> page.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>forgotPasswordHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#"</code>
+        </td>
+        <td>Target of the "Forgot password?" link.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSubmit</code>
+        </td>
+        <td>
+          <code>
+            (values: LoginFormValues) =&gt; void | Promise&lt;void&gt;
+          </code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Called with <code>{"{ email, password, remember }"}</code> once
+          validation passes. Omit it and the form simulates a 1.5s round trip so
+          the block is demonstrable before any auth provider exists.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSocialSignIn</code>
+        </td>
+        <td>
+          <code>(provider: "github" | "google") =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fires when a social button is clicked. The buttons are inert without
+          it.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### RegisterForm
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "split" | "glass" | "minimal"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Same four layouts as <code>LoginForm</code>, so a matched pair of
+          pages needs no extra styling.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the primary button, focus rings, the
+          terms checkbox and the policy links. Accepts valid hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>loginHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#"</code>
+        </td>
+        <td>
+          Where the "Sign in" link at the foot of the form sends someone who
+          already has an account.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>termsHref</code> / <code>privacyHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#"</code>
+        </td>
+        <td>
+          Targets of the two links inside the terms checkbox label. They are
+          real anchors, and clicking one does not toggle the checkbox.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>minPasswordLength</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>
+          Client-side minimum only. It stops an obviously-too-short password
+          before a round trip; your server still enforces the real policy.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSubmit</code>
+        </td>
+        <td>
+          <code>
+            (values: RegisterFormValues) =&gt; void | Promise&lt;void&gt;
+          </code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Called with all six fields once validation passes. Omit it and the
+          form simulates a 1.5s round trip.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSocialSignUp</code>
+        </td>
+        <td>
+          <code>(provider: "github" | "google") =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fires when a social button is clicked. The buttons are inert without
+          it.
         </td>
       </tr>
     </tbody>

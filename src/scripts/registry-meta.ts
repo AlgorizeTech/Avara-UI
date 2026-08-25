@@ -213,11 +213,17 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "navigation"],
     docs: "Named exports: Wizard, WizardProgress, WizardContainer, WizardStep, WizardTitle, WizardDescription, useWizard. Wizard owns the step state; children read `currentStep`, `nextStep` and `prevStep` from the useWizard hook. `onComplete` fires on the final step. Unlike `stepper`, this manages navigation for you.",
   },
-  "auth-form": {
+  "login-form": {
     description:
-      "A sign-in and sign-up form with social buttons, password reveal and four layout variants. Use it as the entry point of an authenticated app.",
+      "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Named exports: AuthForm, getThemeStyles. `type` is login | signup; `variant` is default | split | glass | minimal — split renders a gradient side panel. Presentation only: no auth provider is wired in, so connect your own submit handler.",
+    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+  },
+  "register-form": {
+    description:
+      "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
+    categories: ["authentication", "forms"],
+    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:

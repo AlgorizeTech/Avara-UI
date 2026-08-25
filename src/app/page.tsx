@@ -1,6 +1,6 @@
 "use client";
 
-import AuthForm from "@/components/custom/blocks/AuthForm";
+import LoginForm from "@/components/custom/blocks/LoginForm";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
 import {
@@ -704,11 +704,11 @@ function ComponentShowcase() {
 							<div className="px-3 py-2 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
 									<Lock className="size-3.5 text-primary" />
-									Auth Form Card
+									Login Form Card
 								</span>
 							</div>
 							<div className="p-3">
-								<AuthForm type="login" variant="default" color="primary" />
+								<LoginForm variant="default" color="primary" />
 							</div>
 						</div>
 					</motion.div>
