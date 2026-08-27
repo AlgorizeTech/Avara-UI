@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-25T16:06:29.564Z
-**Total files:** 207
+**Generated at:** 2026-08-27T04:34:45.608Z
+**Total files:** 211
 
 ## Available Files
 
@@ -55,6 +55,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
 - [nextjs/globe](/docs/nextjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
+- [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
@@ -77,6 +78,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
+- [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [nextjs/product-details](/docs/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
@@ -159,6 +161,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
 - [reactjs/globe](/docs/reactjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
+- [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [reactjs/hero-video-player](/docs/reactjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
@@ -181,6 +184,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
+- [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [reactjs/popover](/docs/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [reactjs/pricing](/docs/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [reactjs/product-details](/docs/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`

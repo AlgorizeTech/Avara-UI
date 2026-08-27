@@ -195,6 +195,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "data-display"],
     docs: "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score.",
   },
+  "heart-signal": {
+    description:
+      "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+    categories: ["data-display", "media"],
+    docs: "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration.",
+  },
   stepper: {
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",
@@ -851,5 +857,10 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
     categories: ["marketing", "data-display"],
+  },
+  "particle-canvas": {
+    description:
+      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+    categories: ["media", "data-display"],
   },
 };

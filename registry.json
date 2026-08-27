@@ -1033,6 +1033,31 @@
       "docs": "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score."
     },
     {
+      "name": "heart-signal",
+      "type": "registry:component",
+      "title": "Heart Signal",
+      "author": "AlgorizeTech",
+      "description": "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+      "categories": [
+        "data-display",
+        "media"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeartSignalBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeartSignalBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration."
+    },
+    {
       "name": "hero",
       "type": "registry:component",
       "title": "Hero",
@@ -1633,6 +1658,30 @@
         }
       ],
       "docs": "Renders framework-agnostic buttons, not router links, so wire navigation through your own handler."
+    },
+    {
+      "name": "particle-canvas",
+      "type": "registry:component",
+      "title": "Particle Canvas",
+      "author": "AlgorizeTech",
+      "description": "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "categories": [
+        "media",
+        "data-display"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ParticleCanvasBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ParticleCanvasBlock.tsx"
+        }
+      ]
     },
     {
       "name": "payment",

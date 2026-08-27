@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T16:06:29.509Z",
-  "totalFiles": 207,
+  "generatedAt": "2026-08-27T04:34:45.200Z",
+  "totalFiles": 211,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -291,6 +291,12 @@
       "originalMdx": "[framework]\\half-stars\\page.mdx"
     },
     {
+      "name": "nextjs/heart-signal",
+      "path": "/docs/nextjs-heart-signal.md",
+      "url": "/docs/nextjs/heart-signal",
+      "originalMdx": "[framework]\\heart-signal\\page.mdx"
+    },
+    {
       "name": "nextjs/hero",
       "path": "/docs/nextjs-hero.md",
       "url": "/docs/nextjs/hero",
@@ -421,6 +427,12 @@
       "path": "/docs/nextjs-pagination.md",
       "url": "/docs/nextjs/pagination",
       "originalMdx": "[framework]\\pagination\\page.mdx"
+    },
+    {
+      "name": "nextjs/particle-canvas",
+      "path": "/docs/nextjs-particle-canvas.md",
+      "url": "/docs/nextjs/particle-canvas",
+      "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
       "name": "nextjs/popover",
@@ -915,6 +927,12 @@
       "originalMdx": "[framework]\\half-stars\\page.mdx"
     },
     {
+      "name": "reactjs/heart-signal",
+      "path": "/docs/reactjs-heart-signal.md",
+      "url": "/docs/reactjs/heart-signal",
+      "originalMdx": "[framework]\\heart-signal\\page.mdx"
+    },
+    {
       "name": "reactjs/hero",
       "path": "/docs/reactjs-hero.md",
       "url": "/docs/reactjs/hero",
@@ -1045,6 +1063,12 @@
       "path": "/docs/reactjs-pagination.md",
       "url": "/docs/reactjs/pagination",
       "originalMdx": "[framework]\\pagination\\page.mdx"
+    },
+    {
+      "name": "reactjs/particle-canvas",
+      "path": "/docs/reactjs-particle-canvas.md",
+      "url": "/docs/reactjs/particle-canvas",
+      "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
       "name": "reactjs/popover",
