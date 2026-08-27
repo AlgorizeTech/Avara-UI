@@ -26,6 +26,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "chat-bubble": lazyRetry(() => import("./demos/chat-bubble-demo")),
   "chat": lazyRetry(() => import("./demos/chat-demo")),
   "collapsible": lazyRetry(() => import("./demos/collapsible-demo")),
+  "color-picker": lazyRetry(() => import("./demos/color-picker-demo")),
   "command": lazyRetry(() => import("./demos/command-demo")),
   "context-menu": lazyRetry(() => import("./demos/context-menu-demo")),
   "counter": lazyRetry(() => import("./demos/counter-demo")),

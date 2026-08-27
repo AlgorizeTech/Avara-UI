@@ -85,6 +85,7 @@ export const navigation: NavigationItem[] = [
       { label: "Chart", slug: "chart" },
       { label: "Chat", slug: "chat" },
       { label: "Collapsible", slug: "collapsible" },
+      { label: "Color Picker", slug: "color-picker", badge: "New" },
       { label: "Command", slug: "command" },
       { label: "ContextMenu", slug: "context-menu" },
       { label: "Counter", slug: "counter" },

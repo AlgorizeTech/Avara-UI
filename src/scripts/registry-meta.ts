@@ -311,6 +311,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout"],
     docs: "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`.",
   },
+  "color-picker": {
+    description:
+      "An interactive 360° Color Spectrum Wheel and Color Palette component featuring 2D color picking, lightness & alpha sliders, format toggles (HEX, RGB, HSL), one-click copy, and EyeDropper API support.",
+    categories: ["forms", "utilities"],
+    docs: "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`.",
+  },
   resizable: {
     description:
       "Draggable split panes in horizontal or vertical layout, with min and max size constraints. Use it for editor and preview layouts users can rebalance.",

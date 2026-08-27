@@ -21,6 +21,7 @@ export const sandboxNames = [
   "chat-bubble",
   "chat",
   "collapsible",
+  "color-picker",
   "command",
   "context-menu",
   "counter",
