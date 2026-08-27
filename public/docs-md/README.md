@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-27T02:57:55.011Z
-**Total files:** 209
+**Generated at:** 2026-08-27T04:34:45.608Z
+**Total files:** 211
 
 ## Available Files
 
@@ -55,6 +55,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
 - [nextjs/globe](/docs/nextjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
+- [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
@@ -160,6 +161,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
 - [reactjs/globe](/docs/reactjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
+- [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [reactjs/hero-video-player](/docs/reactjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`

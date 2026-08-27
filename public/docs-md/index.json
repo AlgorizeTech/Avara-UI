@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T02:57:54.973Z",
-  "totalFiles": 209,
+  "generatedAt": "2026-08-27T04:34:45.200Z",
+  "totalFiles": 211,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -289,6 +289,12 @@
       "path": "/docs/nextjs-half-stars.md",
       "url": "/docs/nextjs/half-stars",
       "originalMdx": "[framework]\\half-stars\\page.mdx"
+    },
+    {
+      "name": "nextjs/heart-signal",
+      "path": "/docs/nextjs-heart-signal.md",
+      "url": "/docs/nextjs/heart-signal",
+      "originalMdx": "[framework]\\heart-signal\\page.mdx"
     },
     {
       "name": "nextjs/hero",
@@ -919,6 +925,12 @@
       "path": "/docs/reactjs-half-stars.md",
       "url": "/docs/reactjs/half-stars",
       "originalMdx": "[framework]\\half-stars\\page.mdx"
+    },
+    {
+      "name": "reactjs/heart-signal",
+      "path": "/docs/reactjs-heart-signal.md",
+      "url": "/docs/reactjs/heart-signal",
+      "originalMdx": "[framework]\\heart-signal\\page.mdx"
     },
     {
       "name": "reactjs/hero",

@@ -43,6 +43,7 @@ export const sandboxNames = [
   "form",
   "globe",
   "half-stars",
+  "heart-signal",
   "hero-data",
   "hero",
   "hero-minimal",
