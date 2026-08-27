@@ -4,10 +4,11 @@ import {
   CustomCarousel,
   HeroCarousel,
   ImageCarousel,
+  RadialCarousel,
 } from "@/components/custom/carousel";
 import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
 
-type CarouselType = "image" | "hero" | "thumbnails" | "fluid";
+type CarouselType = "image" | "hero" | "thumbnails" | "fluid" | "radial";
 type ThumbPosition = "bottom" | "left" | "right";
 
 const sampleImages = [
@@ -68,6 +69,13 @@ export default function CarouselDemo({
       {carouselType === "fluid" && (
         <FluidGlassSlider className="rounded-xl border dark:border-zinc-800 shadow-sm w-full" />
       )}
+
+      {carouselType === "radial" && (
+        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm bg-zinc-950/5 dark:bg-zinc-900/30">
+          <RadialCarousel autoPlay={true} autoPlayInterval={3500} />
+        </div>
+      )}
     </div>
   );
 }
+

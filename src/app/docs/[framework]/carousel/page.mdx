@@ -7,9 +7,36 @@ A collection of highly interactive carousel components for image galleries, hero
 
 <InjectablePropNote prop="imageComponent" component="ImageCarousel" />
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
+Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the GSAP-powered `FluidGlassSlider`, which installs on its own.
 
 ## Carousels
+
+export const usageRadial = `import { RadialCarousel } from "@/components/custom/carousel";
+
+const items = [
+  {
+    title: "Misty Pine Forest",
+    category: "Nature",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&fit=crop",
+  },
+  {
+    title: "Lush River Valley",
+    category: "Wilderness",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&fit=crop",
+  },
+  {
+    title: "Autumn Woodland Path",
+    category: "Landscape",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&fit=crop",
+  },
+];
+
+export default function RadialShowcase() {
+  return <RadialCarousel items={items} autoPlay />;
+}`;
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
@@ -79,26 +106,10 @@ export default function FluidShowcase() {
   return <FluidGlassSlider className="w-full rounded-xl" />;
 }`;
 
-## Examples
-
 <ExampleShowcase
   name="carousel"
   columns={1}
   examples={[
-    {
-      title: "Fluid glass slider",
-      subheading: "`FluidGlassSlider` is a GSAP-driven slider where liquid distortion tracks the pointer.",
-      propNotes: [
-        {
-          prop: "items",
-          effect:
-            "drives the glass panel that distorts and follows the cursor between slides.",
-        },
-      ],
-      props: { carouselType: "fluid" },
-      usage: usageFluid,
-      code: extractCode("src/components/custom/ui/FluidGlassSlider.tsx"),
-    },
     {
       title: "Image carousel",
       subheading: "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
@@ -120,6 +131,24 @@ export default function FluidShowcase() {
       ],
       props: { carouselType: "image" },
       usage: usageImage,
+      code: extractCode("src/components/custom/carousel.tsx"),
+    },
+    {
+      title: "Radial carousel",
+      subheading: "`RadialCarousel` arranges cards in a full 360-degree 3D radial wheel radiating in all four directions around a central pivot point with smooth drag momentum.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect: "as `{ title, category, rating, img }[]` — cards radiate in 360 degrees around the center.",
+        },
+        {
+          prop: "stepAngle",
+          effect: "controls the rotation angle increment between cards (default is 360 / items.length).",
+        },
+      ],
+      props: { carouselType: "radial" },
+      usage: usageRadial,
       code: extractCode("src/components/custom/carousel.tsx"),
     },
     {
@@ -172,7 +201,7 @@ export default function FluidShowcase() {
 
 <Installation name="carousel" />
 
-The three carousels above ship in one file. `FluidGlassSlider` is a separate
+The four carousels above ship in one file. `FluidGlassSlider` is a separate
 item — installing `carousel` does not pull it in:
 
 <Installation name="ui-fluid-glass-slider" />
@@ -285,3 +314,6 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
     </tbody>
   </table>
 </div>
+
+
+
