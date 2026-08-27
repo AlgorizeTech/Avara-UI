@@ -75,6 +75,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "network-graph": lazyRetry(() => import("./demos/network-graph-demo")),
   "otp-input": lazyRetry(() => import("./demos/otp-input-demo")),
   "pagination": lazyRetry(() => import("./demos/pagination-demo")),
+  "particle-canvas": lazyRetry(() => import("./demos/particle-canvas-demo")),
   "popover": lazyRetry(() => import("./demos/popover-demo")),
   "pricing": lazyRetry(() => import("./demos/pricing-demo")),
   "product-details": lazyRetry(() => import("./demos/product-details-demo")),

@@ -70,6 +70,7 @@ export const sandboxNames = [
   "network-graph",
   "otp-input",
   "pagination",
+  "particle-canvas",
   "popover",
   "pricing",
   "product-details",

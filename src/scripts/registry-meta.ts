@@ -852,4 +852,9 @@ export const META: Record<string, ItemMeta> = {
       "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
     categories: ["marketing", "data-display"],
   },
+  "particle-canvas": {
+    description:
+      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+    categories: ["media", "data-display"],
+  },
 };

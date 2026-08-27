@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-08-25T16:06:29.564Z
-**Total files:** 207
+**Generated at:** 2026-08-27T02:57:55.011Z
+**Total files:** 209
 
 ## Available Files
 
@@ -77,6 +77,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
+- [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [nextjs/product-details](/docs/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
@@ -181,6 +182,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
+- [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [reactjs/popover](/docs/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [reactjs/pricing](/docs/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [reactjs/product-details](/docs/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`

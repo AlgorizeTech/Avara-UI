@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T16:06:29.509Z",
-  "totalFiles": 207,
+  "generatedAt": "2026-08-27T02:57:54.973Z",
+  "totalFiles": 209,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -421,6 +421,12 @@
       "path": "/docs/nextjs-pagination.md",
       "url": "/docs/nextjs/pagination",
       "originalMdx": "[framework]\\pagination\\page.mdx"
+    },
+    {
+      "name": "nextjs/particle-canvas",
+      "path": "/docs/nextjs-particle-canvas.md",
+      "url": "/docs/nextjs/particle-canvas",
+      "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
       "name": "nextjs/popover",
@@ -1045,6 +1051,12 @@
       "path": "/docs/reactjs-pagination.md",
       "url": "/docs/reactjs/pagination",
       "originalMdx": "[framework]\\pagination\\page.mdx"
+    },
+    {
+      "name": "reactjs/particle-canvas",
+      "path": "/docs/reactjs-particle-canvas.md",
+      "url": "/docs/reactjs/particle-canvas",
+      "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
       "name": "reactjs/popover",

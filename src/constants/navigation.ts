@@ -151,6 +151,7 @@ export const navigation: NavigationItem[] = [
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Memories Card", slug: "memories-card" },
       { label: "Network Graph", slug: "network-graph", badge: "New" },
+      { label: "Particle Canvas", slug: "particle-canvas", badge: "New" },
       { label: "Scroll Stack", slug: "scroll-stack" },
       { label: "Tilted Card", slug: "tilted-card" },
       { label: "Timeline", slug: "animated-timeline" },

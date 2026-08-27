@@ -1635,6 +1635,30 @@
       "docs": "Renders framework-agnostic buttons, not router links, so wire navigation through your own handler."
     },
     {
+      "name": "particle-canvas",
+      "type": "registry:component",
+      "title": "Particle Canvas",
+      "author": "AlgorizeTech",
+      "description": "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "categories": [
+        "media",
+        "data-display"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ParticleCanvasBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ParticleCanvasBlock.tsx"
+        }
+      ]
+    },
+    {
       "name": "payment",
       "type": "registry:component",
       "title": "Payment",
