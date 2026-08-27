@@ -465,6 +465,31 @@
       "docs": "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`."
     },
     {
+      "name": "color-picker",
+      "type": "registry:component",
+      "title": "Color Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive 360° Color Spectrum Wheel and Color Palette component featuring 2D color picking, lightness & alpha sliders, format toggles (HEX, RGB, HSL), one-click copy, and EyeDropper API support.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/color-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/color-picker.tsx"
+        }
+      ],
+      "docs": "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`."
+    },
+    {
       "name": "command",
       "type": "registry:component",
       "title": "Command",
@@ -1706,6 +1731,31 @@
         }
       ],
       "docs": "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements."
+    },
+    {
+      "name": "piano",
+      "type": "registry:component",
+      "title": "Piano",
+      "author": "AlgorizeTech",
+      "description": "An interactive Playable Piano component featuring Web Audio API synthesizers, physical keyboard keybindings (A-S-D-F-G-H-J-K-L-; and W-E-T-Y-U-O-P), master volume slider, and toggleable key indicators.",
+      "categories": [
+        "media",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/piano.tsx",
+          "type": "registry:component",
+          "target": "components/custom/piano.tsx"
+        }
+      ],
+      "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
     },
     {
       "name": "popover",

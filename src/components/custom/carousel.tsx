@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Hand } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 
 /**
@@ -386,6 +386,590 @@ export function CustomCarousel({
     <div className="w-full">
       {CarouselContent}
       {Thumbnails}
+    </div>
+  );
+}
+
+export type FanCarouselItem = {
+  img: ImgSrc;
+  title: string;
+  price?: string;
+  rating?: number | string;
+  category?: string;
+  des?: string;
+};
+
+export type RadialCarouselItem = FanCarouselItem;
+
+export type FanCarouselProps = {
+  items?: FanCarouselItem[];
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  stepAngle?: number;
+  showArrows?: boolean;
+  showDots?: boolean;
+  className?: string;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
+};
+
+export type RadialCarouselProps = FanCarouselProps;
+
+const defaultRadialItems: FanCarouselItem[] = [
+  {
+    title: "Misty Pine Forest",
+    category: "Nature",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Lush River Valley",
+    category: "Wilderness",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Autumn Woodland Path",
+    category: "Landscape",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Cascading Waterfalls",
+    category: "Sanctuary",
+    rating: "4.7",
+    img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Emerald Mountain Peak",
+    category: "Expedition",
+    rating: "5.0",
+    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Serene Alpine Lake",
+    category: "Reflections",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Sunset Coastal Shore",
+    category: "Ocean",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Northern Wilderness",
+    category: "Aurora",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Golden Desert Dunes",
+    category: "Landscape",
+    rating: "4.6",
+    img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Grand Canyon River",
+    category: "Sanctuary",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Alpine Cloud Ridge",
+    category: "Expedition",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Tropical Lagoon Bay",
+    category: "Paradise",
+    rating: "5.0",
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Mist Forest Ridge",
+    category: "Wilderness",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Glacial Ice Valley",
+    category: "Arctic",
+    rating: "5.0",
+    img: "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Sunlit Birch Grove",
+    category: "Forest",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Starlight Mountain Peak",
+    category: "Cosmos",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Volcanic Obsidian Coast",
+    category: "Geothermal",
+    rating: "4.7",
+    img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    title: "Deep Canyon Oasis",
+    category: "Sanctuary",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+  },
+];
+
+export function RadialCarousel({
+  items = defaultRadialItems,
+  autoPlay = false,
+  autoPlayInterval = 3500,
+  stepAngle,
+  showArrows = false,
+  showDots = false,
+  className = "",
+  imageComponent: Image = "img",
+}: RadialCarouselProps) {
+  const [current, setCurrent] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+
+  const displayItems = React.useMemo(() => {
+    if (!items || !items.length) return [];
+    if (items.length >= 10) return items;
+    const repeats = Math.ceil(12 / items.length);
+    return Array.from({ length: repeats }, () => items).flat();
+  }, [items]);
+
+  const total = displayItems.length;
+  const angleStep = stepAngle ?? (total > 0 ? 360 / total : 20);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => prev - 1);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay || total <= 1 || isDragging) return;
+    const interval = setInterval(nextSlide, autoPlayInterval);
+    return () => clearInterval(interval);
+  }, [autoPlay, autoPlayInterval, nextSlide, total, current, isDragging]);
+
+  if (!total) return null;
+
+  const dragAngle = dragOffset / 7; // Sensitivity factor: 7px = 1 degree
+
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, isCardCenter: boolean) => {
+    if (!isCardCenter) return;
+    setIsDragging(true);
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const stepShift = Math.round(dragAngle / angleStep);
+    if (stepShift !== 0) {
+      setCurrent((prev) => prev - stepShift);
+    }
+    setDragOffset(0);
+  };
+
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const wheelRotation = -current * angleStep + dragAngle;
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchMove={handleMouseMove}
+      onTouchEnd={handleMouseUp}
+      className={`relative w-full max-w-full overflow-hidden py-4 flex flex-col items-center justify-center select-none ${className}`}
+    >
+      <div className="relative w-full max-w-3xl h-[520px] sm:h-[600px] md:h-[680px] flex items-center justify-center">
+        {displayItems.map((item, index) => {
+          const cardBaseAngle = index * angleStep;
+          const totalAngle = cardBaseAngle + wheelRotation;
+
+          let normAngle = positiveModulo(totalAngle, 360);
+          if (normAngle > 180) normAngle -= 360;
+
+          const distRatio = Math.abs(normAngle) / 180;
+          const isCenter = Math.abs(normAngle) < 1.5;
+
+          const zIndex = Math.round(60 - distRatio * 40);
+          const scale = isCenter ? 1.05 : Math.max(0.72, 1 - distRatio * 0.28);
+          const translateY = isCenter ? -10 : 0;
+          const opacity = isCenter ? 1 : Math.max(0.7, 1 - distRatio * 0.32);
+          const brightness = isCenter ? 1 : Math.max(0.55, 1 - distRatio * 0.42);
+
+          return (
+            <div
+              key={index}
+              onMouseDown={(e) => handleMouseDown(e, isCenter)}
+              onTouchStart={(e) => handleMouseDown(e, isCenter)}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
+                if (Math.abs(dragOffset) > 5) return;
+                nextSlide();
+              }}
+              style={{
+                top: "50%",
+                left: "50%",
+                transformOrigin: "50% 105%",
+                transform: `translate(-50%, -100%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
+                zIndex,
+                opacity,
+                filter: `brightness(${brightness})`,
+                transition: isDragging
+                  ? "none"
+                  : "transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
+                isCenter
+                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  : "hover:brightness-95"
+              }`}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  width={600}
+                  height={800}
+                  className="w-full h-full object-cover pointer-events-none"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3.5 md:p-5 flex flex-col justify-end text-white">
+                  <h3 className="text-[11px] sm:text-base md:text-lg font-extrabold tracking-wide uppercase drop-shadow-md line-clamp-1">
+                    {item.title}
+                  </h3>
+
+                  <div className="flex items-center justify-between mt-0.5 text-[9px] sm:text-xs md:text-sm">
+                    {item.price ? (
+                      <span className="font-semibold text-zinc-200">{item.price}</span>
+                    ) : item.category ? (
+                      <span className="text-[8px] sm:text-[10px] md:text-xs uppercase font-semibold text-zinc-300 px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm truncate max-w-[60px] sm:max-w-none">
+                        {item.category}
+                      </span>
+                    ) : null}
+
+                    {item.rating && (
+                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-bold text-amber-400 border border-white/10">
+                        <span>★</span>
+                        <span className="text-white">{item.rating}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {(showArrows || showDots) && (
+        <div className="flex items-center gap-4 mt-2 z-10">
+          {showArrows && (
+            <button
+              onClick={prevSlide}
+              className="p-2.5 rounded-full bg-background border border-border text-foreground hover:bg-muted transition-all cursor-pointer shadow-md"
+              aria-label="Previous card"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+
+          {showDots && (
+            <div className="flex items-center gap-1.5 max-w-[200px] overflow-hidden flex-wrap justify-center">
+              {items.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    const activeIdx = positiveModulo(current, items.length);
+                    let diff = idx - activeIdx;
+                    if (diff > Math.floor(items.length / 2)) diff -= items.length;
+                    if (diff < -Math.floor(items.length / 2)) diff += items.length;
+                    setCurrent((c) => c + diff);
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    positiveModulo(current, items.length) === idx
+                      ? "w-6 bg-primary"
+                      : "w-2 bg-zinc-300 dark:bg-zinc-700"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {showArrows && (
+            <button
+              onClick={nextSlide}
+              className="p-2.5 rounded-full bg-background border border-border text-foreground hover:bg-muted transition-all cursor-pointer shadow-md"
+              aria-label="Next card"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const defaultFanDeckItems: FanCarouselItem[] = [
+  {
+    title: "FUTURE UI",
+    price: "$145.00",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&fit=crop",
+  },
+  {
+    title: "NIKE AIR RETRO",
+    price: "$199.99",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&fit=crop",
+  },
+  {
+    title: "RAMEN BOWL",
+    price: "$18.50",
+    rating: "4.7",
+    img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&fit=crop",
+  },
+  {
+    title: "SKATEBOARD PRO",
+    price: "$129.00",
+    rating: "4.6",
+    img: "https://images.unsplash.com/photo-1520040245346-76e79acb253d?w=800&fit=crop",
+  },
+  {
+    title: "CYBER CITY",
+    price: "$210.00",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&fit=crop",
+  },
+  {
+    title: "NEON SOUNDS",
+    price: "$85.00",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&fit=crop",
+  },
+  {
+    title: "PEAK RETREAT",
+    price: "$399.00",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&fit=crop",
+  },
+];
+
+export function FanCarousel({
+  items = defaultFanDeckItems,
+  autoPlay = false,
+  autoPlayInterval = 3500,
+  stepAngle,
+  showArrows = false,
+  showDots = false,
+  className = "",
+  imageComponent: Image = "img",
+}: FanCarouselProps) {
+  const [current, setCurrent] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+
+  const displayItems = React.useMemo(() => {
+    if (!items || !items.length) return [];
+    if (items.length >= 10) return items;
+    const repeats = Math.ceil(12 / items.length);
+    return Array.from({ length: repeats }, () => items).flat();
+  }, [items]);
+
+  const total = displayItems.length;
+  const angleStep = stepAngle ?? (total > 0 ? 360 / total : 20);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => prev - 1);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay || total <= 1 || isDragging) return;
+    const interval = setInterval(nextSlide, autoPlayInterval);
+    return () => clearInterval(interval);
+  }, [autoPlay, autoPlayInterval, nextSlide, total, current, isDragging]);
+
+  if (!total) return null;
+
+  const dragAngle = dragOffset / 7; // Sensitivity factor: 7px = 1 degree
+
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, isCardCenter: boolean) => {
+    if (!isCardCenter) return;
+    setIsDragging(true);
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const stepShift = Math.round(dragAngle / angleStep);
+    if (stepShift !== 0) {
+      setCurrent((prev) => prev - stepShift);
+    }
+    setDragOffset(0);
+  };
+
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const wheelRotation = -current * angleStep + dragAngle;
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchMove={handleMouseMove}
+      onTouchEnd={handleMouseUp}
+      className={`relative w-full max-w-full overflow-hidden py-4 flex flex-col items-center justify-center select-none ${className}`}
+    >
+      {/* Hand Gesture Hint Badge */}
+      <div className="absolute top-2 right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[11px] font-medium text-white/90 border border-white/10 pointer-events-none shadow-lg">
+        <Hand className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+        <span>Drag active card</span>
+      </div>
+
+      {/* 360 Degree Fan Wheel Container */}
+      <div className="relative w-full max-w-3xl h-[520px] sm:h-[600px] md:h-[680px] flex items-center justify-center">
+        {displayItems.map((item, index) => {
+          const cardBaseAngle = index * angleStep;
+          const totalAngle = cardBaseAngle + wheelRotation;
+
+          let normAngle = positiveModulo(totalAngle, 360);
+          if (normAngle > 180) normAngle -= 360;
+
+          const distRatio = Math.abs(normAngle) / 180;
+          const isCenter = Math.abs(normAngle) < 1.5;
+
+          const zIndex = Math.round(60 - distRatio * 40);
+          const scale = isCenter ? 1.05 : Math.max(0.72, 1 - distRatio * 0.28);
+          const translateY = isCenter ? -10 : 0;
+          const opacity = isCenter ? 1 : Math.max(0.7, 1 - distRatio * 0.32);
+          const brightness = isCenter ? 1 : Math.max(0.55, 1 - distRatio * 0.42);
+
+          return (
+            <div
+              key={index}
+              onMouseDown={(e) => handleMouseDown(e, isCenter)}
+              onTouchStart={(e) => handleMouseDown(e, isCenter)}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
+                if (Math.abs(dragOffset) > 5) return;
+                nextSlide();
+              }}
+              style={{
+                top: "50%",
+                left: "50%",
+                transformOrigin: "50% 105%",
+                transform: `translate(-50%, -100%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
+                zIndex,
+                opacity,
+                filter: `brightness(${brightness})`,
+                transition: isDragging
+                  ? "none"
+                  : "transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
+                isCenter
+                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  : "hover:brightness-95"
+              }`}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  width={600}
+                  height={800}
+                  className="w-full h-full object-cover pointer-events-none"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3.5 md:p-5 flex flex-col justify-end text-white">
+                  <h3 className="text-[11px] sm:text-base md:text-lg font-extrabold tracking-wide uppercase drop-shadow-md line-clamp-1">
+                    {item.title}
+                  </h3>
+
+                  <div className="flex items-center justify-between mt-0.5 text-[9px] sm:text-xs md:text-sm">
+                    {item.price ? (
+                      <span className="font-semibold text-zinc-200">{item.price}</span>
+                    ) : item.category ? (
+                      <span className="text-[8px] sm:text-[10px] md:text-xs uppercase font-semibold text-zinc-300 px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm truncate max-w-[60px] sm:max-w-none">
+                        {item.category}
+                      </span>
+                    ) : null}
+
+                    {item.rating && (
+                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-bold text-amber-400 border border-white/10">
+                        <span>★</span>
+                        <span className="text-white">{item.rating}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Center Pivot Hub Pin / Dot Button matching uploaded screenshot */}
+        <div
+          onClick={nextSlide}
+          title="Rotate wheel"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border-2 border-zinc-700 shadow-2xl flex items-center justify-center cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+        >
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-zinc-400/90 shadow-inner" />
+        </div>
+      </div>
     </div>
   );
 }
