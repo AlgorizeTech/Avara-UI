@@ -317,6 +317,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "utilities"],
     docs: "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`.",
   },
+  piano: {
+    description:
+      "An interactive Playable Piano component featuring Web Audio API synthesizers, physical keyboard keybindings (A-S-D-F-G-H-J-K-L-; and W-E-T-Y-U-O-P), master volume slider, and toggleable key indicators.",
+    categories: ["media", "utilities"],
+    docs: "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API.",
+  },
   resizable: {
     description:
       "Draggable split panes in horizontal or vertical layout, with min and max size constraints. Use it for editor and preview layouts users can rebalance.",

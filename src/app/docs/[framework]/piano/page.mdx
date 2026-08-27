@@ -1,0 +1,105 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Playable Piano
+
+An interactive, responsive **Playable Piano** component featuring synthesized acoustic Web Audio API sounds, physical keyboard keybindings, volume control slider, and toggleable key label indicators.
+
+<InjectablePropNote prop="defaultVolume" component="Piano" />
+
+## Variations
+
+export const usageDefault = `import { Piano } from "@/components/custom/piano";
+
+export default function PianoDemo() {
+  return <Piano defaultVolume={0.8} defaultShowKeys={true} />;
+}`;
+
+<ExampleShowcase
+  name="piano"
+  columns={1}
+  examples={[
+    {
+      title: "Playable Synthesizer Piano",
+      subheading: "Interactive playable piano keyboard powered by Web Audio API synthesizers. Play using mouse clicks or typing physical keyboard keys (`A-S-D-F-G-H-J-K-L-;` and `W-E-T-Y-U-O-P`).",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "defaultVolume",
+          value: "0.8",
+          effect: "sets default master volume level (0 to 1).",
+        },
+      ],
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/piano.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="piano" />
+
+## Features
+
+Discover the interactive capabilities of the `Piano` component:
+
+- **Web Audio API Synthesizer**: Zero external MP3 asset dependency. Synthesizes real acoustic piano notes using browser-native AudioContext with exponential decay envelopes.
+- **Physical Keyboard Keybindings**: Play notes naturally using physical keyboard keys (`A, S, D, F, G, H, J, K, L, ;` for White keys, and `W, E, T, Y, U, O, P` for Black keys).
+- **Show/Hide Keys Toggle**: Toggle switch to reveal or hide keyboard key labels over piano keys.
+- **Master Volume Slider**: Adjust or mute synthesizer volume levels in real-time.
+- **Tactile Key Animations**: 3D key press animation with active color highlights and smooth release physics.
+
+## Props Reference: Piano
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>defaultVolume</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.8</code>
+        </td>
+        <td>Initial master volume level between 0 and 1.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultShowKeys</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>Whether key trigger labels are shown over piano keys.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Custom CSS classes for container styling.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

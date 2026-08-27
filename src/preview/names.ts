@@ -73,6 +73,7 @@ export const sandboxNames = [
   "otp-input",
   "pagination",
   "particle-canvas",
+  "piano",
   "popover",
   "pricing",
   "product-details",
