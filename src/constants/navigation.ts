@@ -95,6 +95,7 @@ export const navigation: NavigationItem[] = [
       { label: "Data Maps", slug: "data-maps", badge: "New" },
       { label: "Data Table", slug: "data-table", badge: "New" },
       { label: "Date Picker", slug: "date-picker" },
+      { label: "Range Date Picker", slug: "range-date-picker", badge: "New" },
       { label: "Dialog", slug: "dialog" },
       { label: "Drawer", slug: "drawer" },
       { label: "Form", slug: "form" },

@@ -2003,6 +2003,31 @@
       "docs": "Named export: QrCodeReader. `onRead` fires with the decoded string. Requires camera permission **and a secure context** — it works on HTTPS and localhost, and silently fails on plain HTTP. Decoding runs on the main thread via jsQR, so expect load on low-end devices. Handle permission denial in your own UI."
     },
     {
+      "name": "range-date-picker",
+      "type": "registry:component",
+      "title": "Range Date Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/range-date-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/range-date-picker.tsx"
+        }
+      ],
+      "docs": "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange."
+    },
+    {
       "name": "register-form",
       "type": "registry:component",
       "title": "Register Form",

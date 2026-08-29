@@ -84,6 +84,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "product-details": lazyRetry(() => import("./demos/product-details-demo")),
   "progress": lazyRetry(() => import("./demos/progress-demo")),
   "qr-code": lazyRetry(() => import("./demos/qr-code-demo")),
+  "range-date-picker": lazyRetry(() => import("./demos/range-date-picker-demo")),
   "register-form": lazyRetry(() => import("./demos/register-form-demo")),
   "resizable": lazyRetry(() => import("./demos/resizable-demo")),
   "reviews": lazyRetry(() => import("./demos/reviews-demo")),

@@ -114,6 +114,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms"],
     docs: "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled.",
   },
+  "range-date-picker": {
+    description:
+      "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+    categories: ["forms", "utilities"],
+    docs: "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange.",
+  },
   "otp-input": {
     description:
       "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",

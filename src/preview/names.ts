@@ -79,6 +79,7 @@ export const sandboxNames = [
   "product-details",
   "progress",
   "qr-code",
+  "range-date-picker",
   "register-form",
   "resizable",
   "reviews",
