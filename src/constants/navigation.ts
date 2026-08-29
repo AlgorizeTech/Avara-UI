@@ -149,6 +149,7 @@ export const navigation: NavigationItem[] = [
       { label: "Cursor Animation", slug: "cursor-animation", badge: "New" },
       { label: "Curved Carousel", slug: "curved-carousel", badge: "New" },
       { label: "Dock", slug: "dock", badge: "New" },
+      { label: "Draggable Card List", slug: "draggable-card-list", badge: "New" },
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
       { label: "Globe", slug: "globe", badge: "New" },

@@ -739,6 +739,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["navigation"],
     docs: "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row.",
   },
+  "draggable-card-list": {
+    description:
+      "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+    categories: ["data-display", "layout"],
+    docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
+  },
   "magic-bento": {
     description:
       "A bento grid whose cards light up and follow the pointer on hover. Use it for feature grids on a landing page.",

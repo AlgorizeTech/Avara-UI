@@ -36,6 +36,8 @@ export const sandboxNames = [
   "design-folder-box",
   "dialog",
   "dock",
+  "draggable-card-list",
+  "draggable-card-list-modern",
   "drawer",
   "email",
   "fleet",

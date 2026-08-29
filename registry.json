@@ -858,6 +858,32 @@
       "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
     },
     {
+      "name": "draggable-card-list",
+      "type": "registry:component",
+      "title": "Draggable Card List",
+      "author": "AlgorizeTech",
+      "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/draggable-card-list.tsx",
+          "type": "registry:component",
+          "target": "components/custom/draggable-card-list.tsx"
+        }
+      ],
+      "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+    },
+    {
       "name": "drawer",
       "type": "registry:component",
       "title": "Drawer",
