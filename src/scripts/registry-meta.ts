@@ -114,6 +114,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms"],
     docs: "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled.",
   },
+  "book-flip": {
+    description:
+      "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+    categories: ["data-display", "utilities"],
+    docs: "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios.",
+  },
   "product-card": {
     description:
       "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",

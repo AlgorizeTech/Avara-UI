@@ -10,6 +10,7 @@ export const sandboxNames = [
   "animated-timeline",
   "animated-typography",
   "api-playground",
+  "book-flip",
   "breadcrumb",
   "button",
   "calendar",

@@ -143,6 +143,7 @@ export const navigation: NavigationItem[] = [
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
       { label: "Animated List", slug: "animated-list" },
+      { label: "Book Flip", slug: "book-flip", badge: "New" },
       { label: "Chat Bubble", slug: "chat-bubble" },
       { label: "Components Folder", slug: "design-components-folder", badge: "New" },
       { label: "Cursor Animation", slug: "cursor-animation", badge: "New" },

@@ -15,6 +15,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "animated-timeline": lazyRetry(() => import("./demos/animated-timeline-demo")),
   "animated-typography": lazyRetry(() => import("./demos/animated-typography-demo")),
   "api-playground": lazyRetry(() => import("./demos/api-playground-demo")),
+  "book-flip": lazyRetry(() => import("./demos/book-flip-demo")),
   "breadcrumb": lazyRetry(() => import("./demos/breadcrumb-demo")),
   "button": lazyRetry(() => import("./demos/button-demo")),
   "calendar": lazyRetry(() => import("./demos/calendar-demo")),

@@ -201,6 +201,31 @@
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
     },
     {
+      "name": "book-flip",
+      "type": "registry:component",
+      "title": "Book Flip",
+      "author": "AlgorizeTech",
+      "description": "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+      "categories": [
+        "data-display",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/book-flip.tsx",
+          "type": "registry:component",
+          "target": "components/custom/book-flip.tsx"
+        }
+      ],
+      "docs": "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios."
+    },
+    {
       "name": "breadcrumb",
       "type": "registry:component",
       "title": "Breadcrumb",

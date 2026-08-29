@@ -1,0 +1,203 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Book Flip
+
+An interactive 3D **Book Flip** component simulating realistic book page turns, dynamic spine shifts, center fold shadows, leaf peeking, and bottom icon toolbar controls.
+
+## Variations
+
+export const usageDefault = `import BookFlip, { PageFlipLeaf } from "@/components/custom/book-flip";
+
+const samplePages: PageFlipLeaf[] = [
+  // 1. FRONT COVER (First leaf in array = Front Cover Photo & Metadata)
+  {
+    id: 1,
+    frontImage: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80", // <-- FRONT COVER PHOTO
+    backImage: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80",  // <-- Inside Left Page Photo
+    frontTitle: "TERRA INCOGNITA", // <-- Front Cover Title
+    frontSubtitle: "A Visual Exploration of Earth's Remote Frontiers",
+    frontBadge: "LIMITED EDITION",
+    frontColor: "from-amber-400 to-yellow-600",
+    backTitle: "Whispering Evergreens",
+    backSubtitle: "Highland Ridges & Ancient Pines",
+    backBadge: "Plate 01",
+    backColor: "from-emerald-500 to-teal-600",
+  },
+  // 2. INSIDE PAGES / PLATES
+  {
+    id: 2,
+    frontImage: "https://images.unsplash.com/photo-1434394354979-a235cd36269d?auto=format&fit=crop&w=1200&q=80", // <-- Inside Right Page Photo
+    backImage: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",  // <-- Inside Left Page Photo
+    frontTitle: "Cascading Emerald",
+    frontSubtitle: "Basalt Columns & Rainforest Mist",
+    frontBadge: "Plate 02",
+    frontColor: "from-teal-500 to-cyan-600",
+    backTitle: "Crimson Canyons",
+    backSubtitle: "Red Rock Gorges & Sunset Radiance",
+    backBadge: "Plate 03",
+    backColor: "from-rose-500 to-pink-600",
+  },
+  {
+    id: 3,
+    frontImage: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=1200&q=80",
+    backImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+    frontTitle: "Celestial Auroras",
+    frontSubtitle: "Polar Nights & Luminous Fjord Skies",
+    frontBadge: "Plate 04",
+    frontColor: "from-indigo-500 to-purple-600",
+    backTitle: "Summit Horizons",
+    backSubtitle: "Glacial Peaks & Alpenglow Glow",
+    backBadge: "Plate 05",
+    backColor: "from-blue-500 to-indigo-600",
+  },
+  // 3. BACK COVER (Last leaf in array = Back Cover Photo & Metadata)
+  {
+    id: 4,
+    frontImage: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80", // <-- Inside Right Page Photo
+    backImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",  // <-- BACK COVER PHOTO
+    frontTitle: "Velvet Saharas",
+    frontSubtitle: "Wind Sculpted Dunes & Sunset Glow",
+    frontBadge: "Plate 06",
+    frontColor: "from-amber-600 to-yellow-500",
+    backTitle: "THE INFINITE COSMOS", // <-- Back Cover Title
+    backSubtitle: "Published by Algorize Fine Art Press",
+    backBadge: "HARDCOVER MONOGRAPH",
+    backColor: "from-purple-600 to-violet-800",
+  },
+];
+
+export default function BookFlipDemo() {
+  return (
+    <BookFlip
+      pages={samplePages}
+      defaultTurnedIndex={0}
+      pageWidth={260}
+      pageHeight={380}
+      perspective={1400}
+      peekAngle={14}
+      turnAngle={180}
+      duration={0.7}
+      easing="cubic-bezier(0.4, 0, 0.2, 1)"
+      spineShift={true}
+      radius="4px"
+      showPageNumbers={true}
+      showSpineBinding={true}
+      autoplay={false}
+      autoplayInterval={3500}
+      pauseOnHover={true}
+      interactive={true}
+      showControls={true}
+      onPageChange={(turnedCount, totalLeaves) => {
+        console.log(\`Page flipped: \${turnedCount} / \${totalLeaves}\`);
+      }}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="book-flip"
+  columns={1}
+  examples={[
+    {
+      title: "Book Flip Component",
+      subheading: "Interactive 3D book cover, open spreads with center spine fold shadow, leaf peeking, and icon-only navigation controls.",
+      usage: usageDefault,
+      code: extractCode("src/components/custom/book-flip.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="book-flip" />
+
+## Features
+
+- **3D Book Cover & Spread Transition**: Starts in single-cover mode and dynamically centers into a 2-page spread upon flipping leaves.
+- **Center Spine Crease Shadow**: Realistic crease fold shadow integrated on page surfaces.
+- **Keyboard Navigation**: Press Left Arrow (`←`) and Right Arrow (`→`) keys to flip through pages.
+- **Minimal Icon Toolbar**: Features `< Prev`, `Reset`, `X / Y` counter, and `Next >` icon-only controls.
+
+## Props Reference: BookFlip
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>pages</code></td>
+        <td><code>PageFlipLeaf[]</code></td>
+        <td><code>DEFAULT_PAGES</code></td>
+        <td>Array of page leaves, each containing front and back images & metadata.</td>
+      </tr>
+      <tr>
+        <td><code>turnedIndex</code></td>
+        <td><code>number</code></td>
+        <td><code>undefined</code></td>
+        <td>Controlled turned page count.</td>
+      </tr>
+      <tr>
+        <td><code>defaultTurnedIndex</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Default turned page count (0 = closed cover).</td>
+      </tr>
+      <tr>
+        <td><code>onPageChange</code></td>
+        <td><code>{`(turnedCount: number, totalLeaves: number) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when page count changes.</td>
+      </tr>
+      <tr>
+        <td><code>pageWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>260</code></td>
+        <td>Width of a single page leaf in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>pageHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>380</code></td>
+        <td>Height of a single page leaf in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>showControls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles visibility of the bottom navigation controls toolbar.</td>
+      </tr>
+      <tr>
+        <td><code>showSpineBinding</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles outer book spine crease line overlay.</td>
+      </tr>
+      <tr>
+        <td><code>showPageNumbers</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles page numbering badges on leaves.</td>
+      </tr>
+      <tr>
+        <td><code>autoplay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Enables automatic page flipping timer.</td>
+      </tr>
+      <tr>
+        <td><code>autoplayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3500</code></td>
+        <td>Interval in milliseconds between automatic page flips.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
