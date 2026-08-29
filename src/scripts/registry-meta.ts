@@ -114,6 +114,24 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms"],
     docs: "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled.",
   },
+  "book-flip": {
+    description:
+      "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+    categories: ["data-display", "utilities"],
+    docs: "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios.",
+  },
+  "product-card": {
+    description:
+      "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+    categories: ["data-display", "commerce"],
+    docs: "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView.",
+  },
+  "range-date-picker": {
+    description:
+      "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+    categories: ["forms", "utilities"],
+    docs: "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange.",
+  },
   "otp-input": {
     description:
       "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
@@ -720,6 +738,12 @@ export const META: Record<string, ItemMeta> = {
       "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
     categories: ["navigation"],
     docs: "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row.",
+  },
+  "draggable-card-list": {
+    description:
+      "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+    categories: ["data-display", "layout"],
+    docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
   },
   "magic-bento": {
     description:

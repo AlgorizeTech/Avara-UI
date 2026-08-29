@@ -1,0 +1,220 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Draggable Card List
+
+An interactive, fluid **Draggable Card List** component featuring 60fps Framer Motion spring reordering physics, right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
+
+## Variations
+
+export const usageClassic = `import DraggableCardList, { DraggableCardItem } from "@/components/custom/draggable-card-list";
+
+const sampleCards: DraggableCardItem[] = [
+  {
+    id: "1",
+    title: "System Performance Audit",
+    description: "Optimize bundle splitting, reduce LCP to 0.8s, and tree-shake unused assets",
+    date: "2026-08-30",
+    badge: "PERFORMANCE",
+    badgeStyle: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30",
+    hoverBorderColor: "hover:border-amber-500/80 dark:hover:border-amber-400/80",
+  },
+  {
+    id: "2",
+    title: "Security Vulnerability Patch",
+    description: "Upgrade dependencies, sanitize input payloads, and rotate API tokens",
+    date: "2026-08-30",
+    badge: "SECURITY",
+    badgeStyle: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30",
+    hoverBorderColor: "hover:border-emerald-500/80 dark:hover:border-emerald-400/80",
+  },
+  {
+    id: "3",
+    title: "UI Component Library Release",
+    description: "Publish version 2.4 with dark mode token updates and accessible aria roles",
+    date: "2026-08-30",
+    badge: "LIBRARY",
+    badgeStyle: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/30",
+    hoverBorderColor: "hover:border-purple-500/80 dark:hover:border-purple-400/80",
+  },
+  {
+    id: "4",
+    title: "Database Schema Migration",
+    description: "Execute zero-downtime PostgreSQL indexing and partition query optimization",
+    date: "2026-08-30",
+    badge: "DATABASE",
+    badgeStyle: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30",
+    hoverBorderColor: "hover:border-blue-500/80 dark:hover:border-blue-400/80",
+    linkText: "View database migration logs",
+    linkUrl: "#",
+  },
+];
+
+export default function DraggableCardListClassicDemo() {
+  return (
+    <DraggableCardList
+      items={sampleCards}
+      variant="classic"
+    />
+  );
+}`;
+
+export const usageModern = `import DraggableCardList, { DraggableCardItem } from "@/components/custom/draggable-card-list";
+
+const sampleCards: DraggableCardItem[] = [
+  {
+    id: "1",
+    title: "System Performance Audit",
+    description: "Optimize bundle splitting, reduce LCP to 0.8s, and tree-shake unused assets",
+    date: "2026-08-30",
+    badge: "PERFORMANCE",
+    badgeStyle: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30",
+    accentColor: "from-amber-400 via-orange-500 to-yellow-500",
+    hoverBorderColor: "hover:border-amber-500/80 dark:hover:border-amber-400/80",
+  },
+  {
+    id: "2",
+    title: "Security Vulnerability Patch",
+    description: "Upgrade dependencies, sanitize input payloads, and rotate API tokens",
+    date: "2026-08-30",
+    badge: "SECURITY",
+    badgeStyle: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30",
+    accentColor: "from-emerald-400 via-teal-500 to-cyan-500",
+    hoverBorderColor: "hover:border-emerald-500/80 dark:hover:border-emerald-400/80",
+  },
+  {
+    id: "3",
+    title: "UI Component Library Release",
+    description: "Publish version 2.4 with dark mode token updates and accessible aria roles",
+    date: "2026-08-30",
+    badge: "LIBRARY",
+    badgeStyle: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/30",
+    accentColor: "from-purple-400 via-indigo-500 to-violet-500",
+    hoverBorderColor: "hover:border-purple-500/80 dark:hover:border-purple-400/80",
+  },
+  {
+    id: "4",
+    title: "Database Schema Migration",
+    description: "Execute zero-downtime PostgreSQL indexing and partition query optimization",
+    date: "2026-08-30",
+    badge: "DATABASE",
+    badgeStyle: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30",
+    accentColor: "from-blue-400 via-indigo-500 to-cyan-500",
+    hoverBorderColor: "hover:border-blue-500/80 dark:hover:border-blue-400/80",
+    linkText: "View database migration logs",
+    linkUrl: "#",
+  },
+];
+
+export default function DraggableCardListModernDemo() {
+  return (
+    <DraggableCardList
+      items={sampleCards}
+      variant="modern"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="draggable-card-list"
+  columns={1}
+  examples={[
+    {
+      title: "Classic Card List",
+      subheading: "Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.",
+      props: { variant: "classic" },
+      usage: usageClassic,
+      code: extractCode("src/components/custom/draggable-card-list.tsx"),
+    },
+    {
+      title: "Modern Ambient Tint Card List",
+      subheading: "Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.",
+      props: { variant: "modern" },
+      usage: usageModern,
+      code: extractCode("src/components/custom/draggable-card-list.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="draggable-card-list" />
+
+## Features
+
+- **Butter-Smooth Spring Reordering**: Powered by Framer Motion's `Reorder` engine with 60fps spring physics.
+- **2 Distinct Card Variants**: Supports `"classic"` (clean cards with border hover shift) and `"modern"` (ambient gradient tone with glowing accent strip & separated footer).
+- **Dynamic Hover Border Shift**: Automatically highlights each card's border matching its individual accent color upon hover.
+- **Subtle Pastel Badges**: Lightweight semi-transparent badge backgrounds with subtle borders (`bg-amber-500/10 text-amber-700 border border-amber-500/30`).
+- **Right-Side Grip Handles**: Dedicated drag handles prevent accidental drag triggers on text selection.
+
+## Props Reference: DraggableCardList
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>DraggableCardItem[]</code></td>
+        <td><code>DEFAULT_ITEMS</code></td>
+        <td>Array of card item objects to display and reorder.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"classic" | "modern"</code></td>
+        <td><code>"classic"</code></td>
+        <td>Design style variant of the cards.</td>
+      </tr>
+      <tr>
+        <td><code>onReorder</code></td>
+        <td><code>{`(newItems: DraggableCardItem[]) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the list order changes.</td>
+      </tr>
+      <tr>
+        <td><code>onToggleComplete</code></td>
+        <td><code>{`(id: string | number, completed: boolean) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when a card's completion checkbox is toggled.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional title heading text rendered above the list.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional sub-heading text rendered under the title.</td>
+      </tr>
+      <tr>
+        <td><code>dragHandlePosition</code></td>
+        <td><code>"right" | "left"</code></td>
+        <td><code>"right"</code></td>
+        <td>Position of the grip handle icon on each card.</td>
+      </tr>
+      <tr>
+        <td><code>enableCheckboxes</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Toggles completion checkboxes on cards.</td>
+      </tr>
+      <tr>
+        <td><code>enableBadges</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles category badges on cards.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

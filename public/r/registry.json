@@ -201,6 +201,31 @@
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
     },
     {
+      "name": "book-flip",
+      "type": "registry:component",
+      "title": "Book Flip",
+      "author": "AlgorizeTech",
+      "description": "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+      "categories": [
+        "data-display",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/book-flip.tsx",
+          "type": "registry:component",
+          "target": "components/custom/book-flip.tsx"
+        }
+      ],
+      "docs": "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios."
+    },
+    {
       "name": "breadcrumb",
       "type": "registry:component",
       "title": "Breadcrumb",
@@ -463,6 +488,31 @@
         }
       ],
       "docs": "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`."
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:component",
+      "title": "Color Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive 360° Color Spectrum Wheel and Color Palette component featuring 2D color picking, lightness & alpha sliders, format toggles (HEX, RGB, HSL), one-click copy, and EyeDropper API support.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/color-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/color-picker.tsx"
+        }
+      ],
+      "docs": "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`."
     },
     {
       "name": "command",
@@ -808,6 +858,32 @@
       "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
     },
     {
+      "name": "draggable-card-list",
+      "type": "registry:component",
+      "title": "Draggable Card List",
+      "author": "AlgorizeTech",
+      "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/draggable-card-list.tsx",
+          "type": "registry:component",
+          "target": "components/custom/draggable-card-list.tsx"
+        }
+      ],
+      "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+    },
+    {
       "name": "drawer",
       "type": "registry:component",
       "title": "Drawer",
@@ -1031,6 +1107,31 @@
         }
       ],
       "docs": "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score."
+    },
+    {
+      "name": "heart-signal",
+      "type": "registry:component",
+      "title": "Heart Signal",
+      "author": "AlgorizeTech",
+      "description": "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+      "categories": [
+        "data-display",
+        "media"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeartSignalBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeartSignalBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration."
     },
     {
       "name": "hero",
@@ -1683,6 +1784,31 @@
       "docs": "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements."
     },
     {
+      "name": "piano",
+      "type": "registry:component",
+      "title": "Piano",
+      "author": "AlgorizeTech",
+      "description": "An interactive Playable Piano component featuring Web Audio API synthesizers, physical keyboard keybindings (A-S-D-F-G-H-J-K-L-; and W-E-T-Y-U-O-P), master volume slider, and toggleable key indicators.",
+      "categories": [
+        "media",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/piano.tsx",
+          "type": "registry:component",
+          "target": "components/custom/piano.tsx"
+        }
+      ],
+      "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
+    },
+    {
       "name": "popover",
       "type": "registry:component",
       "title": "Popover",
@@ -1831,6 +1957,31 @@
       "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items."
     },
     {
+      "name": "product-card",
+      "type": "registry:component",
+      "title": "Product Card",
+      "author": "AlgorizeTech",
+      "description": "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+      "categories": [
+        "data-display",
+        "commerce"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProductCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProductCardBlock.tsx"
+        }
+      ],
+      "docs": "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView."
+    },
+    {
       "name": "product-details",
       "type": "registry:component",
       "title": "Product Details",
@@ -1926,6 +2077,31 @@
         }
       ],
       "docs": "Named export: QrCodeReader. `onRead` fires with the decoded string. Requires camera permission **and a secure context** — it works on HTTPS and localhost, and silently fails on plain HTTP. Decoding runs on the main thread via jsQR, so expect load on low-end devices. Handle permission denial in your own UI."
+    },
+    {
+      "name": "range-date-picker",
+      "type": "registry:component",
+      "title": "Range Date Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/range-date-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/range-date-picker.tsx"
+        }
+      ],
+      "docs": "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange."
     },
     {
       "name": "register-form",

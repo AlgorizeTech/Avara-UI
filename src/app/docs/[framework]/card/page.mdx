@@ -5,9 +5,56 @@ import { extractCode } from "@/lib/code";
 
 A flexible container used to group related information and actions together in a visually distinct box.
 
-Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
+Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-The sub-components handle their own padding, so cards stay balanced whatever you put in them.
+export const usageEcommerce = `import { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+
+export default function EcommerceProductCardsDemo() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Product Card 1: Standard Best Seller */}
+      <ProductCard
+        title="Wireless Headphones"
+        subtitle="AudioTech Pro"
+        description="Pure bass acoustics, 40h battery life & active noise control."
+        price="$249.00"
+        originalPrice="$299.00"
+        rating={4.9}
+        reviewsCount={128}
+        badge="Best Seller"
+        badgeVariant="emerald"
+        onAddToCart={() => console.log("Added to cart")}
+      />
+
+      {/* Product Card 2: Apparel with Interactive Colors */}
+      <ProductCard
+        title="Urban Runner Sneakers"
+        subtitle="Footwear Co"
+        price="$89.00"
+        originalPrice="$129.00"
+        badge="-30% OFF"
+        badgeVariant="rose"
+        colors={[
+          { name: "Amber", value: "bg-amber-600 border-amber-500" },
+          { name: "Rose", value: "bg-rose-600 border-rose-500" },
+          { name: "Emerald", value: "bg-emerald-600 border-emerald-500" },
+        ]}
+        onQuickView={() => console.log("Quick View")}
+      />
+
+      {/* Product Card 3: Tech Gadget with Buy Now */}
+      <ProductCard
+        title="Smart Watch Ultra"
+        subtitle="Tech Wearables"
+        price="$199.00"
+        badge="New Arrival"
+        badgeVariant="indigo"
+        inStock={true}
+        onBuyNow={() => console.log("Proceeding to checkout")}
+      />
+    </div>
+  );
+}`;
 
 export const usageDefault = `import {
   Card,
@@ -59,7 +106,6 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custo
 import { Download, Upload } from "lucide-react";
 
 export default function ClickableCards() {
-  // interactive adds hover elevation, a lift, and an active press scale.
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
       <Card variant="bordered" interactive onClick={() => console.log("Download")}>
@@ -94,7 +140,6 @@ export default function StatGrid() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <Card variant="bordered">
-        {/* Override the header's stack to lay the title and icon side by side */}
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-sm font-medium text-zinc-500">Total Revenue</CardTitle>
           <CreditCard className="h-4 w-4 text-zinc-400" />
@@ -102,28 +147,6 @@ export default function StatGrid() {
         <CardContent>
           <div className="text-2xl font-bold">$45,231.89</div>
           <p className="text-xs text-emerald-500 font-medium mt-1">+20.1% from last month</p>
-        </CardContent>
-      </Card>
-
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-zinc-500">Subscriptions</CardTitle>
-          <Bell className="h-4 w-4 text-zinc-400" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+2350</div>
-          <p className="text-xs text-emerald-500 font-medium mt-1">+180.1% from last month</p>
-        </CardContent>
-      </Card>
-
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-zinc-500">Active Now</CardTitle>
-          <Settings className="h-4 w-4 text-zinc-400" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+573</div>
-          <p className="text-xs text-emerald-500 font-medium mt-1">+201 since last hour</p>
         </CardContent>
       </Card>
     </div>
@@ -135,18 +158,18 @@ export default function StatGrid() {
   columns={1}
   examples={[
     {
-      title: "Card",
-      subheading: "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
+      title: "E-commerce Product Cards",
+      subheading: "Complete suite of 4 reusable product cards designed for online stores, shopping platforms, and flash deal showcases.",
       propNotes: [
         {
-          prop: "variant",
-          value: '"bordered"',
-          effect: "is the default — a subtle stroke around the surface.",
+          prop: "layout",
+          value: '"ecommerce"',
+          effect: "renders 4 distinct e-commerce product card layouts (Best Seller, Color Swatches, Tech Specs & Flash Deal).",
         },
       ],
-      props: { variant: "bordered", layout: "standard" },
-      usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
+      props: { variant: "bordered", layout: "ecommerce" },
+      usage: usageEcommerce,
+      code: extractCode("src/components/custom/blocks/ProductCardBlock.tsx"),
     },
   ]}
 />
@@ -161,6 +184,20 @@ export default function StatGrid() {
   name="card"
   columns={1}
   examples={[
+    {
+      title: "Standard Card",
+      subheading: "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect: "is the default — a subtle stroke around the surface.",
+        },
+      ],
+      props: { variant: "bordered", layout: "standard" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
+    },
     {
       title: "Interactive",
       propNotes: [
@@ -200,98 +237,7 @@ Learn about the Card component's flexible layout options, including headers, foo
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Composable</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Mix and match sub-components to create complex card layouts effortlessly.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
-## Best Practices & Guidelines
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </div>
-</div>
-
-## Props Reference
-
-<div className="overflow-x-auto">
-  <table>
-    <thead>
-      <tr>
-        <th>Component</th>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <code>Card</code>
-        </td>
-        <td>
-          <code>variant</code>
-        </td>
-        <td>
-          <code>"default" | "bordered" | "flat"</code>
-        </td>
-        <td>
-          <code>"bordered"</code>
-        </td>
-        <td>
-          Determines the visual styling of the container. <code>bordered</code>{" "}
-          adds a subtle stroke, while <code>flat</code> removes shadows and
-          applies a light background fill.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>Card</code>
-        </td>
-        <td>
-          <code>interactive</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          If true, applies hover states (shadow elevation, border color change,
-          and slight scaling) to indicate the card is clickable.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <strong>All Components</strong>
-        </td>
-        <td>
-          <code>className</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Standard Tailwind CSS overrides. Useful for adjusting the flex layout
-          inside a specific <code>CardContent</code> or <code>CardHeader</code>{" "}
-          block.
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>
