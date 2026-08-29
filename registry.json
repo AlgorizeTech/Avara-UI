@@ -1906,6 +1906,31 @@
       "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items."
     },
     {
+      "name": "product-card",
+      "type": "registry:component",
+      "title": "Product Card",
+      "author": "AlgorizeTech",
+      "description": "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+      "categories": [
+        "data-display",
+        "commerce"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProductCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProductCardBlock.tsx"
+        }
+      ],
+      "docs": "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView."
+    },
+    {
       "name": "product-details",
       "type": "registry:component",
       "title": "Product Details",

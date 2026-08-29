@@ -114,6 +114,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms"],
     docs: "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled.",
   },
+  "product-card": {
+    description:
+      "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+    categories: ["data-display", "commerce"],
+    docs: "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView.",
+  },
   "range-date-picker": {
     description:
       "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
