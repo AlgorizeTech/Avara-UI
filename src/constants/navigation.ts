@@ -154,6 +154,7 @@ export const navigation: NavigationItem[] = [
       { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
       { label: "Globe", slug: "globe", badge: "New" },
       { label: "Heart Signal", slug: "heart-signal", badge: "New" },
+      { label: "Infrastructure Topology", slug: "infrastructure-topology", badge: "New" },
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Memories Card", slug: "memories-card" },
       { label: "Network Graph", slug: "network-graph", badge: "New" },

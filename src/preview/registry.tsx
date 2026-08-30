@@ -62,6 +62,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "homepage-hero-typing": lazyRetry(() => import("./demos/homepage-hero-typing-demo")),
   "horizontal-scroll-stack": lazyRetry(() => import("./demos/horizontal-scroll-stack-demo")),
   "image-compare": lazyRetry(() => import("./demos/image-compare-demo")),
+  "infrastructure-topology": lazyRetry(() => import("./demos/infrastructure-topology-demo")),
   "input": lazyRetry(() => import("./demos/input-demo")),
   "invoice": lazyRetry(() => import("./demos/invoice-demo")),
   "item": lazyRetry(() => import("./demos/item-demo")),

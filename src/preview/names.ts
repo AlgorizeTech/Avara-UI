@@ -57,6 +57,7 @@ export const sandboxNames = [
   "homepage-hero-typing",
   "horizontal-scroll-stack",
   "image-compare",
+  "infrastructure-topology",
   "input",
   "invoice",
   "item",

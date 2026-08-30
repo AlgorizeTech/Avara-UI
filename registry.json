@@ -1304,6 +1304,31 @@
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
     },
     {
+      "name": "infrastructure-topology",
+      "type": "registry:component",
+      "title": "Infrastructure Topology",
+      "author": "AlgorizeTech",
+      "description": "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/infrastructure-topology.tsx",
+          "type": "registry:component",
+          "target": "components/custom/infrastructure-topology.tsx"
+        }
+      ],
+      "docs": "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`."
+    },
+    {
       "name": "input",
       "type": "registry:component",
       "title": "Input",

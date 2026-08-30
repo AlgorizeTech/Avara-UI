@@ -745,6 +745,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "layout"],
     docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
   },
+  "infrastructure-topology": {
+    description:
+      "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+    categories: ["data-display", "layout"],
+    docs: "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`.",
+  },
   "magic-bento": {
     description:
       "A bento grid whose cards light up and follow the pointer on hover. Use it for feature grids on a landing page.",
