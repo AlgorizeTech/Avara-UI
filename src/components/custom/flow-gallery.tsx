@@ -15,12 +15,14 @@ export interface FlowGalleryProps {
     items?: FlowGalleryItem[];
     /** Stream flow angle variant (default: "top-left") */
     direction?: "top-left" | "top-right" | "vertical-up" | "vertical-down" | "vertical";
-    /** Auto-flow downward speed (default: 3.5) */
+    /** Auto-flow speed (default: 3.5) */
     speed?: number;
     /** Pause auto-flow on hover (default: true) */
     pauseOnHover?: boolean;
     /** Columns count in grid stream (default: 9) */
     columns?: number;
+    /** Enable alternating column stream flow directions (default: true) */
+    reverseAlternatingColumns?: boolean;
     /** Footer caption text */
     footerCaption?: string;
     /** Custom class name */
@@ -86,6 +88,7 @@ export function FlowGallery({
     speed = 3.5,
     pauseOnHover = true,
     columns = 9,
+    reverseAlternatingColumns = true,
     footerCaption = "",
     className,
 }: FlowGalleryProps) {
@@ -107,7 +110,7 @@ export function FlowGallery({
 
     const [renderOffset, setRenderOffset] = useState(0);
 
-    // Continuous Auto-Flow Loop
+    // Silky-Smooth 60fps Continuous Auto-Flow Loop
     useEffect(() => {
         let animId: number;
 
@@ -115,10 +118,10 @@ export function FlowGallery({
             const motion = motionRef.current;
 
             if (!motion.isDown) {
-                const dirFactor = (direction === "vertical-up" || direction === "vertical") ? -1 : 1;
+                const baseDirFactor = (direction === "vertical-up" || direction === "vertical") ? -1 : 1;
 
                 if (!isHovered || !pauseOnHover) {
-                    motion.offset += dirFactor * speed;
+                    motion.offset += baseDirFactor * speed;
                 }
 
                 motion.velocity *= 0.94;
@@ -216,12 +219,10 @@ export function FlowGallery({
                 className
             )}
         >
-            {/* Ambient Vignette & Vertical Top/Bottom Dusor Edge Overlays */}
+            {/* Ambient Vignette & Vertical Top/Bottom Edge Overlays */}
             {isVertical ? (
                 <>
-                    {/* Top Gray/Slate Edge Gradient Fade */}
                     <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-background via-background/85 to-transparent z-30 pointer-events-none" />
-                    {/* Bottom Gray/Slate Edge Gradient Fade */}
                     <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-background via-background/85 to-transparent z-30 pointer-events-none" />
                 </>
             ) : (
@@ -248,8 +249,11 @@ export function FlowGallery({
                 <div className="w-full h-full flex justify-center gap-4 sm:gap-5">
                     {Array.from({ length: columns }).map((_, colIdx) => {
                         const colStagger = colIdx * 3;
-                        const rawOffset = renderOffset;
-                        const colOffset = ((rawOffset % loopSpanHeight) + loopSpanHeight) % loopSpanHeight - loopSpanHeight;
+
+                        // Alternating column stream direction algorithm
+                        const colDirMultiplier = (reverseAlternatingColumns && colIdx % 2 === 1) ? -1 : 1;
+                        const colRawOffset = renderOffset * colDirMultiplier;
+                        const colOffset = ((colRawOffset % loopSpanHeight) + loopSpanHeight) % loopSpanHeight - loopSpanHeight;
 
                         return (
                             <div

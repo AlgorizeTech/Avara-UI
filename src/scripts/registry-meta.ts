@@ -701,13 +701,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["communication"],
     docs: "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`.",
   },
-
   // ---- Phase 4F: motion, scroll & domain-specific ----
   "animated-list": {
     description:
-      "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
-    categories: ["utilities"],
-    docs: "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline.",
+      "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
+    categories: ["media", "scroll"],
+    docs: "Renders animated lists with smooth insertion and deletion transitions.",
+  },
+  "animated-marquee": {
+    description:
+      "Horizontal and diagonal 3D cascading gallery marquee with continuous auto-flow motion, drag inertia physics, and 4 directional stream angles.",
+    categories: ["media", "scroll"],
+    docs: "Named export: AnimatedMarquee. Interactive drag with grab cursor, continuous auto-flow, 4 direction stream angles, and Next Themes adaptation.",
   },
   "animated-typography": {
     description:

@@ -3,7 +3,7 @@
   "name": "animated-list",
   "title": "Animated List",
   "author": "AlgorizeTech",
-  "description": "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
+  "description": "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
   "dependencies": [
     "gsap"
   ],
@@ -18,9 +18,10 @@
       "target": "components/custom/blocks/AnimatedListBlock.tsx"
     }
   ],
-  "docs": "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline.",
+  "docs": "Renders animated lists with smooth insertion and deletion transitions.",
   "categories": [
-    "utilities"
+    "media",
+    "scroll"
   ],
   "type": "registry:component"
 }
