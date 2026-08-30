@@ -2474,6 +2474,31 @@
       "docs": "Named export: SplitStepper. `stickySide` places the pinned column left or right; `cardDepthScale` and `cardOffset` tune the stacked-card depth effect. Needs real page height to scroll through — it will look inert inside a short container."
     },
     {
+      "name": "squircle-carousel",
+      "type": "registry:component",
+      "title": "Squircle Carousel",
+      "author": "AlgorizeTech",
+      "description": "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/squircle-carousel.tsx",
+          "type": "registry:component",
+          "target": "components/custom/squircle-carousel.tsx"
+        }
+      ],
+      "docs": "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking."
+    },
+    {
       "name": "stepper",
       "type": "registry:component",
       "title": "Stepper",

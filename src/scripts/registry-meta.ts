@@ -219,6 +219,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "media"],
     docs: "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration.",
   },
+  "squircle-carousel": {
+    description:
+      "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+    categories: ["media", "scroll"],
+    docs: "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking.",
+  },
   stepper: {
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",

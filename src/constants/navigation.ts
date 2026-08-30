@@ -148,6 +148,7 @@ export const navigation: NavigationItem[] = [
       { label: "Components Folder", slug: "design-components-folder", badge: "New" },
       { label: "Cursor Animation", slug: "cursor-animation", badge: "New" },
       { label: "Curved Carousel", slug: "curved-carousel", badge: "New" },
+      { label: "Squircle Carousel", slug: "squircle-carousel", badge: "New" },
       { label: "Dock", slug: "dock", badge: "New" },
       { label: "Draggable Card List", slug: "draggable-card-list", badge: "New" },
       { label: "File Upload", slug: "file-upload" },

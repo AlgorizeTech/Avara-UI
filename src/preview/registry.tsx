@@ -102,6 +102,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "sonner": lazyRetry(() => import("./demos/sonner-demo")),
   "split-scroll-stack": lazyRetry(() => import("./demos/split-scroll-stack-demo")),
   "split-stepper": lazyRetry(() => import("./demos/split-stepper-demo")),
+  "squircle-carousel": lazyRetry(() => import("./demos/squircle-carousel-demo")),
   "stepper": lazyRetry(() => import("./demos/stepper-demo")),
   "sticky-scroll-stack": lazyRetry(() => import("./demos/sticky-scroll-stack-demo")),
   "support": lazyRetry(() => import("./demos/support-demo")),
