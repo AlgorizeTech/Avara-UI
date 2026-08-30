@@ -225,6 +225,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "scroll"],
     docs: "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking.",
   },
+  "flow-gallery": {
+    description:
+      "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+    categories: ["media", "scroll"],
+    docs: "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation.",
+  },
   stepper: {
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",

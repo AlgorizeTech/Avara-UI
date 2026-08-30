@@ -153,6 +153,7 @@ export const navigation: NavigationItem[] = [
       { label: "Draggable Card List", slug: "draggable-card-list", badge: "New" },
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
+      { label: "Flow Gallery", slug: "flow-gallery", badge: "New" },
       { label: "Globe", slug: "globe", badge: "New" },
       { label: "Heart Signal", slug: "heart-signal", badge: "New" },
       { label: "Infrastructure Topology", slug: "infrastructure-topology", badge: "New" },

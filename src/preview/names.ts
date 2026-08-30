@@ -43,6 +43,7 @@ export const sandboxNames = [
   "email",
   "fleet",
   "floating-contact-button",
+  "flow-gallery",
   "flowchart",
   "footer",
   "form",

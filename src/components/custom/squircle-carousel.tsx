@@ -136,7 +136,7 @@ export function SquircleCarousel({
         };
     }, [items]);
 
-    // Canvas Render Loop: Semantic Theme Variables & Fully Configurable Props API
+    // Canvas Render Loop
     const renderCanvas = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -146,7 +146,6 @@ export function SquircleCarousel({
         const width = canvas.width;
         const height = canvas.height;
 
-        // Retrieve semantic background color from container computed style or fallback to theme
         let bgStyle = "#09090b";
         let isDarkTheme = isDark;
 
@@ -171,7 +170,6 @@ export function SquircleCarousel({
 
         const isMobile = width < 640;
 
-        // Dynamic Responsive Padding & Spacing
         const gap = isMobile ? Math.max(4, gridGap - 2) : gridGap;
         const padY = isMobile ? 12 : 24;
         const padX = isMobile ? 8 : 16;
@@ -187,7 +185,6 @@ export function SquircleCarousel({
 
         ctx.save();
 
-        // Symmetric Full Stage Column Range calculation
         const colsHalfStage = Math.ceil((stageCenterX + 200) / tileStride);
         const centerColIdx = Math.floor(currentPos / tileStride);
         const startGlobalCol = centerColIdx - colsHalfStage;
@@ -209,7 +206,6 @@ export function SquircleCarousel({
 
                 ctx.save();
 
-                // Draw Fixed Uniform Squircle Mask Path
                 ctx.beginPath();
                 if (ctx.roundRect) {
                     ctx.roundRect(cellX, cellY, cellW, cellH, cornerRadius);
@@ -235,7 +231,6 @@ export function SquircleCarousel({
             }
         }
 
-        // Semantic Responsive Edge Gradient Overlay
         const fadeWidth = width * (Math.min(50, Math.max(0, fadeWidthPercent)) / 100);
 
         if (fadeWidth > 0) {
@@ -352,7 +347,7 @@ export function SquircleCarousel({
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
             className={cn(
-                "relative w-full h-[260px] xs:h-[320px] sm:h-[420px] md:h-[500px] rounded-[20px] sm:rounded-[24px] overflow-hidden border border-border bg-background text-foreground select-none transition-all",
+                "relative w-full h-[500px] rounded-[24px] overflow-hidden border border-border bg-background text-foreground select-none transition-all",
                 isDragging ? "cursor-grabbing" : "cursor-grab",
                 className
             )}

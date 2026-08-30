@@ -989,6 +989,31 @@
       "docs": "Named export: FloatingContactButtonBlock. `position` is bottom-right | bottom-left; `containerMode` fixed pins it to the viewport while absolute scopes it to a parent. Open state survives reloads via `localStorageKey`. Messages are local — connect your own backend."
     },
     {
+      "name": "flow-gallery",
+      "type": "registry:component",
+      "title": "Flow Gallery",
+      "author": "AlgorizeTech",
+      "description": "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/flow-gallery.tsx",
+          "type": "registry:component",
+          "target": "components/custom/flow-gallery.tsx"
+        }
+      ],
+      "docs": "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation."
+    },
+    {
       "name": "flowchart",
       "type": "registry:component",
       "title": "Flowchart",
