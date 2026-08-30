@@ -107,9 +107,10 @@
       "type": "registry:component",
       "title": "Animated List",
       "author": "AlgorizeTech",
-      "description": "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
+      "description": "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
       "categories": [
-        "utilities"
+        "media",
+        "scroll"
       ],
       "dependencies": [
         "gsap"
@@ -124,7 +125,32 @@
           "target": "components/custom/blocks/AnimatedListBlock.tsx"
         }
       ],
-      "docs": "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline."
+      "docs": "Renders animated lists with smooth insertion and deletion transitions."
+    },
+    {
+      "name": "animated-marquee",
+      "type": "registry:component",
+      "title": "Animated Marquee",
+      "author": "AlgorizeTech",
+      "description": "Horizontal and diagonal 3D cascading gallery marquee with continuous auto-flow motion, drag inertia physics, and 4 directional stream angles.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/animated-marquee.tsx",
+          "type": "registry:component",
+          "target": "components/custom/animated-marquee.tsx"
+        }
+      ],
+      "docs": "Named export: AnimatedMarquee. Interactive drag with grab cursor, continuous auto-flow, 4 direction stream angles, and Next Themes adaptation."
     },
     {
       "name": "animated-timeline",
@@ -989,6 +1015,31 @@
       "docs": "Named export: FloatingContactButtonBlock. `position` is bottom-right | bottom-left; `containerMode` fixed pins it to the viewport while absolute scopes it to a parent. Open state survives reloads via `localStorageKey`. Messages are local — connect your own backend."
     },
     {
+      "name": "flow-gallery",
+      "type": "registry:component",
+      "title": "Flow Gallery",
+      "author": "AlgorizeTech",
+      "description": "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/flow-gallery.tsx",
+          "type": "registry:component",
+          "target": "components/custom/flow-gallery.tsx"
+        }
+      ],
+      "docs": "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation."
+    },
+    {
       "name": "flowchart",
       "type": "registry:component",
       "title": "Flowchart",
@@ -1302,6 +1353,31 @@
         }
       ],
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
+    },
+    {
+      "name": "infrastructure-topology",
+      "type": "registry:component",
+      "title": "Infrastructure Topology",
+      "author": "AlgorizeTech",
+      "description": "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/infrastructure-topology.tsx",
+          "type": "registry:component",
+          "target": "components/custom/infrastructure-topology.tsx"
+        }
+      ],
+      "docs": "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`."
     },
     {
       "name": "input",
@@ -2447,6 +2523,31 @@
         }
       ],
       "docs": "Named export: SplitStepper. `stickySide` places the pinned column left or right; `cardDepthScale` and `cardOffset` tune the stacked-card depth effect. Needs real page height to scroll through — it will look inert inside a short container."
+    },
+    {
+      "name": "squircle-carousel",
+      "type": "registry:component",
+      "title": "Squircle Carousel",
+      "author": "AlgorizeTech",
+      "description": "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/squircle-carousel.tsx",
+          "type": "registry:component",
+          "target": "components/custom/squircle-carousel.tsx"
+        }
+      ],
+      "docs": "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking."
     },
     {
       "name": "stepper",

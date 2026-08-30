@@ -1069,6 +1069,12 @@ html:not(.dark) .cube-face {
   animation: globe-rotate 20s linear infinite !important;
 }
 
+@keyframes dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
 .marquee-track {
   animation: marquee-scroll 35s linear infinite;
 }

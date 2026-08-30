@@ -1,0 +1,313 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Animated Marquee
+
+Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.
+
+Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
+
+export const itemsCode = `const items = [
+  {
+    id: "1",
+    title: "Cyberpunk Officer",
+    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "2",
+    title: "Neon Cyberpunk Girl",
+    imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "3",
+    title: "Ramen Bowl Art",
+    imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "4",
+    title: "Suit Business Portrait",
+    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "5",
+    title: "Grizzly Bear Wildlife",
+    imageUrl: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "6",
+    title: "Skateboard Graphic",
+    imageUrl: "https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "7",
+    title: "Abstract Fluid Ink",
+    imageUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "8",
+    title: "Deep Space Black Hole",
+    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "9",
+    title: "Misty Pine Forest",
+    imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "10",
+    title: "Sunset Mountain Peak",
+    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+  },
+];`;
+
+export const usageTopLeft = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+
+${itemsCode}
+
+export default function AnimatedMarqueeTopLeftDemo() {
+  return (
+    <AnimatedMarquee
+      items={items}
+      direction="top-left"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageTopRight = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+
+${itemsCode}
+
+export default function AnimatedMarqueeTopRightDemo() {
+  return (
+    <AnimatedMarquee
+      items={items}
+      direction="top-right"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageVerticalUp = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+
+${itemsCode}
+
+export default function AnimatedMarqueeVerticalUpDemo() {
+  return (
+    <AnimatedMarquee
+      items={items}
+      direction="vertical-up"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageVerticalDown = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+
+${itemsCode}
+
+export default function AnimatedMarqueeVerticalDownDemo() {
+  return (
+    <AnimatedMarquee
+      items={items}
+      direction="vertical-down"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="animated-marquee"
+  columns={1}
+  examples={[
+    {
+      title: "Top-Left to Bottom-Right Flow Stream",
+      props: { direction: "top-left" },
+      usage: usageTopLeft,
+      code: extractCode("src/components/custom/animated-marquee.tsx"),
+    },
+    {
+      title: "Top-Right to Bottom-Left Flow Stream",
+      props: { direction: "top-right" },
+      usage: usageTopRight,
+    },
+    {
+      title: "Straight Upward Vertical Stream (Bottom to Top)",
+      props: { direction: "vertical-up" },
+      usage: usageVerticalUp,
+    },
+    {
+      title: "Straight Downward Vertical Stream (Top to Bottom)",
+      props: { direction: "vertical-down" },
+      usage: usageVerticalDown,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="animated-marquee" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">4 Directional Stream Angles</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports <code>top-left</code>, <code>top-right</code>, <code>vertical-up</code>, and <code>vertical-down</code> directional angles via simple props.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Continuous Infinite Auto-Flow</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Images cascade continuously with smooth velocity inertia and optional pause-on-hover.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Drag & Inertia Physics</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Interactive mouse and touch drag gestures along the stream axis with grab cursor feedback.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light & Dark Theme Adaptation</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports Next Themes integration to transition stage background tones and radial depth vignette overlays.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Image Resolution & Aspect Ratios</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use square or near-square images (800x800) so that card items maintain crisp aspect ratios when rendered in the 3D plane.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Performance & GPU Acceleration</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">The stream plane uses hardware-accelerated <code>transform: translate3d()</code> properties to maintain 60fps performance across devices.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>direction</code>
+        </td>
+        <td>
+          <code>"top-left" | "top-right" | "vertical-up" | "vertical-down"</code>
+        </td>
+        <td>
+          <code>"top-left"</code>
+        </td>
+        <td>
+          Directional angle of the stream. Use <code>"vertical-down"</code> for straight downward flow from top to bottom.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>AnimatedMarqueeItem[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_ITEMS</code>
+        </td>
+        <td>
+          Array of image objects containing <code>{`{ id, title, imageUrl }`}</code> to display in the stream.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>3.5</code>
+        </td>
+        <td>
+          Continuous auto-flow speed in pixels per frame.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>pauseOnHover</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          When set to true, automatically pauses the continuous auto-flow when hovering over the stage.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>9</code>
+        </td>
+        <td>
+          Number of parallel columns flowing along the stream plane.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedMarquee</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the stage container.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

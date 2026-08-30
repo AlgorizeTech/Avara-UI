@@ -219,6 +219,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "media"],
     docs: "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration.",
   },
+  "squircle-carousel": {
+    description:
+      "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+    categories: ["media", "scroll"],
+    docs: "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking.",
+  },
+  "flow-gallery": {
+    description:
+      "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+    categories: ["media", "scroll"],
+    docs: "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation.",
+  },
   stepper: {
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",
@@ -689,13 +701,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["communication"],
     docs: "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`.",
   },
-
   // ---- Phase 4F: motion, scroll & domain-specific ----
   "animated-list": {
     description:
-      "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
-    categories: ["utilities"],
-    docs: "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline.",
+      "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
+    categories: ["media", "scroll"],
+    docs: "Renders animated lists with smooth insertion and deletion transitions.",
+  },
+  "animated-marquee": {
+    description:
+      "Horizontal and diagonal 3D cascading gallery marquee with continuous auto-flow motion, drag inertia physics, and 4 directional stream angles.",
+    categories: ["media", "scroll"],
+    docs: "Named export: AnimatedMarquee. Interactive drag with grab cursor, continuous auto-flow, 4 direction stream angles, and Next Themes adaptation.",
   },
   "animated-typography": {
     description:
@@ -744,6 +761,12 @@ export const META: Record<string, ItemMeta> = {
       "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
     categories: ["data-display", "layout"],
     docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
+  },
+  "infrastructure-topology": {
+    description:
+      "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+    categories: ["data-display", "layout"],
+    docs: "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`.",
   },
   "magic-bento": {
     description:
