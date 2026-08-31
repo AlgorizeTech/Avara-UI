@@ -58,32 +58,36 @@ function getColorDetails(colorKey: string) {
         hex: "#f43f5e",
         bgClass: "bg-rose-600 dark:bg-rose-500 text-white",
         textClass: "text-rose-600 dark:text-rose-400",
-        ringClass: "ring-rose-500",
+        ringClass: "ring-rose-500 border-rose-500",
         borderClass: "border-rose-500",
+        strokeHex: "#f43f5e",
       };
     case "emerald":
       return {
         hex: "#10b981",
         bgClass: "bg-emerald-600 dark:bg-emerald-500 text-white",
         textClass: "text-emerald-600 dark:text-emerald-400",
-        ringClass: "ring-emerald-500",
+        ringClass: "ring-emerald-500 border-emerald-500",
         borderClass: "border-emerald-500",
+        strokeHex: "#10b981",
       };
     case "zinc":
       return {
         hex: "#71717a",
         bgClass: "bg-primary text-primary-foreground",
         textClass: "text-foreground",
-        ringClass: "ring-zinc-500",
+        ringClass: "ring-zinc-500 border-zinc-500",
         borderClass: "border-zinc-500",
+        strokeHex: "#71717a",
       };
     case "indigo":
       return {
         hex: "#6366f1",
         bgClass: "bg-indigo-600 dark:bg-indigo-500 text-white",
         textClass: "text-indigo-600 dark:text-indigo-400",
-        ringClass: "ring-indigo-500",
+        ringClass: "ring-indigo-500 border-indigo-500",
         borderClass: "border-indigo-500",
+        strokeHex: "#6366f1",
       };
     case "primary":
     case "default":
@@ -93,21 +97,23 @@ function getColorDetails(colorKey: string) {
           hex: colorKey,
           bgClass: "bg-primary text-primary-foreground",
           textClass: "text-primary",
-          ringClass: "ring-primary",
+          ringClass: "ring-primary border-primary",
           borderClass: "border-primary",
+          strokeHex: colorKey,
         };
       }
       return {
         hex: "currentColor",
         bgClass: "bg-primary text-primary-foreground",
         textClass: "text-primary",
-        ringClass: "ring-primary",
+        ringClass: "ring-primary border-primary",
         borderClass: "border-primary",
+        strokeHex: "var(--primary)",
       };
   }
 }
 
-// --- Data Configuration (11 Tools evenly spaced at 360° / 11 = 32.72° intervals) ---
+// --- Data Configuration ---
 const DEFAULT_ORBIT_TOOLS: OrbitTool[] = [
   { id: "slack", name: "Slack", icon: Share2 },
   { id: "whatsapp", name: "WhatsApp", icon: MessageCircle },
@@ -201,16 +207,12 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
 ];
 
 export interface UserGraphProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Accent color: a preset name ("indigo" | "rose" | "emerald" | "zinc"), a hex string, or "primary" to follow your theme. */
   color?: string;
-  /** The orbiting channel nodes around the user avatar. */
   orbitTools?: OrbitTool[];
-  /** The specialist agents in the bottom tier. */
   subAgents?: SubAgent[];
-  /** The orchestrator shown between the orbit and the sub-agents. */
   orchestrator?: { name: string; role: string; avatarUrl: string };
-  /** Orbit node highlighted on first render. */
   defaultSelectedTool?: string;
+  defaultSelectedAgentId?: string;
 }
 
 const DEFAULT_ORCHESTRATOR = {
@@ -226,10 +228,14 @@ export function UserGraph({
   subAgents = DEFAULT_SUB_AGENTS,
   orchestrator = DEFAULT_ORCHESTRATOR,
   defaultSelectedTool = "phone",
+  defaultSelectedAgentId,
   className,
   ...props
 }: UserGraphProps) {
   const [selectedTool, setSelectedTool] = useState<string>(defaultSelectedTool);
+  const [selectedAgentId, setSelectedAgentId] = useState<string>(
+    defaultSelectedAgentId || subAgents[0]?.id || "sales"
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
@@ -237,7 +243,7 @@ export function UserGraph({
   useEffect(() => {
     const handleResize = () => {
       const width = containerRef.current?.clientWidth || window.innerWidth;
-      setIsSmallScreen(width < 640 || window.innerWidth < 640);
+      setIsSmallScreen(width < 1024 || window.innerWidth < 1024);
     };
 
     handleResize();
@@ -261,343 +267,413 @@ export function UserGraph({
     <div
       ref={containerRef}
       className={cn(
-        "w-full p-2 sm:p-3 bg-transparent flex flex-col items-center overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+        "w-full min-h-[580px] sm:min-h-[640px] p-2 sm:p-3 bg-transparent flex flex-col items-center overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
         className,
       )}
       {...props}
     >
-          {/* Theme Dynamic Canvas */}
-          <div className="relative w-full rounded-none bg-muted dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-border flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {/* Ambient Dynamic Theme Glow */}
+      <style>{`
+        @keyframes line-pulse {
+          0% { stroke-dashoffset: 24; }
+          100% { stroke-dashoffset: 0; }
+        }
+        .active-connector-path {
+          stroke-dasharray: 6 6;
+          animation: line-pulse 1.2s linear infinite;
+        }
+      `}</style>
+
+      {/* Theme Dynamic Canvas */}
+      <div className="relative w-full rounded-none bg-muted dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-border flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {/* Ambient Dynamic Theme Glow */}
+        <div
+          className={cn(
+            "pointer-events-none absolute left-1/2 top-1/4 -z-0 h-64 sm:h-96 w-64 sm:w-96 -translate-x-1/2 rounded-full opacity-15 blur-[100px] sm:blur-[120px] transition-colors",
+            color === "default" || color === "primary" ? "bg-primary" : ""
+          )}
+          style={color !== "default" && color !== "primary" ? { backgroundColor: accentColor.hex } : undefined}
+        />
+
+        <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center z-10">
+          {/* TOP TIER: Concentric Circles & Dashed Orbit Ring */}
+          <div className="relative size-[210px] sm:size-[250px] flex items-center justify-center my-0 z-10 scale-95 sm:scale-100">
+            {/* Outer Dashed Orbit Circle */}
+            <div className="absolute size-[170px] sm:size-[210px] rounded-full border border-dashed border-border" />
+
+            {/* Concentric Outer Solid Circle */}
+            <div className="absolute size-[100px] sm:size-[125px] rounded-full border border-border flex items-center justify-center" />
+
+            {/* Concentric Inner Ring */}
             <div
               className={cn(
-                "pointer-events-none absolute left-1/2 top-1/4 -z-0 h-64 sm:h-96 w-64 sm:w-96 -translate-x-1/2 rounded-full opacity-15 blur-[100px] sm:blur-[120px] transition-colors",
-                color === "default" || color === "primary" ? "bg-primary" : ""
+                "absolute size-[65px] sm:size-[85px] rounded-full border opacity-20",
+                color === "default" || color === "primary" ? "border-primary bg-primary/10" : ""
               )}
-              style={color !== "default" && color !== "primary" ? { backgroundColor: accentColor.hex } : undefined}
+              style={color !== "default" && color !== "primary" ? { borderColor: accentColor.hex, backgroundColor: `${accentColor.hex}10` } : undefined}
             />
 
-            <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center z-10">
-              {/* TOP TIER: Concentric Circles & Dashed Orbit Ring */}
-              <div className="relative size-[210px] sm:size-[250px] flex items-center justify-center my-0 z-10 scale-95 sm:scale-100">
-                {/* Outer Dashed Orbit Circle */}
-                <div className="absolute size-[170px] sm:size-[210px] rounded-full border border-dashed border-border" />
+            {/* Center Theme-Dynamic User Avatar Circle */}
+            <div
+              className={cn(
+                "relative z-20 size-12 sm:size-16 rounded-full flex items-center justify-center shadow-md ring-2 sm:ring-4 transition-colors",
+                accentColor.bgClass,
+                accentColor.ringClass
+              )}
+            >
+              <User className="size-5 sm:size-7 stroke-[2.5]" />
+            </div>
 
-                {/* Concentric Outer Solid Circle */}
-                <div className="absolute size-[100px] sm:size-[125px] rounded-full border border-border flex items-center justify-center" />
+            {/* 11 Orbiting Tool Nodes */}
+            {orbitTools.map((tool, index) => {
+              const angleDegree = (index / orbitTools.length) * 360 - 90;
+              const rad = (angleDegree * Math.PI) / 180;
+              const radius = 85;
+              const x = radius * Math.cos(rad);
+              const y = radius * Math.sin(rad);
+              const isSelected = selectedTool === tool.id;
 
-                {/* Concentric Inner Ring */}
+              return (
                 <div
-                  className={cn(
-                    "absolute size-[65px] sm:size-[85px] rounded-full border opacity-20",
-                    color === "default" || color === "primary" ? "border-primary bg-primary/10" : ""
+                  key={tool.id}
+                  style={{ transform: `translate(${x}px, ${y}px)` }}
+                  className="absolute z-30 flex flex-col items-center"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTool(tool.id)}
+                    className={cn(
+                      "size-6 sm:size-8 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
+                      isSelected
+                        ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 dark:ring-offset-zinc-900", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
+                        : "bg-white dark:bg-[#181c2b] border-border text-muted-foreground hover:border-slate-400 dark:hover:border-zinc-500"
+                    )}
+                  >
+                    <tool.icon className="size-3 sm:size-3.5" />
+                  </button>
+
+                  {isSelected && (
+                    <div className="absolute top-7 sm:top-9 z-40 flex flex-col items-center pointer-events-none drop-shadow-md">
+                      <div className="w-0 h-0 border-x-[5px] border-x-transparent border-b-[5px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
+                      <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-bold whitespace-nowrap shadow-md">
+                        {tool.name}
+                      </div>
+                    </div>
                   )}
-                  style={color !== "default" && color !== "primary" ? { borderColor: accentColor.hex, backgroundColor: `${accentColor.hex}10` } : undefined}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* DYNAMIC VIEW SWITCH BASED ON CONTAINER OR SCREEN SIZE */}
+          {!isSmallScreen ? (
+            /* DESKTOP & LARGE SCREEN INTEGRATED SVG GRAPH DIAGRAM */
+            <div className="relative w-full h-[330px]">
+              {/* SVG Precision Connector Lines Layer */}
+              <svg
+                className="pointer-events-none absolute inset-0 size-full overflow-visible"
+                viewBox="0 0 1000 330"
+                preserveAspectRatio="none"
+                style={{ zIndex: 1 }}
+              >
+                {/* 1. Line from Top User Avatar to Orchestrator Avatar Top */}
+                <line
+                  x1="500"
+                  y1="-110"
+                  x2="500"
+                  y2="15"
+                  stroke={accentColor.strokeHex}
+                  strokeWidth="2"
+                  className="opacity-60"
                 />
 
-                {/* Center Theme-Dynamic User Avatar Circle */}
+                {/* 2. Branch Curves emanating directly from Orchestrator Avatar BOTTOM (500, 90) */}
+                {subAgents.map((agent) => {
+                  const isActive = selectedAgentId === agent.id;
+                  const curvePath = `M 500 90 C 500 135, ${agent.svgX} 125, ${agent.svgX} 175`;
+
+                  return (
+                    <g key={agent.id}>
+                      {/* Background Passive Path */}
+                      <path
+                        d={curvePath}
+                        fill="none"
+                        stroke="#cbd5e1"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        className="dark:stroke-zinc-700/60"
+                      />
+
+                      {/* Foreground Active Highlight Path */}
+                      {isActive && (
+                        <path
+                          d={curvePath}
+                          fill="none"
+                          stroke={accentColor.strokeHex}
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          className="active-connector-path drop-shadow-sm"
+                        />
+                      )}
+
+                      {/* 3 Radiating Sub-App Lines */}
+                      <line
+                        x1={agent.svgX}
+                        y1={225}
+                        x2={agent.svgX - 35}
+                        y2={275}
+                        stroke={isActive ? accentColor.strokeHex : "#cbd5e1"}
+                        strokeWidth={isActive ? "2" : "1.2"}
+                        className={isActive ? "opacity-90" : "dark:stroke-zinc-700"}
+                      />
+                      <line
+                        x1={agent.svgX}
+                        y1={225}
+                        x2={agent.svgX}
+                        y2={275}
+                        stroke={isActive ? accentColor.strokeHex : "#cbd5e1"}
+                        strokeWidth={isActive ? "2" : "1.2"}
+                        className={isActive ? "opacity-90" : "dark:stroke-zinc-700"}
+                      />
+                      <line
+                        x1={agent.svgX}
+                        y1={225}
+                        x2={agent.svgX + 35}
+                        y2={275}
+                        stroke={isActive ? accentColor.strokeHex : "#cbd5e1"}
+                        strokeWidth={isActive ? "2" : "1.2"}
+                        className={isActive ? "opacity-90" : "dark:stroke-zinc-700"}
+                      />
+                    </g>
+                  );
+                })}
+              </svg>
+
+              {/* MIDDLE TIER: Main Orchestrator Avatar Node */}
+              <div className="absolute top-[15px] left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
                 <div
                   className={cn(
-                    "relative z-20 size-12 sm:size-16 rounded-full flex items-center justify-center shadow-md ring-2 sm:ring-4 transition-colors",
-                    accentColor.bgClass,
+                    "relative size-16 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
                     accentColor.ringClass
                   )}
                 >
-                  <User className="size-5 sm:size-7 stroke-[2.5]" />
+                  <img
+                    src={orchestrator.avatarUrl}
+                    alt={orchestrator.name}
+                    className="size-full rounded-full object-cover"
+                  />
+                  <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                 </div>
+                <div className="mt-1 text-center">
+                  <h4 className="text-xs font-bold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
+                  <p className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{orchestrator.role}</p>
+                </div>
+              </div>
 
-                {/* 11 Orbiting Tool Nodes mathematically spaced evenly around Dashed Circle */}
-                {orbitTools.map((tool, index) => {
-                  // Calculate exact equal angular spacing: 360 / 11 = 32.727° per tool
-                  const angleDegree = (index / orbitTools.length) * 360 - 90; // Start at top (270° / -90°)
-                  const rad = (angleDegree * Math.PI) / 180;
-                  const radius = isSmallScreen ? 85 : 105;
-                  const x = radius * Math.cos(rad);
-                  const y = radius * Math.sin(rad);
-                  const isSelected = selectedTool === tool.id;
+              {/* BOTTOM TIER: 5 Sub-Agents Grid */}
+              <div className="absolute inset-0 z-10">
+                {subAgents.map((agent) => {
+                  const isActive = selectedAgentId === agent.id;
 
                   return (
                     <div
-                      key={tool.id}
-                      style={{ transform: `translate(${x}px, ${y}px)` }}
-                      className="absolute z-30 flex flex-col items-center"
+                      key={agent.id}
+                      style={{ left: `${agent.percentX}%` }}
+                      onClick={() => setSelectedAgentId(agent.id)}
+                      className="absolute -translate-x-1/2 flex flex-col items-center group w-[19%] cursor-pointer"
                     >
-                      <button
-                        onClick={() => setSelectedTool(tool.id)}
+                      {/* Sub-Agent Avatar Circle */}
+                      <div
                         className={cn(
-                          "size-6 sm:size-8 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
-                          isSelected
-                            ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 dark:ring-offset-zinc-900", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
-                            : "bg-white dark:bg-[#181c2b] border-border text-muted-foreground hover:border-slate-400 dark:hover:border-zinc-500"
+                          "relative size-13 rounded-full p-0.5 bg-white dark:bg-[#181c2b] shadow-sm mt-[175px] mb-1 transition-all duration-300",
+                          isActive
+                            ? cn("ring-2 sm:ring-4 scale-110 shadow-lg", accentColor.ringClass)
+                            : "ring-1 ring-slate-300 dark:ring-zinc-700/80 group-hover:scale-105"
                         )}
                       >
-                        <tool.icon className="size-3 sm:size-3.5" />
-                      </button>
+                        <img
+                          src={agent.avatarUrl}
+                          alt={agent.title}
+                          className="size-full rounded-full object-cover"
+                        />
+                        <span
+                          className={cn(
+                            "absolute bottom-0 right-0 size-3 rounded-full ring-2 ring-slate-50 dark:ring-[#0c0e1a]",
+                            agent.status === "online"
+                              ? "bg-emerald-500"
+                              : agent.status === "idle"
+                              ? "bg-amber-500"
+                              : "bg-slate-400"
+                          )}
+                        />
+                      </div>
 
-                      {/* Active Selected Tool Label Tooltip with Arrow Pointer */}
-                      {isSelected && (
-                        <div className="absolute top-7 sm:top-9 z-40 flex flex-col items-center pointer-events-none drop-shadow-md">
-                          {/* Visible Solid Arrow Pointer Triangle */}
-                          <div className="w-0 h-0 border-x-[5px] border-x-transparent border-b-[5px] border-b-slate-800 dark:border-b-zinc-200 -mb-[1px]" />
-                          
-                          {/* Tooltip Content Badge */}
-                          <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-bold whitespace-nowrap shadow-md">
-                            {tool.name}
+                      {/* Sub-Agent Title Header */}
+                      <span
+                        className={cn(
+                          "text-[11px] font-bold text-center leading-tight mt-2 mb-3.5 whitespace-nowrap transition-all duration-200",
+                          isActive ? cn(accentColor.textClass, "translate-y-1 font-extrabold") : "text-foreground group-hover:text-primary"
+                        )}
+                      >
+                        {agent.title}
+                      </span>
+
+                      {/* 3 Sub-App Badges */}
+                      <div className="flex items-center gap-1.5">
+                        {agent.apps.map((app) => (
+                          <div
+                            key={app.id}
+                            className={cn(
+                              "size-7 sm:size-8 rounded-full flex items-center justify-center border transition-transform duration-200 group-hover:scale-105 shadow-xs",
+                              app.bgColor,
+                              app.textColor,
+                              app.borderColor || "border-border"
+                            )}
+                            title={app.name}
+                          >
+                            {app.customText ? (
+                              <span className="text-[10px] font-bold font-mono uppercase tracking-tighter">
+                                {app.customText}
+                              </span>
+                            ) : (
+                              <app.icon className="size-3 sm:size-4" />
+                            )}
                           </div>
-                        </div>
-                      )}
+                        ))}
+                      </div>
                     </div>
                   );
                 })}
               </div>
-
-              {/* DYNAMIC VIEW SWITCH BASED ON EXACT CONTAINER OR SCREEN SIZE */}
-              {!isSmallScreen ? (
-                /* DESKTOP & TABLET INTEGRATED SVG GRAPH DIAGRAM */
-                <div className="relative w-full h-[330px]">
-                  {/* SVG Precision Connector Lines Layer */}
-                  <svg
-                    className="pointer-events-none absolute inset-0 size-full overflow-visible"
-                    viewBox="0 0 1000 330"
-                    preserveAspectRatio="none"
-                    style={{ zIndex: 1 }}
-                  >
-                    {/* 1. Straight Line from Top User Avatar to John Doe Avatar Top */}
-                    <line
-                      x1="500"
-                      y1="-110"
-                      x2="500"
-                      y2="15"
-                      stroke="#cbd5e1"
-                      strokeWidth="1.5"
-                      className="dark:stroke-zinc-700"
-                    />
-
-                    {/* 2. 5 Branch Curves emanating directly from Shuvo Avatar BOTTOM (500, 90) */}
-                    {subAgents.map((agent) => {
-                      const curvePath = `M 500 90 C 500 135, ${agent.svgX} 125, ${agent.svgX} 175`;
-                      return (
-                        <g key={agent.id}>
-                          <path
-                            d={curvePath}
-                            fill="none"
-                            stroke="#cbd5e1"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            className="dark:stroke-zinc-700"
-                          />
-
-                          {/* 3 Radiating Sub-App Lines */}
-                          <line
-                            x1={agent.svgX}
-                            y1={225}
-                            x2={agent.svgX - 35}
-                            y2={275}
-                            stroke="#cbd5e1"
-                            strokeWidth="1.2"
-                            className="dark:stroke-zinc-700"
-                          />
-                          <line
-                            x1={agent.svgX}
-                            y1={225}
-                            x2={agent.svgX}
-                            y2={275}
-                            stroke="#cbd5e1"
-                            strokeWidth="1.2"
-                            className="dark:stroke-zinc-700"
-                          />
-                          <line
-                            x1={agent.svgX}
-                            y1={225}
-                            x2={agent.svgX + 35}
-                            y2={275}
-                            stroke="#cbd5e1"
-                            strokeWidth="1.2"
-                            className="dark:stroke-zinc-700"
-                          />
-                        </g>
-                      );
-                    })}
-                  </svg>
-
-                  {/* MIDDLE TIER: Shuvo Sarkar Main Orchestrator Avatar Node */}
-                  <div className="absolute top-[15px] left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
-                    <div
-                      className={cn(
-                        "relative size-16 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
-                        accentColor.ringClass
-                      )}
-                    >
-                      <img
-                        src={orchestrator.avatarUrl}
-                        alt={orchestrator.name}
-                        className="size-full rounded-full object-cover"
-                      />
-                      {/* Status Dot */}
-                      <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
-                    </div>
-                    {/* Shuvo Sarkar Info Text */}
-                    <div className="mt-1 text-center">
-                      <h4 className="text-xs font-bold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
-                      <p className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{orchestrator.role}</p>
-                    </div>
-                  </div>
-
-                  {/* BOTTOM TIER: 5 Sub-Agents Grid */}
-                  <div className="absolute inset-0 z-10">
-                    {subAgents.map((agent) => {
-                      return (
-                        <div
-                          key={agent.id}
-                          style={{ left: `${agent.percentX}%` }}
-                          className="absolute -translate-x-1/2 flex flex-col items-center group w-[19%]"
-                        >
-                          {/* Sub-Agent Avatar Circle */}
-                          <div className="relative size-13 rounded-full p-0.5 bg-white dark:bg-[#181c2b] shadow-sm mt-[175px] mb-1 ring-1 ring-slate-300 dark:ring-zinc-700/80">
-                            <img
-                              src={agent.avatarUrl}
-                              alt={agent.title}
-                              className="size-full rounded-full object-cover"
-                            />
-                            <span
-                              className={cn(
-                                "absolute bottom-0 right-0 size-3 rounded-full ring-2 ring-slate-50 dark:ring-[#0c0e1a]",
-                                agent.status === "online"
-                                  ? "bg-emerald-500"
-                                  : agent.status === "idle"
-                                  ? "bg-amber-500"
-                                  : "bg-slate-400"
-                              )}
-                            />
-                          </div>
-
-                          {/* Sub-Agent Title Header BELOW Avatar Image */}
-                          <span className="text-[11px] font-bold text-foreground text-center leading-tight mb-5 whitespace-nowrap">
-                            {agent.title}
-                          </span>
-
-                          {/* 3 Sub-App Badges */}
-                          <div className="flex items-center gap-1.5">
-                            {appList(agent.apps)}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+            </div>
+          ) : (
+            /* UNIFIED 100% IDENTICAL TIMELINE VIEW FOR MOBILE & MD (MEDIUM) SCREENS */
+            <div className="w-full mt-2 flex flex-col items-center gap-4 max-w-sm mx-auto">
+              {/* Orchestrator Item: Horizontally Centered Avatar & Card */}
+              <div className="w-full flex flex-col items-center gap-2 z-10">
+                {/* Horizontally Centered Avatar Image */}
+                <div className={cn("relative size-14 rounded-md p-0.5 bg-white dark:bg-[#181c2b] shadow-md ring-2 mx-auto", accentColor.ringClass)}>
+                  <img
+                    src={orchestrator.avatarUrl}
+                    alt={orchestrator.name}
+                    className="size-full rounded-sm object-cover"
+                  />
+                  <span className="absolute -bottom-1 -right-1 size-3.5 rounded-xs bg-emerald-500 ring-2 ring-white dark:ring-[#181c2b]" />
                 </div>
-              ) : (
-                /* SMALL SCREEN CONTINUOUS VERTICAL TIMELINE LAYOUT */
-                <div className="w-full flex flex-col items-center mt-2 px-2 z-20">
-                  {/* Timeline Main Container with Vertical Central Guide Line */}
-                  <div className="relative w-full max-w-sm flex flex-col items-center">
-                    
-                    {/* Central Vertical Connector Line */}
-                    <div className="absolute top-8 bottom-8 left-6 w-0.5 bg-gradient-to-b from-slate-300 via-slate-300 to-slate-200 dark:from-zinc-700 dark:via-zinc-700 dark:to-zinc-800" />
 
-                    {/* 1. TOP TIMELINE NODE: Shuvo Sarkar Orchestrator */}
-                    <div className="relative w-full flex items-center gap-4 mb-6 z-10">
+                {/* Horizontally Centered Info Card */}
+                <div className="w-full flex items-center justify-between p-3.5 rounded-xl bg-white dark:bg-[#181c2b] border-2 border-transparent shadow-xs">
+                  <div className="min-w-0 pr-2">
+                    <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">{orchestrator.name}</h4>
+                    <p className="text-[10px] sm:text-xs font-medium text-muted-foreground truncate">{orchestrator.role}</p>
+                  </div>
+                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[10px] sm:text-[11px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800 flex-shrink-0 whitespace-nowrap">
+                    Active Lead
+                  </span>
+                </div>
+              </div>
+
+              {/* Sub-Agents Vertical Timeline Container */}
+              <div className="relative w-full flex flex-col gap-4 pl-1">
+                {/* Continuous Vertical Line passing straight through sub-agent avatars */}
+                <div className="absolute left-[24px] top-4 bottom-6 w-0.5 bg-slate-300 dark:bg-zinc-700 z-0" />
+
+                {/* Sub-Agent Timeline Items */}
+                {subAgents.map((agent, idx) => {
+                  const isActive = selectedAgentId === agent.id;
+
+                  return (
+                    <div
+                      key={agent.id}
+                      onClick={() => setSelectedAgentId(agent.id)}
+                      className="relative z-10 flex items-start gap-4 cursor-pointer group"
+                    >
+                      {/* Left Avatar Column with Red Numbered Badge */}
+                      <div className="relative flex-shrink-0">
+                        {/* Red Numbered Badge */}
+                        <div className="absolute -top-1 -left-1 size-4 bg-rose-600 text-white font-bold text-[9px] rounded-xs flex items-center justify-center z-20 shadow-xs">
+                          {idx + 1}
+                        </div>
+
+                        {/* Avatar Image Frame */}
+                        <div
+                          className={cn(
+                            "relative size-12 rounded-md p-0.5 bg-white dark:bg-[#181c2b] shadow-xs transition-all",
+                            isActive
+                              ? cn("ring-2 scale-105", accentColor.ringClass)
+                              : "ring-1 ring-slate-300 dark:ring-zinc-700/80 group-hover:scale-105"
+                          )}
+                        >
+                          <img
+                            src={agent.avatarUrl}
+                            alt={agent.title}
+                            className="size-full rounded-sm object-cover"
+                          />
+                          <span
+                            className={cn(
+                              "absolute -bottom-1 -right-1 size-2.5 rounded-xs ring-2 ring-white dark:ring-[#181c2b]",
+                              agent.status === "online"
+                                ? "bg-emerald-500"
+                                : agent.status === "idle"
+                                ? "bg-amber-500"
+                                : "bg-slate-400"
+                            )}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Right Sub-Agent Content Card (Constant border-2 to prevent jumping) */}
                       <div
                         className={cn(
-                          "relative size-12 shrink-0 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md ml-0 transition-colors",
-                          accentColor.ringClass
+                          "flex-1 min-w-0 p-3.5 rounded-xl border-2 shadow-xs transition-colors duration-200 bg-white dark:bg-[#181c2b]",
+                          isActive
+                            ? accentColor.borderClass
+                            : "border-transparent dark:border-zinc-800/40 group-hover:border-slate-300"
                         )}
                       >
-                        <img
-                          src={orchestrator.avatarUrl}
-                          alt={orchestrator.name}
-                          className="size-full rounded-full object-cover"
-                        />
-                        <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
-                      </div>
-                      <div className="flex flex-col bg-white dark:bg-[#181c2b] p-2.5 rounded-xl border border-border shadow-xs grow">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold text-foreground">{orchestrator.name}</h4>
-                          <span className="px-1.5 py-0.5 text-[9px] font-semibold rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                            Active Lead
+                        {/* Card Header Row */}
+                        <div className="flex items-center justify-between gap-1.5">
+                          <h5 className={cn("text-xs sm:text-sm font-bold truncate", isActive ? accentColor.textClass : "text-foreground")}>
+                            {agent.title}
+                          </h5>
+                          <span className="text-[9px] sm:text-[10px] font-mono font-semibold uppercase text-muted-foreground tracking-wider flex-shrink-0 whitespace-nowrap">
+                            AGENT 0{idx + 1}
                           </span>
                         </div>
-                        <p className="text-[10px] font-medium text-muted-foreground">{orchestrator.role}</p>
-                      </div>
-                    </div>
 
-                    {/* 2. SUB-AGENTS CONTINUOUS TIMELINE STEP NODES */}
-                    <div className="w-full flex flex-col gap-4">
-                      {subAgents.map((agent, index) => (
-                        <div key={agent.id} className="relative w-full flex flex-col z-10">
-                          {/* Agent Step Header Row */}
-                          <div className="flex items-center gap-3">
-                            {/* Timeline Node Point (Avatar) */}
-                            <div className="relative size-12 shrink-0 rounded-full p-0.5 bg-white dark:bg-[#0c0e1a] ring-2 ring-slate-300 dark:ring-zinc-700 shadow-xs">
-                              <img
-                                src={agent.avatarUrl}
-                                alt={agent.title}
-                                className="size-full rounded-full object-cover"
-                              />
-                              <span
+                        {/* Divider Line */}
+                        <div className="h-[1px] bg-border/60 my-2.5" />
+
+                        {/* Apps Footer Row */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] sm:text-xs font-medium text-muted-foreground flex-shrink-0">Apps:</span>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {agent.apps.map((app) => (
+                              <div
+                                key={app.id}
                                 className={cn(
-                                  "absolute bottom-0 right-0 size-2.5 rounded-full ring-1 ring-white dark:ring-[#0c0e1a]",
-                                  agent.status === "online"
-                                    ? "bg-emerald-500"
-                                    : agent.status === "idle"
-                                    ? "bg-amber-500"
-                                    : "bg-slate-400"
+                                  "size-6 sm:size-7 rounded-md flex items-center justify-center border text-[9px] sm:text-[10px] font-bold shadow-2xs transition-transform group-hover:scale-105 flex-shrink-0",
+                                  app.bgColor,
+                                  app.textColor,
+                                  app.borderColor || "border-border"
                                 )}
-                              />
-                              {/* Step Index Badge */}
-                              <span className="absolute -top-1 -left-1 size-4 rounded-full bg-primary text-primary-foreground text-[8px] font-black flex items-center justify-center shadow-xs">
-                                {index + 1}
-                              </span>
-                            </div>
-
-                            {/* Agent Content Box */}
-                            <div className="flex flex-col bg-white dark:bg-[#181c2b] p-3 rounded-xl border border-border shadow-xs grow">
-                              <div className="flex items-center justify-between mb-1.5">
-                                <span className="text-xs font-bold text-foreground">
-                                  {agent.title}
-                                </span>
-                                <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">
-                                  Agent 0{index + 1}
-                                </span>
+                                title={app.name}
+                              >
+                                {app.customText ? app.customText : <app.icon className="size-3 sm:size-3.5" />}
                               </div>
-
-                              {/* Connected Apps Badges */}
-                              <div className="flex items-center gap-2 pt-1 border-t border-border">
-                                <span className="text-[9px] font-medium text-muted-foreground mr-1">Apps:</span>
-                                {appList(agent.apps)}
-                              </div>
-                            </div>
+                            ))}
                           </div>
                         </div>
-                      ))}
+                      </div>
                     </div>
-
-                  </div>
-                </div>
-              )}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-
-function appList(apps: SubApp[]) {
-  return apps.map((app) => (
-    <div
-      key={app.id}
-      className={cn(
-        "size-7 sm:size-8 rounded-full border flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-xs shrink-0",
-        app.bgColor,
-        app.textColor,
-        app.borderColor || "border-border"
-      )}
-      title={app.name}
-    >
-      {app.customText ? (
-        <span className="text-[9px] sm:text-[10px] font-extrabold">{app.customText}</span>
-      ) : (
-        <app.icon className="size-3.5 sm:size-4" />
-      )}
-    </div>
-  ));
-}
+export default UserGraph;
