@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 
 // ==========================================
 // SHARED TYPES & THEMES
