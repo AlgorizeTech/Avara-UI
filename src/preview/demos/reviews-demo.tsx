@@ -1,7 +1,7 @@
 "use client";
 
-import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+import { ReviewsBlock, ReviewsProps } from "@/components/custom/blocks/ReviewsBlock";
 
-export default function ReviewsDemo() {
-  return <ReviewsBlock />;
+export default function ReviewsDemo(props: ReviewsProps) {
+  return <ReviewsBlock {...props} />;
 }

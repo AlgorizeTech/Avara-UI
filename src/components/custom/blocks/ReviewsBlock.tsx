@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import createGlobe from "cobe";
+import { useTheme } from "next-themes";
 
-export type ReviewsVariant = "globe-marquee";
+export type ReviewsVariant = "globe-marquee" | "stacked-carousel" | "stacked";
 
 export interface ReviewItem {
 	id: string;
@@ -20,6 +23,8 @@ export interface ReviewsProps {
 	title?: string;
 	subtitle?: string;
 	reviews?: ReviewItem[];
+	autoSlide?: boolean;
+	autoSlideInterval?: number;
 	className?: string;
 	glowColor?: string;
 }
@@ -27,58 +32,55 @@ export interface ReviewsProps {
 const DEFAULT_REVIEWS: ReviewItem[] = [
 	{
 		id: "1",
-		name: "Alice Johnson",
-		role: "Product Owner",
+		name: "Tamar Mendelson",
+		role: "Restaurant Critic",
 		avatar:
-			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive. I'll definitely be back for more!",
+	},
+	{
+		id: "2",
+		name: "Alice Johnson",
+		role: "Product Director",
+		avatar:
+			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
 			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with the senior developers they pitch you. The code quality, architecture, and attention to detail are on a completely different level.",
 	},
 	{
-		id: "2",
-		name: "Jane Smith",
-		role: "Marketing Manager",
-		avatar:
-			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
-		rating: 5.0,
-		content:
-			"Having a Dedicated PM made this the most stress-free project of my career. I never had to chase them for updates, and they translated our complex business requirements into elegant technical solutions effortlessly.",
-	},
-	{
 		id: "3",
 		name: "Arlene McCoy",
-		role: "Co-Founder",
+		role: "Co-Founder & CEO",
 		avatar:
-			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
 			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and delivered a final product that increased our conversion rate by 40% in the first month.",
 	},
 	{
 		id: "4",
-		name: "Mr. Martin",
-		role: "C&O",
-		avatar:
-			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80",
-		rating: 5.0,
-		content:
-			"The unlimited revisions gave us the creative freedom to truly experiment without worrying about scope creep or hidden fees. AlgorizeTech didn't stop until we were 100% thrilled with the result. A truly rare agency experience.",
-	},
-	{
-		id: "5",
 		name: "Sofia Chen",
-		role: "Lead Engineer",
+		role: "Lead Systems Architect",
 		avatar:
-			"https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80",
+			"https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
 			"Integrating their modular UI components shaved weeks off our launch roadmap. The performance optimizations and accessibility features built right in saved us hundreds of hours.",
 	},
+	{
+		id: "5",
+		name: "Mr. Martin",
+		role: "Chief Operating Officer",
+		avatar:
+			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"The unlimited revisions gave us the creative freedom to truly experiment without worrying about scope creep or hidden fees. AlgorizeTech didn't stop until we were 100% thrilled with the result.",
+	},
 ];
-
-import createGlobe from "cobe";
-import { useTheme } from "next-themes";
 
 // ==========================================
 // ULTRA-REALISTIC COBE WEBGL 3D GLOBE
@@ -89,7 +91,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 	const isDarkMode = resolvedTheme !== "light";
 	const [themeTick, setThemeTick] = useState(0);
 
-	// Listen for live DOM style/class changes (when theme colors update without reload)
 	useEffect(() => {
 		if (typeof window === "undefined") return;
 		const observer = new MutationObserver(() => {
@@ -112,7 +113,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
 
-		// Helper to extract exact computed theme color from CSS --primary or text-primary
 		const getPrimaryAccentRgb = (): [number, number, number] => {
 			if (typeof window !== "undefined") {
 				try {
@@ -122,7 +122,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 					const comp = getComputedStyle(dummy).color || getComputedStyle(dummy).borderColor;
 					document.body.removeChild(dummy);
 
-					// Parse OKLCH format if returned by Tailwind v4 / Theme Customizer: e.g. oklch(0.627 0.265 303.9)
 					if (comp.includes("oklch")) {
 						const match = comp.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
 						if (match) {
@@ -130,12 +129,10 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 							const c = parseFloat(match[2]);
 							const h = parseFloat(match[3]);
 
-							// If chroma is nearly 0 (Neutral theme black/white), return fallback vibrant accent
 							if (c < 0.03) {
 								return isDarkMode ? [0.4, 0.5, 0.95] : [0.25, 0.45, 0.9];
 							}
 
-							// Convert OKLCH -> OKLAB -> Linear RGB -> sRGB
 							const hRad = (h * Math.PI) / 180;
 							const a = c * Math.cos(hRad);
 							const b = c * Math.sin(hRad);
@@ -159,7 +156,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 						}
 					}
 
-					// Standard rgb(r, g, b)
 					const rgbMatch = comp.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
 					if (rgbMatch) {
 						return [
@@ -169,7 +165,6 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 						];
 					}
 
-					// Canvas fallback
 					const ctx = document.createElement("canvas").getContext("2d");
 					if (ctx && comp) {
 						ctx.fillStyle = comp;
@@ -232,37 +227,301 @@ function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
 }
 
 // ==========================================
+// 3D STACKED PORTRAIT CAROUSEL VARIANT
+// ==========================================
+function StackedCardsCarousel({
+	reviews,
+	autoSlide = true,
+	autoSlideInterval = 4000,
+}: {
+	reviews: ReviewItem[];
+	autoSlide?: boolean;
+	autoSlideInterval?: number;
+}) {
+	const [activeIndex, setActiveIndex] = useState(0);
+	const [isHovered, setIsHovered] = useState(false);
+	const [isSmallScreen, setIsSmallScreen] = useState(false);
+	const total = reviews.length;
+
+	// Monitor viewport width to adjust card offsets for small mobile screens
+	useEffect(() => {
+		const checkScreen = () => {
+			if (typeof window !== "undefined") {
+				setIsSmallScreen(window.innerWidth < 640);
+			}
+		};
+		checkScreen();
+		window.addEventListener("resize", checkScreen);
+		return () => window.removeEventListener("resize", checkScreen);
+	}, []);
+
+	const handleNext = useCallback(() => {
+		setActiveIndex((prev) => (prev + 1) % total);
+	}, [total]);
+
+	const handlePrev = useCallback(() => {
+		setActiveIndex((prev) => (prev - 1 + total) % total);
+	}, [total]);
+
+	// Auto-Slide effect
+	useEffect(() => {
+		if (!autoSlide || isHovered || total <= 1) return;
+		const timer = setInterval(() => {
+			handleNext();
+		}, autoSlideInterval);
+		return () => clearInterval(timer);
+	}, [autoSlide, autoSlideInterval, isHovered, total, handleNext]);
+
+	const activeReview = reviews[activeIndex] || reviews[0];
+
+	// Responsive peek offset distances based on screen width
+	const peekDistance = isSmallScreen ? 48 : 85;
+	const loopDistance = isSmallScreen ? 85 : 130;
+
+	return (
+		<div
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+			className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center py-4 sm:py-12 px-3 sm:px-6 overflow-hidden"
+		>
+			{/* Left Column: Synchronized 3D Cyclic Ring Stage */}
+			<div
+				className="lg:col-span-6 relative w-full h-[270px] xs:h-[310px] sm:h-[400px] md:h-[440px] flex items-center justify-center select-none overflow-hidden"
+				style={{ perspective: "1000px" }}
+			>
+				{reviews.map((review, idx) => {
+					// Relative offset in cyclic orbit ring
+					const offset = (idx - activeIndex + total) % total;
+
+					let xOffset = 0;
+					let yOffset = 0;
+					let rotateY = 0;
+					let rotateZ = 0;
+					let scale = 0.85;
+					let zIndex = 0;
+					let opacity = 0;
+
+					if (offset === 0) {
+						// 1. Center Front Active Card
+						xOffset = 0;
+						yOffset = 0;
+						rotateY = 0;
+						rotateZ = 0;
+						scale = 1.0;
+						zIndex = 30;
+						opacity = 1.0;
+					} else if (offset === 1 || (total === 2 && offset === 1)) {
+						// 2. Right Peek Card
+						xOffset = peekDistance;
+						yOffset = 6;
+						rotateY = -14;
+						rotateZ = 5;
+						scale = 0.86;
+						zIndex = 20;
+						opacity = 0.85;
+					} else if (offset === total - 1) {
+						// 3. Left Peek Card
+						xOffset = -peekDistance;
+						yOffset = 6;
+						rotateY = 14;
+						rotateZ = -5;
+						scale = 0.86;
+						zIndex = 20;
+						opacity = 0.85;
+					} else if (offset === 2) {
+						// 4. Looping Underneath Card (Right -> Bottom Loop)
+						xOffset = loopDistance;
+						yOffset = 35;
+						rotateY = -22;
+						rotateZ = 2;
+						scale = 0.7;
+						zIndex = 5;
+						opacity = 0.35;
+					} else if (offset === total - 2) {
+						// 5. Looping Underneath Card (Left -> Bottom Loop)
+						xOffset = -loopDistance;
+						yOffset = 35;
+						rotateY = 22;
+						rotateZ = -2;
+						scale = 0.7;
+						zIndex = 5;
+						opacity = 0.35;
+					} else {
+						// Off-screen hidden slot for items > 5
+						xOffset = 0;
+						yOffset = 50;
+						scale = 0.6;
+						zIndex = 0;
+						opacity = 0;
+					}
+
+					return (
+						<motion.div
+							key={review.id}
+							initial={false}
+							animate={{
+								x: xOffset,
+								y: yOffset,
+								rotateY: rotateY,
+								rotateZ: rotateZ,
+								scale: scale,
+								zIndex: zIndex,
+								opacity: opacity,
+							}}
+							transition={{
+								type: "spring",
+								stiffness: 170,
+								damping: 22,
+								mass: 0.8,
+							}}
+							className="absolute w-[140px] h-[215px] xs:w-[170px] xs:h-[255px] sm:w-[230px] sm:h-[350px] md:w-[250px] md:h-[375px] rounded-[24px] sm:rounded-[28px] overflow-hidden border border-border shadow-none bg-card cursor-pointer transform-gpu"
+							onClick={() => {
+								if (offset === 1) handleNext();
+								if (offset === total - 1) handlePrev();
+							}}
+						>
+							<img
+								src={review.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"}
+								alt={review.name}
+								className="w-full h-full object-cover rounded-[24px] sm:rounded-[28px] pointer-events-none"
+							/>
+						</motion.div>
+					);
+				})}
+			</div>
+
+			{/* Right Column: Animated Review Content & Navigation Controls */}
+			<div className="lg:col-span-6 flex flex-col justify-center items-start space-y-3 sm:space-y-4 font-sans text-left px-2 sm:px-4">
+				{/* Rating Stars */}
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={activeReview.id + "-rating"}
+						initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+						animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+						exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+						transition={{ duration: 0.25 }}
+						className="flex items-center gap-1.5"
+					>
+						<div className="flex items-center text-amber-500 gap-1">
+							{Array.from({ length: 5 }).map((_, i) => (
+								<Star
+									key={i}
+									className="size-3.5 sm:size-4 fill-amber-500 text-amber-500"
+								/>
+							))}
+						</div>
+						<span className="text-xs font-bold text-foreground">
+							{activeReview.rating.toFixed(1)}
+						</span>
+					</motion.div>
+				</AnimatePresence>
+
+				{/* Reviewer Info */}
+				<div className="space-y-0.5 sm:space-y-1">
+					<AnimatePresence mode="wait">
+						<motion.h3
+							key={activeReview.id + "-name"}
+							initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+							exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
+							transition={{ duration: 0.3 }}
+							className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
+						>
+							{activeReview.name}
+						</motion.h3>
+					</AnimatePresence>
+
+					<AnimatePresence mode="wait">
+						<motion.p
+							key={activeReview.id + "-role"}
+							initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+							exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+							transition={{ duration: 0.3, delay: 0.05 }}
+							className="text-xs sm:text-base font-medium text-muted-foreground"
+						>
+							{activeReview.role}
+						</motion.p>
+					</AnimatePresence>
+				</div>
+
+				{/* Review Quote Text */}
+				<AnimatePresence mode="wait">
+					<motion.p
+						key={activeReview.id + "-content"}
+						initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+						animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+						exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+						transition={{ duration: 0.35, delay: 0.08 }}
+						className="text-sm xs:text-base sm:text-lg md:text-xl text-foreground/90 leading-relaxed font-normal pt-1 sm:pt-2 pb-2 sm:pb-4 max-w-xl min-h-[90px] sm:min-h-[120px]"
+					>
+						"{activeReview.content}"
+					</motion.p>
+				</AnimatePresence>
+
+				{/* Circular Arrow Navigation Buttons */}
+				<div className="flex items-center gap-3 pt-1 sm:pt-2">
+					<button
+						type="button"
+						onClick={handlePrev}
+						className="size-10 sm:size-12 rounded-full bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
+						aria-label="Previous review"
+					>
+						<ArrowLeft className="size-4 sm:size-5 stroke-[2.5]" />
+					</button>
+					<button
+						type="button"
+						onClick={handleNext}
+						className="size-10 sm:size-12 rounded-full bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
+						aria-label="Next review"
+					>
+						<ArrowRight className="size-4 sm:size-5 stroke-[2.5]" />
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+// ==========================================
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
+	variant = "globe-marquee",
 	title = "Loved by Tech Leaders Worldwide",
 	subtitle = "See how fast-growing teams scale products with our senior engineering team.",
 	reviews = DEFAULT_REVIEWS,
+	autoSlide = true,
+	autoSlideInterval = 4000,
 	className,
 	glowColor,
 }: ReviewsProps) {
+	const isStacked = variant === "stacked" || variant === "stacked-carousel";
+
 	return (
 		<section
 			className={cn(
-				"relative w-full bg-background text-foreground py-12 sm:py-24 px-4 overflow-hidden border-y border-border transition-colors duration-300",
+				"relative w-full bg-background text-foreground py-12 sm:py-20 px-4 overflow-hidden border-y border-border transition-colors duration-300",
 				className,
 			)}>
 			{/* Self-contained marquee animation styles */}
-			<style>{`
-				@keyframes reviews-marquee-scroll {
-					from { transform: translateX(0); }
-					to   { transform: translateX(-50%); }
-				}
-				.reviews-marquee-track {
-					animation: reviews-marquee-scroll 35s linear infinite;
-				}
-				.reviews-marquee-track:hover {
-					animation-play-state: paused;
-				}
-			`}</style>
+			{!isStacked && (
+				<style>{`
+					@keyframes reviews-marquee-scroll {
+						from { transform: translateX(0); }
+						to   { transform: translateX(-50%); }
+					}
+					.reviews-marquee-track {
+						animation: reviews-marquee-scroll 35s linear infinite;
+					}
+					.reviews-marquee-track:hover {
+						animation-play-state: paused;
+					}
+				`}</style>
+			)}
 
-			{/* Header Info */}
-			{(title || subtitle) && (
+			{/* Header Info (for Globe Marquee variant) */}
+			{!isStacked && (title || subtitle) && (
 				<div className="relative z-20 w-full mx-auto text-center space-y-3 mb-8 sm:mb-12 flex flex-col items-center">
 					<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider">
 						<Star className="size-3.5 fill-primary text-primary" /> Client
@@ -281,76 +540,86 @@ export function ReviewsBlock({
 				</div>
 			)}
 
-			{/* GLOBE MARQUEE CONTAINER (Right to Left) */}
-			<div className="relative w-full min-h-[420px] sm:min-h-[750px] flex items-center justify-center">
-				{/* Centered High-Performance COBE WebGL 3D Globe */}
-				<div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-					<CobeRealGlobe glowColor={glowColor} />
-				</div>
+			{/* Render selected variant */}
+			{isStacked ? (
+				<StackedCardsCarousel
+					reviews={reviews}
+					autoSlide={autoSlide}
+					autoSlideInterval={autoSlideInterval}
+				/>
+			) : (
+				<div className="relative w-full min-h-[420px] sm:min-h-[750px] flex items-center justify-center">
+					{/* Centered High-Performance COBE WebGL 3D Globe */}
+					<div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
+						<CobeRealGlobe glowColor={glowColor} />
+					</div>
 
-				{/* Foreground Smooth Right-to-Left Infinite Marquee Container */}
-				<div className="relative z-10 w-full overflow-hidden py-6">
-					<div className="flex gap-4 sm:gap-6 w-max reviews-marquee-track">
-						{[
-							...reviews,
-							...reviews,
-							...reviews,
-							...reviews,
-							...reviews,
-							...reviews,
-						].map((review, idx) => (
-							<div
-								key={`${review.id}-${idx}`}
-								className="w-[210px] xs:w-[240px] sm:w-[380px] shrink-0 p-3 sm:p-7 rounded-lg sm:rounded-2xl bg-card text-card-foreground border border-border transition-all duration-300 hover:border-primary/60 group flex flex-col justify-between">
-								<div className="space-y-2 sm:space-y-4">
-									{/* Rating Stars & Badge */}
-									<div className="flex items-center gap-1">
-										<div className="flex items-center text-primary gap-0.5">
-											{Array.from({ length: 5 }).map((_, i) => (
-												<Star
-													key={i}
-													className="size-3 sm:size-4 fill-primary text-primary"
-												/>
-											))}
+					{/* Foreground Smooth Right-to-Left Infinite Marquee Container */}
+					<div className="relative z-10 w-full overflow-hidden py-6">
+						<div className="flex gap-4 sm:gap-6 w-max reviews-marquee-track">
+							{[
+								...reviews,
+								...reviews,
+								...reviews,
+								...reviews,
+								...reviews,
+								...reviews,
+							].map((review, idx) => (
+								<div
+									key={`${review.id}-${idx}`}
+									className="w-[210px] xs:w-[240px] sm:w-[380px] shrink-0 p-3 sm:p-7 rounded-lg sm:rounded-2xl bg-card text-card-foreground border border-border transition-all duration-300 hover:border-primary/60 group flex flex-col justify-between">
+									<div className="space-y-2 sm:space-y-4">
+										{/* Rating Stars & Badge */}
+										<div className="flex items-center gap-1">
+											<div className="flex items-center text-primary gap-0.5">
+												{Array.from({ length: 5 }).map((_, i) => (
+													<Star
+														key={i}
+														className="size-3 sm:size-4 fill-primary text-primary"
+													/>
+												))}
+											</div>
+											<span className="text-[11px] sm:text-xs font-bold text-primary ml-0.5">
+												{review.rating.toFixed(1)}
+											</span>
 										</div>
-										<span className="text-[11px] sm:text-xs font-bold text-primary ml-0.5">
-											{review.rating.toFixed(1)}
-										</span>
-									</div>
 
-									{/* Testimonial Quote - Max 2 lines on small screen */}
-									<p className="text-[11px] sm:text-sm text-muted-foreground leading-snug sm:leading-relaxed font-normal line-clamp-2 sm:line-clamp-none">
-										"{review.content}"
-									</p>
-								</div>
-
-								{/* Customer Info Footer */}
-								<div className="pt-3 sm:pt-5 mt-2 sm:mt-4 border-t border-border flex items-center gap-2 sm:gap-3">
-									{review.avatar ? (
-										<img
-											src={review.avatar}
-											alt={review.name}
-											className="size-7 sm:size-10 rounded-full object-cover border border-primary/30"
-										/>
-									) : (
-										<div className="size-7 sm:size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs sm:text-sm">
-											{review.name.charAt(0)}
-										</div>
-									)}
-									<div className="min-w-0">
-										<h4 className="text-[11px] sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
-											{review.name}
-										</h4>
-										<p className="text-[10px] sm:text-[11px] text-primary/90 font-medium truncate">
-											{review.role}
+										{/* Testimonial Quote */}
+										<p className="text-[11px] sm:text-sm text-muted-foreground leading-snug sm:leading-relaxed font-normal line-clamp-2 sm:line-clamp-none">
+											"{review.content}"
 										</p>
 									</div>
+
+									{/* Customer Info Footer */}
+									<div className="pt-3 sm:pt-5 mt-2 sm:mt-4 border-t border-border flex items-center gap-2 sm:gap-3">
+										{review.avatar ? (
+											<img
+												src={review.avatar}
+												alt={review.name}
+												className="size-7 sm:size-10 rounded-full object-cover border border-primary/30"
+											/>
+										) : (
+											<div className="size-7 sm:size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs sm:text-sm">
+												{review.name.charAt(0)}
+											</div>
+										)}
+										<div className="min-w-0">
+											<h4 className="text-[11px] sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
+												{review.name}
+											</h4>
+											<p className="text-[10px] sm:text-[11px] text-primary/90 font-medium truncate">
+												{review.role}
+											</p>
+										</div>
+									</div>
 								</div>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</section>
 	);
 }
+
+export default ReviewsBlock;
