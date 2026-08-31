@@ -24,47 +24,63 @@ export type ProductDetailsVariant =
   | "bento-editorial-showcase"
   | "color-sync-gallery";
 
+export interface ProductColor {
+  name: string;
+  class: string;
+  image?: string;
+}
+
 export interface ProductDetailsProps {
   variant?: ProductDetailsVariant;
   title?: string;
   price?: string;
   originalPrice?: string;
   description?: string;
+  badge?: string;
+  rating?: number;
+  reviewsCount?: number;
+  images?: string[];
+  colors?: ProductColor[];
+  sizes?: string[];
   className?: string;
 }
 
+const DEFAULT_IMAGES = [
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+];
+
+const DEFAULT_COLORS: ProductColor[] = [
+  { name: "Crimson Red / Black", class: "bg-rose-600", image: DEFAULT_IMAGES[0] },
+  { name: "Vibrant Yellow Edition", class: "bg-amber-400", image: DEFAULT_IMAGES[1] },
+  { name: "Stealth Black / Gold", class: "bg-slate-900", image: DEFAULT_IMAGES[2] },
+  { name: "Minimal Pure White", class: "bg-muted border border-border", image: DEFAULT_IMAGES[3] },
+];
+
+const DEFAULT_SIZES = ["US 8", "US 9", "US 10", "US 11", "US 12"];
+
 export function ProductDetails({
   variant = "modern-split-gallery",
-  title,
-  price,
-  originalPrice,
-  description,
+  title = "Nike Air Max Pulse 2026",
+  price = "$189.99",
+  originalPrice = "$240.00",
+  description = "Engineered with reactive Air Cushioning and breathable Flyknit upper for high-performance city workouts and daily street style.",
+  badge = "Special Edition",
+  rating = 4.9,
+  reviewsCount = 284,
+  images = DEFAULT_IMAGES,
+  colors = DEFAULT_COLORS,
+  sizes = DEFAULT_SIZES,
   className,
 }: ProductDetailsProps) {
   const [selectedColor, setSelectedColor] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("US 10");
+  const [selectedSize, setSelectedSize] = useState(sizes[2] || sizes[0] || "US 10");
   const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState<"specs" | "shipping" | "reviews">("specs");
-
-  const shoeSizes = ["US 8", "US 9", "US 10", "US 11", "US 12"];
-
-  // Swapped ONLY 2nd and 4th images while keeping colors array untouched
-  const images = [
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
-  ];
-
-  // Colors array left untouched as requested
-  const colors = [
-    { name: "Crimson Red / Black", class: "bg-rose-600", image: images[0] },
-    { name: "Vibrant Yellow Edition", class: "bg-amber-400", image: images[1] },
-    { name: "Stealth Black / Gold", class: "bg-slate-900", image: images[2] },
-    { name: "Minimal Pure White", class: "bg-muted border border-border", image: images[3] },
-  ];
 
   return (
     <section className={cn("w-full bg-background text-foreground transition-colors py-10 sm:py-20 px-4 sm:px-6 overflow-hidden", className)}>
