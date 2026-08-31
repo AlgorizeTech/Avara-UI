@@ -147,7 +147,7 @@ export function SquircleCarousel({
         const height = canvas.height;
 
         let bgStyle = "#09090b";
-        let isDarkTheme = isDark;
+        const isDarkTheme = isDark;
 
         if (containerRef.current) {
             const computedBg = getComputedStyle(containerRef.current).backgroundColor;

@@ -171,7 +171,7 @@ export function ProductDetails({
                   <a href="#" className="text-foreground hover:underline text-[11px]">Size Guide</a>
                 </div>
                 <div className="flex flex-wrap gap-2.5">
-                  {shoeSizes.map((s) => (
+                  {sizes.map((s) => (
                     <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-4 py-2.5 rounded-xl text-xs font-bold border transition-all bg-card", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                       {s}
                     </button>
@@ -293,7 +293,7 @@ export function ProductDetails({
                 <div className="space-y-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">US Shoe Size</span>
                   <div className="flex gap-2">
-                    {shoeSizes.map((s) => (
+                    {sizes.map((s) => (
                       <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-background", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
@@ -376,7 +376,7 @@ export function ProductDetails({
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">US Shoe Size</label>
                   <div className="flex flex-wrap gap-2">
-                    {shoeSizes.map((s) => (
+                    {sizes.map((s) => (
                       <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-background", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
@@ -482,7 +482,7 @@ export function ProductDetails({
                   <a href="#" className="text-foreground hover:underline text-[11px]">Size Guide</a>
                 </div>
                 <div className="flex flex-wrap gap-2.5">
-                  {shoeSizes.map((s) => (
+                  {sizes.map((s) => (
                     <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-4 py-2.5 rounded-xl text-xs font-bold border transition-all bg-card", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                       {s}
                     </button>
