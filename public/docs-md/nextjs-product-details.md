@@ -4,17 +4,66 @@ A collection of 4 production-ready, high-converting, fully responsive E-commerce
 
 `ProductDetails` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for image slider arrows, color-synced previews, stock urgency bars, specs tabs, and checkout CTAs.
 
+export const productData = `const product = {
+  title: "Nike Air Max Pulse 2026",
+  price: "$189.99",
+  originalPrice: "$240.00",
+  description: "Engineered with reactive Air Cushioning and breathable Flyknit upper for high-performance city workouts and daily street style.",
+  badge: "Special Edition",
+  images: [
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+  ],
+  colors: [
+    { name: "Crimson Red / Black", class: "bg-rose-600" },
+    { name: "Vibrant Yellow Edition", class: "bg-amber-400" },
+    { name: "Stealth Black / Gold", class: "bg-slate-900" },
+    { name: "Minimal Pure White", class: "bg-muted border border-border" },
+  ],
+  sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
+};`;
+
 export const usage1 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
-export default function Demo1() { return ; }`;
+
+${productData}
+
+export default function SplitGalleryDemo() {
+  return (
+    
+  );
+}`;
 
 export const usage2 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
-export default function Demo2() { return ; }`;
+
+${productData}
+
+export default function FloatingGlassCardDemo() {
+  return (
+    
+  );
+}`;
 
 export const usage3 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
-export default function Demo3() { return ; }`;
+
+${productData}
+
+export default function BentoShowcaseDemo() {
+  return (
+    
+  );
+}`;
 
 export const usage4 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
-export default function Demo4() { return ; }`;
+
+${productData}
+
+export default function ColorSyncDemo() {
+  return (
+    
+  );
+}`;
 
 ## Installation
 

@@ -25,34 +25,65 @@ export default function HeroSection() {
 export const usageAspect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function CinematicHero() {
-  // "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
-  // modal, so a cinematic still can still open a 16:9 player.
-  return <HeroVideoPlayer aspectRatio="21/9" thumbnailUrl="/photos/hero-still.jpg" />;
+  return (
+    <HeroVideoPlayer
+      aspectRatio="21/9"
+      badge="Cinematic"
+      title="Wilderness Unbound"
+      subtitle="A 21:9 ultrawide panoramic preview frame."
+      playButtonLabel="Watch Film"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+    />
+  );
 }`;
 
 export const usageAspect43 = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function ClassicHero() {
-  return <HeroVideoPlayer aspectRatio="4/3" thumbnailUrl="/photos/hero-still.jpg" />;
+  return (
+    <HeroVideoPlayer
+      aspectRatio="4/3"
+      badge="Classic 4:3"
+      title="Wilderness Unbound"
+      subtitle="Classic 4:3 aspect ratio video container."
+      playButtonLabel="Watch Film"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+    />
+  );
 }`;
 
 export const usageNoGlow = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function FlatHero() {
-  // Drops the ambient bloom behind the frame — better on busy backgrounds.
-  return <HeroVideoPlayer enableGlow={false} />;
+  return (
+    <HeroVideoPlayer
+      enableGlow={false}
+      badge="Minimal Glow"
+      title="Clean Video Hero"
+      subtitle="Ambient background glow turned off for cleaner minimal layouts."
+      playButtonLabel="Play Video"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+    />
+  );
 }`;
 
 export const usageModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
-// Stand-in for whatever analytics client you already use.
+
 const track = (event: string) => console.log(event);
 
 export default function FullWidthHero() {
-  // "md" | "lg" | "xl" | "full" — how wide the player modal opens.
   return (
     <HeroVideoPlayer
       modalSize="full"
-      videoUrl="https://www.youtube.com/embed/VIDEO_ID?autoplay=1"
+      badge="Full Screen Modal"
+      title="Full Width Experience"
+      subtitle="Expands into an ultra-wide full screen viewport modal upon playback."
+      playButtonLabel="Watch Documentary"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
       onPlay={() => track("hero_video_opened")}
       onClose={() => track("hero_video_closed")}
     />

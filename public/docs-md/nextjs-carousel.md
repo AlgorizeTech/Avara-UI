@@ -2,9 +2,36 @@
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
+Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the GSAP-powered `FluidGlassSlider`, which installs on its own.
 
 ## Carousels
+
+export const usageRadial = `import { RadialCarousel } from "@/components/custom/carousel";
+
+const items = [
+  {
+    title: "Misty Pine Forest",
+    category: "Nature",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&fit=crop",
+  },
+  {
+    title: "Lush River Valley",
+    category: "Wilderness",
+    rating: "4.8",
+    img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&fit=crop",
+  },
+  {
+    title: "Autumn Woodland Path",
+    category: "Landscape",
+    rating: "4.9",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&fit=crop",
+  },
+];
+
+export default function RadialShowcase() {
+  return ;
+}`;
 
 export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
 
@@ -70,11 +97,9 @@ export default function FluidShowcase() {
   return ;
 }`;
 
-## Examples
-
 ### Installation
 
-The three carousels above ship in one file. `FluidGlassSlider` is a separate
+The four carousels above ship in one file. `FluidGlassSlider` is a separate
 item — installing `carousel` does not pull it in:
 
 ## Features

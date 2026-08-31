@@ -607,21 +607,9 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A composable hero section with centre or split layouts, background patterns and a badge slot. Use it as the opening section of a landing page.",
-    categories: ["marketing", "layout"],
-    docs: "Named exports: Hero, HeroContent, HeroBadge, HeroBadgeText, getThemeStyles. `layout` is center | left | split-right | split-left; `pattern` adds a grid or dot backdrop; variants are default | glass | glow. Composable and content-agnostic — no runtime dependencies. For ready-made copy and CTAs, use `homepage-hero`.",
-  },
-  "homepage-hero": {
-    description:
-      "A prop-driven hero with rotating typed words, badge link, CLI command and two CTAs. Use it as a complete above-the-fold section without composing parts.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
     categories: ["marketing"],
-    docs: "Named export: HomepageHeroBlock. Everything is a prop — `typingWords` cycles between `titlePrefix` and `titleSuffix`, and `cliCommand` renders a copyable install line. Animated with Motion; uses next/link, so it needs edits outside Next.js. `homepage-hero-typing` is the same layout without the motion dependency.",
-  },
-  "homepage-hero-typing": {
-    description:
-      "The homepage hero with a hand-rolled typing effect and no motion library. Use it when you want the same layout without the extra dependency.",
-    categories: ["marketing"],
-    docs: "Named export: HomepageHeroTypingBlock. Identical prop surface to `homepage-hero`, but the typing runs on timers instead of Motion — lighter, with less entrance animation. Uses next/link, so it needs edits outside Next.js.",
+    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
   },
   "hero-video-player": {
     description:

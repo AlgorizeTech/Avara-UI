@@ -57,19 +57,58 @@ export type FooterVariant =
   | "neon-glow-pulse"
   | "quantum-particle-beam";
 
+export interface FooterLinkSection {
+  title: string;
+  links: { label: string; href: string }[];
+}
+
 export interface FooterProps {
   variant?: FooterVariant;
   brandName?: string;
   logo?: React.ReactNode;
   tagline?: string;
+  copyrightText?: string;
+  sections?: FooterLinkSection[];
   className?: string;
 }
+
+const DEFAULT_FOOTER_SECTIONS: FooterLinkSection[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "Components", href: "#" },
+      { label: "Templates", href: "#" },
+      { label: "Documentation", href: "#" },
+      { label: "Changelog", href: "#" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "GitHub", href: "#" },
+      { label: "Discord", href: "#" },
+      { label: "Community", href: "#" },
+      { label: "Showcase", href: "#" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", href: "#" },
+      { label: "Blog", href: "#" },
+      { label: "Careers", href: "#" },
+      { label: "Privacy Policy", href: "#" },
+    ],
+  },
+];
 
 export function Footer({
   variant = "simple-centered",
   brandName = "Algorize UI",
   logo,
   tagline = "Elevate your web applications with fluid, production-ready animated components.",
+  copyrightText = "© 2026 AlgorizeTech Inc. All rights reserved.",
+  sections = DEFAULT_FOOTER_SECTIONS,
   className,
 }: FooterProps) {
   const BrandLogo = () => (

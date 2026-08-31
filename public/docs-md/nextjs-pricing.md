@@ -163,10 +163,18 @@ export default function BorderedPricing() {
 
 export const usageBuilder = `import { PricingBuilder } from "@/components/custom/blocks/Pricing";
 
-// Self-contained: the builder owns its own module list, totals and GSAP
-// timeline, so \`color\` is the only prop.
+const modules = [
+  { id: "auth", name: "User Authentication", price: 15 },
+  { id: "db", name: "Database Storage", price: 25 },
+  { id: "analytics", name: "Advanced Analytics", price: 35 },
+  { id: "support", name: "24/7 SLA Support", price: 50 },
+  { id: "domain", name: "Custom Domain & SSL", price: 10 },
+];
+
 export default function QuoteBuilder() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageTable = `import { PricingTable, type PricingTableData } from "@/components/custom/blocks/Pricing";
@@ -206,9 +214,10 @@ export default function ComparePlans() {
 
 export const usageSlider = `import { PricingSlider } from "@/components/custom/blocks/Pricing";
 
-// Usage-based pricing: the slider computes the tier and price internally.
 export default function UsagePricing() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageTypographic = `import { PricingTypographic } from "@/components/custom/blocks/Pricing";

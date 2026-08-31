@@ -1,235 +1,8 @@
-# Hero Sections
+# Hero
 
-A collection of modern, highly composable Hero components for marketing websites. Built with Tailwind CSS and Framer Motion. This block separates layout structure from visual style through **Compound Components**, so you can write the exact same clean component structure every time.
+A collection of modern Hero components for marketing websites. Built with Tailwind CSS and Framer Motion, featuring rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, CLI copy button, and call-to-action buttons.
 
-Three independent blocks live on this page: the composable `HeroBlock` system, and the two ready-made homepage heroes (`HomepageHeroBlock` and `HomepageHeroTypingBlock`). The composable set is the one to reach for when you want to arrange your own content; the homepage blocks are drop-in, prop-configured sections. Each has its own install command, so each one's sits with the block it installs.
-
-## Composable hero
-
-`Hero` publishes `layout`, `variant` and `color` through context, so `HeroTitle`, `HeroAction` and `HeroVisual` restyle themselves — you never repeat the theme on a child.
-
-export const usageSplitRight = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function LandingPage() {
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-  );
-}`;
-
-export const usageSplitLeft = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function SplitLeftHero() {
-  // The visual moves to the left column; the markup order never changes.
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-  );
-}`;
-
-export const usageCenter = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function CenteredHero() {
-  // Centred stack. \`HeroVisual\` sits below the copy instead of beside it.
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-  );
-}`;
-
-export const usageLeft = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function LeftAlignedHero() {
-  // Single column, left aligned — no visual column at all.
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-  );
-}`;
-
-export const usageGlass = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-  HeroVisual,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function GlassHero() {
-  // \`glass\` inverts the palette to light-on-dark and frosts the surfaces.
-  // \`HeroAction\` picks that up from context — no extra props on the buttons.
-  //
-  // Under \`glass\`, \`HeroVisual\` is not a side panel — it becomes the full-bleed
-  // background layer behind the frosted card. Leave it empty and the hero renders
-  // blank, so give it an image.
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-        {/* Keeps the frosted text readable over a bright photo. */}
-
-  );
-}`;
-
-export const usageGlow = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroContent,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function GlowHero() {
-  // \`glow\` adds the ambient accent bloom behind the content. Pair it with
-  // the matching action so the button glows too.
-  return (
-
-          Start Building
-
-  );
-}`;
-
-export const usagePattern = `import {
-  Hero,
-  HeroAction,
-  HeroActions,
-  HeroBadge,
-  HeroContent,
-  HeroDescription,
-  HeroTitle,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function PatternedHero() {
-  // \`pattern\` paints the backdrop: "none", "grid" or "dots".
-  return (
-
-          Supercharged Components
-
-          Build stunning interfaces with flawless code.
-
-          Everything you need to launch a beautiful, accessible, and fast web
-          application without writing layout CSS from scratch.
-
-            Start Building
-
-            Watch Demo
-
-  );
-}`;
-
-export const usageGlitch = `import {
-  Hero,
-  HeroContent,
-  HeroTitle,
-} from "@/components/custom/blocks/HeroBlock";
-
-export default function GlitchHero() {
-  // \`animation\` lives on the title, not the root — the other children keep
-  // their own entrances.
-  return (
-
-          Build stunning interfaces with flawless code.
-
-  );
-}`;
-
-### Installation
-
-### More examples
-
-Every example below is the same `HeroBlock` you just installed — only the props change.
-
-## Homepage hero — word bounce
-
-The flagship centered hero: a sparkle pill badge, a rotating word that bounces in and out, a one-click CLI copy button, and two call-to-action buttons. Every string is a prop.
-
-export const usageHomepageHero = `import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
   return (
@@ -237,13 +10,7 @@ export default function Page() {
   );
 }`;
 
-### Installation
-
-## Homepage hero — typing effect
-
-The same layout with a character-by-character typewriter and a blinking cursor in place of the bounce.
-
-export const usageHomepageHeroTyping = `import { HomepageHeroTypingBlock } from "@/components/custom/blocks/HomepageHeroTypingBlock";
+export const usageTyping = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
   return (
@@ -251,91 +18,28 @@ export default function Page() {
   );
 }`;
 
-### Installation
+export const usageSlider = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
-## Recipes
-
-Two finished compositions built from the same `HeroBlock` primitives — copy one and replace the copy.
+export default function Page() {
+  return (
+    
+  );
+}`;
 
 ## Props Reference
 
-        Component
         Prop
         Type
         Default
         Description
 
-          Hero
-
-          layout
-
-          "center" | "left" | "split-right" | "split-left"
-
-          "center"
-
-          Structural arrangement of HeroContent and{" "}
-          HeroVisual. The split layouts reorder the columns on
-          desktop only.
-
-          Hero
-
           variant
 
-          "default" | "glass" | "glow"
+          "bounce" | "typing" | "slider"
 
-          "default"
+          "bounce"
 
-          Visual treatment, published through context so children restyle
-          themselves. glass goes light-on-dark and frosted;{" "}
-          glow blooms the accent behind the content.
-
-          Hero
-
-          pattern
-
-          "none" | "grid" | "dots"
-
-          "none"
-        
-        Background pattern painted behind the section.
-
-          Hero
-
-          color
-
-          "indigo" | "rose" | "emerald" | "zinc" | string
-
-          "indigo"
-
-          Accent for the badge, primary action and glow. Any hex string is
-          resolved through CSS variables.
-
-          HeroTitle
-
-          animation
-
-          "fade-up" | "blur-in" | "glitch" | "none"
-
-          "fade-up"
-
-          Entrance animation for the headline only — the other children keep
-          their own.
-
-          HeroAction
-
-          variant
-
-          "primary" | "secondary" | "outline" | "ghost" | "glow"
-
-          "primary"
-
-          Button style. It is also re-derived from the hero's own{" "}
-          variant, so the same value looks right on a glass hero
-          without extra props.
-
-          HomepageHeroBlock
-          
-          HomepageHeroTypingBlock
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders a split 2-column hero with a continuous marquee thumbnail slider.
 
           typingWords
 
@@ -343,31 +47,33 @@ Two finished compositions built from the same `HeroBlock` primitives — copy on
 
           ["Interfaces", "Components", …]
 
-          The rotating words between titlePrefix and{" "}
-          titleSuffix.
+          The rotating words between titlePrefix and titleSuffix.
 
-          HomepageHeroBlock
-          
-          HomepageHeroTypingBlock
+          sliderImages
 
-          badgeText · badgeHref ·{" "}
-          titlePrefix · titleSuffix ·{" "}
-          subtitle · cliCommand
+          string[]
+
+          […]
+
+          Array of thumbnail image URLs for the continuous right-to-left marquee slider (used when variant="slider").
+
+          mainImage
+
+          string
+
+          "…"
+
+          Featured image URL for the right column (used when variant="slider").
+
+          badgeText · badgeHref · titlePrefix · titleSuffix · subtitle · cliCommand
 
           string
 
           —
 
-          Every string in the section is a prop, each with a sensible default.{" "}
-          cliCommand also feeds the one-click copy button.
+          Every string in the section is a prop, each with a sensible default. cliCommand feeds the one-click copy button.
 
-          HomepageHeroBlock
-          
-          HomepageHeroTypingBlock
-
-          primaryActionLabel · primaryActionHref ·{" "}
-          secondaryActionLabel ·{" "}
-          secondaryActionHref
+          primaryActionLabel · primaryActionHref · secondaryActionLabel · secondaryActionHref
 
           string
 
@@ -375,18 +81,13 @@ Two finished compositions built from the same `HeroBlock` primitives — copy on
         
         Label and destination for each of the two call-to-action buttons.
 
-          HomepageHeroBlock
-          
-          HomepageHeroTypingBlock
-
           color
 
           string
 
           undefined
 
-          Accent color — a preset name or any CSS color. Left unset it inherits
-          your theme.
+          Accent color — a preset name or any CSS color. Left unset it inherits your theme.
 
 ---
 
