@@ -16,6 +16,8 @@ import {
   Zap,
 } from "lucide-react";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 // ==========================================
 // SHARED TYPES & THEMES
@@ -102,120 +104,87 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
-// WCAG relative luminance, so a custom hex gets a foreground that is legible
-// on it rather than an unconditional white.
-const relLuminance = (rgb: string) => {
-  const [r, g, b] = rgb.split(",").map((n) => {
-    const v = Number(n.trim()) / 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-// Accent + its foreground, published as CSS variables by every theme.
-//
-// Tailwind only emits classes it can SEE in the source, and a variant prefix
-// only binds to the token it is glued to. So `\`selection:${theme.bg}\`` did
-// not produce "selection:<each class>" — it produced ONE prefixed class plus
-// the rest leaking in unprefixed, which is how `text-primary-foreground`
-// escaped onto the typographic section and repainted all of its body copy.
-// Routing the dynamic parts through variables keeps every class literal
-// (`bg-[var(--pricing-accent)]`, `group-hover:text-[var(--pricing-on)]`) so
-// prefixes bind correctly and the value still varies per theme.
-const accentVars = (accent: string, on: string) =>
-  ({ "--pricing-accent": accent, "--pricing-on": on }) as React.CSSProperties;
-
-const PRESET_VARS: Record<string, React.CSSProperties> = {
-  indigo: accentVars("var(--color-indigo-600, #4f46e5)", "#ffffff"),
-  rose: accentVars("var(--color-rose-600, #e11d48)", "#ffffff"),
-  emerald: accentVars("var(--color-emerald-600, #059669)", "#ffffff"),
-  // zinc inverts with the theme; light-dark() keys off `color-scheme`, which
-  // both the docs preview and next-themes set alongside the `dark` class.
-  zinc: accentVars(
-    "light-dark(#18181b, #f4f4f5)",
-    "light-dark(#ffffff, #18181b)",
-  ),
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color === "primary" || color === "default" || !colorThemes[color]) {
-    if (color && color.startsWith("#")) {
-      const rgb = hexToRgb(color);
-      return {
-        theme: {
-          text: "text-[var(--theme-color)]",
-          bg: "bg-[var(--theme-color)] text-[var(--pricing-on)] hover:opacity-90",
-          bgSoft:
-            "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-          border: "border-[var(--theme-color)]",
-          shadow: "shadow-[var(--theme-color)]/20",
-          gradient:
-            "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
-          gradientSoft: "from-[rgba(var(--theme-color-rgb),0.15)] to-transparent",
-          ring: "ring-[var(--theme-color)]",
-          slider:
-            "accent-[var(--theme-color)] [&::-webkit-slider-thumb]:bg-[var(--theme-color)]",
-          fill: "fill-[var(--theme-color)]",
-        },
-        style: {
-          "--theme-color": color,
-          "--theme-color-rgb": rgb,
-          ...accentVars(
-            color,
-            relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff",
-          ),
-        } as React.CSSProperties,
-      };
-    }
+export const getThemeStyles = (color: PricingColor = "primary") => {
+  if (color === "primary") {
     return {
       theme: {
-        text: "text-primary",
-        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-        bgSoft: "bg-primary/10 text-primary",
-        border: "border-primary",
-        shadow: "shadow-primary/20",
-        gradient: "from-primary to-primary/80",
-        gradientSoft: "from-primary/10 to-transparent",
-        ring: "ring-primary",
-        slider: "accent-primary [&::-webkit-slider-thumb]:bg-primary",
-        fill: "fill-primary",
+        text: "text-[var(--pricing-accent)]",
+        bg: "bg-[var(--pricing-accent)] text-[var(--pricing-on)]",
+        bgSoft: "bg-[var(--pricing-accent)]/10 text-[var(--pricing-accent)]",
+        border: "border-[var(--pricing-accent)]",
+        shadow: "shadow-[var(--pricing-accent)]/20",
+        gradient: "from-[var(--pricing-accent)] to-[var(--pricing-accent)]/80",
+        gradientSoft:
+          "from-[var(--pricing-accent)]/10 to-transparent dark:from-[var(--pricing-accent)]/10 dark:to-transparent",
+        ring: "ring-[var(--pricing-accent)]",
+        slider:
+          "accent-[var(--pricing-accent)] [&::-webkit-slider-thumb]:bg-[var(--pricing-accent)]",
+        fill: "fill-[var(--pricing-accent)]",
       },
-      style: accentVars("var(--primary)", "var(--primary-foreground)"),
+      style: {
+        "--pricing-accent": "var(--primary)",
+        "--pricing-on": "var(--primary-foreground)",
+      } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color], style: PRESET_VARS[color] ?? {} };
+
+  if (colorThemes[color]) {
+    return { theme: colorThemes[color], style: {} };
+  }
+
+  const rgb = hexToRgb(color);
+  return {
+    theme: {
+      text: "text-[var(--pricing-accent)]",
+      bg: "bg-[var(--pricing-accent)] text-white",
+      bgSoft: "bg-[var(--pricing-accent)]/10 text-[var(--pricing-accent)]",
+      border: "border-[var(--pricing-accent)]",
+      shadow: "shadow-[var(--pricing-accent)]/20",
+      gradient: "from-[var(--pricing-accent)] to-[var(--pricing-accent)]/80",
+      gradientSoft: "from-[var(--pricing-accent)]/10 to-transparent",
+      ring: "ring-[var(--pricing-accent)]",
+      slider:
+        "accent-[var(--pricing-accent)] [&::-webkit-slider-thumb]:bg-[var(--pricing-accent)]",
+      fill: "fill-[var(--pricing-accent)]",
+    },
+    style: {
+      "--pricing-accent": color,
+      "--pricing-rgb": rgb,
+    } as React.CSSProperties,
+  };
 };
 
-const ICON_MAP: Record<string, React.ElementType> = {
+const iconMap: Record<string, React.ElementType> = {
   Rocket,
-  Users,
   Zap,
   Building,
+  Users,
   Code2,
   PenTool,
 };
 
-const AnimatedPrice = ({ value }: { value: string | number }) => {
-  const cleanValue = value.toString().replace(/\.00$/, "");
+// Animated Price Counter Component
+const AnimatedPrice = ({ value }: { value: number | string }) => {
+  const cleanValue = String(value);
   const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
-  const [displayValue, setDisplayValue] = useState(numericValue || 0);
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
     if (isNaN(numericValue)) return;
     let startTime: number;
-    const duration = 600;
-    const startValue = displayValue;
+    const duration = 650;
+    const startValue = 0;
 
     const animate = (time: number) => {
       if (!startTime) startTime = time;
       const progress = Math.min((time - startTime) / duration, 1);
-      const easeProgress = 1 - Math.pow(1 - progress, 5);
+      const easeProgress = 1 - Math.pow(1 - progress, 4);
       setDisplayValue(startValue + (numericValue - startValue) * easeProgress);
       if (progress < 1) requestAnimationFrame(animate);
       else setDisplayValue(numericValue);
     };
     requestAnimationFrame(animate);
-  }, [numericValue]);
+  }, [numericValue, value]);
 
   if (isNaN(numericValue)) return <span>{cleanValue}</span>;
   const isDecimal = cleanValue.includes(".");
@@ -250,258 +219,141 @@ export function PricingCards({
   data,
   variant = "default",
   color = "primary",
+  linkComponent: LinkComp = "a",
 }: {
   data: PricingData;
   variant?: PricingVariant;
   color?: PricingColor;
+  linkComponent?: React.ElementType;
 }) {
-  const [activeTab, setActiveTab] = useState(data?.tabs?.[0]?.id || "");
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [activeTab, setActiveTab] = useState(data.tabs[0]?.id || "monthly");
   const { theme, style } = getThemeStyles(color);
 
-  if (!data || !data.tabs || data.tabs.length === 0) return null;
-  const activeTabData = data.tabs.find((tab) => tab.id === activeTab);
-  const tabIndex = data.tabs.findIndex((tab) => tab.id === activeTab);
-
-  const handleTabChange = (tabId: string) => {
-    if (tabId !== activeTab) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveTab(tabId);
-        setIsTransitioning(false);
-      }, 150);
-    }
-  };
-
-  const getVariantStyles = () =>
-    ({
-      default: {
-        card: "relative transition-all duration-200 bg-background border border-border rounded-2xl p-6 hover:shadow-lg",
-        cardPopular: cn("border-2 sm:scale-105 z-10", theme.border, theme.shadow),
-        price: "text-4xl font-bold text-foreground",
-        button:
-          "w-full py-2.5 px-4 rounded-xl font-bold transition-colors border border-border ",
-        buttonPopular: cn("border-transparent text-white shadow-md", theme.bg),
-        featuresTitle:
-          "font-semibold text-sm text-muted-foreground uppercase tracking-wide",
-        featureIcon:
-          "rounded-full p-0.5 mr-3 mt-0.5 bg-muted text-muted-foreground",
-        featureIconPopular: cn("text-white", theme.bg),
-      },
-      premium: {
-        card: "relative transition-all duration-300 bg-background border border-border rounded-3xl p-8 hover:shadow-2xl",
-        cardPopular: cn(
-          "border-0 sm:scale-105 z-10 bg-gradient-to-b shadow-2xl",
-          theme.gradientSoft,
-          theme.shadow,
-        ),
-        price: cn(
-          "text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-br",
-          theme.gradient,
-        ),
-        button:
-          "w-full py-3 px-4 rounded-xl font-bold transition-all border border-border",
-        buttonPopular: cn(
-          "border-transparent text-white shadow-lg hover:scale-105",
-          theme.bg,
-          theme.shadow,
-        ),
-        featuresTitle:
-          "font-bold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2",
-        featureIcon:
-          "rounded-lg p-1 mr-3 mt-0.5 bg-muted text-muted-foreground shadow-sm",
-        featureIconPopular: cn("text-white", theme.bg),
-      },
-      elegant: {
-        card: "relative transition-all duration-500 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 border border-border/60 rounded-xl p-8 hover:-translate-y-2 hover:shadow-xl",
-        cardPopular: cn("sm:scale-105 z-10 border-t-4 shadow-2xl", theme.border),
-        price:
-          "text-4xl font-light text-foreground tracking-tight",
-        button:
-          "w-full py-3 px-4 rounded-md font-medium tracking-wide transition-all border border-border",
-        buttonPopular: cn(
-          "border-transparent text-white shadow-md hover:shadow-xl",
-          theme.bg,
-        ),
-        featuresTitle:
-          "font-medium text-xs text-muted-foreground uppercase tracking-[0.1em] border-b border-border/60 pb-3 mb-4",
-        featureIcon:
-          "rounded-full p-1 mr-3 mt-0.5 bg-muted text-muted-foreground",
-        featureIconPopular: cn("text-white shadow-sm", theme.bg),
-      },
-      minimal: {
-        card: "relative transition-all duration-300 bg-transparent rounded-2xl p-6",
-        cardPopular: cn(
-          "bg-muted sm:scale-105 z-10 ring-1 shadow-sm",
-          theme.ring,
-        ),
-        price: "text-4xl font-light text-foreground",
-        button:
-          "w-full py-2.5 px-4 rounded-full font-medium transition-colors border border-border",
-        buttonPopular: cn("border-transparent text-white shadow-md", theme.bg),
-        featuresTitle:
-          "font-medium text-xs text-muted-foreground uppercase tracking-widest mb-4",
-        featureIcon: "mr-3 mt-0.5 text-muted-foreground shrink-0",
-        featureIconPopular: cn("shrink-0", theme.text),
-      },
-      bordered: {
-        card: "relative transition-all duration-200 bg-background border-2 border-primary rounded-none p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]",
-        cardPopular: cn("border-4 sm:scale-105 z-10", theme.border),
-        price: "text-4xl font-black text-foreground uppercase",
-        button:
-          "w-full py-3 px-4 font-bold border-2 border-primary uppercase tracking-wider transition-colors",
-        buttonPopular: cn("text-white border-transparent", theme.bg),
-        featuresTitle:
-          "font-black text-sm text-foreground uppercase tracking-widest border-b-2 border-primary pb-2",
-        featureIcon:
-          "mr-3 mt-0.5 text-foreground font-bold shrink-0",
-        featureIconPopular: cn("font-bold shrink-0", theme.text),
-      },
-    })[variant];
+  const currentTab =
+    data.tabs.find((t) => t.id === activeTab) || data.tabs[0];
 
   return (
-    <div className="w-full flex flex-col items-center px-1 sm:px-4 py-4" style={style}>
-      {/* max-w-md, not max-w-sm: at 384px a two-tab track left each label only
-          ~126px of content box, and "Annually (Save 20%)" needs ~150px, so the
-          second tab wrapped onto a second line and stretched the pill. */}
+    <div className="w-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
       {data.tabs.length > 1 && (
-        <div className="relative flex rounded-full bg-muted p-1 mb-8 sm:mb-12 border border-border max-w-md mx-auto w-full">
-          <div
-            className={cn(
-              "absolute top-1 bottom-1 rounded-full transition-transform duration-300 ease-out shadow-sm",
-              theme.bg,
-            )}
-            style={{
-              width: `calc((100% - 8px) / ${data.tabs.length})`,
-              transform: `translateX(calc(${tabIndex * 100}%))`,
-              left: "4px",
-            }}
-          />
-          {data.tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabChange(tab.id)}
-              className={cn(
-                "flex-1 min-w-0 relative z-10 flex items-center justify-center rounded-full px-3 sm:px-6 py-2.5 text-xs sm:text-sm font-bold transition-all duration-300 truncate",
-                activeTab === tab.id
-                  ? "text-[var(--pricing-on)]"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="flex justify-center mb-8 sm:mb-12">
+          <div className="bg-muted p-1 rounded-xl flex gap-1 border border-border">
+            {data.tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer",
+                  activeTab === tab.id
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
-      <div
-        className={cn(
-          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8 w-full max-w-6xl mx-auto transition-all duration-300 px-2 sm:px-4 pt-4",
-          isTransitioning && "opacity-0 scale-[0.98]",
-        )}
-      >
-        {activeTabData?.plans.map((plan) => {
-          const PlanIcon = ICON_MAP[plan.icon] || Rocket;
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        {currentTab.plans.map((plan) => {
+          const IconComponent = iconMap[plan.icon] || Zap;
+          const isPopular = plan.popular;
+
           return (
             <div
               key={plan.id}
               className={cn(
-                getVariantStyles().card,
-                plan.popular && getVariantStyles().cardPopular,
+                "relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background border",
+                variant === "default" &&
+                  (isPopular
+                    ? cn(theme.border, "shadow-xl scale-105 z-10")
+                    : "border-border shadow-sm"),
+                variant === "premium" &&
+                  (isPopular
+                    ? cn(
+                        theme.border,
+                        "shadow-2xl scale-105 z-10 bg-gradient-to-b",
+                        theme.gradientSoft,
+                      )
+                    : "border-border shadow-md"),
+                variant === "elegant" &&
+                  (isPopular
+                    ? cn("border-t-4", theme.border, "shadow-lg")
+                    : "border-border"),
+                variant === "minimal" &&
+                  (isPopular
+                    ? cn("ring-2", theme.ring, "shadow-md")
+                    : "border-border shadow-none"),
+                variant === "bordered" &&
+                  "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]",
               )}
             >
-              {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2">
-                  <span
-                    className={cn(
-                      "px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-md whitespace-nowrap",
-                      variant === "bordered"
-                        ? "rounded-none border-2 border-white"
-                        : "rounded-full",
-                      theme.bg,
-                    )}
-                  >
-                    Most Popular
-                  </span>
+              {isPopular && (
+                <div
+                  className={cn(
+                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm",
+                    theme.bg,
+                  )}
+                >
+                  Most Popular
                 </div>
               )}
-              <div className="text-center mb-6">
-                <div className="flex items-center justify-center mb-4">
+
+              <div>
+                <div className="flex items-center justify-between mb-4">
                   <div
                     className={cn(
-                      "p-2 mr-3",
-                      variant === "bordered"
-                        ? "rounded-none border-2 border-primary"
-                        : "rounded-xl",
-                      plan.popular
-                        ? theme.bg
-                        : "bg-muted text-muted-foreground",
+                      "p-3 rounded-2xl",
+                      isPopular ? theme.bgSoft : "bg-muted",
                     )}
                   >
-                    {/* No colour of its own: the tile above already sets one
-                        for both states (accent foreground when popular, muted
-                        zinc otherwise), so inheriting is correct in every
-                        theme. Forcing white broke the near-white default
-                        accent, and would have been invisible on the light
-                        zinc-100 tile too. */}
-                    <PlanIcon className="w-6 h-6" />
+                    <IconComponent
+                      className={cn(
+                        "w-6 h-6",
+                        isPopular ? theme.text : "text-muted-foreground",
+                      )}
+                    />
                   </div>
-                  <h3
-                    className={cn(
-                      "text-xl font-bold",
-                      plan.popular
-                        ? theme.text
-                        : "text-foreground",
-                    )}
-                  >
+                  <h3 className="text-xl font-bold text-foreground">
                     {plan.title}
                   </h3>
                 </div>
-                <p className="text-sm text-muted-foreground mb-6 min-h-[40px]">
+
+                <p className="text-sm text-muted-foreground mb-6">
                   {plan.subtitle}
                 </p>
-                <div className="flex items-end justify-center gap-1">
-                  <span className={getVariantStyles().price}>{plan.price}</span>
-                  {plan.period && (
-                    <span className="text-muted-foreground mb-1">
-                      /{plan.period}
-                    </span>
-                  )}
+
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl sm:text-5xl font-black text-foreground">
+                    <AnimatedPrice value={plan.price} />
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    /{plan.period}
+                  </span>
                 </div>
-              </div>
-              <button
-                className={cn(
-                  getVariantStyles().button,
-                  plan.popular && getVariantStyles().buttonPopular,
-                  "mb-8 cursor-pointer",
-                )}
-              >
-                {plan.buttonText}
-              </button>
-              <div className="space-y-4 text-left">
-                <h4 className={getVariantStyles().featuresTitle}>
-                  What&apos;s included:
-                </h4>
-                <ul className="space-y-3">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <div
-                        className={cn(
-                          getVariantStyles().featureIcon,
-                          plan.popular && getVariantStyles().featureIconPopular,
-                        )}
-                      >
-                        {/* Inherits from the tile: white here was invisible on
-                            the light zinc-100 tile of non-popular plans, and
-                            on the near-white default accent of popular ones. */}
-                        <Check className="w-3 h-3" strokeWidth={3} />
-                      </div>
-                      <span className="text-sm text-muted-foreground leading-relaxed">
-                        {feature}
-                      </span>
+
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-foreground">
+                      <Check className={cn("w-4 h-4 shrink-0", theme.text)} />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
+
+              <LinkComp
+                href="#"
+                className={cn(
+                  "w-full py-3 rounded-xl font-bold text-sm text-center transition-all cursor-pointer block",
+                  isPopular
+                    ? cn(theme.bg, "shadow-md hover:opacity-90")
+                    : "bg-muted text-foreground hover:bg-muted/80",
+                )}
+              >
+                {plan.buttonText}
+              </LinkComp>
             </div>
           );
         })}
@@ -511,358 +363,133 @@ export function PricingCards({
 }
 
 // ==========================================
-// 2. PRICING BUILDER (GSAP)
+// 2. PRICING BUILDER (GSAP QUOTE BUILDER)
 // ==========================================
-const getBuilderData = (activePlans: string[]) => {
-  const hasD = activePlans.includes("design");
-  const hasV = activePlans.includes("development");
-  const hasF = activePlans.includes("fast");
-  if (!hasD && !hasV && !hasF)
-    return {
-      title: "Select Services",
-      tag: null,
-      price: 0,
-      features: [
-        "Select the modules above to build your custom package and instantly see your quote.",
-      ],
-    };
-  let title = "";
-  const tag = hasF ? "Fast Track" : "Standard";
-  let price = 0;
-  let features: string[] = [];
-  if (hasD) price += 300;
-  if (hasV) price += 400;
-  if (hasF) price += 100;
-  if (hasD && hasV && hasF) {
-    title = "Complete Fast-Track";
-    features = [
-      "Avg. 1 week turnaround",
-      "5 rounds of revisions",
-      "2 months of free support",
-      "Top-notch custom design",
-      "Figma interactive prototype",
-      "Full custom development",
-      "Priority queue placement",
-    ];
-  } else if (hasD && hasV) {
-    title = "Design & Development";
-    features = [
-      "Avg. 2 weeks turnaround",
-      "5 rounds of revisions",
-      "2 months of free support",
-      "Top-notch custom design",
-      "Figma interactive prototype",
-      "Full custom development",
-    ];
-  } else if (hasD && hasF) {
-    title = "Accelerated Design";
-    features = [
-      "Avg. 2 days turnaround",
-      "3 rounds of revisions",
-      "1 month of free support",
-      "Top-notch custom design",
-      "Figma interactive prototype",
-      "Priority queue placement",
-    ];
-  } else if (hasV && hasF) {
-    title = "Accelerated Dev";
-    features = [
-      "Avg. 4 days turnaround",
-      "5 rounds of revisions",
-      "2 months of free support",
-      "Full custom development",
-      "Priority queue placement",
-    ];
-  } else if (hasD) {
-    title = "Design Only";
-    features = [
-      "Avg. 4 days turnaround",
-      "3 rounds of revisions",
-      "1 month of free support",
-      "Top-notch custom design",
-      "Figma interactive prototype",
-    ];
-  } else if (hasV) {
-    title = "Development Only";
-    features = [
-      "Avg. 1 week turnaround",
-      "5 rounds of revisions",
-      "2 months of free support",
-      "Full custom development",
-    ];
-  } else if (hasF) {
-    title = "Priority Support";
-    features = [
-      "Queue skip guaranteed",
-      "Dedicated account manager",
-      "24/7 Slack channel access",
-    ];
-  }
-  return { title, tag, price, features };
-};
+export interface PricingBuilderModule {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export interface PricingBuilderProps {
+  title?: string;
+  subtitle?: string;
+  basePrice?: number;
+  modules?: PricingBuilderModule[];
+  defaultSelected?: string[];
+  buttonText?: string;
+  color?: PricingColor;
+  className?: string;
+}
+
+const DEFAULT_BUILDER_MODULES: PricingBuilderModule[] = [
+  { id: "auth", name: "User Authentication", price: 15 },
+  { id: "db", name: "Database Storage", price: 25 },
+  { id: "analytics", name: "Advanced Analytics", price: 35 },
+  { id: "support", name: "24/7 SLA Support", price: 50 },
+  { id: "domain", name: "Custom Domain & SSL", price: 10 },
+];
 
 export function PricingBuilder({
+  title = "Custom Quote Builder",
+  subtitle = "Select only the modules you need for your project.",
+  basePrice = 29,
+  modules = DEFAULT_BUILDER_MODULES,
+  defaultSelected = ["auth", "db"],
+  buttonText = "Deploy Custom Stack",
   color = "primary",
-  linkComponent: Link = "a",
-}: {
-  color?: PricingColor;
-  /**
-   * The element used for links. Defaults to a plain `a`, so this component works
-   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
-   * client-side navigation and prefetching: `linkComponent={Link}`.
-   */
-  linkComponent?: React.ElementType;
-}) {
-  const [activePlans, setActivePlans] = useState<string[]>([]);
-  const cardData = getBuilderData(activePlans);
-  const cardContentRef = useRef<HTMLDivElement>(null);
+  className,
+}: PricingBuilderProps) {
+  const [selectedModules, setSelectedModules] = useState<string[]>(defaultSelected);
   const { theme, style } = getThemeStyles(color);
 
-  const togglePlan = (id: string) =>
-    setActivePlans((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id],
+  const toggleModule = (id: string) => {
+    setSelectedModules((prev) =>
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id],
     );
+  };
 
-  useLayoutEffect(() => {
-    if (cardContentRef.current)
-      gsap.fromTo(
-        cardContentRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-      );
-  }, [activePlans]);
+  const totalPrice = selectedModules.reduce((acc, curr) => {
+    const mod = modules.find((m) => m.id === curr);
+    return acc + (mod?.price || 0);
+  }, basePrice);
 
   return (
     <div
-      className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center"
+      className={cn("w-full max-w-4xl mx-auto p-6 sm:p-10 bg-background border border-border rounded-3xl shadow-xl", className)}
       style={style}
     >
-      <div className="w-full lg:w-1/2 space-y-8">
-        <div>
-          <h3 className={cn("text-4xl md:text-5xl font-bold mb-3", theme.text)}>
-            Build Your Plan
-          </h3>
-          <p className="text-xl text-foreground font-medium">
-            Select the services you need.
-          </p>
-          <p className="text-base text-muted-foreground mt-2 leading-relaxed">
-            Customize your package to fit your exact requirements. The price
-            updates instantly.
-          </p>
-        </div>
-        <div className="space-y-4 mt-8">
-          <div
-            onClick={() => togglePlan("design")}
-            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-4 sm:gap-5">
-              <div
-                className={cn(
-                  "p-3.5 rounded-xl transition-colors",
-                  activePlans.includes("design")
-                    ? theme.bgSoft
-                    : "bg-muted text-muted-foreground group-hover:text-foreground",
-                )}
-              >
-                <PenTool size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-lg text-foreground">
-                  UI/UX Design
-                </h4>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Top-notch custom design
-                </p>
-              </div>
-            </div>
-            <div
-              className={cn(
-                "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
-                activePlans.includes("design")
-                  ? theme.bg
-                  : "bg-muted",
-              )}
-            >
-              <div
-                className={cn(
-                  "w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300",
-                  activePlans.includes("design")
-                    ? "translate-x-6"
-                    : "translate-x-0",
-                )}
-              />
-            </div>
-          </div>
-          <div
-            onClick={() => togglePlan("development")}
-            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-4 sm:gap-5">
-              <div
-                className={cn(
-                  "p-3.5 rounded-xl transition-colors",
-                  activePlans.includes("development")
-                    ? theme.bgSoft
-                    : "bg-muted text-muted-foreground group-hover:text-foreground",
-                )}
-              >
-                <Code2 size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-lg text-foreground">
-                  Development
-                </h4>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Full-stack implementation
-                </p>
-              </div>
-            </div>
-            <div
-              className={cn(
-                "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
-                activePlans.includes("development")
-                  ? theme.bg
-                  : "bg-muted",
-              )}
-            >
-              <div
-                className={cn(
-                  "w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300",
-                  activePlans.includes("development")
-                    ? "translate-x-6"
-                    : "translate-x-0",
-                )}
-              />
-            </div>
-          </div>
-          <div
-            onClick={() => togglePlan("fast")}
-            className="flex items-center justify-between bg-card border border-border p-5 sm:p-6 rounded-2xl cursor-pointer hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-4 sm:gap-5">
-              <div
-                className={cn(
-                  "p-3.5 rounded-xl transition-colors",
-                  activePlans.includes("fast")
-                    ? theme.bgSoft
-                    : "bg-muted text-muted-foreground group-hover:text-foreground",
-                )}
-              >
-                <Zap size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-lg text-foreground">
-                  Priority Delivery
-                </h4>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Skip the queue
-                </p>
-              </div>
-            </div>
-            <div
-              className={cn(
-                "w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
-                activePlans.includes("fast")
-                  ? theme.bg
-                  : "bg-muted",
-              )}
-            >
-              <div
-                className={cn(
-                  "w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300",
-                  activePlans.includes("fast")
-                    ? "translate-x-6"
-                    : "translate-x-0",
-                )}
-              />
-            </div>
-          </div>
-        </div>
+      <div className="text-center mb-8 sm:mb-12">
+        <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+          {title}
+        </h3>
+        <p className="text-sm sm:text-base text-muted-foreground">
+          {subtitle}
+        </p>
       </div>
-      <div className="w-full lg:w-1/2">
-        <div className="bg-card border border-border rounded-3xl p-8 sm:p-10 shadow-xl relative flex flex-col justify-between min-h-[500px] overflow-hidden">
-          {activePlans.length > 0 && (
-            <div
-              className={cn(
-                "absolute top-0 right-0 w-[300px] h-[300px] rounded-full blur-[100px] pointer-events-none opacity-20 -translate-y-1/2 translate-x-1/4",
-                theme.bg,
-              )}
-            />
-          )}
-          <div
-            ref={cardContentRef}
-            className="relative z-10 flex flex-col h-full"
-          >
-            <div className="flex justify-between items-start mb-8">
-              <h4 className="text-2xl font-bold text-foreground max-w-[200px] leading-tight">
-                {cardData.title}
-              </h4>
-              {cardData.tag && (
-                <span
-                  className={cn(
-                    "px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest border shrink-0",
-                    theme.bgSoft,
-                    theme.border,
-                  )}
-                >
-                  {cardData.tag}
-                </span>
-              )}
-            </div>
-            <div className="mb-10">
-              <span
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="space-y-3">
+          {modules.map((mod) => {
+            const isSelected = selectedModules.includes(mod.id);
+            return (
+              <div
+                key={mod.id}
+                onClick={() => toggleModule(mod.id)}
                 className={cn(
-                  "text-6xl sm:text-[80px] font-extrabold tracking-tighter leading-none",
-                  activePlans.length > 0
-                    ? theme.text
-                    : "text-zinc-300 dark:text-zinc-700",
+                  "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between",
+                  isSelected
+                    ? cn(theme.border, theme.bgSoft, "shadow-sm")
+                    : "border-border bg-background hover:bg-muted/50",
                 )}
               >
-                <AnimatedPrice value={cardData.price} />
-              </span>
-            </div>
-            <ul className="space-y-4 mb-12 flex-1">
-              {cardData.features.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-4">
+                <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      "mt-1 p-1 rounded-full shrink-0",
-                      activePlans.length > 0
-                        ? theme.bg
-                        : "bg-muted",
+                      "w-5 h-5 rounded-md border flex items-center justify-center transition-all",
+                      isSelected
+                        ? cn(theme.bg, theme.border)
+                        : "border-muted-foreground/40",
                     )}
                   >
-                    <Check
-                      className={cn(
-                        "w-3 h-3",
-                        // Only the inactive state needs its own colour; the
-                        // active tile carries the accent's own foreground.
-                        activePlans.length === 0 && "text-muted-foreground",
-                      )}
-                      strokeWidth={3}
-                    />
+                    {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
                   </div>
-                  <span className="text-foreground font-medium">
-                    {feature}
+                  <span className="font-semibold text-sm sm:text-base text-foreground">
+                    {mod.name}
                   </span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="#"
-              className={cn(
-                "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all",
-                activePlans.length > 0
-                  ? cn("shadow-lg hover:scale-[1.02]", theme.bg)
-                  : // zinc-400 on the light zinc-100 track was only 2.39:1;
-                    // a disabled control should still be readable.
-                    "bg-muted text-muted-foreground cursor-not-allowed",
-              )}
-            >
-              Initiate Project{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+                </div>
+                <span className="font-bold text-sm text-foreground">
+                  +${mod.price}/mo
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="bg-muted/40 p-6 sm:p-8 rounded-3xl border border-border flex flex-col justify-between h-full min-h-[300px]">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
+              Estimated Total
+            </span>
+            <div className="flex items-baseline gap-1 mb-6">
+              <span className="text-5xl sm:text-6xl font-black text-foreground">
+                <AnimatedPrice value={totalPrice} />
+              </span>
+              <span className="text-muted-foreground font-medium">/month</span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed mb-6">
+              Base tier includes core infrastructure (${basePrice}/mo). Cancel or alter your plan modules anytime.
+            </p>
           </div>
+
+          <button
+            className={cn(
+              "w-full py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
+              theme.bg,
+            )}
+          >
+            {buttonText}
+          </button>
         </div>
       </div>
     </div>
@@ -914,7 +541,6 @@ export function PricingTable({
     );
   };
 
-  // Shared by both layouts so the tooltip markup can't drift between them.
   const FeatureLabel = ({ feature }: { feature: TableFeature }) => (
     <>
       {feature.name}
@@ -933,24 +559,12 @@ export function PricingTable({
     cn(
       "w-full py-2.5 rounded-xl font-bold transition-all text-sm cursor-pointer",
       featured
-        ? // No text colour here: every `theme.bg` already carries its own
-          // matching foreground. Re-stating `text-white` let tailwind-merge
-          // drop the theme's own choice, so the default accent rendered white
-          // on `--primary` — which is near-white in dark mode (1.26:1).
-          cn(theme.bg, theme.shadow)
+        ? cn(theme.bg, theme.shadow)
         : "border border-border dark:bg-zinc-800 text-foreground",
     );
 
   return (
-    // Container query, not a media query: this table is nearly always inside a
-    // constrained column, so the viewport says nothing about the room it has.
     <div className="@container/pricing w-full max-w-6xl mx-auto" style={style}>
-      {/* NARROW — one card per plan.
-          A comparison grid cannot survive a phone width. Scrolled sideways the
-          feature-name column leaves the screen and every value loses its label
-          ("25", "Unlimited", "100GB" with nothing to say what of), so instead
-          of scrolling the grid we transpose it: each plan carries its own
-          feature list, and nothing ever leaves the viewport. */}
       <div className="flex flex-col gap-6 @min-[52rem]/pricing:hidden">
         {data.plans.map((plan, pIdx) => (
           <div
@@ -1009,14 +623,7 @@ export function PricingTable({
         ))}
       </div>
 
-      {/* WIDE — the side-by-side comparison grid. */}
       <div className="hidden @min-[52rem]/pricing:block overflow-hidden border border-border rounded-2xl bg-background shadow-sm">
-        {/* The min-width belongs to the CONTENT, not to the scroll container.
-            With `overflow-x-auto min-w-[800px]` on the same element the box can
-            never shrink below 800px, so its content never exceeds it and no
-            scrollbar is ever produced — instead the box overflowed the card,
-            whose `overflow-hidden` silently cut the last plan column off with
-            no way to reach it. */}
         <div className="overflow-x-auto">
           <div className="min-w-[800px]">
             <div className="grid grid-cols-4 bg-muted border-b border-border">
@@ -1070,7 +677,7 @@ export function PricingTable({
                 {section.features.map((feature, fIdx) => (
                   <div
                     key={fIdx}
-                    className="grid grid-cols-4 border-b border-border  transition-colors"
+                    className="grid grid-cols-4 border-b border-border transition-colors"
                   >
                     <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
                       <FeatureLabel feature={feature} />
@@ -1100,50 +707,97 @@ export function PricingTable({
 // ==========================================
 // 4. USAGE SLIDER
 // ==========================================
-export function PricingSlider({ color = "primary" }: { color?: PricingColor }) {
+export interface PricingSliderProps {
+  title?: string;
+  subtitle?: string;
+  basePrice?: number;
+  pricePerStep?: number;
+  minViews?: string;
+  maxViews?: string;
+  buttonText?: string;
+  color?: PricingColor;
+  className?: string;
+}
+
+export function PricingSlider({
+  title = "Usage Based Pricing",
+  subtitle = "Scale your pricing as your traffic grows.",
+  basePrice = 29,
+  pricePerStep = 10,
+  minViews = "10k Views",
+  maxViews = "1M+ Views",
+  buttonText = "Start 14-Day Free Trial",
+  color = "primary",
+  className,
+}: PricingSliderProps) {
   const [value, setValue] = useState(5);
   const { theme, style } = getThemeStyles(color);
-  const calculatedPrice = 29 + value * 10;
+  const calculatedPrice = basePrice + value * pricePerStep;
   const pageviews =
     value === 0 ? "10k" : value === 10 ? "1M+" : `${value * 100}k`;
+  const percentage = (value / 10) * 100;
 
   return (
     <div
-      className="w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-xl text-center"
+      className={cn("w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-xl text-center", className)}
       style={style}
     >
       <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
-        Usage Based Pricing
+        {title}
       </h3>
       <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-10">
-        Scale your pricing as your traffic grows.
+        {subtitle}
       </p>
       <div className="mb-6 sm:mb-12">
         <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-foreground mb-2">
-          ${calculatedPrice}
+          $<AnimatedPrice value={calculatedPrice} />
         </div>
         <p className="text-muted-foreground font-medium tracking-wide uppercase text-xs sm:text-sm">
           Per Month
         </p>
       </div>
       <div className="relative mb-6 sm:mb-12">
-        <div className="flex justify-between text-xs sm:text-sm font-bold text-muted-foreground mb-3 px-1 uppercase tracking-widest">
-          <span>10k Views</span>
-          <span className={theme.text}>{pageviews} Views</span>
-          <span>1M+ Views</span>
+        <div className="flex justify-between items-center text-xs sm:text-sm font-bold text-muted-foreground mb-4 px-1 uppercase tracking-widest">
+          <span>{minViews}</span>
+          <span className={cn("font-extrabold px-3 py-1 rounded-lg border border-border bg-muted/50 shadow-2xs transition-colors", theme.text)}>
+            {pageviews} Views
+          </span>
+          <span>{maxViews}</span>
         </div>
-        <input
-          type="range"
-          min="0"
-          max="10"
-          step="1"
-          value={value}
-          onChange={(e) => setValue(parseInt(e.target.value))}
-          className={cn(
-            "w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer",
-            theme.slider,
-          )}
-        />
+        
+        {/* Modern Custom Range Slider */}
+        <div className="relative flex items-center h-8 w-full group touch-none">
+          {/* Custom Track Background */}
+          <div className="absolute inset-x-0 h-3 rounded-full bg-zinc-200/80 dark:bg-zinc-800 overflow-hidden pointer-events-none">
+            <div
+              className={cn("h-full transition-all duration-75 rounded-full", theme.bg)}
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
+
+          {/* Invisible Range Input Overlay */}
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="1"
+            value={value}
+            onChange={(e) => setValue(parseInt(e.target.value, 10))}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+            aria-label="Usage pageviews volume"
+          />
+
+          {/* Custom Thumb Handle */}
+          <div
+            className={cn(
+              "absolute top-1/2 -translate-y-1/2 size-6 rounded-full bg-background border-2 shadow-md pointer-events-none transition-transform duration-75 group-hover:scale-110 flex items-center justify-center z-10",
+              theme.border
+            )}
+            style={{ left: `calc(${percentage}% - 12px)` }}
+          >
+            <div className={cn("size-2.5 rounded-full", theme.bg)} />
+          </div>
+        </div>
       </div>
       <button
         className={cn(
@@ -1151,7 +805,7 @@ export function PricingSlider({ color = "primary" }: { color?: PricingColor }) {
           theme.bg,
         )}
       >
-        Start 14-Day Free Trial
+        {buttonText}
       </button>
       <p className="text-xs text-muted-foreground mt-3 sm:mt-4">
         No credit card required. Cancel anytime.
@@ -1176,23 +830,15 @@ export interface PricingTypographicPlan {
 export function PricingTypographic({
   packages,
   color = "primary",
-  linkComponent: Link = "a",
+  linkComponent: LinkComp = "a",
 }: {
   packages: any;
   color?: PricingColor;
-  /**
-   * The element used for links. Defaults to a plain `a`, so this component works
-   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
-   * client-side navigation and prefetching: `linkComponent={Link}`.
-   */
   linkComponent?: React.ElementType;
 }) {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
     "monthly",
   );
-  // null means "no explicit pick yet" — the featured plan is resolved below
-  // rather than written back in an effect, which rendered once with nothing
-  // selected before correcting itself.
   const [selectedPlanId, setSelectedPlanId] = useState<string | number | null>(
     null,
   );
@@ -1270,7 +916,6 @@ export function PricingTypographic({
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
-      {/* CUSTOM CSS FOR HOLLOW TYPOGRAPHY */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -1321,7 +966,7 @@ export function PricingTypographic({
                     handleToggleCycle(cycle as "monthly" | "yearly")
                   }
                   className={cn(
-                    "text-sm font-bold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300",
+                    "text-sm font-bold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300 cursor-pointer",
                     billingCycle === cycle
                       ? cn(theme.text, theme.border)
                       : "text-muted-foreground border-transparent hover:text-foreground",
@@ -1347,28 +992,37 @@ export function PricingTypographic({
                   onClick={() => setSelectedPlanId(plan.id)}
                   className="group flex flex-col items-start text-left w-full py-4 pr-4 cursor-pointer"
                 >
-                  {plan.isFeatured && (
-                    <span
-                      className={cn(
-                        "text-[10px] font-mono tracking-widest uppercase mb-2 transition-colors duration-300",
-                        isActive
-                          ? theme.text
-                          : "text-muted-foreground group-hover:text-foreground",
-                      )}
-                    >
-                      [ Most Popular ]
-                    </span>
-                  )}
-                  <span
+                  <div
                     className={cn(
-                      "text-4xl lg:text-5xl xl:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-all duration-500 ease-out",
+                      "flex flex-col items-start transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu",
                       isActive
-                        ? cn(theme.text, "translate-x-4")
-                        : "outline-text group-hover:translate-x-2",
+                        ? "translate-x-6 sm:translate-x-8 scale-[1.02]"
+                        : "group-hover:translate-x-3"
                     )}
                   >
-                    {plan.name}
-                  </span>
+                    {plan.isFeatured && (
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-2.5 shadow-2xs",
+                          isActive
+                            ? cn(theme.bgSoft, theme.border, theme.text)
+                            : "border-border bg-muted/60 text-muted-foreground group-hover:border-primary/40 group-hover:text-foreground",
+                        )}
+                      >
+                        <span className="text-[11px]">✦</span> Most Popular
+                      </span>
+                    )}
+                    <span
+                      className={cn(
+                        "text-4xl lg:text-5xl xl:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-colors duration-300",
+                        isActive
+                          ? theme.text
+                          : "outline-text group-hover:text-foreground/80",
+                      )}
+                    >
+                      {plan.name}
+                    </span>
+                  </div>
                 </button>
               );
             })}
@@ -1390,8 +1044,8 @@ export function PricingTypographic({
                   />
                 )}
 
-                <div className="absolute -right-4 -top-8 text-[150px] xl:text-[200px] font-black text-foreground/[0.03]/[0.02] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300">
-                  ${activePlan.price}
+                <div className="absolute right-2 -top-6 text-[110px] xl:text-[145px] font-black text-foreground/[0.03] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300 max-w-full overflow-hidden text-right">
+                  $<AnimatedPrice key={`wm-${activePlan.id}-${activePlan.price}`} value={activePlan.price} />
                 </div>
 
                 <div className="mb-12 relative z-10">
@@ -1414,7 +1068,7 @@ export function PricingTypographic({
                       $
                     </span>
                     <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-foreground">
-                      <AnimatedPrice value={activePlan.price} />
+                      <AnimatedPrice key={`main-${activePlan.id}-${activePlan.price}`} value={activePlan.price} />
                     </span>
                   </div>
                   <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
@@ -1441,15 +1095,12 @@ export function PricingTypographic({
                   ))}
                 </div>
 
-                <Link
+                <LinkComp
                   href="#"
                   className={cn(
                     "group mt-auto w-max py-4 px-8 rounded-full text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                     activePlan.isFeatured
-                      ? // theme.bg already carries its own foreground; restating
-                        // text-white here let tailwind-merge drop it, painting
-                        // white on the near-white default accent.
-                        theme.bg
+                      ? theme.bg
                       : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
                   )}
                 >
@@ -1462,9 +1113,6 @@ export function PricingTypographic({
                   <span
                     className={cn(
                       "relative z-10 transition-colors duration-500",
-                      // The fill that slides up is the accent, so the label has
-                      // to take the accent's foreground — not white, which
-                      // disappears on a light accent.
                       !activePlan.isFeatured &&
                         "group-hover:text-[var(--pricing-on)]",
                     )}
@@ -1487,7 +1135,7 @@ export function PricingTypographic({
                       )}
                     />
                   </div>
-                </Link>
+                </LinkComp>
               </div>
             )}
           </div>
@@ -1510,11 +1158,13 @@ export function PricingTypographic({
                     {plan.isFeatured && (
                       <span
                         className={cn(
-                          "text-[9px] font-mono tracking-widest uppercase mb-1 transition-colors duration-300",
-                          isActive ? theme.text : "text-muted-foreground",
+                          "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-1.5 w-max",
+                          isActive
+                            ? cn(theme.bgSoft, theme.border, theme.text)
+                            : "border-border bg-muted/60 text-muted-foreground",
                         )}
                       >
-                        [ Most Popular ]
+                        ✦ Most Popular
                       </span>
                     )}
                     <span
@@ -1561,7 +1211,7 @@ export function PricingTypographic({
                           $
                         </span>
                         <span className="text-5xl md:text-6xl font-black tracking-tighter text-foreground">
-                          <AnimatedPrice value={plan.price} />
+                          <AnimatedPrice key={`mob-${plan.id}-${plan.price}`} value={plan.price} />
                         </span>
                       </div>
 
@@ -1588,7 +1238,7 @@ export function PricingTypographic({
                         ))}
                       </div>
 
-                      <Link
+                      <LinkComp
                         href="#"
                         className={cn(
                           "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
@@ -1612,7 +1262,7 @@ export function PricingTypographic({
                         >
                           Initiate Project
                         </span>
-                      </Link>
+                      </LinkComp>
                     </div>
                   </div>
                 </div>
@@ -1624,3 +1274,5 @@ export function PricingTypographic({
     </section>
   );
 }
+
+export default PricingCards;

@@ -1918,7 +1918,8 @@
       ],
       "dependencies": [
         "gsap",
-        "lucide-react"
+        "lucide-react",
+        "next-themes"
       ],
       "registryDependencies": [
         "utils"
