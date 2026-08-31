@@ -6,6 +6,64 @@ Three tiers stack top to bottom: an orbit of channel nodes around the user, the 
 
 export const usageDefault = `import { UserGraph } from "@/components/custom/blocks/UserGraphBlock";
 
+const orchestrator = {
+  name: "John Doe",
+  role: "Senior Product Designer",
+  avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
+};
+
+const orbitTools = [
+  { id: "slack", name: "Slack", icon: Share2 },
+  { id: "whatsapp", name: "WhatsApp", icon: MessageSquare },
+  { id: "telegram", name: "Telegram", icon: Send },
+  { id: "email", name: "Email", icon: Mail },
+  { id: "code", name: "Code", icon: Code2 },
+  { id: "workflow", name: "Workflow", icon: Network },
+  { id: "mcp", name: "MCP", icon: Plug },
+  { id: "phone", name: "Phone", icon: Phone },
+];
+
+const subAgents = [
+  {
+    id: "sales",
+    title: "Sales Lead",
+    role: "Enterprise Conversions",
+    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+    status: "online",
+    percentX: 15,
+    svgX: 150,
+    apps: [
+      { id: "hubspot", name: "HubSpot", icon: Globe, bgColor: "bg-teal-50 dark:bg-teal-950/80", textColor: "text-teal-600 dark:text-teal-400", borderColor: "border-teal-300 dark:border-teal-700" },
+      { id: "stripe", name: "Stripe", icon: CreditCard, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700", customText: "S" },
+    ],
+  },
+  {
+    id: "marketing",
+    title: "Marketing Director",
+    role: "Global Campaigns",
+    avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+    status: "online",
+    percentX: 50,
+    svgX: 500,
+    apps: [
+      { id: "web", name: "Website", icon: Globe, bgColor: "bg-muted", textColor: "text-foreground", borderColor: "border-border" },
+      { id: "mailchimp", name: "Mailchimp", icon: Send, bgColor: "bg-purple-50 dark:bg-purple-950/80", textColor: "text-purple-600 dark:text-purple-400", borderColor: "border-purple-300 dark:border-purple-700" },
+    ],
+  },
+  {
+    id: "support",
+    title: "Support Lead",
+    role: "Priority Escalations",
+    avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
+    status: "idle",
+    percentX: 85,
+    svgX: 850,
+    apps: [
+      { id: "intercom", name: "Intercom", icon: MessageSquare, bgColor: "bg-pink-50 dark:bg-pink-950/80", textColor: "text-pink-600 dark:text-pink-400", borderColor: "border-pink-300 dark:border-pink-700" },
+    ],
+  },
+];
+
 export default function UserGraphPage() {
   return (
 

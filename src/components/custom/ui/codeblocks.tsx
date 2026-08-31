@@ -51,7 +51,7 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
   };
 
   return (
-    <div ref={blockRef} className="relative group w-full bg-muted dark:bg-black border-t border-border transition-all duration-300 ease-in-out">
+    <div ref={blockRef} className="relative group w-full bg-zinc-100/70 dark:bg-black border-t border-border transition-all duration-300 ease-in-out">
       <button
         onClick={handleCopy}
         className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-muted text-foreground transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-border backdrop-blur-xs shadow-none"

@@ -2,9 +2,27 @@
 
 A flexible container used to group related information and actions together in a visually distinct box.
 
-Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` provides a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`) that automatically manage their own internal spacing, ensuring your layouts always look perfectly balanced regardless of what content you put inside them.
+Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-The sub-components handle their own padding, so cards stay balanced whatever you put in them.
+export const usageEcommerce = `import { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+
+export default function EcommerceProductCardsDemo() {
+  return (
+    
+      {/* Product Card 1: Standard Best Seller */}
+       console.log("Added to cart")}
+      />
+
+      {/* Product Card 2: Apparel with Interactive Colors */}
+       console.log("Quick View")}
+      />
+
+      {/* Product Card 3: Tech Gadget with Buy Now */}
+       console.log("Proceeding to checkout")}
+      />
+    
+  );
+}`;
 
 export const usageDefault = `import {
   Card,
@@ -35,7 +53,6 @@ export default function NotificationCard() {
 export const usageInteractive = `"use client";
 
 export default function ClickableCards() {
-  // interactive adds hover elevation, a lift, and an active press scale.
   return (
     
        console.log("Download")}>
@@ -58,22 +75,10 @@ export const usageStats = `import { Card, CardContent, CardHeader, CardTitle } f
 export default function StatGrid() {
   return (
 
-        {/* Override the header's stack to lay the title and icon side by side */}
-        
           Total Revenue
 
           $45,231.89
           +20.1% from last month
-
-          Subscriptions
-
-          +2350
-          +180.1% from last month
-
-          Active Now
-
-          +573
-          +201 since last hour
 
   );
 }`;
@@ -88,62 +93,8 @@ Learn about the Card component's flexible layout options, including headers, foo
     Customizable
     Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
-
-## Props Reference
-
-        Component
-        Prop
-        Type
-        Default
-        Description
-
-          Card
-
-          variant
-
-          "default" | "bordered" | "flat"
-
-          "bordered"
-
-          Determines the visual styling of the container. bordered{" "}
-          adds a subtle stroke, while flat removes shadows and
-          applies a light background fill.
-
-          Card
-
-          interactive
-
-          boolean
-
-          false
-
-          If true, applies hover states (shadow elevation, border color change,
-          and slight scaling) to indicate the card is clickable.
-
-          All Components
-
-          className
-
-          string
-
-          undefined
-
-          Standard Tailwind CSS overrides. Useful for adjusting the flex layout
-          inside a specific CardContent or CardHeader{" "}
-          block.
+    Composable
+    Mix and match sub-components to create complex card layouts effortlessly.
 
 ---
 

@@ -1189,12 +1189,14 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A composable hero section with centre or split layouts, background patterns and a badge slot. Use it as the opening section of a landing page.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
       "categories": [
-        "marketing",
-        "layout"
+        "marketing"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
       "registryDependencies": [
         "utils"
       ],
@@ -1205,7 +1207,7 @@
           "target": "components/custom/blocks/HeroBlock.tsx"
         }
       ],
-      "docs": "Named exports: Hero, HeroContent, HeroBadge, HeroBadgeText, getThemeStyles. `layout` is center | left | split-right | split-left; `pattern` adds a grid or dot backdrop; variants are default | glass | glow. Composable and content-agnostic — no runtime dependencies. For ready-made copy and CTAs, use `homepage-hero`."
+      "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual."
     },
     {
       "name": "hero-video-player",
@@ -1232,57 +1234,6 @@
         }
       ],
       "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight."
-    },
-    {
-      "name": "homepage-hero",
-      "type": "registry:component",
-      "title": "Homepage Hero",
-      "author": "AlgorizeTech",
-      "description": "A prop-driven hero with rotating typed words, badge link, CLI command and two CTAs. Use it as a complete above-the-fold section without composing parts.",
-      "categories": [
-        "marketing"
-      ],
-      "dependencies": [
-        "framer-motion",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/HomepageHeroBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/HomepageHeroBlock.tsx"
-        }
-      ],
-      "docs": "Named export: HomepageHeroBlock. Everything is a prop — `typingWords` cycles between `titlePrefix` and `titleSuffix`, and `cliCommand` renders a copyable install line. Animated with Motion; uses next/link, so it needs edits outside Next.js. `homepage-hero-typing` is the same layout without the motion dependency."
-    },
-    {
-      "name": "homepage-hero-typing",
-      "type": "registry:component",
-      "title": "Homepage Hero Typing",
-      "author": "AlgorizeTech",
-      "description": "The homepage hero with a hand-rolled typing effect and no motion library. Use it when you want the same layout without the extra dependency.",
-      "categories": [
-        "marketing"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/HomepageHeroTypingBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/HomepageHeroTypingBlock.tsx"
-        }
-      ],
-      "docs": "Named export: HomepageHeroTypingBlock. Identical prop surface to `homepage-hero`, but the typing runs on timers instead of Motion — lighter, with less entrance animation. Uses next/link, so it needs edits outside Next.js."
     },
     {
       "name": "horizontal-scroll-stack",

@@ -1,512 +1,592 @@
 "use client";
 
+import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import React, { createContext, forwardRef, useContext } from "react";
+import { ArrowRight, Check, Copy, Sparkles, Terminal, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// ==========================================
-// THEME & CONFIGURATION
-// ==========================================
-export type HeroLayout = "center" | "left" | "split-right" | "split-left";
-export type HeroVariant = "default" | "glass" | "glow";
-export type HeroPattern = "none" | "grid" | "dots";
-export type HeroColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
+/* ═══════════════════════════════════════════════
+   SELF-CONTAINED SVG BRAND ICONS
+   ═══════════════════════════════════════════════ */
 
-const colorThemes: Record<string, Record<string, string>> = {
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-200 dark:border-indigo-800",
-    glow: "rgba(99,102,241,0.5)",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
-    border: "border-rose-200 dark:border-rose-800",
-    glow: "rgba(225,29,72,0.5)",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-200 dark:border-emerald-800",
-    glow: "rgba(16,185,129,0.5)",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-200 dark:border-zinc-800",
-    glow: "rgba(255,255,255,0.3)",
-  },
-};
+const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+    />
+  </svg>
+);
 
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
+/* ═══════════════════════════════════════════════
+   TYPES & INTERFACES
+   ═══════════════════════════════════════════════ */
 
-export const getThemeStyles = (color: string) => {
-  if (color === "primary" || color === "default" || !colorThemes[color]) {
-    if (color && color.startsWith("#")) {
-      const rgb = hexToRgb(color);
-      return {
-        theme: {
-          bg: "bg-[var(--hero-color)] text-white",
-          text: "text-[var(--hero-color)]",
-          bgSoft: "bg-[rgba(var(--hero-rgb),0.1)] text-[var(--hero-color)]",
-          border: "border-[rgba(var(--hero-rgb),0.2)]",
-          glow: `rgba(${rgb}, 0.5)`,
-        },
-        style: {
-          "--hero-color": color,
-          "--hero-rgb": rgb,
-        } as React.CSSProperties,
-      };
-    }
-    return {
-      theme: {
-        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-        text: "text-primary",
-        bgSoft: "bg-primary/10 text-primary",
-        border: "border-primary/20",
-        glow: "var(--primary)",
-      },
-      style: {} as React.CSSProperties,
-    };
+export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
+  /** Animation variant: "bounce" for word spring bounce, "typing" for character typewriter, "slider" for 2-column split 3D word flip & continuous slider */
+  variant?: "bounce" | "typing" | "slider";
+  /** Optional badge text displayed inside the top pill badge */
+  badgeText?: string;
+  /** Badge link URL */
+  badgeHref?: string;
+  /** Main static title text prefix */
+  titlePrefix?: string;
+  /** Words to animate in the bounce, typing, or flip effect */
+  typingWords?: string[];
+  /** Main static title text suffix */
+  titleSuffix?: string;
+  /** Subtitle / description paragraph */
+  subtitle?: string;
+  /** CLI copy command */
+  cliCommand?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+  /** Primary action button label */
+  primaryActionLabel?: string;
+  /** Primary action button URL */
+  primaryActionHref?: string;
+  /** Secondary action button label */
+  secondaryActionLabel?: string;
+  /** Secondary action button URL */
+  secondaryActionHref?: string;
+  /** Array of image URLs for the continuous right-to-left thumbnail slider (used in "slider" variant) */
+  sliderImages?: string[];
+  /** Main featured image URL for the right column (used in "slider" variant) */
+  mainImage?: string;
+  /** Custom accent color (CSS color or tailwind var) */
+  color?: string;
+}
+
+type Rgb = [number, number, number];
+
+const LIGHT_SURFACE_LUM = 1;
+const DARK_SURFACE_LUM = 0.003;
+const MIN_CONTRAST = 3;
+
+const parseColor = (input: string): Rgb | null => {
+  const hex = input.trim().replace(/^#/, "");
+  if (/^[a-f\d]{3}$/i.test(hex)) {
+    const [r, g, b] = hex.split("");
+    return [parseInt(r + r, 16), parseInt(g + g, 16), parseInt(b + b, 16)];
   }
-  return { theme: colorThemes[color], style: {} };
+  if (/^[a-f\d]{6}$/i.test(hex)) {
+    return [
+      parseInt(hex.slice(0, 2), 16),
+      parseInt(hex.slice(2, 4), 16),
+      parseInt(hex.slice(4, 6), 16),
+    ];
+  }
+  const m = input.match(/^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i);
+  return m ? [+m[1], +m[2], +m[3]] : null;
 };
 
-interface HeroContextType {
-  layout: HeroLayout;
-  variant: HeroVariant;
-  theme: Record<string, string>;
-}
+const relLuminance = ([r, g, b]: Rgb) => {
+  const f = (v: number) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+};
 
-const HeroContext = createContext<HeroContextType | null>(null);
+const contrast = (a: number, b: number) =>
+  (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
-function useHero() {
-  const context = useContext(HeroContext);
-  if (!context)
-    throw new Error("Hero components must be used within a Hero root.");
-  return context;
-}
+const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
+  let out = rgb;
+  for (let i = 0; i < 16; i++) {
+    if (contrast(relLuminance(out), surfaceLum) >= MIN_CONTRAST) break;
+    out = out.map((v) => Math.round(v + (target - v) * 0.12)) as Rgb;
+  }
+  return out;
+};
 
-export interface HeroProps extends React.HTMLAttributes<HTMLElement> {
-  layout?: HeroLayout;
-  variant?: HeroVariant;
-  color?: HeroColor;
-  pattern?: HeroPattern;
-}
+const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
 
-export const Hero = forwardRef<HTMLElement, HeroProps>(
+/* ═══════════════════════════════════════════════
+   DEFAULT 3D WEBSITE & ANIMATION RENDER IMAGES
+   ═══════════════════════════════════════════════ */
+
+const DEFAULT_SLIDER_IMAGES = [
+  "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=600&auto=format&fit=crop",
+];
+
+const DEFAULT_MAIN_IMAGE =
+  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop";
+
+/* ═══════════════════════════════════════════════
+   MAIN HERO BLOCK COMPONENT
+   ═══════════════════════════════════════════════ */
+
+export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
   (
     {
-      children,
-      layout = "center",
-      variant = "default",
-      color = "primary",
-      pattern = "none",
+      variant = "bounce",
+      linkComponent: Link = "a",
+      badgeText = "Next-Gen React Components",
+      badgeHref = "/docs",
+      titlePrefix = "Build ",
+      typingWords = [
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+        "Dashboards",
+      ],
+      titleSuffix = "",
+      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
+      cliCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json",
+      primaryActionLabel = "Browse Components",
+      primaryActionHref = "/docs",
+      secondaryActionLabel = "Star on GitHub",
+      secondaryActionHref = "https://github.com/AlgorizeTech",
+      sliderImages = DEFAULT_SLIDER_IMAGES,
+      mainImage = DEFAULT_MAIN_IMAGE,
+      color,
       className,
       ...props
     },
     ref,
   ) => {
-    const { theme, style } = getThemeStyles(color as string);
-    const uniqueId = React.useId().replace(/:/g, "");
+    const [copied, setCopied] = useState(false);
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-    const layoutStyles = {
-      center:
-        "flex flex-col items-center text-center max-w-5xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
-      left: "flex flex-col items-start text-left max-w-5xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
-      "split-right":
-        "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center max-w-7xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
-      "split-left":
-        "grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center max-w-7xl mx-auto py-4 sm:py-8 md:py-12 px-3 sm:px-6",
+    // Typing effect state (used when variant === "typing")
+    const [currentText, setCurrentText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    // Word bounce effect interval (used when variant === "bounce")
+    useEffect(() => {
+      if (variant !== "bounce" || !typingWords || typingWords.length === 0) return;
+      const interval = setInterval(() => {
+        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
+      }, 2400);
+
+      return () => clearInterval(interval);
+    }, [typingWords, variant]);
+
+    // Character typewriter effect interval (used when variant === "typing")
+    useEffect(() => {
+      if (variant !== "typing" || !typingWords || typingWords.length === 0) return;
+      const targetWord = typingWords[currentWordIndex];
+      const typingSpeed = isDeleting ? 60 : 100;
+
+      const timer = setTimeout(() => {
+        if (!isDeleting) {
+          setCurrentText(targetWord.slice(0, currentText.length + 1));
+          if (currentText.length + 1 === targetWord.length) {
+            setTimeout(() => setIsDeleting(true), 1800);
+          }
+        } else {
+          setCurrentText(targetWord.slice(0, currentText.length - 1));
+          if (currentText.length - 1 === 0) {
+            setIsDeleting(false);
+            setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
+          }
+        }
+      }, typingSpeed);
+
+      return () => clearTimeout(timer);
+    }, [currentText, isDeleting, currentWordIndex, typingWords, variant]);
+
+    // 3D Perspective Word Flip effect interval (used when variant === "slider")
+    useEffect(() => {
+      if (variant !== "slider" || !typingWords || typingWords.length === 0) return;
+      const interval = setInterval(() => {
+        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
+      }, 2200);
+
+      return () => clearInterval(interval);
+    }, [typingWords, variant]);
+
+    const handleCopy = () => {
+      if (typeof window !== "undefined" && navigator.clipboard) {
+        navigator.clipboard.writeText(cliCommand);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
     };
 
-    return (
-      <HeroContext.Provider value={{ layout, variant, theme }}>
+    const getAccentColor = (col?: string) => {
+      if (!col || col === "primary" || col === "default") return undefined;
+      const presets: Record<string, string> = {
+        indigo: "#6366f1",
+        rose: "#f43f5e",
+        emerald: "#10b981",
+        zinc: "#18181b",
+      };
+      return presets[col] || col;
+    };
+
+    const resolvedColor = getAccentColor(color);
+    const accentRgb = resolvedColor ? parseColor(resolvedColor) : null;
+
+    const customStyle = {
+      "--hero-accent-text": accentRgb
+        ? `light-dark(${toCss(
+            ensureContrast(accentRgb, LIGHT_SURFACE_LUM, 0),
+          )}, ${toCss(ensureContrast(accentRgb, DARK_SURFACE_LUM, 255))})`
+        : "var(--primary)",
+      ...(resolvedColor ? { "--primary": resolvedColor } : {}),
+      ...(accentRgb
+        ? {
+            "--primary-foreground":
+              relLuminance(accentRgb) > 0.45 ? "#09090b" : "#ffffff",
+          }
+        : {}),
+    } as React.CSSProperties;
+
+    const currentWord = typingWords?.[currentWordIndex] || "";
+
+    /* ═══════════════════════════════════════════════
+       VARIANT 3: CLEAN SOLID WHITE/DARK PARENT WITH SOLID ACCENT FLIP WORD (NO GRADIENT)
+       ═══════════════════════════════════════════════ */
+    if (variant === "slider") {
+      return (
         <section
           ref={ref}
+          style={customStyle}
           className={cn(
-            "relative w-full overflow-hidden transition-all duration-700",
-            variant === "glass" &&
-              "flex items-center justify-center p-0 min-h-[500px] sm:min-h-[600px]",
-            variant === "glow" && "bg-[#fafafa] dark:bg-[#050505]",
+            "relative w-full overflow-hidden py-8 sm:py-12 lg:py-20 bg-white dark:bg-zinc-950 text-foreground",
             className,
           )}
-          style={style}
           {...props}
         >
-          {pattern === "grid" && (
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
-          )}
-          {pattern === "dots" && (
-            <div className="absolute inset-0 bg-[radial-gradient(#80808030_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
-          )}
-
-          {variant === "glow" && (
-            <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-40 dark:opacity-30 blur-[100px] rounded-[100%] pointer-events-none z-0 mix-blend-screen dark:mix-blend-lighten"
-              style={{
-                background: `radial-gradient(circle, ${theme.glow} 0%, transparent 60%)`,
-              }}
-            />
-          )}
-
+          {/* Keyframe style for continuous marquee slider */}
           <style>{`
-            @keyframes hero-fade-up {
-              0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
-              100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+            @keyframes hero-marquee-loop {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
             }
-            .hero-stagger-${uniqueId} > * {
-              animation: hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            .animate-hero-marquee {
+              animation: hero-marquee-loop 25s linear infinite;
             }
-            .hero-stagger-${uniqueId} > *:nth-child(1) { animation-delay: 100ms; }
-            .hero-stagger-${uniqueId} > *:nth-child(2) { animation-delay: 200ms; }
-            .hero-stagger-${uniqueId} > *:nth-child(3) { animation-delay: 300ms; }
-            .hero-stagger-${uniqueId} > *:nth-child(4) { animation-delay: 400ms; }
-            .hero-stagger-${uniqueId} > *:nth-child(5) { animation-delay: 500ms; }
+            .animate-hero-marquee:hover {
+              animation-play-state: paused;
+            }
           `}</style>
 
-          <div
-            className={cn(
-              "relative z-10 w-full",
-              variant !== "glass" && layoutStyles[layout],
-              variant === "glass" &&
-                "flex items-center justify-center w-full py-10 sm:py-16 px-4 sm:px-8",
-            )}
-          >
-            {children}
+          {/* Grid Background Overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
+
+          <div className="relative z-10 max-w-[1320px] mx-auto w-full px-4 sm:px-6 md:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-stretch">
+              
+              {/* Left Section (Span 12 on mobile/md, Span 7 on lg) */}
+              <div className="col-span-1 lg:col-span-7 flex flex-col justify-between space-y-6 sm:space-y-8">
+                
+                {/* Main Content Box */}
+                <div className="relative rounded-3xl p-5 sm:p-8 md:p-10 border border-primary/20 bg-card/60 backdrop-blur-xl space-y-4 sm:space-y-6 overflow-hidden flex-1 flex flex-col justify-center">
+                  
+                  {badgeText && (
+                    <Link href={badgeHref} className="inline-block group/badge self-start">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs sm:text-sm font-bold text-[var(--hero-accent-text)] group-hover/badge:bg-primary/20 transition-all duration-300">
+                        <Sparkles className="size-3.5 text-[var(--hero-accent-text)] animate-spin shrink-0" />
+                        <span>{badgeText}</span>
+                      </div>
+                    </Link>
+                  )}
+
+                  {/* Clean Straight 3D Word Flip with Solid Accent Color (No Gradient) */}
+                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-[1.15]">
+                    <span>{titlePrefix}</span>{" "}
+                    <span className="inline-block">
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={currentWord}
+                          initial={{ opacity: 0, rotateX: -80, y: 10 }}
+                          animate={{ opacity: 1, rotateX: 0, y: 0 }}
+                          exit={{ opacity: 0, rotateX: 80, y: -10 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="inline-block text-[var(--hero-accent-text)] font-black"
+                        >
+                          {currentWord}
+                        </motion.span>
+                      </AnimatePresence>
+                    </span>{" "}
+                    {titleSuffix && <span>{titleSuffix}</span>}
+                  </h1>
+
+                  {subtitle && (
+                    <p className="text-xs sm:text-base text-muted-foreground leading-relaxed max-w-xl font-medium">
+                      {subtitle}
+                    </p>
+                  )}
+
+                  {/* Actions & Copy Line */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    {primaryActionLabel && (
+                      <Link
+                        href={primaryActionHref}
+                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-base font-bold hover:opacity-90 transition-all active:scale-95"
+                      >
+                        <span>{primaryActionLabel}</span>
+                        <ArrowRight className="size-4" />
+                      </Link>
+                    )}
+
+                    {cliCommand && (
+                      <button
+                        type="button"
+                        onClick={handleCopy}
+                        className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-mono font-semibold transition-all cursor-pointer text-foreground"
+                      >
+                        <Terminal className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                        <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-[220px]">{cliCommand}</span>
+                        {copied ? (
+                          <Check className="size-4 text-emerald-500 shrink-0" />
+                        ) : (
+                          <Copy className="size-4 text-muted-foreground shrink-0" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Section: Continuous Marquee 3D Thumbnail Slider */}
+                <div className="relative w-full overflow-hidden rounded-2xl pt-2 shrink-0 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                  <div className="flex w-max animate-hero-marquee gap-3 sm:gap-4 items-center">
+                    {[...sliderImages, ...sliderImages].map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative w-24 h-18 sm:w-32 sm:h-22 rounded-2xl overflow-hidden shrink-0 border border-border bg-card group/thumb"
+                      >
+                        <img
+                          src={img}
+                          alt={`3D Animation ${idx}`}
+                          className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-end p-2">
+                          <span className="text-[10px] font-bold text-white tracking-wide">
+                            3D Render #{((idx % sliderImages.length) + 1).toString().padStart(2, "0")}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Section (Span 12 on mobile/md, Span 5 on lg) */}
+              <div className="col-span-1 lg:col-span-5 relative flex flex-col h-full min-h-[300px] sm:min-h-[360px] lg:min-h-0">
+                <div className="relative w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-3xl overflow-hidden border border-border bg-card group">
+                  
+                  {/* Main 3D Animation Image */}
+                  <img
+                    src={mainImage}
+                    alt="3D Website Animation Visual"
+                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
+                  />
+
+                  {/* Gradient Overlay for Text Contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+
+                  {/* Clean Stationary Floating Badge Top Left */}
+                  <div className="absolute top-4 left-4 sm:top-5 sm:left-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
+                    <div className="size-8 sm:size-10 rounded-xl bg-primary/20 text-[var(--hero-accent-text)] flex items-center justify-center font-bold shrink-0">
+                      <Star className="size-4 sm:size-5 fill-current" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] sm:text-xs font-extrabold text-foreground">3D Web Animation</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">Framer Motion & WebGL</p>
+                    </div>
+                  </div>
+
+                  {/* Clean Stationary Floating Badge Bottom Right */}
+                  <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
+                    <div className="size-2.5 sm:size-3 rounded-full bg-emerald-500 shrink-0" />
+                    <div>
+                      <p className="text-[11px] sm:text-xs font-bold text-foreground">3D Interactive</p>
+                      <p className="text-[9px] sm:text-[10px] text-emerald-500 font-bold">Spatial Rendering</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
-      </HeroContext.Provider>
-    );
-  },
-);
-Hero.displayName = "Hero";
+      );
+    }
 
-export const HeroContent = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
-  const { layout, variant } = useHero();
-  const uniqueId = React.useId().replace(/:/g, "");
-
-  const contentStyles = {
-    center: "flex flex-col items-center justify-center w-full z-10",
-    left: "flex flex-col items-start text-left w-full z-10",
-    "split-right":
-      "flex flex-col items-start text-left w-full z-10 order-2 lg:order-1",
-    "split-left":
-      "flex flex-col items-start text-left w-full z-10 order-2 lg:order-2",
-  };
-
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        contentStyles[layout],
-        `hero-stagger-${uniqueId}`,
-        variant === "glass" &&
-          "p-8 sm:p-12 md:p-16 my-8 sm:my-10 mx-auto rounded-2xl backdrop-blur-2xl bg-white/70 dark:bg-zinc-950/70 border border-white/60 dark:border-zinc-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.7)] z-10 max-w-5xl w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] text-center items-center justify-center ring-1 ring-black/5 dark:ring-white/10 relative overflow-hidden group transition-all duration-500",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
-HeroContent.displayName = "HeroContent";
-
-export const HeroBadge = forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement>
->(({ children, className, href = "#", ...props }, ref) => {
-  const { theme, variant } = useHero();
-  return (
-    <a
-      ref={ref}
-      href={href}
-      className={cn(
-        "inline-flex items-center gap-2 px-3 py-1 mb-4 sm:mb-8 rounded-2xl text-xs sm:text-[13px] font-semibold tracking-tight border backdrop-blur-md transition-colors",
-        variant === "glass"
-          ? "bg-primary/10 border-primary/20 text-foreground shadow-sm"
-          : cn(theme.bgSoft, theme.border, "shadow-sm"),
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </a>
-  );
-});
-HeroBadge.displayName = "HeroBadge";
-
-// --- ADDED: HeroBadgeText ---
-export const HeroBadgeText = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  const { theme, variant } = useHero();
-  return (
-    <span
-      className={cn(
-        "text-[10px] uppercase tracking-wider rounded-2xl px-2 py-0.5 mr-1 font-bold",
-        variant === "glass" ? "bg-primary/20 text-foreground" : theme.bg,
-        className,
-      )}
-    >
-      {children}
-    </span>
-  );
-};
-
-export interface HeroTitleProps
-  extends React.HTMLAttributes<HTMLHeadingElement> {
-  animation?: "fade-up" | "blur-in" | "glitch" | "none";
-}
-
-export const HeroTitle = forwardRef<HTMLHeadingElement, HeroTitleProps>(
-  ({ children, animation = "fade-up", className, ...props }, ref) => {
-    const { variant } = useHero();
-    const uniqueId = React.useId().replace(/:/g, "");
-
+    /* ═══════════════════════════════════════════════
+       VARIANTS 1 & 2: BOUNCE & TYPING (CENTERED HERO)
+       ═══════════════════════════════════════════════ */
     return (
-      <>
-        {animation === "glitch" && (
-          <style>{`
-            .hero-glitch-${uniqueId} { position: relative; }
-            .hero-glitch-${uniqueId}::before, .hero-glitch-${uniqueId}::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8; }
-            .hero-glitch-${uniqueId}::before { left: 2px; text-shadow: -2px 0 red; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
-            .hero-glitch-${uniqueId}::after { left: -2px; text-shadow: -2px 0 blue; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
-            @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 44px, 0); } 20% { clip: rect(85px, 9999px, 140px, 0); } 40% { clip: rect(12px, 9999px, 89px, 0); } 60% { clip: rect(65px, 9999px, 10px, 0); } 80% { clip: rect(9px, 9999px, 53px, 0); } 100% { clip: rect(78px, 9999px, 110px, 0); } }
-            @keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(10px, 9999px, 50px, 0); } 40% { clip: rect(80px, 9999px, 20px, 0); } 60% { clip: rect(30px, 9999px, 90px, 0); } 80% { clip: rect(90px, 9999px, 40px, 0); } 100% { clip: rect(20px, 9999px, 70px, 0); } }
-          `}</style>
-        )}
-        <h1
-          ref={ref}
-          data-text={typeof children === "string" ? children : undefined}
-          className={cn(
-            "text-[1.75rem] xs:text-3xl sm:text-[3.5rem] lg:text-[4.5rem] font-black tracking-tighter leading-[1.1]",
-            variant === "glass"
-              ? "text-foreground"
-              : "text-foreground",
-            animation === "glitch" && `hero-glitch-${uniqueId}`,
-            animation === "blur-in" &&
-              "animate-[hero-blur-in_1s_ease-out_both]",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </h1>
-      </>
-    );
-  },
-);
-HeroTitle.displayName = "HeroTitle";
-
-export const HeroDescription = forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ children, className, ...props }, ref) => {
-  const { variant, layout } = useHero();
-
-  return (
-    <p
-      ref={ref}
-      className={cn(
-        "mt-3 sm:mt-6 text-sm sm:text-[19px] leading-relaxed tracking-wide",
-        layout === "center" || variant === "glass"
-          ? "max-w-2xl mx-auto"
-          : "max-w-xl",
-        variant === "glass"
-          ? "text-muted-foreground"
-          : "text-muted-foreground",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </p>
-  );
-});
-HeroDescription.displayName = "HeroDescription";
-
-export const HeroActions = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
-  const { layout } = useHero();
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "flex flex-wrap items-center gap-4 mt-8 sm:mt-10",
-        layout === "center" && "justify-center",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
-HeroActions.displayName = "HeroActions";
-
-export interface HeroActionProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "glow";
-}
-
-export const HeroAction = forwardRef<HTMLButtonElement, HeroActionProps>(
-  (
-    { children, variant: actionVariant = "primary", className, ...props },
-    ref,
-  ) => {
-    const { theme, variant: heroVariant } = useHero();
-
-    const getActionStyles = () => {
-      if (heroVariant === "glass") {
-        if (actionVariant === "primary")
-          return cn(
-            theme.bg,
-            "text-primary-foreground dark:text-zinc-900 shadow-xl hover:shadow-[var(--hero-color)]/30 hover:scale-[1.03] active:scale-95 border border-white/20 transition-all duration-300",
-          );
-        if (actionVariant === "outline")
-          return "bg-primary/10 border border-primary/20 text-foreground hover:bg-primary/20 backdrop-blur-md hover:scale-[1.03] active:scale-95 shadow-sm transition-all duration-300";
-      }
-
-      switch (actionVariant) {
-        case "glow":
-          return cn(
-            theme.bg,
-            "relative overflow-hidden group shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all",
-            `shadow-[0_0_25px_var(--hero-color)]`,
-          );
-        case "primary":
-          return cn(theme.bg, "shadow-md hover:scale-[1.02] active:scale-95");
-        case "secondary":
-          return "bg-primary text-primary-foreground shadow-md hover:scale-[1.02] active:scale-95";
-        case "outline":
-          return "bg-transparent border border-border/80 text-foreground hover:bg-muted hover:scale-[1.02] active:scale-95 shadow-sm";
-        case "ghost":
-          return "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground active:scale-95";
-      }
-    };
-
-    return (
-      <button
+      <section
         ref={ref}
+        style={customStyle}
         className={cn(
-          "inline-flex items-center justify-center gap-2 h-[46px] px-7 rounded-2xl font-bold text-[14px] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-          getActionStyles(),
+          "relative w-full flex flex-col justify-center items-center py-4 sm:py-8 md:py-12",
           className,
         )}
         {...props}
       >
-        {actionVariant === "glow" && (
-          <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent z-0" />
-        )}
-        <span className="relative z-10 flex items-center gap-2">
-          {children}
-        </span>
-      </button>
-    );
-  },
-);
-HeroAction.displayName = "HeroAction";
-
-export const HeroVisual = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
-  const { layout, variant } = useHero();
-
-  const visualStyles = {
-    center:
-      "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    left: "w-full max-w-5xl max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] mt-10 sm:mt-14 rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    "split-right":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-2 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-    "split-left":
-      "w-full h-full max-h-[360px] sm:max-h-[440px] lg:max-h-[500px] rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-10 order-1 lg:order-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.16)] transition-shadow duration-500",
-  };
-
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        variant === "glass" ? "absolute inset-0 z-0" : visualStyles[layout],
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
-HeroVisual.displayName = "HeroVisual";
-
-// --- ADDED: HeroSocialProof ---
-export interface HeroSocialProofProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  avatars: string[];
-  text: string;
-}
-
-export const HeroSocialProof = forwardRef<HTMLDivElement, HeroSocialProofProps>(
-  ({ avatars, text, className, ...props }, ref) => {
-    const { layout } = useHero();
-
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "mt-8 pt-8 border-t border-border sm:flex sm:items-center",
-          layout === "center" && "justify-center border-t-0 pt-0",
-          className,
-        )}
-        {...props}
-      >
-        <div className="flex -space-x-3 sm:justify-start">
-          {avatars.map((src, idx) => (
-            <img
-              key={idx}
-              className="w-10 h-10 border-2 border-white dark:border-[#09090b] rounded-full object-cover shadow-sm"
-              src={src}
-              alt={`Avatar ${idx + 1}`}
-            />
-          ))}
-        </div>
+        {/* Radial Background Glow */}
         <div
-          className={cn(
-            "mt-3 sm:mt-0 sm:ml-5 text-sm font-medium text-muted-foreground",
-            layout === "center" && "text-center",
-          )}
-        >
-          {text}
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% -10%, var(--primary) 0%, transparent 65%)",
+            opacity: 0.12,
+          }}
+        />
+        {/* Grid Mask Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+
+        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
+            {/* Top Pill Badge */}
+            {badgeText && (
+              <Link href={badgeHref} className="inline-block group">
+                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-[var(--hero-accent-text)] animate-spin shrink-0" />
+                  <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
+                    {badgeText}
+                  </span>
+                </div>
+              </Link>
+            )}
+
+            {/* Dynamic Animated Title Word */}
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
+              <span className="shrink-0">
+                {titlePrefix}{" "}
+                {variant === "bounce" && (
+                  <span className="text-[var(--hero-accent-text)]">
+                    Interactive
+                  </span>
+                )}
+              </span>
+
+              {variant === "typing" ? (
+                <span className="inline-flex items-center">
+                  <span className="text-[var(--hero-accent-text)]">
+                    {currentText}
+                  </span>
+                  <span className="text-[var(--hero-accent-text)] animate-pulse font-mono font-light ml-[1px] mr-0">
+                    |
+                  </span>
+                </span>
+              ) : (
+                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentWord}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      variants={{
+                        initial: { opacity: 0 },
+                        animate: { opacity: 1, transition: { staggerChildren: 0.04 } },
+                        exit: { opacity: 0, transition: { staggerChildren: 0.02 } },
+                      }}
+                      className="text-foreground inline-flex text-left whitespace-nowrap"
+                    >
+                      {currentWord.split("").map((char, index) => (
+                        <motion.span
+                          key={index}
+                          variants={{
+                            initial: { y: 24, opacity: 0, scale: 0.5 },
+                            animate: { y: 0, opacity: 1, scale: 1 },
+                            exit: { y: -24, opacity: 0, scale: 0.5 },
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 350,
+                            damping: 25,
+                          }}
+                          className="inline-block"
+                        >
+                          {char}
+                        </motion.span>
+                      ))}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              )}
+
+              {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
+            </h1>
+
+            {/* Subtitle Paragraph */}
+            {subtitle && (
+              <p className="text-[10px] xs:text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+                {subtitle}
+              </p>
+            )}
+
+            {/* CLI Command Box */}
+            {cliCommand && (
+              <div className="pt-0.5 w-full flex justify-center px-1 sm:px-0">
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-zinc-300 dark:hover:border-primary/50 transition-all"
+                >
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
+                    {cliCommand}
+                  </code>
+                  <div className="pl-1.5 sm:pl-3.5 border-l-0 h-3 sm:h-5 flex items-center shrink-0">
+                    {copied ? (
+                      <Check className="size-3 sm:size-4.5 text-emerald-500" />
+                    ) : (
+                      <Copy className="size-3 sm:size-4.5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    )}
+                  </div>
+                </button>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex flex-row items-center justify-center gap-1.5 xs:gap-2.5 sm:gap-4 pt-0 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
+              {primaryActionLabel && (
+                <Link
+                  href={primaryActionHref}
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                >
+                  <span>{primaryActionLabel}</span>
+                  <ArrowRight className="size-3 sm:size-5 shrink-0" />
+                </Link>
+              )}
+
+              {secondaryActionLabel && (
+                <Link
+                  href={secondaryActionHref}
+                  target={
+                    secondaryActionHref.startsWith("http")
+                      ? "_blank"
+                      : undefined
+                  }
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                >
+                  <span>{secondaryActionLabel}</span>
+                  <GitHubIcon className="size-3 sm:size-5 shrink-0" />
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     );
   },
 );
-HeroSocialProof.displayName = "HeroSocialProof";
+
+HeroBlock.displayName = "HeroBlock";
+export default HeroBlock;

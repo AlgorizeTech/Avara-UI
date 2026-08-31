@@ -15,30 +15,32 @@ export default function HeroSection() {
 export const usageAspect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function CinematicHero() {
-  // "16/9" | "21/9" | "4/3" | "1/1" — sets the thumbnail frame, not the
-  // modal, so a cinematic still can still open a 16:9 player.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageAspect43 = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function ClassicHero() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageNoGlow = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 export default function FlatHero() {
-  // Drops the ambient bloom behind the frame — better on busy backgrounds.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
-// Stand-in for whatever analytics client you already use.
+
 const track = (event: string) => console.log(event);
 
 export default function FullWidthHero() {
-  // "md" | "lg" | "xl" | "full" — how wide the player modal opens.
   return (
      track("hero_video_opened")}
       onClose={() => track("hero_video_closed")}

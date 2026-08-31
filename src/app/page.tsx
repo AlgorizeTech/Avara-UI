@@ -13,7 +13,7 @@ import {
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
-import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -489,10 +489,10 @@ function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
 			{/* Links are passed explicitly rather than relying on the block's
-			    defaults: HomepageHeroBlock ships in the registry, so its defaults
+			    defaults: HeroBlock ships in the registry, so its defaults
 			    have to make sense in a consumer's project, where this site's
 			    routes do not exist. */}
-			<HomepageHeroBlock
+			<HeroBlock
 				badgeHref="/docs/nextjs/index"
 				primaryActionLabel="Browse Components"
 				primaryActionHref="/docs/nextjs/all-components"

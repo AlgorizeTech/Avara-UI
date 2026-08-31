@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-27T04:34:45.200Z",
-  "totalFiles": 211,
+  "generatedAt": "2026-08-31T11:17:47.404Z",
+  "totalFiles": 229,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -33,6 +33,12 @@
       "originalMdx": "[framework]\\animated-list\\page.mdx"
     },
     {
+      "name": "nextjs/animated-marquee",
+      "path": "/docs/nextjs-animated-marquee.md",
+      "url": "/docs/nextjs/animated-marquee",
+      "originalMdx": "[framework]\\animated-marquee\\page.mdx"
+    },
+    {
       "name": "nextjs/animated-timeline",
       "path": "/docs/nextjs-animated-timeline.md",
       "url": "/docs/nextjs/animated-timeline",
@@ -55,6 +61,12 @@
       "path": "/docs/nextjs-architecture.md",
       "url": "/docs/nextjs/architecture",
       "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "nextjs/book-flip",
+      "path": "/docs/nextjs-book-flip.md",
+      "url": "/docs/nextjs/book-flip",
+      "originalMdx": "[framework]\\book-flip\\page.mdx"
     },
     {
       "name": "nextjs/breadcrumb",
@@ -115,6 +127,12 @@
       "path": "/docs/nextjs-collapsible.md",
       "url": "/docs/nextjs/collapsible",
       "originalMdx": "[framework]\\collapsible\\page.mdx"
+    },
+    {
+      "name": "nextjs/color-picker",
+      "path": "/docs/nextjs-color-picker.md",
+      "url": "/docs/nextjs/color-picker",
+      "originalMdx": "[framework]\\color-picker\\page.mdx"
     },
     {
       "name": "nextjs/command",
@@ -195,6 +213,12 @@
       "originalMdx": "[framework]\\dock\\page.mdx"
     },
     {
+      "name": "nextjs/draggable-card-list",
+      "path": "/docs/nextjs-draggable-card-list.md",
+      "url": "/docs/nextjs/draggable-card-list",
+      "originalMdx": "[framework]\\draggable-card-list\\page.mdx"
+    },
+    {
       "name": "nextjs/drawer",
       "path": "/docs/nextjs-drawer.md",
       "url": "/docs/nextjs/drawer",
@@ -261,6 +285,12 @@
       "originalMdx": "[framework]\\floating-contact-button\\page.mdx"
     },
     {
+      "name": "nextjs/flow-gallery",
+      "path": "/docs/nextjs-flow-gallery.md",
+      "url": "/docs/nextjs/flow-gallery",
+      "originalMdx": "[framework]\\flow-gallery\\page.mdx"
+    },
+    {
       "name": "nextjs/flowchart",
       "path": "/docs/nextjs-flowchart.md",
       "url": "/docs/nextjs/flowchart",
@@ -319,6 +349,12 @@
       "path": "/docs/nextjs-index.md",
       "url": "/docs/nextjs/index",
       "originalMdx": "[framework]\\index\\page.mdx"
+    },
+    {
+      "name": "nextjs/infrastructure-topology",
+      "path": "/docs/nextjs-infrastructure-topology.md",
+      "url": "/docs/nextjs/infrastructure-topology",
+      "originalMdx": "[framework]\\infrastructure-topology\\page.mdx"
     },
     {
       "name": "nextjs/input",
@@ -435,6 +471,12 @@
       "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
+      "name": "nextjs/piano",
+      "path": "/docs/nextjs-piano.md",
+      "url": "/docs/nextjs/piano",
+      "originalMdx": "[framework]\\piano\\page.mdx"
+    },
+    {
       "name": "nextjs/popover",
       "path": "/docs/nextjs-popover.md",
       "url": "/docs/nextjs/popover",
@@ -463,6 +505,12 @@
       "path": "/docs/nextjs-qr-code-generator.md",
       "url": "/docs/nextjs/qr-code-generator",
       "originalMdx": "[framework]\\qr-code-generator\\page.mdx"
+    },
+    {
+      "name": "nextjs/range-date-picker",
+      "path": "/docs/nextjs-range-date-picker.md",
+      "url": "/docs/nextjs/range-date-picker",
+      "originalMdx": "[framework]\\range-date-picker\\page.mdx"
     },
     {
       "name": "nextjs/resizable",
@@ -529,6 +577,12 @@
       "path": "/docs/nextjs-split-stepper.md",
       "url": "/docs/nextjs/split-stepper",
       "originalMdx": "[framework]\\split-stepper\\page.mdx"
+    },
+    {
+      "name": "nextjs/squircle-carousel",
+      "path": "/docs/nextjs-squircle-carousel.md",
+      "url": "/docs/nextjs/squircle-carousel",
+      "originalMdx": "[framework]\\squircle-carousel\\page.mdx"
     },
     {
       "name": "nextjs/stepper",
@@ -669,6 +723,12 @@
       "originalMdx": "[framework]\\animated-list\\page.mdx"
     },
     {
+      "name": "reactjs/animated-marquee",
+      "path": "/docs/reactjs-animated-marquee.md",
+      "url": "/docs/reactjs/animated-marquee",
+      "originalMdx": "[framework]\\animated-marquee\\page.mdx"
+    },
+    {
       "name": "reactjs/animated-timeline",
       "path": "/docs/reactjs-animated-timeline.md",
       "url": "/docs/reactjs/animated-timeline",
@@ -691,6 +751,12 @@
       "path": "/docs/reactjs-architecture.md",
       "url": "/docs/reactjs/architecture",
       "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "reactjs/book-flip",
+      "path": "/docs/reactjs-book-flip.md",
+      "url": "/docs/reactjs/book-flip",
+      "originalMdx": "[framework]\\book-flip\\page.mdx"
     },
     {
       "name": "reactjs/breadcrumb",
@@ -751,6 +817,12 @@
       "path": "/docs/reactjs-collapsible.md",
       "url": "/docs/reactjs/collapsible",
       "originalMdx": "[framework]\\collapsible\\page.mdx"
+    },
+    {
+      "name": "reactjs/color-picker",
+      "path": "/docs/reactjs-color-picker.md",
+      "url": "/docs/reactjs/color-picker",
+      "originalMdx": "[framework]\\color-picker\\page.mdx"
     },
     {
       "name": "reactjs/command",
@@ -831,6 +903,12 @@
       "originalMdx": "[framework]\\dock\\page.mdx"
     },
     {
+      "name": "reactjs/draggable-card-list",
+      "path": "/docs/reactjs-draggable-card-list.md",
+      "url": "/docs/reactjs/draggable-card-list",
+      "originalMdx": "[framework]\\draggable-card-list\\page.mdx"
+    },
+    {
       "name": "reactjs/drawer",
       "path": "/docs/reactjs-drawer.md",
       "url": "/docs/reactjs/drawer",
@@ -897,6 +975,12 @@
       "originalMdx": "[framework]\\floating-contact-button\\page.mdx"
     },
     {
+      "name": "reactjs/flow-gallery",
+      "path": "/docs/reactjs-flow-gallery.md",
+      "url": "/docs/reactjs/flow-gallery",
+      "originalMdx": "[framework]\\flow-gallery\\page.mdx"
+    },
+    {
       "name": "reactjs/flowchart",
       "path": "/docs/reactjs-flowchart.md",
       "url": "/docs/reactjs/flowchart",
@@ -955,6 +1039,12 @@
       "path": "/docs/reactjs-index.md",
       "url": "/docs/reactjs/index",
       "originalMdx": "[framework]\\index\\page.mdx"
+    },
+    {
+      "name": "reactjs/infrastructure-topology",
+      "path": "/docs/reactjs-infrastructure-topology.md",
+      "url": "/docs/reactjs/infrastructure-topology",
+      "originalMdx": "[framework]\\infrastructure-topology\\page.mdx"
     },
     {
       "name": "reactjs/input",
@@ -1071,6 +1161,12 @@
       "originalMdx": "[framework]\\particle-canvas\\page.mdx"
     },
     {
+      "name": "reactjs/piano",
+      "path": "/docs/reactjs-piano.md",
+      "url": "/docs/reactjs/piano",
+      "originalMdx": "[framework]\\piano\\page.mdx"
+    },
+    {
       "name": "reactjs/popover",
       "path": "/docs/reactjs-popover.md",
       "url": "/docs/reactjs/popover",
@@ -1099,6 +1195,12 @@
       "path": "/docs/reactjs-qr-code-generator.md",
       "url": "/docs/reactjs/qr-code-generator",
       "originalMdx": "[framework]\\qr-code-generator\\page.mdx"
+    },
+    {
+      "name": "reactjs/range-date-picker",
+      "path": "/docs/reactjs-range-date-picker.md",
+      "url": "/docs/reactjs/range-date-picker",
+      "originalMdx": "[framework]\\range-date-picker\\page.mdx"
     },
     {
       "name": "reactjs/resizable",
@@ -1165,6 +1267,12 @@
       "path": "/docs/reactjs-split-stepper.md",
       "url": "/docs/reactjs/split-stepper",
       "originalMdx": "[framework]\\split-stepper\\page.mdx"
+    },
+    {
+      "name": "reactjs/squircle-carousel",
+      "path": "/docs/reactjs-squircle-carousel.md",
+      "url": "/docs/reactjs/squircle-carousel",
+      "originalMdx": "[framework]\\squircle-carousel\\page.mdx"
     },
     {
       "name": "reactjs/stepper",
