@@ -38,25 +38,25 @@ export type SupportLayout = "chat" | "table";
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-white dark:bg-[#09090b] border border-border shadow-xl",
+      "bg-background text-foreground border border-border shadow-xl",
     header:
       "bg-muted border-b border-border",
     sidebar:
-      "bg-white dark:bg-[#09090b] border-r border-border",
+      "bg-card text-card-foreground border-r border-border",
     filterBar:
       "bg-muted/50 border-b border-border",
-    main: "bg-white dark:bg-[#09090b]",
+    main: "bg-background text-foreground",
     chatHeader:
-      "bg-muted/50 dark:bg-[#121217]/50 backdrop-blur-md border-b border-border",
+      "bg-muted/50 backdrop-blur-md border-b border-border",
     chatFooter:
-      "bg-muted/50 dark:bg-[#121217] border-t border-border",
+      "bg-muted/50 border-t border-border",
     detailsPane:
-      "bg-muted/50 dark:bg-[#09090b] border-l border-border",
-    card: "bg-white dark:bg-[#121217] border border-border shadow-sm",
+      "bg-muted/50 border-l border-border",
+    card: "bg-card text-card-foreground border border-border shadow-sm",
     cardHeader:
       "bg-muted border-b border-border",
     input:
-      "bg-muted dark:bg-[#09090b] border border-border",
+      "bg-muted border border-border",
     chatBubbleReceived:
       "bg-muted text-foreground border border-border/50",
     tableRow:
