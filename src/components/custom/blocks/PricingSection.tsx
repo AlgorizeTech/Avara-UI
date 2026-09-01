@@ -25,7 +25,55 @@ const FeatureItem = ({ text }: { text: string }) => (
   </li>
 );
 
-const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
+const AnimatedPrice = ({
+  value,
+  counting = true,
+}: {
+  value: number | string;
+  counting?: boolean;
+}) => {
+  const cleanValue = String(value);
+  const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
+  const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
+
+  useEffect(() => {
+    if (!counting || isNaN(numericValue)) {
+      setDisplayValue(numericValue);
+      return;
+    }
+    let startTime: number;
+    const duration = 600;
+    const startValue = 0;
+
+    const animate = (time: number) => {
+      if (!startTime) startTime = time;
+      const progress = Math.min((time - startTime) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 5);
+      setDisplayValue(startValue + (numericValue - startValue) * easeProgress);
+      if (progress < 1) requestAnimationFrame(animate);
+      else setDisplayValue(numericValue);
+    };
+    requestAnimationFrame(animate);
+  }, [numericValue, value, counting]);
+
+  if (isNaN(numericValue)) return <span>{cleanValue}</span>;
+  if (!counting) return <span>{cleanValue.replace(/[^0-9.]/g, "")}</span>;
+
+  const isDecimal = cleanValue.includes(".");
+  return (
+    <span>
+      {isDecimal
+        ? displayValue.toFixed(2)
+        : Math.round(displayValue).toLocaleString()}
+    </span>
+  );
+};
+
+const PricingSection = ({
+  packages,
+  counting = true,
+  linkComponent: Link = "a",
+}: any) => {
   const [pricingMode, setPricingMode] = useState("subscription");
   const containerRef = useRef(null);
 
@@ -142,7 +190,14 @@ const PricingSection = ({ packages, linkComponent: Link = "a" }: any) => {
 
                     <div className="mt-6 flex items-baseline gap-1">
                       <span className="text-4xl font-bold text-foreground">
-                        {price === 0 ? "Free" : `$${price}`}
+                        {price === 0 ? (
+                          "Free"
+                        ) : (
+                          <>
+                            $
+                            <AnimatedPrice value={price} counting={counting} />
+                          </>
+                        )}
                       </span>
                       {price > 0 && (
                         <span className="text-sm text-muted-foreground">

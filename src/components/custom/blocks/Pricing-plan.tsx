@@ -94,10 +94,55 @@ const pricingVariants: any = {
   },
 };
 
+const AnimatedPrice = ({
+  value,
+  counting = true,
+}: {
+  value: number | string;
+  counting?: boolean;
+}) => {
+  const cleanValue = String(value);
+  const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
+  const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
+
+  useEffect(() => {
+    if (!counting || isNaN(numericValue)) {
+      setDisplayValue(numericValue);
+      return;
+    }
+    let startTime: number;
+    const duration = 600;
+    const startValue = 0;
+
+    const animate = (time: number) => {
+      if (!startTime) startTime = time;
+      const progress = Math.min((time - startTime) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 5);
+      setDisplayValue(startValue + (numericValue - startValue) * easeProgress);
+      if (progress < 1) requestAnimationFrame(animate);
+      else setDisplayValue(numericValue);
+    };
+    requestAnimationFrame(animate);
+  }, [numericValue, value, counting]);
+
+  if (isNaN(numericValue)) return <span>{cleanValue}</span>;
+  if (!counting) return <span>{cleanValue.replace(/[^0-9.]/g, "")}</span>;
+
+  const isDecimal = cleanValue.includes(".");
+  return (
+    <span>
+      {isDecimal
+        ? displayValue.toFixed(2)
+        : Math.round(displayValue).toLocaleString()}
+    </span>
+  );
+};
+
 export function BasicPricingPlan({
   data,
   variant = "default",
   tabStyle = "default",
+  counting = true,
   tabClassName,
   cardClassName,
   popularBadgeClassName,
@@ -253,7 +298,10 @@ export function BasicPricingPlan({
                   {plan.subtitle}
                 </CardDescription>
                 <div className="mt-4">
-                  <span className={cn(variantStyles.price)}>{plan.price}</span>
+                  <span className={cn(variantStyles.price)}>
+                    {plan.price.startsWith("$") ? "$" : ""}
+                    <AnimatedPrice value={plan.price} counting={counting} />
+                  </span>
                   {plan.period && (
                     <span
                       className={cn(
@@ -333,6 +381,7 @@ export function BasicPricingPlan({
 
 export function TablePricingPlan({
   data,
+  counting = true,
   className,
   headerClassName,
   rowClassName,
@@ -415,7 +464,10 @@ export function TablePricingPlan({
                 {plan.title}
               </h3>
               <div className="mb-4">
-                <span className="text-3xl font-bold">{plan.price}</span>
+                <span className="text-3xl font-bold">
+                  {plan.price.startsWith("$") ? "$" : ""}
+                  <AnimatedPrice value={plan.price} counting={counting} />
+                </span>
                 {plan.period && (
                   <span className="text-muted-foreground ml-1">
                     /{plan.period}
@@ -673,15 +725,7 @@ export function SliderPricingPlan({
                   classNames.price,
                 )}
               >
-                ${Math.floor(getCurrentPrice())}
-              </span>
-              <span
-                className={cn(
-                  "text-2xl font-bold text-foreground",
-                  classNames.priceDecimal,
-                )}
-              >
-                .{((getCurrentPrice() % 1) * 100).toFixed(0).padStart(2, "0")}
+                $<AnimatedPrice value={getCurrentPrice()} counting={counting} />
               </span>
             </div>
             <div

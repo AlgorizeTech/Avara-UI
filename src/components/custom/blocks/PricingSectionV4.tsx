@@ -3,17 +3,20 @@
 import { ArrowRight, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const AnimatedPrice = ({ value }: any) => {
+const AnimatedPrice = ({ value, counting = true }: any) => {
   const cleanValue = value.toString().replace(/\.00$/, "");
   const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
-  const [displayValue, setDisplayValue] = useState(numericValue || 0);
+  const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
 
   useEffect(() => {
-    if (isNaN(numericValue)) return;
+    if (!counting || isNaN(numericValue)) {
+      setDisplayValue(numericValue);
+      return;
+    }
 
     let startTime: any;
     const duration = 600;
-    const startValue = displayValue;
+    const startValue = 0;
 
     const animate = (time: any) => {
       if (!startTime) startTime = time;
@@ -27,9 +30,10 @@ const AnimatedPrice = ({ value }: any) => {
     };
 
     requestAnimationFrame(animate);
-  }, [numericValue, displayValue]);
+  }, [numericValue, value, counting]);
 
   if (isNaN(numericValue)) return <span>{cleanValue}</span>;
+  if (!counting) return <span>{cleanValue.replace(/[^0-9.]/g, "")}</span>;
 
   const isDecimal = cleanValue.includes(".");
   const formatted = isDecimal ? displayValue.toFixed(2) : Math.round(displayValue).toLocaleString();
@@ -37,7 +41,7 @@ const AnimatedPrice = ({ value }: any) => {
   return <span>{formatted}</span>;
 };
 
-export default function PricingSectionV4({ packages, linkComponent: Link = "a" }: any) {
+export default function PricingSectionV4({ packages, counting = true, linkComponent: Link = "a" }: any) {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [selectedPlanId, setSelectedPlanId] = useState<any>(null);
 
@@ -191,7 +195,7 @@ export default function PricingSectionV4({ packages, linkComponent: Link = "a" }
                   <div className="flex items-end gap-2 mb-4">
                     <span className="text-3xl font-bold text-zinc-400 dark:text-zinc-600 mb-2">$</span>
                     <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-foreground">
-                      <AnimatedPrice value={activePlan.price} />
+                      <AnimatedPrice value={activePlan.price} counting={counting} />
                     </span>
                   </div>
                   <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
@@ -255,7 +259,7 @@ export default function PricingSectionV4({ packages, linkComponent: Link = "a" }
                       <div className="flex items-end gap-1.5 mb-3 relative z-10">
                         <span className="text-xl font-bold text-zinc-400 dark:text-zinc-600 mb-1.5">$</span>
                         <span className="text-5xl md:text-6xl font-black tracking-tighter text-foreground">
-                          <AnimatedPrice value={plan.price} />
+                          <AnimatedPrice value={plan.price} counting={counting} />
                         </span>
                       </div>
                       <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-8 relative z-10">{plan.description}</p>

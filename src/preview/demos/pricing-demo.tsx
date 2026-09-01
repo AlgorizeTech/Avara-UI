@@ -249,10 +249,12 @@ export default function PricingDemo({
   layout = "cards",
   variant = "default",
   color = "primary",
+  counting = true,
 }: {
   layout?: LayoutType;
   variant?: PricingVariant;
   color?: PricingColor;
+  counting?: boolean;
 }) {
   return (
     <div
@@ -260,26 +262,28 @@ export default function PricingDemo({
     >
       {layout === "cards" && (
         <PricingCards
-          key={`cards-${variant}-${color}`}
+          key={`cards-${variant}-${color}-${counting}`}
           variant={variant}
           color={color}
+          counting={counting}
           data={sampleCardsData}
         />
       )}
       {layout === "builder" && (
-        <PricingBuilder key={`builder-${color}`} color={color} />
+        <PricingBuilder key={`builder-${color}-${counting}`} color={color} counting={counting} />
       )}
       {layout === "table" && (
-        <PricingTable key={`table-${color}`} color={color} data={sampleTableData} />
+        <PricingTable key={`table-${color}-${counting}`} color={color} counting={counting} data={sampleTableData} />
       )}
       {layout === "slider" && (
-        <PricingSlider key={`slider-${color}`} color={color} />
+        <PricingSlider key={`slider-${color}-${counting}`} color={color} counting={counting} />
       )}
       {layout === "typographic" && (
         <PricingTypographic
-          key={`type-${color}`}
+          key={`type-${color}-${counting}`}
           packages={sampleTypographicData}
           color={color}
+          counting={counting}
         />
       )}
     </div>
