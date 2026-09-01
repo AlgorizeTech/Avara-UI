@@ -100,9 +100,55 @@ const getCardData = (activePlans: string[]) => {
   return { title, tag, price, features };
 };
 
+const AnimatedPrice = ({
+  value,
+  counting = true,
+}: {
+  value: number | string;
+  counting?: boolean;
+}) => {
+  const cleanValue = String(value);
+  const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
+  const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
+
+  useEffect(() => {
+    if (!counting || isNaN(numericValue)) {
+      setDisplayValue(numericValue);
+      return;
+    }
+    let startTime: number;
+    const duration = 600;
+    const startValue = 0;
+
+    const animate = (time: number) => {
+      if (!startTime) startTime = time;
+      const progress = Math.min((time - startTime) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 5);
+      setDisplayValue(startValue + (numericValue - startValue) * easeProgress);
+      if (progress < 1) requestAnimationFrame(animate);
+      else setDisplayValue(numericValue);
+    };
+    requestAnimationFrame(animate);
+  }, [numericValue, value, counting]);
+
+  if (isNaN(numericValue)) return <span>{cleanValue}</span>;
+  if (!counting) return <span>{cleanValue.replace(/[^0-9.]/g, "")}</span>;
+
+  const isDecimal = cleanValue.includes(".");
+  return (
+    <span>
+      {isDecimal
+        ? displayValue.toFixed(2)
+        : Math.round(displayValue).toLocaleString()}
+    </span>
+  );
+};
+
 export default function PricingPlans({
+  counting = true,
   linkComponent: Link = "a",
 }: {
+  counting?: boolean;
   /**
    * The element used for links. Defaults to a plain `a`, so this component works
    * in any React app with no adaptation. In Next.js, pass `next/link` to keep
@@ -290,7 +336,7 @@ export default function PricingPlans({
 
               <div className="mb-10">
                 <span className="text-7xl md:text-[80px] font-extrabold text-lime-500 dark:text-[#CCFF00] tracking-tight leading-none">
-                  ${cardData.price}
+                  $<AnimatedPrice value={cardData.price} counting={counting} />
                 </span>
               </div>
 

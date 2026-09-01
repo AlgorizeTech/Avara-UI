@@ -345,6 +345,15 @@ export default function PricingMenu() {
           icons, primary buttons, and gradients. Any custom hex string is
           resolved through CSS variables.
 
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated number count-up for price values across all plans.
+          When set to true, prices count up smoothly on mount or tab change; when false, prices display statically without animation.
+
 ## Props Reference: Other Layouts
 
         Component
@@ -355,14 +364,23 @@ export default function PricingMenu() {
 
           PricingBuilder
 
+          counting
+
+          boolean
+
+          true
+
+          Controls animated count-up for the calculated total price.
+
+          PricingBuilder
+
           color
 
           PricingColor
 
           "indigo"
 
-          Accent for the module toggles, animated total and call to action. The
-          builder supplies its own modules, so this is its only prop.
+          Accent for the module toggles, animated total and call to action.
 
           PricingTable
 
@@ -374,8 +392,17 @@ export default function PricingMenu() {
 
           plans become the columns (one may set{" "}
           featured) and sections group the feature
-          rows. Each feature's values array must line up with the
-          plan order.
+          rows.
+
+          PricingTable
+
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated count-up for plan prices in column headers.
 
           PricingTable
 
@@ -389,14 +416,23 @@ export default function PricingMenu() {
 
           PricingSlider
 
+          counting
+
+          boolean
+
+          true
+
+          Controls animated count-up when dragging the usage volume slider.
+
+          PricingSlider
+
           color
 
           PricingColor
 
           "indigo"
 
-          Accent for the range track, thumb and computed price. Tiers are
-          defined inside the component.
+          Accent for the range track, thumb and computed price.
 
           PricingTypographic
 
@@ -406,10 +442,17 @@ export default function PricingMenu() {
 
           Required
 
-          A flat list of plans. Entries are split by{" "}
-          billingCycle ("monthly" /{" "}
-          "yearly") to feed the toggle, and{" "}
-          isFeatured highlights one row per cycle.
+          A flat list of plans split by billingCycle.
+
+          PricingTypographic
+
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated count-up for active plan prices.
 
           PricingTypographic
 

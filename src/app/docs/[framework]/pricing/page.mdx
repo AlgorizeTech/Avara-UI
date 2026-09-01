@@ -127,7 +127,7 @@ export const usageCards = `import { PricingCards, type PricingData } from "@/com
 ${pricingData}
 
 export default function Pricing() {
-  return <PricingCards data={data} variant="default" color="indigo" />;
+  return <PricingCards data={data} variant="default" color="indigo" counting={true} />;
 }`;
 
 export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
@@ -136,7 +136,7 @@ ${pricingData}
 
 export default function PremiumPricing() {
   // Heavier shadows, gradient price text and a scaled-up popular card.
-  return <PricingCards data={data} variant="premium" color="indigo" />;
+  return <PricingCards data={data} variant="premium" color="indigo" counting={false} />;
 }`;
 
 export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
@@ -145,7 +145,7 @@ ${pricingData}
 
 export default function ElegantPricing() {
   // Soft top-border accent on the popular card, lighter type.
-  return <PricingCards data={data} variant="elegant" color="indigo" />;
+  return <PricingCards data={data} variant="elegant" color="indigo" counting={false} />;
 }`;
 
 export const usageMinimal = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
@@ -154,7 +154,7 @@ ${pricingData}
 
 export default function MinimalPricing() {
   // No card chrome until hover — the popular plan is marked by a ring.
-  return <PricingCards data={data} variant="minimal" color="indigo" />;
+  return <PricingCards data={data} variant="minimal" color="indigo" counting={true} />;
 }`;
 
 export const usageBordered = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
@@ -163,7 +163,7 @@ ${pricingData}
 
 export default function BorderedPricing() {
   // Hard neo-brutalist edges and offset shadows.
-  return <PricingCards data={data} variant="bordered" color="indigo" />;
+  return <PricingCards data={data} variant="bordered" color="indigo" counting={true} />;
 }`;
 
 export const usageBuilder = `import { PricingBuilder } from "@/components/custom/blocks/Pricing";
@@ -186,6 +186,7 @@ export default function QuoteBuilder() {
       defaultSelected={["auth", "db"]}
       buttonText="Deploy Custom Stack"
       color="indigo"
+      counting={true}
     />
   );
 }`;
@@ -222,7 +223,7 @@ const data: PricingTableData = {
 };
 
 export default function ComparePlans() {
-  return <PricingTable data={data} color="indigo" />;
+  return <PricingTable data={data} color="indigo" counting={true} />;
 }`;
 
 export const usageSlider = `import { PricingSlider } from "@/components/custom/blocks/Pricing";
@@ -238,6 +239,7 @@ export default function UsagePricing() {
       maxViews="1M+ Views"
       buttonText="Start 14-Day Free Trial"
       color="emerald"
+      counting={true}
     />
   );
 }`;
@@ -323,7 +325,7 @@ const packages = [
 ];
 
 export default function PricingMenu() {
-  return <PricingTypographic packages={packages} color="zinc" />;
+  return <PricingTypographic packages={packages} color="zinc" counting={true} />;
 }`;
 
 <ExampleShowcase
@@ -348,7 +350,7 @@ export default function PricingMenu() {
             "on a plan scales that card up and accents it.",
         },
       ],
-      props: { layout: "cards", variant: "default" },
+      props: { layout: "cards", variant: "default", counting: true },
       usage: usageCards,
       code: extractCode("src/components/custom/blocks/Pricing.tsx"),
     },
@@ -376,8 +378,14 @@ export default function PricingMenu() {
           effect:
             "to give the popular card a gradient wash, deeper shadow and gradient price text.",
         },
+        {
+          prop: "counting",
+          value: "{false}",
+          effect:
+            "disables animated price counting for a static numeric display.",
+        },
       ],
-      props: { layout: "cards", variant: "premium" },
+      props: { layout: "cards", variant: "premium", counting: false },
       usage: usagePremium,
     },
     {
@@ -390,8 +398,14 @@ export default function PricingMenu() {
           effect:
             "for a lighter type scale and a top-border accent that lifts on hover.",
         },
+        {
+          prop: "counting",
+          value: "{false}",
+          effect:
+            "disables animated price counting for a static numeric display.",
+        },
       ],
-      props: { layout: "cards", variant: "elegant" },
+      props: { layout: "cards", variant: "elegant", counting: false },
       usage: usageElegant,
     },
     {
@@ -405,7 +419,7 @@ export default function PricingMenu() {
             "to drop the card borders — the popular plan is marked by a single ring instead.",
         },
       ],
-      props: { layout: "cards", variant: "minimal" },
+      props: { layout: "cards", variant: "minimal", counting: true },
       usage: usageMinimal,
     },
     {
@@ -419,7 +433,7 @@ export default function PricingMenu() {
             "for the neo-brutalist take: square corners, thick borders, offset shadows.",
         },
       ],
-      props: { layout: "cards", variant: "bordered" },
+      props: { layout: "cards", variant: "bordered", counting: true },
       usage: usageBordered,
     },
     {
@@ -428,10 +442,10 @@ export default function PricingMenu() {
         {
           prop: "color",
           effect:
-            "is `PricingBuilder`'s only prop — it carries its own module data and recalculates the animated total itself.",
+            "is `PricingBuilder`'s primary theme prop — it carries its own module data and recalculates the animated total itself.",
         },
       ],
-      props: { layout: "builder" },
+      props: { layout: "builder", counting: true },
       usage: usageBuilder,
     },
     {
@@ -443,7 +457,7 @@ export default function PricingMenu() {
             "on `PricingTable` lays plans out as columns and features as grouped rows. A `values` entry may be `true`, `false` or a string.",
         },
       ],
-      props: { layout: "table" },
+      props: { layout: "table", counting: true },
       usage: usageTable,
     },
     {
@@ -455,7 +469,7 @@ export default function PricingMenu() {
             "on `PricingSlider` defines the volume tiers — dragging updates the tier, price and included limits together.",
         },
       ],
-      props: { layout: "slider" },
+      props: { layout: "slider", counting: true },
       usage: usageSlider,
     },
     {
@@ -467,7 +481,7 @@ export default function PricingMenu() {
             "on `PricingTypographic` takes every plan in one array; tag each with `billingCycle` to drive the monthly/yearly toggle.",
         },
       ],
-      props: { layout: "typographic" },
+      props: { layout: "typographic", counting: true },
       usage: usageTypographic,
     },
   ]}
@@ -536,6 +550,21 @@ export default function PricingMenu() {
           resolved through CSS variables.
         </td>
       </tr>
+      <tr>
+        <td>
+          <code>counting</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles animated number count-up for price values across all plans.
+          When set to <code>true</code>, prices count up smoothly on mount or tab change; when <code>false</code>, prices display statically without animation.
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -559,6 +588,23 @@ export default function PricingMenu() {
           <code>PricingBuilder</code>
         </td>
         <td>
+          <code>counting</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Controls animated count-up for the calculated total price.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingBuilder</code>
+        </td>
+        <td>
           <code>color</code>
         </td>
         <td>
@@ -568,8 +614,7 @@ export default function PricingMenu() {
           <code>"indigo"</code>
         </td>
         <td>
-          Accent for the module toggles, animated total and call to action. The
-          builder supplies its own modules, so this is its only prop.
+          Accent for the module toggles, animated total and call to action.
         </td>
       </tr>
       <tr>
@@ -588,8 +633,24 @@ export default function PricingMenu() {
         <td>
           <code>plans</code> become the columns (one may set{" "}
           <code>featured</code>) and <code>sections</code> group the feature
-          rows. Each feature's <code>values</code> array must line up with the
-          plan order.
+          rows.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingTable</code>
+        </td>
+        <td>
+          <code>counting</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles animated count-up for plan prices in column headers.
         </td>
       </tr>
       <tr>
@@ -614,6 +675,23 @@ export default function PricingMenu() {
           <code>PricingSlider</code>
         </td>
         <td>
+          <code>counting</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Controls animated count-up when dragging the usage volume slider.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingSlider</code>
+        </td>
+        <td>
           <code>color</code>
         </td>
         <td>
@@ -623,8 +701,7 @@ export default function PricingMenu() {
           <code>"indigo"</code>
         </td>
         <td>
-          Accent for the range track, thumb and computed price. Tiers are
-          defined inside the component.
+          Accent for the range track, thumb and computed price.
         </td>
       </tr>
       <tr>
@@ -641,10 +718,24 @@ export default function PricingMenu() {
           <strong>Required</strong>
         </td>
         <td>
-          A flat list of plans. Entries are split by{" "}
-          <code>billingCycle</code> (<code>"monthly"</code> /{" "}
-          <code>"yearly"</code>) to feed the toggle, and{" "}
-          <code>isFeatured</code> highlights one row per cycle.
+          A flat list of plans split by <code>billingCycle</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingTypographic</code>
+        </td>
+        <td>
+          <code>counting</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Toggles animated count-up for active plan prices.
         </td>
       </tr>
       <tr>

@@ -163,13 +163,22 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 // Animated Price Counter Component
-const AnimatedPrice = ({ value }: { value: number | string }) => {
+const AnimatedPrice = ({
+  value,
+  counting = true,
+}: {
+  value: number | string;
+  counting?: boolean;
+}) => {
   const cleanValue = String(value);
   const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
 
   useEffect(() => {
-    if (isNaN(numericValue)) return;
+    if (!counting || isNaN(numericValue)) {
+      setDisplayValue(numericValue);
+      return;
+    }
     let startTime: number;
     const duration = 650;
     const startValue = 0;
@@ -183,9 +192,11 @@ const AnimatedPrice = ({ value }: { value: number | string }) => {
       else setDisplayValue(numericValue);
     };
     requestAnimationFrame(animate);
-  }, [numericValue, value]);
+  }, [numericValue, value, counting]);
 
   if (isNaN(numericValue)) return <span>{cleanValue}</span>;
+  if (!counting) return <span>{cleanValue.replace(/[^0-9.]/g, "")}</span>;
+
   const isDecimal = cleanValue.includes(".");
   return (
     <span>
@@ -218,11 +229,13 @@ export function PricingCards({
   data,
   variant = "default",
   color = "primary",
+  counting = true,
   linkComponent: LinkComp = "a",
 }: {
   data: PricingData;
   variant?: PricingVariant;
   color?: PricingColor;
+  counting?: boolean;
   linkComponent?: React.ElementType;
 }) {
   const [activeTab, setActiveTab] = useState(data.tabs[0]?.id || "monthly");
@@ -325,7 +338,7 @@ export function PricingCards({
 
                 <div className="flex items-baseline gap-1 mb-6">
                   <span className="text-4xl sm:text-5xl font-black text-foreground">
-                    <AnimatedPrice value={plan.price} />
+                    <AnimatedPrice value={plan.price} counting={counting} />
                   </span>
                   <span className="text-sm text-muted-foreground">
                     /{plan.period}
@@ -378,6 +391,7 @@ export interface PricingBuilderProps {
   defaultSelected?: string[];
   buttonText?: string;
   color?: PricingColor;
+  counting?: boolean;
   className?: string;
 }
 
@@ -397,6 +411,7 @@ export function PricingBuilder({
   defaultSelected = ["auth", "db"],
   buttonText = "Deploy Custom Stack",
   color = "primary",
+  counting = true,
   className,
 }: PricingBuilderProps) {
   const [selectedModules, setSelectedModules] = useState<string[]>(defaultSelected);
@@ -472,7 +487,7 @@ export function PricingBuilder({
             </span>
             <div className="flex items-baseline gap-1 mb-6">
               <span className="text-5xl sm:text-6xl font-black text-foreground">
-                <AnimatedPrice value={totalPrice} />
+                <AnimatedPrice value={totalPrice} counting={counting} />
               </span>
               <span className="text-muted-foreground font-medium">/month</span>
             </div>
@@ -518,13 +533,18 @@ export interface PricingTableData {
   sections: TableSection[];
 }
 
+export interface PricingTableProps {
+  data: PricingTableData;
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+}
+
 export function PricingTable({
   data,
   color = "primary",
-}: {
-  data: PricingTableData;
-  color?: PricingColor;
-}) {
+  counting = true,
+}: PricingTableProps) {
   const { theme, style } = getThemeStyles(color);
   const renderFeatureValue = (value: string | boolean) => {
     if (value === true)
@@ -592,7 +612,8 @@ export function PricingTable({
                 {plan.title}
               </h4>
               <div className="text-3xl font-black text-foreground mb-5">
-                {plan.price}
+                {plan.price.startsWith("$") ? "$" : ""}
+                <AnimatedPrice value={plan.price} counting={counting} />
               </div>
               <button className={ctaClass(plan.featured)}>
                 {plan.buttonText}
@@ -655,7 +676,8 @@ export function PricingTable({
                     {plan.title}
                   </h4>
                   <div className="text-3xl font-black text-foreground mb-6">
-                    {plan.price}
+                    {plan.price.startsWith("$") ? "$" : ""}
+                    <AnimatedPrice value={plan.price} counting={counting} />
                   </div>
                   <button className={ctaClass(plan.featured)}>
                     {plan.buttonText}
@@ -715,6 +737,7 @@ export interface PricingSliderProps {
   maxViews?: string;
   buttonText?: string;
   color?: PricingColor;
+  counting?: boolean;
   className?: string;
 }
 
@@ -727,6 +750,7 @@ export function PricingSlider({
   maxViews = "1M+ Views",
   buttonText = "Start 14-Day Free Trial",
   color = "primary",
+  counting = true,
   className,
 }: PricingSliderProps) {
   const [value, setValue] = useState(5);
@@ -749,7 +773,7 @@ export function PricingSlider({
       </p>
       <div className="mb-6 sm:mb-12">
         <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-foreground mb-2">
-          $<AnimatedPrice value={calculatedPrice} />
+          $<AnimatedPrice value={calculatedPrice} counting={counting} />
         </div>
         <p className="text-muted-foreground font-medium tracking-wide uppercase text-xs sm:text-sm">
           Per Month
@@ -826,15 +850,19 @@ export interface PricingTypographicPlan {
   billingCycle?: "monthly" | "yearly" | string;
 }
 
+export interface PricingTypographicProps {
+  packages: any;
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+}
+
 export function PricingTypographic({
   packages,
   color = "primary",
+  counting = true,
   linkComponent: LinkComp = "a",
-}: {
-  packages: any;
-  color?: PricingColor;
-  linkComponent?: React.ElementType;
-}) {
+}: PricingTypographicProps) {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
     "monthly",
   );
@@ -1044,7 +1072,7 @@ export function PricingTypographic({
                 )}
 
                 <div className="absolute right-2 -top-6 text-[110px] xl:text-[145px] font-black text-foreground/[0.03] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300 max-w-full overflow-hidden text-right">
-                  $<AnimatedPrice key={`wm-${activePlan.id}-${activePlan.price}`} value={activePlan.price} />
+                  $<AnimatedPrice key={`wm-${activePlan.id}-${activePlan.price}`} value={activePlan.price} counting={counting} />
                 </div>
 
                 <div className="mb-12 relative z-10">
@@ -1067,7 +1095,7 @@ export function PricingTypographic({
                       $
                     </span>
                     <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-foreground">
-                      <AnimatedPrice key={`main-${activePlan.id}-${activePlan.price}`} value={activePlan.price} />
+                      <AnimatedPrice key={`main-${activePlan.id}-${activePlan.price}`} value={activePlan.price} counting={counting} />
                     </span>
                   </div>
                   <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
@@ -1210,7 +1238,7 @@ export function PricingTypographic({
                           $
                         </span>
                         <span className="text-5xl md:text-6xl font-black tracking-tighter text-foreground">
-                          <AnimatedPrice key={`mob-${plan.id}-${plan.price}`} value={plan.price} />
+                          <AnimatedPrice key={`mob-${plan.id}-${plan.price}`} value={plan.price} counting={counting} />
                         </span>
                       </div>
 
