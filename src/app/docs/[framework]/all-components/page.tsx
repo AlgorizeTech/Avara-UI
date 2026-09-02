@@ -122,6 +122,7 @@ const COMPONENT_META: Record<
 	"scroll-stack": { countText: "Stacking Cards", illustrationType: "scroll-stack" },
 	"tilted-card": { countText: "3D Parallax Tilt", illustrationType: "tilted-card" },
 	"animated-timeline": { countText: "Animated History", illustrationType: "timeline" },
+	"radial-orbital-timeline": { countText: "Orbital Interactive", illustrationType: "timeline" },
 	"animated-typography": { countText: "Animated Text", illustrationType: "typography" },
 	"video-accordion": { countText: "Interactive Media", illustrationType: "video-accordion" },
 

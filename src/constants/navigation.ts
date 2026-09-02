@@ -164,6 +164,7 @@ export const navigation: NavigationItem[] = [
       { label: "Scroll Stack", slug: "scroll-stack" },
       { label: "Tilted Card", slug: "tilted-card" },
       { label: "Animated Timeline", slug: "animated-timeline" },
+      { label: "Radial Orbital Timeline", slug: "radial-orbital-timeline", badge: "New" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Animated Marquee", slug: "animated-marquee", badge: "New" },
       { label: "Video Accordion", slug: "video-accordion" },

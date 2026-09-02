@@ -6,48 +6,84 @@ Four independent components live on this page — four in `carousel.tsx` (`Image
 
 ## Carousels
 
-export const usageRadial = `import { RadialCarousel } from "@/components/custom/carousel";
+export const usageFluid = `import { FluidGlassSlider, FluidGlassSlide } from "@/components/custom/carousel";
 
-const items = [
+const customSlides: FluidGlassSlide[] = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2574&auto=format&fit=crop",
+    title: "Discover pristine tropical beaches and crystal-clear waters",
+    subtitle: "TROPICAL PARADISE",
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2574&auto=format&fit=crop",
+    title: "Escape to the serene mountain heights and wilderness trails",
+    subtitle: "MOUNTAIN ADVENTURES",
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2574&auto=format&fit=crop",
+    title: "Surround yourself with majestic peaks and alpine lakes",
+    subtitle: "ALPINE RETREAT",
+  },
+];
+
+export default function FluidGlassSliderDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
+
+const sampleImages = [
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+];
+
+export default function ImageCarouselDemo() {
+  return (
+
+  );
+}`;
+
+export const usageRadial = `import { RadialCarousel, RadialCarouselItem } from "@/components/custom/carousel";
+
+const customItems: RadialCarouselItem[] = [
   {
     title: "Misty Pine Forest",
     category: "Nature",
     rating: "4.9",
+    price: "$120",
     img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&fit=crop",
   },
   {
     title: "Lush River Valley",
     category: "Wilderness",
     rating: "4.8",
+    price: "$150",
     img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&fit=crop",
   },
   {
     title: "Autumn Woodland Path",
     category: "Landscape",
     rating: "4.9",
+    price: "$95",
     img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&fit=crop",
   },
 ];
 
-export default function RadialShowcase() {
-  return ;
-}`;
-
-export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
-
-const images = [
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
-];
-
-export default function Gallery() {
+export default function RadialCarouselDemo() {
   return (
-    
+
   );
 }`;
 
-export const carouselSlides = `const slides = [
+export const usageHero = `import { HeroCarousel, HeroSlide } from "@/components/custom/carousel";
+
+const sampleSlides: HeroSlide[] = [
   {
     img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
     title: "Tropical Paradise",
@@ -63,44 +99,69 @@ export const carouselSlides = `const slides = [
     title: "Mountain Retreat",
     des: "Escape to the serene heights and breathe fresh air.",
   },
-];`;
+];
 
-export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
+export default function HeroCarouselDemo() {
+  return (
 
-${carouselSlides}
-
-export default function Hero() {
-  return ;
+  );
 }`;
 
-export const usageThumbnails = `import { CustomCarousel } from "@/components/custom/carousel";
+export const usageThumbnails = `import { CustomCarousel, CustomItem } from "@/components/custom/carousel";
 
-${carouselSlides}
+const sampleSlides: CustomItem[] = [
+  {
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+    title: "Tropical Paradise",
+    des: "Discover pristine beaches and crystal-clear waters.",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+    title: "Peak Adventures",
+    des: "Challenge yourself with epic mountain trails.",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];
 
-// \`imageButtonPosition\` moves the thumbnail rail: "bottom" | "left" | "right".
-export default function Showcase() {
-  return ;
+export default function CustomCarouselDemo() {
+  return (
+
+  );
 }`;
 
-export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
+export const usageThumbnailsSide = `import { CustomCarousel, CustomItem } from "@/components/custom/carousel";
 
-${carouselSlides}
+const sampleSlides: CustomItem[] = [
+  {
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+    title: "Tropical Paradise",
+    des: "Discover pristine beaches and crystal-clear waters.",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+    title: "Peak Adventures",
+    des: "Challenge yourself with epic mountain trails.",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];
 
-export default function SideThumbnails() {
-  return ;
-}`;
+export default function SideThumbnailsCarouselDemo() {
+  return (
 
-export const usageFluid = `import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
-
-// Requires GSAP — the liquid distortion tracks the pointer.
-export default function FluidShowcase() {
-  return ;
+  );
 }`;
 
 ### Installation
 
-The four carousels above ship in one file. `FluidGlassSlider` is a separate
-item — installing `carousel` does not pull it in:
+All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
 
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.
@@ -122,52 +183,184 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
     Usage Guidelines
     Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
-## Props Reference: ImageCarousel
+## Props Reference
+
+### Unified Carousel (Default Export)
 
         Prop
         Type
         Default
         Description
 
-          images
+        variant
+        "radial" | "glass" | "image" | "hero" | "thumbnails"
+        "image"
+        The layout variant to render.
 
-          ImgSrc[]
+        images
+        ImgSrc[]
+        []
+        Array of image URLs or StaticImageData objects (for "image" variant).
 
-          []
-        
+        slides
+        any[]
+        []
+        Array of slide objects (for "glass" or "hero" variants).
+
+        items
+        any[]
+        []
+        Array of item objects (for "radial" or "thumbnails" variants).
+
+        className
+        string
+        -
+        Custom CSS styling classes for the outer wrapper.
+
+### RadialCarousel
+
+        Prop
+        Type
+        Default
+        Description
+
+        items
+        RadialCarouselItem[]
+        []
+        Array of cards with {`{ title, category, rating, price?, img }`} radiating in 360 degrees.
+
+        autoPlay
+        boolean
+        false
+        If true, continuously rotates the 3D wheel.
+
+        autoPlayInterval
+        number
+        3500
+        Interval (in ms) between auto rotations.
+
+        stepAngle
+        number
+        360 / items.length
+        Rotation angle step per card in degrees.
+
+        className
+        string
+        -
+        Outer container styling.
+
+### FluidGlassSlider
+
+        Prop
+        Type
+        Default
+        Description
+
+        slides
+        FluidGlassSlide[]
+        DEFAULT_SLIDES
+        Array of glass slides with {`{ id, image, title, subtitle }`}.
+
+        className
+        string
+        -
+        Container dimensions, borders, and shadows.
+
+### ImageCarousel
+
+        Prop
+        Type
+        Default
+        Description
+
+        images
+        ImgSrc[]
+        []
         Array of string URLs or Next.js StaticImageData objects.
 
-          autoPlay
+        autoPlay
+        boolean
+        false
+        If true, automatically cycles through images.
 
-          boolean
+        autoPlayInterval
+        number
+        3000
+        Time (in ms) before automatically switching slides.
 
-          false
-        
-        If true, the carousel automatically cycles through images.
+        showArrows
+        boolean
+        true
+        Whether to show previous/next navigation buttons.
 
-          autoPlayInterval
+        showDots
+        boolean
+        true
+        Whether to show bottom navigation dot indicators.
 
-          number
+        transitionDuration
+        number
+        500
+        Transition animation duration in milliseconds.
 
-          3000
-        
-        Time (in ms) before automatically switching to the next slide.
+        imageWidth
+        number
+        1200
+        Default image width in pixels.
 
-          showArrows
+        imageHeight
+        number
+        540
+        Default image height in pixels.
 
-          boolean
+### HeroCarousel
 
-          true
-        
-        Whether to show the previous/next navigation buttons.
+        Prop
+        Type
+        Default
+        Description
 
-          showDots
+        slides
+        HeroSlide[]
+        []
+        Array of full-bleed hero slides with {`{ img, title, des }`}.
 
-          boolean
+        autoPlay
+        boolean
+        false
+        If true, auto-advances the background hero slides.
 
-          true
-        
-        Whether to show the bottom navigation dot indicators.
+        autoPlayInterval
+        number
+        3000
+        Time (in ms) before advancing to the next hero slide.
+
+### CustomCarousel (Thumbnails)
+
+        Prop
+        Type
+        Default
+        Description
+
+        items
+        CustomItem[]
+        []
+        Array of thumbnail slides with {`{ img, title, des }`}.
+
+        imageButtonPosition
+        "bottom" | "left" | "right"
+        "bottom"
+        Placement of the thumbnail selector strip.
+
+        autoPlay
+        boolean
+        false
+        If true, auto-advances through thumbnail items.
+
+        autoPlayInterval
+        number
+        3000
+        Time (in ms) between slide changes.
 
 ---
 

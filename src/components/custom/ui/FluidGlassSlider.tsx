@@ -3,14 +3,14 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
-type Slide = {
+export type Slide = {
   id: number;
   image: string;
   title: string;
   subtitle: string;
 };
 
-const slidesData: Slide[] = [
+const DEFAULT_SLIDES_DATA: Slide[] = [
   {
     id: 1,
     image:
@@ -35,10 +35,12 @@ const slidesData: Slide[] = [
 ];
 
 type Props = {
+  slides?: Slide[];
   className?: string;
 };
 
-export default function FluidGlassSlider({ className }: Props) {
+export default function FluidGlassSlider({ slides, className }: Props) {
+  const slidesData = slides && slides.length > 0 ? slides : DEFAULT_SLIDES_DATA;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const containerRef = useRef<HTMLDivElement | null>(null);

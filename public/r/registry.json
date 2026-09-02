@@ -359,9 +359,12 @@
         "navigation"
       ],
       "dependencies": [
+        "gsap",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "files": [
         {
           "path": "src/components/custom/carousel.tsx",
@@ -2105,6 +2108,32 @@
         }
       ],
       "docs": "Named export: QrCodeReader. `onRead` fires with the decoded string. Requires camera permission **and a secure context** — it works on HTTPS and localhost, and silently fails on plain HTTP. Decoding runs on the main thread via jsQR, so expect load on low-end devices. Handle permission denial in your own UI."
+    },
+    {
+      "name": "radial-orbital-timeline",
+      "type": "registry:component",
+      "title": "Radial Orbital Timeline",
+      "author": "AlgorizeTech",
+      "description": "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RadialOrbitalTimeline.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RadialOrbitalTimeline.tsx"
+        }
+      ],
+      "docs": "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors."
     },
     {
       "name": "range-date-picker",
