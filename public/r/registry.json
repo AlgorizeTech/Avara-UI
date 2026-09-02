@@ -359,9 +359,12 @@
         "navigation"
       ],
       "dependencies": [
+        "gsap",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "files": [
         {
           "path": "src/components/custom/carousel.tsx",
