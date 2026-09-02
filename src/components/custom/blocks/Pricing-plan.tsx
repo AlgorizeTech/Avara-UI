@@ -22,7 +22,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ==========================================
 // ICON MAP FOR MDX COMPATIBILITY
@@ -556,6 +556,7 @@ export function SliderPricingPlan({
   ctaText = "Start 14-day free trial",
   ctaIcon = "ArrowRight", // FIX: Changed default to string
   footerText = "$0.00 due today. No credit card required.",
+  counting = true,
   classNames = {},
   className,
   onTierChange,

@@ -514,7 +514,9 @@ export default function RadialOrbitalTimeline({
             return (
               <div
                 key={item.id}
-                ref={(el) => (nodeRefs.current[item.id] = el)}
+                ref={(el) => {
+                  nodeRefs.current[item.id] = el;
+                }}
                 className={cn(
                   "absolute cursor-pointer",
                   !autoRotate && "transition-all duration-700 ease-out",
@@ -618,7 +620,7 @@ export default function RadialOrbitalTimeline({
                           </div>
                           <div className="flex flex-wrap gap-1">
                             {item.relatedIds.map((relatedId) => {
-                              const relatedItem = timelineData.find(
+                              const relatedItem = allItems.find(
                                 (i) => i.id === relatedId
                               );
                               return (
