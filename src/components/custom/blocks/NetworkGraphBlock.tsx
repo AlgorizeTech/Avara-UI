@@ -1,8 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import React, { useMemo } from "react";
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
+import React, { useMemo, useRef } from "react";
 
 export type NetworkNode = {
   id: string;
@@ -97,107 +102,17 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
         </div>
 
         {/* Render Nodes per Ring with Orbiting Container */}
-        {rings.map((ringIndex) => {
-          const ringNodes = groupedNodes[ringIndex] || [];
-          const angleStep = 360 / ringNodes.length;
-          const radius = baseRadius + (ringIndex - 1) * ringGap;
-
-          // Alternate rotation direction per ring for visual depth
-          const isEvenRing = ringIndex % 2 === 0;
-          const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
-          const ringRotateDirection = isEvenRing ? -360 : 360;
-          const avatarCounterRotate = isEvenRing ? 360 : -360;
-
-          return (
-            <motion.div
-              key={`ring-orbit-${ringIndex}`}
-              className="absolute inset-0 pointer-events-none"
-              animate={
-                animateOrbit ? { rotate: ringRotateDirection } : { rotate: 0 }
-              }
-              transition={
-                animateOrbit
-                  ? {
-                      duration: baseDuration,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }
-                  : { duration: 0.5 }
-              }
-            >
-              {ringNodes.map((node, index) => {
-                const angle = angleStep * index - 90;
-                const radian = (angle * Math.PI) / 180;
-                const x = `calc(50% + ${radius * Math.cos(radian)}%)`;
-                const y = `calc(50% + ${radius * Math.sin(radian)}%)`;
-
-                return (
-                  <div
-                    key={node.id}
-                    className="absolute z-10 w-0 h-0 flex items-center justify-center pointer-events-auto"
-                    style={{ left: x, top: y }}
-                  >
-                    {/* 1. Entrance Scale & Opacity Wrapper */}
-                    <motion.div
-                      initial={animateIn ? { opacity: 0, scale: 0 } : false}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 260,
-                        damping: 20,
-                        delay: 0.2 + ringIndex * 0.1 + index * 0.05,
-                      }}
-                    >
-                      {/* 2. Counter-Rotation Wrapper (Keeps Avatars Upright!) */}
-                      <motion.div
-                        className="relative group cursor-pointer"
-                        animate={
-                          animateOrbit
-                            ? { rotate: avatarCounterRotate }
-                            : { rotate: 0 }
-                        }
-                        transition={
-                          animateOrbit
-                            ? {
-                                duration: baseDuration,
-                                repeat: Infinity,
-                                ease: "linear",
-                              }
-                            : { duration: 0.5 }
-                        }
-                      >
-                        <div
-                          className={cn(
-                            "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-card",
-                            sizeMap[node.size as keyof typeof sizeMap] ?? sizeMap.md,
-                          )}
-                        >
-                          {node.image ? (
-                            <img
-                              src={node.image}
-                              alt={node.label || "Avatar"}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                              {node.fallback}
-                            </span>
-                          )}
-                        </div>
-
-                        {node.label && (
-                          <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-primary text-primary-foreground text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                            {node.label}
-                          </div>
-                        )}
-                      </motion.div>
-                    </motion.div>
-                  </div>
-                );
-              })}
-            </motion.div>
-          );
-        })}
+        {rings.map((ringIndex) => (
+          <OrbitRing
+            key={`ring-orbit-${ringIndex}`}
+            ringIndex={ringIndex}
+            nodes={groupedNodes[ringIndex] || []}
+            radius={baseRadius + (ringIndex - 1) * ringGap}
+            animateIn={animateIn}
+            animateOrbit={animateOrbit}
+            orbitSpeed={orbitSpeed}
+          />
+        ))}
 
         {/* Center Node */}
         {centerNode && (
@@ -234,3 +149,118 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
   },
 );
 NetworkGraph.displayName = "NetworkGraph";
+
+/**
+ * One orbit and the avatars riding it.
+ *
+ * Rotation is advanced by hand each frame instead of being handed to a
+ * `repeat: Infinity` tween, because a tween reads its `duration` only when it
+ * STARTS: with a constant `rotate` target the animation never restarts, so a
+ * later `orbitSpeed` change was silently ignored unless the whole graph was
+ * remounted. Stepping the value per frame makes the speed change apply on the
+ * very next frame, from wherever the ring currently is — no jump, no remount.
+ */
+function OrbitRing({
+  ringIndex,
+  nodes,
+  radius,
+  animateIn,
+  animateOrbit,
+  orbitSpeed,
+}: {
+  ringIndex: number;
+  nodes: NetworkNode[];
+  radius: number;
+  animateIn: boolean;
+  animateOrbit: boolean;
+  orbitSpeed: number;
+}) {
+  const rotate = useMotionValue(0);
+  // Every avatar on the ring shares one counter-rotation, which is what keeps
+  // faces upright while the ring itself turns.
+  const counterRotate = useTransform(rotate, (value) => -value);
+
+  // Outer rings take longer per lap, and even rings run backwards for depth.
+  const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
+  const direction = ringIndex % 2 === 0 ? -1 : 1;
+  const degreesPerSecond = animateOrbit ? (360 / baseDuration) * direction : 0;
+
+  // Read through a ref so the frame callback always sees the latest speed
+  // without being torn down and rebuilt on every render.
+  const speedRef = useRef(degreesPerSecond);
+  speedRef.current = degreesPerSecond;
+
+  useAnimationFrame((_, delta) => {
+    const speed = speedRef.current;
+    if (!speed) return;
+    // Wrapped at a full turn so the value stays small over a long session.
+    rotate.set((rotate.get() + (speed * delta) / 1000) % 360);
+  });
+
+  const angleStep = 360 / nodes.length;
+
+  return (
+    <motion.div
+      className="absolute inset-0 pointer-events-none"
+      style={{ rotate }}
+    >
+      {nodes.map((node, index) => {
+        const angle = angleStep * index - 90;
+        const radian = (angle * Math.PI) / 180;
+        const x = `calc(50% + ${radius * Math.cos(radian)}%)`;
+        const y = `calc(50% + ${radius * Math.sin(radian)}%)`;
+
+        return (
+          <div
+            key={node.id}
+            className="absolute z-10 w-0 h-0 flex items-center justify-center pointer-events-auto"
+            style={{ left: x, top: y }}
+          >
+            {/* 1. Entrance Scale & Opacity Wrapper */}
+            <motion.div
+              initial={animateIn ? { opacity: 0, scale: 0 } : false}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: 0.2 + ringIndex * 0.1 + index * 0.05,
+              }}
+            >
+              {/* 2. Counter-Rotation Wrapper (Keeps Avatars Upright!) */}
+              <motion.div
+                className="relative group cursor-pointer"
+                style={{ rotate: counterRotate }}
+              >
+                <div
+                  className={cn(
+                    "relative rounded-full flex items-center justify-center overflow-hidden border border-white dark:border-[#0a0a0a] shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:z-50 bg-card",
+                    sizeMap[node.size as keyof typeof sizeMap] ?? sizeMap.md,
+                  )}
+                >
+                  {node.image ? (
+                    <img
+                      src={node.image}
+                      alt={node.label || "Avatar"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                      {node.fallback}
+                    </span>
+                  )}
+                </div>
+
+                {node.label && (
+                  <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-md bg-primary text-primary-foreground text-[10px] sm:text-[11px] font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                    {node.label}
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          </div>
+        );
+      })}
+    </motion.div>
+  );
+}

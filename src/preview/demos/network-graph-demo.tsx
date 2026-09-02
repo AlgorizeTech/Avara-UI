@@ -139,7 +139,12 @@ export default function NetworkGraphDemo({
 
       <div className="p-4 sm:p-8 md:p-12 flex items-center justify-center">
         <NetworkGraph
-          key={`${triggerKey}-${ringCount}-${nodeSet}-${animateOrbit}-${orbitSpeed}-${showCenter}`}
+          // `ringCount` and `orbitSpeed` are deliberately NOT in the key: both
+          // are slider-driven, and remounting on every step would restart the
+          // entrance animation mid-drag. A newly revealed ring mounts on its
+          // own and animates in anyway, and framer-motion picks up the new
+          // orbit duration in place, so nothing is lost.
+          key={`${triggerKey}-${nodeSet}-${animateOrbit}-${showCenter}`}
           nodes={nodes}
           ringCount={ringCount}
           baseRadius={baseRadius}

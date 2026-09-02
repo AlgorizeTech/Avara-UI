@@ -31,6 +31,11 @@ import {
 } from "@/components/custom/ui/code-renderer";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
+  ShowcaseControlCard,
+  ShowcaseSliders,
+  type SliderControl,
+} from "@/components/site/ShowcaseSliders";
+import {
   DEFAULT_SHOWCASE_COLOR,
   useShowcaseColorContext,
 } from "@/components/site/showcase-color";
@@ -903,14 +908,8 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
-export interface SliderControl {
-  name: string;
-  label: string;
-  min: number;
-  max: number;
-  step?: number;
-  defaultValue: number;
-}
+/** Re-exported so docs pages can keep importing it from the showcase module. */
+export type { SliderControl };
 
 export function ExampleShowcase({
   name,
@@ -996,85 +995,39 @@ export function ExampleShowcase({
     setControlValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handed to the FIRST example so the card sits directly above its preview —
+  // the controls read as part of that demo rather than as page furniture.
+  const controlCard =
+    ownsPicker || controls.length > 0 ? (
+      <ShowcaseControlCard>
+        {ownsPicker && (
+          <ThemeColorPicker
+            color={color}
+            onChange={setColor}
+            label={colorLabel}
+            className="sm:max-w-sm"
+          />
+        )}
+
+        {controls.length > 0 && (
+          <ShowcaseSliders
+            controls={controls}
+            values={controlValues}
+            onChange={handleControlChange}
+          />
+        )}
+      </ShowcaseControlCard>
+    ) : null;
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {(ownsPicker || controls.length > 0) && (
-        <div className="flex flex-col gap-5 p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
-          {ownsPicker && (
-            <ThemeColorPicker
-              color={color}
-              onChange={setColor}
-              label={colorLabel}
-              className="sm:max-w-sm"
-            />
-          )}
-
-          {controls.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-3 border-t border-zinc-200/80 dark:border-zinc-800">
-              {controls.map((ctrl) => {
-                const val = controlValues[ctrl.name] ?? ctrl.defaultValue;
-                const percentage = Math.min(
-                  100,
-                  Math.max(0, ((val - ctrl.min) / (ctrl.max - ctrl.min)) * 100)
-                );
-                return (
-                  <div
-                    key={ctrl.name}
-                    className="flex flex-col gap-2 p-3 bg-white dark:bg-zinc-950/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl shadow-xs transition-shadow hover:shadow-sm"
-                  >
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                        {ctrl.label}
-                      </span>
-                      <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200/60 dark:border-zinc-700/50 shadow-2xs">
-                        {val}
-                      </span>
-                    </div>
-                    <div className="relative flex items-center h-6 w-full group touch-none">
-                      {/* Custom Track Background */}
-                      <div className="absolute inset-x-0 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden pointer-events-none">
-                        <div
-                          className="h-full bg-primary transition-all duration-75"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      {/* Hidden Range Input overlay */}
-                      <input
-                        type="range"
-                        min={ctrl.min}
-                        max={ctrl.max}
-                        step={ctrl.step ?? 1}
-                        value={val}
-                        onChange={(e) =>
-                          handleControlChange(ctrl.name, parseFloat(e.target.value))
-                        }
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      />
-                      {/* Custom Thumb Circle with Theme Accent Ring Glow */}
-                      <div
-                        className="absolute w-5 h-5 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary ring-4 ring-primary/25 shadow-md flex items-center justify-center pointer-events-none transition-transform duration-75 group-hover:scale-120 active:scale-125"
-                        style={{
-                          left: `calc(${percentage}% - ${(percentage / 100) * 20}px)`,
-                        }}
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
       <div
         className={cn(
           "grid grid-cols-1 gap-10",
           columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
         )}
       >
-        {examples.map((example) => {
+        {examples.map((example, index) => {
           const effectiveProps = { ...example.props, ...controlValues };
           if (colorControl) {
             effectiveProps[colorProp] = color;
@@ -1096,6 +1049,7 @@ export function ExampleShowcase({
                 usage: effectiveUsage,
                 code: effectiveCode,
               }}
+              controlCard={index === 0 ? controlCard : null}
               options={example.options ?? options}
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
@@ -1110,12 +1064,15 @@ export function ExampleShowcase({
 function ExampleCard({
   name,
   example,
+  controlCard,
   options,
   minHeight,
   maxHeight,
 }: {
   name: string;
   example: ResolvedShowcaseExample;
+  /** The gallery's live-control card, drawn just above this preview. */
+  controlCard?: React.ReactNode;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;
@@ -1177,6 +1134,8 @@ function ExampleCard({
         )}
         {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
+
+      {controlCard && <div className="mt-4">{controlCard}</div>}
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
       <div className="flex-1 [&>div]:!my-4">

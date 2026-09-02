@@ -40,59 +40,64 @@ export const networkNodes = `const users: NetworkNode[] = [
   { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
 ];`;
 
-export const usageRings = `import {
+export const usageInteractive = `import {
   NetworkGraph,
   type NetworkNode,
 } from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 
-export default function RingLayout() {
+export default function OrbitGraph() {
   // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
   // ring's radius and \`ringGap\` the distance to each next one — both as a
   // percentage of the square container, so the layout scales on any screen.
+  // \`orbitSpeed\` multiplies the rotation rate.
   return (
     <NetworkGraph
       nodes={users}
-      ringCount={2}
-      baseRadius={25}
-      ringGap={20}
-      centerNode={{ image: "/brand-logo.png", label: "Core Community" }}
+      ringCount={3}
+      baseRadius={18}
+      ringGap={16}
+      orbitSpeed={1}
+      centerNode={{ image: "/brand-logo.png", label: "You" }}
     />
   );
-}`;
-
-export const usageStatic = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function StaticGraph() {
-  // Rings hold their position — the entrance animation still plays.
-  return <NetworkGraph nodes={users} animateOrbit={false} />;
-}`;
-
-export const usageSpeed = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function FastGraph() {
-  // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-  return <NetworkGraph nodes={users} orbitSpeed={3} />;
 }`;
 
 <ExampleShowcase
   name="network-graph"
   columns={1}
+  controls={[
+    { name: "ringCount", label: "Ring Count", min: 1, max: 3, step: 1, defaultValue: 3 },
+    { name: "baseRadius", label: "Base Radius", min: 8, max: 22, step: 1, defaultValue: 18, unit: "%" },
+    { name: "ringGap", label: "Ring Gap", min: 6, max: 16, step: 1, defaultValue: 16, unit: "%" },
+    { name: "orbitSpeed", label: "Orbit Speed", min: 0.25, max: 3, step: 0.25, defaultValue: 1, unit: "x" },
+  ]}
   examples={[
     {
-      title: "Static rings",
+      title: "Interactive rings",
+      subheading:
+        "Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.",
       propNotes: [
+        {
+          prop: "ringCount",
+          effect:
+            "is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.",
+        },
+        {
+          prop: "baseRadius",
+          effect:
+            "is the first ring's radius as a percentage of the square container, so it scales with the box.",
+        },
+        {
+          prop: "ringGap",
+          effect: "is the percentage added for each subsequent ring.",
+        },
+        {
+          prop: "orbitSpeed",
+          effect:
+            "multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.",
+        },
         {
           lead: "Set",
           prop: "animateOrbit",
@@ -101,8 +106,8 @@ export default function FastGraph() {
             "to stop the planetary motion. `animateIn` is separate, so the entrance still plays.",
         },
       ],
-      props: { animateOrbit: false },
-      usage: usageStatic,
+      props: { ringCount: 3, baseRadius: 18, ringGap: 16, orbitSpeed: 1 },
+      usage: usageInteractive,
       code: extractCode("src/components/custom/blocks/NetworkGraphBlock.tsx"),
     },
   ]}
@@ -111,53 +116,6 @@ export default function FastGraph() {
 ## Installation
 
 <Installation name="network-graph" />
-
-## Examples
-
-<ExampleShowcase
-  name="network-graph"
-  columns={1}
-  examples={[
-    {
-      title: "Ring layout",
-      propNotes: [
-        {
-          prop: "ringCount",
-          value: '{2}',
-          effect:
-            "is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.",
-        },
-        {
-          prop: "baseRadius",
-          value: '{25}',
-          effect:
-            "is the first ring's radius as a percentage of the square container, so it scales with the box.",
-        },
-        {
-          prop: "ringGap",
-          value: '{20}',
-          effect:
-            "is the percentage added for each subsequent ring.",
-        },
-      ],
-      props: { ringCount: 2, nodeSet: "compact", baseRadius: 25, ringGap: 20 },
-      usage: usageRings,
-    },
-    {
-      title: "Orbit speed",
-      propNotes: [
-        {
-          prop: "orbitSpeed",
-          value: '{3}',
-          effect:
-            "multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.",
-        },
-      ],
-      props: { orbitSpeed: 3 },
-      usage: usageSpeed,
-    },
-  ]}
-/>
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
