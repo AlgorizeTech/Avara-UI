@@ -995,36 +995,39 @@ export function ExampleShowcase({
     setControlValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handed to the FIRST example so the card sits directly above its preview —
+  // the controls read as part of that demo rather than as page furniture.
+  const controlCard =
+    ownsPicker || controls.length > 0 ? (
+      <ShowcaseControlCard>
+        {ownsPicker && (
+          <ThemeColorPicker
+            color={color}
+            onChange={setColor}
+            label={colorLabel}
+            className="sm:max-w-sm"
+          />
+        )}
+
+        {controls.length > 0 && (
+          <ShowcaseSliders
+            controls={controls}
+            values={controlValues}
+            onChange={handleControlChange}
+          />
+        )}
+      </ShowcaseControlCard>
+    ) : null;
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {(ownsPicker || controls.length > 0) && (
-        <ShowcaseControlCard>
-          {ownsPicker && (
-            <ThemeColorPicker
-              color={color}
-              onChange={setColor}
-              label={colorLabel}
-              className="sm:max-w-sm"
-            />
-          )}
-
-          {controls.length > 0 && (
-            <ShowcaseSliders
-              controls={controls}
-              values={controlValues}
-              onChange={handleControlChange}
-            />
-          )}
-        </ShowcaseControlCard>
-      )}
-
       <div
         className={cn(
           "grid grid-cols-1 gap-10",
           columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
         )}
       >
-        {examples.map((example) => {
+        {examples.map((example, index) => {
           const effectiveProps = { ...example.props, ...controlValues };
           if (colorControl) {
             effectiveProps[colorProp] = color;
@@ -1046,6 +1049,7 @@ export function ExampleShowcase({
                 usage: effectiveUsage,
                 code: effectiveCode,
               }}
+              controlCard={index === 0 ? controlCard : null}
               options={example.options ?? options}
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
@@ -1060,12 +1064,15 @@ export function ExampleShowcase({
 function ExampleCard({
   name,
   example,
+  controlCard,
   options,
   minHeight,
   maxHeight,
 }: {
   name: string;
   example: ResolvedShowcaseExample;
+  /** The gallery's live-control card, drawn just above this preview. */
+  controlCard?: React.ReactNode;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;
@@ -1127,6 +1134,8 @@ function ExampleCard({
         )}
         {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
+
+      {controlCard && <div className="mt-4">{controlCard}</div>}
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
       <div className="flex-1 [&>div]:!my-4">
