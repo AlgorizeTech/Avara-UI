@@ -11,7 +11,7 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const ICON_POOL = [Zap, TrendingUp, Sparkles, Star, Shield];
 const getIcon = (index: number) => ICON_POOL[index % ICON_POOL.length];

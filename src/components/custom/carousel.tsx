@@ -142,6 +142,7 @@ export type HeroSlide = {
 
 export type HeroCarouselProps = {
   slides?: HeroSlide[];
+  className?: string;
   rootClassName?: string;
   textContainerClassName?: string;
   titleClassName?: string;
@@ -293,6 +294,7 @@ export type CustomItem = {
 
 export type CustomCarouselProps = {
   items?: CustomItem[];
+  className?: string;
   rootClassName?: string;
   textClassName?: string;
   titleClassName?: string;
