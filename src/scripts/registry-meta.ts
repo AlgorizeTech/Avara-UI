@@ -427,6 +427,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
   },
+  "radial-orbital-timeline": {
+    description:
+      "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.",
+    categories: ["data-display", "marketing"],
+    docs: "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors.",
+  },
   "user-graph": {
     description:
       "An orbital diagram placing a user at the centre with tools and sub-agents circling around. Use it to illustrate an AI agent or integration ecosystem.",

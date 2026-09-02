@@ -942,10 +942,14 @@ input[type="range"]:focus::-moz-range-thumb {
   }
 }
 
-/* Force zero border radius across all elements when --radius is 0rem */
-[style*="--radius: 0rem"] *,
-[style*="--radius:0rem"] * {
+/* Force zero border radius across all elements when --radius is 0rem (except orbital lines marked .keep-rounded) */
+[style*="--radius: 0rem"] *:not(.keep-rounded),
+[style*="--radius:0rem"] *:not(.keep-rounded) {
   border-radius: 0 !important;
+}
+
+.keep-rounded {
+  border-radius: 50% !important;
 }
 
 /* Custom animations for badge components */
