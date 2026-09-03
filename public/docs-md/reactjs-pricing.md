@@ -125,14 +125,7 @@ export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
-
-export default function PremiumPricing() {
-  // Heavier shadows, gradient price text and a scaled-up popular card.
-  return ;
-}`;
 
 export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
@@ -302,6 +295,59 @@ const packages = [
 
 export default function PricingMenu() {
   return ;
+}`;
+
+export const usagePlans = `import PricingPlans from "@/components/custom/blocks/PricingPlans";
+
+const services = [
+  {
+    id: "design",
+    name: "Design",
+    description: "Top-notch custom design",
+    price: 300,
+    icon: "PenTool",
+    features: [
+      "Top-notch custom design",
+      "Figma design & interactive prototype",
+    ],
+  },
+  {
+    id: "development",
+    name: "Development",
+    description: "Full development solution",
+    price: 400,
+    icon: "Code2",
+    features: [
+      "Framer/Custom development",
+      "2 months of free support",
+    ],
+  },
+  {
+    id: "fast",
+    name: "Fast",
+    description: "Quick budget solution",
+    price: 100,
+    icon: "Zap",
+    tag: "Fast Track",
+    features: [
+      "Fast delivery (3X everything)",
+    ],
+  },
+];
+
+export default function InteractiveChecklistPricing() {
+  return (
+    <PricingPlans
+      brandTitle="Custom Services"
+      brandSubtitle="Select options tailored to your goals"
+      brandDescription="Mix and match custom design, full-stack development, and priority delivery to build the ideal package for your business."
+      services={services}
+      defaultActiveIds={["design"]}
+      ctaText="Book a 45-min call"
+      color="indigo"
+      counting={true}
+    />
+  );
 }`;
 
 ## Installation

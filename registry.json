@@ -1930,7 +1930,9 @@
         "gsap",
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "files": [
         {
           "path": "src/components/custom/blocks/PricingPlans.tsx",

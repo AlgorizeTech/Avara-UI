@@ -24,7 +24,6 @@ import { useTheme } from "next-themes";
 export type PricingColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type PricingVariant =
   | "default"
-  | "premium"
   | "elegant"
   | "minimal"
   | "bordered";
@@ -276,29 +275,28 @@ export function PricingCards({
             <div
               key={plan.id}
               className={cn(
-                "relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background border",
+                "relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background",
                 variant === "default" &&
                   (isPopular
-                    ? cn(theme.border, "shadow-xl scale-105 z-10")
-                    : "border-border shadow-sm"),
-                variant === "premium" &&
-                  (isPopular
-                    ? cn(
-                        theme.border,
-                        "shadow-2xl scale-105 z-10 bg-gradient-to-b",
-                        theme.gradientSoft,
-                      )
-                    : "border-border shadow-md"),
+                    ? cn("border-2", theme.border, "scale-105 z-10 shadow-none hover:shadow-lg")
+                    : "border border-border shadow-none hover:shadow-lg"),
+
                 variant === "elegant" &&
                   (isPopular
-                    ? cn("border-t-4", theme.border, "shadow-lg")
-                    : "border-border"),
+                    ? cn("border border-border border-t-4", theme.border, "shadow-lg")
+                    : "border border-border hover:shadow-lg"),
                 variant === "minimal" &&
                   (isPopular
-                    ? cn("ring-2", theme.ring, "shadow-md")
-                    : "border-border shadow-none"),
+                    ? cn("border-2", theme.border, "shadow-sm z-10")
+                    : "border-0 shadow-none bg-transparent"),
                 variant === "bordered" &&
-                  "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]",
+                  (isPopular
+                    ? cn(
+                        "border-2",
+                        theme.border,
+                        "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1 z-10",
+                      )
+                    : "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1"),
               )}
             >
               {isPopular && (
@@ -313,10 +311,10 @@ export function PricingCards({
               )}
 
               <div>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3.5 mb-4">
                   <div
                     className={cn(
-                      "p-3 rounded-2xl",
+                      "p-3 rounded-2xl shrink-0",
                       isPopular ? theme.bgSoft : "bg-muted",
                     )}
                   >
@@ -361,6 +359,8 @@ export function PricingCards({
                   "w-full py-3 rounded-xl font-bold text-sm text-center transition-all cursor-pointer block",
                   isPopular
                     ? cn(theme.bg, "shadow-md hover:opacity-90")
+                    : variant === "minimal"
+                    ? "border border-border bg-background hover:bg-muted text-foreground"
                     : "bg-muted text-foreground hover:bg-muted/80",
                 )}
               >
@@ -430,7 +430,7 @@ export function PricingBuilder({
 
   return (
     <div
-      className={cn("w-full max-w-4xl mx-auto p-6 sm:p-10 bg-background border border-border rounded-3xl shadow-xl", className)}
+      className={cn("w-full max-w-4xl mx-auto p-6 sm:p-10 bg-background border border-border rounded-3xl shadow-sm", className)}
       style={style}
     >
       <div className="text-center mb-8 sm:mb-12">
@@ -762,7 +762,7 @@ export function PricingSlider({
 
   return (
     <div
-      className={cn("w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-xl text-center", className)}
+      className={cn("w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-sm text-center", className)}
       style={style}
     >
       <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">

@@ -11,8 +11,15 @@ import {
   PricingTypographic,
   PricingVariant,
 } from "@/components/custom/blocks/Pricing";
+import PricingPlans from "@/components/custom/blocks/PricingPlans";
 
-type LayoutType = "cards" | "builder" | "table" | "slider" | "typographic";
+type LayoutType =
+  | "cards"
+  | "builder"
+  | "table"
+  | "slider"
+  | "typographic"
+  | "plans";
 
 const sampleCardsData: PricingData = {
   tabs: [
@@ -258,7 +265,7 @@ export default function PricingDemo({
 }) {
   return (
     <div
-      className={`w-full py-12 md:py-24 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "bg-zinc-50/50 dark:bg-transparent"}`}
+      className={`w-full py-4 md:py-8 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "bg-zinc-50/50 dark:bg-transparent"}`}
     >
       {layout === "cards" && (
         <PricingCards
@@ -285,6 +292,9 @@ export default function PricingDemo({
           color={color}
           counting={counting}
         />
+      )}
+      {layout === "plans" && (
+        <PricingPlans key={`plans-${color}-${counting}`} color={color} counting={counting} />
       )}
     </div>
   );
