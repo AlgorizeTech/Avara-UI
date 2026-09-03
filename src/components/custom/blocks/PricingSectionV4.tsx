@@ -93,7 +93,7 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
   }
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-background text-foreground font-sans antialiased overflow-hidden selection:bg-lime-400 dark:selection:bg-[#CCFF00] selection:text-black transition-colors duration-300 relative">
+    <section id="pricing" className="py-6 md:py-12 bg-background text-foreground font-sans antialiased overflow-hidden selection:bg-lime-400 dark:selection:bg-[#CCFF00] selection:text-black transition-colors duration-300 relative">
       <style
         dangerouslySetInnerHTML={{
           __html: `

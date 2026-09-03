@@ -95,10 +95,10 @@ const PricingSection = ({
     <section
       ref={containerRef}
       id="pricing"
-      className="relative overflow-hidden bg-background py-24 sm:py-32 transition-colors duration-300"
+      className="relative overflow-hidden bg-background py-6 md:py-12 transition-colors duration-300"
     >
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <header className="mx-auto max-w-2xl text-center mb-16">
+        <header className="mx-auto max-w-2xl text-center mb-8">
           <h2 className="pricing-header-el mt-2 text-4xl font-bold text-foreground sm:text-5xl">
             Choose your plan
           </h2>

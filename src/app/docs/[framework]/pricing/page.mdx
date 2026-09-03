@@ -130,14 +130,7 @@ export default function Pricing() {
   return <PricingCards data={data} variant="default" color="indigo" counting={true} />;
 }`;
 
-export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
-
-export default function PremiumPricing() {
-  // Heavier shadows, gradient price text and a scaled-up popular card.
-  return <PricingCards data={data} variant="premium" color="indigo" counting={false} />;
-}`;
 
 export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
@@ -328,6 +321,59 @@ export default function PricingMenu() {
   return <PricingTypographic packages={packages} color="zinc" counting={true} />;
 }`;
 
+export const usagePlans = `import PricingPlans from "@/components/custom/blocks/PricingPlans";
+
+const services = [
+  {
+    id: "design",
+    name: "Design",
+    description: "Top-notch custom design",
+    price: 300,
+    icon: "PenTool",
+    features: [
+      "Top-notch custom design",
+      "Figma design & interactive prototype",
+    ],
+  },
+  {
+    id: "development",
+    name: "Development",
+    description: "Full development solution",
+    price: 400,
+    icon: "Code2",
+    features: [
+      "Framer/Custom development",
+      "2 months of free support",
+    ],
+  },
+  {
+    id: "fast",
+    name: "Fast",
+    description: "Quick budget solution",
+    price: 100,
+    icon: "Zap",
+    tag: "Fast Track",
+    features: [
+      "Fast delivery (3X everything)",
+    ],
+  },
+];
+
+export default function InteractiveChecklistPricing() {
+  return (
+    <PricingPlans
+      brandTitle="Custom Services"
+      brandSubtitle="Select options tailored to your goals"
+      brandDescription="Mix and match custom design, full-stack development, and priority delivery to build the ideal package for your business."
+      services={services}
+      defaultActiveIds={["design"]}
+      ctaText="Book a 45-min call"
+      color="indigo"
+      counting={true}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="pricing"
   colorControl
@@ -368,26 +414,6 @@ export default function PricingMenu() {
   colorControl
   columns={1}
   examples={[
-    {
-      title: "Premium cards",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"premium"',
-          effect:
-            "to give the popular card a gradient wash, deeper shadow and gradient price text.",
-        },
-        {
-          prop: "counting",
-          value: "{false}",
-          effect:
-            "disables animated price counting for a static numeric display.",
-        },
-      ],
-      props: { layout: "cards", variant: "premium", counting: false },
-      usage: usagePremium,
-    },
     {
       title: "Elegant cards",
       propNotes: [
@@ -483,6 +509,19 @@ export default function PricingMenu() {
       ],
       props: { layout: "typographic", counting: true },
       usage: usageTypographic,
+    },
+    {
+      title: "Interactive service checklist",
+      propNotes: [
+        {
+          prop: "PricingPlans",
+          effect:
+            "calculates estimated cost based on selected services (Design, Development, Fast Track).",
+        },
+      ],
+      props: { layout: "plans", counting: true },
+      usage: usagePlans,
+      code: extractCode("src/components/custom/blocks/PricingPlans.tsx"),
     },
   ]}
 />
