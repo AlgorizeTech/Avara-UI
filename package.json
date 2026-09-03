@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next build",
-    "build:registry": "npm run generate:registry && shadcn build",
+    "build:registry": "npm run generate:registry && shadcn build && tsx ./src/scripts/clean-registry-build.ts",
     "build:md": "tsx ./src/scripts/build-md-files.ts",
     "generate:preview": "tsx ./src/scripts/generate-preview-registry.ts",
     "generate:components": "tsx ./src/scripts/auto-generate-components.ts",
