@@ -1,6 +1,6 @@
 # Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
+A complete, fully functional, and editable Invoice dashboard component featuring 8 distinct design variants: Default, Minimal, Glassmorphism, Corporate Executive, Modern Tech, Compact Receipt, Neo-Brutalist, and Creative Agency.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
@@ -51,7 +51,47 @@ export const usageDefault = `import Invoice from "@/components/custom/blocks/Inv
 ${invoiceSource}
 
 export default function InvoicePage() {
-  return ;
+  return <Invoice invoiceData={invoiceData} />;
+}`;
+
+export const usageCorporate = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function CorporateInvoice() {
+  return <Invoice variant="corporate" invoiceData={invoiceData} />;
+}`;
+
+export const usageModern = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function ModernInvoice() {
+  return <Invoice variant="modern" invoiceData={invoiceData} />;
+}`;
+
+export const usageCompact = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function CompactInvoice() {
+  return <Invoice variant="compact" invoiceData={invoiceData} />;
+}`;
+
+export const usageBrutalist = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function BrutalistInvoice() {
+  return <Invoice variant="brutalist" invoiceData={invoiceData} />;
+}`;
+
+export const usageCreative = `import Invoice from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function CreativeInvoice() {
+  return <Invoice variant="creative" invoiceData={invoiceData} />;
 }`;
 
 export const usageMinimal = `import Invoice from "@/components/custom/blocks/Invoice";
@@ -59,8 +99,7 @@ export const usageMinimal = `import Invoice from "@/components/custom/blocks/Inv
 ${invoiceSource}
 
 export default function MinimalInvoice() {
-  // Strips the card chrome down to type and rules — the print-friendly layout.
-  return ;
+  return <Invoice variant="minimal" invoiceData={invoiceData} />;
 }`;
 
 export const usageGlass = `import Invoice from "@/components/custom/blocks/Invoice";
@@ -69,72 +108,21 @@ ${invoiceSource}
 
 export default function GlassInvoice() {
   return (
-    // Nature wallpaper backdrop for glass refraction
-
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      <Invoice variant="glass" invoiceData={invoiceData} />
+    </div>
   );
 };`;
 
 ## Installation
 
-## Examples
-
-## Features
-Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
-
-## Props Reference
-
-        Prop
-        Type
-        Default
-        Description
-
-          invoiceData
-
-          InvoiceData
-
-          Required
-
-          The core data object containing all fields (dates, addresses, billing
-          details, array of items, totals, and notes). See usage example for
-          shape.
-
-          variant
-
-          "default" | "minimal" | "glass"
-
-          "default"
-
-          Applies overarching structural layouts, including borders, backdrop
-          blurs, and shadows.
-
-          color
-
-          "indigo" | "rose" | "emerald" | "zinc"
-
-          "indigo"
-
-          Applies global color themes to the primary buttons, focus rings, and
-          heart icon.
-
----
-
-**Component Path:** `[framework]\invoice\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+```bash
+npx shadcn@latest add "https://algorizetech.com/r/invoice.json"
+```
