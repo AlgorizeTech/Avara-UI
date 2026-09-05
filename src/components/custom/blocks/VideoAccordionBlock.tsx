@@ -29,15 +29,17 @@ export const VideoAccordion = React.forwardRef<
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
-  // Core GSAP Layout & Playback Engine
+  // Core GSAP Layout & Video Playback Engine
   useEffect(() => {
     panels.forEach((panel, index) => {
       const panelEl = panelRefs.current[index];
+      const videoEl = videoRefs.current[index];
       const titleEl = titleRefs.current[index];
       const descEl = descRefs.current[index];
       const isActive = activeId === panel.id;
@@ -52,7 +54,20 @@ export const VideoAccordion = React.forwardRef<
         });
       }
 
-      // 2. Animate Text Visibility (Only show when active)
+      // 2. Handle Video Playback (Only play active/hovered panel, pause others)
+      if (videoEl) {
+        videoEl.muted = true;
+        if (isActive) {
+          const playPromise = videoEl.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {});
+          }
+        } else {
+          videoEl.pause();
+        }
+      }
+
+      // 3. Animate Text Visibility (Only show when active)
       if (titleEl && descEl) {
         gsap.to([titleEl, descEl], {
           opacity: isActive ? 1 : 0,
@@ -86,16 +101,43 @@ export const VideoAccordion = React.forwardRef<
             ref={(el) => {
               panelRefs.current[index] = el;
             }}
-            onMouseEnter={() => setActiveId(panel.id)}
-            onClick={() => setActiveId(panel.id)} // For mobile tap interaction
+            onMouseEnter={() => {
+              setActiveId(panel.id);
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.muted = true;
+                vid.play().catch(() => {});
+              }
+            }}
+            onMouseLeave={() => {
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.pause();
+              }
+            }}
+            onClick={() => {
+              setActiveId(panel.id);
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.muted = true;
+                vid.play().catch(() => {});
+              }
+            }}
             className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-900"
           >
-            {/* Background Image Layer */}
-            <img
-              src={panel.posterUrl || panel.videoSrc}
-              alt={panel.title}
+            {/* Background Video Layer with Poster fallback when paused */}
+            <video
+              ref={(el) => {
+                videoRefs.current[index] = el;
+              }}
+              src={panel.videoSrc}
+              poster={panel.posterUrl}
+              muted
+              loop
+              playsInline
+              preload="auto"
               className={cn(
-                "absolute inset-0 w-full h-full object-cover transition-transform duration-1000",
+                "absolute inset-0 w-full h-full object-cover transition-transform duration-1000 opacity-100",
                 isActive ? "scale-105" : "scale-100",
               )}
             />

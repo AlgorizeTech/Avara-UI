@@ -2,12 +2,17 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight, Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import createGlobe from "cobe";
 import { useTheme } from "next-themes";
 
-export type ReviewsVariant = "globe-marquee" | "stacked-carousel" | "stacked";
+export type ReviewsVariant =
+	| "globe-marquee"
+	| "stacked-carousel"
+	| "stacked"
+	| "vertical-marquee"
+	| "4-column-marquee";
 
 export interface ReviewItem {
 	id: string;
@@ -79,6 +84,36 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		rating: 5.0,
 		content:
 			"The unlimited revisions gave us the creative freedom to truly experiment without worrying about scope creep or hidden fees. AlgorizeTech didn't stop until we were 100% thrilled with the result.",
+	},
+	{
+		id: "6",
+		name: "David Kim",
+		role: "Head of Design",
+		avatar:
+			"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+	},
+	{
+		id: "7",
+		name: "Elena Rostova",
+		role: "VP of Engineering",
+		avatar:
+			"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+	},
+	{
+		id: "8",
+		name: "Marcus Vance",
+		role: "Tech Lead",
+		avatar:
+			"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
 	},
 ];
 
@@ -484,6 +519,176 @@ function StackedCardsCarousel({
 }
 
 // ==========================================
+// REUSABLE MODERN REVIEW CARD
+// ==========================================
+function ReviewCard({
+	review,
+	className,
+}: {
+	review: ReviewItem;
+	className?: string;
+}) {
+	return (
+		<div
+			className={cn(
+				"relative p-5 sm:p-6 rounded-3xl bg-card border border-border/80 text-card-foreground shadow-sm hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between overflow-hidden cursor-pointer select-none",
+				className
+			)}
+		>
+			{/* Top Bar: Stars Badge + Verified Tag */}
+			<div className="flex items-center justify-between gap-2 mb-3">
+				<div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full text-amber-500">
+					{Array.from({ length: 5 }).map((_, i) => (
+						<Star key={i} className="size-3.5 fill-amber-500 text-amber-500" />
+					))}
+					<span className="text-xs font-extrabold text-amber-600 dark:text-amber-400 ml-1">
+						5.0
+					</span>
+				</div>
+				<span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
+					Verified
+				</span>
+			</div>
+
+			{/* Middle Section: Left Accent Line & Review Text */}
+			<div className="my-2 border-l-2 border-primary/40 pl-3 py-0.5">
+				<p className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-medium">
+					"{review.content}"
+				</p>
+			</div>
+
+			{/* Bottom User Bar */}
+			<div className="pt-3 mt-2 border-t border-border/40 flex items-center justify-between gap-3">
+				<div className="flex items-center gap-3 min-w-0">
+					<div className="relative shrink-0">
+						{review.avatar ? (
+							<img
+								src={review.avatar}
+								alt={review.name}
+								className="size-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300"
+							/>
+						) : (
+							<div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300">
+								{review.name.charAt(0)}
+							</div>
+						)}
+						<span className="absolute -bottom-0.5 -right-0.5 size-3 bg-emerald-500 rounded-full ring-2 ring-card" />
+					</div>
+					<div className="min-w-0">
+						<h4 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
+							{review.name}
+						</h4>
+						<p className="text-[11px] text-muted-foreground truncate font-medium">
+							{review.role}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+// ==========================================
+// 4-COLUMN VERTICAL MARQUEE VARIANT
+// ==========================================
+function FourColumnMarqueeReviews({ reviews }: { reviews: ReviewItem[] }) {
+	const col1 = [...reviews, ...reviews];
+	const col2 = [...reviews.slice(1), ...reviews, ...reviews.slice(0, 1)];
+	const col3 = [...reviews.slice(2), ...reviews, ...reviews.slice(0, 2)];
+	const col4 = [...reviews.slice(3), ...reviews, ...reviews.slice(0, 3)];
+
+	const columns = [
+		{ items: col1, dir: "up", speed: "65s", visibility: "flex" },
+		{ items: col2, dir: "down", speed: "75s", visibility: "flex" },
+		{ items: col3, dir: "up", speed: "68s", visibility: "hidden lg:flex" },
+		{ items: col4, dir: "down", speed: "78s", visibility: "hidden xl:flex" },
+	];
+
+	return (
+		<div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4">
+			{/* MOBILE VIEW (< sm): 4 Horizontal Left & Right Scrolling Marquee Rows */}
+			<div className="block sm:hidden relative w-full overflow-hidden space-y-3 py-2">
+				{/* Left & Right Horizontal Fade Masks */}
+				<div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background to-transparent z-20" />
+				<div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent z-20" />
+
+				{/* Row 1 (Col 1): Scrolls Left */}
+				<div className="overflow-hidden w-full">
+					<div className="flex gap-3 w-max reviews-hmarquee-left">
+						{[...col1, ...col1].map((review, idx) => (
+							<ReviewCard key={`m1-${review.id}-${idx}`} review={review} className="w-[260px] shrink-0" />
+						))}
+					</div>
+				</div>
+
+				{/* Row 2 (Col 2): Scrolls Right */}
+				<div className="overflow-hidden w-full">
+					<div className="flex gap-3 w-max reviews-hmarquee-right">
+						{[...col2, ...col2].map((review, idx) => (
+							<ReviewCard key={`m2-${review.id}-${idx}`} review={review} className="w-[260px] shrink-0" />
+						))}
+					</div>
+				</div>
+
+				{/* Row 3 (Col 3): Scrolls Left */}
+				<div className="overflow-hidden w-full">
+					<div className="flex gap-3 w-max reviews-hmarquee-left">
+						{[...col3, ...col3].map((review, idx) => (
+							<ReviewCard key={`m3-${review.id}-${idx}`} review={review} className="w-[260px] shrink-0" />
+						))}
+					</div>
+				</div>
+
+				{/* Row 4 (Col 4): Scrolls Right */}
+				<div className="overflow-hidden w-full">
+					<div className="flex gap-3 w-max reviews-hmarquee-right">
+						{[...col4, ...col4].map((review, idx) => (
+							<ReviewCard key={`m4-${review.id}-${idx}`} review={review} className="w-[260px] shrink-0" />
+						))}
+					</div>
+				</div>
+			</div>
+
+			{/* TABLET (md: 2 columns), LARGE DESKTOP (lg: 3 columns), EXTRA LARGE (xl: 4 columns) */}
+			<div className="hidden sm:block relative">
+				{/* Top & Bottom Ambient Fade Masks */}
+				<div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background via-background/80 to-transparent z-20" />
+				<div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background via-background/80 to-transparent z-20" />
+
+				{/* Responsive Grid: 2 cols on md/sm, 3 cols on lg, 4 cols on xl */}
+				<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 h-[580px] sm:h-[680px] overflow-hidden relative">
+					{columns.map((col, colIdx) => (
+						<div
+							key={colIdx}
+							className={cn("relative h-full overflow-hidden flex flex-col", col.visibility)}
+						>
+							<div
+								className={cn(
+									"flex flex-col gap-4 sm:gap-5 shrink-0",
+									col.dir === "up"
+										? "reviews-vmarquee-up"
+										: "reviews-vmarquee-down"
+								)}
+								style={{
+									animationDuration: col.speed,
+								}}
+							>
+								{[...col.items, ...col.items].map((review, idx) => (
+									<ReviewCard
+										key={`${review.id}-${colIdx}-${idx}`}
+										review={review}
+									/>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+// ==========================================
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
@@ -497,6 +702,7 @@ export function ReviewsBlock({
 	glowColor,
 }: ReviewsProps) {
 	const isStacked = variant === "stacked" || variant === "stacked-carousel";
+	const isVerticalMarquee = variant === "vertical-marquee" || variant === "4-column-marquee";
 
 	return (
 		<section
@@ -505,23 +711,53 @@ export function ReviewsBlock({
 				className,
 			)}>
 			{/* Self-contained marquee animation styles */}
-			{!isStacked && (
-				<style>{`
-					@keyframes reviews-marquee-scroll {
-						from { transform: translateX(0); }
-						to   { transform: translateX(-50%); }
-					}
-					.reviews-marquee-track {
-						animation: reviews-marquee-scroll 35s linear infinite;
-					}
-					.reviews-marquee-track:hover {
-						animation-play-state: paused;
-					}
-				`}</style>
-			)}
+			<style>{`
+				@keyframes reviews-marquee-scroll {
+					from { transform: translateX(0); }
+					to   { transform: translateX(-50%); }
+				}
+				@keyframes reviews-marquee-left-scroll {
+					from { transform: translateX(0); }
+					to   { transform: translateX(-50%); }
+				}
+				@keyframes reviews-marquee-right-scroll {
+					from { transform: translateX(-50%); }
+					to   { transform: translateX(0); }
+				}
+				@keyframes reviews-vmarquee-up-scroll {
+					from { transform: translateY(0); }
+					to   { transform: translateY(-50%); }
+				}
+				@keyframes reviews-vmarquee-down-scroll {
+					from { transform: translateY(-50%); }
+					to   { transform: translateY(0); }
+				}
+				.reviews-marquee-track {
+					animation: reviews-marquee-scroll 35s linear infinite;
+				}
+				.reviews-hmarquee-left {
+					animation: reviews-marquee-left-scroll 55s linear infinite;
+				}
+				.reviews-hmarquee-right {
+					animation: reviews-marquee-right-scroll 55s linear infinite;
+				}
+				.reviews-vmarquee-up {
+					animation: reviews-vmarquee-up-scroll linear infinite;
+				}
+				.reviews-vmarquee-down {
+					animation: reviews-vmarquee-down-scroll linear infinite;
+				}
+				.reviews-marquee-track:hover,
+				.reviews-hmarquee-left:hover,
+				.reviews-hmarquee-right:hover,
+				.reviews-vmarquee-up:hover,
+				.reviews-vmarquee-down:hover {
+					animation-play-state: paused;
+				}
+			`}</style>
 
-			{/* Header Info (for Globe Marquee variant) */}
-			{!isStacked && (title || subtitle) && (
+			{/* Header Info */}
+			{(title || subtitle) && (
 				<div className="relative z-20 w-full mx-auto text-center space-y-3 mb-8 sm:mb-12 flex flex-col items-center">
 					<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider">
 						<Star className="size-3.5 fill-primary text-primary" /> Client
@@ -547,6 +783,8 @@ export function ReviewsBlock({
 					autoSlide={autoSlide}
 					autoSlideInterval={autoSlideInterval}
 				/>
+			) : isVerticalMarquee ? (
+				<FourColumnMarqueeReviews reviews={reviews} />
 			) : (
 				<div className="relative w-full min-h-[420px] sm:min-h-[750px] flex items-center justify-center">
 					{/* Centered High-Performance COBE WebGL 3D Globe */}

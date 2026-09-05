@@ -257,13 +257,13 @@ export default function ImageTrailCursorDemo() {
   columns={1}
   examples={[
     {
-      title: "Glow Cursor",
+      title: "Image Trail Cursor",
       propNotes: [
-        { lead: "Use", prop: "variant", value: '"glow"', effect: "for a blurred background glow that trails the pointer on smooth physics. It is the default." },
+        { lead: "Use", prop: "variant", value: '"image-trail"', effect: "to spawn interactive image cards dynamically centered on pointer movement." },
         { prop: "color", effect: "themes every variant — a named key (`primary`, `indigo`, `rose`, `emerald`, `zinc`) or a hex string." },
       ],
-      props: { variant: "glow" },
-      usage: usageGlow,
+      props: { variant: "image-trail" },
+      usage: usageImageTrail,
       code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
     },
   ]}
@@ -280,6 +280,14 @@ export default function ImageTrailCursorDemo() {
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Glow Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"glow"', effect: "for a blurred background glow that trails the pointer on smooth physics. It is the default." },
+      ],
+      props: { variant: "glow" },
+      usage: usageGlow,
+    },
     {
       title: "Magnetic Target Cursor",
       propNotes: [
@@ -353,15 +361,6 @@ export default function ImageTrailCursorDemo() {
       ],
       props: { variant: "sonar" },
       usage: usageSonar,
-    },
-    {
-      title: "Image Trail Cursor",
-      propNotes: [
-        { lead: "Use", prop: "variant", value: '"image-trail"', effect: "to spawn interactive image cards dynamically centered on pointer movement." },
-        { prop: "images", effect: "accepts a custom array of image URLs (`string[]`) to render personalized trail image cards." },
-      ],
-      props: { variant: "image-trail" },
-      usage: usageImageTrail,
     },
   ]}
 />
