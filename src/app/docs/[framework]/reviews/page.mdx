@@ -8,22 +8,144 @@ A high-converting Review / Testimonial website section featuring a 3D WebGL rota
 
 Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
 
+export const sampleReviewsData = `const sampleReviews = [
+  {
+    id: "1",
+    name: "Tamar Mendelson",
+    role: "Restaurant Critic",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive.",
+  },
+  {
+    id: "2",
+    name: "Alice Johnson",
+    role: "Product Director",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "The difference between AlgorizeTech and other agencies is their talent pool. Code quality, architecture, and attention to detail are on a completely different level.",
+  },
+  {
+    id: "3",
+    name: "Arlene McCoy",
+    role: "Co-Founder & CEO",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "Their 'Quality Obsessed' mantra is apparent in everything they do. Delivered a final product that increased our conversion rate by 40%.",
+  },
+  {
+    id: "4",
+    name: "Sofia Chen",
+    role: "Lead Systems Architect",
+    avatar:
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "Integrating their modular UI components shaved weeks off our launch roadmap. Performance optimizations saved us hundreds of hours.",
+  },
+  {
+    id: "5",
+    name: "Mr. Martin",
+    role: "Chief Operating Officer",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "The unlimited revisions gave us creative freedom to experiment without scope creep. AlgorizeTech didn't stop until we were 100% thrilled.",
+  },
+  {
+    id: "6",
+    name: "David Kim",
+    role: "Head of Design",
+    avatar:
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+  },
+  {
+    id: "7",
+    name: "Elena Rostova",
+    role: "VP of Engineering",
+    avatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+  },
+  {
+    id: "8",
+    name: "Marcus Vance",
+    role: "Tech Lead",
+    avatar:
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
+    rating: 5.0,
+    content:
+      "Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
+  },
+];`;
+
 export const usageGlobeMarquee = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
 
+${sampleReviewsData}
+
 export default function GlobeMarqueeDemo() {
-  return <ReviewsBlock variant="globe-marquee" />;
+  return (
+    <ReviewsBlock
+      variant="globe-marquee"
+      title="Loved by Tech Leaders Worldwide"
+      subtitle="See how fast-growing teams scale products with our senior engineering team."
+      reviews={sampleReviews}
+    />
+  );
 }`;
 
 export const usageStackedCarousel = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
 
+${sampleReviewsData}
+
 export default function StackedCarouselDemo() {
-  return <ReviewsBlock variant="stacked-carousel" />;
+  return (
+    <ReviewsBlock
+      variant="stacked-carousel"
+      title="Loved by Tech Leaders Worldwide"
+      subtitle="See how fast-growing teams scale products with our senior engineering team."
+      reviews={sampleReviews}
+    />
+  );
+}`;
+
+export const usageVerticalMarquee = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function VerticalMarqueeDemo() {
+  return (
+    <ReviewsBlock
+      variant="vertical-marquee"
+      title="Loved by Tech Leaders Worldwide"
+      subtitle="See how fast-growing teams scale products with our senior engineering team."
+      reviews={sampleReviews}
+    />
+  );
 }`;
 
 <ExampleShowcase
   name="reviews"
   columns={1}
   examples={[
+    {
+      title: "4-Column Vertical Marquee (Up & Down Scrolling)",
+      propNotes: [{ lead: "Features", prop: "vertical-marquee", value: "4-Column Vertical Marquee", effect: "renders 4 infinite vertical marquee columns scrolling up and down with hover pause." }],
+      props: { variant: "vertical-marquee" },
+      usage: usageVerticalMarquee,
+    },
     {
       title: "3D Stacked Cards Carousel with Rolling Motion & Arrows",
       propNotes: [{ lead: "Features", prop: "stacked-carousel", value: "3D Stacked Carousel", effect: "renders 3 stacked portrait cards with smooth rolling rotation motion and arrow navigation." }],
@@ -48,9 +170,9 @@ export default function StackedCarouselDemo() {
 
 Discover the key capabilities of the `ReviewsBlock` component:
 
+- **4-Column Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with Framer Motion spring physics, rolling 3D card rotation, and circular arrow buttons.
 - **3D Rotating WebGL Globe Canvas**: Interactive COBE WebGL 3D sphere with dynamic accent glow and light field.
-- **Right-to-Left Infinite Marquee**: Continuous smooth right-to-left marquee motion with hover-to-pause interaction.
-- **Client Rating Badges & Score**: Built-in 5-star ratings (`★★★★★ 5.0`) with customer avatar, name, and designation.
+- **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
 - **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
 - **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
