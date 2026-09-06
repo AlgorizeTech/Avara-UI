@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check, Copy, Sparkles, Terminal, Star } from "lucide-react";
+import { ArrowRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
@@ -113,19 +113,20 @@ const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
 const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
 
 /* ═══════════════════════════════════════════════
-   DEFAULT 3D WEBSITE & ANIMATION RENDER IMAGES
+   DEFAULT DEVELOPER-FIRST RENDER & CODE IMAGES
    ═══════════════════════════════════════════════ */
 
 const DEFAULT_SLIDER_IMAGES = [
-  "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
 ];
 
 const DEFAULT_MAIN_IMAGE =
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop";
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop";
 
 /* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
@@ -255,6 +256,54 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
        VARIANT 3: CLEAN SOLID WHITE/DARK PARENT WITH SOLID ACCENT FLIP WORD (NO GRADIENT)
        ═══════════════════════════════════════════════ */
     if (variant === "slider") {
+      const sliderBadgeText =
+        badgeText === "Next-Gen React Components"
+          ? "Full-Stack Software Engineer"
+          : badgeText;
+      const sliderTitlePrefix =
+        titlePrefix === "Build " ? "Building & Engineering" : titlePrefix;
+      const sliderSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Full-stack software engineer dedicated to building scalable web applications, modern SaaS platforms, and high-performance digital experiences."
+          : subtitle;
+      const sliderPrimaryActionLabel =
+        primaryActionLabel === "Browse Components"
+          ? "Explore Projects"
+          : primaryActionLabel;
+      const sliderSecondaryActionLabel =
+        secondaryActionLabel === "Star on GitHub"
+          ? "Contact Me"
+          : secondaryActionLabel;
+      const sliderSecondaryActionHref =
+        secondaryActionHref === "https://github.com/AlgorizeTech"
+          ? "#contact"
+          : secondaryActionHref;
+
+      const devSliderWords =
+        typingWords &&
+        typingWords.length === 5 &&
+        typingWords[0] === "Interfaces"
+          ? [
+              "Full-Stack Apps",
+              "Scalable Systems",
+              "SaaS Platforms",
+              "Digital Products",
+              "Modern Interfaces",
+            ]
+          : typingWords;
+
+      const sliderCurrentWord = devSliderWords?.[currentWordIndex % devSliderWords.length] || "";
+
+      const devLabels = [
+        "3D Web App",
+        "WebGL Experience",
+        "Three.js Scene",
+        "3D Product UI",
+        "Interactive 3D",
+        "Spatial Web",
+      ];
+
       return (
         <section
           ref={ref}
@@ -286,77 +335,65 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-stretch">
               
               {/* Left Section (Span 12 on mobile/md, Span 7 on lg) */}
-              <div className="col-span-1 lg:col-span-7 flex flex-col justify-between space-y-6 sm:space-y-8">
+              <div className="col-span-1 lg:col-span-7 flex flex-col justify-between space-y-6 sm:space-y-8 order-2 lg:order-1">
                 
                 {/* Main Content Box */}
                 <div className="relative rounded-3xl p-5 sm:p-8 md:p-10 border border-primary/20 bg-card/60 backdrop-blur-xl space-y-4 sm:space-y-6 overflow-hidden flex-1 flex flex-col justify-center">
                   
-                  {badgeText && (
+                  {sliderBadgeText && (
                     <Link href={badgeHref} className="inline-block group/badge self-start">
                       <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs sm:text-sm font-bold text-[var(--hero-accent-text)] group-hover/badge:bg-primary/20 transition-all duration-300">
-                        <Sparkles className="size-3.5 text-[var(--hero-accent-text)] animate-spin shrink-0" />
-                        <span>{badgeText}</span>
+                        <Terminal className="size-3.5 text-[var(--hero-accent-text)] shrink-0" />
+                        <span>{sliderBadgeText}</span>
                       </div>
                     </Link>
                   )}
 
-                  {/* Clean Straight 3D Word Flip with Solid Accent Color (No Gradient) */}
-                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-[1.15]">
-                    <span>{titlePrefix}</span>{" "}
-                    <span className="inline-block">
-                      <AnimatePresence mode="wait">
-                        <motion.span
-                          key={currentWord}
-                          initial={{ opacity: 0, rotateX: -80, y: 10 }}
-                          animate={{ opacity: 1, rotateX: 0, y: 0 }}
-                          exit={{ opacity: 0, rotateX: 80, y: -10 }}
-                          transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="inline-block text-[var(--hero-accent-text)] font-black"
-                        >
-                          {currentWord}
-                        </motion.span>
-                      </AnimatePresence>
-                    </span>{" "}
-                    {titleSuffix && <span>{titleSuffix}</span>}
+                  {/* Clean Static 2-Line Developer Heading */}
+                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight flex flex-col leading-tight">
+                    <span className="text-foreground shrink-0">{sliderTitlePrefix}</span>
+                    <span className="text-[var(--hero-accent-text)] font-black">
+                      Full-Stack Digital Products
+                    </span>
                   </h1>
 
-                  {subtitle && (
+                  {sliderSubtitle && (
                     <p className="text-xs sm:text-base text-muted-foreground leading-relaxed max-w-xl font-medium">
-                      {subtitle}
+                      {sliderSubtitle}
                     </p>
                   )}
 
                   {/* Actions & Copy Line */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    {primaryActionLabel && (
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 w-full">
+                    {sliderPrimaryActionLabel && (
                       <Link
                         href={primaryActionHref}
-                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-base font-bold hover:opacity-90 transition-all active:scale-95"
+                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-base font-bold hover:opacity-90 transition-all active:scale-95 w-full sm:w-auto text-center"
                       >
-                        <span>{primaryActionLabel}</span>
+                        <span>{sliderPrimaryActionLabel}</span>
                         <ArrowRight className="size-4" />
                       </Link>
                     )}
 
-                    {cliCommand && (
-                      <button
-                        type="button"
-                        onClick={handleCopy}
-                        className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-mono font-semibold transition-all cursor-pointer text-foreground"
+                    {sliderSecondaryActionLabel && (
+                      <Link
+                        href={sliderSecondaryActionHref}
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
                       >
-                        <Terminal className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
-                        <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-[220px]">{cliCommand}</span>
-                        {copied ? (
-                          <Check className="size-4 text-emerald-500 shrink-0" />
+                        {sliderSecondaryActionLabel.toLowerCase().includes("github") ? (
+                          <GitHubIcon className="size-4 shrink-0 text-foreground" />
+                        ) : sliderSecondaryActionLabel.toLowerCase().includes("resume") || sliderSecondaryActionLabel.toLowerCase().includes("cv") ? (
+                          <FileText className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
                         ) : (
-                          <Copy className="size-4 text-muted-foreground shrink-0" />
+                          <Mail className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
                         )}
-                      </button>
+                        <span>{sliderSecondaryActionLabel}</span>
+                      </Link>
                     )}
                   </div>
                 </div>
 
-                {/* Bottom Section: Continuous Marquee 3D Thumbnail Slider */}
+                {/* Bottom Section: Continuous Marquee Developer Code Slider */}
                 <div className="relative w-full overflow-hidden rounded-2xl pt-2 shrink-0 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
                   <div className="flex w-max animate-hero-marquee gap-3 sm:gap-4 items-center">
                     {[...sliderImages, ...sliderImages].map((img, idx) => (
@@ -366,12 +403,12 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       >
                         <img
                           src={img}
-                          alt={`3D Animation ${idx}`}
+                          alt={`Developer Visual ${idx}`}
                           className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-end p-2">
-                          <span className="text-[10px] font-bold text-white tracking-wide">
-                            3D Render #{((idx % sliderImages.length) + 1).toString().padStart(2, "0")}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-end p-2">
+                          <span className="text-[10px] font-bold text-white tracking-wide truncate">
+                            {devLabels[idx % devLabels.length]}
                           </span>
                         </div>
                       </div>
@@ -382,36 +419,36 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               </div>
 
               {/* Right Section (Span 12 on mobile/md, Span 5 on lg) */}
-              <div className="col-span-1 lg:col-span-5 relative flex flex-col h-full min-h-[300px] sm:min-h-[360px] lg:min-h-0">
+              <div className="col-span-1 lg:col-span-5 relative flex flex-col h-full min-h-[300px] sm:min-h-[360px] lg:min-h-0 order-1 lg:order-2">
                 <div className="relative w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-3xl overflow-hidden border border-border bg-card group">
                   
-                  {/* Main 3D Animation Image */}
+                  {/* Main Developer Visual Image */}
                   <img
                     src={mainImage}
-                    alt="3D Website Animation Visual"
+                    alt="Developer Code Visual"
                     className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
                   />
 
                   {/* Gradient Overlay for Text Contrast */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
-                  {/* Clean Stationary Floating Badge Top Left */}
+                  {/* Developer Floating Badge Top Left */}
                   <div className="absolute top-4 left-4 sm:top-5 sm:left-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
                     <div className="size-8 sm:size-10 rounded-xl bg-primary/20 text-[var(--hero-accent-text)] flex items-center justify-center font-bold shrink-0">
-                      <Star className="size-4 sm:size-5 fill-current" />
+                      <Code className="size-4 sm:size-5" />
                     </div>
                     <div>
-                      <p className="text-[11px] sm:text-xs font-extrabold text-foreground">3D Web Animation</p>
-                      <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">Framer Motion & WebGL</p>
+                      <p className="text-[11px] sm:text-xs font-extrabold text-foreground">100% Type-Safe</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">TypeScript & Tailwind CSS</p>
                     </div>
                   </div>
 
-                  {/* Clean Stationary Floating Badge Bottom Right */}
+                  {/* Developer Floating Badge Bottom Right */}
                   <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
                     <div className="size-2.5 sm:size-3 rounded-full bg-emerald-500 shrink-0" />
                     <div>
-                      <p className="text-[11px] sm:text-xs font-bold text-foreground">3D Interactive</p>
-                      <p className="text-[9px] sm:text-[10px] text-emerald-500 font-bold">Spatial Rendering</p>
+                      <p className="text-[11px] sm:text-xs font-bold text-foreground">Developer Experience</p>
+                      <p className="text-[9px] sm:text-[10px] text-emerald-500 font-bold">Copy-Paste Ready</p>
                     </div>
                   </div>
 
@@ -467,16 +504,14 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
               <span className="shrink-0">
                 {titlePrefix}{" "}
-                {variant === "bounce" && (
-                  <span className="text-[var(--hero-accent-text)]">
-                    Interactive
-                  </span>
-                )}
+                <span className="text-[var(--hero-accent-text)]">
+                  Interactive
+                </span>
               </span>
 
               {variant === "typing" ? (
                 <span className="inline-flex items-center">
-                  <span className="text-[var(--hero-accent-text)]">
+                  <span className="text-foreground">
                     {currentText}
                   </span>
                   <span className="text-[var(--hero-accent-text)] animate-pulse font-mono font-light ml-[1px] mr-0">
