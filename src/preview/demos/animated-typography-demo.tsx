@@ -15,7 +15,7 @@ const ALL_SIZES = ["5xl", "24px", "2rem"];
 
 export default function AnimatedTypographyDemo({
   tag = "h1",
-  variant = "flip-up",
+  variant = "matrix-scramble",
   align = "center",
   customSize = "",
   customText = "The quick brown fox jumps over the lazy dog.",
@@ -32,16 +32,7 @@ export default function AnimatedTypographyDemo({
   customText?: string;
   animationKey?: number;
   color?: TypographyColor | string;
-  /**
-   * Renders every step of one axis in a single frame. `variant` is NOT one of
-   * them — animations are grouped by family instead, via `variants` below.
-   */
   showAll?: "tags" | "align" | "sizes";
-  /**
-   * A small family of related animations to show together (2–5), each labelled
-   * with its variant name. Grouping similar effects keeps them comparable;
-   * dumping all nine in one frame does not (Rule 14).
-   */
   variants?: TypographyVariant[];
   singleVariant?: TypographyVariant;
 }) {
@@ -55,8 +46,7 @@ export default function AnimatedTypographyDemo({
               key={`${animationKey}-${singleVariant}-${t}`}
               as={t}
               variant={singleVariant}
-              align={["word-bounce", "word-zoom", "word-slide", "char-wave"].includes(singleVariant) ? "left" : "center"}
-              titlePrefix={["word-bounce", "word-zoom", "word-slide", "char-wave"].includes(singleVariant) ? "Build Interactive" : undefined}
+              align="center"
               text={customText}
               color={color}
             />
@@ -98,7 +88,7 @@ export default function AnimatedTypographyDemo({
             node: (
               <AnimatedTypographyBlock
                 as={t}
-                variant="fade-up"
+                variant="matrix-scramble"
                 align="left"
                 text="The quick brown fox."
                 color={color}
@@ -111,7 +101,7 @@ export default function AnimatedTypographyDemo({
               node: (
                 <AnimatedTypographyBlock
                   as="p"
-                  variant="fade-up"
+                  variant="matrix-scramble"
                   align={a}
                   size="lg"
                   text={customText}
@@ -124,7 +114,7 @@ export default function AnimatedTypographyDemo({
               node: (
                 <AnimatedTypographyBlock
                   as="h2"
-                  variant="fade-up"
+                  variant="matrix-scramble"
                   align="left"
                   size={s}
                   text="The quick brown fox."
@@ -152,7 +142,6 @@ export default function AnimatedTypographyDemo({
   return (
     <div className="w-full flex items-center justify-center min-h-[350px] relative z-10 overflow-hidden">
       <div className="w-full max-w-4xl flex flex-col justify-center">
-        {/* The key prop forces React to remount the component, re-triggering the CSS/JS animations */}
         <AnimatedTypographyBlock
           key={`${animationKey}-${variant}-${tag}-${align}`}
           as={tag}
