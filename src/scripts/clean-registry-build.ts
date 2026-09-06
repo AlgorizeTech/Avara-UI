@@ -31,7 +31,7 @@ for (const file of files) {
     removedCount++;
   } else {
     // 2. Normalize CRLF to LF in JSON files & internal file content strings
-    let raw = fs.readFileSync(filePath, "utf8");
+    const raw = fs.readFileSync(filePath, "utf8");
     let modified = false;
 
     try {
