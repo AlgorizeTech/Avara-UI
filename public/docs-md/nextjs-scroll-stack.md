@@ -415,18 +415,7 @@ export default function ProcessRail() {
   );
 }`;
 
-export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
-
-${railSteps}
-
-export default function ShortRail() {
-  // Fewer steps means a shorter pinned scroll distance.
-  return ;
-}`;
-
 ### Installation
-
-### More examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

@@ -1,6 +1,6 @@
 # Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component featuring 8 distinct design variants: Default, Minimal, Glassmorphism, Corporate Executive, Modern Tech, Compact Receipt, Neo-Brutalist, and Creative Agency.
+A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
@@ -51,7 +51,7 @@ export const usageDefault = `import Invoice from "@/components/custom/blocks/Inv
 ${invoiceSource}
 
 export default function InvoicePage() {
-  return <Invoice invoiceData={invoiceData} />;
+  return ;
 }`;
 
 export const usageCorporate = `import Invoice from "@/components/custom/blocks/Invoice";
@@ -59,23 +59,7 @@ export const usageCorporate = `import Invoice from "@/components/custom/blocks/I
 ${invoiceSource}
 
 export default function CorporateInvoice() {
-  return <Invoice variant="corporate" invoiceData={invoiceData} />;
-}`;
-
-export const usageModern = `import Invoice from "@/components/custom/blocks/Invoice";
-
-${invoiceSource}
-
-export default function ModernInvoice() {
-  return <Invoice variant="modern" invoiceData={invoiceData} />;
-}`;
-
-export const usageCompact = `import Invoice from "@/components/custom/blocks/Invoice";
-
-${invoiceSource}
-
-export default function CompactInvoice() {
-  return <Invoice variant="compact" invoiceData={invoiceData} />;
+  return ;
 }`;
 
 export const usageBrutalist = `import Invoice from "@/components/custom/blocks/Invoice";
@@ -83,46 +67,63 @@ export const usageBrutalist = `import Invoice from "@/components/custom/blocks/I
 ${invoiceSource}
 
 export default function BrutalistInvoice() {
-  return <Invoice variant="brutalist" invoiceData={invoiceData} />;
+  return ;
 }`;
-
-export const usageCreative = `import Invoice from "@/components/custom/blocks/Invoice";
-
-${invoiceSource}
-
-export default function CreativeInvoice() {
-  return <Invoice variant="creative" invoiceData={invoiceData} />;
-}`;
-
-export const usageMinimal = `import Invoice from "@/components/custom/blocks/Invoice";
-
-${invoiceSource}
-
-export default function MinimalInvoice() {
-  return <Invoice variant="minimal" invoiceData={invoiceData} />;
-}`;
-
-export const usageGlass = `import Invoice from "@/components/custom/blocks/Invoice";
-
-${invoiceSource}
-
-export default function GlassInvoice() {
-  return (
-    <div
-      className="p-8 rounded-2xl bg-cover bg-center relative"
-      style={{
-        backgroundImage:
-          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
-      }}
-    >
-      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
-      <Invoice variant="glass" invoiceData={invoiceData} />
-    </div>
-  );
-};`;
 
 ## Installation
 
-```bash
-npx shadcn@latest add "https://algorizetech.com/r/invoice.json"
-```
+## Variations
+
+## Features
+Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
+
+    3 Design Variants
+    Choose from Default, Corporate Executive, and Neo-Brutalist layout variants.
+
+    Interactive Edit & Export
+    Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.
+
+    Print & PDF Ready
+    Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.
+
+    Theme Integration
+    Seamless support for custom color themes across primary buttons, focus rings, and badges.
+
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+          invoiceData
+
+          InvoiceData
+
+          Required
+
+          The core data object containing all fields (dates, addresses, billing
+          details, array of items, totals, and notes).
+
+          variant
+
+          "default" | "corporate" | "brutalist"
+
+          "default"
+
+          Applies overarching structural layouts, including borders, backdrop
+          blurs, and shadows.
+
+          color
+
+          "primary" | "indigo" | "rose" | "emerald" | "zinc"
+
+          "primary"
+
+          Applies global color themes to buttons, focus rings, and highlights.
+
+---
+
+**Component Path:** `[framework]\invoice\page.mdx`
+
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

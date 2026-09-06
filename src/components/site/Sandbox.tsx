@@ -793,8 +793,8 @@ export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & 
   code?: string;
 };
 
-const slugify = (value: string) =>
-  value
+const slugify = (value?: string) =>
+  (value || "")
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
