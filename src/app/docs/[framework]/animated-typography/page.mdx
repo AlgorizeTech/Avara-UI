@@ -11,62 +11,50 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
-export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageMatrix = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FlipUpShowcase() {
+export default function MatrixScrambleShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="flip-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageWavy = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FadeUpShowcase() {
+export default function WavyFloatShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="fade-up" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usagePopIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usagePerspective = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function PopInShowcase() {
+export default function PerspectiveFlipShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="pop-in" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageBlurIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageElastic = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function BlurInShowcase() {
+export default function ElasticSpringShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="blur-in" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}`;
-
-export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function TypewriterShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="typewriter" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
@@ -78,14 +66,14 @@ export default function TypewriterShowcase() {
   columns={1}
   examples={[
     {
-      title: "Flip Up Entrance",
-      subheading: "3D rotateX word-by-word entrance animation across h3, h4, and p tags.",
+      title: "Matrix Scramble Decryption",
+      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
       propNotes: [
-        { prop: "variant", value: '"flip-up"', effect: "rotates each word in 3D around its bottom edge." },
+        { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "flip-up" },
-      usage: usageFlipUp,
+      props: { singleVariant: "matrix-scramble" },
+      usage: usageMatrix,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
   ]}
@@ -97,122 +85,50 @@ export default function TypewriterShowcase() {
 
 ## Examples
 
-export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSpotlight = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordBounceShowcase() {
+export default function SpotlightRevealShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock
-        as="h3"
-        variant="word-bounce"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="h4"
-        variant="word-bounce"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="p"
-        variant="word-bounce"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
+      <AnimatedTypographyBlock as="h3" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSplit = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordZoomShowcase() {
+export default function SplitStaggerShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock
-        as="h3"
-        variant="word-zoom"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="h4"
-        variant="word-zoom"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="p"
-        variant="word-zoom"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
+      <AnimatedTypographyBlock as="h3" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
 
-export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageUnderline = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordSlideShowcase() {
+export default function UnderlineDrawShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock
-        as="h3"
-        variant="word-slide"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="h4"
-        variant="word-slide"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="p"
-        variant="word-slide"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
+      <AnimatedTypographyBlock as="h3" variant="underline-draw" align="center" text="Creative Typography Design" />
+      <AnimatedTypographyBlock as="h4" variant="underline-draw" align="center" text="Creative Typography Design" />
+      <AnimatedTypographyBlock as="p" variant="underline-draw" align="center" text="Creative Typography Design" />
     </div>
   );
 }`;
 
-export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageColorReveal = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function CharWaveShowcase() {
+export default function ColorRevealShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock
-        as="h3"
-        variant="char-wave"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="h4"
-        variant="char-wave"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
-      <AnimatedTypographyBlock
-        as="p"
-        variant="char-wave"
-        align="center"
-        titlePrefix="Build Interactive"
-        text="Interfaces, Components, Experiences, Animations, Dashboards"
-      />
+      <AnimatedTypographyBlock as="h3" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
     </div>
   );
 }`;
@@ -224,88 +140,74 @@ export default function CharWaveShowcase() {
   columns={1}
   examples={[
     {
-      title: "Fade Up Mask",
-      subheading: "Words slide up out of a clipping mask while fading into view.",
+      title: "Color Reveal Staggered Sweep",
+      subheading: "Characters start in muted gray and transition left-to-right into active theme color.",
       propNotes: [
-        { prop: "variant", value: '"fade-up"', effect: "slides words upward while fading opacity." },
+        { prop: "variant", value: '"color-reveal"', effect: "transitions text from gray to active theme color from left to right." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "fade-up" },
-      usage: usageFadeUp,
+      props: { singleVariant: "color-reveal" },
+      usage: usageColorReveal,
     },
     {
-      title: "Pop In Spring",
-      subheading: "Words scale up on a springy curve with overshoot.",
+      title: "Wavy Float Sine Wave",
+      subheading: "Continuous sine-wave floating vertical movement across characters.",
       propNotes: [
-        { prop: "variant", value: '"pop-in"', effect: "scales words from 0.8 to 1 with overshoot." },
+        { prop: "variant", value: '"wavy-float"', effect: "animates characters in a smooth sine wave float." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "pop-in" },
-      usage: usagePopIn,
+      props: { singleVariant: "wavy-float" },
+      usage: usageWavy,
     },
     {
-      title: "Blur In Reveal",
-      subheading: "Words resolve into focus out of a soft 12px blur filter.",
+      title: "3D Perspective Flip",
+      subheading: "Words enter with 3D rotateX perspective and spring settling.",
       propNotes: [
-        { prop: "variant", value: '"blur-in"', effect: "resolves words out of a 12px backdrop blur." },
+        { prop: "variant", value: '"3d-perspective-flip"', effect: "flips words in 3D around their bottom edge." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "blur-in" },
-      usage: usageBlurIn,
+      props: { singleVariant: "3d-perspective-flip" },
+      usage: usagePerspective,
     },
     {
-      title: "Typewriter Effect",
-      subheading: "Character-by-character typewriter reveal with a blinking cursor.",
+      title: "Elastic Spring Overshoot",
+      subheading: "Playful spring bounce entrance scaling up with overshoot physics.",
       propNotes: [
-        { prop: "variant", value: '"typewriter"', effect: "types text out character by character." },
+        { prop: "variant", value: '"elastic-spring"', effect: "bounces words with elastic spring curve." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "typewriter" },
-      usage: usageTypewriter,
+      props: { singleVariant: "elastic-spring" },
+      usage: usageElastic,
     },
     {
-      title: "Word Bounce",
-      subheading: "Spring-animated vertical word transition cycling continuously through a list of words with optional prefix or suffix text.",
+      title: "Spotlight Focus Reveal",
+      subheading: "Localized spotlight beam effect revealing text out of heavy blur.",
       propNotes: [
-        { prop: "variant", value: '"word-bounce"', effect: "bounces words vertically using a spring curve." },
-        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
-        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+        { prop: "variant", value: '"spotlight-reveal"', effect: "focuses text from dark blur to sharp text." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "word-bounce", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
-      usage: usageWordBounce,
+      props: { singleVariant: "spotlight-reveal" },
+      usage: usageSpotlight,
     },
     {
-      title: "Word Zoom",
-      subheading: "Cinematic blur-fade zoom transition scaling words seamlessly into focus.",
+      title: "Split Stagger Entrance",
+      subheading: "Alternating letters slide in from top and bottom directions.",
       propNotes: [
-        { prop: "variant", value: '"word-zoom"', effect: "zooms and fades words in out of a 12px blur filter." },
-        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
-        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+        { prop: "variant", value: '"split-stagger"', effect: "splits alternating characters from top/bottom offsets." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "word-zoom", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
-      usage: usageWordZoom,
+      props: { singleVariant: "split-stagger" },
+      usage: usageSplit,
     },
     {
-      title: "Word Slide",
-      subheading: "Smooth horizontal slide transition moving words in and out with blur filtering.",
+      title: "Underline Stroke Draw",
+      subheading: "Synchronized liquid SVG underline stroke drawing beneath text.",
       propNotes: [
-        { prop: "variant", value: '"word-slide"', effect: "slides words horizontally in and out with blur reveal." },
-        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
-        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
+        { prop: "variant", value: '"underline-draw"', effect: "animates an SVG path underline beneath text." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
       ],
-      props: { singleVariant: "word-slide", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
-      usage: usageWordSlide,
-    },
-    {
-      title: "Character Wave (Homepage Hero Style)",
-      subheading: "Staggered kinetic wave transition popping words in letter-by-letter on a spring curve.",
-      propNotes: [
-        { prop: "variant", value: '"char-wave"', effect: "animates characters in a staggered kinetic wave." },
-        { prop: "titlePrefix", value: '"Build Interactive"', effect: "prepends static prefix text before the animated word." },
-        { prop: "align", value: '"center"', effect: "centers the text and animation container." },
-      ],
-      props: { singleVariant: "char-wave", customText: "Interfaces, Components, Experiences, Animations, Dashboards" },
-      usage: usageCharWave,
+      props: { singleVariant: "underline-draw", customText: "Creative Typography Design" },
+      usage: usageUnderline,
     },
   ]}
 />
@@ -315,33 +217,20 @@ Discover the key capabilities that make this component an excellent choice for m
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">7 Modern Patterns</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Features 7 distinct, non-generic typography animation patterns from Matrix decryption to liquid underlines.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Accessible</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically renders an sr-only version for screen readers while displaying child visual spans.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Sizing</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </div>
-</div>
-
-## Best Practices & Guidelines
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hardware Accelerated</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.</p>
   </div>
 </div>
 
@@ -373,9 +262,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <strong>Required</strong>
         </td>
         <td>
-          The text content to render. Staggered variants (like{" "}
-          <code>fade-up</code> or <code>pop-in</code>) automatically split this
-          string by spaces to animate word-by-word.
+          The text content to render. Staggered variants split this string to animate word-by-word or character-by-character.
         </td>
       </tr>
       <tr>
@@ -395,9 +282,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>"p"</code>
         </td>
         <td>
-          The semantic HTML tag to render. Automatically applies sensible
-          responsive sizing based on the tag unless overridden by the{" "}
-          <code>size</code> prop.
+          The semantic HTML tag to render.
         </td>
       </tr>
       <tr>
@@ -409,14 +294,15 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           <code>
-            "fade-up" | "reveal" | "flip-up" | "blur-in" | "pop-in" |
-            "typewriter" | "glitch" | "glow" | "none"
+            "matrix-scramble" | "color-reveal" | "wavy-float" |
+            "3d-perspective-flip" | "elastic-spring" | "spotlight-reveal" |
+            "split-stagger" | "underline-draw"
           </code>
         </td>
         <td>
-          <code>"fade-up"</code>
+          <code>"matrix-scramble"</code>
         </td>
-        <td>The animation effect applied to the text.</td>
+        <td>The 8 distinct animation patterns applied to the text.</td>
       </tr>
       <tr>
         <td>
@@ -433,83 +319,7 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>Controls the CSS text alignment of the underlying container.</td>
       </tr>
-      <tr>
-        <td>
-          <code>AnimatedTypographyBlock</code>
-        </td>
-        <td>
-          <code>size</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Overrides the default tag size. Supports Tailwind scale sizes (e.g.,{" "}
-          <code>"sm"</code>, <code>"3xl"</code>) OR standard CSS values (e.g.,{" "}
-          <code>"24px"</code>, <code>"2rem"</code>).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AnimatedTypographyBlock</code>
-        </td>
-        <td>
-          <code>color</code>
-        </td>
-        <td>
-          <code>
-            "indigo" | "rose" | "emerald" | "zinc" | "default" | string
-          </code>
-        </td>
-        <td>
-          <code>"default"</code>
-        </td>
-        <td>
-          The text color. If <code>"default"</code>, it inherits the parent
-          container's color. Fully supports custom hex codes.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AnimatedTypographyBlock</code>
-        </td>
-        <td>
-          <code>delay</code>
-        </td>
-        <td>
-          <code>number</code>
-        </td>
-        <td>
-          <code>0</code>
-        </td>
-        <td>
-          The initial delay in milliseconds before the animation begins.
-          Essential for sequencing multiple typography blocks (e.g., fading a
-          subheadline in after the main headline).
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>AnimatedTypographyBlock</code>
-        </td>
-        <td>
-          <code>speed</code>
-        </td>
-        <td>
-          <code>number</code>
-        </td>
-        <td>
-          <code>1</code>
-        </td>
-        <td>
-          A multiplier for the animation speed. Lower numbers mean faster
-          animations (e.g., <code>0.5</code> makes the staggered delays run
-          twice as fast).
-        </td>
-      </tr>
     </tbody>
   </table>
 </div>
+

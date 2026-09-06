@@ -1239,6 +1239,49 @@
       "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight."
     },
     {
+      "name": "homepage-hero",
+      "type": "registry:component",
+      "title": "Homepage Hero",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe homepage-hero. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HomepageHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HomepageHeroBlock.tsx"
+        }
+      ]
+    },
+    {
+      "name": "horizontal-rail",
+      "type": "registry:component",
+      "title": "Horizontal Rail",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe horizontal-rail. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HorizontalRailBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HorizontalRailBlock.tsx"
+        }
+      ]
+    },
+    {
       "name": "horizontal-scroll-stack",
       "type": "registry:component",
       "title": "Horizontal Scroll Stack",

@@ -626,8 +626,6 @@ export default function PinnedLeftStack() {
   ]}
 />
 
-## Horizontal stack
-
 export const railSteps = `import {
   Compass,
   Cpu,
@@ -690,22 +688,7 @@ export const usageHorizontal = `import { HorizontalScrollStack } from "@/compone
 ${railSteps}
 
 export default function ProcessRail() {
-  return (
-    <HorizontalScrollStack
-      items={steps}
-      title="How we work"
-      subtitle="Four steps, start to ship."
-    />
-  );
-}`;
-
-export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
-
-${railSteps}
-
-export default function ShortRail() {
-  // Fewer steps means a shorter pinned scroll distance.
-  return <HorizontalScrollStack items={steps.slice(0, 3)} />;
+  return <HorizontalScrollStack items={steps} />;
 }`;
 
 <ExampleShowcase
@@ -714,8 +697,7 @@ export default function ShortRail() {
   columns={1}
   examples={[
     {
-      title: "Horizontal stack",
-      subheading: "The section pins and vertical scroll is translated into horizontal travel.",
+      id: "horizontal-scroll-stack",
       propNotes: [
         {
           prop: "items",
@@ -723,7 +705,6 @@ export default function ShortRail() {
             "become the cards on the rail, in order.",
         },
       ],
-      props: { title: "How we work", subtitle: "Four steps, start to ship." },
       usage: usageHorizontal,
       code: extractCode("src/components/custom/blocks/HorizontalScrollStackBlock.tsx"),
     },
@@ -734,6 +715,15 @@ export default function ShortRail() {
 
 <Installation name="horizontal-scroll-stack" showSetupPath={false} />
 
+export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
+
+${railSteps}
+
+export default function ProcessRailTrack() {
+  // Items slide continuously across the viewport without stacking
+  return <HorizontalRail items={steps} />;
+}`;
+
 ### More examples
 
 <ExampleShowcase
@@ -742,19 +732,22 @@ export default function ShortRail() {
   columns={1}
   examples={[
     {
+      id: "horizontal-rail-track",
       title: "Shorter rail",
       propNotes: [
         {
           prop: "items",
           effect:
-            "also sets the pinned scroll distance — it is derived from the count, so trimming the array shortens the section.",
+            "slide continuously across the viewport without stacking.",
         },
       ],
-      props: { itemCount: 3 },
       usage: usageHorizontalShort,
+      code: extractCode("src/components/custom/blocks/HorizontalRailBlock.tsx"),
     },
   ]}
 />
+
+
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

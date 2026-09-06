@@ -125,8 +125,6 @@ export default function Pricing() {
   return ;
 }`;
 
-
-
 export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
@@ -337,16 +335,7 @@ const services = [
 
 export default function InteractiveChecklistPricing() {
   return (
-    <PricingPlans
-      brandTitle="Custom Services"
-      brandSubtitle="Select options tailored to your goals"
-      brandDescription="Mix and match custom design, full-stack development, and priority delivery to build the ideal package for your business."
-      services={services}
-      defaultActiveIds={["design"]}
-      ctaText="Book a 45-min call"
-      color="indigo"
-      counting={true}
-    />
+    
   );
 }`;
 

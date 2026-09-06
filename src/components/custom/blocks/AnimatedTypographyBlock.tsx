@@ -8,19 +8,15 @@ import { AnimatePresence, motion } from "framer-motion";
 // THEME & CONFIGURATION
 // ==========================================
 export type TypographyVariant =
-  | "fade-up"
-  | "blur-in"
-  | "typewriter"
-  | "glitch"
-  | "glow"
-  | "flip-up"
-  | "reveal"
-  | "pop-in"
-  | "word-bounce"
-  | "word-zoom"
-  | "word-slide"
-  | "char-wave"
-  | "none";
+  | "matrix-scramble"
+  | "color-reveal"
+  | "wavy-float"
+  | "3d-perspective-flip"
+  | "elastic-spring"
+  | "spotlight-reveal"
+  | "split-stagger"
+  | "underline-draw";
+
 export type TypographyTag =
   | "h1"
   | "h2"
@@ -31,6 +27,7 @@ export type TypographyTag =
   | "p"
   | "span"
   | "blockquote";
+
 export type TypographyColor =
   | "indigo"
   | "rose"
@@ -38,6 +35,7 @@ export type TypographyColor =
   | "zinc"
   | "default"
   | (string & {});
+
 export type TypographyAlign = "left" | "center" | "right" | "justify";
 
 const colorThemes: Record<string, string> = {
@@ -112,6 +110,56 @@ const tailwindSizeMap: Record<string, string> = {
   "9xl": "text-4xl sm:text-7xl lg:text-9xl",
 };
 
+// Matrix scramble helper
+const MATRIX_CHARS = "ABCDEFGHJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?";
+
+function MatrixScrambleText({
+  text,
+  speed = 1,
+  delay = 0,
+}: {
+  text: string;
+  speed?: number;
+  delay?: number;
+}) {
+  const [displayText, setDisplayText] = useState("");
+
+  useEffect(() => {
+    let iteration = 0;
+    let interval: ReturnType<typeof setInterval> | null = null;
+    const timeout = setTimeout(() => {
+      interval = setInterval(() => {
+        setDisplayText(
+          text
+            .split("")
+            .map((char, index) => {
+              if (char === " ") return " ";
+              if (index < iteration) {
+                return text[index];
+              }
+              return MATRIX_CHARS[
+                Math.floor(Math.random() * MATRIX_CHARS.length)
+              ];
+            })
+            .join(""),
+        );
+
+        if (iteration >= text.length) {
+          if (interval) clearInterval(interval);
+        }
+        iteration += 1 / 2.5;
+      }, 35 * speed);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      if (interval) clearInterval(interval);
+    };
+  }, [text, speed, delay]);
+
+  return <span>{displayText || text}</span>;
+}
+
 // ==========================================
 // INTERFACES
 // ==========================================
@@ -139,7 +187,7 @@ export const AnimatedTypographyBlock = forwardRef<
   (
     {
       as: Tag = "p",
-      variant = "fade-up",
+      variant = "matrix-scramble",
       text,
       titlePrefix,
       titleSuffix,
@@ -158,54 +206,7 @@ export const AnimatedTypographyBlock = forwardRef<
     );
     const uniqueId = useId().replace(/:/g, "");
 
-    // Typewriter & Word Bounce States
-    const [displayedText, setDisplayedText] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
-    const [wordBounceIndex, setWordBounceIndex] = useState(0);
-
-    const bounceWords = React.useMemo(() => {
-      return text.split(",").map((w) => w.trim()).filter(Boolean);
-    }, [text]);
-
-    useEffect(() => {
-      if (
-        (variant === "word-bounce" ||
-          variant === "word-zoom" ||
-          variant === "word-slide" ||
-          variant === "char-wave") &&
-        bounceWords.length > 0
-      ) {
-        const interval = setInterval(() => {
-          setWordBounceIndex((prev) => (prev + 1) % bounceWords.length);
-        }, 2400 * speed);
-        return () => clearInterval(interval);
-      }
-    }, [variant, bounceWords, speed]);
-
-    useEffect(() => {
-      if (variant === "typewriter") {
-        setDisplayedText("");
-        setIsTyping(true);
-        let currentIndex = 0;
-
-        const timeout = setTimeout(() => {
-          const interval = setInterval(() => {
-            if (currentIndex <= text.length) {
-              setDisplayedText(text.slice(0, currentIndex));
-              currentIndex++;
-            } else {
-              clearInterval(interval);
-              setIsTyping(false);
-            }
-          }, 30 * speed);
-          return () => clearInterval(interval);
-        }, delay);
-
-        return () => clearTimeout(timeout);
-      }
-    }, [text, variant, delay, speed]);
-
-    // Smart Sizing Logic with Responsive Scaling
+    // Responsive Sizing
     let sizeClass = "";
     let customSizeStyle: React.CSSProperties = {};
 
@@ -216,7 +217,6 @@ export const AnimatedTypographyBlock = forwardRef<
         customSizeStyle = { fontSize: size };
       }
     } else {
-      // Default fallbacks if no size is explicitly passed
       const defaultSizeMap: Record<TypographyTag, string> = {
         h1: "text-xl sm:text-3xl md:text-4xl lg:text-6xl",
         h2: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
@@ -231,278 +231,127 @@ export const AnimatedTypographyBlock = forwardRef<
       sizeClass = defaultSizeMap[Tag];
     }
 
-    // Split text into words for staggered animations
     const words = text.split(" ");
 
     // Render logic based on variant
     const renderContent = () => {
       switch (variant) {
-        case "fade-up":
-          return words.map((word, i) => (
+        case "matrix-scramble":
+          return <MatrixScrambleText text={text} speed={speed} delay={delay} />;
+
+        case "color-reveal":
+          return text.split("").map((char, i) => (
             <span
               key={i}
-              className="inline-block overflow-hidden align-bottom pb-1 -mb-1"
-            >
-              <span
-                className="inline-block animate-[typo-slide-up_0.6s_cubic-bezier(0.16,1,0.3,1)_both]"
-                style={{ animationDelay: `${delay + i * 60 * speed}ms` }}
-              >
-                {word}&nbsp;
-              </span>
-            </span>
-          ));
-
-        case "reveal":
-          return words.map((word, i) => (
-            <span
-              key={i}
-              className="inline-block overflow-hidden align-bottom pb-1 -mb-1"
-            >
-              <span
-                className="inline-block animate-[typo-reveal_0.7s_cubic-bezier(0.77,0,0.175,1)_both]"
-                style={{ animationDelay: `${delay + i * 50 * speed}ms` }}
-              >
-                {word}&nbsp;
-              </span>
-            </span>
-          ));
-
-        case "flip-up":
-          return words.map((word, i) => (
-            <span key={i} className="inline-block perspective-[1000px]">
-              <span
-                className="inline-block origin-bottom animate-[typo-flip-up_0.8s_cubic-bezier(0.175,0.885,0.32,1.275)_both]"
-                style={{ animationDelay: `${delay + i * 80 * speed}ms` }}
-              >
-                {word}&nbsp;
-              </span>
-            </span>
-          ));
-
-        case "blur-in":
-          return words.map((word, i) => (
-            <span
-              key={i}
-              className="inline-block animate-[typo-blur-in_0.8s_ease-out_both]"
-              style={{ animationDelay: `${delay + i * 80 * speed}ms` }}
-            >
-              {word}&nbsp;
-            </span>
-          ));
-
-        case "pop-in":
-          return words.map((word, i) => (
-            <span
-              key={i}
-              className="inline-block animate-[typo-pop-in_0.6s_cubic-bezier(0.175,0.885,0.32,1.275)_both]"
-              style={{ animationDelay: `${delay + i * 50 * speed}ms` }}
-            >
-              {word}&nbsp;
-            </span>
-          ));
-
-        case "typewriter":
-          return (
-            <>
-              {displayedText}
-              <span
-                className={cn(
-                  "inline-block w-[0.1em] h-[1em] ml-1 align-middle bg-current transition-opacity duration-100",
-                  isTyping
-                    ? "animate-[pulse_0.1s_ease-in-out_infinite]"
-                    : "animate-[pulse_1s_ease-in-out_infinite]",
-                )}
-              />
-            </>
-          );
-
-        case "glitch":
-          return (
-            <>
-              <style>{`
-                .typo-glitch-${uniqueId} { position: relative; display: inline-block; }
-                .typo-glitch-${uniqueId}::before,
-                .typo-glitch-${uniqueId}::after {
-                  content: attr(data-text);
-                  position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
-                }
-                .typo-glitch-${uniqueId}::before {
-                  left: 2px; text-shadow: -2px 0 red; clip: rect(24px, 550px, 90px, 0);
-                  animation: glitch-anim-2 3s infinite linear alternate-reverse;
-                }
-                .typo-glitch-${uniqueId}::after {
-                  left: -2px; text-shadow: -2px 0 blue; clip: rect(85px, 550px, 140px, 0);
-                  animation: glitch-anim 2.5s infinite linear alternate-reverse;
-                }
-                @keyframes glitch-anim {
-                  0% { clip: rect(10px, 9999px, 44px, 0); }
-                  20% { clip: rect(85px, 9999px, 140px, 0); }
-                  40% { clip: rect(12px, 9999px, 89px, 0); }
-                  60% { clip: rect(65px, 9999px, 10px, 0); }
-                  80% { clip: rect(9px, 9999px, 53px, 0); }
-                  100% { clip: rect(78px, 9999px, 110px, 0); }
-                }
-                @keyframes glitch-anim-2 {
-                  0% { clip: rect(65px, 9999px, 100px, 0); }
-                  20% { clip: rect(10px, 9999px, 50px, 0); }
-                  40% { clip: rect(80px, 9999px, 20px, 0); }
-                  60% { clip: rect(30px, 9999px, 90px, 0); }
-                  80% { clip: rect(90px, 9999px, 40px, 0); }
-                  100% { clip: rect(20px, 9999px, 70px, 0); }
-                }
-              `}</style>
-              <span className={`typo-glitch-${uniqueId}`} data-text={text}>
-                {text}
-              </span>
-            </>
-          );
-
-        case "glow":
-          return (
-            <span
-              className={cn(
-                "animate-[typo-glow_3s_ease-in-out_infinite_alternate]",
-              )}
+              className="inline-block text-slate-400 dark:text-zinc-600 animate-[typo-color-reveal_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
               style={{
-                textShadow:
-                  color === "default"
-                    ? "0 0 20px rgba(255,255,255,0.5)"
-                    : "0 0 20px var(--typo-color, currentColor)",
+                animationDelay: `${delay + i * 45 * speed}ms`,
+                whiteSpace: char === " " ? "pre" : "normal",
               }}
             >
-              {text}
+              {char}
             </span>
-          );
+          ));
 
-        case "word-bounce": {
-          const currentBounceWord = bounceWords[wordBounceIndex] || "";
-          return (
-            <span className="inline-flex items-center justify-start flex-wrap gap-x-2">
-              {titlePrefix && <span className="shrink-0 text-foreground">{titlePrefix}</span>}
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentBounceWord}
-                    initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
-                    animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                    exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 24,
-                      mass: 0.8,
-                    }}
-                    className="inline-block text-left whitespace-nowrap"
-                  >
-                    {currentBounceWord}
-                  </motion.span>
-                </AnimatePresence>
+        case "wavy-float":
+          return text.split("").map((char, i) => (
+            <span
+              key={i}
+              className="inline-block animate-[typo-wavy_2s_ease-in-out_infinite]"
+              style={{
+                animationDelay: `${delay + i * 80 * speed}ms`,
+                whiteSpace: char === " " ? "pre" : "normal",
+              }}
+            >
+              {char}
+            </span>
+          ));
+
+        case "3d-perspective-flip":
+          return words.map((word, i) => (
+            <span key={i} className="inline-block perspective-[1000px] mr-[0.25em]">
+              <span
+                className="inline-block origin-bottom animate-[typo-perspective_0.75s_cubic-bezier(0.34,1.56,0.64,1)_both]"
+                style={{ animationDelay: `${delay + i * 70 * speed}ms` }}
+              >
+                {word}
               </span>
-              {titleSuffix && <span className="shrink-0 text-foreground">{titleSuffix}</span>}
             </span>
-          );
-        }
+          ));
 
-        case "word-zoom": {
-          const currentBounceWord = bounceWords[wordBounceIndex] || "";
-          return (
-            <span className="inline-flex items-center justify-start flex-wrap gap-x-2">
-              {titlePrefix && <span className="shrink-0 text-foreground">{titlePrefix}</span>}
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentBounceWord}
-                    initial={{ opacity: 0, scale: 0.7, filter: "blur(12px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 1.3, filter: "blur(12px)" }}
-                    transition={{
-                      duration: 0.6,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="inline-block text-left whitespace-nowrap"
-                  >
-                    {currentBounceWord}
-                  </motion.span>
-                </AnimatePresence>
+        case "elastic-spring":
+          return words.map((word, i) => (
+            <span
+              key={i}
+              className="inline-block animate-[typo-elastic_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)_both] mr-[0.25em]"
+              style={{ animationDelay: `${delay + i * 65 * speed}ms` }}
+            >
+              {word}
+            </span>
+          ));
+
+        case "spotlight-reveal":
+          return words.map((word, i) => (
+            <span
+              key={i}
+              className="inline-block animate-[typo-spotlight_1s_cubic-bezier(0.16,1,0.3,1)_both] mr-[0.25em]"
+              style={{ animationDelay: `${delay + i * 80 * speed}ms` }}
+            >
+              {word}
+            </span>
+          ));
+
+        case "split-stagger":
+          return text.split("").map((char, i) => {
+            const isEven = i % 2 === 0;
+            return (
+              <span
+                key={i}
+                className={cn(
+                  "inline-block",
+                  isEven
+                    ? "animate-[typo-split-top_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
+                    : "animate-[typo-split-bottom_0.7s_cubic-bezier(0.16,1,0.3,1)_both]",
+                )}
+                style={{
+                  animationDelay: `${delay + i * 35 * speed}ms`,
+                  whiteSpace: char === " " ? "pre" : "normal",
+                }}
+              >
+                {char}
               </span>
-              {titleSuffix && <span className="shrink-0 text-foreground">{titleSuffix}</span>}
-            </span>
-          );
-        }
+            );
+          });
 
-        case "word-slide": {
-          const currentBounceWord = bounceWords[wordBounceIndex] || "";
+        case "underline-draw":
           return (
-            <span className="inline-flex items-center justify-start flex-wrap gap-x-2">
-              {titlePrefix && <span className="shrink-0 text-foreground">{titlePrefix}</span>}
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentBounceWord}
-                    initial={{ x: 40, opacity: 0, filter: "blur(6px)" }}
-                    animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
-                    exit={{ x: -40, opacity: 0, filter: "blur(6px)" }}
-                    transition={{
-                      duration: 0.55,
-                      ease: [0.25, 1, 0.5, 1],
-                    }}
-                    className="inline-block text-left whitespace-nowrap"
-                  >
-                    {currentBounceWord}
-                  </motion.span>
-                </AnimatePresence>
+            <span className="relative inline-block pb-2">
+              <span className="inline-block animate-[typo-fade_0.6s_ease-out_both]" style={{ animationDelay: `${delay}ms` }}>
+                {text}
               </span>
-              {titleSuffix && <span className="shrink-0 text-foreground">{titleSuffix}</span>}
+              <svg
+                className="absolute left-0 bottom-0 w-full h-3 overflow-visible text-primary"
+                viewBox="0 0 100 12"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M0,5 Q50,12 100,5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.9 * speed,
+                    delay: delay / 1000 + 0.2,
+                    ease: "easeOut",
+                  }}
+                />
+              </svg>
             </span>
           );
-        }
 
-        case "char-wave": {
-          const currentBounceWord = bounceWords[wordBounceIndex] || "";
-          return (
-            <span className="inline-flex items-center justify-start flex-wrap gap-x-2">
-              {titlePrefix && <span className="shrink-0 text-foreground">{titlePrefix}</span>}
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentBounceWord}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    variants={{
-                      initial: { opacity: 0 },
-                      animate: { opacity: 1, transition: { staggerChildren: 0.04 * speed } },
-                      exit: { opacity: 0, transition: { staggerChildren: 0.02 * speed } },
-                    }}
-                    className="inline-flex text-left whitespace-nowrap"
-                  >
-                    {currentBounceWord.split("").map((char, index) => (
-                      <motion.span
-                        key={index}
-                        variants={{
-                          initial: { y: 24, opacity: 0, scale: 0.5 },
-                          animate: { y: 0, opacity: 1, scale: 1 },
-                          exit: { y: -24, opacity: 0, scale: 0.5 },
-                        }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 350,
-                          damping: 25,
-                        }}
-                        className="inline-block"
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
-                  </motion.span>
-                </AnimatePresence>
-              </span>
-              {titleSuffix && <span className="shrink-0 text-foreground">{titleSuffix}</span>}
-            </span>
-          );
-        }
-
-        case "none":
         default:
           return text;
       }
@@ -511,29 +360,44 @@ export const AnimatedTypographyBlock = forwardRef<
     return (
       <>
         <style>{`
-          @keyframes typo-slide-up {
+          @keyframes typo-color-reveal {
+            0% {
+              color: rgb(148 163 184 / 0.4);
+              opacity: 0.5;
+            }
+            100% {
+              color: inherit;
+              opacity: 1;
+            }
+          }
+          @keyframes typo-wavy {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+          }
+          @keyframes typo-perspective {
+            0% { opacity: 0; transform: rotateX(-90deg) scale(0.8); }
+            100% { opacity: 1; transform: rotateX(0deg) scale(1); }
+          }
+          @keyframes typo-elastic {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 0.8; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+          }
+          @keyframes typo-spotlight {
+            0% { opacity: 0; filter: blur(14px); transform: scale(0.9) translateY(6px); }
+            100% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
+          }
+          @keyframes typo-split-top {
+            0% { opacity: 0; transform: translateY(-100%); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes typo-split-bottom {
             0% { opacity: 0; transform: translateY(100%); }
             100% { opacity: 1; transform: translateY(0); }
           }
-          @keyframes typo-reveal {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(0); }
-          }
-          @keyframes typo-flip-up {
-            0% { opacity: 0; transform: rotateX(-90deg); }
-            100% { opacity: 1; transform: rotateX(0deg); }
-          }
-          @keyframes typo-blur-in {
-            0% { opacity: 0; filter: blur(12px); transform: scale(0.95); }
-            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
-          }
-          @keyframes typo-pop-in {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-          }
-          @keyframes typo-glow {
-            0% { filter: brightness(1); }
-            100% { filter: brightness(1.5); }
+          @keyframes typo-fade {
+            0% { opacity: 0; transform: translateY(4px); }
+            100% { opacity: 1; transform: translateY(0); }
           }
         `}</style>
 
@@ -559,3 +423,4 @@ export const AnimatedTypographyBlock = forwardRef<
   },
 );
 AnimatedTypographyBlock.displayName = "AnimatedTypographyBlock";
+

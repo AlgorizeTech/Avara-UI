@@ -8,41 +8,33 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
-export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageMatrix = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FlipUpShowcase() {
+export default function MatrixScrambleShowcase() {
   return (
 
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageWavy = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FadeUpShowcase() {
+export default function WavyFloatShowcase() {
   return (
 
   );
 }`;
 
-export const usagePopIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usagePerspective = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function PopInShowcase() {
+export default function PerspectiveFlipShowcase() {
   return (
 
   );
 }`;
 
-export const usageBlurIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageElastic = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function BlurInShowcase() {
-  return (
-
-  );
-}`;
-
-export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function TypewriterShowcase() {
+export default function ElasticSpringShowcase() {
   return (
 
   );
@@ -52,33 +44,33 @@ export default function TypewriterShowcase() {
 
 ## Examples
 
-export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSpotlight = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordBounceShowcase() {
+export default function SpotlightRevealShowcase() {
   return (
 
   );
 }`;
 
-export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSplit = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordZoomShowcase() {
+export default function SplitStaggerShowcase() {
   return (
 
   );
 }`;
 
-export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageUnderline = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordSlideShowcase() {
+export default function UnderlineDrawShowcase() {
   return (
 
   );
 }`;
 
-export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageColorReveal = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function CharWaveShowcase() {
+export default function ColorRevealShowcase() {
   return (
 
   );
@@ -87,25 +79,17 @@ export default function CharWaveShowcase() {
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+    7 Modern Patterns
+    Features 7 distinct, non-generic typography animation patterns from Matrix decryption to liquid underlines.
 
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+    Highly Accessible
+    Automatically renders an sr-only version for screen readers while displaying child visual spans.
 
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+    Responsive Sizing
+    Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.
 
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
-## Best Practices & Guidelines
-
-    Animation Performance
-    Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
-
-    State Management
-    When triggering animations via state changes, ensure you wrap state updates in startTransition or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+    Hardware Accelerated
+    GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.
 
 ## Props Reference
 
@@ -123,9 +107,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           Required
 
-          The text content to render. Staggered variants (like{" "}
-          fade-up or pop-in) automatically split this
-          string by spaces to animate word-by-word.
+          The text content to render. Staggered variants split this string to animate word-by-word or character-by-character.
 
           AnimatedTypographyBlock
 
@@ -136,20 +118,19 @@ Discover the key capabilities that make this component an excellent choice for m
 
           "p"
 
-          The semantic HTML tag to render. Automatically applies sensible
-          responsive sizing based on the tag unless overridden by the{" "}
-          size prop.
+          The semantic HTML tag to render.
 
           AnimatedTypographyBlock
 
           variant
 
-            "fade-up" | "reveal" | "flip-up" | "blur-in" | "pop-in" |
-            "typewriter" | "glitch" | "glow" | "none"
+            "matrix-scramble" | "color-reveal" | "wavy-float" |
+            "3d-perspective-flip" | "elastic-spring" | "spotlight-reveal" |
+            "split-stagger" | "underline-draw"
 
-          "fade-up"
+          "matrix-scramble"
         
-        The animation effect applied to the text.
+        The 8 distinct animation patterns applied to the text.
 
           AnimatedTypographyBlock
 
@@ -160,53 +141,6 @@ Discover the key capabilities that make this component an excellent choice for m
           "left"
         
         Controls the CSS text alignment of the underlying container.
-
-          AnimatedTypographyBlock
-
-          size
-
-          string
-
-          undefined
-
-          Overrides the default tag size. Supports Tailwind scale sizes (e.g.,{" "}
-          "sm", "3xl") OR standard CSS values (e.g.,{" "}
-          "24px", "2rem").
-
-          AnimatedTypographyBlock
-
-          color
-
-            "indigo" | "rose" | "emerald" | "zinc" | "default" | string
-
-          "default"
-
-          The text color. If "default", it inherits the parent
-          container's color. Fully supports custom hex codes.
-
-          AnimatedTypographyBlock
-
-          delay
-
-          number
-
-          0
-
-          The initial delay in milliseconds before the animation begins.
-          Essential for sequencing multiple typography blocks (e.g., fading a
-          subheadline in after the main headline).
-
-          AnimatedTypographyBlock
-
-          speed
-
-          number
-
-          1
-
-          A multiplier for the animation speed. Lower numbers mean faster
-          animations (e.g., 0.5 makes the staggered delays run
-          twice as fast).
 
 ---
 

@@ -85,7 +85,7 @@ export default function HorizontalScrollStackDemo({
 
   return (
     <div
-      className="w-full relative rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50"
+      className="w-full relative"
       style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
       <HorizontalScrollStack
