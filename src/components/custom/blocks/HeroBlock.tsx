@@ -2,8 +2,8 @@
 
 import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, PawPrint, Heart, ShieldCheck, ShoppingBag } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, PawPrint, Heart, ShieldCheck, ShoppingBag, Stethoscope, Calendar, Activity, UserCheck, Package, Truck } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
    SELF-CONTAINED SVG BRAND ICONS
@@ -29,8 +29,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -186,6 +186,20 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
+
+    // Scroll animation tracking for "doctor" variant sticky card stack
+    const doctorContainerRef = React.useRef<HTMLDivElement>(null);
+    const { scrollYProgress: doctorScrollProgress } = useScroll({
+      target: doctorContainerRef,
+      offset: ["start start", "end end"],
+    });
+
+    const docHeroScale = useTransform(doctorScrollProgress, [0, 0.45], [1, 0.92]);
+    const docHeroOpacity = useTransform(doctorScrollProgress, [0, 0.45], [1, 0.35]);
+    const docHeroY = useTransform(doctorScrollProgress, [0, 0.45], [0, -25]);
+
+    const docCardStackY = useTransform(doctorScrollProgress, [0.1, 0.55], [60, 0]);
+    const docCardScale = useTransform(doctorScrollProgress, [0.1, 0.55], [0.93, 1]);
 
     // Word bounce effect interval (used when variant === "bounce")
     useEffect(() => {
@@ -447,6 +461,287 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               </div>
 
             </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
+       VARIANT 5: TRUSTED KITS & MEDICAL CARE HERO (EXACTLY MATCHES REFERENCE IMAGE)
+       ═══════════════════════════════════════════════ */
+    if (variant === "doctor") {
+      const docTitlePrefix =
+        titlePrefix === "Build " ? "Trusted Kits" : titlePrefix;
+      const docTitleAccent =
+        titleSuffix || "Real Results";
+      const docSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
+          : subtitle;
+
+      const docPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Order Kit"
+          : primaryActionLabel;
+
+      const docSecondaryAction =
+        secondaryActionLabel === "Star on GitHub"
+          ? "See How Its Work"
+          : secondaryActionLabel;
+
+      const doctorMainImage =
+        petImage ||
+        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop";
+
+      const doctorSubImage =
+        secondaryPetImage ||
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop";
+
+      const labTestImage =
+        mainImage === DEFAULT_MAIN_IMAGE
+          ? "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
+          : mainImage;
+
+      const inlineBadgeImage =
+        "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?q=80&w=200&auto=format&fit=crop";
+
+      const stat1Val = ratingText === "4.9 ★ Rated" ? "100%" : ratingText;
+      const stat1Label = badgeTags?.[0] === "Certified Organic & Vet Approved" ? "Safe & Private Results" : badgeTags?.[0] || "Safe & Private Results";
+      const stat2Val = featurePillText === "24/7 Vet Care" ? "98%" : featurePillText;
+      const stat2Label = badgeTags?.[1] === "4.9 Star Rated" ? "Satisfaction rate" : badgeTags?.[1] || "Satisfaction rate";
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full overflow-hidden bg-white dark:bg-zinc-950 text-foreground transition-colors duration-300 min-h-[620px]",
+            className,
+          )}
+          {...props}
+        >
+          <div className="w-full max-w-[1440px] mx-auto min-h-[620px] grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            
+            {/* LEFT COLUMN: Title, Subtitle, CTA & Stats */}
+            <div className="col-span-1 lg:col-span-6 px-4 sm:px-8 lg:px-16 py-6 sm:py-10 lg:py-20 flex flex-col justify-center space-y-5 sm:space-y-8 z-10">
+              
+              {/* Heading Section */}
+              <div className="space-y-1.5 sm:space-y-2">
+                <h1 className="text-2xl sm:text-4xl lg:text-7xl font-light tracking-tight text-zinc-600 dark:text-zinc-300 font-sans leading-tight">
+                  {docTitlePrefix}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-0.5 sm:pt-1">
+                  <span 
+                    className="relative inline-flex size-7 sm:size-11 lg:size-12 rounded-full overflow-hidden border-2 shrink-0 shadow-md"
+                    style={{ borderColor: "var(--hero-accent-text)" }}
+                  >
+                    <img
+                      src={inlineBadgeImage}
+                      alt="Kit thumbnail"
+                      className="w-full h-full object-cover"
+                    />
+                  </span>
+                  <span 
+                    className="text-2xl sm:text-4xl lg:text-7xl font-extrabold tracking-tight leading-tight"
+                    style={{ color: "var(--hero-accent-text)" }}
+                  >
+                    {docTitleAccent}
+                  </span>
+                </div>
+              </div>
+
+              {/* Subtitle with Left Border Line Accent */}
+              {docSubtitle && (
+                <div 
+                  className="border-l-2 pl-3 sm:pl-4 py-0.5"
+                  style={{ borderColor: "var(--hero-accent-text)" }}
+                >
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs sm:text-base leading-relaxed font-medium max-w-lg">
+                    {docSubtitle}
+                  </p>
+                </div>
+              )}
+
+              {/* Action Buttons Row (Full Width on mobile/sm, auto on desktop lg) */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 pt-1 sm:pt-2 w-full">
+                <Link
+                  href={primaryActionHref}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-base shadow-md transition-all active:scale-95 text-center"
+                  style={{
+                    backgroundColor: "var(--hero-accent-text)",
+                    color: "var(--primary-foreground)",
+                  }}
+                >
+                  <Package className="size-4 sm:size-5 shrink-0" />
+                  <span>{docPrimaryAction}</span>
+                </Link>
+
+                <Link
+                  href={secondaryActionHref}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-base hover:underline transition-all text-center"
+                  style={{ color: "var(--hero-accent-text)" }}
+                >
+                  <span>{docSecondaryAction}</span>
+                </Link>
+              </div>
+
+              {/* Stats Footer Row */}
+              <div className="flex flex-wrap items-center gap-6 sm:gap-14 pt-1 sm:pt-4">
+                <div className="space-y-0.5 sm:space-y-1">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                    {stat1Val}
+                  </p>
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-zinc-500 dark:text-zinc-400">
+                    <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
+                    <span>{stat1Label}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-0.5 sm:space-y-1">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                    {stat2Val}
+                  </p>
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-zinc-500 dark:text-zinc-400">
+                    <Heart className="size-3.5 text-rose-500 shrink-0" />
+                    <span>{stat2Label}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* RIGHT COLUMN: Dark Container with Images Grid & Floating Cards */}
+            <div className="col-span-1 lg:col-span-6 relative flex flex-col justify-center px-3 sm:px-8 lg:px-12 py-6 sm:py-10 lg:py-12 min-h-[380px] sm:min-h-[480px] lg:min-h-0 mt-4 lg:mt-0">
+              
+              {/* Dark Green / Dynamic Accent Panel */}
+              <div 
+                className="absolute inset-y-0 right-0 left-0 sm:left-20 lg:left-36 rounded-[20px] sm:rounded-[28px] lg:rounded-l-[48px] lg:rounded-r-none z-0 transition-colors duration-300"
+                style={{
+                  backgroundColor: accentRgb
+                    ? `rgb(${Math.max(5, Math.round(accentRgb[0] * 0.12))}, ${Math.max(15, Math.round(accentRgb[1] * 0.22))}, ${Math.max(15, Math.round(accentRgb[2] * 0.22))})`
+                    : "#0a271d",
+                }}
+              />
+
+              {/* Main Images Layout Grid */}
+              <div className="relative w-full h-full grid grid-cols-12 gap-2.5 sm:gap-4 items-center z-10 my-auto p-2 sm:p-0">
+                
+                {/* Doctor Consultation Portrait Card */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="col-span-6 ml-0 lg:-ml-10 relative z-20"
+                >
+                  <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-white dark:border-zinc-900 bg-zinc-800">
+                    <img
+                      src={doctorMainImage}
+                      alt="Doctor Consultation"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Right Stacked Images inside Dark Panel */}
+                <div className="col-span-6 space-y-2.5 sm:space-y-4 relative z-10">
+                  
+                  {/* Top Right Patient Care Portrait Image */}
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                    className="relative aspect-[4/3] sm:aspect-square w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10"
+                  >
+                    <img
+                      src={doctorSubImage}
+                      alt="Patient Care"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+
+                  {/* Bottom Right Lab Kit Test Image */}
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    className="relative aspect-[4/3] w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10 group"
+                  >
+                    <img
+                      src={labTestImage}
+                      alt="Lab Test Kit"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-2 sm:p-3.5">
+                      <p className="text-[9px] sm:text-xs font-black text-white leading-tight">
+                        Lab-Trusted. <br /> Doorstep Delivered.
+                      </p>
+                    </div>
+                  </motion.div>
+
+                </div>
+
+              </div>
+
+              {/* Bottom Floating Delivery Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="relative lg:absolute mt-3 lg:mt-0 bottom-0 lg:bottom-6 left-0 lg:-left-6 lg:-ml-24 z-30 w-full lg:w-auto min-w-0 sm:min-w-[320px] p-3 sm:p-4 lg:p-5 rounded-[16px] sm:rounded-[24px] shadow-2xl border-2 backdrop-blur-xl transition-colors duration-300 bg-card text-card-foreground"
+                style={{
+                  backgroundColor: accentRgb
+                    ? `rgba(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}, 0.18)`
+                    : undefined,
+                  borderColor: "var(--hero-accent-text)",
+                }}
+              >
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
+                  <div 
+                    className="size-8 sm:size-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0"
+                    style={{
+                      backgroundColor: "var(--hero-accent-text)",
+                      color: "var(--primary-foreground)",
+                    }}
+                  >
+                    <Package className="size-4 sm:size-5" />
+                  </div>
+                  <div 
+                    className="size-7 sm:size-8 rounded-full flex items-center justify-center border border-current shrink-0"
+                    style={{ color: "var(--hero-accent-text)" }}
+                  >
+                    <ArrowUpRight className="size-3.5 sm:size-4" />
+                  </div>
+                </div>
+
+                <div className="pt-2 sm:pt-3 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+                  <div>
+                    <p className="font-extrabold text-[11px] sm:text-sm whitespace-nowrap tracking-tight">
+                      Fast &amp; Reliable Delivery
+                    </p>
+                  </div>
+                  {/* User Profile Avatar Stack (5 images with 3px gap) */}
+                  <div className="flex items-center gap-[3px] shrink-0">
+                    {[
+                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=100&auto=format&fit=crop",
+                    ].map((imgSrc, i) => (
+                      <img
+                        key={i}
+                        src={imgSrc}
+                        alt={`User avatar ${i + 1}`}
+                        className="size-5 sm:size-8 rounded-md sm:rounded-lg border border-white/60 object-cover shadow-sm"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+            </div>
+
           </div>
         </section>
       );

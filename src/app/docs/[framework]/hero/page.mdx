@@ -179,6 +179,51 @@ export default function Page() {
   ]}
 />
 
+export const usageDoctor = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="doctor"
+      titlePrefix="Trusted Kits"
+      titleSuffix="Real Results"
+      subtitle="Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
+      primaryActionLabel="Order Kit"
+      primaryActionHref="/order"
+      secondaryActionLabel="See How Its Work"
+      secondaryActionHref="/how-it-works"
+      petImage="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
+      secondaryPetImage="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
+      mainImage="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
+      ratingText="100%"
+      featurePillText="98%"
+      badgeTags={["Safe & Private Results", "Satisfaction rate"]}
+      className="w-full min-h-screen"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-doctor"
+  colorControl
+  columns={1}
+  minHeight={480}
+  examples={[
+    {
+      title: "Doctor Portal & Healthcare Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"doctor"',
+          effect: "for a clean medical & healthcare hero with specialist doctor showcase and appointment booking CTA.",
+        },
+      ],
+      usage: usageDoctor,
+    },
+  ]}
+/>
+
 ## Props Reference
 
 <div className="overflow-x-auto mb-8">
