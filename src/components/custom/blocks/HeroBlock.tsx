@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, PawPrint, Heart, ShieldCheck, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
@@ -29,8 +29,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce" for word spring bounce, "typing" for character typewriter, "slider" for 2-column split 3D word flip & continuous slider */
-  variant?: "bounce" | "typing" | "slider";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -63,6 +63,18 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   sliderImages?: string[];
   /** Main featured image URL for the right column (used in "slider" variant) */
   mainImage?: string;
+  /** Array of category pill tags (used in "pet-shop" variant) */
+  categories?: string[];
+  /** Rating text (used in "pet-shop" variant, e.g. "4.9 ★ Rated") */
+  ratingText?: string;
+  /** Feature pill badge text (used in "pet-shop" variant) */
+  featurePillText?: string;
+  /** Array of top badge strings (used in "pet-shop" variant) */
+  badgeTags?: string[];
+  /** Main featured pet image URL (used in "pet-shop" variant) */
+  petImage?: string;
+  /** Secondary pet avatar image URL (used in "pet-shop" variant) */
+  secondaryPetImage?: string;
   /** Custom accent color (CSS color or tailwind var) */
   color?: string;
 }
@@ -156,6 +168,12 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       secondaryActionHref = "https://github.com/AlgorizeTech",
       sliderImages = DEFAULT_SLIDER_IMAGES,
       mainImage = DEFAULT_MAIN_IMAGE,
+      petImage,
+      secondaryPetImage,
+      categories = ["Dry Food", "Toys", "Grooming", "Wellness", "Subscription"],
+      ratingText = "4.9 ★ Rated",
+      featurePillText = "24/7 Vet Care",
+      badgeTags = ["Certified Organic & Vet Approved", "4.9 Star Rated"],
       color,
       className,
       ...props
@@ -253,6 +271,188 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     const currentWord = typingWords?.[currentWordIndex] || "";
 
     /* ═══════════════════════════════════════════════
+       VARIANT 4: MODERN PET SHOP & ANIMAL CARE HERO (MINIMAL, NO SHADOWS & NO PET ICONS)
+       ═══════════════════════════════════════════════ */
+    if (variant === "pet-shop" || variant === "glow-arc") {
+      const petTitlePrefix =
+        titlePrefix === "Build " ? "All Pet Essentials" : titlePrefix;
+      const petTitleAccent =
+        titleSuffix || "Delivered To Your Door";
+      const petSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations delivered to your door."
+          : subtitle;
+
+      const petPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Shop Dog Supplies"
+          : primaryActionLabel;
+
+      const petSecondaryAction =
+        secondaryActionLabel === "Star on GitHub"
+          ? "Shop Cat Care"
+          : secondaryActionLabel;
+
+      const dogImage =
+        petImage ||
+        "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop";
+      const catImage =
+        secondaryPetImage ||
+        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop";
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full overflow-hidden py-14 sm:py-20 lg:py-28 bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* Subtle Dynamic Theme Accent Glow Orbs */}
+          <div className="absolute top-10 left-10 size-72 sm:size-96 rounded-full blur-3xl pointer-events-none opacity-15" style={{ backgroundColor: "var(--hero-accent-text)" }} />
+          <div className="absolute bottom-10 right-10 size-72 sm:size-96 rounded-full blur-3xl pointer-events-none opacity-15" style={{ backgroundColor: "var(--hero-accent-text)" }} />
+
+          <div className="relative z-10 max-w-[1320px] mx-auto w-full px-4 sm:px-6 md:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Image Column: Top on Mobile (order-1), Left on Desktop (lg:order-1) */}
+              <div className="col-span-1 lg:col-span-5 relative flex justify-center items-center order-1 lg:order-1">
+                <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
+                  
+                  {/* Outer Concentric Border Accent Ring */}
+                  <div className="absolute inset-2 rounded-full border-2 border-dashed opacity-30 animate-[spin_60s_linear_infinite]" style={{ borderColor: "var(--hero-accent-text)" }} />
+                  
+                  {/* Central Large Circular Image Mask */}
+                  <div className="relative w-[85%] h-[85%] rounded-full overflow-hidden border-4 border-background bg-muted group">
+                    <img
+                      src={dogImage}
+                      alt="Happy Pet"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+
+                  {/* Top-Left Floating Feature Pill */}
+                  <div className="absolute top-2 left-0 sm:-left-2 px-4 py-2 rounded-2xl bg-card border-2 border-border flex items-center gap-2.5 z-20">
+                    <div className="size-2 rounded-full" style={{ backgroundColor: "var(--hero-accent-text)" }} />
+                    <div>
+                      <p className="text-[11px] font-black text-foreground">{featurePillText}</p>
+                      <p className="text-[9px] font-bold" style={{ color: "var(--hero-accent-text)" }}>Verified Doctors</p>
+                    </div>
+                  </div>
+
+                  {/* Bottom-Right Cat Avatar Pill */}
+                  <div className="absolute bottom-2 right-0 sm:-right-2 p-2 pr-4 rounded-2xl bg-card border-2 border-border flex items-center gap-2.5 z-20">
+                    <div className="size-10 rounded-xl overflow-hidden border border-border shrink-0">
+                      <img src={catImage} alt="Cat Supplies" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-black text-foreground">Cat Essentials</p>
+                      <p className="text-[9px] font-bold text-muted-foreground">Same Day Delivery</p>
+                    </div>
+                  </div>
+
+                  {/* Center Left Rating Pill */}
+                  <div className="absolute bottom-1/3 -left-4 px-3.5 py-1.5 rounded-full font-black text-xs border z-20" style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)", borderColor: "var(--hero-accent-text)" }}>
+                    {ratingText}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Content Column: Bottom on Mobile (order-2), Right on Desktop (lg:order-2) */}
+              <div className="col-span-1 lg:col-span-7 flex flex-col justify-center space-y-6 text-left order-2 lg:order-2">
+                
+                {/* Category Pills Header */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {badgeTags?.[0] && (
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold" style={{ backgroundColor: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.25)", color: "var(--hero-accent-text)" }}>
+                      <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
+                      <span>{badgeTags[0]}</span>
+                    </div>
+                  )}
+                  {badgeTags?.[1] && (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "rgba(249, 115, 22, 0.08)", borderColor: "rgba(249, 115, 22, 0.25)", color: "#f97316" }}>
+                      <Star className="size-3.5 fill-orange-500 text-orange-500" />
+                      <span>{badgeTags[1]}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Main Heading */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-foreground">
+                  <span className="block">{petTitlePrefix}</span>
+                  <span className="block mt-1" style={{ color: "var(--hero-accent-text)" }}>
+                    {petTitleAccent}
+                  </span>
+                </h1>
+
+                {/* Subtitle */}
+                {petSubtitle && (
+                  <p className="text-xs sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl font-medium">
+                    {petSubtitle}
+                  </p>
+                )}
+
+                {/* Quick Pet Category Select Pills */}
+                {categories && categories.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mr-1">Popular:</span>
+                    {categories.map((cat, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-bold text-foreground cursor-pointer transition-all"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-3 w-full">
+                  <Link
+                    href={primaryActionHref}
+                    className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl font-extrabold text-sm sm:text-base transition-all active:scale-95 text-center"
+                    style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)" }}
+                  >
+                    <ShoppingBag className="size-5 shrink-0" />
+                    <span>{petPrimaryAction}</span>
+                    <ArrowRight className="size-4 shrink-0" />
+                  </Link>
+
+                  <Link
+                    href={secondaryActionHref}
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-accent text-foreground font-bold text-sm sm:text-base transition-all active:scale-95 text-center"
+                  >
+                    <span>{petSecondaryAction}</span>
+                    <ArrowUpRight className="size-4 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
+                  </Link>
+                </div>
+
+                {/* Trust Footer Line */}
+                <div className="pt-3 flex items-center gap-4 text-xs font-bold text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="size-4" style={{ color: "var(--hero-accent-text)" }} />
+                    <span>Vet Verified Ingredients</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Heart className="size-4 text-rose-500" />
+                    <span>Free Shipping $35+</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
        VARIANT 3: CLEAN SOLID WHITE/DARK PARENT WITH SOLID ACCENT FLIP WORD (NO GRADIENT)
        ═══════════════════════════════════════════════ */
     if (variant === "slider") {
@@ -262,6 +462,11 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           : badgeText;
       const sliderTitlePrefix =
         titlePrefix === "Build " ? "Building & Engineering" : titlePrefix;
+      const sliderTitleAccent =
+        titleSuffix ||
+        (titlePrefix === "Build "
+          ? "Full-Stack Digital Products"
+          : "Interactive Experiences");
       const sliderSubtitle =
         subtitle ===
         "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
@@ -280,18 +485,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ? "#contact"
           : secondaryActionHref;
 
-      const devSliderWords =
-        typingWords &&
-        typingWords.length === 5 &&
-        typingWords[0] === "Interfaces"
-          ? [
-              "Full-Stack Apps",
-              "Scalable Systems",
-              "SaaS Platforms",
-              "Digital Products",
-              "Modern Interfaces",
-            ]
-          : typingWords;
+      const devSliderWords = typingWords;
 
       const sliderCurrentWord = devSliderWords?.[currentWordIndex % devSliderWords.length] || "";
 
@@ -309,7 +503,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ref={ref}
           style={customStyle}
           className={cn(
-            "relative w-full overflow-hidden py-8 sm:py-12 lg:py-20 bg-white dark:bg-zinc-950 text-foreground",
+            "relative w-full overflow-hidden py-8 sm:py-12 lg:py-20 bg-background text-foreground",
             className,
           )}
           {...props}
@@ -353,7 +547,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight flex flex-col leading-tight">
                     <span className="text-foreground shrink-0">{sliderTitlePrefix}</span>
                     <span className="text-[var(--hero-accent-text)] font-black">
-                      Full-Stack Digital Products
+                      {sliderTitleAccent}
                     </span>
                   </h1>
 
