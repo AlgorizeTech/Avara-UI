@@ -43,10 +43,7 @@ export const usageNative = `import { HeroVideoPlayer } from "@/components/custom
 
 export default function NativeVideoHero() {
   return (
-     element with the browser's own controls — no player library at all."
-      videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
-      thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
-    />
+    
   );
 }`;
 
@@ -100,6 +97,8 @@ export default function NativeModalHero() {
     },
   ]}
 />
+
+### Install the video player
 
 ## Audio player
 
@@ -181,6 +180,8 @@ export default function NativeAudioHero() {
   ]}
 />
 
+### Install the audio player
+
 ## Plyr player
 
 [Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
@@ -261,6 +262,8 @@ export default function PlyrAudioHero() {
   ]}
 />
 
+### Install the Plyr player
+
 ## JW Player
 
 [JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `HeroJwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
@@ -289,18 +292,7 @@ export default function BrandedJwHero() {
   );
 }`;
 
-## Installation
-
-Each component installs independently — take only the players you actually use.
-
-{/* Not wrapped in : it crashes `next build` at page-data
-    collection. The banner it suppresses is turned off per block instead. */}
-
----
-
----
-
----
+### Install the JW player
 
 ### JW Player setup
 
@@ -318,7 +310,7 @@ If the library fails to load, the component renders a native `` with the poster 
     Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.
 
     Five Player Backends
-    YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one caption block and one glow treatment.
+    YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one hover overlay and one glow treatment.
 
     Deferred Media Weight
     In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.
@@ -363,7 +355,7 @@ If the library fails to load, the component renders a native `` with the poster 
         playbackMode
         "modal" | "inline" | "direct"
         "modal"
-        How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the copy moved below the frame.
+        How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the copy laid over the frame.
 
         source
         "youtube" | "video"
@@ -388,7 +380,7 @@ If the library fails to load, the component renders a native `` with the poster 
         badge
         string
         "Wilderness Exploration"
-        Pill badge with an animated icon — top-left over the poster, or above the title in direct mode.
+        Pill badge with an animated icon, top-left over the poster. Poster hero only — direct mode shows just the title and subtitle.
 
         title
         string
@@ -424,6 +416,11 @@ If the library fails to load, the component renders a native `` with the poster 
         boolean
         false / false / true
         Passed to the native &lt;video&gt;. Ignored for source="youtube".
+
+        showOverlay
+        boolean
+        true
+        The title/subtitle revealed over the foot of the frame on hover in direct mode. Turn it off for a bare player.
 
         enableGlow
         boolean
@@ -554,10 +551,15 @@ If the library fails to load, the component renders a native `` with the poster 
         false
         Passed to Plyr. autoPlay forces muted, since browsers block the alternative.
 
-        badge / title / subtitle
+        title / subtitle
         string
-        "Plyr Player" / …
-        Caption under the frame. showCaption={false} removes the whole block.
+        "View From A Blue Moon" / …
+        Revealed over the foot of the frame on hover, above the control bar. An audio player has no picture, so its copy sits above the bar in normal flow instead. showOverlay={false} removes it.
+
+        showOverlay
+        boolean
+        true
+        Whether the title/subtitle overlay renders at all.
 
         onReady
         () =&gt; void
@@ -625,6 +627,16 @@ If the library fails to load, the component renders a native `` with the poster 
         Record&lt;string, unknown&gt;
         undefined
         Merged last into jwplayer().setup(). The escape hatch for any JW option the props do not cover.
+
+        title / subtitle
+        string
+        "Enterprise-grade video delivery" / …
+        Revealed over the foot of the frame on hover, above JW's control bar.
+
+        showOverlay
+        boolean
+        true
+        Whether the title/subtitle overlay renders at all.
 
         onReady
         () =&gt; void

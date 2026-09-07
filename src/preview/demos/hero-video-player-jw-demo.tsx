@@ -2,33 +2,27 @@
 
 import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
 
+// Overlay copy is one line over the picture, so it stays short.
 const COPY = {
   default: {
-    badge: "JW Player — Default",
     title: "Enterprise-grade video delivery",
-    subtitle:
-      "JW's own control bar, untouched. Adaptive streaming, analytics and DRM behind it.",
+    subtitle: "JW's own control bar, untouched",
   },
   midnight: {
-    badge: "JW Player — Midnight",
-    title: "Skinned to your brand",
-    subtitle:
-      "The same player with a `skin` colour config: control bar, menus, time slider and tooltips.",
+    title: "Midnight skin",
+    subtitle: "Indigo controls on near-black",
   },
   neon: {
-    badge: "JW Player — Neon",
-    title: "Skinned to your brand",
-    subtitle: "A high-contrast cyan preset over the same JW control bar.",
+    title: "Neon skin",
+    subtitle: "High-contrast cyan over a dark bar",
   },
   sunset: {
-    badge: "JW Player — Sunset",
-    title: "Skinned to your brand",
-    subtitle: "A warm amber preset over the same JW control bar.",
+    title: "Sunset skin",
+    subtitle: "Warm amber over a stone bar",
   },
   minimal: {
-    badge: "JW Player — Minimal",
-    title: "Skinned to your brand",
-    subtitle: "A transparent control bar that sits directly on the frame.",
+    title: "Minimal skin",
+    subtitle: "A transparent bar, straight on the frame",
   },
 } as const;
 
@@ -36,14 +30,14 @@ export default function HeroVideoPlayerJwDemo({
   skin = "default",
   aspectRatio = "16/9",
   enableGlow = true,
-  showCaption = true,
+  showOverlay = true,
   autoStart = false,
   color = "primary",
 }: {
   skin?: "default" | "midnight" | "neon" | "sunset" | "minimal";
   aspectRatio?: "16/9" | "21/9" | "4/3" | "1/1";
   enableGlow?: boolean;
-  showCaption?: boolean;
+  showOverlay?: boolean;
   autoStart?: boolean;
   color?: string;
 }) {
@@ -59,7 +53,7 @@ export default function HeroVideoPlayerJwDemo({
           skin={skin}
           aspectRatio={aspectRatio}
           enableGlow={enableGlow}
-          showCaption={showCaption}
+          showOverlay={showOverlay}
           autoStart={autoStart}
           // JW's public docs library. Swap in your own player id before shipping.
           playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
