@@ -3126,8 +3126,8 @@ function CTASection() {
 					</h2>
 
 					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
-						Install fully responsive, accessible, and animated UI components
-						built for Next.js, React, and Tailwind CSS.
+						Designed for the shadcn/ui &amp; Tailwind CSS ecosystem. Install
+						fully responsive, accessible, and animated UI components.
 					</p>
 
 					{/* Interactive CLI Quick Copy Pill Box */}
