@@ -346,8 +346,6 @@ export default function PinnedLeftStack() {
 
 ### More examples
 
-## Horizontal stack
-
 export const railSteps = `import {
   Compass,
   Cpu,
@@ -410,12 +408,21 @@ export const usageHorizontal = `import { HorizontalScrollStack } from "@/compone
 ${railSteps}
 
 export default function ProcessRail() {
-  return (
-    
-  );
+  return ;
 }`;
 
 ### Installation
+
+export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
+
+${railSteps}
+
+export default function ProcessRailTrack() {
+  // Items slide continuously across the viewport without stacking
+  return ;
+}`;
+
+### More examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

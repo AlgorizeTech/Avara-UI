@@ -11,6 +11,8 @@ The `DialogBlock` component handles the complex DOM logic required for true acce
 
 Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
+`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
+
 export const usageDefault = `import {
   Dialog,
   DialogContent,
@@ -248,6 +250,221 @@ export default function ControlledDialog() {
   );
 }`;
 
+export const usageSizes = `import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+const SIZES = ["sm", "md", "lg", "xl", "full"] as const;
+
+export default function DialogSizes() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {SIZES.map((size) => (
+        <Dialog key={size}>
+          <DialogTrigger>
+            <button className="px-3 py-1.5 border text-sm font-mono rounded-md">
+              {size}
+            </button>
+          </DialogTrigger>
+
+          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport */}
+          <DialogContent size={size}>
+            <DialogHeader>
+              <DialogTitle>Size {size}</DialogTitle>
+              <DialogDescription>
+                Reach for the smallest size the content actually fits in.
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogClose className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
+              Close
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
+      ))}
+    </div>
+  );
+}`;
+
+export const usageConfirmDelete = `"use client";
+
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
+
+type Project = { id: string; name: string };
+
+export default function ProjectList({
+  projects,
+  onDelete,
+}: {
+  projects: Project[];
+  onDelete: (id: string) => Promise<void>;
+}) {
+  // The row awaiting confirmation — null means the dialog is closed.
+  const [pending, setPending] = useState<Project | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!pending) return;
+    setDeleting(true);
+    await onDelete(pending.id);
+    setDeleting(false);
+    setPending(null); // only now is the row really gone
+  };
+
+  return (
+    <>
+      {projects.map((project) => (
+        <button
+          key={project.id}
+          onClick={() => setPending(project)}
+          aria-label={"Delete " + project.name}
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      ))}
+
+      {/* One dialog for the whole list, not one per row. */}
+      <Dialog
+        open={pending !== null}
+        onOpenChange={(open) => {
+          // Escape and backdrop clicks route through here too — ignore them
+          // while the request is still in flight.
+          if (!open && !deleting) setPending(null);
+        }}
+      >
+        <DialogContent size="sm" hideCloseButton>
+          <DialogHeader>
+            <DialogTitle>Delete “{pending?.name}”?</DialogTitle>
+            <DialogDescription>
+              This permanently removes the project and everything inside it.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPending(null)}
+                disabled={deleting}
+                className="px-4 py-2 border text-sm font-medium rounded-md disabled:opacity-60"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleting}
+                className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md disabled:opacity-60"
+              >
+                {deleting ? "Deleting…" : "Delete project"}
+              </button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}`;
+
+export const usageNested = `"use client";
+
+import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+const CUSTOMERS = [
+  { id: "c1", name: "Northwind Traders" },
+  { id: "c2", name: "Acme Robotics" },
+];
+
+export default function NestedDialog() {
+  const [customer, setCustomer] = useState<(typeof CUSTOMERS)[number] | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+          New invoice
+        </button>
+      </DialogTrigger>
+
+      <DialogContent size="lg">
+        <DialogHeader>
+          <DialogTitle>New invoice</DialogTitle>
+          <DialogDescription>
+            Bill to {customer?.name ?? "nobody yet"}.
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* A second Dialog root, rendered inside the first one's content.
+            It portals on top of its parent, and Escape or a backdrop click
+            only reaches the dialog on top of the stack — so the invoice
+            underneath stays exactly where the user left it. */}
+        <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
+          <DialogTrigger>
+            <button className="px-3 py-2 border text-sm font-medium rounded-md">
+              Choose customer
+            </button>
+          </DialogTrigger>
+
+          <DialogContent size="sm">
+            <DialogHeader>
+              <DialogTitle className="text-base">Select a customer</DialogTitle>
+            </DialogHeader>
+
+            {CUSTOMERS.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => {
+                  setCustomer(option);
+                  setPickerOpen(false); // closes the picker only
+                }}
+                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-zinc-100"
+              >
+                {option.name}
+              </button>
+            ))}
+
+            <DialogFooter>
+              <DialogClose className="px-4 py-2 border text-sm font-medium rounded-md">
+                Back to invoice
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <DialogFooter>
+          <DialogClose className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
+            Create invoice
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
+
 <ExampleShowcase
   name="dialog"
   columns={1}
@@ -285,11 +502,36 @@ export default function ControlledDialog() {
         {
           prop: "className",
           effect:
-            "on `DialogContent` is where you size the modal — drop any form markup into the body.",
+            "on `DialogContent` fine-tunes the width when no `size` step fits — drop any form markup into the body.",
         },
       ],
       props: { layout: "form" },
       usage: usageForm,
+    },
+    {
+      title: "Size variations",
+      subheading: "Five widths, from a compact confirm up to a full-page surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "size",
+          effect:
+            "to `sm` | `md` | `lg` | `xl` | `full` — roughly 24rem, 32rem, 42rem and 56rem, then the whole viewport.",
+        },
+        {
+          prop: "size",
+          value: '"full"',
+          effect:
+            "also drops the rounding, border and height cap, so the panel really does reach every edge.",
+        },
+        {
+          prop: "className",
+          effect:
+            "still wins over the size it is paired with — reach for it only when no step on the scale fits.",
+        },
+      ],
+      props: { layout: "sizes" },
+      usage: usageSizes,
     },
     {
       title: "Destructive confirm",
@@ -303,6 +545,31 @@ export default function ControlledDialog() {
       ],
       props: { layout: "destructive" },
       usage: usageDestructive,
+    },
+    {
+      title: "Confirm before deleting",
+      subheading: "The working version of that shape — the row is only removed once the dialog resolves.",
+      propNotes: [
+        {
+          lead: "Drive it with",
+          prop: "open",
+          effect:
+            "set from the row awaiting confirmation, so one dialog serves the whole list instead of one per row.",
+        },
+        {
+          prop: "onOpenChange",
+          effect:
+            "is where you refuse the dismissal while the request is in flight — Escape and backdrop clicks arrive here too.",
+        },
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "suits a confirm — one question, two buttons, nothing to scan past.",
+        },
+      ],
+      props: { layout: "confirm-delete" },
+      usage: usageConfirmDelete,
     },
     {
       title: "Without close button",
@@ -334,6 +601,31 @@ export default function ControlledDialog() {
       ],
       props: { layout: "controlled" },
       usage: usageControlled,
+    },
+    {
+      title: "Dialog inside a dialog",
+      subheading: "A small dialog opens on top of the one already on screen — and Escape or a backdrop click only reaches the topmost of the two.",
+      propNotes: [
+        {
+          lead: "Nesting needs no new API —",
+          prop: "Dialog",
+          effect:
+            "is just rendered inside another `DialogContent`, and the inner one portals above its parent.",
+        },
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "on the inner dialog is what makes it read as a popup over the sheet rather than a second full window.",
+        },
+        {
+          prop: "onOpenChange",
+          effect:
+            "on the inner dialog is how the choice travels back out — write it into the outer form's state, then close only the inner one.",
+        },
+      ],
+      props: { layout: "nested" },
+      usage: usageNested,
     },
   ]}
 />
@@ -454,6 +746,26 @@ Discover the Dialog component's accessible modal features, including focus trapp
       </tr>
       <tr>
         <td>
+          <code>DialogContent</code>
+        </td>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>{`"sm" | "md" | "lg" | "xl" | "full"`}</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Panel width: <code>sm</code> ~24rem, <code>md</code> ~32rem,{" "}
+          <code>lg</code> ~42rem, <code>xl</code> ~56rem. <code>full</code>{" "}
+          fills the viewport and drops the rounding, border and{" "}
+          <code>max-height</code> cap the inset sizes use.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <strong>All Components</strong>
         </td>
         <td>
@@ -466,9 +778,10 @@ Discover the Dialog component's accessible modal features, including focus trapp
           <code>undefined</code>
         </td>
         <td>
-          Standard Tailwind CSS overrides for customized styling or spacing. For{" "}
-          <code>DialogContent</code>, you can adjust the <code>max-w-*</code>{" "}
-          class here to change the modal width.
+          Standard Tailwind CSS overrides for customized styling or spacing. On{" "}
+          <code>DialogContent</code> it is merged after <code>size</code>, so a{" "}
+          <code>max-w-*</code> class here wins — use it only when no step on the
+          size scale fits.
         </td>
       </tr>
     </tbody>

@@ -7,6 +7,55 @@ export interface MockupProps extends React.HTMLAttributes<HTMLDivElement> {
   videoSrc?: string;
 }
 
+export const Iphone17ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps>(
+  ({ children, src, videoSrc, className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "relative mx-auto w-[340px] h-[712px] rounded-[3.75rem] border-[3px] border-border bg-black flex-shrink-0",
+          "ring-[6px] ring-slate-200 dark:ring-slate-700 shadow-2xl",
+          className
+        )}
+        {...props}
+      >
+        {/* Left rail: Action button, then volume up / down. */}
+        <div className="absolute -left-[13px] top-[128px] w-[5px] h-[30px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[13px] top-[188px] w-[5px] h-[58px] bg-muted rounded-l-md"></div>
+        <div className="absolute -left-[13px] top-[260px] w-[5px] h-[58px] bg-muted rounded-l-md"></div>
+
+        {/* Right rail: side button, then the flush Camera Control. */}
+        <div className="absolute -right-[13px] top-[200px] w-[5px] h-[88px] bg-muted rounded-r-md"></div>
+        <div className="absolute -right-[12px] top-[320px] w-[4px] h-[36px] rounded-r-md bg-gradient-to-b from-slate-300 to-slate-400 dark:from-slate-500 dark:to-slate-700"></div>
+
+        {/* The 17 Pro Max runs a near-uniform bezel, so the screen border is
+            thinner here than on the 14 Pro Max below. */}
+        <div className="relative w-full h-full rounded-[3.55rem] border-[7px] border-black bg-black overflow-hidden z-10">
+          <div className="absolute top-[9px] inset-x-0 mx-auto w-[100px] h-[29px] bg-black rounded-full z-20 flex justify-between items-center px-3 shadow-inner">
+            <div className="w-[10px] h-[10px] bg-zinc-900 rounded-full shadow-[inset_0_0_2px_rgba(255,255,255,0.08)]"></div>
+            <div className="w-[13px] h-[13px] bg-zinc-900 rounded-full flex items-center justify-center relative shadow-[inset_0_0_2px_rgba(255,255,255,0.1)]">
+              <div className="w-[6px] h-[6px] bg-blue-900/40 rounded-full relative">
+                <div className="absolute inset-0 m-auto w-[2px] h-[2px] bg-blue-300/60 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative w-full h-full rounded-[3.1rem] overflow-hidden bg-background">
+            {videoSrc ? (
+              <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            ) : src ? (
+              <img src={src} alt="Mockup" className="w-full h-full object-cover" />
+            ) : (
+              children
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+Iphone17ProMaxMockup.displayName = "Iphone17ProMaxMockup";
+
 export const Iphone14ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps>(
   ({ children, src, videoSrc, className, ...props }, ref) => {
     return (

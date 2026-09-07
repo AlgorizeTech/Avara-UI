@@ -6,6 +6,10 @@ import {
 /**
  * Blocking script that applies the persisted theme before the first paint.
  *
+ * With no stored choice it falls back to "system", matching the provider's
+ * defaultTheme, so a first-time reader on a light-mode OS gets light and
+ * everyone else gets dark — resolved here rather than after hydration.
+ *
  * Without it the page paints with the defaults from globals.css, then
  * ThemeCustomizerProvider's mount effect injects the stored palette — the user
  * sees the default theme flash into their own colors on every reload.
@@ -21,9 +25,10 @@ import {
 export function ThemeInitScript() {
   const script = `(function(){try{
 var d=document.documentElement,s=d.style;
-var t=localStorage.getItem("theme")||"dark";
-var m=t==="system"?(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):t;
-if(m!=="dark"&&m!=="light")m="dark";
+var sys=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+var t=localStorage.getItem("theme")||"system";
+var m=t==="system"?sys:t;
+if(m!=="dark"&&m!=="light")m=sys;
 if(m==="dark")d.classList.add("dark");else d.classList.remove("dark");
 s.colorScheme=m;
 var raw=localStorage.getItem(${JSON.stringify(THEME_CUSTOMIZER_STORAGE_KEY)});

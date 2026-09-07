@@ -104,9 +104,9 @@ export const META: Record<string, ItemMeta> = {
   },
   progress: {
     description:
-      "A themeable progress bar with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+      "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
     categories: ["feedback"],
-    docs: "Named exports: Progress, ProgressField, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout.",
+    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage.",
   },
   toggle: {
     description:
@@ -366,10 +366,11 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
   },
   "vertical-tabs": {
+    title: "Tabs",
     description:
-      "A tab panel that stacks vertically or horizontally, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
+      "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` switches between vertical and horizontal without changing the API. Variants: default | glass | minimal | bordered.",
+    docs: "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
   },
   item: {
     description:
@@ -479,7 +480,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
     categories: ["commerce"],
-    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally.",
+    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
   },
   "api-playground": {
     description:
@@ -501,9 +502,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "mobile-mockup": {
     description:
-      "Device frames for iPhone, Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
+      "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
     categories: ["media", "marketing"],
-    docs: "Named exports: Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+    docs: "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
   },
   "image-compare": {
     description:
@@ -517,13 +518,14 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A composable modal dialog with focus trapping, overlay and controlled or uncontrolled open state. Use it as the general-purpose dialog primitive.",
     categories: ["overlays"],
-    docs: "Named exports: Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, useDialog. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it. `asChild` on the trigger merges props into your own element instead of rendering a button. For preset confirmation and fullscreen layouts, use `modal`.",
+    docs: "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog, plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`.",
   },
   modal: {
     description:
-      "A themed modal with standard, form, fullscreen and confirmation presets and GSAP transitions. Use it when you want a ready-made layout rather than composing a dialog.",
+      "A composable overlay handling the portal, backdrop, scroll lock, Escape and backdrop dismissal, with no preset layout of its own. Use it when you hold the open state and want the panel to render your own markup.",
     categories: ["overlays"],
-    docs: "Named exports: ModalBlock, getThemeStyles. `type` is standard | form | fullscreen | confirmation; variants are default | glass | minimal | bordered. Depends on `select` for the form preset. For an unopinionated primitive, use `dialog`.",
+    docs: "Named exports: Modal, ModalHeader, ModalBody, ModalFooter, plus the ModalProps and ModalSectionProps types. Modal is controlled — pass `isOpen` and `onClose`; there is no trigger and no `type` or `variant`. Size and skin the panel with `contentClassName` and the backdrop with `overlayClassName`; `hideCloseButton` drops the built-in X and `primaryCloseButton` tints it. Pass `ariaLabel` whenever the heading is not inside ModalHeader. Every slot is optional. The documented form example uses `select`. For a trigger-driven dialog with uncontrolled open state, use `dialog`.",
+    usageDependencies: ["select"],
   },
   drawer: {
     description:

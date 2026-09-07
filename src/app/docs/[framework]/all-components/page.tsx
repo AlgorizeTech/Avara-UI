@@ -100,7 +100,7 @@ const COMPONENT_META: Record<
 	sonner: { countText: "Toast Stream", illustrationType: "sonner" },
 	stepper: { countText: "Wizard Flow", illustrationType: "stepper" },
 	table: { countText: "Data Layout", illustrationType: "table" },
-	"vertical-tabs": { countText: "Vertical & Horizontal", illustrationType: "tabs", titleOverride: "Tabs" },
+	"vertical-tabs": { countText: "Horizontal & Vertical", illustrationType: "tabs", titleOverride: "Tabs" },
 	"theme-switcher": { countText: "Light/Dark Toggle", illustrationType: "theme-switcher" },
 	timeline: { countText: "History Feed", illustrationType: "timeline" },
 	toast: { countText: "Popup Alert", illustrationType: "toast" },

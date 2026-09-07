@@ -153,6 +153,331 @@ export default function StatGrid() {
   );
 }`;
 
+export const usageBlogShowcase = `import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+const FEED = [
+  {
+    title: "Naming things without a thesaurus",
+    topic: "Craft",
+    read: "5 min",
+    thumb: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=400&auto=format&fit=crop",
+    thumbAlt: "Developer writing code at a desk",
+  },
+  {
+    title: "What a design token is not",
+    topic: "Design systems",
+    read: "6 min",
+    thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop",
+    thumbAlt: "Workspace with a laptop showing a web layout",
+  },
+];
+
+export default function BlogShowcase() {
+  return (
+    <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+      {/* Featured story */}
+      <Card variant="bordered" interactive className="group overflow-hidden rounded-lg">
+        {/* The cover sits outside CardHeader so it can bleed to the edges */}
+        <div className="relative aspect-[16/9] overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
+            alt="Analytics dashboard charts on a laptop screen"
+            loading="lazy"
+            className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.04]"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/65 to-transparent" />
+          <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
+            Performance
+          </span>
+        </div>
+
+        <CardHeader className="gap-2.5 px-6 pb-4 pt-5">
+          <CardTitle className="font-serif text-[23px] font-normal leading-snug tracking-normal">
+            The quiet cost of a re-render
+          </CardTitle>
+          <CardDescription className="leading-relaxed">
+            A dashboard that only felt slow on Mondays, and the six components that explained it.
+          </CardDescription>
+        </CardHeader>
+
+        <CardFooter className="items-center gap-3 border-t border-border/70 px-6 pb-6 pt-4">
+          <img
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop"
+            alt=""
+            className="size-8 shrink-0 rounded-full object-cover"
+          />
+          <div className="min-w-0 flex-1 leading-tight">
+            <p className="truncate text-sm font-medium">Priya Raman</p>
+            <p className="text-xs text-muted-foreground">4 March</p>
+          </div>
+          <span className="text-xs text-muted-foreground">8 min</span>
+        </CardFooter>
+      </Card>
+
+      {/* Sidebar feed — one Card, rows split by divide-y */}
+      <Card variant="bordered" className="divide-y divide-border overflow-hidden rounded-lg">
+        <p className="px-5 py-3.5 text-sm font-medium">Latest</p>
+        {FEED.map((story) => (
+          <button
+            key={story.title}
+            type="button"
+            className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-muted/60"
+          >
+            <img
+              src={story.thumb}
+              alt={story.thumbAlt}
+              loading="lazy"
+              className="size-[72px] shrink-0 rounded-md object-cover"
+            />
+            <span className="min-w-0 flex-1">
+              <span className="block font-serif text-[15px] leading-snug">{story.title}</span>
+              <span className="mt-1.5 block text-xs text-muted-foreground">{story.topic}</span>
+            </span>
+            <span className="shrink-0 text-xs text-muted-foreground">{story.read}</span>
+          </button>
+        ))}
+      </Card>
+    </div>
+  );
+}`;
+
+export const usageBlogGrid = `import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+const POSTS = [
+  {
+    topic: "Layout",
+    title: "Grids that survive translation",
+    dek: "German compound nouns broke our pricing table in four places. What we changed.",
+    cover: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "Maya Lin",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop",
+    read: "7 min",
+  },
+  {
+    topic: "Accessibility",
+    title: "The accessibility tree is not a mirror",
+    dek: "Two components that looked identical read as completely different things aloud.",
+    cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Glowing circuit board traces",
+    author: "Daniel Kim",
+    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop",
+    read: "5 min",
+  },
+  {
+    topic: "Machine learning",
+    title: "Ship the model, keep the seams",
+    dek: "Every inference call our app makes can fail. The UI has to say so plainly.",
+    cover: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Abstract render of intersecting shapes",
+    author: "Ethan Wright",
+    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=200&auto=format&fit=crop",
+    read: "9 min",
+  },
+];
+
+export default function BlogCardGrid() {
+  return (
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {POSTS.map((post) => (
+        <Card
+          key={post.title}
+          variant="bordered"
+          interactive
+          className="group overflow-hidden rounded-xl"
+        >
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <img
+              src={post.cover}
+              alt={post.coverAlt}
+              loading="lazy"
+              className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+            {/* The topic rides on the image, so the card body stays type-only */}
+            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
+              {post.topic}
+            </span>
+          </div>
+
+          <CardHeader className="gap-2 px-5 pb-3 pt-5">
+            <CardTitle className="font-serif text-[17px] font-normal leading-snug tracking-normal">
+              {post.title}
+            </CardTitle>
+            <CardDescription className="line-clamp-2 leading-relaxed">
+              {post.dek}
+            </CardDescription>
+          </CardHeader>
+
+          <CardFooter className="items-center gap-2.5 px-5 pb-5 pt-0">
+            <img src={post.avatar} alt="" className="size-7 shrink-0 rounded-full object-cover" />
+            <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+              {post.author}
+            </span>
+            <span className="shrink-0 text-xs text-muted-foreground">{post.read}</span>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  );
+}`;
+
+export const usageTicket = `import { Card } from "@/components/custom/blocks/CardBlock";
+import { Plane } from "lucide-react";
+
+export default function BoardingPassCard() {
+  return (
+    // sm:flex-row turns the column into two panels the perforation runs between
+    <Card variant="bordered" className="w-full max-w-3xl rounded-2xl sm:flex-row">
+      <div className="flex-1 p-6 sm:p-7">
+        <p className="text-sm font-semibold">Meridian Air</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">Flight MR 214, Saturday 12 April</p>
+
+        <div className="mt-7 flex items-start gap-4">
+          <div>
+            <p className="font-mono text-3xl font-semibold tracking-tight">DAC</p>
+            <p className="mt-2 font-mono text-sm tabular-nums">09:40</p>
+          </div>
+          <div className="flex-1 pt-3">
+            <div className="flex items-center">
+              <span className="flex-1 border-t border-dashed border-teal-500/50" />
+              <span className="mx-2 grid size-7 place-items-center rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-600 dark:text-teal-400">
+                <Plane className="size-3.5 rotate-90" />
+              </span>
+              <span className="flex-1 border-t border-dashed border-teal-500/50" />
+            </div>
+            <p className="mt-2 text-center text-[11px] text-muted-foreground">5 h 25 m, nonstop</p>
+          </div>
+          <div className="text-right">
+            <p className="font-mono text-3xl font-semibold tracking-tight">SIN</p>
+            <p className="mt-2 font-mono text-sm tabular-nums">15:05</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tear-off stub: dashed edge plus two holes filled with the page colour */}
+      <div className="relative border-t border-dashed border-border p-6 sm:w-48 sm:border-l sm:border-t-0">
+        <span className="absolute -left-2.5 -top-2.5 size-5 rounded-full border border-border bg-background" />
+        <span className="absolute -bottom-2.5 -left-2.5 hidden size-5 rounded-full border border-border bg-background sm:block" />
+        <span className="absolute -right-2.5 -top-2.5 size-5 rounded-full border border-border bg-background sm:hidden" />
+
+        <p className="text-xs text-muted-foreground">Seat</p>
+        <p className="font-mono text-4xl font-semibold tracking-tight">14A</p>
+        <div className="mt-5 h-14 w-full bg-[repeating-linear-gradient(90deg,currentColor_0_2px,transparent_2px_4px,currentColor_4px_5px,transparent_5px_9px)] text-foreground/75" />
+        <p className="mt-2 font-mono text-[11px] tracking-widest text-muted-foreground">MR214 12APR</p>
+      </div>
+    </Card>
+  );
+}`;
+
+export const usageMedia = `"use client";
+
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/custom/blocks/CardBlock";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+
+const WAVEFORM = [22, 34, 48, 40, 62, 76, 58, 44, 68, 88, 72, 54, 38, 46, 60, 82, 96, 78];
+const TRACK_LENGTH = 214;
+
+const formatTime = (s) => \`\${Math.floor(s / 60)}:\${String(s % 60).padStart(2, "0")}\`;
+
+export default function NowPlayingCard() {
+  const [playing, setPlaying] = useState(false);
+  const [elapsed, setElapsed] = useState(72);
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(
+      () => setElapsed((v) => (v >= TRACK_LENGTH ? 0 : v + 1)),
+      1000,
+    );
+    return () => clearInterval(id);
+  }, [playing]);
+
+  const progress = elapsed / TRACK_LENGTH;
+
+  return (
+    <Card variant="bordered" className="w-full max-w-2xl overflow-hidden rounded-2xl sm:flex-row">
+      {/* Art panel — the record turns only while the track is playing */}
+      <div className="grid aspect-square w-full shrink-0 place-items-center bg-indigo-950 sm:aspect-auto sm:size-48">
+        <div
+          className={\`grid size-32 place-items-center rounded-full bg-[repeating-radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.10)_0_1px,transparent_1px_5px)] ring-1 ring-white/10 sm:size-36 \${
+            playing ? "[animation-duration:6s] motion-safe:animate-spin" : ""
+          }\`}
+        >
+          <span className="grid size-12 place-items-center rounded-full bg-amber-400">
+            <span className="size-1.5 rounded-full bg-indigo-950" />
+          </span>
+        </div>
+      </div>
+
+      <CardContent className="flex flex-1 flex-col justify-center gap-4 p-6">
+        <div>
+          <h3 className="text-lg font-semibold leading-tight">Ceiling Fan Blues</h3>
+          <p className="text-sm text-muted-foreground">Lila Moreau Trio</p>
+        </div>
+
+        {/* A real range input sits invisibly over the bars, so seeking works
+            with a pointer and a keyboard both */}
+        <div className="relative rounded-md focus-within:ring-2 focus-within:ring-indigo-500">
+          <div aria-hidden className="pointer-events-none flex h-10 items-end gap-[3px]">
+            {WAVEFORM.map((height, i) => (
+              <span
+                key={i}
+                style={{ height: \`\${height}%\` }}
+                className={\`min-w-0 flex-1 rounded-full \${
+                  i / WAVEFORM.length <= progress ? "bg-indigo-500" : "bg-muted-foreground/25"
+                }\`}
+              />
+            ))}
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={TRACK_LENGTH}
+            value={elapsed}
+            aria-label="Seek"
+            onChange={(e) => setElapsed(Number(e.target.value))}
+            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          />
+        </div>
+
+        <div className="flex justify-between font-mono text-xs tabular-nums text-muted-foreground">
+          <span>{formatTime(elapsed)}</span>
+          <span>{formatTime(TRACK_LENGTH)}</span>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <button aria-label="Previous track" className="grid size-9 place-items-center rounded-full text-muted-foreground hover:bg-muted">
+            <SkipBack className="size-4" />
+          </button>
+          <button
+            aria-label={playing ? "Pause" : "Play"}
+            onClick={() => setPlaying((v) => !v)}
+            className="grid size-11 place-items-center rounded-full bg-indigo-600 text-white hover:bg-indigo-500"
+          >
+            {playing ? <Pause className="size-5" /> : <Play className="size-5 translate-x-px" />}
+          </button>
+          <button aria-label="Next track" className="grid size-9 place-items-center rounded-full text-muted-foreground hover:bg-muted">
+            <SkipForward className="size-4" />
+          </button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}`;
+
 <ExampleShowcase
   name="card"
   columns={1}
@@ -223,6 +548,78 @@ export default function StatGrid() {
       ],
       props: { variant: "bordered", layout: "stats" },
       usage: usageStats,
+    },
+    {
+      title: "Blog showcase",
+      subheading: "One featured story beside the rest of the feed \u2014 both built from the same three primitives.",
+      propNotes: [
+        {
+          lead: "Keep the cover outside",
+          prop: "CardHeader",
+          effect:
+            "so the image bleeds to the card's edges; `overflow-hidden` on the `Card` is what clips it to the corner radius.",
+        },
+        {
+          prop: "layout",
+          value: '"blog-showcase"',
+          effect:
+            "pairs the featured card with a sidebar whose rows are split by `divide-y`, so a feed needs no second component.",
+        },
+      ],
+      props: { variant: "bordered", layout: "blog-showcase", interactive: true },
+      usage: usageBlogShowcase,
+      minHeight: 620,
+    },
+    {
+      title: "Blog cards",
+      subheading: "Three posts across. The topic rides on the image, so the card body stays type-only.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "interactive",
+          effect:
+            "to make the whole card clickable \u2014 the cover then scales gently on hover, and holds still under `prefers-reduced-motion`.",
+        },
+        {
+          prop: "layout",
+          value: '"blog-grid"',
+          effect: "drops to two columns at `sm` and one on a phone.",
+        },
+      ],
+      props: { variant: "bordered", layout: "blog-grid", interactive: true },
+      usage: usageBlogGrid,
+      minHeight: 560,
+    },
+    {
+      title: "Boarding pass",
+      subheading: "One card, two panels, a dashed perforation between them \u2014 the holes are circles filled with the page colour.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "className",
+          value: '"sm:flex-row"',
+          effect:
+            "to turn the card's column into side-by-side panels; below `sm` the perforation becomes a horizontal tear.",
+        },
+      ],
+      props: { variant: "bordered", layout: "ticket" },
+      usage: usageTicket,
+      minHeight: 460,
+    },
+    {
+      title: "Now playing",
+      subheading: "A horizontal card holding live state: the record turns while the track runs, and the waveform doubles as a scrubber.",
+      propNotes: [
+        {
+          prop: "layout",
+          value: '"media"',
+          effect:
+            "puts a full-bleed art panel beside `CardContent`. An invisible `input[type=range]` covers the bars, so seeking works by pointer and keyboard.",
+        },
+      ],
+      props: { variant: "bordered", layout: "media" },
+      usage: usageMedia,
+      minHeight: 460,
     },
   ]}
 />

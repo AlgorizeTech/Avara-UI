@@ -2,7 +2,7 @@
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Leave the first two previews alone for a moment and the bag trigger tilts and rings to invite the click; press it and it squashes, springs back and pushes a ripple out as the panel arrives. Every one of those tweens is skipped under `prefers-reduced-motion: reduce`.
 
 export const cartItems = `const items: CartItem[] = [
   {

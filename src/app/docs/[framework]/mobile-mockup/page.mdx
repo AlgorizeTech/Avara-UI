@@ -19,26 +19,56 @@ export const metadata = {
 
 A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.
 
-The suite ships with six iconic models: the retro iPhone 5, the flat-edged iPhone 12 Pro Max, the ultra-modern iPhone 14 Pro Max, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10. Whether you want to evoke nostalgia with a classic home button or highlight the future with a dynamic island and edge-to-edge glass, these mockups seamlessly wrap your React content to create the perfect showcase.
+The suite ships with seven iconic models, led by the iPhone 17 Pro Max — a near-uniform bezel, a compact Dynamic Island and the flush Camera Control on the right rail. Behind it sit the iPhone 14 Pro Max, the flat-edged iPhone 12 Pro Max, the retro iPhone 5, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10 — so you can evoke nostalgia with a classic home button or show off the newest glass, from the same API.
 
-Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom.
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The screens below run this site's own hero section as live children rather than a screenshot: the headline word flips, and the install command copies.
 
-export const usageIphone5 = `import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
+export const usageIphone17 = `import { Iphone17ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+/**
+ * Your marketing hero, sized for a phone screen.
+ *
+ * Give an embedded screen a fixed type scale rather than Tailwind's responsive
+ * prefixes: those key off the viewport, so a \`sm:\` class still fires inside a
+ * 300px-wide frame on a desktop and blows the layout out.
+ */
+function HeroScreen() {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-2.5 px-4 text-center bg-background">
+      <span className="px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-bold text-primary">
+        Next-Gen React Components
+      </span>
+      <h1 className="text-[19px] font-black tracking-tight leading-tight text-foreground">
+        Build <span className="text-primary">Interactive</span> Interfaces
+      </h1>
+      <p className="text-[10px] leading-snug text-muted-foreground">
+        A meticulous library of React components and interactive blocks.
+      </p>
+      <button className="w-full max-w-[230px] h-9 rounded-xl bg-primary text-primary-foreground text-[10px] font-bold">
+        Browse Components
+      </button>
+    </div>
+  );
+}
 
 export default function AppShowcase() {
   return (
-    <Iphone5Mockup>
-      <img
-        src="/assets/mockups/dashboard_light.png"
-        alt="Light Dashboard"
-        className="dark:hidden w-full h-full object-cover"
-      />
-      <img
-        src="/assets/mockups/dashboard_dark.png"
-        alt="Dark Dashboard"
-        className="hidden dark:block w-full h-full object-cover"
-      />
-    </Iphone5Mockup>
+    <Iphone17ProMaxMockup>
+      <HeroScreen />
+    </Iphone17ProMaxMockup>
+  );
+}`;
+
+export const usageIphone14 = `import { Iphone14ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+// Autoplaying video works just as well as a live React tree.
+export default function Iphone14Showcase() {
+  return (
+    <Iphone14ProMaxMockup>
+      <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+        <source src="/demo.mp4" type="video/mp4" />
+      </video>
+    </Iphone14ProMaxMockup>
   );
 }`;
 
@@ -52,16 +82,23 @@ export default function Iphone12Showcase() {
   );
 }`;
 
-export const usageIphone14 = `import { Iphone14ProMaxMockup } from "@/components/custom/blocks/MobileMockupBlock";
+export const usageIphone5 = `import { Iphone5Mockup } from "@/components/custom/blocks/MobileMockupBlock";
 
-// Autoplaying video works just as well as a still.
-export default function Iphone14Showcase() {
+// The shortest screen in the set — keep embedded hero copy to a couple of lines.
+export default function Iphone5Showcase() {
   return (
-    <Iphone14ProMaxMockup>
-      <video autoPlay muted loop playsInline className="w-full h-full object-cover">
-        <source src="/demo.mp4" type="video/mp4" />
-      </video>
-    </Iphone14ProMaxMockup>
+    <Iphone5Mockup>
+      <img
+        src="/assets/mockups/dashboard_light.png"
+        alt="Light Dashboard"
+        className="dark:hidden w-full h-full object-cover"
+      />
+      <img
+        src="/assets/mockups/dashboard_dark.png"
+        alt="Dark Dashboard"
+        className="hidden dark:block w-full h-full object-cover"
+      />
+    </Iphone5Mockup>
   );
 }`;
 
@@ -120,17 +157,19 @@ export default function Pixel10Showcase() {
   columns={1}
   examples={[
     {
-      title: "iPhone 5",
-      subheading: "The retro frame — thick bezels, a home button and a 16:9 screen.",
+      title: "iPhone 17 Pro Max",
+      subheading:
+        "The flagship frame — near-uniform bezel, a compact Dynamic Island and the flush Camera Control. Running this site's hero section as live children.",
       propNotes: [
         {
-          prop: "src",
+          lead: "Pass",
+          prop: "children",
           effect:
-            "fills the screen with an image; `videoSrc` auto-plays a muted, looping video instead.",
+            "to embed a real, interactive screen; `src` and `videoSrc` swap in a screenshot or a looping video instead.",
         },
       ],
-      props: { activeDevice: "iphone5" },
-      usage: usageIphone5,
+      props: { activeDevice: "iphone17" },
+      usage: usageIphone17,
       code: extractCode("src/components/custom/blocks/MobileMockupBlock.tsx"),
     },
   ]}
@@ -147,6 +186,19 @@ export default function Pixel10Showcase() {
   columns={1}
   examples={[
     {
+      title: "iPhone 14 Pro Max",
+      subheading: "A wider Dynamic Island and a chunkier bezel than the 17.",
+      propNotes: [
+        {
+          prop: "videoSrc",
+          effect:
+            "suits this frame well — the bezel is slim enough not to distract from motion.",
+        },
+      ],
+      props: { activeDevice: "iphone14" },
+      usage: usageIphone14,
+    },
+    {
       title: "iPhone 12 Pro Max",
       subheading: "Flat edges and a notch, at a 19.5:9 aspect ratio.",
       propNotes: [
@@ -160,17 +212,17 @@ export default function Pixel10Showcase() {
       usage: usageIphone12,
     },
     {
-      title: "iPhone 14 Pro Max",
-      subheading: "Dynamic island and edge-to-edge glass.",
+      title: "iPhone 5",
+      subheading: "The retro frame — thick bezels, a home button and a 16:9 screen.",
       propNotes: [
         {
-          prop: "videoSrc",
+          prop: "src",
           effect:
-            "suits this frame best — it has the least bezel to distract from motion.",
+            "fills the screen with an image; `videoSrc` auto-plays a muted, looping video instead.",
         },
       ],
-      props: { activeDevice: "iphone14" },
-      usage: usageIphone14,
+      props: { activeDevice: "iphone5" },
+      usage: usageIphone5,
     },
     {
       title: "Samsung S24 Ultra",
@@ -219,8 +271,8 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">6 Unique Devices</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Choose from a variety of iconic models including classic iPhones, modern Pro Max series, Samsung Ultra, and Google Pixel.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">7 Unique Devices</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Choose from a variety of iconic models, from the latest iPhone 17 Pro Max through the classic iPhones to Samsung Ultra and Google Pixel.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pure CSS/SVG</h3>
@@ -241,7 +293,11 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
     <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Content Aspect Ratios</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Sizing Live Screens</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
   </div>
   <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
     <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Handling Overflow</h4>

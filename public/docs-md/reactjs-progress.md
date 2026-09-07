@@ -2,7 +2,7 @@
 
 A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards.
 
-This block is split into two composable pieces: the core `` bar for the visual fill, and the optional `` wrapper which automatically handles the layout for labels and percentage text.
+This block is split into composable pieces: the core `` bar for the visual fill, the optional `` wrapper which handles the layout for labels and percentage text, `` with `` children for several values sharing one track, and `` for the same value drawn as a ring.
 
 Each example shows a live preview with the exact code to copy.
 
@@ -30,6 +30,99 @@ export default function WizardProgress() {
 
   return (
     // showValue={false} hides the percentage when the label already says it.
+
+  );
+}`;
+
+export const usageMulti = `import {
+  MultiProgress,
+  ProgressField,
+  ProgressSegment,
+} from "@/components/custom/blocks/ProgressBlock";
+
+const phases = [
+  { label: "Merged", value: 30 },
+  { label: "In review", value: 18 },
+  { label: "Drafted", value: 11 },
+];
+
+export default function ReleaseProgress() {
+  const shipped = phases.reduce((sum, phase) => sum + phase.value, 0);
+
+  return (
+     \`\${value} / \${max} tasks\`}
+    >
+      {/* gap pulls the segments apart so each level reads on its own. */}
+      
+        {phases.map((phase) => (
+          
+        ))}
+
+  );
+}`;
+
+export const usageMultiColors = `import {
+  MultiProgress,
+  ProgressField,
+  ProgressSegment,
+  getThemeStyles,
+} from "@/components/custom/blocks/ProgressBlock";
+
+const segments = [
+  { label: "Documents", value: 18, color: "indigo" },
+  { label: "Photos", value: 34, color: "emerald" },
+  { label: "Videos", value: 21, color: "rose" },
+  { label: "System", value: 9, color: "#f59e0b" },
+];
+
+// The legend reuses the block's theme table, so a dot and its segment
+// can never drift apart.
+function LegendDot({ color }) {
+  const { theme, style } = getThemeStyles(color);
+  return (
+    
+  );
+}
+
+export default function StorageBreakdown() {
+  const used = segments.reduce((sum, segment) => sum + segment.value, 0);
+
+  return (
+     \`\${value} GB / \${max} GB\`}
+    >
+      
+        {segments.map((segment) => (
+          
+        ))}
+
+        {segments.map((segment) => (
+
+            {segment.label}
+          
+        ))}
+
+  );
+}`;
+
+export const usageCircular = `import { CircularProgress } from "@/components/custom/blocks/ProgressBlock";
+
+export default function UploadRing() {
+  return (
+    
+  );
+}`;
+
+export const usageCircularCustom = `import { CircularProgress } from "@/components/custom/blocks/ProgressBlock";
+
+export default function CreditsRing() {
+  const used = 68;
+
+  return (
+    // Children replace the centred percentage entirely.
+    
+      {used}
+      
+        of 100 credits
 
   );
 }`;
@@ -175,6 +268,136 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           undefined
         
         A custom formatter function. If not provided, it defaults to calculating and displaying [percentage]%.
+
+          MultiProgress
+
+          max
+
+          number
+
+          100
+        
+        The shared denominator every child segment measures its value against.
+
+          MultiProgress
+
+          gap
+
+          number
+
+          0
+        
+        Pixels between segments. Any value above 0 also rounds each segment's ends; 0 fuses them into one continuous bar.
+
+          MultiProgress
+
+          variant
+
+          "default" | "glass" | "glow" | "minimal"
+
+          "default"
+        
+        Styles the shared track behind the segments. Segment fills are colored individually.
+
+          MultiProgress
+
+          barSize
+
+          "sm" | "md" | "lg"
+
+          "md"
+        
+        Height of the shared track. Thicker tracks make multi-segment breakdowns easier to read.
+
+          ProgressSegment
+
+          value
+
+          number
+
+          0
+        
+        This slice's portion of the parent's max. Must be rendered inside a MultiProgress.
+
+          ProgressSegment
+
+          color
+
+          "indigo" | "rose" | "emerald" | "zinc" | string
+
+          "primary"
+        
+        Color for this slice alone, so one track can carry several themes. Supports custom hex codes.
+
+          ProgressSegment
+
+          label
+
+          string
+
+          undefined
+        
+        Accessible name for the slice, also used as its native hover tooltip.
+
+          CircularProgress
+
+          value
+
+          number
+
+          0
+        
+        The current progress value, drawn as a filled arc starting at twelve o'clock.
+
+          CircularProgress
+
+          circleSize
+
+          number
+
+          120
+        
+        Outer diameter of the ring in pixels; the centred readout scales with it. The glow variant's halo fades out past this edge, the way a box-shadow does.
+
+          CircularProgress
+
+          barSize
+
+          "sm" | "md" | "lg"
+
+          "md"
+        
+        Ring thickness, on the same scale as the bar — 5, 9 and 14 pixels of stroke.
+
+          CircularProgress
+
+          showValue
+
+          boolean
+
+          true
+        
+        Draws the percentage in the middle of the ring. Ignored when children are supplied.
+
+          CircularProgress
+
+          children
+
+          ReactNode
+
+          undefined
+        
+        Replaces the centred readout entirely — use it for a count, an icon, or a caption.
+
+          CircularProgress
+
+          trackClassName
+
+          string
+
+          undefined
+        
+        Optional classes for the unfilled ring underneath the arc.
 
 ---
 
