@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
 import type PlyrInstance from "plyr";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -23,7 +22,6 @@ export interface HeroPlyrPlayerProps
   /** MIME type for the HTML5 source, e.g. `video/mp4`. */
   srcType?: string;
   posterUrl?: string;
-  badge?: string;
   title?: string;
   subtitle?: string;
   aspectRatio?: "16/9" | "21/9" | "4/3" | "1/1";
@@ -35,8 +33,12 @@ export interface HeroPlyrPlayerProps
   /** Plyr control names in bar order. Omit for Plyr's own default set. */
   controls?: string[];
   enableGlow?: boolean;
-  /** Caption block under the frame. Turn off for a bare player. */
-  showCaption?: boolean;
+  /**
+   * The title/subtitle laid over the frame: at the foot until the video is
+   * first played, then a hover-only bar at the top. Turn it off for a bare
+   * player with no copy on it.
+   */
+  showOverlay?: boolean;
   autoPlay?: boolean;
   muted?: boolean;
   loop?: boolean;
@@ -85,6 +87,64 @@ function embedId(src: string, provider: PlyrProvider): string {
   }
 }
 
+/**
+ * Title and subtitle laid over the frame, following the convention YouTube set.
+ *
+ * Before anything has played the copy sits at the FOOT of the frame and stays
+ * there: nothing is happening yet, so it is free to introduce the video, and a
+ * viewer should not have to hover to find out what they are about to watch.
+ * Its bottom padding keeps it clear of Plyr's control bar, so the gradient
+ * reaches the bottom edge but the text stops above the scrubber.
+ *
+ * Once playback has started that is no longer true — the picture is the point,
+ * and a permanent caption is in the way. So the copy moves to the TOP of the
+ * frame and only appears on hover, where it overlaps nothing that matters.
+ *
+ * `pointer-events-none` keeps every click going through to Plyr in both
+ * positions.
+ */
+function MediaOverlay({
+  title,
+  subtitle,
+  hasPlayed,
+}: {
+  title?: string;
+  subtitle?: string;
+  /** Whether the viewer has started watching. Drives the whole treatment. */
+  hasPlayed?: boolean;
+}) {
+  if (!title && !subtitle) return null;
+
+  const copy = (
+    <>
+      {title && (
+        <h3 className="line-clamp-1 text-base font-bold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
+          {title}
+        </h3>
+      )}
+      {subtitle && (
+        <p className="mt-0.5 line-clamp-1 text-[11px] text-zinc-300 sm:text-xs md:text-sm">
+          {subtitle}
+        </p>
+      )}
+    </>
+  );
+
+  if (hasPlayed) {
+    return (
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/85 via-black/40 to-transparent px-4 pt-4 pb-16 opacity-0 transition-opacity duration-300 group-hover/frame:opacity-100 group-focus-within/frame:opacity-100 sm:px-6 sm:pt-5 sm:pb-20">
+        {copy}
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent px-4 pt-16 pb-14 transition-opacity duration-300 sm:px-6 sm:pt-24 sm:pb-16">
+      {copy}
+    </div>
+  );
+}
+
 export const HeroPlyrPlayer = React.forwardRef<
   HTMLDivElement,
   HeroPlyrPlayerProps
@@ -96,14 +156,13 @@ export const HeroPlyrPlayer = React.forwardRef<
       mediaType = "video",
       srcType = "video/mp4",
       posterUrl = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg",
-      badge = "Plyr Player",
       title = "View From A Blue Moon",
       subtitle = "An accessible, customizable HTML5, YouTube and Vimeo player.",
       aspectRatio = "16/9",
       accentColor,
       controls,
       enableGlow = true,
-      showCaption = true,
+      showOverlay = true,
       autoPlay = false,
       muted = false,
       loop = false,
@@ -117,6 +176,10 @@ export const HeroPlyrPlayer = React.forwardRef<
     const mediaRef = useRef<HTMLElement | null>(null);
     const playerRef = useRef<PlyrInstance | null>(null);
     const [isReady, setIsReady] = useState(false);
+    // Latches on the first play and never goes back: the title treatment keys
+    // off "has this viewer started watching", not the current paused state, so
+    // pausing must not bring the bottom caption back over the picture.
+    const [hasPlayed, setHasPlayed] = useState(false);
     const onReadyRef = useRef(onReady);
     onReadyRef.current = onReady;
 
@@ -135,6 +198,7 @@ export const HeroPlyrPlayer = React.forwardRef<
 
       let cancelled = false;
       let player: PlyrInstance | null = null;
+      setHasPlayed(false);
 
       // Plyr touches `document` at construction, so it is imported here rather
       // than at module scope: the component then renders on the server and
@@ -150,6 +214,7 @@ export const HeroPlyrPlayer = React.forwardRef<
           ...(barControls ? { controls: barControls } : {}),
           ...(iconUrl ? { iconUrl } : {}),
         });
+        player.on("play", () => setHasPlayed(true));
         playerRef.current = player;
         setIsReady(true);
         onReadyRef.current?.();
@@ -222,10 +287,27 @@ export const HeroPlyrPlayer = React.forwardRef<
         <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">
           <div
             className={cn(
-              "relative w-full bg-black",
+              "group/frame relative w-full bg-black",
               isAudio ? "p-4 sm:p-6" : aspectRatios[aspectRatio],
             )}
           >
+            {/* An audio player has no picture to lay copy over, so its title
+                sits above the control bar in normal flow instead. */}
+            {isAudio && showOverlay && (title || subtitle) && (
+              <div className="mb-3">
+                {title && (
+                  <h3 className="line-clamp-1 text-base font-bold tracking-tight text-white sm:text-xl">
+                    {title}
+                  </h3>
+                )}
+                {subtitle && (
+                  <p className="mt-0.5 line-clamp-1 text-[11px] text-zinc-400 sm:text-xs">
+                    {subtitle}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Plyr rewrites the media element into its own markup on init.
                 Until that happens the raw <video> would flash at its intrinsic
                 size, so it is held invisible behind a matching placeholder. */}
@@ -244,32 +326,15 @@ export const HeroPlyrPlayer = React.forwardRef<
                 <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white/80" />
               </div>
             )}
-          </div>
 
-          {showCaption && (badge || title || subtitle) && (
-            <div className="flex flex-col gap-1.5 p-4 sm:gap-2 sm:p-6 md:p-8">
-              {badge && (
-                <div className="flex justify-start">
-                  <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm backdrop-blur-md sm:gap-2 sm:px-4 sm:text-xs dark:bg-black/40">
-                    <Sparkles className="h-3 w-3 shrink-0 animate-pulse text-amber-400 sm:h-3.5 sm:w-3.5" />
-                    <span className="max-w-[180px] truncate sm:max-w-none">
-                      {badge}
-                    </span>
-                  </div>
-                </div>
-              )}
-              {title && (
-                <h3 className="text-base font-extrabold tracking-tight text-white sm:text-2xl md:text-3xl">
-                  {title}
-                </h3>
-              )}
-              {subtitle && (
-                <p className="text-[11px] leading-relaxed text-zinc-300 sm:text-xs md:text-base">
-                  {subtitle}
-                </p>
-              )}
-            </div>
-          )}
+            {!isAudio && isReady && showOverlay && (
+              <MediaOverlay
+                title={title}
+                subtitle={subtitle}
+                hasPlayed={hasPlayed}
+              />
+            )}
+          </div>
         </div>
       </div>
     );

@@ -20,8 +20,7 @@ const MEDIA = {
       "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg",
     badge: "Native HTML5",
     title: "View From A Blue Moon",
-    subtitle:
-      "A plain <video> element with the browser's own controls — no player library at all.",
+    subtitle: "A plain video element with the browser's own controls",
     playButtonLabel: "Play Trailer",
   },
 } as const;

@@ -55,9 +55,7 @@ export default function DirectEmbedHero() {
   return (
     <HeroVideoPlayer
       playbackMode="direct"
-      badge="Nature 4K"
       title="Wilderness Unbound"
-      subtitle="The embed renders on load; the copy moves below the frame so it never covers the controls."
       videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
     />
   );
@@ -71,9 +69,8 @@ export default function NativeVideoHero() {
       source="video"
       videoType="video/mp4"
       playbackMode="direct"
-      badge="Native HTML5"
       title="View From A Blue Moon"
-      subtitle="A plain <video> element with the browser's own controls — no player library at all."
+      subtitle="A plain video element with the browser's own controls"
       videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
       thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
     />
@@ -157,13 +154,20 @@ export default function NativeModalHero() {
     {
       title: "Direct embed",
       subheading:
-        "No poster at all — the player renders immediately and the copy moves below the frame.",
+        "No poster at all — the embed renders on load and keeps its own title chrome.",
       propNotes: [
         {
           prop: "playbackMode",
           value: '"direct"',
           effect:
-            "drops the thumbnail and the CTA. Badge, title and subtitle become a caption under the frame so they cannot sit on top of the player's own controls.",
+            "drops the thumbnail and the CTA, so the embed is the whole component.",
+        },
+        {
+          lead: "No copy is drawn over an embed:",
+          prop: "source",
+          value: '"youtube"',
+          effect:
+            "already renders YouTube's own title bar, and a second one stacked on it is duplicate chrome. `title` still reaches the iframe as its accessible name. The native player below gets the full treatment.",
         },
         {
           prop: "autoPlay",
@@ -190,6 +194,12 @@ export default function NativeModalHero() {
           value: '"video/mp4"',
           effect:
             "goes on the `<source>` so the browser can skip a codec it cannot play. `loop`, `muted` and `controls` pass straight through.",
+        },
+        {
+          lead: "The title sits at the foot of the frame until you press play, then moves to a hover-only top bar the way YouTube does. Set",
+          prop: "showOverlay",
+          value: "{false}",
+          effect: "for a bare player with no copy on it at all.",
         },
       ],
       props: { source: "video", playbackMode: "direct" },
@@ -221,6 +231,10 @@ export default function NativeModalHero() {
     },
   ]}
 />
+
+### Install the video player
+
+<Installation name="hero-video-player" />
 
 ## Audio player
 
@@ -331,6 +345,10 @@ export default function NativeAudioHero() {
   ]}
 />
 
+### Install the audio player
+
+<Installation name="hero-audio-player" showSetupPath={false} />
+
 ## Plyr player
 
 [Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
@@ -345,7 +363,6 @@ export default function PlyrHero() {
       srcType="video/mp4"
       posterUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
       accentColor="#6366f1"
-      badge="Plyr — HTML5"
       title="View From A Blue Moon"
       subtitle="A native file behind Plyr's accessible, fully keyboard-driven control bar."
     />
@@ -361,7 +378,6 @@ export default function PlyrYouTubeHero() {
       src="LXb3EKWsInQ"
       accentColor="#22d3ee"
       controls={["play-large", "play", "progress", "current-time", "mute", "volume", "fullscreen"]}
-      badge="Plyr — YouTube"
       title="Wilderness Unbound"
       subtitle="The same control bar in front of a YouTube embed, so both look identical."
     />
@@ -377,7 +393,6 @@ export default function PlyrAudioHero() {
       src="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
       srcType="audio/mpeg"
       accentColor="#fb923c"
-      badge="Plyr — Audio"
       title="It All Began With a Burst"
       subtitle="Kishi Bashi — 151a. The same player in its audio layout."
     />
@@ -449,6 +464,10 @@ export default function PlyrAudioHero() {
   ]}
 />
 
+### Install the Plyr player
+
+<Installation name="hero-video-player-plyr" showSetupPath={false} />
+
 ## JW Player
 
 [JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `HeroJwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
@@ -461,7 +480,6 @@ export default function JwHero() {
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
       posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
-      badge="JW Player — Default"
       title="Enterprise-grade video delivery"
       subtitle="JW's own control bar, untouched."
     />
@@ -477,7 +495,6 @@ export default function SkinnedJwHero() {
       skin="midnight"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
       posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
-      badge="JW Player — Midnight"
       title="Skinned to your brand"
       subtitle="Control bar, menus, time slider and tooltips, all from one skin config."
     />
@@ -497,7 +514,6 @@ export default function BrandedJwHero() {
         timeslider: { progress: "#f43f5e", rail: "rgba(255,255,255,0.25)" },
       }}
       playerOptions={{ playbackRateControls: true, stretching: "uniform" }}
-      badge="JW Player — Custom"
       title="Your palette, JW's pipeline"
       subtitle="skinConfig takes the raw JW skin object; playerOptions merges into setup()."
     />
@@ -571,24 +587,7 @@ export default function BrandedJwHero() {
   ]}
 />
 
-## Installation
-
-Each component installs independently — take only the players you actually use.
-
-{/* Not wrapped in <InstallGroup>: it crashes `next build` at page-data
-    collection. The banner it suppresses is turned off per block instead. */}
-
-<Installation name="hero-video-player" />
-
----
-
-<Installation name="hero-audio-player" showSetupPath={false} />
-
----
-
-<Installation name="hero-video-player-plyr" showSetupPath={false} />
-
----
+### Install the JW player
 
 <Installation name="hero-video-player-jw" showSetupPath={false} />
 
@@ -611,7 +610,7 @@ If the library fails to load, the component renders a native `<video>` with the 
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Five Player Backends</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one caption block and one glow treatment.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Deferred Media Weight</h3>
@@ -646,6 +645,10 @@ If the library fails to load, the component renders a native `<video>` with the 
     <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Optimizing thumbnails</h4>
     <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Give <code>thumbnailUrl</code> a resolution that matches your <code>aspectRatio</code>. It is the poster, the LCP candidate and — for <code>source="video"</code> — the <code>&lt;video&gt;</code> element's own <code>poster</code>, so a mismatched crop shows up in all three places.</p>
   </div>
+  <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/50 dark:bg-rose-950/20">
+    <h4 className="text-base font-semibold text-rose-900 dark:text-rose-300 mb-1">The title treatment follows playback</h4>
+    <p className="text-rose-800 dark:text-rose-400/80 text-sm">Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native <code>&lt;video&gt;</code>, Plyr and JW. A YouTube or Vimeo <em>embed</em> already paints its own title bar, so nothing is layered on top of it.</p>
+  </div>
   <div className="p-5 rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-950/20">
     <h4 className="text-base font-semibold text-purple-900 dark:text-purple-300 mb-1">Choosing a backend</h4>
     <p className="text-purple-800 dark:text-purple-400/80 text-sm">Start with <code>HeroVideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
@@ -677,7 +680,7 @@ If the library fails to load, the component renders a native `<video>` with the 
         <td><code>playbackMode</code></td>
         <td><code>"modal" | "inline" | "direct"</code></td>
         <td><code>"modal"</code></td>
-        <td>How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the copy moved below the frame.</td>
+        <td>How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the title laid over the frame.</td>
       </tr>
       <tr>
         <td><code>source</code></td>
@@ -707,7 +710,7 @@ If the library fails to load, the component renders a native `<video>` with the 
         <td><code>badge</code></td>
         <td><code>string</code></td>
         <td><code>"Wilderness Exploration"</code></td>
-        <td>Pill badge with an animated icon — top-left over the poster, or above the title in <code>direct</code> mode.</td>
+        <td>Pill badge with an animated icon, top-left over the poster. Poster hero only — <code>direct</code> mode shows just the title and subtitle.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -750,6 +753,12 @@ If the library fails to load, the component renders a native `<video>` with the 
         <td><code>boolean</code></td>
         <td><code>false</code> / <code>false</code> / <code>true</code></td>
         <td>Passed to the native <code>&lt;video&gt;</code>. Ignored for <code>source="youtube"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The title treatment in <code>direct</code> mode: at the foot of the frame until the video is first played, then a hover-only bar at the top. <code>source="video"</code> only — an embed keeps its own title chrome.</td>
       </tr>
       <tr>
         <td><code>enableGlow</code></td>
@@ -924,10 +933,16 @@ If the library fails to load, the component renders a native `<video>` with the 
         <td>Passed to Plyr. <code>autoPlay</code> forces <code>muted</code>, since browsers block the alternative.</td>
       </tr>
       <tr>
-        <td><code>badge</code> / <code>title</code> / <code>subtitle</code></td>
+        <td><code>title</code> / <code>subtitle</code></td>
         <td><code>string</code></td>
-        <td><code>"Plyr Player"</code> / …</td>
-        <td>Caption under the frame. <code>showCaption={false}</code> removes the whole block.</td>
+        <td><code>"View From A Blue Moon"</code> / …</td>
+        <td>Laid over the frame: at the foot until the video is first played (clear of the control bar), then a hover-only bar at the top. An audio player has no picture, so its copy sits above the bar in normal flow instead.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether the title/subtitle overlay renders at all.</td>
       </tr>
       <tr>
         <td><code>onReady</code></td>
@@ -1017,6 +1032,18 @@ If the library fails to load, the component renders a native `<video>` with the 
         <td><code>Record&lt;string, unknown&gt;</code></td>
         <td><code>undefined</code></td>
         <td>Merged last into <code>jwplayer().setup()</code>. The escape hatch for any JW option the props do not cover.</td>
+      </tr>
+      <tr>
+        <td><code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Enterprise-grade video delivery"</code> / …</td>
+        <td>Laid over the frame: at the foot until the video is first played (clear of JW's control bar), then a hover-only bar at the top.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether the title/subtitle overlay renders at all.</td>
       </tr>
       <tr>
         <td><code>onReady</code></td>

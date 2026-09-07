@@ -14,9 +14,9 @@ export type HeroVideoSource = "youtube" | "video";
  * - `modal`  — poster hero, player opens in a centered dialog (the default).
  * - `inline` — poster hero, the player swaps in *inside the card* on click. No
  *   overlay and no scroll lock, so it can sit inside a scrolling column.
- * - `direct` — no poster at all: the player renders immediately and the
- *   badge/title/subtitle move below the frame as a caption, where they cannot
- *   cover the player's own controls.
+ * - `direct` — no poster at all: the player renders immediately. A native
+ *   player is introduced by a title at the foot of the frame that moves to a
+ *   hover-only top bar once played; an embed is left to its own title chrome.
  */
 export type HeroVideoPlaybackMode = "modal" | "inline" | "direct";
 
@@ -54,6 +54,15 @@ export interface HeroVideoPlayerProps
   muted?: boolean;
   /** Native `<video>` controls. Ignored for `source="youtube"`. */
   controls?: boolean;
+  /**
+   * The title/subtitle laid over the frame in `playbackMode="direct"`: at the
+   * foot until the video is first played, then a hover-only bar at the top.
+   *
+   * Only applies to `source="video"`. A third-party embed draws its own title
+   * bar, so the overlay stays off for `source="youtube"` rather than stacking
+   * a second one on it.
+   */
+  showOverlay?: boolean;
   onPlay?: () => void;
   onClose?: () => void;
 }
@@ -107,6 +116,7 @@ function PlayerFrame({
   loop,
   muted,
   controls,
+  onFirstPlay,
 }: {
   source: HeroVideoSource;
   videoUrl: string;
@@ -117,6 +127,11 @@ function PlayerFrame({
   loop: boolean;
   muted: boolean;
   controls: boolean;
+  /**
+   * Fires the first time the viewer starts watching. Native player only — a
+   * cross-origin embed reports no playback events.
+   */
+  onFirstPlay?: () => void;
 }) {
   if (source === "video") {
     return (
@@ -132,6 +147,7 @@ function PlayerFrame({
         muted={muted || autoplay}
         playsInline
         preload="metadata"
+        onPlay={onFirstPlay}
       >
         <source src={videoUrl} type={videoType} />
         Your browser does not support the video tag.
@@ -147,6 +163,65 @@ function PlayerFrame({
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
     />
+  );
+}
+
+/**
+ * Title and subtitle laid over the frame, following the convention YouTube set.
+ *
+ * Before anything has played the copy sits at the FOOT of the frame and stays
+ * there: nothing is happening yet, so it is free to introduce the video, and a
+ * viewer should not have to hover to find out what they are about to watch.
+ * Its bottom padding keeps it clear of the control bar, so the gradient reaches
+ * the bottom edge but the text stops above the scrubber.
+ *
+ * Once playback has started that is no longer true — the picture is the point,
+ * and a permanent caption is in the way. So the copy moves to the TOP of the
+ * frame and only appears on hover, where it overlaps nothing that matters and
+ * stays available for anyone who wants to check what they are watching.
+ *
+ * `pointer-events-none` keeps every click going through to the player in both
+ * positions.
+ */
+function MediaOverlay({
+  title,
+  subtitle,
+  hasPlayed,
+}: {
+  title?: string;
+  subtitle?: string;
+  /** Whether the viewer has started watching. Drives the whole treatment. */
+  hasPlayed?: boolean;
+}) {
+  if (!title && !subtitle) return null;
+
+  const copy = (
+    <>
+      {title && (
+        <h3 className="line-clamp-1 text-base font-bold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
+          {title}
+        </h3>
+      )}
+      {subtitle && (
+        <p className="mt-0.5 line-clamp-1 text-[11px] text-zinc-300 sm:text-xs md:text-sm">
+          {subtitle}
+        </p>
+      )}
+    </>
+  );
+
+  if (hasPlayed) {
+    return (
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/85 via-black/40 to-transparent px-4 pt-4 pb-16 opacity-0 transition-opacity duration-300 group-hover/frame:opacity-100 group-focus-within/frame:opacity-100 sm:px-6 sm:pt-5 sm:pb-20">
+        {copy}
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent px-4 pt-16 pb-14 transition-opacity duration-300 sm:px-6 sm:pt-24 sm:pb-16">
+      {copy}
+    </div>
   );
 }
 
@@ -196,6 +271,7 @@ export const HeroVideoPlayer = React.forwardRef<
       loop = false,
       muted = false,
       controls = true,
+      showOverlay = true,
       onPlay,
       onClose,
       className,
@@ -204,6 +280,14 @@ export const HeroVideoPlayer = React.forwardRef<
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
+    // Latches on the first play and never goes back: the title treatment is
+    // about "has this viewer started watching", not about the current paused
+    // state, so pausing must not bring the bottom caption back over the video.
+    // An autoplaying direct player is already watching by the time it paints.
+    const [hasPlayed, setHasPlayed] = useState(
+      () => playbackMode === "direct" && autoPlay,
+    );
+    const handleFirstPlay = useCallback(() => setHasPlayed(true), []);
     const containerRef = useRef<HTMLDivElement>(null);
     // Where focus returns when the player is dismissed. Without it a keyboard
     // user who closes the modal lands back at the top of the document.
@@ -267,6 +351,7 @@ export const HeroVideoPlayer = React.forwardRef<
         loop={loop}
         muted={muted}
         controls={controls}
+        onFirstPlay={handleFirstPlay}
       />
     );
 
@@ -281,7 +366,7 @@ export const HeroVideoPlayer = React.forwardRef<
       </div>
     ) : null;
 
-    /* ── direct: the player is the hero, the copy sits under it ───────────── */
+    /* ── direct: the player is the hero, the copy sits over it ────────────── */
     if (isDirect) {
       return (
         <div
@@ -290,31 +375,28 @@ export const HeroVideoPlayer = React.forwardRef<
           {...props}
         >
           {glow}
-          <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">
+          <div className="relative z-10 w-full overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">
             <div
               className={cn(
-                "relative w-full overflow-hidden bg-black",
+                "group/frame relative w-full overflow-hidden bg-black",
                 aspectRatios[aspectRatio],
               )}
             >
               {frame}
+              {/* Native player only. A YouTube (or any third-party) embed
+                  already draws its own title bar over the picture, so a second
+                  one on top of it is duplicate chrome — and the parent document
+                  cannot see across the origin boundary to know when the embed
+                  started playing anyway. `title` still reaches the iframe as
+                  its accessible name. */}
+              {showOverlay && source === "video" && (
+                <MediaOverlay
+                  title={title}
+                  subtitle={subtitle}
+                  hasPlayed={hasPlayed}
+                />
+              )}
             </div>
-
-            {(badge || title || subtitle) && (
-              <div className="flex flex-col gap-1.5 p-4 sm:gap-2 sm:p-6 md:p-8">
-                {badgePill && <div className="flex justify-start">{badgePill}</div>}
-                {title && (
-                  <h3 className="text-base font-extrabold tracking-tight text-white sm:text-2xl md:text-3xl">
-                    {title}
-                  </h3>
-                )}
-                {subtitle && (
-                  <p className="text-[11px] leading-relaxed text-zinc-300 sm:text-xs md:text-base">
-                    {subtitle}
-                  </p>
-                )}
-              </div>
-            )}
           </div>
         </div>
       );
