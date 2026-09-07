@@ -268,6 +268,20 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
         return () => clearInterval(timer);
     }, [autoplay, autoplayInterval, pauseOnHover, isHovered, totalLeaves]);
 
+    // Preload Page Images to eliminate initial flip rendering jump/flash
+    useEffect(() => {
+        pages.forEach((page) => {
+            if (page.frontImage) {
+                const imgFront = new Image();
+                imgFront.src = page.frontImage;
+            }
+            if (page.backImage) {
+                const imgBack = new Image();
+                imgBack.src = page.backImage;
+            }
+        });
+    }, [pages]);
+
     // Keyboard Navigation
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -342,7 +356,19 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         const isFrontCover = index === 0;
                         const isBackCover = index === totalLeaves - 1;
 
-                        const zIndex = isTurned ? index + 1 : totalLeaves - index;
+                        // Calculate robust stack zIndex
+                        // Unturned leaves stack downwards (top leaf highest)
+                        // Turned leaves stack upwards (last turned leaf highest)
+                        let zIndex = isTurned ? index + 1 : totalLeaves - index;
+
+                        // Give highest z-index priority to the active leaf currently flipping
+                        if (index === currentTurned - 1) {
+                            // Leaf that was just flipped to the left stays on top of left stack
+                            zIndex = totalLeaves + 20;
+                        } else if (index === currentTurned) {
+                            // Leaf about to flip from right stays on top of right stack
+                            zIndex = totalLeaves + 10;
+                        }
 
                         let leafRotation = isTurned ? -turnAngle : 0;
                         if (!isTurned && isPeeking) {
@@ -363,7 +389,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     if (peekingIndex === index) setPeekingIndex(null);
                                 }}
                                 className={cn(
-                                    "absolute inset-0 origin-left cursor-pointer border-0 shadow-none",
+                                    "absolute inset-0 origin-left border-0 shadow-none transition-transform",
                                     interactive ? "cursor-pointer" : "pointer-events-none"
                                 )}
                                 style={{
@@ -387,7 +413,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         src={leaf.frontImage}
                                         alt={leaf.frontTitle ?? `Plate ${index * 2 + 1}`}
                                         className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-                                        loading="lazy"
+                                        loading="eager"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
@@ -472,7 +498,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         src={leaf.backImage}
                                         alt={leaf.backTitle ?? `Plate ${index * 2 + 2}`}
                                         className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-                                        loading="lazy"
+                                        loading="eager"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
