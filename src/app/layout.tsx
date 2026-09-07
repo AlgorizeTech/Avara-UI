@@ -43,7 +43,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${geistMono.variable} antialiased min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ThemeContextProvider>
             <ThemeCustomizerProvider>
               <PackageManagerProvider>

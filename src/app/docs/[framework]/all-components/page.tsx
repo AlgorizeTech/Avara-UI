@@ -13,6 +13,12 @@ import {
 	Globe,
 } from "lucide-react";
 import { navigation } from "@/constants/navigation";
+import { sandboxNames } from "@/preview/names";
+import {
+	ComponentPreviewTooltip,
+	useComponentPreviewHover,
+} from "@/components/site/ComponentPreviewTooltip";
+import { IconSlideButton } from "@/components/ui/icon-slide-button";
 
 /* ═══════════════════════════════════════════════
    PREVIEW CARD DATA MODEL & ITEMS (DYNAMICALLY SYNCED WITH SIDEBAR NAVIGATION)
@@ -25,6 +31,8 @@ type PreviewCardItem = {
 	href?: string;
 	badge?: string;
 	illustrationType: string;
+	/** Sandbox demo shown on hover, or null where the page has no registered demo. */
+	previewName: string | null;
 };
 
 type PreviewCategoryGroup = {
@@ -92,7 +100,7 @@ const COMPONENT_META: Record<
 	sonner: { countText: "Toast Stream", illustrationType: "sonner" },
 	stepper: { countText: "Wizard Flow", illustrationType: "stepper" },
 	table: { countText: "Data Layout", illustrationType: "table" },
-	"vertical-tabs": { countText: "Vertical & Horizontal", illustrationType: "tabs", titleOverride: "Tabs" },
+	"vertical-tabs": { countText: "Horizontal & Vertical", illustrationType: "tabs", titleOverride: "Tabs" },
 	"theme-switcher": { countText: "Light/Dark Toggle", illustrationType: "theme-switcher" },
 	timeline: { countText: "History Feed", illustrationType: "timeline" },
 	toast: { countText: "Popup Alert", illustrationType: "toast" },
@@ -154,6 +162,30 @@ const CATEGORY_META: Record<string, { subtitle: string; icon: any }> = {
 	},
 };
 
+/**
+ * Slugs whose docs page shows a demo registered under a different name. Every
+ * other card resolves by slug, so this list only needs the mismatches — a new
+ * component with a matching demo name is picked up with no edit here.
+ */
+const PREVIEW_NAME_OVERRIDES: Record<string, string> = {
+	"3d-carousel": "carousel-3d",
+	"data-table": "advanced-table",
+	"file-upload": "upload",
+	"fleet-tracker": "fleet",
+	navigation: "navigation-menu",
+	"qr-code-generator": "qr-code",
+	"support-dashboard": "support",
+};
+
+const registeredDemos = new Set<string>(sandboxNames);
+
+/** The sandbox demo a card hovers into, or null when none is registered. */
+function resolvePreviewName(slug?: string): string | null {
+	if (!slug) return null;
+	const name = PREVIEW_NAME_OVERRIDES[slug] ?? slug;
+	return registeredDemos.has(name) ? name : null;
+}
+
 const componentPreviewData: PreviewCategoryGroup[] = navigation
 	.filter((group) => CATEGORY_META[group.label])
 	.map((group) => {
@@ -170,6 +202,7 @@ const componentPreviewData: PreviewCategoryGroup[] = navigation
 					slug: child.slug,
 					badge: child.badge,
 					illustrationType: itemMeta.illustrationType || child.slug || "card",
+					previewName: resolvePreviewName(child.slug),
 				};
 			}),
 		};
@@ -199,7 +232,7 @@ function MiniatureIllustration({
 	type: string;
 }) {
 	return (
-		<div className="w-full h-full rounded-xl border border-border/80 bg-gradient-to-b from-card to-muted/30 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/50 transition-colors">
+		<div className="w-full h-full rounded-xl border border-border/80 bg-gradient-to-b from-card to-muted/30 pt-1.5 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/50 transition-colors">
 			<CardHeaderMockup title={title} />
 
 			<div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
@@ -384,7 +417,7 @@ function MiniatureIllustration({
 								<span className="text-[9px] font-bold text-foreground">
 									Modal Dialog
 								</span>
-								<span className="text-[8px] text-muted-foreground">✕</span>
+								<span className="text-[8px] text-muted-foreground pr-1.5 pb-0.5">✕</span>
 							</div>
 							<div className="text-[7px] text-muted-foreground">
 								Confirm action step?
@@ -1116,17 +1149,17 @@ function MiniatureIllustration({
 				{type === "accordion" && (
 					<div className="w-full space-y-1 my-auto px-0.5 text-[7px]">
 						<div className="p-1.5 rounded-lg bg-background border border-primary/50 shadow-2xs space-y-1">
-							<div className="flex justify-between items-center font-extrabold text-primary">
+							<div className="flex justify-between items-center font-extrabold text-primary px-0.5">
 								<span>Is it accessible?</span>
 								<span className="text-[8px]">▲</span>
 							</div>
-							<div className="text-[6px] text-muted-foreground border-t border-border/40 pt-1">
+							<div className="text-[6px] text-muted-foreground border-t border-border/40 pt-1 px-0.5">
 								Yes. Adheres to WAI-ARIA standards.
 							</div>
 						</div>
-						<div className="p-1 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-bold text-foreground">
+						<div className="py-1 px-2 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-bold text-foreground">
 							<span>Is it styled?</span>
-							<span className="text-[8px] text-muted-foreground">▼</span>
+							<span className="text-[8px] text-muted-foreground pt-0.75">▼</span>
 						</div>
 					</div>
 				)}
@@ -2283,6 +2316,10 @@ export default function AllComponentsDocsPage() {
 	// back to the default.
 	const framework = frameworkFromPathname(usePathname() ?? "");
 
+	// Hovering a card floats the component's real sandbox demo beside it. One
+	// preview at a time, mounted only while hovered.
+	const { preview, getTriggerProps } = useComponentPreviewHover();
+
 	return (
 		<div className="not-prose w-full py-4 text-foreground">
 			<div className="w-full space-y-12">
@@ -2337,6 +2374,7 @@ export default function AllComponentsDocsPage() {
 									<Link
 										key={item.title}
 										href={item.href || docsHref(framework, item.slug || "")}
+										{...getTriggerProps(item.previewName, item.title)}
 										className="group block rounded-2xl">
 										<div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
 											{/* Card Thumbnail / Illustration */}
@@ -2362,9 +2400,9 @@ export default function AllComponentsDocsPage() {
 														{item.countText}
 													</p>
 												</div>
-												<div className="size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+												<IconSlideButton as="span" trigger="group">
 													<ArrowRight className="size-3.5" />
-												</div>
+												</IconSlideButton>
 											</div>
 										</div>
 									</Link>
@@ -2374,6 +2412,12 @@ export default function AllComponentsDocsPage() {
 					))}
 				</div>
 			</div>
+
+			{/* Keyed so moving to another card mounts a fresh sandbox document
+			    rather than navigating the one already running. */}
+			{preview && (
+				<ComponentPreviewTooltip key={preview.name} {...preview} />
+			)}
 		</div>
 	);
 }

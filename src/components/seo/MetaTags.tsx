@@ -28,10 +28,11 @@ export function MetaTags() {
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
 
-      {/* Icons and Manifest */}
-      <link rel="manifest" href="/manifest.json" />
-      <link rel="icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" href="/logo.svg" />
+      {/* Icons and the manifest are declared in `metadata.icons` /
+          `metadata.manifest` (src/lib/metadata.ts), not here. Next.js emits
+          those <link> tags itself; hand-writing a second set produced
+          duplicates, and the apple-touch-icon pointed at /logo.svg, which does
+          not exist in /public. */}
 
       {/* Preconnect for Performance - Deduplicated */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />

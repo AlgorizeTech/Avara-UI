@@ -218,6 +218,15 @@ const Summary = ({
 );
 
 /**
+ * Every trigger animation below is decoration layered on a plain button: each
+ * one tweens *from* an offset back to the resting state CSS already paints, so
+ * a blocked, failed or reduced-motion run still leaves a usable trigger.
+ */
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+/**
  * Defined at module scope on purpose: inside CartBlock it would be a new
  * component type on every render, remounting the button on each cart change.
  */
@@ -226,23 +235,164 @@ function TriggerButton({
   onToggle,
   totalItems,
   themeBg,
+  themeBorder,
 }: {
   isOpen: boolean;
   onToggle: () => void;
   totalItems: number;
   themeBg: string;
+  themeBorder: string;
 }) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const iconRef = useRef<HTMLSpanElement>(null);
+  const ringRef = useRef<HTMLSpanElement>(null);
+  const badgeRef = useRef<HTMLSpanElement>(null);
+  const nudgeRef = useRef<gsap.core.Timeline | null>(null);
+  const prevTotal = useRef(totalItems);
+
+  /**
+   * The nudge is a hint, not a nag: once the cart has been opened it never
+   * comes back, so the trigger stops competing with the rest of the page.
+   */
+  const [hasOpened, setHasOpened] = useState(false);
+  useEffect(() => {
+    if (isOpen) setHasOpened(true);
+  }, [isOpen]);
+
+  const shouldNudge = !isOpen && !hasOpened && totalItems > 0;
+
+  // --- "click me": the bag tilts every few seconds and pushes out a ring.
+  useIsomorphicLayoutEffect(() => {
+    const icon = iconRef.current;
+    const ring = ringRef.current;
+    if (!icon || !ring || !shouldNudge || prefersReducedMotion()) return;
+
+    const tl = gsap.timeline({ delay: 1.2, repeat: -1, repeatDelay: 2.8 });
+    tl.fromTo(
+      ring,
+      { scale: 0.9, opacity: 0.5 },
+      { scale: 1.8, opacity: 0, duration: 0.9, ease: "power2.out" },
+      0,
+    )
+      .to(icon, { rotate: -14, duration: 0.16, ease: "power2.out" }, 0)
+      .to(icon, { rotate: 10, duration: 0.16, ease: "power1.inOut" })
+      .to(icon, { rotate: -6, duration: 0.14, ease: "power1.inOut" })
+      .to(icon, { rotate: 0, duration: 0.5, ease: "elastic.out(1, 0.45)" });
+
+    nudgeRef.current = tl;
+    return () => {
+      nudgeRef.current = null;
+      tl.kill();
+      gsap.set(icon, { rotate: 0 });
+      gsap.set(ring, { clearProps: "transform,opacity" });
+    };
+  }, [shouldNudge]);
+
+  // Pointing at the button is already engagement. Stop nudging and settle the
+  // bag upright rather than freezing it mid-tilt.
+  const pauseNudge = () => {
+    if (!nudgeRef.current) return;
+    nudgeRef.current.pause();
+    gsap.to(iconRef.current, { rotate: 0, duration: 0.25, ease: "power2.out" });
+    gsap.to(ringRef.current, { opacity: 0, duration: 0.2 });
+  };
+  const resumeNudge = () => nudgeRef.current?.restart(true);
+
+  // --- the press itself: squash, spring back, and throw a ring outwards so the
+  // click reads as the thing that pushed the panel into view.
+  const playPress = () => {
+    const button = buttonRef.current;
+    const icon = iconRef.current;
+    const ring = ringRef.current;
+    if (!button || !icon || prefersReducedMotion()) return;
+
+    nudgeRef.current?.pause();
+    gsap.killTweensOf([button, icon]);
+
+    const tl = gsap.timeline();
+    tl.to(button, { scale: 0.86, duration: 0.1, ease: "power2.in" })
+      .to(button, { scale: 1, duration: 0.55, ease: "elastic.out(1, 0.45)" })
+      .to(
+        icon,
+        { rotate: 0, y: 3, scale: 0.9, duration: 0.1, ease: "power2.in" },
+        0,
+      )
+      .to(
+        icon,
+        { y: 0, scale: 1, duration: 0.5, ease: "elastic.out(1, 0.4)" },
+        0.1,
+      );
+
+    if (ring)
+      tl.fromTo(
+        ring,
+        { scale: 0.85, opacity: 0.6 },
+        { scale: 1.9, opacity: 0, duration: 0.6, ease: "power3.out" },
+        0.04,
+      );
+  };
+
+  // --- something landed in the bag: pop the count and bounce the icon, so a
+  // quantity change is visible even while the panel is closed.
+  useEffect(() => {
+    const grew = totalItems > prevTotal.current;
+    prevTotal.current = totalItems;
+    if (!grew || prefersReducedMotion()) return;
+
+    if (badgeRef.current)
+      gsap.fromTo(
+        badgeRef.current,
+        { scale: 0.3 },
+        { scale: 1, duration: 0.6, ease: "back.out(4)" },
+      );
+    if (iconRef.current)
+      gsap.fromTo(
+        iconRef.current,
+        { y: -4 },
+        { y: 0, duration: 0.6, ease: "bounce.out" },
+      );
+  }, [totalItems]);
+
   return (
     <button
-      onClick={onToggle}
+      ref={buttonRef}
+      onClick={() => {
+        playPress();
+        onToggle();
+      }}
+      onMouseEnter={pauseNudge}
+      onMouseLeave={resumeNudge}
+      onFocus={pauseNudge}
+      onBlur={resumeNudge}
+      aria-expanded={isOpen}
+      aria-label={`${isOpen ? "Close" : "Open"} cart, ${totalItems} item${
+        totalItems === 1 ? "" : "s"
+      }`}
       className={cn(
-        "relative flex items-center justify-center p-3 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-all active:scale-95 text-foreground",
+        "relative flex items-center justify-center p-3 rounded-full bg-card border border-border shadow-sm hover:shadow-md text-foreground will-change-transform",
+        // Transform belongs to GSAP here - a CSS transition on it would fight
+        // the spring and flatten the press.
+        "transition-[background-color,box-shadow,border-color] duration-200",
+        // The only press feedback a reduced-motion user gets, since playPress
+        // opts out for them.
+        "active:bg-muted",
         isOpen && "bg-muted",
       )}
     >
-      <ShoppingBag size={22} />
+      <span
+        ref={ringRef}
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 rounded-full border-2 opacity-0",
+          themeBorder,
+        )}
+      />
+      <span ref={iconRef} className="block will-change-transform">
+        <ShoppingBag size={22} />
+      </span>
       {totalItems > 0 && (
         <span
+          ref={badgeRef}
           className={cn(
             "absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-full shadow-sm",
             themeBg,
@@ -464,6 +614,7 @@ export function CartBlock({
           onToggle={() => (isOpen ? closeCart() : openCart())}
           totalItems={totalItems}
           themeBg={theme.bg}
+          themeBorder={theme.border}
         />
 
         {type === "popover" && isLayerMounted && (

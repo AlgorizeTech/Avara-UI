@@ -139,6 +139,27 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.json",
+  // Icons live in /public/favicon, except favicon.ico which is also mirrored at
+  // the web root: browsers and crawlers request GET /favicon.ico directly,
+  // without ever reading a <link>, so the root copy is not optional.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
+    // iOS ignores sizes it was not given and rescales, so the single 180x180
+    // is enough — it is the largest size any current iOS home screen asks for.
+    apple: [
+      {
+        url: "/favicon/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
   // No `alternates.canonical` here, deliberately.
   //
   // Next.js inherits this object into every page that does not override it, so a
