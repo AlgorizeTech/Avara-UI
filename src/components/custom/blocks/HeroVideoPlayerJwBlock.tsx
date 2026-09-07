@@ -229,10 +229,15 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
     const onReadyRef = useRef(onReady);
     onReadyRef.current = onReady;
 
-    const skinKey = JSON.stringify(
-      resolveSkin(skin, skinConfig, skinUrl, skinName) ?? null,
-    );
+    // `skinConfig` and `playerOptions` are object literals, so they are new
+    // references on every parent render. The effect keys off their serialized
+    // values and reads the live objects through refs — depending on the objects
+    // themselves would rebuild the player on every render, restarting playback.
+    const resolvedSkin = resolveSkin(skin, skinConfig, skinUrl, skinName);
+    const skinKey = JSON.stringify(resolvedSkin ?? null);
     const optionsKey = playerOptions ? JSON.stringify(playerOptions) : "";
+    const setupRef = useRef({ skin: resolvedSkin, options: playerOptions });
+    setupRef.current = { skin: resolvedSkin, options: playerOptions };
 
     useEffect(() => {
       let cancelled = false;
@@ -244,7 +249,7 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
           if (cancelled) return;
           if (licenseKey) jwplayer.key = licenseKey;
 
-          const resolvedSkin = resolveSkin(skin, skinConfig, skinUrl, skinName);
+          const { skin: activeSkin, options } = setupRef.current;
 
           player = jwplayer(containerId);
           player.setup({
@@ -256,8 +261,8 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
             mute: muted || autoStart,
             repeat,
             controls,
-            ...(resolvedSkin ? { skin: resolvedSkin } : {}),
-            ...(playerOptions ?? {}),
+            ...(activeSkin ? { skin: activeSkin } : {}),
+            ...(options ?? {}),
           });
 
           player.on("ready", () => {
@@ -296,13 +301,8 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
       repeat,
       controls,
       containerId,
-      skin,
-      skinConfig,
-      skinUrl,
-      skinName,
       skinKey,
       optionsKey,
-      playerOptions,
     ]);
 
     return (
@@ -337,18 +337,30 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
                 player keeps the media watchable instead of leaving a black box. */}
             {status === "error" && (
               <div className="absolute inset-0 flex flex-col bg-zinc-950">
-                <video
-                  className="h-full w-full flex-1 bg-black object-contain"
-                  poster={posterUrl}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  src={file}
-                />
+                {file ? (
+                  <video
+                    className="h-full w-full flex-1 bg-black object-contain"
+                    poster={posterUrl}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    src={file}
+                  />
+                ) : (
+                  // A JW playlist is only resolvable by JW, so with the library
+                  // gone there is no media to hand a <video>. The poster is all
+                  // that is left, and it beats a black rectangle.
+                  <img
+                    src={posterUrl}
+                    alt=""
+                    className="h-full w-full flex-1 object-cover opacity-60"
+                  />
+                )}
                 <p className="flex items-center gap-2 bg-amber-500/10 px-3 py-2 text-[11px] text-amber-300">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                  JW Player library unavailable — falling back to the native
-                  player. Check <code className="font-mono">libraryUrl</code>.
+                  {file
+                    ? "JW Player library unavailable — falling back to the native player."
+                    : "JW Player library unavailable, and a JW playlist cannot be played without it. Set `file` for a native fallback."}
                 </p>
               </div>
             )}

@@ -3,9 +3,20 @@ import { extractCode } from "@/lib/code";
 
 # Hero Video Player
 
-An embeddable, hardware-accelerated video preview component designed for landing pages and high-conversion hero sections. Features a glassmorphism CTA button, automatic dark/light mode responsiveness, and full keyboard accessibility.
+An embeddable, hardware-accelerated media hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-Click the CTA in any preview to open the modal player; `Esc` closes it and focus returns to the button.
+Four independent components live on this page, and each installs on its own:
+
+- **`HeroVideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `<video>` behind it. No player library.
+- **`HeroAudioPlayer`** — the same hero language for audio, with artwork, transport, scrubber and volume. No player library.
+- **`HeroPlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
+- **`HeroJwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
+
+Reach for the first two unless you need adaptive streaming, DRM or a shared control bar across providers — they add no player dependency at all.
+
+## YouTube & native video
+
+Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.
 
 export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
@@ -16,74 +27,76 @@ export default function HeroSection() {
       title="Wilderness Unbound"
       subtitle="A cinematic journey through serene mountain vistas and ancient forests."
       playButtonLabel="Watch Film"
-      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
       thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
     />
   );
 }`;
 
-export const usageAspect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageInline = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
-export default function CinematicHero() {
+export default function InlineHero() {
   return (
     <HeroVideoPlayer
-      aspectRatio="21/9"
-      badge="Cinematic"
+      playbackMode="inline"
+      badge="Nature 4K"
       title="Wilderness Unbound"
-      subtitle="A 21:9 ultrawide panoramic preview frame."
-      playButtonLabel="Watch Film"
-      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
+      subtitle="The player swaps into the card itself — no overlay, no scroll lock."
+      playButtonLabel="Play Here"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
       thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
     />
   );
 }`;
 
-export const usageAspect43 = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDirect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
-export default function ClassicHero() {
+export default function DirectEmbedHero() {
   return (
     <HeroVideoPlayer
-      aspectRatio="4/3"
-      badge="Classic 4:3"
+      playbackMode="direct"
+      badge="Nature 4K"
       title="Wilderness Unbound"
-      subtitle="Classic 4:3 aspect ratio video container."
-      playButtonLabel="Watch Film"
-      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
-      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+      subtitle="The embed renders on load; the copy moves below the frame so it never covers the controls."
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
     />
   );
 }`;
 
-export const usageNoGlow = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNative = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
-export default function FlatHero() {
+export default function NativeVideoHero() {
   return (
     <HeroVideoPlayer
-      enableGlow={false}
-      badge="Minimal Glow"
-      title="Clean Video Hero"
-      subtitle="Ambient background glow turned off for cleaner minimal layouts."
-      playButtonLabel="Play Video"
-      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
-      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+      source="video"
+      videoType="video/mp4"
+      playbackMode="direct"
+      badge="Native HTML5"
+      title="View From A Blue Moon"
+      subtitle="A plain <video> element with the browser's own controls — no player library at all."
+      videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
     />
   );
 }`;
 
-export const usageModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNativeModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
 
 const track = (event: string) => console.log(event);
 
-export default function FullWidthHero() {
+export default function NativeModalHero() {
   return (
     <HeroVideoPlayer
+      source="video"
+      videoType="video/mp4"
       modalSize="full"
-      badge="Full Screen Modal"
-      title="Full Width Experience"
-      subtitle="Expands into an ultra-wide full screen viewport modal upon playback."
-      playButtonLabel="Watch Documentary"
-      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"
-      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+      aspectRatio="21/9"
+      badge="Self-hosted"
+      title="View From A Blue Moon"
+      subtitle="A self-hosted file behind the poster hero, opening full width."
+      playButtonLabel="Play Trailer"
+      videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
       onPlay={() => track("hero_video_opened")}
       onClose={() => track("hero_video_closed")}
     />
@@ -95,51 +108,526 @@ export default function FullWidthHero() {
   columns={1}
   examples={[
     {
-      title: "Hero video player",
-      subheading: "A full-width 4K nature video preview, glass CTA button and modal player.",
+      title: "Modal player",
+      subheading:
+        "The default. A full-width 4K nature preview, glass CTA button and a centered dialog player.",
       propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"modal"',
+          effect:
+            "opens the video in a centered dialog. `Esc` closes it, the page behind it stops scrolling, and focus returns to the play button.",
+        },
         {
           prop: "thumbnailUrl",
           effect:
-            "is the preview nature background image and `videoUrl` the nature documentary embed that opens in the modal.",
+            "is the preview background and `videoUrl` the embed that only loads once the modal opens.",
         },
         {
-          prop: "badge",
+          prop: "modalSize",
           effect:
-            "`title`, `subtitle` and `playButtonLabel` customize the hero narrative overlay.",
+            "sizes the dialog — md | lg | xl | full. `full` fills the viewport at 90vh.",
         },
       ],
-      props: {},
+      props: { playbackMode: "modal" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/HeroVideoPlayerBlock.tsx"),
+    },
+    {
+      title: "Inline player",
+      subheading:
+        "Same poster hero, but the player swaps into the card instead of opening an overlay.",
+      propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"inline"',
+          effect:
+            "replaces the poster with the player in place. Nothing covers the page and body scrolling is untouched, so it is safe inside a scrolling column or a carousel slide.",
+        },
+        {
+          lead: "The close button restores the poster — use it over",
+          prop: "playbackMode",
+          value: '"modal"',
+          effect: "when the hero sits mid-page rather than above the fold.",
+        },
+      ],
+      props: { playbackMode: "inline" },
+      usage: usageInline,
+    },
+    {
+      title: "Direct embed",
+      subheading:
+        "No poster at all — the player renders immediately and the copy moves below the frame.",
+      propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"direct"',
+          effect:
+            "drops the thumbnail and the CTA. Badge, title and subtitle become a caption under the frame so they cannot sit on top of the player's own controls.",
+        },
+        {
+          prop: "autoPlay",
+          effect:
+            "is only read in this mode — the other two are click-initiated and always start playing. The native player mutes itself when it is set, because browsers block unmuted autoplay.",
+        },
+      ],
+      props: { playbackMode: "direct" },
+      usage: usageDirect,
+    },
+    {
+      title: "Native HTML5 video",
+      subheading:
+        "A self-hosted mp4 with the browser's own controls — no embed, no third-party player.",
+      propNotes: [
+        {
+          prop: "source",
+          value: '"video"',
+          effect:
+            "renders a real `<video>` element instead of an iframe, so `videoUrl` is a media file and `thumbnailUrl` becomes its `poster`.",
+        },
+        {
+          prop: "videoType",
+          value: '"video/mp4"',
+          effect:
+            "goes on the `<source>` so the browser can skip a codec it cannot play. `loop`, `muted` and `controls` pass straight through.",
+        },
+      ],
+      props: { source: "video", playbackMode: "direct" },
+      usage: usageNative,
+    },
+    {
+      title: "Native video in a modal",
+      subheading:
+        "The same file behind the poster hero, opening ultrawide at full viewport size.",
+      propNotes: [
+        {
+          prop: "source",
+          value: '"video"',
+          effect: "works in every playback mode — the reveal and the player are independent choices.",
+        },
+        {
+          prop: "onPlay",
+          effect:
+            "and `onClose` fire on open and dismiss, which is where analytics goes.",
+        },
+      ],
+      props: {
+        source: "video",
+        playbackMode: "modal",
+        modalSize: "full",
+        aspectRatio: "21/9",
+      },
+      usage: usageNativeModal,
+    },
+  ]}
+/>
+
+## Audio player
+
+`HeroAudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
+
+export const usageAudioHero = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
+
+export default function PodcastHero() {
+  return (
+    <HeroAudioPlayer
+      badge="Now Playing"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
+    />
+  );
+}`;
+
+export const usageAudioBar = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
+
+export default function EpisodeRow() {
+  return (
+    <HeroAudioPlayer
+      variant="bar"
+      enableGlow={false}
+      badge="Episode 12"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
+    />
+  );
+}`;
+
+export const usageAudioNative = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
+
+export default function NativeAudioHero() {
+  return (
+    <HeroAudioPlayer
+      variant="native"
+      badge="Now Playing"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-audio-player"
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Audio hero",
+      subheading:
+        "Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"hero"',
+          effect:
+            "is the default — artwork beside its own transport. `audioUrl` and `artworkUrl` are the only two props it really needs.",
+        },
+        {
+          prop: "skipSeconds",
+          value: "{10}",
+          effect:
+            "sizes the rewind and forward jumps. Set it to `0` to drop both buttons.",
+        },
+      ],
+      props: { variant: "hero" },
+      usage: usageAudioHero,
+      code: extractCode("src/components/custom/blocks/HeroAudioPlayerBlock.tsx"),
+    },
+    {
+      title: "Compact bar",
+      subheading:
+        "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bar"',
+          effect:
+            "collapses artwork, copy and transport into a single row. The volume slider hides below `sm` where there is no room for it.",
+        },
+      ],
+      props: { variant: "bar", enableGlow: false },
+      usage: usageAudioBar,
+    },
+    {
+      title: "Native controls",
+      subheading:
+        "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"native"',
+          effect:
+            "renders `<audio controls>` instead of the custom transport. The most accessible option by default, and the one that inherits platform features like playback speed for free.",
+        },
+      ],
+      props: { variant: "native" },
+      usage: usageAudioNative,
+    },
+  ]}
+/>
+
+## Plyr player
+
+[Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
+
+export const usagePlyrHtml5 = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+
+export default function PlyrHero() {
+  return (
+    <HeroPlyrPlayer
+      provider="html5"
+      src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      srcType="video/mp4"
+      posterUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+      accentColor="#6366f1"
+      badge="Plyr — HTML5"
+      title="View From A Blue Moon"
+      subtitle="A native file behind Plyr's accessible, fully keyboard-driven control bar."
+    />
+  );
+}`;
+
+export const usagePlyrYouTube = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+
+export default function PlyrYouTubeHero() {
+  return (
+    <HeroPlyrPlayer
+      provider="youtube"
+      src="LXb3EKWsInQ"
+      accentColor="#22d3ee"
+      controls={["play-large", "play", "progress", "current-time", "mute", "volume", "fullscreen"]}
+      badge="Plyr — YouTube"
+      title="Wilderness Unbound"
+      subtitle="The same control bar in front of a YouTube embed, so both look identical."
+    />
+  );
+}`;
+
+export const usagePlyrAudio = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+
+export default function PlyrAudioHero() {
+  return (
+    <HeroPlyrPlayer
+      mediaType="audio"
+      src="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      srcType="audio/mpeg"
+      accentColor="#fb923c"
+      badge="Plyr — Audio"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a. The same player in its audio layout."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-video-player-plyr"
+  columns={1}
+  examples={[
+    {
+      title: "Plyr — HTML5",
+      subheading:
+        "A self-hosted mp4 behind Plyr's control bar, skinned with a single CSS variable.",
+      propNotes: [
+        {
+          prop: "provider",
+          value: '"html5"',
+          effect:
+            "plays `src` as a media file. `srcType` goes on the `<source>` and `posterUrl` on the `<video>`.",
+        },
+        {
+          prop: "accentColor",
+          effect:
+            "sets Plyr's `--plyr-color-main`, which is what actually colours the control bar, the progress fill and the focus ring.",
+        },
+      ],
+      props: { provider: "html5", mediaType: "video" },
+      usage: usagePlyrHtml5,
+      code: extractCode(
+        "src/components/custom/blocks/HeroVideoPlayerPlyrBlock.tsx",
+      ),
+    },
+    {
+      title: "Plyr — YouTube",
+      subheading:
+        "A YouTube embed wearing exactly the same controls as the file above.",
+      propNotes: [
+        {
+          prop: "provider",
+          value: '"youtube"',
+          effect:
+            "accepts a watch URL or a bare video id — `src` is normalised to the embed id either way. `vimeo` works the same.",
+        },
+        {
+          prop: "controls",
+          effect:
+            "takes Plyr's control-name array in bar order, so you can drop settings, captions or the volume slider.",
+        },
+      ],
+      props: { provider: "youtube", mediaType: "video" },
+      usage: usagePlyrYouTube,
+    },
+    {
+      title: "Plyr — Audio",
+      subheading: "The same component in its audio layout, with no video frame.",
+      propNotes: [
+        {
+          prop: "mediaType",
+          value: '"audio"',
+          effect:
+            "renders an `<audio>` element, so the card drops the aspect ratio and sizes to the control bar.",
+        },
+      ],
+      props: { mediaType: "audio" },
+      minHeight: 320,
+      usage: usagePlyrAudio,
+    },
+  ]}
+/>
+
+## JW Player
+
+[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `HeroJwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
+
+export const usageJwDefault = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+
+export default function JwHero() {
+  return (
+    <HeroJwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
+      posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
+      badge="JW Player — Default"
+      title="Enterprise-grade video delivery"
+      subtitle="JW's own control bar, untouched."
+    />
+  );
+}`;
+
+export const usageJwSkin = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+
+export default function SkinnedJwHero() {
+  return (
+    <HeroJwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      skin="midnight"
+      playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
+      posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
+      badge="JW Player — Midnight"
+      title="Skinned to your brand"
+      subtitle="Control bar, menus, time slider and tooltips, all from one skin config."
+    />
+  );
+}`;
+
+export const usageJwCustom = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+
+export default function BrandedJwHero() {
+  return (
+    <HeroJwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      file="https://cdn.example.com/media/launch-film.m3u8"
+      posterUrl="https://cdn.example.com/media/launch-film.jpg"
+      skinConfig={{
+        controlbar: { background: "rgba(0,0,0,0)", icons: "#fafafa", iconsActive: "#f43f5e", text: "#fafafa" },
+        timeslider: { progress: "#f43f5e", rail: "rgba(255,255,255,0.25)" },
+      }}
+      playerOptions={{ playbackRateControls: true, stretching: "uniform" }}
+      badge="JW Player — Custom"
+      title="Your palette, JW's pipeline"
+      subtitle="skinConfig takes the raw JW skin object; playerOptions merges into setup()."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-video-player-jw"
+  columns={1}
+  examples={[
+    {
+      title: "JW Player — default skin",
+      subheading:
+        "JW's own control bar, untouched, around a JW-hosted playlist.",
+      propNotes: [
+        {
+          prop: "libraryUrl",
+          effect:
+            "is the JW library script. It defaults to JW's public docs library so the component works out of the box — replace it with your own player id before shipping.",
+        },
+        {
+          prop: "playlistUrl",
+          effect:
+            "points at a JW playlist or media endpoint; use `file` instead for a plain mp4 or HLS manifest.",
+        },
+      ],
+      props: { skin: "default" },
+      usage: usageJwDefault,
+      code: extractCode("src/components/custom/blocks/HeroVideoPlayerJwBlock.tsx"),
+    },
+    {
+      title: "JW Player — skinned",
+      subheading:
+        "The same player with a colour preset applied to the control bar, menus, time slider and tooltips.",
+      propNotes: [
+        {
+          prop: "skin",
+          value: '"midnight"',
+          effect:
+            "picks a pre-mixed colour config — default | midnight | neon | sunset | minimal.",
+        },
+        {
+          prop: "skinConfig",
+          effect:
+            "takes the raw JW skin object and wins over `skin`; `skinUrl` and `skinName` point at a custom stylesheet instead.",
+        },
+      ],
+      props: { skin: "midnight" },
+      usage: usageJwSkin,
+    },
+    {
+      title: "JW Player — custom palette",
+      subheading:
+        "A transparent control bar over your own media, with extra JW options merged into setup.",
+      propNotes: [
+        {
+          prop: "skin",
+          value: '"minimal"',
+          effect:
+            "removes the control bar background so it sits directly on the frame.",
+        },
+        {
+          prop: "playerOptions",
+          effect:
+            "is merged last into `jwplayer().setup()` — the escape hatch for anything the props do not cover.",
+        },
+      ],
+      props: { skin: "minimal" },
+      usage: usageJwCustom,
     },
   ]}
 />
 
 ## Installation
 
+Each component installs independently — take only the players you actually use.
+
+{/* Not wrapped in <InstallGroup>: it crashes `next build` at page-data
+    collection. The banner it suppresses is turned off per block instead. */}
+
 <Installation name="hero-video-player" />
+
+---
+
+<Installation name="hero-audio-player" showSetupPath={false} />
+
+---
+
+<Installation name="hero-video-player-plyr" showSetupPath={false} />
+
+---
+
+<Installation name="hero-video-player-jw" showSetupPath={false} />
+
+### JW Player setup
+
+`HeroJwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
+
+1. Create a player in the [JW Dashboard](https://dashboard.jwplayer.com) and copy its cloud-hosted library URL — `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js`.
+2. Pass it as `libraryUrl`. For a self-hosted build, also pass the `licenseKey` from your player settings.
+3. Leave `libraryUrl` unset only while evaluating. The default is JW's public documentation library, which carries JW's branding and can be rotated or rate-limited without notice.
+
+If the library fails to load, the component renders a native `<video>` with the poster and a visible warning rather than a black box — so a licence problem degrades instead of breaking the page.
 
 ## Features
 
-Discover the Hero Video Player's immersive features, including autoplay, custom overlay controls, and responsive scaling.
-
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Immersive Previews</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Captivate users with autoplaying, loop-ready thumbnail videos that elegantly transition into a full modal player.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Three Reveal Modes</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Cinematic Glow</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optional ambient background glow derived directly from the video thumbnail for a premium, theater-like aesthetic.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Five Player Backends</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one caption block and one glow treatment.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Deferred Media Weight</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Aspect Ratios</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Natively supports standard 16:9, ultrawide 21:9, and classic 4:3 ratios, automatically scaling for mobile devices.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">16:9, ultrawide 21:9, classic 4:3 and square 1:1, forwarded to Plyr and JW in their own ratio formats so the frame never jumps.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully compliant with ARIA standards, allowing users to trigger the video and dismiss the modal via keyboard navigation.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The play CTA is a real button, the modal is a labelled dialog, <code>Esc</code> closes it, the page behind it stops scrolling, and focus returns to the trigger.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Themed Accent</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Play buttons and progress fills read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the players match the rest of the page.</p>
   </div>
 </div>
 
@@ -147,22 +635,31 @@ Discover the Hero Video Player's immersive features, including autoplay, custom 
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Optimizing Thumbnails</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Always provide a high-resolution <code>thumbnailUrl</code> that matches your selected <code>aspectRatio</code>. The ambient glow effect relies on the average color values of the thumbnail image.</p>
+    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Picking a playback mode</h4>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use <code>modal</code> above the fold, where the video is the page's main call to action. Use <code>inline</code> mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use <code>direct</code> when the video <em>is</em> the content, such as a documentation walkthrough.</p>
   </div>
   <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Autoplay Considerations</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When embedding YouTube or Vimeo videos via <code>videoUrl</code>, append <code>?autoplay=1</code> to the URL so that the video starts playing instantly when the user clicks to open the modal.</p>
+    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Autoplay is a request, not a guarantee</h4>
+    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Browsers block autoplay with sound. <code>autoPlay</code> only applies to <code>playbackMode="direct"</code>, and the native player mutes itself when it is set. In <code>modal</code> and <code>inline</code> the click <em>is</em> the gesture, so playback starts on its own and the component adds <code>autoplay=1</code> to the embed URL for you.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Optimizing thumbnails</h4>
+    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Give <code>thumbnailUrl</code> a resolution that matches your <code>aspectRatio</code>. It is the poster, the LCP candidate and — for <code>source="video"</code> — the <code>&lt;video&gt;</code> element's own <code>poster</code>, so a mismatched crop shows up in all three places.</p>
+  </div>
+  <div className="p-5 rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-950/20">
+    <h4 className="text-base font-semibold text-purple-900 dark:text-purple-300 mb-1">Choosing a backend</h4>
+    <p className="text-purple-800 dark:text-purple-400/80 text-sm">Start with <code>HeroVideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
   </div>
 </div>
 
 ## Props Reference
 
+### HeroVideoPlayer
+
 <div className="overflow-x-auto mb-8">
   <table>
     <thead>
       <tr>
-        <th>Component</th>
         <th>Prop</th>
         <th>Type</th>
         <th>Default</th>
@@ -171,233 +668,361 @@ Discover the Hero Video Player's immersive features, including autoplay, custom 
     </thead>
     <tbody>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>videoUrl</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"https://www.youtube..."</code>
-        </td>
-        <td>
-          The embed URL (YouTube, Vimeo, etc.) or video source string rendered
-          inside the active modal dialog.
-        </td>
+        <td><code>videoUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://www.youtube..."</code></td>
+        <td>Embed URL for <code>source="youtube"</code>, or a playable media file for <code>source="video"</code>.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>thumbnailUrl</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"https://images.unsplash..."</code>
-        </td>
-        <td>
-          High-resolution image URL displayed on the card preview before the
-          modal is launched.
-        </td>
+        <td><code>playbackMode</code></td>
+        <td><code>"modal" | "inline" | "direct"</code></td>
+        <td><code>"modal"</code></td>
+        <td>How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the copy moved below the frame.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>thumbnailAlt</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"Hero Video Thumbnail"</code>
-        </td>
-        <td>Accessible alt text string for the background image preview.</td>
+        <td><code>source</code></td>
+        <td><code>"youtube" | "video"</code></td>
+        <td><code>"youtube"</code></td>
+        <td>Renders an iframe embed or a native <code>&lt;video&gt;</code> element. Independent of <code>playbackMode</code>.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>badge</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"Next-Gen Architecture"</code>
-        </td>
-        <td>
-          Optional pill badge rendered with an animated pulse icon at the
-          top-left of the preview container.
-        </td>
+        <td><code>videoType</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>MIME type on the <code>&lt;source&gt;</code> for <code>source="video"</code>, e.g. <code>video/mp4</code>.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>title</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"Experience the Platform..."</code>
-        </td>
-        <td>
-          The bold headline string overlaid at the bottom of the hero video
-          card.
-        </td>
+        <td><code>thumbnailUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Poster image for the card, and the <code>poster</code> attribute of the native player.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>subtitle</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"Watch how our engine..."</code>
-        </td>
-        <td>
-          The secondary descriptive paragraph displayed directly below the
-          title.
-        </td>
+        <td><code>thumbnailAlt</code></td>
+        <td><code>string</code></td>
+        <td><code>"Nature Wilderness..."</code></td>
+        <td>Alt text for the poster image.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>playButtonLabel</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>"Watch Demo"</code>
-        </td>
-        <td>
-          Text label anchored inside the centered glassmorphic play button CTA.
-        </td>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"Wilderness Exploration"</code></td>
+        <td>Pill badge with an animated icon — top-left over the poster, or above the title in <code>direct</code> mode.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>aspectRatio</code>
-        </td>
-        <td>
-          <code>"16/9" | "21/9" | "4/3" | "1/1"</code>
-        </td>
-        <td>
-          <code>"16/9"</code>
-        </td>
-        <td>
-          Controls the responsive aspect ratio dimensions of the preview card
-          container.
-        </td>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Experience Untouched..."</code></td>
+        <td>Headline, and the accessible name of the modal dialog.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>modalSize</code>
-        </td>
-        <td>
-          <code>"md" | "lg" | "xl" | "full"</code>
-        </td>
-        <td>
-          <code>"lg"</code>
-        </td>
-        <td>
-          Determines the width and height constraints of the popup modal dialog.
-        </td>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Embark on an immersive..."</code></td>
+        <td>Secondary paragraph under the title.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>enableGlow</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>true</code>
-        </td>
-        <td>
-          Toggles an ambient, theme-responsive blur gradient glow behind the
-          hero player container.
-        </td>
+        <td><code>playButtonLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>"Watch Nature Documentary"</code></td>
+        <td>Label inside the glassmorphic CTA. Not rendered in <code>direct</code> mode.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>onPlay</code>
-        </td>
-        <td>
-          <code>() =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Optional callback function fired whenever the user clicks to launch
-          the video modal.
-        </td>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Aspect ratio of the card and of the modal frame.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>onClose</code>
-        </td>
-        <td>
-          <code>() =&gt; void</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Optional callback function fired whenever the video modal dialog is
-          dismissed.
-        </td>
+        <td><code>modalSize</code></td>
+        <td><code>"md" | "lg" | "xl" | "full"</code></td>
+        <td><code>"lg"</code></td>
+        <td>Width of the dialog. <code>full</code> fills the viewport at 90vh. Only read in <code>modal</code> mode.</td>
       </tr>
       <tr>
-        <td>
-          <code>HeroVideoPlayer</code>
-        </td>
-        <td>
-          <code>className</code>
-        </td>
-        <td>
-          <code>string</code>
-        </td>
-        <td>
-          <code>undefined</code>
-        </td>
-        <td>
-          Custom Tailwind CSS classes applied to the outermost container
-          wrapper. Also accepts all standard React HTML div attributes.
-        </td>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Starts playback on load. Only read in <code>direct</code> mode; the native player mutes itself when it is set.</td>
+      </tr>
+      <tr>
+        <td><code>muted</code> / <code>loop</code> / <code>controls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code> / <code>false</code> / <code>true</code></td>
+        <td>Passed to the native <code>&lt;video&gt;</code>. Ignored for <code>source="youtube"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>enableGlow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Ambient blur gradient behind the card.</td>
+      </tr>
+      <tr>
+        <td><code>onPlay</code> / <code>onClose</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fire when the player opens and when it is dismissed. Not called in <code>direct</code> mode, which never opens or closes.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes on the outer wrapper. All other standard div attributes pass through.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### HeroAudioPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>audioUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>Audio file the browser plays natively — mp3, ogg, wav, m4a.</td>
+      </tr>
+      <tr>
+        <td><code>audioType</code></td>
+        <td><code>string</code></td>
+        <td><code>"audio/mpeg"</code></td>
+        <td>MIME type on the <code>&lt;source&gt;</code>, so the browser can skip a format it cannot play.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"hero" | "bar" | "native"</code></td>
+        <td><code>"hero"</code></td>
+        <td>Full artwork card, single compact row, or the browser's own <code>&lt;audio controls&gt;</code> under the artwork.</td>
+      </tr>
+      <tr>
+        <td><code>artworkUrl</code> / <code>artworkAlt</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Cover image and its alt text.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code> / <code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Now Playing"</code> / …</td>
+        <td>Track copy. <code>subtitle</code> is the natural place for the artist or show name.</td>
+      </tr>
+      <tr>
+        <td><code>skipSeconds</code></td>
+        <td><code>number</code></td>
+        <td><code>10</code></td>
+        <td>Seconds the rewind and forward buttons jump. <code>0</code> hides both.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code> / <code>loop</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Passed to the <code>&lt;audio&gt;</code> element. Autoplay is blocked without a prior interaction on most browsers.</td>
+      </tr>
+      <tr>
+        <td><code>preload</code></td>
+        <td><code>"none" | "metadata" | "auto"</code></td>
+        <td><code>"metadata"</code></td>
+        <td>How much the browser fetches up front. <code>metadata</code> is enough to show the duration.</td>
+      </tr>
+      <tr>
+        <td><code>enableGlow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Ambient blur gradient behind the card.</td>
+      </tr>
+      <tr>
+        <td><code>onPlay</code> / <code>onPause</code> / <code>onEnded</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Playback callbacks for analytics.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### HeroPlyrPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>A media file for <code>html5</code>; a watch URL or bare video id for <code>youtube</code> and <code>vimeo</code>.</td>
+      </tr>
+      <tr>
+        <td><code>provider</code></td>
+        <td><code>"html5" | "youtube" | "vimeo"</code></td>
+        <td><code>"html5"</code></td>
+        <td>Which backend Plyr wraps. All three get the same control bar and keyboard shortcuts.</td>
+      </tr>
+      <tr>
+        <td><code>mediaType</code></td>
+        <td><code>"video" | "audio"</code></td>
+        <td><code>"video"</code></td>
+        <td>HTML5 only. <code>audio</code> drops the video frame and sizes the card to the control bar.</td>
+      </tr>
+      <tr>
+        <td><code>srcType</code></td>
+        <td><code>string</code></td>
+        <td><code>"video/mp4"</code></td>
+        <td>MIME type on the HTML5 <code>&lt;source&gt;</code>.</td>
+      </tr>
+      <tr>
+        <td><code>posterUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>Poster for the HTML5 video. Embeds supply their own.</td>
+      </tr>
+      <tr>
+        <td><code>accentColor</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Sets Plyr's <code>--plyr-color-main</code> on the wrapper — control bar, progress fill and focus ring.</td>
+      </tr>
+      <tr>
+        <td><code>controls</code></td>
+        <td><code>string[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Plyr control names in bar order. Omit for Plyr's default set.</td>
+      </tr>
+      <tr>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Frame ratio, forwarded to Plyr's own <code>ratio</code> option in <code>w:h</code> form.</td>
+      </tr>
+      <tr>
+        <td><code>iconUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Overrides Plyr's CDN icon sprite. Point it at a self-hosted <code>plyr.svg</code> to avoid a third-party request.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code> / <code>muted</code> / <code>loop</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Passed to Plyr. <code>autoPlay</code> forces <code>muted</code>, since browsers block the alternative.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code> / <code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Plyr Player"</code> / …</td>
+        <td>Caption under the frame. <code>showCaption={false}</code> removes the whole block.</td>
+      </tr>
+      <tr>
+        <td><code>onReady</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fires once Plyr has initialised and replaced the raw media element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### HeroJwPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>libraryUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>JW_DEMO_LIBRARY_URL</code></td>
+        <td>JW library script. Defaults to JW's public documentation library — replace it with your own <code>https://cdn.jwplayer.com/libraries/&lt;PLAYER_ID&gt;.js</code> before shipping.</td>
+      </tr>
+      <tr>
+        <td><code>licenseKey</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Only for a self-hosted library build. Cloud-hosted libraries embed their own licence.</td>
+      </tr>
+      <tr>
+        <td><code>playlistUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.jwplayer.com/v2/media/hWF9vG66"</code></td>
+        <td>A JW playlist or media endpoint. Takes precedence over <code>file</code>.</td>
+      </tr>
+      <tr>
+        <td><code>file</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>A direct mp4 or HLS manifest. Also the source of the native fallback player.</td>
+      </tr>
+      <tr>
+        <td><code>posterUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Passed to JW as <code>image</code>, and used as the fallback player's poster.</td>
+      </tr>
+      <tr>
+        <td><code>skin</code></td>
+        <td><code>"default" | "midnight" | "neon" | "sunset" | "minimal"</code></td>
+        <td><code>"default"</code></td>
+        <td>Pre-mixed JW colour config for the control bar, menus, time slider and tooltips.</td>
+      </tr>
+      <tr>
+        <td><code>skinConfig</code></td>
+        <td><code>JwSkinConfig</code></td>
+        <td><code>undefined</code></td>
+        <td>Raw JW <code>skin</code> object. Wins over <code>skin</code> when both are set.</td>
+      </tr>
+      <tr>
+        <td><code>skinUrl</code> / <code>skinName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>An external skin stylesheet and the class name it defines, for a fully custom look.</td>
+      </tr>
+      <tr>
+        <td><code>autoStart</code> / <code>muted</code> / <code>repeat</code> / <code>controls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code> / <code>false</code> / <code>false</code> / <code>true</code></td>
+        <td>JW playback flags. <code>autoStart</code> forces <code>muted</code>.</td>
+      </tr>
+      <tr>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Frame ratio, forwarded to JW's <code>aspectratio</code> in <code>w:h</code> form.</td>
+      </tr>
+      <tr>
+        <td><code>playerOptions</code></td>
+        <td><code>Record&lt;string, unknown&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Merged last into <code>jwplayer().setup()</code>. The escape hatch for any JW option the props do not cover.</td>
+      </tr>
+      <tr>
+        <td><code>onReady</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fires on JW's <code>ready</code> event. A failed load or setup falls back to the native player instead.</td>
       </tr>
     </tbody>
   </table>
