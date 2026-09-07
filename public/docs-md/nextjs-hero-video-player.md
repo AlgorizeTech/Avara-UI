@@ -293,6 +293,15 @@ export default function BrandedJwHero() {
 
 Each component installs independently — take only the players you actually use.
 
+{/* Not wrapped in : it crashes `next build` at page-data
+    collection. The banner it suppresses is turned off per block instead. */}
+
+---
+
+---
+
+---
+
 ### JW Player setup
 
 `HeroJwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
@@ -318,10 +327,10 @@ If the library fails to load, the component renders a native `` with the poster 
     16:9, ultrawide 21:9, classic 4:3 and square 1:1, forwarded to Plyr and JW in their own ratio formats so the frame never jumps.
 
     Keyboard Accessible
-    The play CTA is a real button, the modal is a labelled dialog, `Esc` closes it, the page behind it stops scrolling, and focus returns to the trigger.
+    The play CTA is a real button, the modal is a labelled dialog, Esc closes it, the page behind it stops scrolling, and focus returns to the trigger.
 
     Themed Accent
-    Play buttons and progress fills read `--theme-color`, falling back to your `--primary`, so the players match the rest of the page.
+    Play buttons and progress fills read --theme-color, falling back to your --primary, so the players match the rest of the page.
 
 ## Best Practices & Guidelines
 
