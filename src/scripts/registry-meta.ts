@@ -512,6 +512,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media"],
     docs: "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
   },
+  "table-of-contents": {
+    description:
+      "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Framer Motion indicators, and section search filtering.",
+    categories: ["navigation", "scroll"],
+    docs: "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right.",
+  },
 
   // ---- Phase 4D: overlays, feedback & messaging ----
   dialog: {

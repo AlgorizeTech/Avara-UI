@@ -2,8 +2,13 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
+<<<<<<< HEAD
+**Generated at:** 2026-09-07T15:26:48.869Z
+**Total files:** 233
+=======
 **Generated at:** 2026-09-07T11:04:00.244Z
 **Total files:** 231
+>>>>>>> 22e4775e9d7e821411370d67099c2c9d8147bffb
 
 ## Available Files
 
@@ -108,6 +113,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/stepper](/docs/nextjs-stepper.md) - Source: `[framework]\stepper\page.mdx`
 - [nextjs/support-dashboard](/docs/nextjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
 - [nextjs/table](/docs/nextjs-table.md) - Source: `[framework]\table\page.mdx`
+- [nextjs/table-of-contents](/docs/nextjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [nextjs/terminal](/docs/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [nextjs/text-animation](/docs/nextjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [nextjs/theme-switcher](/docs/nextjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
@@ -224,6 +230,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/stepper](/docs/reactjs-stepper.md) - Source: `[framework]\stepper\page.mdx`
 - [reactjs/support-dashboard](/docs/reactjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
 - [reactjs/table](/docs/reactjs-table.md) - Source: `[framework]\table\page.mdx`
+- [reactjs/table-of-contents](/docs/reactjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [reactjs/terminal](/docs/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [reactjs/text-animation](/docs/reactjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [reactjs/theme-switcher](/docs/reactjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`

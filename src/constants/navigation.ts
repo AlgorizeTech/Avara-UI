@@ -126,6 +126,7 @@ export const navigation: NavigationItem[] = [
       { label: "Sonner", slug: "sonner" },
       { label: "Stepper", slug: "stepper" },
       { label: "Table", slug: "table" },
+      { label: "Table of Contents", slug: "table-of-contents", badge: "New" },
       { label: "Tabs", slug: "vertical-tabs" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Timeline", slug: "timeline" },
