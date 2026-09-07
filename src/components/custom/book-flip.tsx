@@ -218,6 +218,19 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
     const [internalTurned, setInternalTurned] = useState<number>(defaultTurnedIndex);
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [peekingIndex, setPeekingIndex] = useState<number | null>(null);
+    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1200);
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Dynamically adjust page scale on small mobile screens (<640px)
+    const isSmallScreen = windowWidth < 640;
+    const effectivePageWidth = isSmallScreen ? Math.min(pageWidth, Math.floor((windowWidth - 48) / 2)) : pageWidth;
+    const effectivePageHeight = isSmallScreen ? Math.floor(effectivePageWidth * (pageHeight / pageWidth)) : pageHeight;
 
     const totalLeaves = pages.length;
     const currentTurned = controlledTurnedIndex !== undefined ? controlledTurnedIndex : internalTurned;
@@ -305,9 +318,9 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
     let containerTranslateX = 0;
     if (spineShift) {
         if (currentTurned > 0 && currentTurned < totalLeaves) {
-            containerTranslateX = pageWidth / 2;
+            containerTranslateX = effectivePageWidth / 2;
         } else if (currentTurned === totalLeaves) {
-            containerTranslateX = pageWidth;
+            containerTranslateX = effectivePageWidth;
         }
     }
 
@@ -326,16 +339,16 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                 className="relative flex items-center justify-center transition-all duration-500"
                 style={{
                     perspective: `${perspective}px`,
-                    width: `${pageWidth * 2 + 40}px`,
-                    height: `${pageHeight + 40}px`,
+                    width: `${effectivePageWidth * 2 + (isSmallScreen ? 12 : 40)}px`,
+                    height: `${effectivePageHeight + 40}px`,
                 }}
             >
                 {/* 3D Book Container */}
                 <div
                     className="relative transition-transform"
                     style={{
-                        width: `${pageWidth}px`,
-                        height: `${pageHeight}px`,
+                        width: `${effectivePageWidth}px`,
+                        height: `${effectivePageHeight}px`,
                         transformStyle: "preserve-3d",
                         transition: `transform ${duration}s ${easing}`,
                         transform: `translateX(${containerTranslateX}px)`,
@@ -420,11 +433,11 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     {/* Integrated Spine Crease Overlay on Front Face */}
                                     <div className="absolute top-0 bottom-0 left-0 w-[8px] bg-gradient-to-r from-black/90 via-zinc-900/60 to-transparent pointer-events-none z-30" />
 
-                                    {/* Top Header */}
-                                    <div className="relative p-3.5 z-10 flex items-center justify-between pointer-events-none">
+                                     {/* Top Header */}
+                                    <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
                                         {!isFrontCover && leaf.frontBadge ? (
                                             <span className={cn(
-                                                "px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r ml-2",
+                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r ml-1 sm:ml-2",
                                                 frontGrad
                                             )}>
                                                 {leaf.frontBadge}
@@ -432,7 +445,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         ) : <div />}
                                         {/* Page Number */}
                                         {showPageNumbers && !isFrontCover && (
-                                            <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-extrabold bg-black/60 backdrop-blur-md text-emerald-300">
+                                            <span className="px-1.5 sm:px-2.5 py-0.5 rounded-md text-[8px] sm:text-[10px] font-mono font-extrabold bg-black/60 backdrop-blur-md text-emerald-300">
                                                 #{index * 2}
                                             </span>
                                         )}
@@ -441,42 +454,42 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     {/* Bottom Content Metadata */}
                                     {isFrontCover ? (
                                         /* High-Fashion Minimalist Magazine Editorial Cover Design */
-                                        <div className="relative p-6 z-10 w-full h-full flex flex-col justify-between pointer-events-none">
+                                        <div className="relative p-3 sm:p-6 z-10 w-full h-full flex flex-col justify-between pointer-events-none">
                                             {/* Top Brand Header */}
-                                            <div className="flex items-center justify-between z-20 pt-2">
-                                                <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
-                                                    <Globe className="w-3.5 h-3.5 text-emerald-400" />
-                                                    <span className="text-[9px] font-mono font-bold tracking-widest text-white uppercase">
+                                            <div className="flex items-center justify-between z-20 pt-1 sm:pt-2">
+                                                <div className="flex items-center gap-1 bg-black/70 backdrop-blur-md px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-white/20">
+                                                    <Globe className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-emerald-400" />
+                                                    <span className="text-[7px] sm:text-[9px] font-mono font-bold tracking-widest text-white uppercase">
                                                         VOL. 08 — EDITION I
                                                     </span>
                                                 </div>
-                                                <Sparkles className="w-4 h-4 text-emerald-400" />
+                                                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-400" />
                                             </div>
 
                                             {/* Bottom Magazine Monograph Header */}
-                                            <div className="z-20 space-y-2 pb-6">
-                                                <div className="w-10 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" />
-                                                <h1 className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-sans leading-none drop-shadow-2xl">
+                                            <div className="z-20 space-y-1 sm:space-y-2 pb-2 sm:pb-6">
+                                                <div className="w-6 sm:w-10 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" />
+                                                <h1 className="text-xl sm:text-4xl font-black tracking-tighter text-white uppercase font-sans leading-tight sm:leading-none drop-shadow-2xl">
                                                     {leaf.frontTitle || "TERRA INCOGNITA"}
                                                 </h1>
-                                                <p className="text-xs font-medium text-emerald-200/90 leading-relaxed max-w-[90%]">
+                                                <p className="text-[10px] sm:text-xs font-medium text-emerald-200/90 leading-tight sm:leading-relaxed max-w-[95%] sm:max-w-[90%] line-clamp-2 sm:line-clamp-none">
                                                     {leaf.frontSubtitle || "A Visual Exploration of Earth's Most Remote Frontiers"}
                                                 </p>
-                                                <div className="pt-2 text-[9px] font-mono font-semibold tracking-widest text-zinc-300 uppercase">
+                                                <div className="pt-0.5 sm:pt-2 text-[7px] sm:text-[9px] font-mono font-semibold tracking-widest text-zinc-300 uppercase">
                                                     ALGORIZE MAGNATE PRESS
                                                 </div>
                                             </div>
                                         </div>
                                     ) : (
                                         /* Standard Plate Front Layout */
-                                        <div className="relative p-4 z-10 space-y-1 pointer-events-none">
+                                        <div className="relative p-2 sm:p-4 z-10 space-y-0.5 sm:space-y-1 pointer-events-none">
                                             {leaf.frontTitle && (
-                                                <h4 className="text-base font-black tracking-tight text-white leading-tight">
+                                                <h4 className="text-xs sm:text-base font-black tracking-tight text-white leading-tight">
                                                     {leaf.frontTitle}
                                                 </h4>
                                             )}
                                             {leaf.frontSubtitle && (
-                                                <p className="text-xs font-semibold text-emerald-200/90 line-clamp-1">
+                                                <p className="text-[9px] sm:text-xs font-semibold text-emerald-200/90 line-clamp-1">
                                                     {leaf.frontSubtitle}
                                                 </p>
                                             )}
@@ -506,10 +519,10 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     <div className="absolute top-0 bottom-0 right-0 w-[8px] bg-gradient-to-l from-black/90 via-zinc-900/60 to-transparent pointer-events-none z-30" />
 
                                     {/* Top Header */}
-                                    <div className="relative p-3.5 z-10 flex items-center justify-between pointer-events-none">
+                                    <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
                                         {!isBackCover && leaf.backBadge ? (
                                             <span className={cn(
-                                                "px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r",
+                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r",
                                                 backGrad
                                             )}>
                                                 {leaf.backBadge}
@@ -517,7 +530,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         ) : <div />}
                                         {/* Page Number */}
                                         {showPageNumbers && !isBackCover && (
-                                            <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-extrabold bg-black/60 backdrop-blur-md text-cyan-300 mr-2">
+                                            <span className="px-1.5 sm:px-2.5 py-0.5 rounded-md text-[8px] sm:text-[10px] font-mono font-extrabold bg-black/60 backdrop-blur-md text-cyan-300 mr-1 sm:mr-2">
                                                 #{index * 2 + 1}
                                             </span>
                                         )}
@@ -526,29 +539,29 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     {/* Bottom Content Metadata */}
                                     {isBackCover ? (
                                         /* Luxurious Royal Back Cover Design */
-                                        <div className="relative p-6 z-10 w-full space-y-3 pointer-events-none bg-gradient-to-t from-black/95 via-black/85 to-transparent text-center flex flex-col items-center justify-end pb-9">
-                                            <div className="w-12 h-0.5 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full mb-1" />
-                                            <h3 className="text-base font-black tracking-[0.2em] uppercase text-white font-serif">
+                                        <div className="relative p-3 sm:p-6 z-10 w-full space-y-1.5 sm:space-y-3 pointer-events-none bg-gradient-to-t from-black/95 via-black/85 to-transparent text-center flex flex-col items-center justify-end pb-4 sm:pb-9">
+                                            <div className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full mb-0.5" />
+                                            <h3 className="text-xs sm:text-base font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white font-serif">
                                                 {leaf.backTitle || "THE INFINITE COSMOS"}
                                             </h3>
-                                            <p className="text-[11px] font-medium text-zinc-300/90 leading-relaxed max-w-[92%]">
+                                            <p className="text-[9px] sm:text-[11px] font-medium text-zinc-300/90 leading-tight sm:leading-relaxed max-w-[95%] sm:max-w-[92%] line-clamp-2 sm:line-clamp-none">
                                                 {leaf.backSubtitle || "Published by Algorize Fine Art Press. All rights reserved."}
                                             </p>
-                                            <div className="pt-2 w-full flex items-center justify-between border-t border-white/15 text-zinc-400 text-[9px] font-mono">
+                                            <div className="pt-1 sm:pt-2 w-full flex items-center justify-between border-t border-white/15 text-zinc-400 text-[7px] sm:text-[9px] font-mono">
                                                 <span>ISBN 978-0-321-12345-6</span>
-                                                <QrCode className="w-4 h-4 text-white/80" />
+                                                <QrCode className="w-3 h-3 sm:w-4 sm:h-4 text-white/80" />
                                             </div>
                                         </div>
                                     ) : (
                                         /* Standard Plate Back Layout */
-                                        <div className="relative p-4 z-10 space-y-1 pointer-events-none">
+                                        <div className="relative p-2 sm:p-4 z-10 space-y-0.5 sm:space-y-1 pointer-events-none">
                                             {leaf.backTitle && (
-                                                <h4 className="text-base font-black tracking-tight text-white leading-tight">
+                                                <h4 className="text-xs sm:text-base font-black tracking-tight text-white leading-tight">
                                                     {leaf.backTitle}
                                                 </h4>
                                             )}
                                             {leaf.backSubtitle && (
-                                                <p className="text-xs font-semibold text-cyan-200/90 line-clamp-1">
+                                                <p className="text-[9px] sm:text-xs font-semibold text-cyan-200/90 line-clamp-1">
                                                     {leaf.backSubtitle}
                                                 </p>
                                             )}
