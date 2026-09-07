@@ -15,6 +15,7 @@ import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+import HomepageReviewsSection from "@/components/home/HomepageReviewsSection";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -3254,6 +3255,7 @@ export default function HomePage() {
 			<ComponentShowcase />
 			<WhyChooseUsSection />
 			<ComponentPreviewGridSection />
+			<HomepageReviewsSection />
 			<CTASection />
 			<FooterSection />
 		</div>
