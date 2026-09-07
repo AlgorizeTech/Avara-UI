@@ -2,8 +2,13 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
+<<<<<<< HEAD
 **Generated at:** 2026-09-07T15:26:48.869Z
 **Total files:** 233
+=======
+**Generated at:** 2026-09-07T11:04:00.244Z
+**Total files:** 231
+>>>>>>> 22e4775e9d7e821411370d67099c2c9d8147bffb
 
 ## Available Files
 

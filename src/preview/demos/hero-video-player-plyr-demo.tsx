@@ -8,27 +8,22 @@ const MEDIA = {
     src: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
     srcType: "video/mp4",
     posterUrl: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg",
-    badge: "Plyr — HTML5",
     title: "View From A Blue Moon",
-    subtitle:
-      "A native file behind Plyr's accessible, fully keyboard-driven control bar.",
+    subtitle: "A native mp4 behind Plyr's control bar",
   },
   youtube: {
     src: "LXb3EKWsInQ",
     srcType: undefined,
     posterUrl: undefined,
-    badge: "Plyr — YouTube",
     title: "Wilderness Unbound",
-    subtitle:
-      "The same control bar in front of a YouTube embed, so both look identical.",
+    subtitle: "The same control bar, in front of YouTube",
   },
   vimeo: {
     src: "76979871",
     srcType: undefined,
     posterUrl: undefined,
-    badge: "Plyr — Vimeo",
     title: "Vimeo Staff Picks",
-    subtitle: "Plyr normalises Vimeo behind the same controls and shortcuts.",
+    subtitle: "The same control bar, in front of Vimeo",
   },
 } as const;
 
@@ -36,9 +31,8 @@ const AUDIO = {
   src: "https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3",
   srcType: "audio/mpeg",
   posterUrl: undefined,
-  badge: "Plyr — Audio",
   title: "It All Began With a Burst",
-  subtitle: "Kishi Bashi — 151a. The same player in its audio layout.",
+  subtitle: "Kishi Bashi — 151a",
 } as const;
 
 export default function HeroVideoPlayerPlyrDemo({
@@ -46,7 +40,7 @@ export default function HeroVideoPlayerPlyrDemo({
   mediaType = "video",
   aspectRatio = "16/9",
   enableGlow = true,
-  showCaption = true,
+  showOverlay = true,
   accentColor,
   color = "primary",
 }: {
@@ -54,7 +48,7 @@ export default function HeroVideoPlayerPlyrDemo({
   mediaType?: "video" | "audio";
   aspectRatio?: "16/9" | "21/9" | "4/3" | "1/1";
   enableGlow?: boolean;
-  showCaption?: boolean;
+  showOverlay?: boolean;
   accentColor?: string;
   color?: string;
 }) {
@@ -73,7 +67,7 @@ export default function HeroVideoPlayerPlyrDemo({
           mediaType={mediaType}
           aspectRatio={aspectRatio}
           enableGlow={enableGlow}
-          showCaption={showCaption}
+          showOverlay={showOverlay}
           // Falls through to the page's theme colour when no explicit accent is
           // set, so the Plyr control bar tracks the docs colour picker.
           accentColor={accentColor ?? "var(--theme-color, var(--primary))"}

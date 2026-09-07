@@ -1297,7 +1297,6 @@
         "media"
       ],
       "dependencies": [
-        "lucide-react",
         "plyr"
       ],
       "registryDependencies": [
