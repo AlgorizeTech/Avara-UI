@@ -137,12 +137,12 @@ function SingleCardItem({
                 dragControls={controls}
                 dragListener={false}
                 whileDrag={{
-                    scale: 1.025,
+                    scale: 1.02,
                     zIndex: 50,
                 }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 className={cn(
-                    "relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-primary/5 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-primary/10 backdrop-blur-2xl p-5 shadow-none transition-all duration-300 select-none group flex items-center justify-between gap-4",
+                    "relative w-full overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-primary/5 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-primary/10 backdrop-blur-2xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3",
                     item.hoverBorderColor || "hover:border-primary/80",
                     item.completed && "opacity-60 bg-muted/40",
                     cardClassName
@@ -158,11 +158,11 @@ function SingleCardItem({
 
                 {dragHandlePosition === "left" && renderDragHandle()}
 
-                {/* Main Content Area */}
-                <div className="flex-1 min-w-0 space-y-2 pl-2">
-                    {/* Header Row: Title & Badge */}
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                        <div className="flex items-center gap-2 min-w-0">
+                {/* Main Card Content */}
+                <div className="flex-1 min-w-0 space-y-1.5 pl-2">
+                    {/* Header Row: Title & Right-Aligned Badge */}
+                    <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
                             {enableCheckboxes && (
                                 <button
                                     type="button"
@@ -176,7 +176,7 @@ function SingleCardItem({
                                     )}
                                 </button>
                             )}
-                            <h3 className={cn("text-base font-extrabold tracking-tight text-foreground leading-tight truncate", item.completed && "line-through text-muted-foreground")}>
+                            <h3 className={cn("text-base font-bold tracking-tight text-foreground leading-tight", item.completed && "line-through text-muted-foreground")}>
                                 {item.title}
                             </h3>
                         </div>
@@ -184,7 +184,7 @@ function SingleCardItem({
                         {enableBadges && item.badge && (
                             <span
                                 className={cn(
-                                    "px-2.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider shrink-0 shadow-2xs",
+                                    "px-2.5 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider shrink-0 shadow-2xs ml-auto",
                                     item.badgeStyle || "bg-primary/10 text-primary border border-primary/30"
                                 )}
                             >
@@ -193,37 +193,34 @@ function SingleCardItem({
                         )}
                     </div>
 
-                    {/* Subtitle / Description */}
                     {item.description && (
-                        <p className="text-xs font-medium text-muted-foreground/90 leading-relaxed">
+                        <p className="text-xs font-medium text-muted-foreground leading-relaxed">
                             {item.description}
                         </p>
                     )}
 
                     {/* Footer Row */}
-                    {(item.date || item.linkText) && (
-                        <div className="pt-2 border-t border-border/40 flex items-center justify-between gap-2 flex-wrap text-xs text-muted-foreground/80 font-mono">
-                            {item.date && (
-                                <div className="flex items-center gap-1.5 text-[11px] font-semibold">
-                                    <Calendar className="w-3.5 h-3.5 text-primary/70" />
-                                    <span>{item.date}</span>
-                                </div>
-                            )}
+                    <div className="pt-2 border-t border-border/40 flex items-center justify-between gap-2 flex-wrap text-xs text-muted-foreground/80 font-mono">
+                        {item.date && (
+                            <div className="flex items-center gap-1.5 text-[11px] font-semibold">
+                                <Calendar className="w-3.5 h-3.5 text-primary" />
+                                <span>{item.date}</span>
+                            </div>
+                        )}
 
-                            {item.linkText && (
-                                <a
-                                    href={item.linkUrl || "#"}
-                                    onClick={(e) => {
-                                        if (!item.linkUrl || item.linkUrl === "#") e.preventDefault();
-                                    }}
-                                    className="inline-flex items-center gap-1 text-[11px] font-sans font-semibold text-primary hover:underline hover:text-primary/80 transition-colors ml-auto"
-                                >
-                                    <span>{item.linkText}</span>
-                                    <ExternalLink className="w-3 h-3" />
-                                </a>
-                            )}
-                        </div>
-                    )}
+                        {item.linkText && (
+                            <a
+                                href={item.linkUrl || "#"}
+                                onClick={(e) => {
+                                    if (!item.linkUrl || item.linkUrl === "#") e.preventDefault();
+                                }}
+                                className="inline-flex items-center gap-1 text-[11px] font-sans font-semibold text-primary hover:underline hover:text-primary/80 transition-colors ml-auto"
+                            >
+                                <span>{item.linkText}</span>
+                                <ExternalLink className="w-3 h-3" />
+                            </a>
+                        )}
+                    </div>
                 </div>
 
                 {dragHandlePosition === "right" && renderDragHandle()}
@@ -236,15 +233,13 @@ function SingleCardItem({
         <Reorder.Item
             value={item}
             id={String(item.id)}
-            dragControls={controls}
-            dragListener={false}
             whileDrag={{
                 scale: 1.02,
                 zIndex: 50,
             }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             className={cn(
-                "relative rounded-2xl border border-border/80 bg-card dark:bg-zinc-900/90 backdrop-blur-xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3",
+                "relative w-full rounded-2xl border border-border/80 bg-card dark:bg-zinc-900/90 backdrop-blur-xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3 cursor-grab active:cursor-grabbing",
                 item.hoverBorderColor || "hover:border-primary/80",
                 item.completed && "opacity-60 bg-muted/40",
                 cardClassName
