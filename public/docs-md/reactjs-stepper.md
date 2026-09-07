@@ -354,7 +354,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
           The active theme color for the progress line, completed/active
           circles and the pulse ring. Any CSS color value — hex,{" "}
