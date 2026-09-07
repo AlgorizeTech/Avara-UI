@@ -26,6 +26,22 @@ export default function Page() {
   );
 }`;
 
+export const usageGlowArc = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    
+  );
+}`;
+
+export const usageDoctor = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    
+  );
+}`;
+
 ## Props Reference
 
         Prop
@@ -35,11 +51,11 @@ export default function Page() {
 
           variant
 
-          "bounce" | "typing" | "slider"
+          "bounce" | "typing" | "slider" | "pet-shop"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders a split 2-column hero with a continuous marquee thumbnail slider.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders a split 2-column hero with continuous slider; "pet-shop" renders a clean 2-column pet shop & e-commerce hero.
 
           typingWords
 
@@ -48,6 +64,14 @@ export default function Page() {
           ["Interfaces", "Components", …]
 
           The rotating words between titlePrefix and titleSuffix.
+
+          petImage · secondaryPetImage
+
+          string
+
+          Unsplash URLs
+
+          Custom image URLs for the main featured pet photo and secondary avatar badge photo (used when variant="pet-shop").
 
           sliderImages
 

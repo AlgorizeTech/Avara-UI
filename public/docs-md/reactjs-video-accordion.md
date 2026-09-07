@@ -12,8 +12,7 @@ export const accordionPanels = `const panels = [
     title: "Alpine Sanctuary",
     description:
       "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    videoSrc: "https://vjs.zencdn.net/v/oceans.mp4",
     posterUrl:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
   },
@@ -22,18 +21,16 @@ export const accordionPanels = `const panels = [
     title: "Emerald Rainforest",
     description:
       "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=1200&auto=format&fit=crop",
   },
   {
     id: "soaring",
     title: "Highland Ridge",
     description:
       "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
     posterUrl:
       "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
   },
@@ -42,10 +39,9 @@ export const accordionPanels = `const panels = [
     title: "Cascading Waterfalls",
     description:
       "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
   },
 ];`;
 
@@ -56,7 +52,9 @@ ${accordionPanels}
 export default function OpenedOnLoad() {
   // Land with one panel already open — good for hero sections where the
   // first frame should not look inert.
-  return ;
+  return (
+
+  );
 }`;
 
 export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
@@ -66,7 +64,9 @@ ${accordionPanels}
 export default function ShortReel() {
   // Fewer, wider panels. Each one keeps a legible title strip even when
   // compressed, so two or three read as well as five.
-  return ;
+  return (
+
+  );
 }`;
 
 ## Installation

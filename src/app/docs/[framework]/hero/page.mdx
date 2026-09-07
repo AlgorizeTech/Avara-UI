@@ -98,10 +98,20 @@ export default function Page() {
     <HeroBlock
       variant="slider"
       badgeText="FW 24/25 Collection"
+      badgeHref="/collection"
       titlePrefix="Back into "
+      titleSuffix="Modern Fashion"
       subtitle="Designed for ultimate comfort and flexibility. Crafted with breathable fabrics and sleek, modern designs."
       primaryActionLabel="View Collection"
-      primaryActionHref="/docs"
+      primaryActionHref="/shop"
+      secondaryActionLabel="Explore Lookbook"
+      secondaryActionHref="/lookbook"
+      mainImage="https://images.unsplash.com/photo-1524504388940-b1c1722653e1"
+      sliderImages={[
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
+        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4",
+        "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead"
+      ]}
       className="w-full min-h-screen"
     />
   );
@@ -128,6 +138,92 @@ export default function Page() {
   ]}
 />
 
+export const usageGlowArc = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="pet-shop"
+      titlePrefix="All Pet Essentials"
+      titleSuffix="Delivered To Your Door"
+      subtitle="Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations."
+      primaryActionLabel="Shop Dog Supplies"
+      primaryActionHref="/shop/dog"
+      secondaryActionLabel="Shop Cat Care"
+      secondaryActionHref="/shop/cat"
+      petImage="https://images.unsplash.com/photo-1543466835-00a7907e9de1"
+      secondaryPetImage="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
+      className="w-full min-h-screen"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-glow-arc"
+  colorControl
+  columns={1}
+  minHeight={450}
+  examples={[
+    {
+      title: "Pet Shop & Animal Care Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"pet-shop"',
+          effect: "for a clean, minimal e-commerce hero layout with circular image showcase and feature badges.",
+        },
+      ],
+      usage: usageGlowArc,
+    },
+  ]}
+/>
+
+export const usageDoctor = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="doctor"
+      titlePrefix="Trusted Kits"
+      titleSuffix="Real Results"
+      subtitle="Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
+      primaryActionLabel="Order Kit"
+      primaryActionHref="/order"
+      secondaryActionLabel="See How Its Work"
+      secondaryActionHref="/how-it-works"
+      petImage="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
+      secondaryPetImage="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
+      mainImage="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
+      ratingText="100%"
+      featurePillText="98%"
+      badgeTags={["Safe & Private Results", "Satisfaction rate"]}
+      className="w-full min-h-screen"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-doctor"
+  colorControl
+  columns={1}
+  minHeight={480}
+  examples={[
+    {
+      title: "Doctor Portal & Healthcare Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"doctor"',
+          effect: "for a clean medical & healthcare hero with specialist doctor showcase and appointment booking CTA.",
+        },
+      ],
+      usage: usageDoctor,
+    },
+  ]}
+/>
+
 ## Props Reference
 
 <div className="overflow-x-auto mb-8">
@@ -146,13 +242,13 @@ export default function Page() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider"</code>
+          <code>"bounce" | "typing" | "slider" | "pet-shop"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders a split 2-column hero with a continuous marquee thumbnail slider.
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders a split 2-column hero with continuous slider; <code>"pet-shop"</code> renders a clean 2-column pet shop & e-commerce hero.
         </td>
       </tr>
       <tr>
@@ -167,6 +263,20 @@ export default function Page() {
         </td>
         <td>
           The rotating words between <code>titlePrefix</code> and <code>titleSuffix</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>petImage</code> · <code>secondaryPetImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>Unsplash URLs</code>
+        </td>
+        <td>
+          Custom image URLs for the main featured pet photo and secondary avatar badge photo (used when <code>variant="pet-shop"</code>).
         </td>
       </tr>
       <tr>

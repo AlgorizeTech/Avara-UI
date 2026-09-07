@@ -37,49 +37,24 @@ export const networkNodes = `const users: NetworkNode[] = [
   { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
 ];`;
 
-export const usageRings = `import {
+export const usageInteractive = `import {
   NetworkGraph,
   type NetworkNode,
 } from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 
-export default function RingLayout() {
+export default function OrbitGraph() {
   // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
   // ring's radius and \`ringGap\` the distance to each next one — both as a
   // percentage of the square container, so the layout scales on any screen.
+  // \`orbitSpeed\` multiplies the rotation rate.
   return (
     
   );
 }`;
 
-export const usageStatic = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function StaticGraph() {
-  // Rings hold their position — the entrance animation still plays.
-  return ;
-}`;
-
-export const usageSpeed = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function FastGraph() {
-  // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-  return ;
-}`;
-
 ## Installation
-
-## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
