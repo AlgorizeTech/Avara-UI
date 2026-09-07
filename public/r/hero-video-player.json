@@ -3,7 +3,7 @@
   "name": "hero-video-player",
   "title": "Hero Video Player",
   "author": "AlgorizeTech",
-  "description": "A video hero with thumbnail, glow and a modal player that opens on click. Use it for product demo sections that should not autoplay.",
+  "description": "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/HeroVideoPlayerBlock.tsx"
     }
   ],
-  "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight.",
+  "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`.",
   "categories": [
     "marketing",
     "media"

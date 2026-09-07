@@ -83,7 +83,7 @@ export default function StatGrid() {
   );
 }`;
 
-export const usageEditorial = `import {
+export const usageBlogShowcase = `import {
   Card,
   CardDescription,
   CardFooter,
@@ -91,106 +91,116 @@ export const usageEditorial = `import {
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
 
-export default function LeadStoryCard() {
-  return (
-    
-      {/* Cover art sits outside CardHeader so it can bleed to the edges */}
-
-          240 ms trace
-
-          Performance
-
-          The quiet cost of a re-render
-
-          A dashboard that only felt slow on Mondays, and the six components that explained it.
-
-          PR
-
-          Priya Raman
-          4 March
-        
-        8 min
-
-  );
-}`;
-
-export const usageProfile = `"use client";
-
-export default function ProfileCard() {
-  const [following, setFollowing] = useState(false);
-
-  return (
-    
-      {/* Cover band — the avatar overlaps its lower edge */}
-
-            AK
-
-          Ayesha Karim
-          Design engineer at Northwind
-
-          {[
-            ["128", "Components"],
-            ["342", "Merged PRs"],
-            ["96", "Reviews"],
-          ].map(([value, label]) => (
-            
-              {value}
-              {label}
-            
-          ))}
-
-         setFollowing((v) => !v)}
-          className={\`inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors \${
-            following
-              ? "border-border hover:bg-muted"
-              : "border-violet-600 bg-violet-600 text-white hover:bg-violet-500"
-          }\`}
-        >
-          {following ?  : }
-          {following ? "Following" : "Follow"}
-
-           Message
-
-  );
-}`;
-
-export const usagePricing = `import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/custom/blocks/CardBlock";
-
-const FEATURES = [
-  "Everything in Starter",
-  "Figma kit and tokens",
-  "Private registry",
-  "Priority patches",
+const FEED = [
+  {
+    title: "Naming things without a thesaurus",
+    topic: "Craft",
+    read: "5 min",
+    thumb: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=400&auto=format&fit=crop",
+    thumbAlt: "Developer writing code at a desk",
+  },
+  {
+    title: "What a design token is not",
+    topic: "Design systems",
+    read: "6 min",
+    thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop",
+    thumbAlt: "Workspace with a laptop showing a web layout",
+  },
 ];
 
-export default function FeaturedPlanCard() {
+export default function BlogShowcase() {
   return (
-    // The featured tier inverts the surface instead of adding a gradient
+    
+      {/* Featured story */}
+      
+        {/* The cover sits outside CardHeader so it can bleed to the edges */}
 
-          Team
+            Performance
+
+            The quiet cost of a re-render
+
+            A dashboard that only felt slow on Mondays, and the six components that explained it.
+
+            Priya Raman
+            4 March
           
-            Most picked
+          8 min
 
-          $24
-          per seat, per month
+      {/* Sidebar feed — one Card, rows split by divide-y */}
+      
+        Latest
+        {FEED.map((story) => (
 
-          Keep one design system in sync across a team.
-
-          {FEATURES.map((feature) => (
-
-              {feature}
+              {story.title}
+              {story.topic}
             
-          ))}
+            {story.read}
+          
+        ))}
 
-          Choose Team
+  );
+}`;
 
+export const usageBlogGrid = `import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+const POSTS = [
+  {
+    topic: "Layout",
+    title: "Grids that survive translation",
+    dek: "German compound nouns broke our pricing table in four places. What we changed.",
+    cover: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "Maya Lin",
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop",
+    read: "7 min",
+  },
+  {
+    topic: "Accessibility",
+    title: "The accessibility tree is not a mirror",
+    dek: "Two components that looked identical read as completely different things aloud.",
+    cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Glowing circuit board traces",
+    author: "Daniel Kim",
+    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop",
+    read: "5 min",
+  },
+  {
+    topic: "Machine learning",
+    title: "Ship the model, keep the seams",
+    dek: "Every inference call our app makes can fail. The UI has to say so plainly.",
+    cover: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop",
+    coverAlt: "Abstract render of intersecting shapes",
+    author: "Ethan Wright",
+    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=200&auto=format&fit=crop",
+    read: "9 min",
+  },
+];
+
+export default function BlogCardGrid() {
+  return (
+    
+      {POSTS.map((post) => (
+
+            {/* The topic rides on the image, so the card body stays type-only */}
+            
+              {post.topic}
+
+              {post.title}
+
+              {post.dek}
+
+              {post.author}
+            
+            {post.read}
+
+      ))}
+    
   );
 }`;
 

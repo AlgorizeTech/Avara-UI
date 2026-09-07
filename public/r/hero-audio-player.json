@@ -3,7 +3,7 @@
   "name": "hero-audio-player",
   "title": "Hero Audio Player",
   "author": "AlgorizeTech",
-  "description": "TODO: describe hero-audio-player. Generated placeholder.",
+  "description": "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
   "dependencies": [
     "lucide-react"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/HeroAudioPlayerBlock.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named export: HeroAudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
+  "categories": [
+    "marketing",
+    "media"
+  ],
   "type": "registry:component"
 }

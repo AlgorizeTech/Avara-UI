@@ -121,10 +121,13 @@ export const HeroPlyrPlayer = React.forwardRef<
     onReadyRef.current = onReady;
 
     const isEmbed = provider !== "html5";
-    // JSON props arrive as fresh arrays every render, so the effect keys off the
-    // serialized value — otherwise the player is torn down and rebuilt on every
-    // parent render, and playback restarts under the viewer.
+    // `controls` is an array literal, so it is a new reference on every parent
+    // render. The effect keys off its serialized value and reads the live array
+    // through a ref — depending on the array itself would rebuild the player on
+    // every render and restart playback under the viewer.
     const controlsKey = controls ? JSON.stringify(controls) : "";
+    const controlsRef = useRef(controls);
+    controlsRef.current = controls;
 
     useEffect(() => {
       const element = mediaRef.current;
@@ -138,12 +141,13 @@ export const HeroPlyrPlayer = React.forwardRef<
       // hydrates without the library ever loading during SSR.
       void import("plyr").then(({ default: Plyr }) => {
         if (cancelled) return;
+        const barControls = controlsRef.current;
         player = new Plyr(element, {
           autoplay: autoPlay,
           muted: muted || autoPlay,
           loop: { active: loop },
           ratio: plyrRatios[aspectRatio],
-          ...(controls ? { controls } : {}),
+          ...(barControls ? { controls: barControls } : {}),
           ...(iconUrl ? { iconUrl } : {}),
         });
         playerRef.current = player;
@@ -164,7 +168,17 @@ export const HeroPlyrPlayer = React.forwardRef<
           /* already torn down */
         }
       };
-    }, [src, provider, mediaType, aspectRatio, autoPlay, muted, loop, iconUrl, controlsKey, controls]);
+    }, [
+      src,
+      provider,
+      mediaType,
+      aspectRatio,
+      autoPlay,
+      muted,
+      loop,
+      iconUrl,
+      controlsKey,
+    ]);
 
     const setMedia = (el: HTMLElement | null) => {
       mediaRef.current = el;

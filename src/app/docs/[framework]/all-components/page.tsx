@@ -74,7 +74,7 @@ const COMPONENT_META: Record<
 	drawer: { countText: "Slideover Sheet", illustrationType: "drawer" },
 	form: { countText: "Validated Forms", illustrationType: "form" },
 	"half-stars": { countText: "Rating Stars", illustrationType: "half-stars" },
-	"hero-video-player": { countText: "Action Video Hero", illustrationType: "hero-videoplayer" },
+	"hero-video-player": { countText: "Video & Audio Players", illustrationType: "hero-videoplayer" },
 	"image-compare": { countText: "Before & After Slider", illustrationType: "image-compare" },
 	input: { countText: "Text & Fields", illustrationType: "input" },
 	invoice: { countText: "Billing Paper", illustrationType: "invoice" },
