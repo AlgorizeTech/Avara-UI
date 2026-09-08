@@ -39,7 +39,7 @@ export default function AnimatedTypographyDemo({
   if (singleVariant) {
     const tags: TypographyTag[] = ["h3", "h4", "p"];
     return (
-      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10 flex flex-col justify-center items-center">
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10 flex flex-col justify-center items-center">
         <div className="w-full max-w-3xl flex flex-col gap-6 items-center text-center">
           {tags.map((t) => (
             <AnimatedTypographyBlock
@@ -57,7 +57,7 @@ export default function AnimatedTypographyDemo({
   }
   if (variants?.length) {
     return (
-      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10">
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10">
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {variants.map((v) => (
             <div key={v} className="flex flex-col gap-1">
@@ -124,7 +124,7 @@ export default function AnimatedTypographyDemo({
             }));
 
     return (
-      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10">
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10">
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {rows.map((row) => (
             <div key={row.label} className="flex flex-col gap-1">
