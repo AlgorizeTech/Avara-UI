@@ -45,7 +45,7 @@ type LayoutType =
 export default function ButtonDemo({
   layout = "basic",
 }: {
-  layout?: "basic" | "slide-icon" | "slide-text";
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social";
 }) {
   return (
     <div className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0">
@@ -153,6 +153,51 @@ export default function ButtonDemo({
           {/* 20. Liquid Wave Fill */}
           <Button variant="liquid-fill" iconLeft={<MailIcon />}>
             Liquid Fill
+          </Button>
+        </div>
+      )}
+
+      {layout === "icon-only" && (
+        <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto py-2">
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SearchIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<BellIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MailIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PhoneIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SettingsIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PlusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MinusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon />} />
+        </div>
+      )}
+
+      {layout === "social" && (
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 w-full max-w-4xl mx-auto py-2">
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<EmailIcon />}>
+            Login with Email
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GoogleIcon />}>
+            Continue with Google
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GitHubIcon />}>
+            Continue with GitHub
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<FacebookIcon />}>
+            Login with Facebook
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon2 />}>
+            Login with X
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<AppleIcon />}>
+            Login with Apple
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MicrosoftIcon />}>
+            Login with Microsoft
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SlackIcon />}>
+            Login with Slack
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<LinkedInIcon />}>
+            Login with LinkedIn
           </Button>
         </div>
       )}

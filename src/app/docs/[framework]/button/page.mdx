@@ -70,6 +70,80 @@ export default function MotionButtonDemo() {
   );
 }`;
 
+export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
+import {
+  SearchIcon,
+  BellIcon,
+  MailIcon,
+  PhoneIcon,
+  SettingsIcon,
+  PlusIcon,
+  MinusIcon,
+  XIcon,
+} from "@/components/custom/blocks/Icons";
+
+export default function IconOnlyButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Button variant="default" size="sm" iconLeft={<SearchIcon />} />
+      <Button variant="default" size="sm" iconLeft={<BellIcon />} />
+      <Button variant="default" size="sm" iconLeft={<MailIcon />} />
+      <Button variant="default" size="sm" iconLeft={<PhoneIcon />} />
+      <Button variant="default" size="sm" iconLeft={<SettingsIcon />} />
+      <Button variant="default" size="sm" iconLeft={<PlusIcon />} />
+      <Button variant="default" size="sm" iconLeft={<MinusIcon />} />
+      <Button variant="default" size="sm" iconLeft={<XIcon />} />
+    </div>
+  );
+}`;
+
+export const usageSocial = `import Button from "@/components/custom/blocks/Button";
+import {
+  EmailIcon,
+  GoogleIcon,
+  GitHubIcon,
+  FacebookIcon,
+  XIcon2,
+  AppleIcon,
+  MicrosoftIcon,
+  SlackIcon,
+  LinkedInIcon,
+} from "@/components/custom/blocks/Icons";
+
+export default function SocialButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4 max-w-2xl mx-auto">
+      <Button variant="default" iconLeft={<EmailIcon />}>
+        Login with Email
+      </Button>
+      <Button variant="default" iconLeft={<GoogleIcon />}>
+        Continue with Google
+      </Button>
+      <Button variant="default" iconLeft={<GitHubIcon />}>
+        Continue with GitHub
+      </Button>
+      <Button variant="default" iconLeft={<FacebookIcon />}>
+        Login with Facebook
+      </Button>
+      <Button variant="default" iconLeft={<XIcon2 />}>
+        Login with X
+      </Button>
+      <Button variant="default" iconLeft={<AppleIcon />}>
+        Login with Apple
+      </Button>
+      <Button variant="default" iconLeft={<MicrosoftIcon />}>
+        Login with Microsoft
+      </Button>
+      <Button variant="default" iconLeft={<SlackIcon />}>
+        Login with Slack
+      </Button>
+      <Button variant="default" iconLeft={<LinkedInIcon />}>
+        Login with LinkedIn
+      </Button>
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="button"
   colorControl
@@ -92,6 +166,20 @@ export default function MotionButtonDemo() {
       ],
       props: { layout: "slide-icon" },
       usage: usageSlideIcon,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Icon only",
+      description: "Omit the children and the button collapses to a square icon target.",
+      props: { layout: "icon-only" },
+      usage: usageIconOnly,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Social login",
+      description: "Brand SVGs from the bundled icon set as leading icons.",
+      props: { layout: "social" },
+      usage: usageSocial,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
   ]}

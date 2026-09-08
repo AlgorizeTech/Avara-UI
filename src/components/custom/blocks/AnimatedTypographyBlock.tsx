@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { forwardRef, useEffect, useId, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { forwardRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 // ==========================================
 // THEME & CONFIGURATION
@@ -82,32 +82,32 @@ const alignStyles: Record<TypographyAlign, string> = {
 };
 
 const baseStyles: Record<TypographyTag, string> = {
-  h1: "font-extrabold tracking-tight leading-[1.1] break-words",
-  h2: "font-bold tracking-tight break-words",
-  h3: "font-semibold tracking-tight break-words",
-  h4: "font-semibold tracking-tight break-words",
-  h5: "font-medium break-words",
-  h6: "font-medium break-words",
-  p: "leading-relaxed break-words",
-  span: "break-words",
-  blockquote: "pl-4 sm:pl-6 italic border-l-4 border-border break-words",
+  h1: "font-extrabold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
+  h2: "font-bold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
+  h3: "font-semibold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
+  h4: "font-semibold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
+  h5: "font-medium leading-normal whitespace-nowrap max-w-full overflow-visible",
+  h6: "font-medium leading-normal whitespace-nowrap max-w-full overflow-visible",
+  p: "leading-relaxed whitespace-nowrap max-w-full overflow-visible",
+  span: "whitespace-nowrap max-w-full overflow-visible",
+  blockquote: "pl-2 sm:pl-4 italic border-l-2 sm:border-l-4 border-border whitespace-nowrap max-w-full overflow-visible",
 };
 
-// Map of valid tailwind text sizes to responsive scaling classes
+// Map of valid tailwind text sizes to responsive scaling classes (scales down on small screens to fit 1 line)
 const tailwindSizeMap: Record<string, string> = {
-  xs: "text-xs",
-  sm: "text-xs sm:text-sm",
+  xs: "text-[10px] sm:text-xs",
+  sm: "text-[11px] sm:text-sm",
   base: "text-xs sm:text-base",
-  lg: "text-sm sm:text-lg",
-  xl: "text-base sm:text-xl",
-  "2xl": "text-lg sm:text-2xl",
-  "3xl": "text-xl sm:text-3xl",
-  "4xl": "text-2xl sm:text-4xl",
-  "5xl": "text-2xl sm:text-4xl lg:text-5xl",
-  "6xl": "text-3xl sm:text-5xl lg:text-6xl",
-  "7xl": "text-3xl sm:text-5xl lg:text-7xl",
-  "8xl": "text-4xl sm:text-6xl lg:text-8xl",
-  "9xl": "text-4xl sm:text-7xl lg:text-9xl",
+  lg: "text-xs sm:text-lg",
+  xl: "text-xs sm:text-xl",
+  "2xl": "text-xs sm:text-2xl",
+  "3xl": "text-xs sm:text-3xl",
+  "4xl": "text-xs sm:text-2xl md:text-4xl",
+  "5xl": "text-sm sm:text-3xl lg:text-5xl",
+  "6xl": "text-sm sm:text-4xl lg:text-6xl",
+  "7xl": "text-base sm:text-5xl lg:text-7xl",
+  "8xl": "text-base sm:text-6xl lg:text-8xl",
+  "9xl": "text-lg sm:text-7xl lg:text-9xl",
 };
 
 // Matrix scramble helper
@@ -157,7 +157,18 @@ function MatrixScrambleText({
     };
   }, [text, speed, delay]);
 
-  return <span>{displayText || text}</span>;
+  const targetText = displayText || text;
+  const words = targetText.split(" ");
+
+  return (
+    <span className="inline whitespace-nowrap">
+      {words.map((word, i) => (
+        <span key={i} className="inline-block whitespace-nowrap mr-[0.2em]">
+          {word}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 // ==========================================
@@ -204,9 +215,8 @@ export const AnimatedTypographyBlock = forwardRef<
     const { className: colorClass, style: colorStyle } = getThemeStyles(
       color as string,
     );
-    const uniqueId = useId().replace(/:/g, "");
 
-    // Responsive Sizing
+    // Responsive Sizing (small on mobile so text fits on 1 line)
     let sizeClass = "";
     let customSizeStyle: React.CSSProperties = {};
 
@@ -214,19 +224,19 @@ export const AnimatedTypographyBlock = forwardRef<
       if (tailwindSizeMap[size]) {
         sizeClass = tailwindSizeMap[size];
       } else {
-        customSizeStyle = { fontSize: size };
+        customSizeStyle = { fontSize: `clamp(10px, 3.2vw, ${size})` };
       }
     } else {
       const defaultSizeMap: Record<TypographyTag, string> = {
-        h1: "text-xl sm:text-3xl md:text-4xl lg:text-6xl",
-        h2: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
-        h3: "text-base sm:text-xl md:text-2xl lg:text-3xl",
-        h4: "text-sm sm:text-lg md:text-xl lg:text-2xl",
-        h5: "text-xs sm:text-base md:text-lg lg:text-xl",
-        h6: "text-xs sm:text-sm md:text-base lg:text-lg",
-        p: "text-xs sm:text-base",
+        h1: "text-base sm:text-2xl md:text-4xl lg:text-5xl",
+        h2: "text-sm sm:text-xl md:text-3xl lg:text-4xl",
+        h3: "text-xs sm:text-lg md:text-2xl lg:text-3xl",
+        h4: "text-[11px] sm:text-base md:text-xl lg:text-2xl",
+        h5: "text-[10px] sm:text-sm md:text-lg lg:text-xl",
+        h6: "text-[9px] sm:text-xs md:text-base lg:text-lg",
+        p: "text-[10px] sm:text-base",
         span: "text-inherit",
-        blockquote: "text-sm sm:text-lg",
+        blockquote: "text-[11px] sm:text-lg",
       };
       sizeClass = defaultSizeMap[Tag];
     }
@@ -239,37 +249,71 @@ export const AnimatedTypographyBlock = forwardRef<
         case "matrix-scramble":
           return <MatrixScrambleText text={text} speed={speed} delay={delay} />;
 
-        case "color-reveal":
-          return text.split("").map((char, i) => (
-            <span
-              key={i}
-              className="inline-block text-slate-400 dark:text-zinc-600 animate-[typo-color-reveal_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
-              style={{
-                animationDelay: `${delay + i * 45 * speed}ms`,
-                whiteSpace: char === " " ? "pre" : "normal",
-              }}
-            >
-              {char}
+        case "color-reveal": {
+          let globalCharIndex = 0;
+          return (
+            <span className="inline whitespace-nowrap">
+              {words.map((word, wordIdx) => {
+                const wordChars = word.split("");
+                const wordNode = (
+                  <span key={wordIdx} className="inline-block whitespace-nowrap mr-[0.2em]">
+                    {wordChars.map((char) => {
+                      const idx = globalCharIndex++;
+                      return (
+                        <span
+                          key={idx}
+                          className="inline-block text-slate-400 dark:text-zinc-600 animate-[typo-color-reveal_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
+                          style={{
+                            animationDelay: `${delay + idx * 45 * speed}ms`,
+                          }}
+                        >
+                          {char}
+                        </span>
+                      );
+                    })}
+                  </span>
+                );
+                globalCharIndex++;
+                return wordNode;
+              })}
             </span>
-          ));
+          );
+        }
 
-        case "wavy-float":
-          return text.split("").map((char, i) => (
-            <span
-              key={i}
-              className="inline-block animate-[typo-wavy_2s_ease-in-out_infinite]"
-              style={{
-                animationDelay: `${delay + i * 80 * speed}ms`,
-                whiteSpace: char === " " ? "pre" : "normal",
-              }}
-            >
-              {char}
+        case "wavy-float": {
+          let globalCharIndex = 0;
+          return (
+            <span className="inline whitespace-nowrap">
+              {words.map((word, wordIdx) => {
+                const wordChars = word.split("");
+                const wordNode = (
+                  <span key={wordIdx} className="inline-block whitespace-nowrap mr-[0.2em]">
+                    {wordChars.map((char) => {
+                      const idx = globalCharIndex++;
+                      return (
+                        <span
+                          key={idx}
+                          className="inline-block animate-[typo-wavy_2s_ease-in-out_infinite]"
+                          style={{
+                            animationDelay: `${delay + idx * 80 * speed}ms`,
+                          }}
+                        >
+                          {char}
+                        </span>
+                      );
+                    })}
+                  </span>
+                );
+                globalCharIndex++;
+                return wordNode;
+              })}
             </span>
-          ));
+          );
+        }
 
         case "3d-perspective-flip":
           return words.map((word, i) => (
-            <span key={i} className="inline-block perspective-[1000px] mr-[0.25em]">
+            <span key={i} className="inline-block whitespace-nowrap perspective-[1000px] mr-[0.2em]">
               <span
                 className="inline-block origin-bottom animate-[typo-perspective_0.75s_cubic-bezier(0.34,1.56,0.64,1)_both]"
                 style={{ animationDelay: `${delay + i * 70 * speed}ms` }}
@@ -283,7 +327,7 @@ export const AnimatedTypographyBlock = forwardRef<
           return words.map((word, i) => (
             <span
               key={i}
-              className="inline-block animate-[typo-elastic_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)_both] mr-[0.25em]"
+              className="inline-block whitespace-nowrap animate-[typo-elastic_0.8s_cubic-bezier(0.68,-0.55,0.265,1.55)_both] mr-[0.2em]"
               style={{ animationDelay: `${delay + i * 65 * speed}ms` }}
             >
               {word}
@@ -294,43 +338,58 @@ export const AnimatedTypographyBlock = forwardRef<
           return words.map((word, i) => (
             <span
               key={i}
-              className="inline-block animate-[typo-spotlight_1s_cubic-bezier(0.16,1,0.3,1)_both] mr-[0.25em]"
+              className="inline-block whitespace-nowrap animate-[typo-spotlight_1s_cubic-bezier(0.16,1,0.3,1)_both] mr-[0.2em]"
               style={{ animationDelay: `${delay + i * 80 * speed}ms` }}
             >
               {word}
             </span>
           ));
 
-        case "split-stagger":
-          return text.split("").map((char, i) => {
-            const isEven = i % 2 === 0;
-            return (
-              <span
-                key={i}
-                className={cn(
-                  "inline-block",
-                  isEven
-                    ? "animate-[typo-split-top_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
-                    : "animate-[typo-split-bottom_0.7s_cubic-bezier(0.16,1,0.3,1)_both]",
-                )}
-                style={{
-                  animationDelay: `${delay + i * 35 * speed}ms`,
-                  whiteSpace: char === " " ? "pre" : "normal",
-                }}
-              >
-                {char}
-              </span>
-            );
-          });
+        case "split-stagger": {
+          let globalCharIndex = 0;
+          return (
+            <span className="inline whitespace-nowrap">
+              {words.map((word, wordIdx) => {
+                const wordChars = word.split("");
+                const wordNode = (
+                  <span key={wordIdx} className="inline-block whitespace-nowrap mr-[0.2em]">
+                    {wordChars.map((char) => {
+                      const idx = globalCharIndex++;
+                      const isEven = idx % 2 === 0;
+                      return (
+                        <span
+                          key={idx}
+                          className={cn(
+                            "inline-block",
+                            isEven
+                              ? "animate-[typo-split-top_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
+                              : "animate-[typo-split-bottom_0.7s_cubic-bezier(0.16,1,0.3,1)_both]",
+                          )}
+                          style={{
+                            animationDelay: `${delay + idx * 35 * speed}ms`,
+                          }}
+                        >
+                          {char}
+                        </span>
+                      );
+                    })}
+                  </span>
+                );
+                globalCharIndex++;
+                return wordNode;
+              })}
+            </span>
+          );
+        }
 
         case "underline-draw":
           return (
-            <span className="relative inline-block pb-2">
-              <span className="inline-block animate-[typo-fade_0.6s_ease-out_both]" style={{ animationDelay: `${delay}ms` }}>
+            <span className="relative inline-block max-w-full pb-2 whitespace-nowrap">
+              <span className="inline-block max-w-full whitespace-nowrap animate-[typo-fade_0.6s_ease-out_both]" style={{ animationDelay: `${delay}ms` }}>
                 {text}
               </span>
               <svg
-                className="absolute left-0 bottom-0 w-full h-3 overflow-visible text-primary"
+                className="absolute left-0 bottom-0 w-full h-3 overflow-visible text-primary pointer-events-none"
                 viewBox="0 0 100 12"
                 preserveAspectRatio="none"
               >
@@ -372,7 +431,7 @@ export const AnimatedTypographyBlock = forwardRef<
           }
           @keyframes typo-wavy {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
           }
           @keyframes typo-perspective {
             0% { opacity: 0; transform: rotateX(-90deg) scale(0.8); }
@@ -414,7 +473,7 @@ export const AnimatedTypographyBlock = forwardRef<
           {...props}
         >
           <span className="sr-only">{text}</span>
-          <span aria-hidden="true" className="inline-block w-full">
+          <span aria-hidden="true" className="inline-block w-full max-w-full whitespace-nowrap overflow-visible py-2">
             {renderContent()}
           </span>
         </Tag>
@@ -423,4 +482,3 @@ export const AnimatedTypographyBlock = forwardRef<
   },
 );
 AnimatedTypographyBlock.displayName = "AnimatedTypographyBlock";
-
