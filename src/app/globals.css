@@ -1189,3 +1189,22 @@ button {
 #features + .grid {
   display: none !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   All Components catalog page (/docs/[framework]/all-components) only:
+   opt back out of Tailwind Preflight's `* { margin: 0; padding: 0 }` reset
+   so text flows with the browser's default spacing again — a bottom gap
+   under every paragraph and heading, indented/bulleted lists, etc.
+
+   `revert` rolls each property back to the user-agent stylesheet, so the
+   values are literally the browser defaults rather than hand-picked ones.
+   Kept inside `@layer base` so margin utilities written in the markup
+   (mt-2, mb-4, space-y-*) still win — only elements that declare no margin
+   of their own fall back to the default.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer base {
+  .all-components-page :is(p) {
+    margin: revert;
+  }
+
+}
