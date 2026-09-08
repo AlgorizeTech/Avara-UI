@@ -467,41 +467,41 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Content Wrapper (Highest Z-index z-50 to guarantee text stays strictly on top of all bg layers) */}
           <span className="relative z-50 flex items-center justify-center gap-3">
             {iconLeft && (
-              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-white z-30 shrink-0 shadow-sm">
+              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-primary-foreground z-30 shrink-0 shadow-sm">
                 {/* Layer 1: Initial Icon BG (Fades out on hover) */}
                 <span className="absolute inset-0 rounded-full bg-primary/20 transition-opacity duration-700 ease-in-out group-hover:opacity-0 pointer-events-none z-0" />
 
-                {/* Layer 2: Hover Black Icon BG (Fades in to solid black on hover) */}
-                <span className="absolute inset-0 rounded-full bg-black dark:bg-black opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
+                {/* Layer 2: Hover Icon Circle BG (Fades in to theme primary-foreground on hover) */}
+                <span className="absolute inset-0 rounded-full bg-primary-foreground opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
 
                 {/* Layer 3: Ultra-Slow 1.6s Radial Primary Layer (Scales out slowly from icon center to fill entire button) */}
                 <span className="absolute inset-0 rounded-full bg-primary transition-transform duration-[1600ms] [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[30] pointer-events-none -z-10" />
 
-                {/* Standard White Icon Symbol */}
-                <span className="relative z-20 flex items-center justify-center text-white">
+                {/* Icon Symbol: text-primary-foreground initially, text-primary on hover */}
+                <span className="relative z-20 flex items-center justify-center text-primary-foreground group-hover:text-primary transition-colors duration-700">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : iconLeft}
                 </span>
               </span>
             )}
 
-            {/* Main Label Text (Elevated Z-Index z-50 with guaranteed high contrast) */}
-            <span className="relative z-50 transition-colors duration-700 text-black dark:text-white group-hover:!text-white dark:group-hover:!text-white font-semibold">
+            {/* Main Label Text (Elevated Z-Index z-50; transitions to primary-foreground on hover) */}
+            <span className="relative z-50 transition-colors duration-700 text-foreground group-hover:!text-primary-foreground font-semibold">
               {children}
             </span>
 
             {iconRight && !iconLeft && (
-              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-white z-30 shrink-0 shadow-sm">
+              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-primary-foreground z-30 shrink-0 shadow-sm">
                 {/* Layer 1: Initial Icon BG (Fades out on hover) */}
                 <span className="absolute inset-0 rounded-full bg-primary/20 transition-opacity duration-700 ease-in-out group-hover:opacity-0 pointer-events-none z-0" />
 
-                {/* Layer 2: Hover Black Icon BG (Fades in to solid black on hover) */}
-                <span className="absolute inset-0 rounded-full bg-black dark:bg-black opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
+                {/* Layer 2: Hover Icon Circle BG (Fades in to theme primary-foreground on hover) */}
+                <span className="absolute inset-0 rounded-full bg-primary-foreground opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
 
                 {/* Layer 3: Ultra-Slow 1.6s Radial Primary Layer (Scales out slowly from icon center to fill entire button) */}
                 <span className="absolute inset-0 rounded-full bg-primary transition-transform duration-[1600ms] [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[30] pointer-events-none -z-10" />
 
-                {/* Standard White Icon Symbol */}
-                <span className="relative z-20 flex items-center justify-center text-white">
+                {/* Icon Symbol: text-primary-foreground initially, text-primary on hover */}
+                <span className="relative z-20 flex items-center justify-center text-primary-foreground group-hover:text-primary transition-colors duration-700">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : iconRight}
                 </span>
               </span>
@@ -1486,7 +1486,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {...props}
         >
           {/* Sliding Left Icon on Hover */}
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 w-7 rounded-full bg-white text-black shadow-xs -translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out z-20">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 w-7 rounded-full bg-primary-foreground text-primary shadow-xs -translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out z-20">
             {activeIcon}
           </span>
 

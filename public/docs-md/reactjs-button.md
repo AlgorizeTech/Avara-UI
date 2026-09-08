@@ -56,6 +56,58 @@ export default function MotionButtonDemo() {
   );
 }`;
 
+export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
+
+export default function IconOnlyButtonDemo() {
+  return (
+    
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+    
+  );
+}`;
+
+export const usageSocial = `import Button from "@/components/custom/blocks/Button";
+
+export default function SocialButtonDemo() {
+  return (
+    
+      }>
+        Login with Email
+      
+      }>
+        Continue with Google
+      
+      }>
+        Continue with GitHub
+      
+      }>
+        Login with Facebook
+      
+      }>
+        Login with X
+      
+      }>
+        Login with Apple
+      
+      }>
+        Login with Microsoft
+      
+      }>
+        Login with Slack
+      
+      }>
+        Login with LinkedIn
+
+  );
+}`;
+
 ## Installation
 
 ## Features
