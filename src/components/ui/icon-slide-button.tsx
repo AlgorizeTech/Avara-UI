@@ -52,8 +52,8 @@ const SLIDE_CLASSES: Record<
 
 /** Default resting-to-active surface. Overridable through `className`. */
 const SURFACE_CLASSES = {
-	self: "group-hover/icon-slide:bg-primary group-hover/icon-slide:text-primary-foreground group-focus-visible/icon-slide:bg-primary group-focus-visible/icon-slide:text-primary-foreground",
-	group: "group-hover:bg-primary group-hover:text-primary-foreground group-focus-visible:bg-primary group-focus-visible:text-primary-foreground",
+	self: "group-hover/icon-slide:bg-background group-hover/icon-slide:text-primary group-focus-visible/icon-slide:bg-background group-focus-visible/icon-slide:text-primary",
+	group: "group-hover:bg-background group-hover:text-primary group-focus-visible:bg-background group-focus-visible:text-primary",
 };
 
 export type IconSlideButtonProps = Omit<

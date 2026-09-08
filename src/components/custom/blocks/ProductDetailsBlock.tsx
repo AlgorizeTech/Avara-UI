@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
+  X,
+  ZoomIn,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,17 +48,24 @@ export interface ProductDetailsProps {
 }
 
 const DEFAULT_IMAGES = [
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+  "/assets/catch.png",
+  "/assets/catch.png",
+  "/assets/catch.png",
+  "/assets/catch.png",
+];
+
+const ITEM_BG_CLASSES = [
+  "bg-rose-600 dark:bg-rose-700",
+  "bg-amber-500 dark:bg-amber-600",
+  "bg-blue-600 dark:bg-blue-700",
+  "bg-emerald-600 dark:bg-emerald-700",
 ];
 
 const DEFAULT_COLORS: ProductColor[] = [
-  { name: "Crimson Red / Black", class: "bg-rose-600", image: DEFAULT_IMAGES[0] },
-  { name: "Vibrant Yellow Edition", class: "bg-amber-400", image: DEFAULT_IMAGES[1] },
-  { name: "Stealth Black / Gold", class: "bg-slate-900", image: DEFAULT_IMAGES[2] },
-  { name: "Minimal Pure White", class: "bg-muted border border-border", image: DEFAULT_IMAGES[3] },
+  { name: "Crimson Red", class: "bg-rose-600", bgClass: ITEM_BG_CLASSES[0], image: DEFAULT_IMAGES[0] },
+  { name: "Vibrant Yellow", class: "bg-amber-500", bgClass: ITEM_BG_CLASSES[1], image: DEFAULT_IMAGES[1] },
+  { name: "Cobalt Blue", class: "bg-blue-600", bgClass: ITEM_BG_CLASSES[2], image: DEFAULT_IMAGES[2] },
+  { name: "Emerald Green", class: "bg-emerald-600", bgClass: ITEM_BG_CLASSES[3], image: DEFAULT_IMAGES[3] },
 ];
 
 const DEFAULT_SIZES = ["US 8", "US 9", "US 10", "US 11", "US 12"];
@@ -81,6 +90,13 @@ export function ProductDetails({
   const [liked, setLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState<"specs" | "shipping" | "reviews">("specs");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const currentImageSrc = variant === "color-sync-gallery" ? images[selectedColor] : images[selectedImage];
+
+  const sizeIndex = Math.max(0, sizes.indexOf(selectedSize));
+  const sizeScales = ["scale-75", "scale-80", "scale-85", "scale-90", "scale-95"];
+  const sizeScaleClass = sizeScales[sizeIndex % sizeScales.length] || "scale-85";
 
   return (
     <section className={cn("w-full bg-background text-foreground transition-colors py-10 sm:py-20 px-4 sm:px-6 overflow-hidden", className)}>
@@ -89,36 +105,48 @@ export function ProductDetails({
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-7 space-y-4">
-              <div className="aspect-square w-full rounded-3xl bg-card overflow-hidden border border-border relative group">
-                <img src={images[selectedImage]} alt="Sneaker" className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105" />
+              <div
+                onClick={() => setIsModalOpen(true)}
+                className={cn(
+                  "aspect-square w-full rounded-3xl overflow-hidden border border-border relative cursor-pointer flex items-center justify-center p-0 transition-colors",
+                  ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+                )}
+              >
+                <img src={images[selectedImage]} alt="Sneaker" className={cn("peer w-full h-full object-contain p-6 transition-all duration-300 hover:scale-105", sizeScaleClass)} />
 
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-10">
+                <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
+                  <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                    <ZoomIn className="size-4" /> Click to Expand
+                  </span>
+                </div>
+
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-20 pointer-events-auto">
                   20% OFF
                 </span>
 
-                <button onClick={() => setLiked(!liked)} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-10">
+                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20">
                   <Heart className={cn("size-5", liked && "fill-rose-500 text-rose-500")} />
                 </button>
 
                 {/* Left & Right Slider Arrow Buttons */}
                 <button
-                  onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-10"
+                  onClick={(e) => { e.stopPropagation(); setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
                   aria-label="Previous Image"
                 >
                   <ChevronLeft className="size-5" />
                 </button>
 
                 <button
-                  onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-10"
+                  onClick={(e) => { e.stopPropagation(); setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1)); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
                   aria-label="Next Image"
                 >
                   <ChevronRight className="size-5" />
                 </button>
 
                 {/* Slide Indicator Dots */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20" onClick={(e) => e.stopPropagation()}>
                   {images.map((_, idx) => (
                     <button
                       key={idx}
@@ -238,20 +266,34 @@ export function ProductDetails({
           <div className="p-6 sm:p-10 rounded-3xl bg-card border border-border space-y-8 relative overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               <div className="lg:col-span-6 space-y-4">
-                <div className="aspect-[4/3] w-full rounded-2xl bg-background overflow-hidden border border-border relative">
-                  <img src={images[selectedImage]} alt="Glass Sneaker" className="w-full h-full object-cover transition-all duration-500 hover:scale-105" />
-                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-extrabold uppercase tracking-wider">
+                <div
+                  onClick={() => setIsModalOpen(true)}
+                  className={cn(
+                    "aspect-[4/3] w-full rounded-2xl overflow-hidden border border-border relative cursor-pointer flex items-center justify-center p-0 transition-colors",
+                    ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+                  )}
+                >
+                  <img src={images[selectedImage]} alt="Glass Sneaker" className={cn("peer w-full h-full object-contain p-2 transition-all duration-500 hover:scale-110", sizeScaleClass)} />
+ 
+                  <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
+                    <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                      <ZoomIn className="size-4" /> Click to Expand
+                    </span>
+                  </div>
+ 
+                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-extrabold uppercase tracking-wider z-20">
                     20% OFF
                   </div>
-                  <button onClick={() => setLiked(!liked)} className="absolute top-3 right-3 p-2.5 rounded-full bg-card border border-border text-foreground hover:text-rose-500 transition-all">
+ 
+                  <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-3 right-3 p-2.5 rounded-full bg-card border border-border text-foreground hover:text-rose-500 transition-all z-20">
                     <Heart className={cn("size-4", liked && "fill-rose-500 text-rose-500")} />
                   </button>
                 </div>
-
+ 
                 <div className="flex gap-2.5">
                   {images.map((img, idx) => (
-                    <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("flex-1 aspect-square rounded-xl overflow-hidden border-2 transition-all bg-card", selectedImage === idx ? "border-primary" : "border-border opacity-60 hover:opacity-100")}>
-                      <img src={img} alt="Thumb" className="w-full h-full object-cover" />
+                    <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("flex-1 aspect-square rounded-xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100")}>
+                      <img src={img} alt="Thumb" className="w-full h-full object-contain p-0.5" />
                     </button>
                   ))}
                 </div>
@@ -328,29 +370,41 @@ export function ProductDetails({
       {variant === "bento-editorial-showcase" && (
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 relative rounded-3xl bg-slate-950 text-white overflow-hidden border border-slate-800 p-8 sm:p-12 flex flex-col justify-between min-h-[460px]">
-              <img src={images[selectedImage]} alt="Bento Sneaker" className="absolute inset-0 w-full h-full object-cover opacity-60 hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/30 pointer-events-none" />
+            <div
+              onClick={() => setIsModalOpen(true)}
+              className={cn(
+                "lg:col-span-8 relative rounded-3xl overflow-hidden border border-slate-800 p-6 sm:p-10 flex flex-col justify-between min-h-[460px] cursor-pointer transition-colors",
+                ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+              )}
+            >
+              <img src={images[selectedImage]} alt="Bento Sneaker" className={cn("peer absolute inset-0 w-full h-full object-contain p-0 transition-all duration-700 hover:scale-110 z-0", sizeScaleClass)} />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none z-0" />
 
-              <div className="relative z-10 flex justify-between items-start">
+              <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
+                <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                  <ZoomIn className="size-4" /> Click to Expand
+                </span>
+              </div>
+
+              <div className="relative z-20 flex justify-between items-start">
                 <span className="px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-white text-xs font-black uppercase tracking-wider backdrop-blur-md">
                   20% OFF
                 </span>
-                <button onClick={() => setLiked(!liked)} className="p-3 rounded-full bg-slate-900/80 border border-slate-700 text-white hover:text-rose-500 transition-all backdrop-blur-md">
+                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="p-3 rounded-full bg-slate-900/80 border border-slate-700 text-white hover:text-rose-500 transition-all backdrop-blur-md z-20">
                   <Heart className={cn("size-5", liked && "fill-rose-500 text-rose-500")} />
                 </button>
               </div>
 
-              <div className="relative z-10 space-y-3 max-w-xl">
-                <div className="flex items-center gap-2 text-amber-400 text-xs font-bold">
-                  <Star className="size-4 fill-amber-400" /> 4.9 Rating (3,150 Verified Runner Reviews)
+              <div className="relative z-20 space-y-3 max-w-xl pointer-events-none">
+                <div className="flex items-center gap-2 text-amber-300 text-xs font-bold drop-shadow">
+                  <Star className="size-4 fill-amber-300" /> 4.9 Rating (3,150 Verified Runner Reviews)
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-white">{title || "Air Jordan 1 Retro High OG Vintage"}</h1>
-                <p className="text-xs sm:text-sm text-slate-200 line-clamp-2">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">{title || "Air Jordan 1 Retro High OG Vintage"}</h1>
+                <p className="text-xs sm:text-sm text-slate-100/90 line-clamp-2 drop-shadow">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
                 <div className="flex items-baseline gap-3 pt-2">
-                  <span className="text-3xl font-black text-white">{price || "$160.00"}</span>
-                  <span className="text-lg text-muted-foreground line-through">{originalPrice || "$190.00"}</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold">Save $30</span>
+                  <span className="text-3xl font-black text-white drop-shadow-md">{price || "$160.00"}</span>
+                  <span className="text-lg text-white/70 line-through">{originalPrice || "$190.00"}</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-xs font-bold backdrop-blur-sm">Save $30</span>
                 </div>
               </div>
             </div>
@@ -407,8 +461,8 @@ export function ProductDetails({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             {images.map((img, idx) => (
-              <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all bg-card", selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100")}>
-                <img src={img} alt="Bento Thumb" className="w-full h-full object-cover" />
+              <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100")}>
+                <img src={img} alt="Bento Thumb" className="w-full h-full object-contain p-0.5" />
               </button>
             ))}
           </div>
@@ -420,24 +474,32 @@ export function ProductDetails({
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-7 space-y-4">
-              <div className="aspect-square w-full rounded-3xl bg-card overflow-hidden border border-border relative group">
+              <div
+                onClick={() => setIsModalOpen(true)}
+                className={cn(
+                  "aspect-square w-full rounded-3xl overflow-hidden border border-border relative cursor-pointer flex items-center justify-center p-0 transition-colors",
+                  ITEM_BG_CLASSES[selectedColor % ITEM_BG_CLASSES.length]
+                )}
+              >
                 <img
                   src={images[selectedColor]}
                   alt={colors[selectedColor].name}
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                  className={cn("peer w-full h-full object-contain p-2 transition-all duration-500 hover:scale-110", sizeScaleClass)}
                 />
 
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-10">
+                <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
+                  <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                    <ZoomIn className="size-4" /> Click to Expand
+                  </span>
+                </div>
+
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-20">
                   20% OFF
                 </span>
 
-                <button onClick={() => setLiked(!liked)} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-10">
+                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20">
                   <Heart className={cn("size-5", liked && "fill-rose-500 text-rose-500")} />
                 </button>
-
-                <div className="absolute bottom-4 left-4 px-3.5 py-1.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-border text-foreground text-xs font-bold backdrop-blur-md z-10 flex items-center gap-1.5">
-                  <Sparkles className="size-3.5 text-amber-500" /> Studio Colorway: {colors[selectedColor].name}
-                </div>
               </div>
             </div>
 
@@ -537,6 +599,82 @@ export function ProductDetails({
               <div className="p-4 rounded-2xl bg-card border border-border text-xs text-muted-foreground space-y-1 font-medium">
                 <p className="font-bold text-foreground">4.9 out of 5 stars (3,150 Verified Reviews)</p>
                 <p>"Super comfortable for all-day walking and running. True to size!" - Marcus L.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* FULL SCREEN IMAGE LIGHTBOX MODAL */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-background/60 dark:bg-black/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => setIsModalOpen(false)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 rounded-full bg-card/80 hover:bg-card border border-border text-foreground transition-all backdrop-blur-md z-50 cursor-pointer"
+            aria-label="Close Lightbox"
+          >
+            <X className="size-6" />
+          </button>
+
+          {/* Modal Container */}
+          <div
+            className="relative max-w-4xl max-h-[80vh] w-full h-full flex items-center justify-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className={cn(
+                "p-6 rounded-3xl border border-border max-w-full max-h-[75vh] flex items-center justify-center transition-colors overflow-hidden",
+                ITEM_BG_CLASSES[(variant === "color-sync-gallery" ? selectedColor : selectedImage) % ITEM_BG_CLASSES.length]
+              )}
+            >
+              <img
+                src={currentImageSrc}
+                alt="Full Screen Preview"
+                className={cn("max-w-full max-h-[65vh] object-contain transition-all duration-300", sizeScaleClass)}
+              />
+            </div>
+
+            {/* Lightbox Slider Arrows (for non-color-sync variants) */}
+            {variant !== "color-sync-gallery" && (
+              <>
+                <button
+                  onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-card/80 hover:bg-card border border-border text-foreground backdrop-blur-md transition-all z-50 cursor-pointer"
+                  aria-label="Previous Image"
+                >
+                  <ChevronLeft className="size-6" />
+                </button>
+
+                <button
+                  onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-card/80 hover:bg-card border border-border text-foreground backdrop-blur-md transition-all z-50 cursor-pointer"
+                  aria-label="Next Image"
+                >
+                  <ChevronRight className="size-6" />
+                </button>
+              </>
+            )}
+
+            {/* Thumbnails inside Lightbox */}
+            {variant !== "color-sync-gallery" && (
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-3 p-2 rounded-2xl bg-card/80 backdrop-blur-md border border-border z-50">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={cn(
+                      "size-12 rounded-xl overflow-hidden border-2 transition-all cursor-pointer p-1 flex items-center justify-center",
+                      ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length],
+                      selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100"
+                    )}
+                  >
+                    <img src={img} alt="Thumb" className="max-w-full max-h-full object-contain" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
