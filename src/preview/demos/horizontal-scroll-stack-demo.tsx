@@ -4,6 +4,7 @@ import {
   HorizontalScrollStack,
   ScrollStackItem,
 } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
 import {
   Compass,
   Cpu,
@@ -72,12 +73,14 @@ export default function HorizontalScrollStackDemo({
   subtitle,
   itemCount,
   color = "primary",
+  variant = "stack",
 }: {
   title?: string;
   subtitle?: string;
   /** Trims the rail so the pinned scroll distance shortens. */
   itemCount?: number;
   color?: string;
+  variant?: "stack" | "rail";
 }) {
   const items = itemCount
     ? demoProcessItems.slice(0, itemCount)
@@ -88,12 +91,21 @@ export default function HorizontalScrollStackDemo({
       className="w-full relative"
       style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
-      <HorizontalScrollStack
-        key={`${items.length}-${title}-${subtitle}`}
-        items={items}
-        title={title}
-        subtitle={subtitle}
-      />
+      {variant === "rail" ? (
+        <HorizontalRail
+          key={`rail-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      ) : (
+        <HorizontalScrollStack
+          key={`stack-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      )}
     </div>
   );
 }

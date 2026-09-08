@@ -67,6 +67,12 @@ export default function NativeModalHero() {
           effect:
             "goes on the `` so the browser can skip a codec it cannot play. `loop`, `muted` and `controls` pass straight through.",
         },
+        {
+          lead: "The title sits at the foot of the frame until you press play, then moves to a hover-only top bar the way YouTube does. Set",
+          prop: "showOverlay",
+          value: "{false}",
+          effect: "for a bare player with no copy on it at all.",
+        },
       ],
       props: { source: "video", playbackMode: "direct" },
       usage: usageNative,
@@ -310,7 +316,7 @@ If the library fails to load, the component renders a native `` with the poster 
     Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.
 
     Five Player Backends
-    YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one hover overlay and one glow treatment.
+    YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.
 
     Deferred Media Weight
     In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.
@@ -335,6 +341,9 @@ If the library fails to load, the component renders a native `` with the poster 
     Optimizing thumbnails
     Give thumbnailUrl a resolution that matches your aspectRatio. It is the poster, the LCP candidate and — for source="video" — the &lt;video&gt; element's own poster, so a mismatched crop shows up in all three places.
 
+    The title treatment follows playback
+    Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native &lt;video&gt;, Plyr and JW. A YouTube or Vimeo embed already paints its own title bar, so nothing is layered on top of it.
+
     Choosing a backend
     Start with HeroVideoPlayer — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.
 
@@ -355,7 +364,7 @@ If the library fails to load, the component renders a native `` with the poster 
         playbackMode
         "modal" | "inline" | "direct"
         "modal"
-        How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the copy laid over the frame.
+        How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the title laid over the frame.
 
         source
         "youtube" | "video"
@@ -420,7 +429,7 @@ If the library fails to load, the component renders a native `` with the poster 
         showOverlay
         boolean
         true
-        The title/subtitle revealed over the foot of the frame on hover in direct mode. Turn it off for a bare player.
+        The title treatment in direct mode: at the foot of the frame until the video is first played, then a hover-only bar at the top. source="video" only — an embed keeps its own title chrome.
 
         enableGlow
         boolean
@@ -554,7 +563,7 @@ If the library fails to load, the component renders a native `` with the poster 
         title / subtitle
         string
         "View From A Blue Moon" / …
-        Revealed over the foot of the frame on hover, above the control bar. An audio player has no picture, so its copy sits above the bar in normal flow instead. showOverlay={false} removes it.
+        Laid over the frame: at the foot until the video is first played (clear of the control bar), then a hover-only bar at the top. An audio player has no picture, so its copy sits above the bar in normal flow instead.
 
         showOverlay
         boolean
@@ -631,7 +640,7 @@ If the library fails to load, the component renders a native `` with the poster 
         title / subtitle
         string
         "Enterprise-grade video delivery" / …
-        Revealed over the foot of the frame on hover, above JW's control bar.
+        Laid over the frame: at the foot until the video is first played (clear of JW's control bar), then a hover-only bar at the top.
 
         showOverlay
         boolean

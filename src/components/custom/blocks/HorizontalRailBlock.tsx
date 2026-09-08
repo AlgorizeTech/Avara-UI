@@ -1,43 +1,39 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import {
-  animate,
-  motion,
-  MotionValue,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { animate, motion, MotionValue, useMotionValue, useTransform } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-export type ScrollStackItem = {
-  id: string | number;
-  number?: string;
+export interface HorizontalRailItem {
+  id: string;
   title: string;
   description: string;
   icon?: React.ReactNode;
-};
+  stepNumber?: string;
+  color?: string;
+  content?: React.ReactNode;
+}
 
 export interface HorizontalRailProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  items: ScrollStackItem[];
+  items: HorizontalRailItem[];
   title?: string;
   subtitle?: string;
 }
 
-// --- CHILD COMPONENT: Rail Card Item ---
+// --- CHILD COMPONENT: Individual Rail Card ---
 function RailCard({
   item,
   index,
   cardWidth,
-  isMobile = false,
+  isMobile,
 }: {
-  item: ScrollStackItem;
+  item: HorizontalRailItem;
   index: number;
   cardWidth: number;
-  isMobile?: boolean;
+  isMobile: boolean;
 }) {
-  const displayNum = item.number || `0${index + 1}`;
+  const displayNum = item.stepNumber || `0${index + 1}`;
 
   return (
     <div
@@ -45,13 +41,14 @@ function RailCard({
         width: isMobile ? "100%" : `${cardWidth}px`,
       }}
       className={cn(
-        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border/80 flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] transition-all duration-300 relative",
-        isMobile ? "w-full" : "",
+        "rounded-2xl p-6 sm:p-8 flex flex-col justify-between shrink-0 shadow-lg border transition-all duration-300 relative overflow-hidden group select-none",
+        item.color ||
+          "bg-white dark:bg-zinc-900/90 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white"
       )}
     >
       <div>
-        <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-primary-foreground dark:group-hover:!text-zinc-900 group-hover:[&_svg]:!text-primary-foreground dark:group-hover:[&_svg]:!text-zinc-900">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="w-12 h-12 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-bold shadow-xs">
             {item.icon}
           </div>
           <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
@@ -121,31 +118,29 @@ export function HorizontalRail({
   const progress = useMotionValue(0);
   const lastScrollTimeRef = useRef(0);
 
-  const steps = items.length;
+  const maxSteps = Math.max(1, items.length - 1);
 
   // Smoothly animate progress whenever activeStep changes
   useEffect(() => {
-    const targetProgress = activeStep / steps;
+    const targetProgress = maxSteps > 0 ? activeStep / maxSteps : 0;
     const controls = animate(progress, targetProgress, {
       duration: 0.6,
       ease: [0.25, 1, 0.5, 1],
     });
     return () => controls.stop();
-  }, [activeStep, steps, progress]);
+  }, [activeStep, maxSteps, progress]);
 
   const [layout, setLayout] = useState({
     cardWidth: 440,
     gap: 32,
   });
   const [isMobile, setIsMobile] = useState(false);
-  const [winWidth, setWinWidth] = useState(1400);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const updateLayout = () => {
       const w = window.innerWidth;
-      setWinWidth(w);
       setIsMobile(w < 768);
 
       if (w < 640) {
@@ -162,7 +157,7 @@ export function HorizontalRail({
     return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
-  // Stepped scroll control: Slides entire rail track smoothly from right to left (no sticky items at all)
+  // Stepped scroll control: Cards start inside screen. Scrolling shifts cards left.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -181,12 +176,12 @@ export function HorizontalRail({
       const isCooldown = now - lastScrollTimeRef.current < 550;
 
       if (e.deltaY > 0) {
-        if (activeStep < steps) {
+        if (activeStep < maxSteps) {
           e.preventDefault();
           e.stopPropagation();
           if (!isCooldown) {
             lastScrollTimeRef.current = now;
-            setActiveStep((prev) => Math.min(steps, prev + 1));
+            setActiveStep((prev) => Math.min(maxSteps, prev + 1));
           }
         }
       } else if (e.deltaY < 0) {
@@ -203,11 +198,11 @@ export function HorizontalRail({
 
     win.addEventListener("wheel", handleWheel, { passive: false });
     return () => win.removeEventListener("wheel", handleWheel);
-  }, [activeStep, steps, isMobile]);
+  }, [activeStep, maxSteps, isMobile]);
 
-  // Entire rail track enters from right screen edge (winWidth) and exits out left screen edge (-totalRailWidth)
-  const totalRailWidth = items.length * layout.cardWidth + Math.max(0, items.length - 1) * layout.gap;
-  const trackX = useTransform(progress, [0, 1], [winWidth, -totalRailWidth]);
+  // Track starts at x=0 (visible inside screen) and shifts left by -(cardWidth + gap) per step
+  const maxScrollDist = maxSteps * (layout.cardWidth + layout.gap);
+  const trackX = useTransform(progress, [0, 1], [0, -maxScrollDist]);
 
   return (
     <div

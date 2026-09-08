@@ -626,6 +626,7 @@ export default function PinnedLeftStack() {
   ]}
 />
 
+
 export const railSteps = `import {
   Compass,
   Cpu,
@@ -698,6 +699,8 @@ export default function ProcessRail() {
   examples={[
     {
       id: "horizontal-scroll-stack",
+      title: "Horizontal Scroll Stack",
+      subheading: "The section pins and vertical scroll is translated into horizontal travel.",
       propNotes: [
         {
           prop: "items",
@@ -733,7 +736,7 @@ export default function ProcessRailTrack() {
   examples={[
     {
       id: "horizontal-rail-track",
-      title: "Shorter rail",
+      title: "Shorter Rail",
       propNotes: [
         {
           prop: "items",
@@ -741,13 +744,12 @@ export default function ProcessRailTrack() {
             "slide continuously across the viewport without stacking.",
         },
       ],
+      props: { variant: "rail" },
       usage: usageHorizontalShort,
       code: extractCode("src/components/custom/blocks/HorizontalRailBlock.tsx"),
     },
   ]}
 />
-
-
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
