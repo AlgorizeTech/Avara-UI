@@ -93,6 +93,7 @@ const COMPONENT_META: Record<
 	popover: { countText: "Context Popup", illustrationType: "popover" },
 	progress: { countText: "Loading Bars", illustrationType: "progress" },
 	"qr-code-generator": { countText: "QR Generator", illustrationType: "qr", titleOverride: "QR Code" },
+	"range-date-picker": { countText: "Priced Range Calendar", illustrationType: "range-date-picker" },
 	resizable: { countText: "Split Panels", illustrationType: "resizable" },
 	"scroll-area": { countText: "Custom Scrollbar", illustrationType: "scroll-area" },
 	select: { countText: "Dropdown Menu", illustrationType: "select" },
@@ -414,7 +415,7 @@ function MiniatureIllustration({
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="w-4/5 p-2 rounded-xl bg-background border border-border shadow-lg space-y-1.5">
 							<div className="flex justify-between items-center border-b border-border/40 pb-0.5">
-								<span className="text-[9px] font-bold text-foreground">
+								<span className="text-[9px] font-bold text-foreground pb-0.5">
 									Modal Dialog
 								</span>
 								<span className="text-[8px] text-muted-foreground pr-1.5 pb-0.5">✕</span>
@@ -1425,10 +1426,10 @@ function MiniatureIllustration({
 
 				{type === "drawer" && (
 					<div className="w-full h-full relative flex flex-col justify-end items-center my-auto overflow-hidden bg-black/10 dark:bg-black/40 rounded-lg">
-						<div className="w-full h-3/4 rounded-t-2xl bg-background border-t border-border shadow-2xl p-1.5 flex flex-col justify-between text-[6.5px]">
+						<div className="w-full h-[95%] rounded-t-2xl bg-background border-t border-border shadow-2xl p-1.5 flex flex-col justify-between text-[6.5px]">
 							<div className="w-6 h-1 rounded-full bg-muted-foreground/40 mx-auto" />
 							<div className="space-y-1 my-auto">
-								<div className="font-extrabold text-foreground border-b border-border/40 pb-0.5 text-center">
+								<div className="font-extrabold text-foreground border-b border-border/40 pb-1.5 text-center">
 									Drawer Sheet
 								</div>
 								<div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold text-[5.5px]">
@@ -1447,7 +1448,7 @@ function MiniatureIllustration({
 
 				{type === "dialog" && (
 					<div className="w-full h-full flex items-center justify-center my-auto">
-						<div className="w-4/5 p-1.5 rounded-xl bg-background border border-border shadow-xl space-y-1 text-[6.5px]">
+						<div className="w-4/5 px-2.5 py-1.5 pb-2 rounded-xl bg-background border border-border shadow-xl space-y-1 text-[6.5px]">
 							<div className="font-extrabold text-foreground border-b border-border/40 pb-0.5">
 								Dialog Title
 							</div>
@@ -2147,7 +2148,7 @@ function MiniatureIllustration({
 						<span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-black shadow-2xs">
 							1
 						</span>
-						<span className="size-4 rounded bg-background border border-border text-foreground flex items-center justify-center">
+						<span className="px-2 rounded bg-background border border-border text-foreground flex items-center justify-center">
 							2
 						</span>
 						<span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">
@@ -2306,6 +2307,144 @@ function MiniatureIllustration({
 						<div className="absolute top-1 left-[79%] w-1.5 h-4 bg-zinc-900 rounded-b-xs z-10 border-x border-b border-black" />
 					</div>
 				)}
+
+				{type === "range-date-picker" && (
+					<div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
+						<div className="w-[97%] p-1.5 rounded-lg bg-card border border-border shadow-xs space-y-1 my-auto">
+							{/* Month Header with Prev / Next Navigation */}
+							<div className="flex items-center justify-between">
+								<span className="text-[6.5px] font-extrabold text-foreground tracking-tight">
+									August 2026
+								</span>
+								<div className="flex items-center gap-0.5">
+									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-bold text-muted-foreground">
+										‹
+									</span>
+									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-bold text-muted-foreground">
+										›
+									</span>
+								</div>
+							</div>
+
+							{/* Weekday Grid Labels */}
+							<div className="grid grid-cols-7 text-center text-[4.5px] font-bold uppercase text-muted-foreground/70">
+								<span>Su</span>
+								<span>Mo</span>
+								<span>Tu</span>
+								<span>We</span>
+								<span>Th</span>
+								<span>Fr</span>
+								<span>Sa</span>
+							</div>
+
+							{/* Nightly Rates Grid — Aug 8 to Aug 13 held as one continuous range band */}
+							<div className="grid grid-cols-7 text-center">
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">2</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">3</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">4</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">5</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">6</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$120</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">7</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$120</div>
+								</div>
+								{/* Range start */}
+								<div className="py-0.5 leading-tight rounded-l-sm bg-primary text-primary-foreground">
+									<div className="text-[5px] font-extrabold">8</div>
+									<div className="text-[4px] font-semibold opacity-80">$100</div>
+								</div>
+
+								{/* In-range nights */}
+								<div className="py-0.5 leading-tight bg-primary/15">
+									<div className="text-[5px] font-semibold text-foreground">9</div>
+									<div className="text-[4px] font-semibold text-primary">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight bg-primary/15">
+									<div className="text-[5px] font-semibold text-foreground">10</div>
+									<div className="text-[4px] font-semibold text-primary">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight bg-primary/15">
+									<div className="text-[5px] font-semibold text-foreground">11</div>
+									<div className="text-[4px] font-semibold text-primary">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight bg-primary/15">
+									<div className="text-[5px] font-semibold text-foreground">12</div>
+									<div className="text-[4px] font-semibold text-primary">$100</div>
+								</div>
+								{/* Range end */}
+								<div className="py-0.5 leading-tight rounded-r-sm bg-primary text-primary-foreground">
+									<div className="text-[5px] font-extrabold">13</div>
+									<div className="text-[4px] font-semibold opacity-80">$120</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">14</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$120</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-foreground">15</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/60">$100</div>
+								</div>
+
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">16</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">17</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">18</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">19</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$100</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">20</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$120</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">21</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$120</div>
+								</div>
+								<div className="py-0.5 leading-tight">
+									<div className="text-[5px] font-medium text-muted-foreground/50">22</div>
+									<div className="text-[4px] font-semibold text-muted-foreground/40">$100</div>
+								</div>
+							</div>
+
+							{/* Selected Range Summary Footer with Reset */}
+							<div className="flex items-center justify-between pt-1 border-t border-border/60">
+								<span className="flex items-center gap-1 text-[4.5px] font-medium text-muted-foreground truncate">
+									<span className="size-1 rounded-full bg-primary shrink-0" />
+									<strong className="font-bold text-foreground">Aug 8</strong>
+									<span>–</span>
+									<strong className="font-bold text-foreground">Aug 13</strong>
+								</span>
+								<span className="px-1 py-0.5 rounded border border-border/80 text-[4.5px] font-bold text-muted-foreground shrink-0">
+									Reset
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -2321,7 +2460,7 @@ export default function AllComponentsDocsPage() {
 	const { preview, getTriggerProps } = useComponentPreviewHover();
 
 	return (
-		<div className="not-prose w-full py-4 text-foreground">
+		<div className="all-components-page not-prose w-full py-4 text-foreground">
 			<div className="w-full space-y-12">
 				{/* Section Header - Left Aligned Exactly like Docs Layout */}
 				<div className="text-left space-y-3 pb-4 border-b border-border/60">
