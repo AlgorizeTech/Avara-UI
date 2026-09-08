@@ -42,7 +42,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
       steps,
       currentStep,
       onStepChange,
-      color = "#FFAB1D",
+      color = "var(--primary)",
       className,
       ...props
     },

@@ -15,6 +15,7 @@ import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+import HomepageReviewsSection from "@/components/home/HomepageReviewsSection";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -3125,8 +3126,8 @@ function CTASection() {
 					</h2>
 
 					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
-						Install fully responsive, accessible, and animated UI components
-						built for Next.js, React, and Tailwind CSS.
+						Designed for the shadcn/ui &amp; Tailwind CSS ecosystem. Install
+						fully responsive, accessible, and animated UI components.
 					</p>
 
 					{/* Interactive CLI Quick Copy Pill Box */}
@@ -3254,6 +3255,7 @@ export default function HomePage() {
 			<ComponentShowcase />
 			<WhyChooseUsSection />
 			<ComponentPreviewGridSection />
+			<HomepageReviewsSection />
 			<CTASection />
 			<FooterSection />
 		</div>

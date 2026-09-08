@@ -111,6 +111,7 @@ export const sandboxNames = [
   "sticky-scroll-stack",
   "support",
   "table",
+  "table-of-contents",
   "terminal",
   "text-animation",
   "theme-switcher",

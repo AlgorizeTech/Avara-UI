@@ -24,20 +24,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-// The Stepper paints the indicator label `text-white`, so the accent has to
-// stay dark enough in both themes — hence the component's own amber default
-// for "primary" rather than the theme-flipping `var(--primary)`.
 const getThemeColorHex = (c: string) => {
-  if (c.startsWith("#")) return c;
+  if (!c || c === "primary" || c === "default") return "var(--primary)";
+  if (c.startsWith("#") || c.startsWith("var(") || c.startsWith("rgb") || c.startsWith("hsl")) return c;
   const map: Record<string, string> = {
-    primary: "#FFAB1D",
-    default: "#FFAB1D",
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
     zinc: "#18181b",
   };
-  return map[c] || "#FFAB1D";
+  return map[c] || "var(--primary)";
 };
 
 const PRIMARY_ROLE_OPTIONS = [
