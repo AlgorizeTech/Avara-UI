@@ -15,6 +15,7 @@ _Hint: the Edit button in the batch toolbar opens a fully functional custom moda
 
         Name
 
+    >
       {(rows) =>                          // already searched, sorted and paged
         rows.map((user) => (
 
@@ -49,12 +50,14 @@ export default function UserTable({ users }: { users: User[] }) {
             Role
 
             {/* Sort on the timestamp while the cell shows prose */}
-             user.lastActiveTs}
+            
+              sortBy={(user) => user.lastActiveTs}
               sortId="lastActive"
               sortType="number"
             >
               Last Active
 
+        >
           {(rows) =>
             rows.length === 0 ? (
               No users found.

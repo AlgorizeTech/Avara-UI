@@ -212,6 +212,13 @@ export const AnimatedTypographyBlock = forwardRef<
     },
     ref,
   ) => {
+    // `as` picks the element. Every tag it allows accepts HTML attributes
+    // and an HTMLElement ref, which is exactly what this says; JSX cannot
+    // work that out from the union on its own.
+    const Component = Tag as unknown as React.ComponentType<
+      React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
+    >;
+
     const { className: colorClass, style: colorStyle } = getThemeStyles(
       color as string,
     );
@@ -460,8 +467,8 @@ export const AnimatedTypographyBlock = forwardRef<
           }
         `}</style>
 
-        <Tag
-          ref={ref as any}
+        <Component
+          ref={ref}
           className={cn(
             baseStyles[Tag],
             alignStyles[align],
@@ -476,7 +483,7 @@ export const AnimatedTypographyBlock = forwardRef<
           <span aria-hidden="true" className="inline-block w-full max-w-full whitespace-nowrap overflow-visible py-2">
             {renderContent()}
           </span>
-        </Tag>
+        </Component>
       </>
     );
   },

@@ -20,7 +20,10 @@ export interface TextAnimationProps extends React.HTMLAttributes<HTMLDivElement>
   as?: React.ElementType;
 }
 
-export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
+export const TextAnimation = React.forwardRef<
+  HTMLDivElement,
+  TextAnimationProps
+>(
   (
     { 
       text, 
@@ -325,7 +328,7 @@ export const TextAnimation = React.forwardRef<HTMLElement, TextAnimationProps>(
     };
 
     return (
-      <div ref={ref as any} {...props}>
+      <div ref={ref} {...props}>
         {renderAnimation()}
       </div>
     );

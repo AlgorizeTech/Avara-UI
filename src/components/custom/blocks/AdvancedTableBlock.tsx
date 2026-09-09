@@ -102,7 +102,7 @@ interface SortState<T> {
   type: SortType;
 }
 
-export interface DataTableContextValue<T = any> {
+export interface DataTableContextValue<T = unknown> {
   /** Exactly what you passed in. */
   sourceRows: T[];
   /** After search + sort, before paging. */
@@ -145,7 +145,7 @@ export interface DataTableContextValue<T = any> {
 const DataTableContext = createContext<DataTableContextValue | null>(null);
 
 /** Escape hatch — build your own toolbar, pager or empty state on this. */
-export function useDataTable<T = any>(): DataTableContextValue<T> {
+export function useDataTable<T = unknown>(): DataTableContextValue<T> {
   const ctx = useContext(DataTableContext);
   if (!ctx) {
     throw new Error("useDataTable must be used inside <DataTable>.");
@@ -487,7 +487,7 @@ export function DataTablePageSize({
  * Children receive the current page of rows. Falling back to plain children
  * keeps `useDataTable()` viable for people who want to map rows themselves.
  */
-export interface DataTableBodyProps<T = any>
+export interface DataTableBodyProps<T = unknown>
   extends Omit<React.HTMLAttributes<HTMLTableSectionElement>, "children"> {
   children: ((rows: T[]) => React.ReactNode) | React.ReactNode;
   animate?: boolean;
@@ -512,11 +512,11 @@ function DataTableBodyImpl<T>({
   );
 }
 
-export const DataTableBody = DataTableBodyImpl as <T = any>(
+export const DataTableBody = DataTableBodyImpl as <T = unknown>(
   props: DataTableBodyProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableRowProps<T = any>
+export interface DataTableRowProps<T = unknown>
   extends React.HTMLAttributes<HTMLTableRowElement> {
   /** Pass the row and selection/expansion wire themselves up. */
   row?: T;
@@ -553,11 +553,11 @@ function DataTableRowImpl<T>({
   );
 }
 
-export const DataTableRow = DataTableRowImpl as <T = any>(
+export const DataTableRow = DataTableRowImpl as <T = unknown>(
   props: DataTableRowProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableHeadProps<T = any>
+export interface DataTableHeadProps<T = unknown>
   extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "align"> {
   align?: TableAlign;
   /** Dot-path or accessor function. Presence of this makes the header sortable. */
@@ -593,7 +593,7 @@ function DataTableHeadImpl<T>({
   );
 }
 
-export const DataTableHead = DataTableHeadImpl as <T = any>(
+export const DataTableHead = DataTableHeadImpl as <T = unknown>(
   props: DataTableHeadProps<T>,
 ) => React.ReactElement | null;
 
@@ -709,11 +709,11 @@ export function DataTableExpandedRow({
 // ------------------------------------------
 // Batch actions
 // ------------------------------------------
-export interface DataTableBatchBarProps {
+export interface DataTableBatchBarProps<T = unknown> {
   /** Receives the selected rows and a way to clear them. */
   children?:
     | ((args: {
-        selectedRows: any[];
+        selectedRows: T[];
         selectedIds: (string | number)[];
         clearSelection: () => void;
       }) => React.ReactNode)
@@ -723,12 +723,12 @@ export interface DataTableBatchBarProps {
   className?: string;
 }
 
-export function DataTableBatchBar({
+export function DataTableBatchBar<T = unknown>({
   children,
   floating = true,
   className,
-}: DataTableBatchBarProps) {
-  const { selectedIds, selectedRows, clearSelection } = useDataTable();
+}: DataTableBatchBarProps<T>) {
+  const { selectedIds, selectedRows, clearSelection } = useDataTable<T>();
   const count = selectedIds.size;
 
   return (

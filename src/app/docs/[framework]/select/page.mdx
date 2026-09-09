@@ -95,7 +95,7 @@ import { useState } from "react";
 ${selectOptions}
 
 export default function MultiSelect() {
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState<string[]>([]);
 
   return (
     <SelectBlock

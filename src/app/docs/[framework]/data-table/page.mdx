@@ -28,7 +28,7 @@ _Hint: the Edit button in the batch toolbar opens a fully functional custom moda
       </DataTableRow>
     </DataTableHeader>
 
-    <DataTableBody>
+    <DataTableBody<User>>
       {(rows) =>                          // already searched, sorted and paged
         rows.map((user) => (
           <DataTableRow key={user._id} row={user}>
@@ -97,7 +97,7 @@ export default function UserTable({ users }: { users: User[] }) {
             <DataTableHead sortBy="role">Role</DataTableHead>
 
             {/* Sort on the timestamp while the cell shows prose */}
-            <DataTableHead
+            <DataTableHead<User>
               sortBy={(user) => user.lastActiveTs}
               sortId="lastActive"
               sortType="number"
@@ -107,7 +107,7 @@ export default function UserTable({ users }: { users: User[] }) {
           </DataTableRow>
         </DataTableHeader>
 
-        <DataTableBody>
+        <DataTableBody<User>>
           {(rows) =>
             rows.length === 0 ? (
               <DataTableEmpty colSpan={3}>No users found.</DataTableEmpty>
