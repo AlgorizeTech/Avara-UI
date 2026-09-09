@@ -130,6 +130,16 @@ export default function StatGrid() {
           $45,231.89
           +20.1% from last month
 
+          Subscriptions
+
+          +2350
+          +180.1% from last month
+
+          Active Now
+
+          +573
+          +201 since last hour
+
   );
 }`;
 
