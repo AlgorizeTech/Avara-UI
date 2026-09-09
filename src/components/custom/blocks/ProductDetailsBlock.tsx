@@ -29,6 +29,7 @@ export type ProductDetailsVariant =
 export interface ProductColor {
   name: string;
   class: string;
+  bgClass?: string;
   image?: string;
 }
 
