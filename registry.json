@@ -344,11 +344,6 @@
           "path": "src/components/custom/blocks/CardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CardBlock.tsx"
-        },
-        {
-          "path": "src/components/custom/blocks/ProductCardBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/ProductCardBlock.tsx"
         }
       ],
       "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
