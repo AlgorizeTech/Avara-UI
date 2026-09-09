@@ -974,6 +974,47 @@ export function FanCarousel({
           <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-zinc-400/90 shadow-inner" />
         </div>
       </div>
+
+      {showArrows && (
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={prevSlide}
+            aria-label="Previous slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={nextSlide}
+            aria-label="Next slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {showDots && (
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          {displayItems.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={positiveModulo(current, total) === index}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                positiveModulo(current, total) === index
+                  ? "w-6 bg-zinc-900 dark:bg-zinc-200"
+                  : "w-2 bg-zinc-400/60 dark:bg-zinc-600",
+              )}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import {
   ArrowRight,
   Building,
@@ -15,8 +14,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useTheme } from "next-themes";
+import React, { useEffect, useState } from "react";
 
 // ==========================================
 // SHARED TYPES & THEMES

@@ -4,7 +4,7 @@ An interactive, fluid **Draggable Card List** component featuring 60fps Framer M
 
 ## Variations
 
-export const usageClassic = `import DraggableCardList, { DraggableCardItem } from "@/components/custom/draggable-card-list";
+export const usageClassic = `import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
 
 const sampleCards: DraggableCardItem[] = [
   {
@@ -53,7 +53,7 @@ export default function DraggableCardListClassicDemo() {
   );
 }`;
 
-export const usageModern = `import DraggableCardList, { DraggableCardItem } from "@/components/custom/draggable-card-list";
+export const usageModern = `import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
 
 const sampleCards: DraggableCardItem[] = [
   {

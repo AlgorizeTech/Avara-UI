@@ -6,7 +6,7 @@ Four independent components live on this page — four in `carousel.tsx` (`Image
 
 ## Carousels
 
-export const usageFluid = `import { FluidGlassSlider, FluidGlassSlide } from "@/components/custom/carousel";
+export const usageFluid = `import { FluidGlassSlider, type FluidGlassSlide } from "@/components/custom/carousel";
 
 const customSlides: FluidGlassSlide[] = [
   {
@@ -49,7 +49,7 @@ export default function ImageCarouselDemo() {
   );
 }`;
 
-export const usageRadial = `import { RadialCarousel, RadialCarouselItem } from "@/components/custom/carousel";
+export const usageRadial = `import { RadialCarousel, type RadialCarouselItem } from "@/components/custom/carousel";
 
 const customItems: RadialCarouselItem[] = [
   {
@@ -81,7 +81,7 @@ export default function RadialCarouselDemo() {
   );
 }`;
 
-export const usageHero = `import { HeroCarousel, HeroSlide } from "@/components/custom/carousel";
+export const usageHero = `import { HeroCarousel, type HeroSlide } from "@/components/custom/carousel";
 
 const sampleSlides: HeroSlide[] = [
   {
@@ -107,7 +107,7 @@ export default function HeroCarouselDemo() {
   );
 }`;
 
-export const usageThumbnails = `import { CustomCarousel, CustomItem } from "@/components/custom/carousel";
+export const usageThumbnails = `import { CustomCarousel, type CustomItem } from "@/components/custom/carousel";
 
 const sampleSlides: CustomItem[] = [
   {
@@ -133,7 +133,7 @@ export default function CustomCarouselDemo() {
   );
 }`;
 
-export const usageThumbnailsSide = `import { CustomCarousel, CustomItem } from "@/components/custom/carousel";
+export const usageThumbnailsSide = `import { CustomCarousel, type CustomItem } from "@/components/custom/carousel";
 
 const sampleSlides: CustomItem[] = [
   {

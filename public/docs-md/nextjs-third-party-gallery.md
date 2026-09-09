@@ -85,9 +85,9 @@ export default function PhotoAlbumLightbox() {
   );
 }`;
 
-## Installation
+### Installation
 
-The examples below also use these Algorize UI components — install whichever
+This example also uses these Algorize UI components — install whichever
 your project does not already have:
 
 ## Masonry layout
@@ -166,6 +166,11 @@ export default function MasonryLightbox() {
 
   );
 }`;
+
+### Installation
+
+Same two packages as above — `MasonryPhotoAlbum` and the extra plugins ship
+inside them, so there is nothing new to add:
 
 ## The layouts and the plugins
 

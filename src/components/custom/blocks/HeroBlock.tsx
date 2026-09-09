@@ -2,8 +2,8 @@
 
 import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, PawPrint, Heart, ShieldCheck, ShoppingBag, Stethoscope, Calendar, Activity, UserCheck, Package, Truck } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
    SELF-CONTAINED SVG BRAND ICONS
@@ -186,20 +186,6 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
-
-    // Scroll animation tracking for "doctor" variant sticky card stack
-    const doctorContainerRef = React.useRef<HTMLDivElement>(null);
-    const { scrollYProgress: doctorScrollProgress } = useScroll({
-      target: doctorContainerRef,
-      offset: ["start start", "end end"],
-    });
-
-    const docHeroScale = useTransform(doctorScrollProgress, [0, 0.45], [1, 0.92]);
-    const docHeroOpacity = useTransform(doctorScrollProgress, [0, 0.45], [1, 0.35]);
-    const docHeroY = useTransform(doctorScrollProgress, [0, 0.45], [0, -25]);
-
-    const docCardStackY = useTransform(doctorScrollProgress, [0.1, 0.55], [60, 0]);
-    const docCardScale = useTransform(doctorScrollProgress, [0.1, 0.55], [0.93, 1]);
 
     // Word bounce effect interval (used when variant === "bounce")
     useEffect(() => {
@@ -780,9 +766,6 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ? "#contact"
           : secondaryActionHref;
 
-      const devSliderWords = typingWords;
-
-      const sliderCurrentWord = devSliderWords?.[currentWordIndex % devSliderWords.length] || "";
 
       const devLabels = [
         "3D Web App",

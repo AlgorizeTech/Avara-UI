@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { DollarSign, Heart, Plus, Save, Send, Trash2, CheckCircle2, QrCode, Building2, User, FileText, CreditCard, Sparkles, Printer, ArrowUpRight, Download, Edit3 } from "lucide-react";
+import { Heart, Plus, Save, Send, Trash2, CheckCircle2, QrCode, Building2, Printer, Download, Edit3 } from "lucide-react";
 import { useState } from "react";
 
 // ==========================================

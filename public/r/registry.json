@@ -1987,9 +1987,7 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react",
-        "next-themes"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"

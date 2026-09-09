@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Star, ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import createGlobe from "cobe";
 import { useTheme } from "next-themes";
