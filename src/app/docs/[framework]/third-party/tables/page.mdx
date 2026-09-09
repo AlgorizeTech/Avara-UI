@@ -279,6 +279,18 @@ export default function TanStackDataTable() {
   ]}
 />
 
+### Installation
+
+<Cli command="install @tanstack/react-table" />
+
+The example renders through our table primitives, so install those too:
+
+<Installation name="table" />
+
+It also uses `Badge` and `Button`:
+
+<Cli command="add ui-badge.json button.json" />
+
 ### Coming from v8
 
 The v9 API is a real break, and most examples still online are v8. Three
@@ -316,20 +328,6 @@ differences account for nearly every migration error:
 Keep `features`, `data` and `columns` stable across renders. A fresh array
 literal as a fallback (`data={rows ?? []}`) invalidates every data-dependent row
 model on every render.
-
-## Installation
-
-<Cli command="install @tanstack/react-table" />
-
-<Cli command="install ag-grid-react ag-grid-community" />
-
-The TanStack example renders through our table primitives, so install those too:
-
-<Installation name="table" />
-
-Both examples also use `Card`, `Badge` and `Button`:
-
-<Cli command="add card.json ui-badge.json button.json" />
 
 ## AG Grid
 
@@ -519,6 +517,15 @@ export default function AgGridInventory() {
     },
   ]}
 />
+
+### Installation
+
+<Cli command="install ag-grid-react ag-grid-community" />
+
+This example also uses these Algorize UI components — install whichever
+your project does not already have:
+
+<Cli command="add card.json ui-badge.json button.json" />
 
 ## Which one
 
