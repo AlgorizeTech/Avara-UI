@@ -5,7 +5,7 @@ import { animate, motion, MotionValue, useMotionValue, useTransform } from "fram
 import { cn } from "@/lib/utils";
 
 export interface HorizontalRailItem {
-  id: string;
+  id: string | number;
   title: string;
   description: string;
   icon?: React.ReactNode;

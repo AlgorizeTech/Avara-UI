@@ -2800,6 +2800,33 @@
       "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."
     },
     {
+      "name": "table-of-contents",
+      "type": "registry:component",
+      "title": "Table Of Contents",
+      "author": "AlgorizeTech",
+      "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Framer Motion indicators, and section search filtering.",
+      "categories": [
+        "navigation",
+        "scroll"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-codeblocks.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TableOfContentsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TableOfContentsBlock.tsx"
+        }
+      ],
+      "docs": "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right."
+    },
+    {
       "name": "terminal",
       "type": "registry:component",
       "title": "Terminal",
