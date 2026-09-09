@@ -7,49 +7,103 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-export const usageEcommerce = `import { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+export const usageEcommerce = `"use client";
+
+import { useState } from "react";
+import { ProductCard } from "@/components/custom/blocks/CardBlock";
 
 export default function EcommerceProductCardsDemo() {
+  const [sneakerBg, setSneakerBg] = useState(
+    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30"
+  );
+  const [watchBg, setWatchBg] = useState(
+    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30"
+  );
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {/* Product Card 1: Standard Best Seller */}
+      {/* Product Card 1: Headphones */}
       <ProductCard
-        title="Wireless Headphones"
+        title="Wireless Noise-Cancelling Headphones"
         subtitle="AudioTech Pro"
-        description="Pure bass acoustics, 40h battery life & active noise control."
+        description="Pure bass acoustics, 40h battery life & dual microphone noise suppression."
         price="$249.00"
         originalPrice="$299.00"
         rating={4.9}
         reviewsCount={128}
         badge="Best Seller"
         badgeVariant="emerald"
+        image={
+          <div className="w-full h-full bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 flex items-center justify-center">
+            <span className="text-5xl drop-shadow-md transition-transform duration-300 hover:scale-110">🎧</span>
+          </div>
+        }
         onAddToCart={() => console.log("Added to cart")}
       />
 
-      {/* Product Card 2: Apparel with Interactive Colors */}
+      {/* Product Card 2: Sneakers with Dynamic Swatches */}
       <ProductCard
-        title="Urban Runner Sneakers"
+        title="Urban Runner Sneakers X"
         subtitle="Footwear Co"
+        description="Ultra-lightweight mesh knit with responsive cushion soles for daily runs."
         price="$89.00"
         originalPrice="$129.00"
         badge="-30% OFF"
         badgeVariant="rose"
+        image={
+          <div className={"w-full h-full flex items-center justify-center transition-all duration-300 " + sneakerBg}>
+            <span className="text-5xl drop-shadow-md transition-transform duration-300 hover:scale-110">👟</span>
+          </div>
+        }
         colors={[
-          { name: "Amber", value: "bg-amber-600 border-amber-500" },
-          { name: "Rose", value: "bg-rose-600 border-rose-500" },
-          { name: "Emerald", value: "bg-emerald-600 border-emerald-500" },
+          {
+            name: "Amber",
+            value:
+              "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
+          },
+          {
+            name: "Rose",
+            value:
+              "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-zinc-900 border-rose-500/30",
+          },
+          {
+            name: "Emerald",
+            value:
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+          },
         ]}
+        onColorChange={(col) => setSneakerBg(col.value.split("|")[1])}
         onQuickView={() => console.log("Quick View")}
       />
 
-      {/* Product Card 3: Tech Gadget with Buy Now */}
+      {/* Product Card 3: Tech Gadget Smartwatch */}
       <ProductCard
-        title="Smart Watch Ultra"
-        subtitle="Tech Wearables"
-        price="$199.00"
+        title="Apex Horizon Smartwatch"
+        subtitle="Chronos Tech"
+        description="AMOLED display, ECG monitoring, cellular connectivity & 50m water resistance."
+        price="$349.00"
+        rating={4.8}
+        reviewsCount={95}
         badge="New Arrival"
-        badgeVariant="indigo"
-        inStock={true}
+        badgeVariant="amber"
+        image={
+          <div className={"w-full h-full flex items-center justify-center transition-all duration-300 " + watchBg}>
+            <span className="text-5xl drop-shadow-md transition-transform duration-300 hover:scale-110">⌚</span>
+          </div>
+        }
+        colors={[
+          {
+            name: "Indigo",
+            value:
+              "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30",
+          },
+          {
+            name: "Emerald",
+            value:
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+          },
+        ]}
+        onColorChange={(col) => setWatchBg(col.value.split("|")[1])}
         onBuyNow={() => console.log("Proceeding to checkout")}
       />
     </div>
@@ -147,6 +201,28 @@ export default function StatGrid() {
         <CardContent>
           <div className="text-2xl font-bold">$45,231.89</div>
           <p className="text-xs text-emerald-500 font-medium mt-1">+20.1% from last month</p>
+        </CardContent>
+      </Card>
+
+      <Card variant="bordered">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-zinc-500">Subscriptions</CardTitle>
+          <Bell className="h-4 w-4 text-zinc-400" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">+2350</div>
+          <p className="text-xs text-emerald-500 font-medium mt-1">+180.1% from last month</p>
+        </CardContent>
+      </Card>
+
+      <Card variant="bordered">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-zinc-500">Active Now</CardTitle>
+          <Settings className="h-4 w-4 text-zinc-400" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">+573</div>
+          <p className="text-xs text-zinc-500 font-medium mt-1">+201 since last hour</p>
         </CardContent>
       </Card>
     </div>

@@ -7,11 +7,11 @@ An interactive **Range Date Picker** component featuring single month, dual-mont
 
 ## Variations
 
-export const usageSingle = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usageSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 import { useState } from "react";
 
 export default function SingleRangeDatePickerDemo() {
-  const [range, setRange] = useState({
+  const [range, setRange] = useState<DateRange>({
     from: new Date(new Date().setDate(new Date().getDate() - 7)),
     to: new Date(),
   });
@@ -26,11 +26,11 @@ export default function SingleRangeDatePickerDemo() {
   );
 }`;
 
-export const usagePricedSingle = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usagePricedSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 import { useState } from "react";
 
 export default function PricedSingleRangeDatePickerDemo() {
-  const [range, setRange] = useState({
+  const [range, setRange] = useState<DateRange>({
     from: new Date(new Date().setDate(8)),
     to: new Date(new Date().setDate(18)),
   });
@@ -38,6 +38,7 @@ export default function PricedSingleRangeDatePickerDemo() {
   return (
     <RangeDatePicker
       variant="priced-single"
+      showPrices={true}
       value={range}
       onChange={setRange}
       getPrice={(date) => (date.getDay() === 0 || date.getDay() === 6 ? "$120" : "$100")}
@@ -46,11 +47,11 @@ export default function PricedSingleRangeDatePickerDemo() {
   );
 }`;
 
-export const usageDual = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usageDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 import { useState } from "react";
 
 export default function DualRangeDatePickerDemo() {
-  const [range, setRange] = useState({
+  const [range, setRange] = useState<DateRange>({
     from: new Date(new Date().setDate(new Date().getDate() - 14)),
     to: new Date(),
   });
@@ -65,11 +66,11 @@ export default function DualRangeDatePickerDemo() {
   );
 }`;
 
-export const usagePricedDual = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usagePricedDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 import { useState } from "react";
 
 export default function PricedDualRangeDatePickerDemo() {
-  const [range, setRange] = useState({
+  const [range, setRange] = useState<DateRange>({
     from: new Date(new Date().setDate(8)),
     to: new Date(new Date().setDate(28)),
   });
@@ -77,6 +78,7 @@ export default function PricedDualRangeDatePickerDemo() {
   return (
     <RangeDatePicker
       variant="priced-dual"
+      showPrices={true}
       value={range}
       onChange={setRange}
       getPrice={(date) => (date.getDay() === 0 || date.getDay() === 6 ? "$120" : "$100")}

@@ -25,6 +25,7 @@ export interface ColorPickerProps {
   showEyeDropper?: boolean;
   showAlpha?: boolean;
   showShades?: boolean;
+  showHarmonies?: boolean;
   className?: string;
   variant?: "standalone" | "gradient";
 }
@@ -172,6 +173,7 @@ export function StandaloneColorPicker({
   showEyeDropper = true,
   showAlpha = true,
   showShades = true,
+  showHarmonies = true,
   className,
 }: ColorPickerProps) {
   const parseColorToState = (val: string) => {
@@ -608,45 +610,47 @@ export function StandaloneColorPicker({
           </div>
         </section>
 
-        {/* Curated Theme Collections */}
-        <section className="space-y-2">
-          <header className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
-            <Palette className="size-4 text-emerald-500 shrink-0" />
-            <span className="truncate">Curated Theme Collections</span>
-          </header>
+        {/* Curated Theme Collections / Color Harmonies */}
+        {showHarmonies && (
+          <section className="space-y-2">
+            <header className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+              <Palette className="size-4 text-emerald-500 shrink-0" />
+              <span className="truncate">Curated Theme Collections</span>
+            </header>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            {[
-              { name: "Neon Cyber", colors: ["#00f5d4", "#7b2cbf", "#ff007f", "#00bbf9"] },
-              { name: "Pastel Dreams", colors: ["#ffc6ff", "#bdb2ff", "#a0c4ff", "#9bf6ff"] },
-              { name: "Warm Autumn", colors: ["#d4a373", "#faedcd", "#fefae0", "#bc6c25"] },
-              { name: "Deep Midnight", colors: ["#0f172a", "#1e293b", "#334155", "#64748b"] },
-            ].map((theme, idx) => (
-              <figure
-                key={idx}
-                className="p-2 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 flex flex-col gap-1.5 m-0"
-              >
-                <figcaption className="text-[10px] font-extrabold text-zinc-600 dark:text-zinc-300 truncate">
-                  {theme.name}
-                </figcaption>
-                <div className="flex gap-1">
-                  {theme.colors.map((c, cIdx) => (
-                    <button
-                      key={cIdx}
-                      onClick={() => {
-                        setColorHsl(parseColorToState(c));
-                        onChange?.(c);
-                      }}
-                      className="flex-1 h-5 rounded-lg border border-black/10 dark:border-white/10 transition-transform hover:scale-110"
-                      style={{ backgroundColor: c }}
-                      title={c}
-                    />
-                  ))}
-                </div>
-              </figure>
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {[
+                { name: "Neon Cyber", colors: ["#00f5d4", "#7b2cbf", "#ff007f", "#00bbf9"] },
+                { name: "Pastel Dreams", colors: ["#ffc6ff", "#bdb2ff", "#a0c4ff", "#9bf6ff"] },
+                { name: "Warm Autumn", colors: ["#d4a373", "#faedcd", "#fefae0", "#bc6c25"] },
+                { name: "Deep Midnight", colors: ["#0f172a", "#1e293b", "#334155", "#64748b"] },
+              ].map((theme, idx) => (
+                <figure
+                  key={idx}
+                  className="p-2 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 flex flex-col gap-1.5 m-0"
+                >
+                  <figcaption className="text-[10px] font-extrabold text-zinc-600 dark:text-zinc-300 truncate">
+                    {theme.name}
+                  </figcaption>
+                  <div className="flex gap-1">
+                    {theme.colors.map((c, cIdx) => (
+                      <button
+                        key={cIdx}
+                        onClick={() => {
+                          setColorHsl(parseColorToState(c));
+                          onChange?.(c);
+                        }}
+                        className="flex-1 h-5 rounded-lg border border-black/10 dark:border-white/10 transition-transform hover:scale-110"
+                        style={{ backgroundColor: c }}
+                        title={c}
+                      />
+                    ))}
+                  </div>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 48 Expanded Preset Palette Swatches */}
         {showPresets && (
