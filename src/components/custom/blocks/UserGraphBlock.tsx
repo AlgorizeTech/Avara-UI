@@ -44,7 +44,7 @@ export interface SubAgent {
   title: string;
   role: string;
   avatarUrl: string;
-  status: "online" | "idle" | "offline";
+  status: "online" | "idle" | "offline" | string;
   percentX: number;
   svgX: number;
   apps: SubApp[];

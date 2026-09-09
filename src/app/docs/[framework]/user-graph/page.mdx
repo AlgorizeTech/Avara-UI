@@ -7,16 +7,18 @@ An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Ne
 
 Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
 
-export const usageDefault = `import { UserGraph } from "@/components/custom/blocks/UserGraphBlock";
-import { Mic, Phone, MessageSquare, Send, Mail, Code2, Plug, Network, Share2, Globe, CreditCard } from "lucide-react";
+export const usageDefault = `import { UserGraph, type OrbitTool, type SubAgent } from "@/components/custom/blocks/UserGraphBlock";
+import { Mic, Phone, MessageSquare, Send, Mail, Code2, Plug, Network, Share2, Globe, CreditCard, BarChart3, Database } from "lucide-react";
 
+// Optional: Customize central orchestrator node
 const orchestrator = {
   name: "John Doe",
   role: "Senior Product Designer",
   avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
 };
 
-const orbitTools = [
+// Optional: Customize orbiting tools
+const orbitTools: OrbitTool[] = [
   { id: "slack", name: "Slack", icon: Share2 },
   { id: "whatsapp", name: "WhatsApp", icon: MessageSquare },
   { id: "telegram", name: "Telegram", icon: Send },
@@ -27,15 +29,16 @@ const orbitTools = [
   { id: "phone", name: "Phone", icon: Phone },
 ];
 
-const subAgents = [
+// Optional: Customize sub-agent team cards & app integrations
+const subAgents: SubAgent[] = [
   {
     id: "sales",
     title: "Sales Lead",
     role: "Enterprise Conversions",
     avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
     status: "online",
-    percentX: 15,
-    svgX: 150,
+    percentX: 20,
+    svgX: 200,
     apps: [
       { id: "hubspot", name: "HubSpot", icon: Globe, bgColor: "bg-teal-50 dark:bg-teal-950/80", textColor: "text-teal-600 dark:text-teal-400", borderColor: "border-teal-300 dark:border-teal-700" },
       { id: "stripe", name: "Stripe", icon: CreditCard, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700", customText: "S" },
@@ -55,22 +58,23 @@ const subAgents = [
     ],
   },
   {
-    id: "support",
-    title: "Support Lead",
-    role: "Priority Escalations",
-    avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
-    status: "idle",
-    percentX: 85,
-    svgX: 850,
+    id: "analyst",
+    title: "Data Engineer",
+    role: "BI & Pipeline Systems",
+    avatarUrl: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
+    status: "online",
+    percentX: 80,
+    svgX: 800,
     apps: [
-      { id: "intercom", name: "Intercom", icon: MessageSquare, bgColor: "bg-pink-50 dark:bg-pink-950/80", textColor: "text-pink-600 dark:text-pink-400", borderColor: "border-pink-300 dark:border-pink-700" },
+      { id: "drive", name: "Google Drive", icon: Database, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700" },
+      { id: "sheets", name: "Sheets", icon: BarChart3, bgColor: "bg-emerald-50 dark:bg-emerald-950/80", textColor: "text-emerald-600 dark:text-emerald-400", borderColor: "border-emerald-300 dark:border-emerald-700" },
     ],
   },
 ];
 
-export default function UserGraphPage() {
+export default function UserGraphDemo() {
   return (
-    <div className="w-full p-4 sm:p-8 bg-slate-50 dark:bg-zinc-950">
+    <div className="w-full p-4 sm:p-8 bg-slate-50 dark:bg-zinc-950 flex justify-center">
       <UserGraph
         color="indigo"
         orchestrator={orchestrator}
