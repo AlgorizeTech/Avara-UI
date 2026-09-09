@@ -269,7 +269,7 @@ export function HomepageReviewsSection({
 					to   { transform: translateX(-50%); }
 				}
 				.homepage-reviews-marquee-track {
-					animation: homepage-reviews-marquee-scroll 35s linear infinite;
+					animation: homepage-reviews-marquee-scroll 70s linear infinite;
 				}
 				.homepage-reviews-marquee-track:hover {
 					animation-play-state: paused;
