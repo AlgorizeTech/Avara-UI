@@ -9,7 +9,7 @@ export const chatData = `const currentUser = {
   status: "online",
 };
 
-const contactsData = [
+const contactsData: Contact[] = [
   {
     id: 1,
     name: "Felecia Rower",
@@ -51,7 +51,7 @@ const contactsData = [
   },
 ];`;
 
-export const usageDefault = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageDefault = `import ChatApp, { type Contact } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 
@@ -59,7 +59,7 @@ export default function Messages() {
   return ;
 }`;
 
-export const usageMinimal = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageMinimal = `import ChatApp, { type Contact } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 
@@ -70,7 +70,7 @@ export default function MinimalChat() {
   );
 }`;
 
-export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageGlass = `import ChatApp, { type Contact } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 

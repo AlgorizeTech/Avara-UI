@@ -6,7 +6,7 @@ This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.
 
 One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
 
-export const chartData = `const revenue = [
+export const chartData = `const revenue: ChartDataPoint[] = [
   { label: "Jan", value: 1200 },
   { label: "Feb", value: 1900 },
   { label: "Mar", value: 1500 },
@@ -29,7 +29,7 @@ export const chartHeading = `
         
       `;
 
-export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageBar = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -41,7 +41,7 @@ export default function RevenueChart() {
   );
 }`;
 
-export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageLine = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -54,7 +54,7 @@ export default function RevenueLine() {
   );
 }`;
 
-export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usagePie = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -68,7 +68,7 @@ export default function RevenuePie() {
   );
 }`;
 
-export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageDonut = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 

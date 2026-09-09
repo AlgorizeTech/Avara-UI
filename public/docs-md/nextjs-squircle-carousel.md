@@ -4,9 +4,9 @@ Horizontal flowing carousel where images are masked behind a grid of rounded cub
 
 Drag the stage left or right to explore images seamlessly across squircle tiles.
 
-export const usageCode = `import { SquircleCarousel } from "@/components/custom/squircle-carousel";
+export const usageCode = `import { SquircleCarousel, type SquircleCarouselItem } from "@/components/custom/squircle-carousel";
 
-const items = [
+const items: SquircleCarouselItem[] = [
   {
     id: "1",
     title: "Misty Pine Forest",

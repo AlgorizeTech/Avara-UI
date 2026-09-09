@@ -6,9 +6,9 @@ This component features four distinct visual variants, seamless color theming, a
 
 You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
-export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-const items = [
+const items: BreadcrumbItem[] = [
   { label: "Docs", href: "/docs" },
   { label: "Components", href: "/docs/components" },
   { label: "Breadcrumb", href: "/docs/components/breadcrumb" },
@@ -19,9 +19,9 @@ export default function BreadcrumbDemo() {
   return ;
 }`;
 
-export const usageIcons = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+export const usageIcons = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-const items = [
+const items: BreadcrumbItem[] = [
   // icon takes the Lucide component itself, not a string
   { label: "Home", href: "/", icon: Home },
   { label: "Settings", href: "/settings", icon: Settings },
@@ -32,9 +32,9 @@ export default function BreadcrumbWithIcons() {
   return ;
 }`;
 
-export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+export const usageTruncated = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-const deepPath = [
+const deepPath: BreadcrumbItem[] = [
   { label: "Home", href: "/", icon: Home },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Projects", href: "/projects", icon: Folder },

@@ -52,7 +52,7 @@ const MockMobileView = () => (
 
 );
 
-const steps = [
+const steps: SplitStep[] = [
   {
     id: "landing",
     stepNumber: "01",
@@ -103,7 +103,7 @@ const steps = [
   },
 ];`;
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDefault = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -113,7 +113,7 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageStickyLeft = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -122,7 +122,7 @@ export default function ServicesSectionMirrored() {
   return ;
 }`;
 
-export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -134,7 +134,7 @@ export default function DeepDeck() {
   );
 }`;
 
-export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageColor = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 

@@ -4,7 +4,7 @@ Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow mo
 
 Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
 
-export const itemsCode = `const items = [
+export const itemsCode = `const items: FlowGalleryItem[] = [
   {
     id: "1",
     title: "Cyberpunk Officer",
@@ -57,7 +57,7 @@ export const itemsCode = `const items = [
   },
 ];`;
 
-export const usageTopLeft = `import { FlowGallery } from "@/components/custom/flow-gallery";
+export const usageTopLeft = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
 
 ${itemsCode}
 
@@ -67,7 +67,7 @@ export default function FlowGalleryTopLeftDemo() {
   );
 }`;
 
-export const usageTopRight = `import { FlowGallery } from "@/components/custom/flow-gallery";
+export const usageTopRight = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
 
 ${itemsCode}
 
@@ -77,7 +77,7 @@ export default function FlowGalleryTopRightDemo() {
   );
 }`;
 
-export const usageVerticalUp = `import { FlowGallery } from "@/components/custom/flow-gallery";
+export const usageVerticalUp = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
 
 ${itemsCode}
 
@@ -87,7 +87,7 @@ export default function FlowGalleryVerticalUpDemo() {
   );
 }`;
 
-export const usageVerticalDown = `import { FlowGallery } from "@/components/custom/flow-gallery";
+export const usageVerticalDown = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
 
 ${itemsCode}
 

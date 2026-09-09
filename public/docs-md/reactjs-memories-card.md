@@ -4,7 +4,7 @@ A premium, interactive card stack component featuring real-time 3D tilt physics,
 
 Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
 
-export const memoriesData = `const memories = [
+export const memoriesData = `const memories: MemoryItem[] = [
   {
     id: "m1",
     tag: "Highlight",

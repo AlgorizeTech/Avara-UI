@@ -4,7 +4,7 @@ Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow mo
 
 Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
 
-export const itemsCode = `const items = [
+export const itemsCode = `const items: AnimatedMarqueeItem[] = [
   {
     id: "1",
     title: "Cyberpunk Officer",
@@ -57,7 +57,7 @@ export const itemsCode = `const items = [
   },
 ];`;
 
-export const usageTopLeft = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+export const usageTopLeft = `import { AnimatedMarquee, type AnimatedMarqueeItem } from "@/components/custom/animated-marquee";
 
 ${itemsCode}
 
@@ -67,7 +67,7 @@ export default function AnimatedMarqueeTopLeftDemo() {
   );
 }`;
 
-export const usageTopRight = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+export const usageTopRight = `import { AnimatedMarquee, type AnimatedMarqueeItem } from "@/components/custom/animated-marquee";
 
 ${itemsCode}
 
@@ -77,7 +77,7 @@ export default function AnimatedMarqueeTopRightDemo() {
   );
 }`;
 
-export const usageVerticalUp = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+export const usageVerticalUp = `import { AnimatedMarquee, type AnimatedMarqueeItem } from "@/components/custom/animated-marquee";
 
 ${itemsCode}
 
@@ -87,7 +87,7 @@ export default function AnimatedMarqueeVerticalUpDemo() {
   );
 }`;
 
-export const usageVerticalDown = `import { AnimatedMarquee } from "@/components/custom/animated-marquee";
+export const usageVerticalDown = `import { AnimatedMarquee, type AnimatedMarqueeItem } from "@/components/custom/animated-marquee";
 
 ${itemsCode}
 

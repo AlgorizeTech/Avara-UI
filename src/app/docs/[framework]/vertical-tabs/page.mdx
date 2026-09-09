@@ -9,7 +9,7 @@ Eight `variant` styles ship with it — from a filled pill bar to an underline r
 
 Switch tabs in any preview and the panel slides in from the side you moved toward. Arrow keys walk the rail, `Home` and `End` jump to its ends, and nothing animates on load. The component is exported as `VerticalTabs`, which is the original name and stays the import so existing installs keep working.
 
-export const usageTabsData = `const tabs = [
+export const usageTabsData = `const tabs: TabItem[] = [
   {
     id: "photos",
     label: "Photos",
@@ -66,7 +66,7 @@ export const usageTabsData = `const tabs = [
   `note` becomes the comment that explains what the props above it change.
 */}
 
-export const tabsUsage = ({ name, props = "", note }) => `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+export const tabsUsage = ({ name, props = "", note }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
 import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 ${usageTabsData}
@@ -75,7 +75,7 @@ export default function ${name}() {
 ${note ? `  // ${note}\n` : ""}  return <VerticalTabs tabs={tabs}${props} />;
 }`;
 
-export const glassUsage = ({ name, props = "" }) => `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+export const glassUsage = ({ name, props = "" }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
 import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 ${usageTabsData}

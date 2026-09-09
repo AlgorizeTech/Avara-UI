@@ -4,7 +4,7 @@ A premium, interactive LLM chat interface featuring conversation history managem
 
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
 
-export const chatData = `const chatHistory = [
+export const chatData = `const chatHistory: ChatThread[] = [
   { id: 1, title: "Help with React Components", date: "Today" },
   { id: 2, title: "Write a python script for SEO", date: "Today" },
   { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
@@ -12,7 +12,7 @@ export const chatData = `const chatHistory = [
   { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
 ];
 
-const initialMessages = [
+const initialMessages: Message[] = [
   {
     id: 1,
     role: "ai",
@@ -34,7 +34,7 @@ const initialMessages = [
   },
 ];`;
 
-export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageDefault = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 
@@ -44,7 +44,7 @@ export default function Assistant() {
   );
 }`;
 
-export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageMinimal = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 
@@ -56,7 +56,7 @@ export default function MinimalAssistant() {
   );
 }`;
 
-export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageGlass = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 

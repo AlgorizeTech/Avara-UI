@@ -111,7 +111,7 @@ const MockMobileView = () => (
 );
 
 
-const steps = [
+const steps: SplitStep[] = [
   {
     id: "landing",
     stepNumber: "01",
@@ -162,7 +162,7 @@ const steps = [
   },
 ];`;
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDefault = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -175,7 +175,7 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageStickyLeft = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -185,7 +185,7 @@ export default function ServicesSectionMirrored() {
   return <SplitStepper steps={steps} stickySide="left" color="#FFAB1D" />;
 }`;
 
-export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -198,7 +198,7 @@ export default function DeepDeck() {
   );
 }`;
 
-export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageColor = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}

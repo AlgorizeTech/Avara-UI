@@ -11,7 +11,7 @@ Explore the different variations of the Select component — each example shows 
 
 export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
 
-const options = [
+const options: SelectOption[] = [
   { label: "Engineering", value: "eng", icon: Code },
   { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },
@@ -21,7 +21,7 @@ const options = [
 
 export const usageDefault = `"use client";
 
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
 
 ${selectOptions}
@@ -44,7 +44,7 @@ export default function BasicSelect() {
 export const usageUnderlined = `"use client";
 
 import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 
 ${selectOptions}
 
@@ -67,7 +67,7 @@ export default function UnderlinedSelect() {
 export const usageSearchable = `"use client";
 
 import { useState } from "react";
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 
 ${selectOptions}
 
@@ -89,7 +89,7 @@ export default function SearchableSelect() {
 
 export const usageMultiple = `"use client";
 
-import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 import { useState } from "react";
 
 ${selectOptions}
