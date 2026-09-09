@@ -17,11 +17,12 @@ export default function Page() {
       badgeHref="/docs"
       titlePrefix="Build Interactive "
       typingWords={["Interfaces", "Components", "Experiences", "Animations"]}
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
       cliCommand="npx shadcn@latest add button"
-      primaryActionLabel="Get Started"
+      primaryActionLabel="Browse Components"
       primaryActionHref="/docs"
-      secondaryActionLabel="GitHub"
-      className="w-full min-h-screen"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
     />
   );
 }`;
@@ -58,14 +59,20 @@ export default function Page() {
       variant="typing"
       badgeText="Next-Gen React Components"
       badgeHref="/docs"
-      titlePrefix="Build "
-      typingWords={["Exceptional", "Interactive", "Animated"]}
-      titleSuffix="Interfaces"
-      cliCommand="npx shadcn@latest add button"
-      primaryActionLabel="Get Started"
+      titlePrefix="Build Interactive "
+      typingWords={[
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+      ]}
+      titleSuffix=""
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+      cliCommand="npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json"
+      primaryActionLabel="Browse Components"
       primaryActionHref="/docs"
-      secondaryActionLabel="GitHub"
-      className="w-full min-h-screen"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
     />
   );
 }`;
@@ -97,22 +104,21 @@ export default function Page() {
   return (
     <HeroBlock
       variant="slider"
-      badgeText="FW 24/25 Collection"
-      badgeHref="/collection"
-      titlePrefix="Back into "
-      titleSuffix="Modern Fashion"
-      subtitle="Designed for ultimate comfort and flexibility. Crafted with breathable fabrics and sleek, modern designs."
-      primaryActionLabel="View Collection"
-      primaryActionHref="/shop"
-      secondaryActionLabel="Explore Lookbook"
-      secondaryActionHref="/lookbook"
-      mainImage="https://images.unsplash.com/photo-1524504388940-b1c1722653e1"
+      badgeText="Full-Stack Software Engineer"
+      badgeHref="/docs"
+      titlePrefix="Building & Engineering "
+      titleSuffix="Full-Stack Digital Products"
+      subtitle="Full-stack software engineer dedicated to building scalable web applications, modern SaaS platforms, and high-performance digital experiences."
+      primaryActionLabel="Explore Projects"
+      primaryActionHref="/projects"
+      secondaryActionLabel="Contact Me"
+      secondaryActionHref="#contact"
+      mainImage="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
       sliderImages={[
-        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
-        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4",
-        "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead"
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=600&q=80"
       ]}
-      className="w-full min-h-screen"
     />
   );
 }`;
@@ -144,16 +150,17 @@ export default function Page() {
   return (
     <HeroBlock
       variant="pet-shop"
+      badgeText="Certified Organic & Vet Approved"
       titlePrefix="All Pet Essentials"
       titleSuffix="Delivered To Your Door"
       subtitle="Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations."
+      categories={["Dry Food", "Toys", "Grooming", "Wellness", "Subscription"]}
       primaryActionLabel="Shop Dog Supplies"
       primaryActionHref="/shop/dog"
       secondaryActionLabel="Shop Cat Care"
       secondaryActionHref="/shop/cat"
-      petImage="https://images.unsplash.com/photo-1543466835-00a7907e9de1"
-      secondaryPetImage="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
-      className="w-full min-h-screen"
+      petImage="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80"
+      secondaryPetImage="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80"
     />
   );
 }`;
@@ -192,13 +199,12 @@ export default function Page() {
       primaryActionHref="/order"
       secondaryActionLabel="See How Its Work"
       secondaryActionHref="/how-it-works"
-      petImage="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
-      secondaryPetImage="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
-      mainImage="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
       ratingText="100%"
       featurePillText="98%"
       badgeTags={["Safe & Private Results", "Satisfaction rate"]}
-      className="w-full min-h-screen"
+      petImage="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
+      secondaryPetImage="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
+      mainImage="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
     />
   );
 }`;
