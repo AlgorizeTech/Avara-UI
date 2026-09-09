@@ -37,7 +37,120 @@ const ICON_MAP: Record<string, React.ElementType> = {
   ArrowRight,
 };
 
-const pricingVariants: any = {
+/** A cell in the comparison table: a tick, a cross, or a value. */
+export type PricingCellValue = string | number | boolean | null;
+
+/** One row of the comparison table, with a value per plan column. */
+export interface PricingComparisonFeature {
+  name: string;
+  values: PricingCellValue[];
+}
+
+export interface PricingFeatureSection {
+  title: string;
+  features: PricingComparisonFeature[];
+}
+
+export interface PricingPlan {
+  id: string | number;
+  title: string;
+  subtitle?: string;
+  price: string | number;
+  period?: string;
+  /** A key of the block’s ICON_MAP, or a component. */
+  icon?: string | React.ElementType;
+  features?: string[];
+  popular?: boolean;
+  popularText?: string;
+  featured?: boolean;
+  active?: boolean;
+  buttonText?: string;
+  buttonClassName?: string;
+  rootClassName?: string;
+}
+
+export interface PricingPlanTab {
+  id: string;
+  label: string;
+  icon?: string | React.ElementType;
+  plans?: PricingPlan[];
+  featureSections?: PricingFeatureSection[];
+}
+
+export interface PricingPlanData {
+  tabs: PricingPlanTab[];
+}
+
+export interface BasicPricingPlanProps {
+  data?: PricingPlanData;
+  variant?: string;
+  tabStyle?: "default" | "toggle" | string;
+  counting?: boolean;
+  tabClassName?: string;
+  cardClassName?: string;
+  popularBadgeClassName?: string;
+  buttonClassName?: string;
+}
+
+export interface TablePricingPlanProps {
+  data?: PricingPlanData;
+  counting?: boolean;
+  className?: string;
+  headerClassName?: string;
+  rowClassName?: string;
+  buttonClassName?: string;
+}
+
+export interface PricingBillingPeriod {
+  id: string;
+  label: string;
+  period?: string;
+  /** Percent off, applied to the tier price. */
+  discount?: number;
+  badgeText?: string;
+  badgeClassName?: string;
+}
+
+export interface PricingSliderTier {
+  /** Shown in the tier label and substituted into `{tier}` in features. */
+  label?: string;
+  price: number | string;
+  /** Overrides `price` for a given billing period id. */
+  customPricing?: Record<string, number | string>;
+  [key: string]: unknown;
+}
+
+export interface PricingSliderConfig {
+  min?: number;
+  max?: number;
+  step?: number;
+  defaultValue?: number;
+  minLabel?: string;
+  maxLabel?: string;
+}
+
+export interface SliderPricingPlanProps {
+  pricingTiers?: PricingSliderTier[];
+  features?: string[];
+  billingPeriods?: PricingBillingPeriod[];
+  sliderConfig?: PricingSliderConfig;
+  ctaText?: string;
+  ctaIcon?: string | React.ElementType;
+  footerText?: string;
+  counting?: boolean;
+  /** Per-element class overrides. */
+  classNames?: Record<string, string>;
+  className?: string;
+  /** Fired with the newly selected tier and its slider index. */
+  onTierChange?: (tier: PricingSliderTier | undefined, index: number) => void;
+  /** Fired with the billing period id. */
+  onBillingChange?: (id: string) => void;
+  /** Fired with the current tier and billing period id. */
+  onCtaClick?: (tier: PricingSliderTier | undefined, billingPeriod: string) => void;
+}
+
+/** Class bundles per visual variant. */
+const pricingVariants: Record<string, Record<string, string>> = {
   default: {
     container: "w-full p-6",
     card: "relative transition-all duration-200 hover:shadow-lg dark:hover:shadow-xl dark:bg-slate-900 dark:border-slate-700",
@@ -147,12 +260,12 @@ export function BasicPricingPlan({
   cardClassName,
   popularBadgeClassName,
   buttonClassName,
-}: any) {
+}: BasicPricingPlanProps) {
   const [activeTab, setActiveTab] = useState(data?.tabs?.[0]?.id || "");
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   if (!data || !data.tabs || data.tabs.length === 0) return null;
-  const activeTabData = data.tabs.find((tab: any) => tab.id === activeTab);
+  const activeTabData = data.tabs.find((tab: PricingPlanTab) => tab.id === activeTab);
   const variantStyles = pricingVariants[variant] || pricingVariants.default;
 
   const handleTabChange = (tabId: string) => {
@@ -181,10 +294,10 @@ export function BasicPricingPlan({
               className="absolute top-1 bottom-1 bg-primary rounded-full transition-all duration-300 ease-in-out shadow-sm"
               style={{
                 width: `calc(${100 / data.tabs.length}% - 8px)`,
-                left: `calc(${(data.tabs.findIndex((tab: any) => tab.id === activeTab) * 100) / data.tabs.length}% + 4px)`,
+                left: `calc(${(data.tabs.findIndex((tab: PricingPlanTab) => tab.id === activeTab) * 100) / data.tabs.length}% + 4px)`,
               }}
             />
-            {data.tabs.map((tab: any) => {
+            {data.tabs.map((tab: PricingPlanTab) => {
               const TabIcon =
                 typeof tab.icon === "string" ? ICON_MAP[tab.icon] : tab.icon;
               return (
@@ -211,7 +324,7 @@ export function BasicPricingPlan({
               tabClassName,
             )}
           >
-            {data.tabs.map((tab: any) => {
+            {data.tabs.map((tab: PricingPlanTab) => {
               const TabIcon =
                 typeof tab.icon === "string" ? ICON_MAP[tab.icon] : tab.icon;
               return (
@@ -241,7 +354,7 @@ export function BasicPricingPlan({
           tabStyle === "toggle" && isTransitioning && "opacity-0 scale-95",
         )}
       >
-        {activeTabData?.plans.map((plan: any) => {
+        {activeTabData?.plans?.map((plan: PricingPlan) => {
           const PlanIcon =
             typeof plan.icon === "string" ? ICON_MAP[plan.icon] : plan.icon;
           return (
@@ -299,7 +412,7 @@ export function BasicPricingPlan({
                 </CardDescription>
                 <div className="mt-4">
                   <span className={cn(variantStyles.price)}>
-                    {plan.price.startsWith("$") ? "$" : ""}
+                    {typeof plan.price === "string" && plan.price.startsWith("$") ? "$" : ""}
                     <AnimatedPrice value={plan.price} counting={counting} />
                   </span>
                   {plan.period && (
@@ -333,7 +446,7 @@ export function BasicPricingPlan({
                     What&apos;s included:
                   </h4>
                   <ul className="space-y-3">
-                    {plan.features.map((feature: any, featureIndex: number) => (
+                    {plan.features?.map((feature: string, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-start">
                         <div
                           className={cn(
@@ -386,13 +499,13 @@ export function TablePricingPlan({
   headerClassName,
   rowClassName,
   buttonClassName,
-}: any) {
+}: TablePricingPlanProps) {
   const [activeTab, setActiveTab] = useState(data?.tabs?.[0]?.id || "");
 
   if (!data || !data.tabs || data.tabs.length === 0) return null;
-  const activeTabData = data.tabs.find((tab: any) => tab.id === activeTab);
+  const activeTabData = data.tabs.find((tab: PricingPlanTab) => tab.id === activeTab);
 
-  const renderFeatureValue = (value: any, planIndex: number) => {
+  const renderFeatureValue = (value: PricingCellValue, planIndex: number) => {
     if (value === true)
       return <Check className="w-5 h-5 text-primary mx-auto" />;
     if (value === false || value === null || value === undefined)
@@ -416,7 +529,7 @@ export function TablePricingPlan({
       {data.tabs.length > 1 && (
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center justify-center rounded-full bg-muted p-1">
-            {data.tabs.map((tab: any) => {
+            {data.tabs.map((tab: PricingPlanTab) => {
               const TabIcon =
                 typeof tab.icon === "string" ? ICON_MAP[tab.icon] : tab.icon;
               return (
@@ -447,7 +560,7 @@ export function TablePricingPlan({
           )}
         >
           <div className="p-6"></div>
-          {activeTabData?.plans.map((plan: any) => (
+          {activeTabData?.plans?.map((plan: PricingPlan) => (
             <div
               key={plan.id}
               className={cn(
@@ -465,7 +578,7 @@ export function TablePricingPlan({
               </h3>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                  {plan.price.startsWith("$") ? "$" : ""}
+                  {typeof plan.price === "string" && plan.price.startsWith("$") ? "$" : ""}
                   <AnimatedPrice value={plan.price} counting={counting} />
                 </span>
                 {plan.period && (
@@ -489,7 +602,7 @@ export function TablePricingPlan({
           ))}
         </div>
 
-        {activeTabData?.featureSections.map((section: any) => (
+        {activeTabData?.featureSections?.map((section: PricingFeatureSection) => (
           <div key={section.title}>
             <div
               className={cn(
@@ -502,7 +615,7 @@ export function TablePricingPlan({
               <div className="border-l"></div>
               <div className="border-l"></div>
             </div>
-            {section.features.map((feature: any) => (
+            {section.features.map((feature: PricingComparisonFeature) => (
               <div
                 key={feature.name}
                 className={cn(
@@ -511,7 +624,7 @@ export function TablePricingPlan({
                 )}
               >
                 <div className="p-4 text-sm font-medium">{feature.name}</div>
-                {activeTabData.plans.map((plan: any, planIndex: number) => (
+                {activeTabData?.plans?.map((plan: PricingPlan, planIndex: number) => (
                   <div
                     key={plan.id}
                     className={cn(
@@ -562,7 +675,7 @@ export function SliderPricingPlan({
   onTierChange,
   onBillingChange,
   onCtaClick,
-}: any) {
+}: SliderPricingPlanProps) {
   const [sliderValue, setSliderValue] = useState([
     sliderConfig.defaultValue || 0,
   ]);
@@ -574,18 +687,17 @@ export function SliderPricingPlan({
 
   const currentTier = pricingTiers[sliderValue[0]];
   const currentBilling = billingPeriods.find(
-    (bp: any) => bp.id === billingPeriod,
+    (bp: PricingBillingPeriod) => bp.id === billingPeriod,
   );
 
   // Resolve string icon to component
   const CtaIcon = typeof ctaIcon === "string" ? ICON_MAP[ctaIcon] : ctaIcon;
 
-  const getPrice = () => {
+  const getPrice = (): number => {
     if (!currentTier) return 0;
-    if (currentTier.customPricing?.[billingPeriod]) {
-      return currentTier.customPricing[billingPeriod] as number;
-    }
-    return currentTier.price;
+    const raw = currentTier.customPricing?.[billingPeriod] ?? currentTier.price;
+    const value = typeof raw === "string" ? parseFloat(raw.replace(/[^0-9.]/g, "")) : raw;
+    return Number.isFinite(value) ? value : 0;
   };
 
   const getCurrentPrice = () => getPrice();
@@ -619,7 +731,7 @@ export function SliderPricingPlan({
     onCtaClick?.(currentTier, billingPeriod);
   };
 
-  const processedFeatures = features.map((feature: any) =>
+  const processedFeatures = features.map((feature: string) =>
     feature.replace("{tier}", currentTier?.label || ""),
   );
 
@@ -683,7 +795,7 @@ export function SliderPricingPlan({
                 classNames.tabContainer,
               )}
             >
-              {billingPeriods.map((period: any) => (
+              {billingPeriods.map((period: PricingBillingPeriod) => (
                 <button
                   key={period.id}
                   onClick={() => handleBillingChange(period.id)}
@@ -753,7 +865,7 @@ export function SliderPricingPlan({
           </div>
 
           <div className={cn("space-y-4 mb-8", classNames.featuresList)}>
-            {processedFeatures.map((feature: any, index: number) => (
+            {processedFeatures.map((feature: string, index: number) => (
               <div
                 key={index}
                 className={cn("flex items-center", classNames.featureItem)}

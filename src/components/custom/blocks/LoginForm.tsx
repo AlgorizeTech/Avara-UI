@@ -120,6 +120,12 @@ export const getThemeStyles = (color: string) => {
 };
 
 // --- INLINE UI COMPONENTS ---
+interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: React.ReactNode;
+  error?: string;
+  description?: React.ReactNode;
+}
+
 const Input = ({
   label,
   id,
@@ -128,7 +134,7 @@ const Input = ({
   type = "text",
   className,
   ...props
-}: any) => {
+}: FieldInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
@@ -176,6 +182,15 @@ const Input = ({
   );
 };
 
+interface FieldCheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+  label?: React.ReactNode;
+  error?: string;
+  onCheckedChange: (checked: boolean) => void;
+  /** A row out of the block’s colour table. */
+  theme: Record<string, string>;
+}
+
 const Checkbox = ({
   label,
   id,
@@ -185,7 +200,7 @@ const Checkbox = ({
   className,
   theme,
   ...props
-}: any) => (
+}: FieldCheckboxProps) => (
   <div className="flex flex-col gap-1">
     <div className="flex items-start gap-2.5">
       <div className="relative flex items-center mt-0.5">
@@ -223,6 +238,12 @@ const Checkbox = ({
   </div>
 );
 
+interface FieldButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outline" | "ghost" | string;
+  size?: "default" | "sm" | "lg" | string;
+  theme?: Record<string, string>;
+}
+
 const Button = ({
   className,
   variant = "default",
@@ -231,7 +252,7 @@ const Button = ({
   theme,
   children,
   ...props
-}: any) => (
+}: FieldButtonProps) => (
   <button
     disabled={disabled}
     className={cn(
@@ -360,7 +381,7 @@ export default function LoginForm({
           autoComplete="email"
           placeholder="name@company.com"
           value={formData.email}
-          onChange={(e: any) => handleChange("email", e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("email", e.target.value)}
           error={errors.email}
           className={theme.ring}
         />
@@ -372,7 +393,7 @@ export default function LoginForm({
           autoComplete="current-password"
           placeholder="Enter your password"
           value={formData.password}
-          onChange={(e: any) => handleChange("password", e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("password", e.target.value)}
           error={errors.password}
           className={theme.ring}
         />

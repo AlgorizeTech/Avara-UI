@@ -116,7 +116,7 @@ const ItemRow = ({
   item: CartItem;
   updateQty: (id: string, delta: number) => void;
   removeItem: (id: string) => void;
-  theme: any;
+  theme: Record<string, string>;
 }) => (
   <div className="flex gap-4 py-4 border-b border-border">
     <div
@@ -174,7 +174,7 @@ const Summary = ({
   isPage = false,
 }: {
   subtotal: number;
-  theme: any;
+  theme: Record<string, string>;
   isPage?: boolean;
 }) => (
   <div

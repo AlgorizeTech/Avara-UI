@@ -848,8 +848,24 @@ export interface PricingTypographicPlan {
   billingCycle?: "monthly" | "yearly" | string;
 }
 
+/** Plans already split by billing cycle, optionally one level down. */
+export interface PricingTypographicGroups {
+  monthly?: PricingTypographicPlan[];
+  yearly?: PricingTypographicPlan[];
+  packages?: PricingTypographicGroups;
+  data?: PricingTypographicGroups;
+}
+
+/**
+ * Either a flat list, where each plan carries its own `billingCycle`, or a
+ * grouped object. Both are accepted; the block sorts it out.
+ */
+export type PricingTypographicPackages =
+  | PricingTypographicPlan[]
+  | PricingTypographicGroups;
+
 export interface PricingTypographicProps {
-  packages: any;
+  packages: PricingTypographicPackages;
   color?: PricingColor;
   counting?: boolean;
   linkComponent?: React.ElementType;

@@ -4,7 +4,7 @@ A complete, fully functional, and editable Invoice dashboard component featuring
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
-export const invoiceSource = `const invoiceData = {
+export const invoiceSource = `const invoiceData: InvoiceData = {
   invoiceNumber: "#4987",
   dateIssued: "13 Mar 2026",
   dateDue: "23 Mar 2026",
@@ -46,7 +46,7 @@ export const invoiceSource = `const invoiceData = {
   note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
 };`;
 
-export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageDefault = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
@@ -54,7 +54,7 @@ export default function InvoicePage() {
   return ;
 }`;
 
-export const usageCorporate = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageCorporate = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
@@ -62,7 +62,7 @@ export default function CorporateInvoice() {
   return ;
 }`;
 
-export const usageBrutalist = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageBrutalist = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 

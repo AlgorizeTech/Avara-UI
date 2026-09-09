@@ -59,7 +59,9 @@ export function Piano({
   const getAudioContext = useCallback(() => {
     if (!audioCtxRef.current) {
       const AudioContextClass =
-        window.AudioContext || (window as any).webkitAudioContext;
+        window.AudioContext ||
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
       if (AudioContextClass) {
         audioCtxRef.current = new AudioContextClass();
       }

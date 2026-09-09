@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { useMemo, useState } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
@@ -195,7 +195,10 @@ function Calendar({
   formatters,
   components,
   ...props
-}: any) {
+}: React.ComponentProps<typeof DayPicker> & {
+  /** Button style used for the nav and day cells. */
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+}) {
   const defaultClassNames = getDefaultClassNames();
   return (
     <DayPicker
@@ -342,7 +345,12 @@ function Calendar({
   );
 }
 
-function CalendarDayButton({ className, day, modifiers, ...props }: any) {
+function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  ...props
+}: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
   const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -469,13 +477,16 @@ function CalendarDashboard({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
   const [selectedTime, setSelectedTime] = useState("12:00");
-  const [editingEvent, setEditingEvent] = useState<any | null>(null);
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [eventType, setEventType] = useState("pentest");
   const [eventPlatform, setEventPlatform] = useState("meet");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Filter State
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    types: Record<string, boolean>;
+    platforms: Record<string, boolean>;
+  }>({
     types: { pentest: true, kickoff: true },
     platforms: { meet: true, slack: true, discord: true },
   });
@@ -564,13 +575,13 @@ function CalendarDashboard({
   const filteredEvents = useMemo(() => {
     return events.filter(
       (e) =>
-        (filters.types as any)[e.type] &&
-        (filters.platforms as any)[e.platform],
+        filters.types[e.type] &&
+        filters.platforms[e.platform],
     );
   }, [events, filters]);
 
   const toggleFilter = (category: "types" | "platforms", key: string) => {
-    setFilters((prev: any) => ({
+    setFilters((prev) => ({
       ...prev,
       [category]: { ...prev[category], [key]: !prev[category][key] },
     }));
@@ -620,7 +631,7 @@ function CalendarDashboard({
     setIsAddModalOpen(true);
   };
 
-  const openEditModal = (event: any) => {
+  const openEditModal = (event: CalendarEvent) => {
     setEditingEvent(event);
     setEventType(event.type ?? "pentest");
     setEventPlatform(event.platform ?? "meet");
@@ -1409,6 +1420,29 @@ function CalendarDashboard({
   );
 }
 
+/** Shared by the month cell and the time-grid cell. */
+interface CalendarCellBaseProps {
+  events?: CalendarEvent[];
+  activePopupEventId: string | null;
+  setActivePopupEventId: (id: string | null) => void;
+  colIndex: number;
+  rowIndex: number;
+  dateStr: string;
+  onDeleteEvent: (id: string) => void;
+  onEditEvent: (event: CalendarEvent) => void;
+  onClickCell: () => void;
+  cellClass?: string;
+  theme: Record<string, string>;
+}
+
+interface CalendarCellProps extends CalendarCellBaseProps {
+  day: number | string;
+  isGray?: boolean;
+  variant?: CalendarVariant;
+}
+
+type TimeGridCellProps = CalendarCellBaseProps;
+
 // === Sub Component: CalendarCell ===
 function CalendarCell({
   day,
@@ -1424,11 +1458,11 @@ function CalendarCell({
   onClickCell,
   cellClass,
   theme,
-  variant
-}: any) {
+  variant,
+}: CalendarCellProps) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";
-  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
+  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
 
   return (
     <div
@@ -1445,7 +1479,7 @@ function CalendarCell({
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-1 sm:space-y-1.5 pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event: any) => {
+        {events.map((event: CalendarEvent) => {
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
@@ -1489,7 +1523,7 @@ function CalendarCell({
         })}
       </div>
 
-      {events.map((event: any) => {
+      {events.map((event: CalendarEvent) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
 
@@ -1595,10 +1629,10 @@ function TimeGridCell({
   onClickCell,
   cellClass,
   theme,
-}: any) {
+}: TimeGridCellProps) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 6 ? "sm:bottom-full sm:mb-2" : "sm:top-10";
-  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
+  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
 
   return (
     <div
@@ -1609,7 +1643,7 @@ function TimeGridCell({
       )}
     >
       <div className="flex-1 overflow-y-auto space-y-1 pr-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event: any) => {
+        {events.map((event: CalendarEvent) => {
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isPentest
@@ -1653,7 +1687,7 @@ function TimeGridCell({
         })}
       </div>
 
-      {events.map((event: any) => {
+      {events.map((event: CalendarEvent) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
 

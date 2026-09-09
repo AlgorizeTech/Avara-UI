@@ -5,6 +5,7 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
+  type MotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
@@ -105,7 +106,7 @@ Dock.displayName = "Dock";
 
 interface DockIconProps {
   item: DockItem;
-  mouseX: any;
+  mouseX: MotionValue<number>;
   baseSize: number;
   magnification: number;
   distance: number;

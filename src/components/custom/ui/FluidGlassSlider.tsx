@@ -64,7 +64,7 @@ export default function FluidGlassSlider({ slides, className }: Props) {
     if (!progressRef.current) return;
 
     // Auto-play progress bar (Infinite Loop)
-    const progressTween: any = gsap.fromTo(
+    const progressTween = gsap.fromTo(
       progressRef.current,
       { width: "0%" },
       {

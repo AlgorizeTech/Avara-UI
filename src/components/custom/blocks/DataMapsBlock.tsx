@@ -22,6 +22,12 @@ import { useMap } from "react-leaflet";
  * where next/dynamic does not resolve.
  */
 type ReactLeaflet = typeof import("react-leaflet");
+type Leaflet = typeof import("leaflet");
+
+/** A country polygon, carrying the GeoJSON feature it was built from. */
+type FeatureLayer = import("leaflet").Polygon & {
+  feature?: { id?: string | number };
+};
 
 function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: React.RefObject<HTMLDivElement | null>; initialZoom: number; zoomable?: boolean }) {
   const map = useMap();
@@ -122,14 +128,15 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
   ) => {
     const isMounted = useIsMounted();
     const instanceId = React.useId();
-    const [geoData, setGeoData] = useState<any>(null);
-    const mapRef = useRef<any>(null);
+    const [geoData, setGeoData] =
+      useState<import("geojson").FeatureCollection | null>(null);
+    const mapRef = useRef<import("leaflet").Map | null>(null);
     const mapWrapperRef = useRef<HTMLDivElement>(null);
-    const geoJsonRef = useRef<any>(null);
-    const markersGroupRef = useRef<any>(null);
+    const geoJsonRef = useRef<import("leaflet").GeoJSON | null>(null);
+    const markersGroupRef = useRef<import("leaflet").LayerGroup | null>(null);
     const highlightColorRef = useRef(highlightColor);
     const variantRef = useRef(variant);
-    const [leafletLib, setLeafletLib] = useState<any>(null);
+    const [leafletLib, setLeafletLib] = useState<Leaflet | null>(null);
     const [rl, setRl] = useState<ReactLeaflet | null>(null);
     const [dotCount, setDotCount] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -182,7 +189,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       // Update existing layers dynamically to prevent unmounting React-Leaflet
       if (geoJsonRef.current && leafletLib) {
         const isDots = variant === "dots";
-        const map = geoJsonRef.current._map;
+        const map = (geoJsonRef.current as unknown as { _map?: import("leaflet").Map })
+          ._map;
         
         if (map && !markersGroupRef.current) {
           markersGroupRef.current = leafletLib.layerGroup().addTo(map);
@@ -194,7 +202,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
 
         let currentDotCount = 0;
 
-        geoJsonRef.current.eachLayer((layer: any) => {
+        geoJsonRef.current.eachLayer((baseLayer) => {
+          const layer = baseLayer as FeatureLayer;
           const countryId = layer.feature?.id;
           const dataPoint = dataPoints.find((p) => p.id === countryId);
           

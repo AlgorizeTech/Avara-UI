@@ -122,6 +122,16 @@ const colorThemes: Record<string, Record<string, string>> = {
   },
 };
 
+/** One bubble in a conversation. */
+export type ChatMessage = {
+  id: string | number;
+  text: string;
+  sender: "me" | "them";
+  time: string;
+  /** Only meaningful on your own messages. */
+  status?: "delivered" | "read";
+};
+
 export type Contact = {
   id: string | number;
   name: string;
@@ -238,9 +248,9 @@ export default function ChatApp({
 
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
-  const [chatHistories, setChatHistories] = useState<Record<string, any[]>>(
+  const [chatHistories, setChatHistories] = useState<Record<string, ChatMessage[]>>(
     () => {
-      const initialChats: Record<string, any[]> = {};
+      const initialChats: Record<string, ChatMessage[]> = {};
       contactsData.forEach((contact) => {
         initialChats[contact.id] = [
           {
@@ -288,7 +298,7 @@ export default function ChatApp({
       hour: "2-digit",
       minute: "2-digit",
     });
-    const newUserMsg = {
+    const newUserMsg: ChatMessage = {
       id: Date.now(),
       text: inputValue,
       sender: "me",
@@ -316,7 +326,7 @@ export default function ChatApp({
         hour: "2-digit",
         minute: "2-digit",
       });
-      const replyMsg = {
+      const replyMsg: ChatMessage = {
         id: Date.now() + 1,
         text: "That sounds perfect! Let's get it done. 🚀",
         sender: "them",

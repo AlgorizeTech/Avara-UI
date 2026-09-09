@@ -154,7 +154,7 @@ export const WizardContainer = forwardRef<
     const stepCount = React.Children.toArray(children).filter(
       (child) =>
         React.isValidElement(child) &&
-        (child.type as any).displayName === "WizardStep",
+        (child.type as { displayName?: string }).displayName === "WizardStep",
     ).length;
     setTotalSteps(stepCount);
   }, [children, setTotalSteps]);

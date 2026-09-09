@@ -1,6 +1,7 @@
 "use client";
 
 import { CodeRenderer } from "./code-renderer";
+import type { BuiltinLanguage } from "shiki";
 import { useState, useMemo, useRef } from "react";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 /** Initial lines shown before reader asks for more. */
@@ -8,7 +9,14 @@ const INITIAL_LINES = 30;
 /** Additional lines added on each "Show More" click. */
 const STEP_LINES = 30;
 
-export const CodeBlocks = ({ code, language = "tsx" }: any) => {
+export interface CodeBlocksProps {
+  /** The source to render. */
+  code: string;
+  /** Shiki language id; defaults to tsx. */
+  language?: BuiltinLanguage;
+}
+
+export const CodeBlocks = ({ code, language = "tsx" }: CodeBlocksProps) => {
   const [copied, setCopied] = useState(false);
   const [visibleLinesCount, setVisibleLinesCount] = useState(INITIAL_LINES);
   const [isLoadingMore, setIsLoadingMore] = useState(false);

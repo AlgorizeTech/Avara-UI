@@ -48,7 +48,11 @@ export function resolveAccessor<T>(row: T, accessor: Accessor<T>): unknown {
   if (typeof accessor === "function") return accessor(row);
   return accessor
     .split(".")
-    .reduce<any>((acc, key) => (acc == null ? acc : acc[key]), row);
+    .reduce<unknown>(
+      (acc, key) =>
+        acc == null ? acc : (acc as Record<string, unknown>)[key],
+      row,
+    );
 }
 
 /** Flattens any nested row into one searchable string. */
@@ -62,8 +66,19 @@ function defaultSearchText(value: unknown): string {
 }
 
 /** Works with SQL `id`, Mongo `_id` and anything you map yourself. */
-function defaultGetRowId(row: any): string | number {
-  return row?.id ?? row?._id ?? row?.uuid ?? row?.key;
+/** The id fields a row is checked for, in order. */
+type RowWithId = {
+  id?: string | number;
+  _id?: string | number;
+  uuid?: string | number;
+  key?: string | number;
+};
+
+function defaultGetRowId<T>(row: T): string | number {
+  const candidate = row as RowWithId | null | undefined;
+  return (
+    candidate?.id ?? candidate?._id ?? candidate?.uuid ?? candidate?.key ?? ""
+  );
 }
 
 function compareValues(a: unknown, b: unknown, type: SortType): number {
@@ -519,7 +534,8 @@ function DataTableRowImpl<T>({
 }: DataTableRowProps<T>) {
   const { getRowId, isSelected } = useDataTable<T>();
   const rowId =
-    rowIdProp ?? (row !== undefined ? getRowId(row) : (undefined as any));
+    rowIdProp ??
+    (row !== undefined ? getRowId(row) : (undefined as unknown as string | number));
 
   const content = (
     <TableRow
