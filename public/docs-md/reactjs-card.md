@@ -4,21 +4,69 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-export const usageEcommerce = `import { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+export const usageEcommerce = `export default function EcommerceProductCardsDemo() {
+  const [sneakerBg, setSneakerBg] = useState(
+    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30"
+  );
+  const [watchBg, setWatchBg] = useState(
+    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30"
+  );
 
-export default function EcommerceProductCardsDemo() {
   return (
     
-      {/* Product Card 1: Standard Best Seller */}
-       console.log("Added to cart")}
+      {/* Product Card 1: Headphones */}
+      
+            🎧
+          
+        }
+        onAddToCart={() => console.log("Added to cart")}
       />
 
-      {/* Product Card 2: Apparel with Interactive Colors */}
-       console.log("Quick View")}
+      {/* Product Card 2: Sneakers with Dynamic Swatches */}
+      
+            👟
+          
+        }
+        colors={[
+          {
+            name: "Amber",
+            value:
+              "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
+          },
+          {
+            name: "Rose",
+            value:
+              "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-zinc-900 border-rose-500/30",
+          },
+          {
+            name: "Emerald",
+            value:
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+          },
+        ]}
+        onColorChange={(col) => setSneakerBg(col.value.split("|")[1])}
+        onQuickView={() => console.log("Quick View")}
       />
 
-      {/* Product Card 3: Tech Gadget with Buy Now */}
-       console.log("Proceeding to checkout")}
+      {/* Product Card 3: Tech Gadget Smartwatch */}
+      
+            ⌚
+          
+        }
+        colors={[
+          {
+            name: "Indigo",
+            value:
+              "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30",
+          },
+          {
+            name: "Emerald",
+            value:
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+          },
+        ]}
+        onColorChange={(col) => setWatchBg(col.value.split("|")[1])}
+        onBuyNow={() => console.log("Proceeding to checkout")}
       />
     
   );

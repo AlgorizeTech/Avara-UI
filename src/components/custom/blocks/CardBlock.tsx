@@ -121,3 +121,8 @@ export function CardFooter({
     </div>
   );
 }
+
+// Re-export ProductCard for convenient unified importing from CardBlock
+export { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+export type { ProductCardProps, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
+
