@@ -1,0 +1,539 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = {
+  title: "Charts - Algorize UI",
+  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
+  keywords: [
+    "recharts",
+    "chart.js",
+    "react-chartjs-2",
+    "react charts",
+    "chart theming",
+    "dark mode charts",
+  ],
+  openGraph: {
+    title: "Charts - Algorize UI",
+    description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
+    type: "article",
+    url: "/docs/nextjs/third-party/charts",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Charts - Algorize UI",
+    description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
+  },
+};
+
+# Charts
+
+Recharts and Chart.js are the two React charting libraries most projects
+actually reach for, and they take opposite approaches: Recharts composes SVG out
+of React elements, Chart.js paints a canvas from a config object. Both are shown
+here, and both are made to look like the rest of the app the same way — by
+reading the design tokens out of CSS and handing them over as plain values.
+
+## Recharts
+
+Both examples read their colours from one small `useChartTokens` hook — the
+whole of it is in [the theme bridge](#the-theme-bridge) below the install
+commands.
+
+export const usageRecharts = `import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import { useChartTokens } from "@/lib/chart-tokens";
+
+const revenue = [
+  { month: "Jan", mrr: 12400, expansion: 2100 },
+  { month: "Feb", mrr: 14850, expansion: 2600 },
+  { month: "Mar", mrr: 15900, expansion: 2400 },
+  { month: "Apr", mrr: 18600, expansion: 3100 },
+  { month: "May", mrr: 21050, expansion: 3800 },
+  { month: "Jun", mrr: 24900, expansion: 4200 },
+  { month: "Jul", mrr: 26400, expansion: 4050 },
+  { month: "Aug", mrr: 29800, expansion: 5300 },
+];
+
+const currency = (value: number) => \`$\${(value / 1000).toFixed(1)}k\`;
+
+/**
+ * Recharts draws the plot; the surrounding chrome — card, title, legend,
+ * tooltip — is all Algorize UI. That split is the whole integration: the
+ * chart library never renders anything the design system already owns.
+ */
+export default function RechartsRevenue() {
+  const tokens = useChartTokens();
+
+  return (
+    <Card className="w-full max-w-3xl">
+      <CardHeader>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <CardTitle>Recurring revenue</CardTitle>
+            <CardDescription>Monthly recurring revenue and expansion</CardDescription>
+          </div>
+          <Badge variant="secondary">+18.4%</Badge>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <div className="h-[280px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={revenue} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
+              <defs>
+                <linearGradient id="mrrFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={tokens.series[0]} stopOpacity={0.35} />
+                  <stop offset="100%" stopColor={tokens.series[0]} stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="expansionFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={tokens.series[1]} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={tokens.series[1]} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+
+              <CartesianGrid strokeDasharray="4 4" stroke={tokens.border} vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: tokens.muted, fontSize: 12 }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={currency}
+                tick={{ fill: tokens.muted, fontSize: 12 }}
+              />
+              <Tooltip
+                cursor={{ stroke: tokens.border }}
+                contentStyle={{
+                  background: tokens.card,
+                  border: \`1px solid \${tokens.border}\`,
+                  borderRadius: 12,
+                  color: tokens.foreground,
+                  fontSize: 12,
+                }}
+                formatter={(value) => currency(Number(value))}
+              />
+              <Area
+                type="monotone"
+                dataKey="mrr"
+                name="MRR"
+                stroke={tokens.series[0]}
+                strokeWidth={2}
+                fill="url(#mrrFill)"
+              />
+              <Area
+                type="monotone"
+                dataKey="expansion"
+                name="Expansion"
+                stroke={tokens.series[1]}
+                strokeWidth={2}
+                fill="url(#expansionFill)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}`;
+
+<ExampleShowcase
+  name="third-party-charts-recharts"
+  columns={1}
+  minHeight={520}
+  examples={[
+    {
+      title: "Area chart in a Card",
+      subheading:
+        "Recharts draws the plot; the card, the title, the badge and the tooltip surface are all Algorize UI. The chart library never renders anything the design system already owns.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "stroke",
+          effect:
+            "and `fill` the resolved token values — `tokens.border` for the grid, `tokens.muted` for axis ticks.",
+        },
+        {
+          prop: "contentStyle",
+          effect:
+            "is how the built-in `Tooltip` is repainted; it takes inline style, so `tokens.card` and `tokens.border` go straight in.",
+        },
+        {
+          prop: "ResponsiveContainer",
+          effect:
+            "needs a parent with a real height — `h-[280px]` here. A percentage height inside an auto-height parent collapses to zero.",
+        },
+      ],
+      usage: usageRecharts,
+      code: extractCode("src/lib/chart-tokens.ts"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Cli command="install recharts" />
+
+<Cli command="install chart.js react-chartjs-2" />
+
+The examples below also use these Algorize UI components — install whichever
+your project does not already have:
+
+<Cli command="add card.json ui-badge.json" />
+
+## The theme bridge
+
+A chart cannot read `text-muted-foreground`. Recharts needs a `stroke` string,
+Chart.js needs a `borderColor` for a canvas, and AG Grid — on the
+<DocLink to="third-party/tables">Data Tables</DocLink> page — needs the same
+values again. So the token lookup lives in one small hook rather than in each
+chart:
+
+```ts
+// src/lib/chart-tokens.ts
+import { useEffect, useState } from "react";
+
+/**
+ * Bridges the design tokens in CSS into the plain strings third-party chart
+ * libraries expect.
+ *
+ * Recharts, Chart.js, AG Grid and friends take colours as values, not as
+ * classes, so `text-muted-foreground` means nothing to them. Reading the
+ * custom properties off `<html>` keeps one source of truth: change a token in
+ * globals.css and every chart follows, in both themes.
+ */
+export type ChartTokens = {
+  foreground: string;
+  muted: string;
+  border: string;
+  card: string;
+  /** Categorical palette, in the order series should be assigned. */
+  series: string[];
+};
+
+/**
+ * Series colours are literal hex rather than tokens on purpose: the neutral
+ * `--primary` is a greyscale ramp, so a chart drawn from it would be six
+ * indistinguishable greys. These six hues hold their separation in both
+ * themes — swap them for your brand ramp and every example follows.
+ */
+const SERIES = ["#6366f1", "#06b6d4", "#f59e0b", "#ec4899", "#10b981", "#8b5cf6"];
+
+const FALLBACK: ChartTokens = {
+  foreground: "#18181b",
+  muted: "#71717a",
+  border: "#e4e4e7",
+  card: "#ffffff",
+  series: SERIES,
+};
+
+function readTokens(): ChartTokens {
+  if (typeof window === "undefined") return FALLBACK;
+  const styles = getComputedStyle(document.documentElement);
+  const read = (name: string, fallback: string) =>
+    styles.getPropertyValue(name).trim() || fallback;
+
+  return {
+    foreground: read("--foreground", FALLBACK.foreground),
+    muted: read("--muted-foreground", FALLBACK.muted),
+    border: read("--border", FALLBACK.border),
+    card: read("--card", FALLBACK.card),
+    series: SERIES,
+  };
+}
+
+/**
+ * Re-reads on theme change. next-themes (and most theme switchers) toggle a
+ * class on `<html>`, so watching that attribute is enough — no context, no
+ * provider, and it works the same in a Vite app as in Next.js.
+ */
+export function useChartTokens(): ChartTokens {
+  const [tokens, setTokens] = useState<ChartTokens>(FALLBACK);
+
+  useEffect(() => {
+    const sync = () => setTokens(readTokens());
+    sync();
+
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style", "data-theme"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return tokens;
+}
+```
+
+Two details earn their place. Colours are read off `document.documentElement`,
+so anything defined in `globals.css` is available without a provider. And the
+`MutationObserver` on the root element's `class` is what makes a chart follow a
+theme switch — next-themes toggles that class, and a canvas painted before the
+toggle will not repaint on its own.
+
+The series palette is literal hex rather than a token, deliberately: the default
+`--primary` is a greyscale ramp, so a six-series chart drawn from it would be six
+indistinguishable greys. Swap those six hues for your brand ramp and every chart
+on this page follows.
+
+## Chart.js
+
+export const usageChartJs = `import { useMemo } from "react";
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Tooltip,
+  type ChartOptions,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { useChartTokens } from "@/lib/chart-tokens";
+
+/**
+ * Chart.js is tree-shaken: every scale, element and plugin you use has to be
+ * registered once. Do it at module scope, not inside the component — a
+ * register call in a render body runs on every update.
+ */
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend);
+
+const channels = ["Organic", "Referral", "Social", "Email", "Paid"];
+const sessions = [18400, 9200, 7600, 5400, 4100];
+
+export default function ChartJsTraffic() {
+  const tokens = useChartTokens();
+
+  /**
+   * Options are rebuilt when the tokens change, which is what makes the
+   * chart follow the theme switch — Chart.js paints to a canvas and cannot
+   * inherit anything from CSS.
+   */
+  const barOptions = useMemo<ChartOptions<"bar">>(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: tokens.card,
+          titleColor: tokens.foreground,
+          bodyColor: tokens.muted,
+          borderColor: tokens.border,
+          borderWidth: 1,
+          padding: 12,
+          displayColors: false,
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          border: { color: tokens.border },
+          ticks: { color: tokens.muted, font: { size: 12 } },
+        },
+        y: {
+          grid: { color: tokens.border },
+          border: { display: false },
+          ticks: { color: tokens.muted, font: { size: 12 } },
+        },
+      },
+    }),
+    [tokens],
+  );
+
+  const doughnutOptions = useMemo<ChartOptions<"doughnut">>(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "68%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            color: tokens.muted,
+            usePointStyle: true,
+            pointStyle: "circle",
+            boxWidth: 8,
+            padding: 16,
+            font: { size: 12 },
+          },
+        },
+        tooltip: {
+          backgroundColor: tokens.card,
+          titleColor: tokens.foreground,
+          bodyColor: tokens.muted,
+          borderColor: tokens.border,
+          borderWidth: 1,
+          padding: 12,
+        },
+      },
+    }),
+    [tokens],
+  );
+
+  return (
+    <div className="grid w-full max-w-4xl gap-4 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Sessions by channel</CardTitle>
+          <CardDescription>Last 30 days</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[260px]">
+            <Bar
+              options={barOptions}
+              data={{
+                labels: channels,
+                datasets: [
+                  {
+                    label: "Sessions",
+                    data: sessions,
+                    backgroundColor: tokens.series[0],
+                    hoverBackgroundColor: tokens.series[5],
+                    borderRadius: 6,
+                    maxBarThickness: 40,
+                  },
+                ],
+              }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Share of traffic</CardTitle>
+          <CardDescription>Same data, proportional view</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[260px]">
+            <Doughnut
+              options={doughnutOptions}
+              data={{
+                labels: channels,
+                datasets: [
+                  {
+                    data: sessions,
+                    backgroundColor: tokens.series,
+                    borderColor: tokens.card,
+                    borderWidth: 3,
+                  },
+                ],
+              }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="third-party-charts-chartjs"
+  columns={1}
+  minHeight={480}
+  examples={[
+    {
+      title: "Bar and doughnut",
+      subheading:
+        "Chart.js is tree-shaken, so every scale, element and plugin has to be registered once. Do it at module scope — a `ChartJS.register` call in a render body runs on every update.",
+      propNotes: [
+        {
+          lead: "Wrap",
+          prop: "options",
+          effect:
+            "in `useMemo` keyed on the tokens. Rebuilding the options object is what makes a canvas chart follow the theme switch; it cannot inherit anything from CSS.",
+        },
+        {
+          prop: "maintainAspectRatio",
+          value: "{false}",
+          effect:
+            "lets the chart fill its container instead of forcing a 2:1 box. Pair it with a fixed-height wrapper.",
+        },
+        {
+          prop: "borderColor",
+          effect:
+            "on the doughnut is set to `tokens.card`, so the gap between arcs is the card surface rather than white in dark mode.",
+        },
+      ],
+      usage: usageChartJs,
+      code: extractCode("src/lib/chart-tokens.ts"),
+    },
+  ]}
+/>
+
+## Which one
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Recharts</th>
+        <th>Chart.js</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Renders</td>
+        <td>SVG elements</td>
+        <td>Canvas</td>
+      </tr>
+      <tr>
+        <td>Composition</td>
+        <td>React children (<code>{'<Area>'}</code>, <code>{'<XAxis>'}</code>)</td>
+        <td>One config object</td>
+      </tr>
+      <tr>
+        <td>Custom marks</td>
+        <td>Any React component</td>
+        <td>Plugin API</td>
+      </tr>
+      <tr>
+        <td>Many points</td>
+        <td>Slows down — every point is a DOM node</td>
+        <td>Stays fast</td>
+      </tr>
+      <tr>
+        <td>Theme change</td>
+        <td>Re-renders like any React tree</td>
+        <td>Needs the options object rebuilt</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Reach for Recharts when the chart is part of the component tree and you want to
+drop your own React nodes into it. Reach for Chart.js when the series are long
+enough that a few thousand SVG nodes would hurt.
+
+Neither example hard-codes a colour at the call site — both index
+`tokens.series`. Changing the palette in `chart-tokens.ts` restyles every chart
+in the app at once, which is the point of routing colour through the bridge
+rather than passing hex into each component.

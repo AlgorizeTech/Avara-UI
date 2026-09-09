@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-09T03:58:30.387Z",
-  "totalFiles": 233,
+  "generatedAt": "2026-09-09T10:22:33.446Z",
+  "totalFiles": 245,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -631,6 +631,42 @@
       "path": "/docs/nextjs-theme-switcher.md",
       "url": "/docs/nextjs/theme-switcher",
       "originalMdx": "[framework]\\theme-switcher\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party",
+      "path": "/docs/nextjs-third-party.md",
+      "url": "/docs/nextjs/third-party",
+      "originalMdx": "[framework]\\third-party\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party/carousel",
+      "path": "/docs/nextjs-third-party-carousel.md",
+      "url": "/docs/nextjs/third-party/carousel",
+      "originalMdx": "[framework]\\third-party\\carousel\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party/charts",
+      "path": "/docs/nextjs-third-party-charts.md",
+      "url": "/docs/nextjs/third-party/charts",
+      "originalMdx": "[framework]\\third-party\\charts\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party/gallery",
+      "path": "/docs/nextjs-third-party-gallery.md",
+      "url": "/docs/nextjs/third-party/gallery",
+      "originalMdx": "[framework]\\third-party\\gallery\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party/select",
+      "path": "/docs/nextjs-third-party-select.md",
+      "url": "/docs/nextjs/third-party/select",
+      "originalMdx": "[framework]\\third-party\\select\\page.mdx"
+    },
+    {
+      "name": "nextjs/third-party/tables",
+      "path": "/docs/nextjs-third-party-tables.md",
+      "url": "/docs/nextjs/third-party/tables",
+      "originalMdx": "[framework]\\third-party\\tables\\page.mdx"
     },
     {
       "name": "nextjs/tilted-card",
@@ -1333,6 +1369,42 @@
       "path": "/docs/reactjs-theme-switcher.md",
       "url": "/docs/reactjs/theme-switcher",
       "originalMdx": "[framework]\\theme-switcher\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party",
+      "path": "/docs/reactjs-third-party.md",
+      "url": "/docs/reactjs/third-party",
+      "originalMdx": "[framework]\\third-party\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party/carousel",
+      "path": "/docs/reactjs-third-party-carousel.md",
+      "url": "/docs/reactjs/third-party/carousel",
+      "originalMdx": "[framework]\\third-party\\carousel\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party/charts",
+      "path": "/docs/reactjs-third-party-charts.md",
+      "url": "/docs/reactjs/third-party/charts",
+      "originalMdx": "[framework]\\third-party\\charts\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party/gallery",
+      "path": "/docs/reactjs-third-party-gallery.md",
+      "url": "/docs/reactjs/third-party/gallery",
+      "originalMdx": "[framework]\\third-party\\gallery\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party/select",
+      "path": "/docs/reactjs-third-party-select.md",
+      "url": "/docs/reactjs/third-party/select",
+      "originalMdx": "[framework]\\third-party\\select\\page.mdx"
+    },
+    {
+      "name": "reactjs/third-party/tables",
+      "path": "/docs/reactjs-third-party-tables.md",
+      "url": "/docs/reactjs/third-party/tables",
+      "originalMdx": "[framework]\\third-party\\tables\\page.mdx"
     },
     {
       "name": "reactjs/tilted-card",

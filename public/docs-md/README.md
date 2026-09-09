@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-09T03:58:30.428Z
-**Total files:** 233
+**Generated at:** 2026-09-09T10:22:33.740Z
+**Total files:** 245
 
 ## Available Files
 
@@ -112,6 +112,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/terminal](/docs/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [nextjs/text-animation](/docs/nextjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [nextjs/theme-switcher](/docs/nextjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
+- [nextjs/third-party](/docs/nextjs-third-party.md) - Source: `[framework]\third-party\page.mdx`
+- [nextjs/third-party/carousel](/docs/nextjs-third-party-carousel.md) - Source: `[framework]\third-party\carousel\page.mdx`
+- [nextjs/third-party/charts](/docs/nextjs-third-party-charts.md) - Source: `[framework]\third-party\charts\page.mdx`
+- [nextjs/third-party/gallery](/docs/nextjs-third-party-gallery.md) - Source: `[framework]\third-party\gallery\page.mdx`
+- [nextjs/third-party/select](/docs/nextjs-third-party-select.md) - Source: `[framework]\third-party\select\page.mdx`
+- [nextjs/third-party/tables](/docs/nextjs-third-party-tables.md) - Source: `[framework]\third-party\tables\page.mdx`
 - [nextjs/tilted-card](/docs/nextjs-tilted-card.md) - Source: `[framework]\tilted-card\page.mdx`
 - [nextjs/timeline](/docs/nextjs-timeline.md) - Source: `[framework]\timeline\page.mdx`
 - [nextjs/toast](/docs/nextjs-toast.md) - Source: `[framework]\toast\page.mdx`
@@ -229,6 +235,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/terminal](/docs/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [reactjs/text-animation](/docs/reactjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [reactjs/theme-switcher](/docs/reactjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
+- [reactjs/third-party](/docs/reactjs-third-party.md) - Source: `[framework]\third-party\page.mdx`
+- [reactjs/third-party/carousel](/docs/reactjs-third-party-carousel.md) - Source: `[framework]\third-party\carousel\page.mdx`
+- [reactjs/third-party/charts](/docs/reactjs-third-party-charts.md) - Source: `[framework]\third-party\charts\page.mdx`
+- [reactjs/third-party/gallery](/docs/reactjs-third-party-gallery.md) - Source: `[framework]\third-party\gallery\page.mdx`
+- [reactjs/third-party/select](/docs/reactjs-third-party-select.md) - Source: `[framework]\third-party\select\page.mdx`
+- [reactjs/third-party/tables](/docs/reactjs-third-party-tables.md) - Source: `[framework]\third-party\tables\page.mdx`
 - [reactjs/tilted-card](/docs/reactjs-tilted-card.md) - Source: `[framework]\tilted-card\page.mdx`
 - [reactjs/timeline](/docs/reactjs-timeline.md) - Source: `[framework]\timeline\page.mdx`
 - [reactjs/toast](/docs/reactjs-toast.md) - Source: `[framework]\toast\page.mdx`
