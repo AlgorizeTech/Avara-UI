@@ -202,4 +202,46 @@ export const navigation: NavigationItem[] = [
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
     ],
   },
+  {
+    label: "Third Party Integration",
+    children: [
+      {
+        label: "Overview",
+        slug: "third-party",
+        badge: "New",
+        keywords: ["integration", "third party", "library", "ecosystem"],
+      },
+      {
+        label: "Charts",
+        slug: "third-party/charts",
+        keywords: ["recharts", "chart.js", "chartjs", "graph", "plot"],
+      },
+      {
+        label: "Data Tables",
+        slug: "third-party/tables",
+        keywords: ["tanstack", "react-table", "ag grid", "aggrid", "datagrid"],
+      },
+      {
+        label: "Carousels",
+        slug: "third-party/carousel",
+        keywords: ["embla", "swiper", "slider", "slideshow"],
+      },
+      {
+        label: "Select",
+        slug: "third-party/select",
+        keywords: ["react-select", "select2", "combobox", "autocomplete", "multiselect"],
+      },
+      {
+        label: "Gallery & Lightbox",
+        slug: "third-party/gallery",
+        keywords: [
+          "lightbox",
+          "photoswipe",
+          "react-photo-album",
+          "yet another react lightbox",
+          "masonry",
+        ],
+      },
+    ],
+  },
 ];
