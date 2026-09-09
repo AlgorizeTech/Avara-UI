@@ -4,7 +4,7 @@ An interactive **Range Date Picker** component featuring single month, dual-mont
 
 ## Variations
 
-export const usageSingle = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usageSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 
 export default function SingleRangeDatePickerDemo() {
   const [range, setRange] = useState({
@@ -17,7 +17,7 @@ export default function SingleRangeDatePickerDemo() {
   );
 }`;
 
-export const usagePricedSingle = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usagePricedSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 
 export default function PricedSingleRangeDatePickerDemo() {
   const [range, setRange] = useState({
@@ -32,7 +32,7 @@ export default function PricedSingleRangeDatePickerDemo() {
   );
 }`;
 
-export const usageDual = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usageDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 
 export default function DualRangeDatePickerDemo() {
   const [range, setRange] = useState({
@@ -45,7 +45,7 @@ export default function DualRangeDatePickerDemo() {
   );
 }`;
 
-export const usagePricedDual = `import { RangeDatePicker } from "@/components/custom/range-date-picker";
+export const usagePricedDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 
 export default function PricedDualRangeDatePickerDemo() {
   const [range, setRange] = useState({
