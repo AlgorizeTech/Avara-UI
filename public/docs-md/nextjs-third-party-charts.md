@@ -56,9 +56,9 @@ export default function RechartsRevenue() {
   );
 }`;
 
-## Installation
+### Installation
 
-The examples below also use these Algorize UI components — install whichever
+This example also uses these Algorize UI components — install whichever
 your project does not already have:
 
 ## The theme bridge
@@ -250,6 +250,11 @@ export default function ChartJsTraffic() {
 
   );
 }`;
+
+### Installation
+
+This example also uses these Algorize UI components — install whichever
+your project does not already have:
 
 ## Which one
 

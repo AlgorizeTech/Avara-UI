@@ -388,8 +388,8 @@ export function StandaloneColorPicker({
 
             {/* Center Orb Preview Eye */}
             <div
-              className="absolute size-32 rounded-full border-4 border-white dark:border-zinc-800 flex flex-col items-center justify-center p-2 text-center transition-all duration-200 pointer-events-none group z-10"
-              style={{ backgroundColor: hex }}
+              className="absolute size-32 rounded-full overflow-hidden border-4 border-white dark:border-zinc-800 flex flex-col items-center justify-center p-2 text-center transition-all duration-200 pointer-events-none group z-10"
+              style={{ backgroundColor: hex, borderRadius: "50%" }}
             >
               <span className="font-mono text-sm font-black text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] uppercase tracking-wider">
                 {hex}
@@ -691,10 +691,10 @@ export function StandaloneColorPicker({
 // ==========================================
 
 export function GradientColorPicker({
+  value,
+  onChange,
   className,
-}: {
-  className?: string;
-}) {
+}: ColorPickerProps) {
   const [gradientType, setGradientType] = useState<"linear" | "radial" | "conic">("linear");
   const [stopCount, setStopCount] = useState<2 | 3>(2);
   const [color1, setColor1] = useState("#8b5cf6");
@@ -703,14 +703,23 @@ export function GradientColorPicker({
   const [angle, setAngle] = useState(135);
   const [copied, setCopied] = useState(false);
 
-  const getGradientCss = () => {
+  const getGradientCss = useCallback(() => {
     const stops = stopCount === 3 ? `${color1}, ${color2}, ${color3}` : `${color1}, ${color2}`;
     if (gradientType === "radial") return `radial-gradient(circle at center, ${stops})`;
     if (gradientType === "conic") return `conic-gradient(from ${angle}deg at 50% 50%, ${stops})`;
     return `linear-gradient(${angle}deg, ${stops})`;
-  };
+  }, [gradientType, stopCount, color1, color2, color3, angle]);
 
   const gradientCss = getGradientCss();
+
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    onChange?.(gradientCss);
+  }, [gradientCss, onChange]);
 
   const handleCopyCss = () => {
     navigator.clipboard.writeText(`background: ${gradientCss};`);
@@ -973,7 +982,7 @@ export function GradientColorPicker({
 
 export function ColorPicker(props: ColorPickerProps) {
   if (props.variant === "gradient") {
-    return <GradientColorPicker className={props.className} />;
+    return <GradientColorPicker {...props} />;
   }
 
   return <StandaloneColorPicker {...props} />;
