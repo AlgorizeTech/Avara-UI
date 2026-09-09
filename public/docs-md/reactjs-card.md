@@ -44,7 +44,7 @@ export const usageEcommerce = `export default function EcommerceProductCardsDemo
               "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
           },
         ]}
-        onColorChange={(col) => setSneakerBg(col.value.split("|")[1])}
+        onColorChange={(col: ProductColorOption) => setSneakerBg(col.value.split("|")[1])}
         onQuickView={() => console.log("Quick View")}
       />
 
@@ -65,7 +65,7 @@ export const usageEcommerce = `export default function EcommerceProductCardsDemo
               "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
           },
         ]}
-        onColorChange={(col) => setWatchBg(col.value.split("|")[1])}
+        onColorChange={(col: ProductColorOption) => setWatchBg(col.value.split("|")[1])}
         onBuyNow={() => console.log("Proceeding to checkout")}
       />
     
