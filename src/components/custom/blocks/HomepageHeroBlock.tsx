@@ -35,179 +35,20 @@ export interface HomepageHeroBlockProps extends React.HTMLAttributes<HTMLElement
   secondaryActionHref?: string;
 }
 
+import HeroBlock, { HeroBlockProps } from "./HeroBlock";
+
+export interface HomepageHeroBlockProps extends HeroBlockProps {}
+
 export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>(
-  (
-    {
-      linkComponent: Link = "a",
-      badgeText = "Next-Gen React Components",
-      badgeHref = "/docs",
-      titlePrefix = "Build ",
-      typingWords = [
-        "Interfaces",
-        "Components",
-        "Experiences",
-        "Animations",
-        "Dashboards",
-      ],
-      titleSuffix = "",
-      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
-      cliCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json",
-      primaryActionLabel = "Browse Components",
-      primaryActionHref = "/docs",
-      secondaryActionLabel = "Star on GitHub",
-      secondaryActionHref = "https://github.com/AlgorizeTech",
-      className,
-      ...props
-    },
-    ref,
-  ) => {
-    const [copied, setCopied] = useState(false);
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
-    useEffect(() => {
-      if (!typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2400);
-
-      return () => clearInterval(interval);
-    }, [typingWords]);
-
-    const handleCopy = () => {
-      if (typeof window !== "undefined" && navigator.clipboard) {
-        navigator.clipboard.writeText(cliCommand);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
-    };
-
-    const currentWord = typingWords?.[currentWordIndex] || "";
-
+  (props, ref) => {
     return (
-      <section
+      <HeroBlock
         ref={ref}
-        className={cn(
-          "relative w-full flex flex-col justify-center items-center py-4 sm:py-8 md:py-12",
-          className,
-        )}
+        variant="component-wall"
         {...props}
-      >
-        {/* Radial Background Glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% -10%, var(--primary) 0%, transparent 65%)",
-            opacity: 0.12,
-          }}
-        />
-        {/* Grid Mask Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
-
-        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
-          <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
-            {/* Top Pill Badge */}
-            {badgeText && (
-              <Link href={badgeHref} className="inline-block group">
-                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
-                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
-                  <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
-                    {badgeText}
-                  </span>
-                </div>
-              </Link>
-            )}
-
-            {/* Dynamic Animated Title Word (Vertical Text Slide / Word Flip) */}
-            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
-              <span className="shrink-0 mr-2">
-                {titlePrefix}
-                <span className="text-primary">Interactive</span>
-              </span>
-
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] shrink-0 min-w-[150px] xs:min-w-[170px] sm:min-w-[210px] md:min-w-[250px] lg:min-w-[300px]">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={currentWord}
-                    initial={{ y: "100%", opacity: 0 }}
-                    animate={{ y: "0%", opacity: 1 }}
-                    exit={{ y: "-100%", opacity: 0 }}
-                    transition={{
-                      duration: 0.45,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="text-foreground font-black inline-block whitespace-nowrap text-left"
-                  >
-                    {currentWord}
-                  </motion.span>
-                </AnimatePresence>
-              </span>
-
-              {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
-            </h1>
-
-            {/* Subtitle Paragraph */}
-            {subtitle && (
-              <p className="text-[10px] xs:text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
-                {subtitle}
-              </p>
-            )}
-
-            {/* CLI Command Box */}
-            {cliCommand && (
-              <div className="pt-0.5 w-full flex justify-center px-1 sm:px-0">
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-zinc-300 dark:hover:border-primary/50 transition-all"
-                >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-zinc-700 dark:text-primary shrink-0" />
-                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
-                    {cliCommand}
-                  </code>
-                  <div className="pl-1.5 sm:pl-3.5 border-l-0 h-3 sm:h-5 flex items-center shrink-0">
-                    {copied ? (
-                      <Check className="size-3 sm:size-4.5 text-emerald-500" />
-                    ) : (
-                      <Copy className="size-3 sm:size-4.5 text-muted-foreground group-hover:text-foreground transition-colors" />
-                    )}
-                  </div>
-                </button>
-              </div>
-            )}
-
-            {/* Actions */}
-            <div className="flex flex-row items-center justify-center gap-1.5 xs:gap-2.5 sm:gap-4 pt-0 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
-              {primaryActionLabel && (
-                <Link
-                  href={primaryActionHref}
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
-                >
-                  <span>{primaryActionLabel}</span>
-                  <ArrowRight className="size-3 sm:size-5 shrink-0" />
-                </Link>
-              )}
-
-              {secondaryActionLabel && (
-                <Link
-                  href={secondaryActionHref}
-                  target={
-                    secondaryActionHref.startsWith("http")
-                      ? "_blank"
-                      : undefined
-                  }
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
-                >
-                  <span>{secondaryActionLabel}</span>
-                  <GitHubIcon className="size-3 sm:size-5 shrink-0" />
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      />
     );
-  },
+  }
 );
 
 HomepageHeroBlock.displayName = "HomepageHeroBlock";

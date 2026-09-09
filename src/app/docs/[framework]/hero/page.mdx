@@ -230,6 +230,47 @@ export default function Page() {
   ]}
 />
 
+export const usageComponentWall = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function ComponentWallHeroDemo() {
+  return (
+    <HeroBlock
+      variant="component-wall"
+      badgeText="50+ new blocks released"
+      badgeHref="/docs"
+      titlePrefix="The React component library for"
+      titleSuffix="beautiful landing pages."
+      subtitle="200+ production-ready components, blocks and templates built with React, Tailwind CSS and Motion. Copy, paste, customize and ship at lightning speed without wrestling with animations or styling."
+      primaryActionLabel="Browse Components"
+      primaryActionHref="/docs"
+      secondaryActionLabel="Get All Access"
+      secondaryActionHref="https://github.com/AlgorizeTech"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-component-wall"
+  colorControl
+  columns={1}
+  minHeight={540}
+  examples={[
+    {
+      title: "3D Component Grid Wall Showcase Hero",
+      subheading: "Ultra-modern SaaS & component library landing hero featuring a 3D perspective floating component grid wall, changelog badge, CTAs, and avatar rating trust proof.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"component-wall"',
+          effect: "renders a 2-column hero with 3D tilted floating UI component grid wall showcase.",
+        },
+      ],
+      usage: usageComponentWall,
+    },
+  ]}
+/>
+
 ## Props Reference
 
 <div className="overflow-x-auto mb-8">

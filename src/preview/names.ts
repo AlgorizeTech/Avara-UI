@@ -59,6 +59,7 @@ export const sandboxNames = [
   "hero-video-player",
   "hero-video-player-jw",
   "hero-video-player-plyr",
+  "homepage-hero-component-wall",
   "homepage-hero",
   "homepage-hero-glow-arc",
   "homepage-hero-slider",
