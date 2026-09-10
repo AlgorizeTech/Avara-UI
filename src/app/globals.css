@@ -615,11 +615,11 @@ html.dark .shiki span {
   color: #a1a1aa !important;
 }
 
-/* Table code elements: NO background, NO border, EXTRA BOLD text */
-.prose table code,
-.prose td code,
-.prose th code,
-.vitepress-table code {
+/* Table code elements: NO background & EXTRA BOLD text for Prop, Type, Default (non-last cells) */
+.prose td:not(:last-child) code,
+.prose th:not(:last-child) code,
+.vitepress-table td:not(:last-child) code,
+.vitepress-table th:not(:last-child) code {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;
