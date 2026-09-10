@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation";
 
 import { buildDocsMetadata } from "@/lib/docs-metadata";
-import { isFramework } from "@/lib/framework";
+import { BUILT_FRAMEWORKS, isFramework } from "@/lib/framework";
 
 import NextjsContent from "./_content/nextjs.mdx";
 import ReactjsContent from "./_content/reactjs.mdx";
+
+export function generateStaticParams() {
+  return BUILT_FRAMEWORKS.map((framework) => ({ framework }));
+}
 
 /**
  * Installation is one of two pages that fork rather than vary.

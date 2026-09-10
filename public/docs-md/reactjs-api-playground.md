@@ -55,7 +55,53 @@ Explore the interactive API Playground component capabilities designed to elevat
 
 ## Props Reference
 
-mockHandler Object Signatures
+        Prop
+        Type
+        Default
+        Description
+
+          defaultUrl
+
+          string
+
+          "https://api.example.com/v1/users"
+        
+        Initial API URL displayed in the request address bar.
+
+          defaultMethod
+
+          "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+
+          "GET"
+        
+        Initial HTTP method selected in the method dropdown.
+
+          color
+
+          ApiColor
+
+          "primary"
+        
+        Accent color theme ("primary" | "indigo" | "rose" | "emerald" | "zinc" or custom hex).
+
+          mockHandler
+
+          ApiMockHandler
+
+          undefined
+        
+        Async function that receives request details and returns simulated API response data.
+
+          className
+
+          string
+
+          undefined
+        
+        Additional CSS classes applied to the root container.
+
+### mockHandler Object Signatures
+
 When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
 ```tsx

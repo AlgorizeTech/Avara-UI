@@ -76,6 +76,28 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Circular Reveal View Transition for Theme Switcher */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Disable standard CSS transitions during theme transition to avoid double-fading/delayed border transitions */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
+}
+
 /* Shiki theme switching */
 html:not(.dark) .shiki,
 html:not(.dark) .shiki span {
@@ -615,11 +637,11 @@ html.dark .shiki span {
   color: #a1a1aa !important;
 }
 
-/* Table code elements: NO background, NO border, EXTRA BOLD text */
-.prose table code,
-.prose td code,
-.prose th code,
-.vitepress-table code {
+/* Table code elements: NO background & EXTRA BOLD text for Prop, Type, Default (non-last cells) */
+.prose td:not(:last-child) code,
+.prose th:not(:last-child) code,
+.vitepress-table td:not(:last-child) code,
+.vitepress-table th:not(:last-child) code {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;

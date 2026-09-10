@@ -52,7 +52,6 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "flowchart": lazyRetry(() => import("./demos/flowchart-demo")),
   "footer": lazyRetry(() => import("./demos/footer-demo")),
   "form": lazyRetry(() => import("./demos/form-demo")),
-  "globe": lazyRetry(() => import("./demos/globe-demo")),
   "half-stars": lazyRetry(() => import("./demos/half-stars-demo")),
   "heart-signal": lazyRetry(() => import("./demos/heart-signal-demo")),
   "hero-audio-player": lazyRetry(() => import("./demos/hero-audio-player-demo")),

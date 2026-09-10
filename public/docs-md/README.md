@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-10T03:51:54.586Z
-**Total files:** 245
+**Generated at:** 2026-09-10T10:30:45.703Z
+**Total files:** 243
 
 ## Available Files
 
@@ -58,7 +58,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/flowchart](/docs/nextjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
 - [nextjs/footer](/docs/nextjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
-- [nextjs/globe](/docs/nextjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -181,7 +180,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/flowchart](/docs/reactjs-flowchart.md) - Source: `[framework]\flowchart\page.mdx`
 - [reactjs/footer](/docs/reactjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
-- [reactjs/globe](/docs/reactjs-globe.md) - Source: `[framework]\globe\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`

@@ -47,7 +47,6 @@ export const sandboxNames = [
   "flowchart",
   "footer",
   "form",
-  "globe",
   "half-stars",
   "heart-signal",
   "hero-audio-player",

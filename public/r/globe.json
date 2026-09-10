@@ -3,7 +3,7 @@
   "name": "globe",
   "title": "Globe",
   "author": "AlgorizeTech",
-  "description": "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
+  "description": "TODO: describe globe. Generated placeholder.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,11 +16,6 @@
       "target": "components/custom/blocks/GlobeBlock.tsx"
     }
   ],
-  "docs": "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color.",
-  "categories": [
-    "data-display",
-    "marketing",
-    "maps"
-  ],
+  "categories": [],
   "type": "registry:component"
 }
