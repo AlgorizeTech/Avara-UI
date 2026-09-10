@@ -37,14 +37,8 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/table.json",
-        "utils"
-      ],
+      "dependencies": [],
+      "registryDependencies": [],
       "files": [
         {
           "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",
@@ -2789,6 +2783,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
         "utils"
       ],
       "files": [

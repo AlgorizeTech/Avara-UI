@@ -103,7 +103,83 @@ Explore the interactive API Playground component capabilities designed to elevat
 
 ## Props Reference
 
-mockHandler Object Signatures
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>defaultUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"https://api.example.com/v1/users"</code>
+        </td>
+        <td>Initial API URL displayed in the request address bar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultMethod</code>
+        </td>
+        <td>
+          <code>"GET" | "POST" | "PUT" | "PATCH" | "DELETE"</code>
+        </td>
+        <td>
+          <code>"GET"</code>
+        </td>
+        <td>Initial HTTP method selected in the method dropdown.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>ApiColor</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Accent color theme (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>mockHandler</code>
+        </td>
+        <td>
+          <code>ApiMockHandler</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Async function that receives request details and returns simulated API response data.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Additional CSS classes applied to the root container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### mockHandler Object Signatures
+
 When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
 ```tsx
@@ -136,3 +212,4 @@ The Response Object — exported as `ApiResponse` (required return type):
   data: any; // A Javascript object or array. The component will format this as JSON automatically.
 }
 ```
+

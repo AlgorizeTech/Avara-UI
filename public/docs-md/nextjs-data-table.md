@@ -1,130 +1,127 @@
 # Data Table
 
-The same composable primitives as the [Table](../table), plus a state provider that wires up **search, sorting, pagination, row selection and batch actions** for you.
-
-You still write every row yourself, so the data shape stays yours: nested objects, `_id` instead of `id`, values that are computed rather than stored. `DataTable` never asks you to reshape a response before rendering it.
-
-Every example is live. Search for &ldquo;Admin&rdquo;, sort by **Last Active**, or tick a few rows to bring up the floating batch-actions pill.
-
-_Hint: the Edit button in the batch toolbar opens a fully functional custom modal._
-
-## Anatomy
-
-```tsx
- u._id}>
-
-        Name
-
-      {(rows) =>                          // already searched, sorted and paged
-        rows.map((user) => (
-
-            {user.profile.name}
-          
-        ))
-      }
-
-    {({ selectedRows, clearSelection }) => Delete}
-
-```
-
-`DataTableBody` takes a render function and hands you the current page of rows. Everything else is either a layout primitive re-exported from `Table`, or a small wired control that reads the provider.
+A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
 
 export const usageBasic = `"use client";
 
-// Straight off the wire — nested, and keyed by _id.
-type User = {
-  _id: string;
-  profile: { name: string; email: string };
+const now = Date.now();
+const ago = (d: number, h: number = 0) => now - (d * 86400000 + h * 3600000);
+
+interface Employee {
+  id: number;
+  name: string;
   role: string;
-  lastActiveTs: number;
+  status: "Active" | "Inactive" | "Pending" | "Banned";
   lastActive: string;
+  lastActiveTs: number;
+  sessions: number;
+}
+
+const INITIAL_DATA: Employee[] = [
+  { id: 1, name: "Alice Johnson", role: "Admin", status: "Active", lastActive: "2 minutes ago", lastActiveTs: ago(0, 0), sessions: 142 },
+  { id: 2, name: "Bob Martinez", role: "Editor", status: "Active", lastActive: "1 hour ago", lastActiveTs: ago(0, 1), sessions: 89 },
+  { id: 3, name: "Carol Williams", role: "Viewer", status: "Pending", lastActive: "3 hours ago", lastActiveTs: ago(0, 3), sessions: 12 },
+  { id: 4, name: "David Lee", role: "Manager", status: "Active", lastActive: "Yesterday", lastActiveTs: ago(1), sessions: 201 },
+  { id: 5, name: "Eva Chen", role: "Developer", status: "Inactive", lastActive: "3 days ago", lastActiveTs: ago(3), sessions: 54 },
+  { id: 6, name: "Frank Nguyen", role: "Editor", status: "Active", lastActive: "5 days ago", lastActiveTs: ago(5), sessions: 76 },
+  { id: 7, name: "Grace Park", role: "Viewer", status: "Banned", lastActive: "2 weeks ago", lastActiveTs: ago(14), sessions: 3 },
+  { id: 8, name: "Hank Torres", role: "Admin", status: "Active", lastActive: "30 minutes ago", lastActiveTs: ago(0, 0.5), sessions: 310 },
+  { id: 9, name: "Iris Scott", role: "Manager", status: "Active", lastActive: "4 hours ago", lastActiveTs: ago(0, 4), sessions: 188 },
+  { id: 10, name: "James Kim", role: "Developer", status: "Pending", lastActive: "1 week ago", lastActiveTs: ago(7), sessions: 29 },
+  { id: 11, name: "Karen Brown", role: "Viewer", status: "Active", lastActive: "10 minutes ago", lastActiveTs: ago(0, 0.17), sessions: 67 },
+  { id: 12, name: "Liam Davis", role: "Editor", status: "Inactive", lastActive: "1 month ago", lastActiveTs: ago(30), sessions: 22 },
+  { id: 13, name: "Mia Wilson", role: "Developer", status: "Active", lastActive: "2 days ago", lastActiveTs: ago(2), sessions: 95 },
+  { id: 14, name: "Noah Anderson", role: "Manager", status: "Active", lastActive: "6 hours ago", lastActiveTs: ago(0, 6), sessions: 134 },
+  { id: 15, name: "Olivia Thomas", role: "Viewer", status: "Banned", lastActive: "3 months ago", lastActiveTs: ago(90), sessions: 1 },
+];
+
+const ROLE_STYLES: Record = {
+  Admin: "bg-[#ede9fe] text-[#5b21b6] dark:bg-purple-500/10 dark:text-purple-400",
+  Manager: "bg-[#dbeafe] text-[#1e40af] dark:bg-blue-500/10 dark:text-blue-400",
+  Developer: "bg-[#d1fae5] text-[#065f46] dark:bg-emerald-500/10 dark:text-emerald-400",
+  Editor: "bg-[#fef3c7] text-[#92400e] dark:bg-amber-500/10 dark:text-amber-400",
+  Viewer: "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300",
 };
 
-export default function UserTable({ users }: { users: User[] }) {
-  return (
-     user._id}>
+const STATUS_STYLES: Record = {
+  Active: "bg-[#d1fae5] text-[#065f46] dark:bg-emerald-500/10 dark:text-emerald-400",
+  Pending: "bg-[#fef3c7] text-[#92400e] dark:bg-amber-500/10 dark:text-amber-400",
+  Inactive: "bg-[#dbeafe] text-[#1e40af] dark:bg-blue-500/10 dark:text-blue-400",
+  Banned: "bg-[#fee2e2] text-[#991b1b] dark:bg-red-500/10 dark:text-red-400",
+};
 
-            {/* Dot paths reach into nested objects */}
+const Pill = ({ styles, children }: { styles: string; children: React.ReactNode }) => (
+  
+    {children}
+  
+);
+
+const getDotClass = (ts: number) => {
+  const diff = (now - ts) / 60000;
+  if (diff (INITIAL_DATA);
+
+  const handleBatchDelete = (ids: (string | number)[]) => {
+    if (confirm(\`Are you sure you want to delete \${ids.length} users?\`)) {
+      setData((prev) => prev.filter((d) => !ids.includes(d.id)));
+    }
+  };
+
+  return (
+     row.id}>
+
             Name
             Role
-
-            {/* Sort on the timestamp while the cell shows prose */}
-             user.lastActiveTs}
+            Status
+             row.lastActiveTs}
               sortId="lastActive"
               sortType="number"
             >
               Last Active
 
+              Sessions
+
+         animate>
           {(rows) =>
             rows.length === 0 ? (
-              No users found.
+              No users match that search.
             ) : (
-              rows.map((user) => (
-                
-                  {user.profile.name}
-                  {user.role}
-                  {user.lastActive}
+              rows.map((row) => (
+
+                    {row.name}
+
+                    {row.role}
+
+                    {row.status}
+
+                      {row.lastActive}
+
+                  {row.sessions}
                 
               ))
             )
           }
 
+        {({ selectedIds, clearSelection }) => (
+          
+             alert(\`Edit \${selectedIds.length} items\`)}
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
+            >
+               Edit
+            
+             {
+                handleBatchDelete(selectedIds);
+                clearSelection();
+              }}
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-black/20 hover:bg-black/30 text-white transition-colors cursor-pointer"
+            >
+               Delete
+
+        )}
+
   );
 }`;
 
-export const usageSelection = `// Add the two checkbox controls and the floating pill. Selection state,
-// select-all-on-page and the indeterminate state are all handled for you.
-
-  Name
-
-// …and in each body row — DataTableSelect finds its id from the row prop.
-
-  {user.name}
-
-  {({ selectedRows, selectedIds, clearSelection }) => (
-     archive(selectedIds)}>
-      Archive {selectedRows.length}
-    
-  )}
-`;
-
-export const usageBatch = `// The pill is yours to fill. It floats over the table by default —
-// pass floating={false} to place it inline in the heading instead.
-
-  {({ selectedIds, clearSelection }) => (
-    <>
-       exportCsv(selectedIds)}>Export CSV
-      Clear
-    
-  )}
-`;
-
-export const usageSearch = `// By default every value in the row — however deeply nested — is searchable.
-…
-
-// Narrow it when you only want certain fields to match:
- user.profile.name + " " + user.profile.email}
->
-  …
-`;
-
-export const usageHook = `// Everything the wired controls use is available to you directly.
-
-function ResultCount() {
-  const { total, filteredRows, selectedRows, clearSelection } = useDataTable();
-
-  return (
-    
-      {total} matching · {selectedRows.length} selected
-    
-  );
-}
-
-// Render it anywhere inside .`;
-
 ## Installation
-
-## Examples
 
 ## Features
 
@@ -153,46 +150,113 @@ function ResultCount() {
 
 ## Props Reference
 
-### `DataTable`
+        Component
+        Prop
+        Type
+        Default
+        Description
 
-      PropTypeDefaultDescription
+        DataTable
+        data
+        T[]
+        Required
+        Your rows, in whatever shape they arrive.
 
-      dataT[]RequiredYour rows, in whatever shape they arrive.
-      getRowId(row: T) =&gt; string | numberid → _id → uuidHow a row is identified for selection and expansion.
-      getSearchText(row: T) =&gt; stringall valuesOverride what the search box matches against.
-      initialSort{`{ id, direction?, type? }`}undefinedSort applied on first render.
-      pageSizenumber2nd optionStarting page size.
-      pageSizeOptionsnumber[][5, 10, 25, 50]Choices offered by DataTablePageSize.
-      onSelectionChange(rows: T[]) =&gt; void—Fires when the selection changes, with the full row objects.
-      variant / size / color——Passed through to Table.
+        DataTable
+        getRowId
+        (row: T) =&gt; string | number
+        id → _id → uuid
+        How a row is identified for selection and expansion.
 
-### `DataTableHead`
+        DataTable
+        getSearchText
+        (row: T) =&gt; string
+        all values
+        Override what the search box matches against.
 
-      PropTypeDefaultDescription
+        DataTable
+        initialSort
+        {`{ id, direction?, type? }`}
+        undefined
+        Sort applied on first render.
 
-      sortBystring | ((row: T) =&gt; unknown)—A dot path such as "profile.name", or an accessor function. Its presence makes the header sortable.
-      sortIdstringthe pathRequired only when sortBy is a function.
-      sortType"auto" | "string" | "number" | "date""auto"auto compares numbers numerically and everything else as text.
-      align"left" | "center" | "right""left"Text alignment.
+        DataTable
+        pageSize
+        number
+        2nd option
+        Starting page size.
 
-### Wired components
+        DataTable
+        pageSizeOptions
+        number[]
+        [5, 10, 25, 50]
+        Choices offered by DataTablePageSize.
 
-      ComponentNotes
+        DataTable
+        onSelectionChange
+        (rows: T[]) =&gt; void
+        —
+        Fires when the selection changes, with the full row objects.
 
-      DataTableBodyChildren are a function receiving the current page of rows. Also takes animate.
-      DataTableRowPass row (or rowId) so selection and expansion resolve. Highlights itself when selected.
-      DataTableSearchDebounce-free controlled input. Resets to page 1 on change. Accepts placeholder.
-      DataTablePageSizePage-size picker. Accepts label, suffix, color.
-      DataTableSelectAll / DataTableSelectHeader and row checkboxes. Select-all applies to the current page.
-      DataTableBatchBarFloating pill shown while a selection exists. Render function receives {`{ selectedRows, selectedIds, clearSelection }`}. Set floating={`{false}`} for inline.
-      DataTableInfoThe &ldquo;Showing 1 to 10 of 42 results&rdquo; line.
-      DataTablePaginationPrev / next plus a five-page window.
-      DataTableExpandToggle / DataTableExpandedRowRow expansion, tracked by row id.
-      DataTableHeading, DataTableContent, DataTableHeader, DataTableCell, DataTableFooter, DataTableEmptyRe-exported unchanged from Table.
+        DataTable
+        variant / size / color
+        —
+        —
+        Passed through to Table.
 
-### `useDataTable()`
+        DataTableHead
+        sortBy
+        string | ((row: T) =&gt; unknown)
+        —
+        A dot path such as "profile.name", or an accessor function. Its presence makes the header sortable.
 
-Returns `sourceRows`, `filteredRows`, `rows`, `getRowId`, `search` / `setSearch`, `sort` / `toggleSort`, `page` / `setPage`, `pageSize` / `setPageSize`, `pageSizeOptions`, `totalPages`, `total`, `from`, `to`, `selectedIds`, `selectedRows`, `isSelected`, `toggleRow`, `toggleAllOnPage`, `clearSelection`, `isAllPageSelected`, `isSomePageSelected`, `isExpanded`, `toggleExpanded` and `theme`.
+        DataTableHead
+        sortId
+        string
+        the path
+        Required only when sortBy is a function.
+
+        DataTableHead
+        sortType
+        "auto" | "string" | "number" | "date"
+        "auto"
+        auto compares numbers numerically and everything else as text.
+
+        DataTableHead
+        align
+        "left" | "center" | "right"
+        "left"
+        Text alignment.
+
+        DataTableBatchBar
+        children
+        {`((args: { selectedRows: T[]; selectedIds: (string | number)[]; clearSelection: () => void }) => ReactNode) | ReactNode`}
+        —
+        Render function or nodes for the floating batch actions bar.
+
+        DataTableBatchBar
+        floating
+        boolean
+        true
+        Floats over the bottom center of the table when true; set false for inline rendering.
+
+        DataTableSearch
+        placeholder
+        string
+        "Search…"
+        Placeholder text for the search input box.
+
+        DataTableSelectAll
+        className
+        string
+        —
+        Header checkbox to select or deselect all rows on the current page.
+
+        DataTableSelect
+        className
+        string
+        —
+        Row checkbox to select or deselect the specific row.
 
 ---
 

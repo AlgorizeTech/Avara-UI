@@ -355,6 +355,182 @@ Learn about the Card component's flexible layout options, including headers, foo
     Composable
     Mix and match sub-components to create complex card layouts effortlessly.
 
+## Props Reference
+
+### Card
+
+        Prop
+        Type
+        Default
+        Description
+
+          variant
+
+          "bordered" | "default" | "flat"
+
+          "bordered"
+        
+        Visual styling variant of the card container.
+
+          interactive
+
+          boolean
+
+          false
+        
+        Enables hover elevation, scale effects, and pointer cursor.
+
+          className
+
+          string
+
+          undefined
+        
+        Additional CSS classes applied to the root element.
+
+### ProductCard
+
+        Prop
+        Type
+        Default
+        Description
+
+          title
+
+          string
+
+          -
+        
+        Product title heading (required).
+
+          price
+
+          string
+
+          -
+        
+        Displayed product price string (required).
+
+          variant
+
+          "standard" | "compact" | "horizontal"
+
+          "standard"
+        
+        Layout orientation and sizing of the product card.
+
+          subtitle
+
+          string
+
+          undefined
+        
+        Brand name, category or secondary label.
+
+          description
+
+          string
+
+          undefined
+        
+        Detailed product description text.
+
+          originalPrice
+
+          string
+
+          undefined
+        
+        Strikethrough original price for discount display.
+
+          rating
+
+          number
+
+          undefined
+        
+        Star rating score (e.g. 4.8).
+
+          reviewsCount
+
+          number
+
+          undefined
+        
+        Total review count displayed beside rating.
+
+          badge
+
+          string
+
+          undefined
+        
+        Tag label displayed on top corner (e.g. "Best Seller").
+
+          badgeVariant
+
+          "emerald" | "rose" | "indigo" | "amber" | "zinc"
+
+          "emerald"
+        
+        Color theme of the badge tag.
+
+          inStock
+
+          boolean
+
+          true
+        
+        Shows availability indicator badge on image header.
+
+          image
+
+          ReactNode
+
+          undefined
+        
+        Image or visual graphic node for the product preview.
+
+          colors
+
+          ProductColorOption[]
+
+          undefined
+        
+        Array of color swatch options &#123; name, value &#125;.
+
+          onAddToCart
+
+          () => void
+
+          undefined
+        
+        Callback triggered when clicking the Add to Cart button.
+
+          onBuyNow
+
+          () => void
+
+          undefined
+        
+        Callback triggered when clicking Buy Now button.
+
+          onQuickView
+
+          () => void
+
+          undefined
+        
+        Callback triggered when clicking Quick View button.
+
+          onFavoriteToggle
+
+          (isLiked: boolean) => void
+
+          undefined
+        
+        Callback when heart button is toggled.
+
 ---
 
 **Component Path:** `[framework]\card\page.mdx`
