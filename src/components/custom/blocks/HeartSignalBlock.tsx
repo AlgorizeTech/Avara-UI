@@ -82,7 +82,9 @@ export function HeartSignal({
       if (computedColor && computedColor !== "rgba(0, 0, 0, 0)" && computedColor !== "transparent") {
         return computedColor;
       }
-    } catch {}
+    } catch {
+      // Colour could not be resolved; the theme default below is used.
+    }
     return resolvedTheme === "dark" ? "#f43f5e" : "#e11d48";
   };
 

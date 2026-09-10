@@ -328,13 +328,13 @@ function StackedCardsCarousel({
 					// Relative offset in cyclic orbit ring
 					const offset = (idx - activeIndex + total) % total;
 
-					let xOffset = 0;
-					let yOffset = 0;
+					let xOffset: number;
+					let yOffset: number;
 					let rotateY = 0;
 					let rotateZ = 0;
-					let scale = 0.85;
-					let zIndex = 0;
-					let opacity = 0;
+					let scale: number;
+					let zIndex: number;
+					let opacity: number;
 
 					if (offset === 0) {
 						// 1. Center Front Active Card

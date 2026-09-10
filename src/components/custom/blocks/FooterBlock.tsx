@@ -130,6 +130,61 @@ const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = 
   ],
 };
 
+/** The wordmark, or whatever `logo` was passed instead of it. */
+function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">) {
+  return (
+  <div className="flex items-center gap-2.5 select-none">
+    {logo || (
+      <div className="relative flex items-center justify-center">
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="size-[24px]"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="1.5" className="fill-foreground" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" className="fill-primary" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" className="fill-foreground" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" className="fill-primary" />
+        </svg>
+      </div>
+    )}
+    <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
+      {brandName === "Algorize UI" ? "Docs" : brandName}{" "}
+      <span className="text-primary font-normal">UI</span>
+      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
+        v1.0
+      </span>
+    </span>
+  </div>
+  );
+}
+
+/** The social row. Static, so it lives outside the component. */
+function SocialLinks() {
+  return (
+  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+    <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
+      <Twitter className="size-4" />
+    </a>
+    <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
+      <Github className="size-4" />
+    </a>
+    <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
+      <Linkedin className="size-4" />
+    </a>
+    <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
+      <Youtube className="size-4" />
+    </a>
+    <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
+      <Instagram className="size-4" />
+    </a>
+  </div>
+  );
+}
+
 export function Footer({
   variant = "simple-centered",
   brandName = "Algorize UI",
@@ -143,61 +198,13 @@ export function Footer({
   const copyright =
     copyrightText ??
     `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
-  const BrandLogo = () => (
-    <div className="flex items-center gap-2.5 select-none">
-      {logo || (
-        <div className="relative flex items-center justify-center">
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="size-[24px]"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1.5" className="fill-foreground" />
-            <rect x="14" y="3" width="7" height="7" rx="1.5" className="fill-primary" />
-            <rect x="14" y="14" width="7" height="7" rx="1.5" className="fill-foreground" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" className="fill-primary" />
-          </svg>
-        </div>
-      )}
-      <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-        {brandName === "Algorize UI" ? "Docs" : brandName}{" "}
-        <span className="text-primary font-normal">UI</span>
-        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
-          v1.0
-        </span>
-      </span>
-    </div>
-  );
-
-  const SocialLinks = () => (
-    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-      <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
-        <Twitter className="size-4" />
-      </a>
-      <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
-        <Github className="size-4" />
-      </a>
-      <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
-        <Linkedin className="size-4" />
-      </a>
-      <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
-        <Youtube className="size-4" />
-      </a>
-      <a href="#" className="p-2.5 rounded-xl bg-muted/60 hover:bg-primary/10 hover:text-primary transition-all text-muted-foreground hover:scale-105">
-        <Instagram className="size-4" />
-      </a>
-    </div>
-  );
 
   return (
     <footer className={cn("w-full bg-background border-t border-border/80 text-foreground transition-all overflow-hidden", className)}>
       {/* 1. SIMPLE CENTERED */}
       {variant === "simple-centered" && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 flex flex-col items-center justify-center text-center gap-8 sm:gap-10">
-          <BrandLogo />
+          <BrandLogo logo={logo} brandName={brandName} />
           
           <div className="max-w-xl space-y-3 px-2">
             <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Build faster with modern component building blocks</h3>
@@ -246,7 +253,7 @@ export function Footer({
           <div className="p-8 sm:p-12 rounded-3xl bg-card/80 backdrop-blur-2xl border border-border shadow-2xl space-y-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2">
-                <BrandLogo />
+                <BrandLogo logo={logo} brandName={brandName} />
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-md">{tagline}</p>
               </div>
               <SocialLinks />
@@ -283,7 +290,7 @@ export function Footer({
         <div className="w-full bg-purple-50/50 dark:bg-slate-950 text-foreground py-16 sm:py-24 px-4 border-t border-purple-300/60 dark:border-purple-500/30 transition-colors">
           <div className="max-w-7xl mx-auto p-8 sm:p-12 rounded-3xl bg-white/90 dark:bg-slate-900/80 border border-purple-300 dark:border-purple-500/40 shadow-[0_0_40px_rgba(168,85,247,0.15)] dark:shadow-[0_0_50px_rgba(168,85,247,0.2)] space-y-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-purple-200/80 dark:border-slate-800">
-              <BrandLogo />
+              <BrandLogo logo={logo} brandName={brandName} />
               <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30 text-xs font-mono animate-pulse">
                 <Cpu className="size-4" /> NEON MATRIX ONLINE (60 FPS)
               </div>
@@ -321,7 +328,7 @@ export function Footer({
           <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/30 shadow-xl space-y-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2">
-                <BrandLogo />
+                <BrandLogo logo={logo} brandName={brandName} />
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-md">{tagline}</p>
               </div>
               <SocialLinks />

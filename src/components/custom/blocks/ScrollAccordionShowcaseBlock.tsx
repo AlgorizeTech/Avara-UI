@@ -108,7 +108,9 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 break;
               }
             }
-          } catch {}
+          } catch {
+            // Unreadable stylesheet (cross-origin): try the next one.
+          }
         }
 
         if (!foundColor && typeof localStorage !== "undefined") {
@@ -131,7 +133,9 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 }
               }
             }
-          } catch {}
+          } catch {
+            // Unreadable stylesheet (cross-origin): try the next one.
+          }
         }
 
         if (!foundColor && typeof document !== "undefined") {
@@ -150,7 +154,9 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 foundColor = trimmed;
               }
             }
-          } catch {}
+          } catch {
+            // Unreadable stylesheet (cross-origin): try the next one.
+          }
         }
 
         const targetColor = foundColor || defaultAccentColor;

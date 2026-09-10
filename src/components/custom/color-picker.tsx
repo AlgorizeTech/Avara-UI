@@ -17,6 +17,14 @@ import {
 
 export type ColorFormat = "hex" | "rgb" | "hsl";
 
+/**
+ * The slice of the EyeDropper API this uses. It is still not in lib.dom,
+ * and `"EyeDropper" in window` already guards the call site.
+ */
+type EyeDropperConstructor = new () => {
+  open: () => Promise<{ sRGBHex: string }>;
+};
+
 export interface ColorPickerProps {
   value?: string;
   onChange?: (color: string) => void;
@@ -323,8 +331,9 @@ export function StandaloneColorPicker({
   const handleEyeDropper = async () => {
     if (typeof window !== "undefined" && "EyeDropper" in window) {
       try {
-        // @ts-ignore - EyeDropper API
-        const eyeDropper = new window.EyeDropper();
+        const eyeDropper = new (
+          window as unknown as { EyeDropper: EyeDropperConstructor }
+        ).EyeDropper();
         const result = await eyeDropper.open();
         if (result?.sRGBHex) {
           setColorHsl(parseColorToState(result.sRGBHex));

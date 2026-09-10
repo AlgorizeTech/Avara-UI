@@ -184,7 +184,6 @@ export const DrawerContent = React.forwardRef<
   return (
     <div
       ref={(node) => {
-        // @ts-ignore
         contentRef.current = node;
         if (typeof ref === "function") ref(node);
         else if (ref)

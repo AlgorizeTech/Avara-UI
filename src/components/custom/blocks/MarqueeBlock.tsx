@@ -39,7 +39,7 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
     const isReverse = direction === "right" || direction === "down";
 
     // Determine animation duration based on speed
-    let duration = "20s";
+    let duration: string;
     if (typeof speed === "number") {
       duration = `${speed}s`;
     } else {

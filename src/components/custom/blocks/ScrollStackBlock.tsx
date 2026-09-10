@@ -28,7 +28,7 @@ export interface ScrollStackProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ScrollStack = ({
   items,
   depthScale = 0.05,
-  cardGap: _cardGap = 24,
+  cardGap = 24,
   scroller,
   className,
   ...props
@@ -120,7 +120,10 @@ export const ScrollStack = ({
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="flex min-h-screen w-full items-center justify-center sticky top-0 sm:top-2"
+          className="flex min-h-screen w-full items-center justify-center sticky"
+          // Each card sticks a little lower than the one before, which is
+          // what makes the stack fan out rather than pile up exactly.
+          style={{ top: index * cardGap }}
         >
           <div
             ref={(el) => {

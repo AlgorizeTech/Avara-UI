@@ -40,7 +40,7 @@ function ResizeHandler({ wrapperRef, initialZoom, zoomable }: { wrapperRef: Reac
       const el = wrapperRef.current;
       if (!el) return;
       const width = el.clientWidth;
-      let targetZoom = initialZoom;
+      let targetZoom: number;
       if (width < 450) {
         targetZoom = 0;
       } else if (width < 640) {
@@ -118,7 +118,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
       zoomable = false,
       scrollWheelZoom = false,
       highlightColor = "var(--primary, #2563eb)",
-      defaultColor: _defaultColor = "#cbd5e1",
+      defaultColor = "var(--map-default-fill)",
       mapGeoJsonUrl = "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json",
       mapId,
       className,
@@ -208,7 +208,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           const dataPoint = dataPoints.find((p) => p.id === countryId);
           
           layer.setStyle({
-            fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+            fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : defaultColor,
           });
 
           if (isDots && dataPoint && layer.getBounds && markersGroupRef.current && map?.getPanes?.()?.markerPane) {
@@ -239,7 +239,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
              markersGroupRef.current.clearLayers();
          }
       }
-    }, [highlightColor, dataPoints, variant, geoData, leafletLib]);
+    }, [highlightColor, defaultColor, dataPoints, variant, geoData, leafletLib]);
 
     useEffect(() => {
       fetch(mapGeoJsonUrl)
@@ -364,7 +364,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                 const dataPoint = dataPoints.find((p) => p.id === countryId);
                 const isDots = variant === "dots";
                 return {
-                  fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : "var(--map-default-fill)",
+                  fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : defaultColor,
                   className: "map-stroke",
                   weight: 0.5,
                   fillOpacity: 1,

@@ -23,7 +23,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       children,
       className,
       tiltIntensity = 15,
-      glareOpacity: _glareOpacity = 0.2, // Back to a balanced default
+      glareOpacity = 0.2,
       scaleOnHover = 1.02,
       ...props
     },
@@ -91,13 +91,18 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
         >
           <div
             className="relative w-full h-full z-10"
-            style={{ transform: "translateZ(30px)" }}
+            style={
+              {
+                transform: "translateZ(30px)",
+                "--glare-opacity": glareOpacity,
+              } as React.CSSProperties
+            }
           >
             {children}
 
             {/* Dynamic Theme Color Glare Overlay */}
             <motion.div
-              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl"
+              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-[var(--glare-opacity)] transition-opacity duration-300 rounded-2xl"
               style={{ background: glareBackgroundTheme }}
             />
           </div>

@@ -180,8 +180,8 @@ export function TableOfContentsBlock({
 		const scrollContainer = findScrollParent(contentRef.current);
 
 		const handleScroll = () => {
-			let scrollTop = 0;
-			let totalHeight = 0;
+			let scrollTop: number;
+			let totalHeight: number;
 
 			if (scrollContainer === window) {
 				scrollTop = window.scrollY;

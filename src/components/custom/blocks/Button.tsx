@@ -154,7 +154,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const [ripples, setRipples] = useState<Ripple[]>([]);
 
-    const iconOnly = !Boolean(children) && Boolean(iconLeft || iconRight);
+    const iconOnly = !children && Boolean(iconLeft || iconRight);
 
     useEffect(() => {
       const styleId = "ripple-animation-style";

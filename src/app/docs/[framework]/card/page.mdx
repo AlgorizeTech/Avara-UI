@@ -10,7 +10,7 @@ Building a UI entirely out of raw `div` tags quickly leads to inconsistent paddi
 export const usageEcommerce = `"use client";
 
 import { useState } from "react";
-import { ProductCard, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
+import { ProductCard, type ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 
 export default function EcommerceProductCardsDemo() {
   const [sneakerBg, setSneakerBg] = useState(
