@@ -1,6 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+/**
+ * False while server-rendering and during hydration, true afterwards — without
+ * the extra render an effect-flipped useState costs.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
@@ -40,16 +53,13 @@ export function HeartSignal({
   ...props
 }: HeartSignalProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const [themePrimaryColor, setThemePrimaryColor] = useState<string>("currentColor");
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Real-time semantic CSS theme color resolver (supports standard CSS vars and Shadcn HSL variables)
   const getActivePrimaryColor = (): string => {

@@ -203,11 +203,13 @@ export function StandaloneColorPicker({
   const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
 
   useEffect(() => {
+    // Keeps the editable hex field in step with the swatch the user is dragging.
     setInputHex(hex);
   }, [hex]);
 
   useEffect(() => {
     if (value && value !== hex) {
+      // Adopts a new controlled `value`, parsed from a string this component does not otherwise hold.
       setColorHsl(parseColorToState(value));
     }
   }, [value]);

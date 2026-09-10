@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, {
-  useCallback,
   useEffect,
   useId,
   useLayoutEffect,
@@ -373,7 +372,7 @@ export function VerticalTabs({
   // active label in the accent colour, so the selection is never invisible.
   const [rect, setRect] = useState<Rect | null>(null);
 
-  const measure = useCallback(() => {
+  const measure = () => {
     if (!indicatorMode) return;
     const el = tabRefs.current[activeId];
     if (!el || !railRef.current) return;
@@ -383,11 +382,11 @@ export function VerticalTabs({
       w: el.offsetWidth,
       h: el.offsetHeight,
     });
-  }, [activeId, indicatorMode]);
+  };
 
   useIsoLayoutEffect(() => {
     measure();
-  }, [measure, orientation, variant, tabs.length]);
+  }, [activeId, indicatorMode, orientation, variant, tabs.length]);
 
   useEffect(() => {
     if (!indicatorMode || !railRef.current) return;
@@ -395,7 +394,7 @@ export function VerticalTabs({
     observer.observe(railRef.current);
     for (const el of Object.values(tabRefs.current)) if (el) observer.observe(el);
     return () => observer.disconnect();
-  }, [measure, indicatorMode]);
+  }, [activeId, indicatorMode, orientation, variant]);
 
   // Geometry per mode: the bar rides the edge facing the content pane, the
   // fill matches the tab it belongs to.

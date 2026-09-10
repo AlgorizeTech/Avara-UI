@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Reorder, useDragControls } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { GripVertical, Calendar, ExternalLink, CheckCircle2, Circle } from "lucide-react";
@@ -327,10 +327,13 @@ export function DraggableCardList({
     cardClassName,
 }: DraggableCardListProps) {
     const [itemList, setItemList] = useState<DraggableCardItem[]>(initialItems);
-
-    useEffect(() => {
+    // Re-seed when the caller hands over a different array. Doing it here
+    // rather than in an effect avoids rendering the previous list first.
+    const [seededFrom, setSeededFrom] = useState(initialItems);
+    if (seededFrom !== initialItems) {
+        setSeededFrom(initialItems);
         setItemList(initialItems);
-    }, [initialItems]);
+    }
 
     const handleReorder = (newItems: DraggableCardItem[]) => {
         setItemList(newItems);

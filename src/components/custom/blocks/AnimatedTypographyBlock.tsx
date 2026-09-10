@@ -479,9 +479,15 @@ export const AnimatedTypographyBlock = forwardRef<
           style={{ ...colorStyle, ...customSizeStyle }}
           {...props}
         >
-          <span className="sr-only">{text}</span>
+          <span className="sr-only">
+            {titlePrefix}
+            {text}
+            {titleSuffix}
+          </span>
           <span aria-hidden="true" className="inline-block w-full max-w-full whitespace-nowrap overflow-visible py-2">
+            {titlePrefix}
             {renderContent()}
+            {titleSuffix}
           </span>
         </Component>
       </>

@@ -22,7 +22,6 @@ export function Pagination({
   onPageChange,
   siblingCount = 2,
   showEdges = true,
-  children,
   ...props
 }: PaginationProps) {
   // Advanced pagination logic to calculate ellipses
@@ -249,7 +248,7 @@ export function PaginationPrevious({
         {...props}
       >
         <ChevronLeft className="h-4 w-4" />
-        <span>Previous</span>
+        {showLabel !== false && <span>Previous</span>}
       </button>
     </li>
   );
@@ -275,7 +274,7 @@ export function PaginationNext({
         )}
         {...props}
       >
-        <span>Next</span>
+        {showLabel !== false && <span>Next</span>}
         <ChevronRight className="h-4 w-4" />
       </button>
     </li>

@@ -156,6 +156,7 @@ export function TooltipContent({
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Clears the measured flag on close so the next open re-measures.
     if (!open) setPositioned(false);
   }, [open]);
 

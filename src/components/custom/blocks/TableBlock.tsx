@@ -796,7 +796,7 @@ function DataTableImpl<T>({
         }
       : null,
   );
-  const [page, setPage] = useState(1);
+  const [pageState, setPage] = useState(1);
   const [pageSize, setPageSizeState] = useState(
     pageSizeProp ?? pageSizeOptions[1] ?? 10,
   );
@@ -836,14 +836,14 @@ function DataTableImpl<T>({
   // 3. Paginate
   const total = filteredRows.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  // The row count can shrink under the current page — a filter, a bigger
+  // page size. Read it clamped rather than correcting it afterwards.
+  const page = Math.min(pageState, totalPages);
   const rows = useMemo(
     () => filteredRows.slice((page - 1) * pageSize, page * pageSize),
     [filteredRows, page, pageSize],
   );
 
-  useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
-  }, [page, totalPages]);
 
   const setSearch = useCallback((value: string) => {
     setSearchState(value);
@@ -877,9 +877,11 @@ function DataTableImpl<T>({
   );
 
   const selectionCallbackRef = React.useRef(onSelectionChange);
-  selectionCallbackRef.current = onSelectionChange;
   const selectedRowsRef = React.useRef(selectedRows);
-  selectedRowsRef.current = selectedRows;
+  React.useEffect(() => {
+    selectionCallbackRef.current = onSelectionChange;
+    selectedRowsRef.current = selectedRows;
+  });
 
   useEffect(() => {
     selectionCallbackRef.current?.(selectedRowsRef.current);

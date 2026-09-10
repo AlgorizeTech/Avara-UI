@@ -215,6 +215,7 @@ export function DialogContent({
     // looking at, so it takes both the Escape key and the highest layer.
     const id = idRef.current as symbol;
     openDialogs.push(id);
+    // Depth comes from a module-level stack of open dialogs, which only exists once this one has mounted and claimed a slot.
     setDepth(openDialogs.length - 1);
 
     // Lock body scroll. A nested dialog reads the lock the outer one already

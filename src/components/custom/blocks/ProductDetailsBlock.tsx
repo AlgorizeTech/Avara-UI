@@ -70,6 +70,20 @@ const DEFAULT_COLORS: ProductColor[] = [
 
 const DEFAULT_SIZES = ["US 8", "US 9", "US 10", "US 11", "US 12"];
 
+/** Five stars, filled up to `rating`. */
+function Stars({ className, rating }: { className?: string; rating: number }) {
+  return (
+    <div className="flex text-amber-400 shrink-0">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star
+          key={i}
+          className={cn(className, i < Math.round(rating) && "fill-amber-400")}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function ProductDetails({
   variant = "modern-split-gallery",
   title = "Nike Air Max Pulse 2026",
@@ -98,17 +112,6 @@ export function ProductDetails({
   const sizeScales = ["scale-100", "scale-105", "scale-110", "scale-115", "scale-120"];
   const sizeScaleClass = sizeScales[sizeIndex % sizeScales.length] || "scale-110";
 
-  /** Five stars, filled up to `rating`. */
-  const Stars = ({ className }: { className?: string }) => (
-    <div className="flex text-amber-400 shrink-0">
-      {Array.from({ length: 5 }, (_, i) => (
-        <Star
-          key={i}
-          className={cn(className, i < Math.round(rating) && "fill-amber-400")}
-        />
-      ))}
-    </div>
-  );
   const reviews = reviewsCount.toLocaleString();
 
   return (
@@ -175,7 +178,7 @@ export function ProductDetails({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
-                  <Stars className="size-4" />
+                  <Stars className="size-4" rating={rating} />
                   <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
@@ -318,7 +321,7 @@ export function ProductDetails({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
                     <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-                      <Stars className="size-3.5" />
+                      <Stars className="size-3.5" rating={rating} />
                       <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
                     </div>
                   </div>
@@ -523,7 +526,7 @@ export function ProductDetails({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
-                  <Stars className="size-4" />
+                  <Stars className="size-4" rating={rating} />
                   <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>

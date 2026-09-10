@@ -256,6 +256,7 @@ function TriggerButton({
    */
   const [hasOpened, setHasOpened] = useState(false);
   useEffect(() => {
+    // A latch: once the cart has been opened it must stay opened, so this cannot be derived from `isOpen`.
     if (isOpen) setHasOpened(true);
   }, [isOpen]);
 

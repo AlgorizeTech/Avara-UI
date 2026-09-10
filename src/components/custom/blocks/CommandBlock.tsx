@@ -16,6 +16,8 @@ import { createPortal } from "react-dom";
 // 1. CONTEXT
 // ==========================================
 interface CommandContextType {
+  /** When false the caller owns filtering and every item stays visible. */
+  shouldFilter: boolean;
   search: string;
   setSearch: (search: string) => void;
   /**
@@ -43,7 +45,7 @@ export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Command({
   className,
-  shouldFilter: _shouldFilter = true,
+  shouldFilter = true,
   children,
   ...props
 }: CommandProps) {
@@ -104,7 +106,7 @@ export function Command({
   }, [search, command]);
 
   return (
-    <CommandContext.Provider value={{ search, setSearch, command }}>
+    <CommandContext.Provider value={{ search, setSearch, command, shouldFilter }}>
       <div
         ref={setCommand}
         cmdk-root="true"
@@ -333,13 +335,17 @@ export function CommandItem({
   children,
   ...props
 }: CommandItemProps) {
-  const { search, command } = useCommand();
+  const { search, command, shouldFilter } = useCommand();
   const itemRef = useRef<HTMLDivElement>(null);
 
   // Extract text content for fuzzy matching if no explicit value is provided
   const textValue = value || textFromChildren(children);
+  // With `shouldFilter={false}` the caller owns the list and every item
+  // stays visible, however the query reads.
   const isMatch =
-    !search || textValue.toLowerCase().includes(search.toLowerCase());
+    !shouldFilter ||
+    !search ||
+    textValue.toLowerCase().includes(search.toLowerCase());
 
   const handleSelect = () => {
     if (onSelect) onSelect(textValue);

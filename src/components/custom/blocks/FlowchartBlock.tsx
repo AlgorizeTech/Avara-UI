@@ -92,7 +92,6 @@ export interface FlowNodeProps extends React.HTMLAttributes<HTMLDivElement> {
 export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
   (
     {
-      id,
       title,
       description,
       icon: Icon,
@@ -289,7 +288,10 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500"
+          className={cn(
+            "text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500",
+            className,
+          )}
           {...props}
         />
 

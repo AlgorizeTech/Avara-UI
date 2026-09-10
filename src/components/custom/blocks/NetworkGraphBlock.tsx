@@ -7,7 +7,7 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 export type NetworkNode = {
   id: string;
@@ -188,7 +188,9 @@ function OrbitRing({
   // Read through a ref so the frame callback always sees the latest speed
   // without being torn down and rebuilt on every render.
   const speedRef = useRef(degreesPerSecond);
-  speedRef.current = degreesPerSecond;
+  useEffect(() => {
+    speedRef.current = degreesPerSecond;
+  });
 
   useAnimationFrame((_, delta) => {
     const speed = speedRef.current;

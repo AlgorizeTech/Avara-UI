@@ -296,7 +296,7 @@ WizardInput.displayName = "WizardInput";
 export const WizardNavigation = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
+>(({ className, ...props }, ref) => {
   const { currentStep, nextStep, prevStep, color } = useWizard();
 
   const isHex = color && color.startsWith("#");

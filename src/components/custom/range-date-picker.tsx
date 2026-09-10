@@ -1,6 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
+
+/**
+ * False while server-rendering and during hydration, true afterwards — without
+ * the extra render an effect-flipped useState costs.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
@@ -180,11 +193,8 @@ export function RangeDatePicker({
   disabled = false,
   getPrice,
 }: RangeDatePickerProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isDual = variant === "dual" || variant === "priced-dual";
   const isPriced =
@@ -212,10 +222,14 @@ export function RangeDatePicker({
 
   const theme = colorThemes[color] || colorThemes.primary;
 
-  useEffect(() => {
+  // Adopt a new controlled range as it arrives. Handled during render so
+  // the previous range is never painted first.
+  const [seededRange, setSeededRange] = useState({ fromDate, toDate });
+  if (seededRange.fromDate !== fromDate || seededRange.toDate !== toDate) {
+    setSeededRange({ fromDate, toDate });
     setSelectingFrom(fromDate);
     setSelectingTo(toDate);
-  }, [fromDate, toDate]);
+  }
 
   const handleDateClick = (clickedDate: Date) => {
     if (disabled) return;
