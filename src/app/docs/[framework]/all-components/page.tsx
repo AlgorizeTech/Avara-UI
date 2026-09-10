@@ -122,7 +122,6 @@ const COMPONENT_META: Record<
 	dock: { countText: "macOS Magnification", illustrationType: "dock" },
 	"file-upload": { countText: "Drag & Drop Motion", illustrationType: "file-upload" },
 	"floating-contact-button": { countText: "Animated Action", illustrationType: "floating-contact" },
-	globe: { countText: "9 3D Variants", illustrationType: "globe" },
 	"heart-signal": { countText: "Pulse Beacon", illustrationType: "heart-signal" },
 	"magic-bento": { countText: "Glow & Tilt Grid", illustrationType: "magic-bento" },
 	"memories-card": { countText: "Stackable Cards", illustrationType: "memories-card" },
@@ -878,19 +877,7 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "globe" && (
-					<div className="w-full h-full relative flex items-center justify-center p-1 my-auto overflow-hidden bg-card rounded-xl border border-border group/globe">
-						<div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)] opacity-20" />
-						<div className="relative size-16 rounded-full border border-primary/40 flex items-center justify-center animate-[spin_20s_linear_infinite]">
-							<div className="absolute inset-0 rounded-full border border-dashed border-primary/30" />
-							<div className="size-12 rounded-full border border-primary/60 flex items-center justify-center bg-primary/10">
-								<Globe className="size-6 text-primary animate-pulse" />
-							</div>
-							<div className="absolute -top-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-blue-400 shadow-md shadow-blue-400" />
-							<div className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-emerald-400 shadow-md shadow-emerald-400" />
-						</div>
-					</div>
-				)}
+
 
 				{type === "footer" && (
 					<div className="w-full h-full p-2 flex flex-col justify-between my-auto overflow-hidden bg-card rounded-xl border border-border">

@@ -447,12 +447,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
   },
-  globe: {
-    description:
-      "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
-    categories: ["data-display", "marketing", "maps"],
-    docs: "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color.",
-  },
   footer: {
     description:
       "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",

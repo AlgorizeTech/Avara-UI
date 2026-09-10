@@ -155,7 +155,6 @@ export const navigation: NavigationItem[] = [
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button" },
       { label: "Flow Gallery", slug: "flow-gallery" },
-      { label: "Globe", slug: "globe" },
       { label: "Heart Signal", slug: "heart-signal" },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
       { label: "Magic Bento", slug: "magic-bento" },
