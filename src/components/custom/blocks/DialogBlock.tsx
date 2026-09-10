@@ -2,33 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
-// ==========================================
-// 1. CONTEXT
-// ==========================================
-interface DialogContextType {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const DialogContext = createContext<DialogContextType | undefined>(undefined);
-
-export function useDialog() {
-  const context = useContext(DialogContext);
-  if (!context)
-    throw new Error("Dialog components must be used within a <Dialog> root.");
-  return context;
-}
+import { DialogContext, useDialog } from "./dialog-context";
 
 // ==========================================
 // 2. ROOT COMPONENT

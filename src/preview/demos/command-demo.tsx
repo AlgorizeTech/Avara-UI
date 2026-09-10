@@ -11,7 +11,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/custom/blocks/CommandBlock";
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 import {
   Calculator,
   Calendar,

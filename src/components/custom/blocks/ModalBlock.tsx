@@ -83,7 +83,8 @@ export function Modal({
   useEffect(() => {
     if (isOpen) {
       isClosingRef.current = false;
-      // Mount first, then animate: the element has to be in the DOM before the transition can run.
+      // Mount first, then animate: the element has to be in the DOM before
+      // the transition can run.
       setShouldRender(true);
       const timer = setTimeout(() => setIsVisible(true), 10);
       return () => clearTimeout(timer);

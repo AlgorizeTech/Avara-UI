@@ -167,6 +167,11 @@
           "path": "src/components/custom/blocks/AnimatedTimelineBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedTimelineBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-timeline-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-timeline-theme.ts"
         }
       ],
       "docs": "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`."
@@ -192,6 +197,11 @@
           "path": "src/components/custom/blocks/AnimatedTypographyBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedTypographyBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-typography-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-typography-theme.ts"
         }
       ],
       "docs": "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`."
@@ -218,6 +228,11 @@
           "path": "src/components/custom/blocks/ApiPlaygroundBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/api-playground-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/api-playground-theme.ts"
         }
       ],
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
@@ -267,6 +282,11 @@
           "path": "src/components/custom/blocks/BreadcrumbBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/BreadcrumbBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/breadcrumb-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/breadcrumb-theme.ts"
         }
       ],
       "docs": "Named exports: BreadcrumbBlock, getThemeStyles. `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js."
@@ -305,6 +325,7 @@
         "dates"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react",
         "react-day-picker"
       ],
@@ -318,6 +339,11 @@
           "path": "src/components/custom/blocks/Calendar.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Calendar.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/button-variants.ts",
+          "type": "registry:component",
+          "target": "components/custom/ui/button-variants.ts"
         }
       ],
       "docs": "Named exports: Calendar, CalendarDashboard, CalendarDayButton. Built on react-day-picker; variants are default | minimal | glass. `mockEvents` is a Record<string, string[]> keyed by date for the event dots. Pulls in `select` and `ui-button` as registry dependencies. For a plain date field, use `date-picker`."
@@ -418,6 +444,11 @@
           "path": "src/components/custom/blocks/CartBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CartBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/cart-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/cart-theme.ts"
         }
       ],
       "docs": "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion."
@@ -633,6 +664,11 @@
           "path": "src/components/custom/blocks/CounterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CounterBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/counter-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/counter-theme.ts"
         }
       ],
       "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical."
@@ -728,6 +764,11 @@
           "path": "src/components/custom/blocks/DataGridBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DataGridBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/data-grid-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/data-grid-theme.ts"
         }
       ],
       "docs": "Named exports: DataGridBlock, getThemeStyles. `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies."
@@ -783,6 +824,11 @@
           "path": "src/components/custom/blocks/DatePickerBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DatePickerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/date-picker-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/date-picker-theme.ts"
         }
       ],
       "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead."
@@ -856,6 +902,11 @@
           "path": "src/components/custom/blocks/DialogBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DialogBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/dialog-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/dialog-context.ts"
         }
       ],
       "docs": "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog, plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`."
@@ -1060,6 +1111,11 @@
           "path": "src/components/custom/blocks/FlowchartBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FlowchartBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/flowchart-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/flowchart-context.ts"
         }
       ],
       "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
@@ -1109,6 +1165,11 @@
           "path": "src/components/custom/blocks/FormBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FormBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/form-theme.ts"
         }
       ],
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
@@ -1462,6 +1523,11 @@
           "path": "src/components/custom/blocks/InputBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/InputBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/input-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/input-theme.ts"
         }
       ],
       "docs": "Named exports: InputBlock, getThemeStyles. Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error."
@@ -1487,6 +1553,11 @@
           "path": "src/components/custom/blocks/Invoice.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Invoice.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/invoice-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/invoice-theme.ts"
         }
       ],
       "docs": "Named exports: Invoice, getThemeStyles. `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass."
@@ -1554,6 +1625,11 @@
           "path": "src/components/custom/blocks/LoaderBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/LoaderBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/loader-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/loader-theme.ts"
         }
       ],
       "docs": "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`."
@@ -1580,6 +1656,11 @@
           "path": "src/components/custom/blocks/LoginForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/LoginForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/login-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/login-form-theme.ts"
         }
       ],
       "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
@@ -1774,6 +1855,11 @@
           "path": "src/components/custom/blocks/NavbarBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NavbarBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/navbar-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/navbar-theme.ts"
         }
       ],
       "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`."
@@ -1798,6 +1884,11 @@
           "path": "src/components/custom/blocks/NavigationMenu.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NavigationMenu.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/navigation-menu-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/navigation-menu-theme.ts"
         }
       ],
       "docs": "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles. Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass."
@@ -1846,6 +1937,11 @@
           "path": "src/components/custom/blocks/OtpInputBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/OtpInputBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/otp-input-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/otp-input-theme.ts"
         }
       ],
       "docs": "Pasting a full code into any cell distributes the digits across all cells."
@@ -1990,6 +2086,11 @@
           "path": "src/components/custom/blocks/Pricing.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Pricing.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/pricing-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/pricing-theme.ts"
         }
       ],
       "docs": "Named exports: PricingCards, PricingBuilder, getThemeStyles, plus Plan, PricingData, TableFeature, TableSection and PricingTableData types. The largest pricing item — variants are default | premium | elegant | minimal | bordered. Uses next/link, so it needs edits outside Next.js. For a single card row, use `pricing-plans` or `pricing-section`."
@@ -2165,6 +2266,11 @@
           "path": "src/components/custom/blocks/ProgressBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProgressBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/progress-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-theme.ts"
         }
       ],
       "docs": "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage."
@@ -2291,6 +2397,11 @@
           "path": "src/components/custom/blocks/RegisterForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/RegisterForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/register-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
       "docs": "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
@@ -2391,6 +2502,11 @@
           "path": "src/components/custom/blocks/ScrollAreaBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ScrollAreaBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/scroll-area-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/scroll-area-theme.ts"
         }
       ],
       "docs": "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent."
@@ -2438,6 +2554,11 @@
           "path": "src/components/custom/blocks/SelectBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SelectBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/select-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/select-theme.ts"
         }
       ],
       "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one."
@@ -2486,6 +2607,11 @@
           "path": "src/components/custom/blocks/SidebarBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SidebarBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/sidebar-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/sidebar-context.ts"
         }
       ],
       "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating."
@@ -2558,6 +2684,11 @@
           "path": "src/components/custom/blocks/SonnerBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SonnerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/sonner-store.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/sonner-store.ts"
         }
       ],
       "docs": "Named exports: Toaster, toast, toastState. Mount Toaster once, then call `toast()` from anywhere — including non-React code — since state lives in a module singleton. Set `expand` to fan the stack apart on hover. For a context-based API, use `toast`."
@@ -2787,6 +2918,11 @@
           "path": "src/components/custom/blocks/TableBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TableBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/table-core.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/table-core.ts"
         }
       ],
       "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."
@@ -2838,6 +2974,11 @@
           "path": "src/components/custom/blocks/TerminalBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TerminalBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/terminal-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/terminal-theme.ts"
         }
       ],
       "docs": "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`."
@@ -2940,6 +3081,11 @@
           "path": "src/components/custom/blocks/TimelineBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TimelineBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-theme.ts"
         }
       ],
       "docs": "Named exports: TimelineBlock, getThemeStyles. Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`."
@@ -2965,6 +3111,11 @@
           "path": "src/components/custom/blocks/ToastBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ToastBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/toast-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/toast-context.ts"
         }
       ],
       "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider."
@@ -3010,6 +3161,11 @@
           "path": "src/components/custom/blocks/ToggleGroupBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ToggleGroupBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/toggle-group-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/toggle-group-theme.ts"
         }
       ],
       "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down."
@@ -3106,6 +3262,11 @@
           "path": "src/components/custom/ui/badge.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/badge.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/badge-variants.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/badge-variants.ts"
         }
       ],
       "docs": "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
@@ -3151,6 +3312,11 @@
           "path": "src/components/custom/ui/button.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/button.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/button-variants.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/button-variants.ts"
         }
       ],
       "docs": "This is the internal primitive, not the main `button` item. Prefer `button` unless you specifically need the Slot-based base. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
@@ -3195,6 +3361,11 @@
           "path": "src/components/custom/ui/code-renderer.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/code-renderer.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/code-renderer-core.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/code-renderer-core.ts"
         }
       ],
       "docs": "Named export: CodeRenderer, plus `warmHighlighter` and `prefetchHighlight` for callers that know a snippet before it is shown — prefetching one makes its first paint already highlighted, with no unstyled flash. Takes `code` and a Shiki `lang`. One Shiki instance and one markup cache are shared by every block on the page. A snippet that is still cold renders inside `pre.shiki-pending`; style that class to match your `.shiki` metrics so the swap does not shift the page. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface."
@@ -3342,6 +3513,11 @@
           "path": "src/components/custom/blocks/UploadBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/UploadBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/upload-format.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/upload-format.ts"
         }
       ],
       "docs": "Named exports: Dropzone, UploadItem, formatBytes, formatTimeLeft. Dropzone handles the drop target and reports via `onFilesDrop`; render an UploadItem per file and drive its `status` and `progress` yourself. No transport is included — wire it to your own upload call."
@@ -3440,6 +3616,11 @@
           "path": "src/components/custom/blocks/VerticalTabs.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/VerticalTabs.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/vertical-tabs-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/vertical-tabs-theme.ts"
         }
       ],
       "docs": "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion."
@@ -3490,6 +3671,11 @@
           "path": "src/components/custom/blocks/WizardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/WizardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/wizard-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/wizard-context.ts"
         }
       ],
       "docs": "Named exports: Wizard, WizardProgress, WizardContainer, WizardStep, WizardTitle, WizardDescription, useWizard. Wizard owns the step state; children read `currentStep`, `nextStep` and `prevStep` from the useWizard hook. `onComplete` fires on the final step. Unlike `stepper`, this manages navigation for you."

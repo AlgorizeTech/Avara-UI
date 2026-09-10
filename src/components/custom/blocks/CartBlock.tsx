@@ -11,7 +11,8 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { getThemeStyles } from "./cart-theme";
 
 /**
  * GSAP has to write its "from" values before the browser paints, otherwise the
@@ -26,77 +27,6 @@ const useIsomorphicLayoutEffect =
 // ==========================================
 export type CartColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type CartType = "drawer" | "modal" | "popover" | "page";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    bgSoft: "bg-primary/10",
-    ring: "focus:ring-primary",
-  },
-  indigo: {
-    bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-600",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    ring: "focus:ring-indigo-600",
-  },
-  rose: {
-    bg: "bg-rose-600 hover:bg-rose-700 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-600",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    ring: "focus:ring-rose-600",
-  },
-  emerald: {
-    bg: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-600",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    ring: "focus:ring-emerald-600",
-  },
-  zinc: {
-    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 text-white",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    ring: "focus:ring-zinc-900 dark:focus:ring-zinc-100",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        text: "text-[var(--theme-color)]",
-        border: "border-[var(--theme-color)]",
-        bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]",
-        ring: "focus:ring-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 export interface CartItem {
   id: string;
@@ -255,10 +185,9 @@ function TriggerButton({
    * comes back, so the trigger stops competing with the rest of the page.
    */
   const [hasOpened, setHasOpened] = useState(false);
-  useEffect(() => {
-    // A latch: once the cart has been opened it must stay opened, so this cannot be derived from `isOpen`.
-    if (isOpen) setHasOpened(true);
-  }, [isOpen]);
+  // A latch, not derived state: once the cart has been opened the nudge is
+  // gone for good, including after it closes again.
+  if (isOpen && !hasOpened) setHasOpened(true);
 
   const shouldNudge = !isOpen && !hasOpened && totalItems > 0;
 
@@ -544,7 +473,6 @@ export function CartBlock({
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [isOpen]);
-
 
   if (type === "page") {
     return (

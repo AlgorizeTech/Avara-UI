@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  toast,
-  Toaster,
-  type ToasterProps,
-} from "@/components/custom/blocks/SonnerBlock";
+import { Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 

@@ -240,6 +240,24 @@ const sources: Source[] = [
 const byAbsPath = new Map<string, Source>();
 for (const s of sources) byAbsPath.set(path.normalize(s.abs).toLowerCase(), s);
 
+/**
+ * A local import that is NOT its own registry item: a helper module living
+ * beside the component. Returns its absolute path so the item can ship it.
+ */
+function resolveCompanion(spec: string, fromFile: string): string | undefined {
+  let candidate: string | undefined;
+  if (spec.startsWith("@/")) candidate = path.join(ROOT, "src", spec.slice(2));
+  else if (spec.startsWith(".")) candidate = path.resolve(path.dirname(fromFile), spec);
+  if (!candidate) return undefined;
+
+  for (const ext of [".ts", ".tsx", "/index.ts", "/index.tsx"]) {
+    const full = candidate + ext;
+    if (byAbsPath.has(path.normalize(full).toLowerCase())) return undefined; // its own item
+    if (fs.existsSync(full)) return full;
+  }
+  return undefined;
+}
+
 function resolveLocal(spec: string, fromFile: string): Source | undefined {
   let candidate: string | undefined;
 
@@ -308,13 +326,20 @@ function titleFor(name: string, meta?: ItemMeta): string {
 }
 
 const items: BuiltItem[] = sources.map((s) => {
-  const src = fs.readFileSync(s.abs, "utf8");
-  const specs = parseImports(src);
-
   const dependencies = new Set<string>();
   const devDependencies = new Set<string>();
   const registryDependencies = new Set<string>();
   let usesNext = false;
+
+  // Companion modules ship with this item, so their imports count as its own.
+  const companions: string[] = [];
+  const walked = new Set<string>([path.normalize(s.abs).toLowerCase()]);
+  const queue: string[] = [s.abs];
+
+  while (queue.length) {
+  const from = queue.shift() as string;
+  const src = fs.readFileSync(from, "utf8");
+  const specs = parseImports(src);
 
   for (const spec of specs) {
     if (spec.startsWith("@/") || spec.startsWith(".")) {
@@ -323,8 +348,18 @@ const items: BuiltItem[] = sources.map((s) => {
         registryDependencies.add("utils");
         continue;
       }
-      const local = resolveLocal(spec, s.abs);
+      const local = resolveLocal(spec, from);
       if (!local) {
+        const companion = resolveCompanion(spec, from);
+        if (companion) {
+          const key = path.normalize(companion).toLowerCase();
+          if (!walked.has(key)) {
+            walked.add(key);
+            companions.push(companion);
+            queue.push(companion);
+          }
+          continue;
+        }
         unresolvedLocal.push(`${s.basename} imports ${spec}`);
         continue;
       }
@@ -339,6 +374,7 @@ const items: BuiltItem[] = sources.map((s) => {
     dependencies.add(pkg);
     const types = typesPackageFor(pkg);
     if (types) devDependencies.add(types);
+  }
   }
 
   if (usesNext) nextCoupled.push(s.name);
@@ -375,7 +411,17 @@ const items: BuiltItem[] = sources.map((s) => {
       ? { devDependencies: [...devDependencies].sort() }
       : {}),
     registryDependencies: [...registryDependencies].sort().map(depRef),
-    files: [{ path: s.rel, type: fileType, target: s.target }],
+    files: [
+      { path: s.rel, type: fileType, target: s.target },
+      ...companions
+        .map((abs) => path.relative(ROOT, abs).split(path.sep).join("/"))
+        .sort()
+        .map((rel) => ({
+          path: rel,
+          type: fileType,
+          target: rel.replace(/^src\//, ""),
+        })),
+    ],
   };
   if (meta?.docs) item.docs = meta.docs;
   return item;

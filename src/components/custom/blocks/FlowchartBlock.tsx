@@ -2,35 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
-import React, {
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-// ==========================================
-// CONTEXT & TYPES
-// ==========================================
-interface FlowchartContextType {
-  activePath: string | null;
-  setActivePath: (pathId: string | null) => void;
-  color: string;
-}
-
-const FlowchartContext = createContext<FlowchartContextType | null>(null);
-
-export function useFlowchart() {
-  const context = useContext(FlowchartContext);
-  if (!context) {
-    throw new Error(
-      "Flowchart sub-components must be used within a Flowchart root.",
-    );
-  }
-  return context;
-}
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { FlowchartContext, useFlowchart } from "./flowchart-context";
 
 // ==========================================
 // COMPONENTS

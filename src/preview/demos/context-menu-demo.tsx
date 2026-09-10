@@ -9,7 +9,8 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/custom/blocks/ContextMenuBlock";
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 import {
   Copy,
   Download,

@@ -155,10 +155,13 @@ export function TooltipContent({
   const [positioned, setPositioned] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Clears the measured flag on close so the next open re-measures.
+  // Forget the measurement on close, so the next open cannot flash at last
+  // time’s coordinates before the layout effect re-measures.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
     if (!open) setPositioned(false);
-  }, [open]);
+  }
 
   useIsomorphicLayoutEffect(() => {
     if (!open || !triggerEl || !contentRef.current) return;

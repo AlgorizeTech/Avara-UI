@@ -202,17 +202,19 @@ export function StandaloneColorPicker({
   const rgb = hslToRgb(colorHsl.h, colorHsl.s, colorHsl.l);
   const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
 
-  useEffect(() => {
-    // Keeps the editable hex field in step with the swatch the user is dragging.
+  // Keep the editable hex field in step with the swatch as it is dragged.
+  const [syncedHex, setSyncedHex] = useState(hex);
+  if (syncedHex !== hex) {
+    setSyncedHex(hex);
     setInputHex(hex);
-  }, [hex]);
+  }
 
-  useEffect(() => {
-    if (value && value !== hex) {
-      // Adopts a new controlled `value`, parsed from a string this component does not otherwise hold.
-      setColorHsl(parseColorToState(value));
-    }
-  }, [value]);
+  // Adopt a new controlled `value` as it arrives.
+  const [adoptedValue, setAdoptedValue] = useState(value);
+  if (adoptedValue !== value) {
+    setAdoptedValue(value);
+    if (value && value !== hex) setColorHsl(parseColorToState(value));
+  }
 
   const updateColor = useCallback(
     (newHsl: { h: number; s: number; l: number; a: number }) => {

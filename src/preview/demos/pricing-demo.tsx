@@ -1,16 +1,7 @@
 "use client";
 
-import {
-  PricingBuilder,
-  PricingCards,
-  PricingColor,
-  PricingData,
-  PricingSlider,
-  PricingTable,
-  PricingTableData,
-  PricingTypographic,
-  PricingVariant,
-} from "@/components/custom/blocks/Pricing";
+import { PricingBuilder, PricingCards, PricingData, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
+import { PricingColor } from "@/components/custom/blocks/pricing-theme";
 import PricingPlans from "@/components/custom/blocks/PricingPlans";
 
 type LayoutType =
