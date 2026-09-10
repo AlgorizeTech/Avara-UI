@@ -1,9 +1,47 @@
 "use client";
 
 import { ArrowRight, Star } from "lucide-react";
+import type React from "react";
 import { useEffect, useState } from "react";
 
-const AnimatedPrice = ({ value, counting = true }: any) => {
+export interface PricingV4Plan {
+  id: string | number;
+  name: string;
+  price: string | number;
+  description?: string;
+  features?: string[];
+  isFeatured?: boolean;
+  billingCycle?: "monthly" | "yearly" | string;
+}
+
+/** Plans already split by cycle, optionally one level down. */
+export interface PricingV4Groups {
+  monthly?: PricingV4Plan[];
+  yearly?: PricingV4Plan[];
+  packages?: PricingV4Groups;
+  data?: PricingV4Groups;
+}
+
+/**
+ * Either a flat list, where each plan carries its own `billingCycle`, or a
+ * grouped object. Both are accepted; the block sorts it out.
+ */
+export type PricingV4Packages = PricingV4Plan[] | PricingV4Groups;
+
+export interface PricingSectionV4Props {
+  packages: PricingV4Packages;
+  /** Animate prices up from zero on mount. */
+  counting?: boolean;
+  /** Swap in your router link, e.g. `linkComponent={Link}`. */
+  linkComponent?: React.ElementType;
+}
+
+interface AnimatedPriceProps {
+  value: string | number;
+  counting?: boolean;
+}
+
+const AnimatedPrice = ({ value, counting = true }: AnimatedPriceProps) => {
   const cleanValue = value.toString().replace(/\.00$/, "");
   const numericValue = parseFloat(cleanValue.replace(/[^0-9.]/g, ""));
   const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
@@ -14,11 +52,11 @@ const AnimatedPrice = ({ value, counting = true }: any) => {
       return;
     }
 
-    let startTime: any;
+    let startTime: number | undefined;
     const duration = 600;
     const startValue = 0;
 
-    const animate = (time: any) => {
+    const animate = (time: number) => {
       if (!startTime) startTime = time;
       const progress = Math.min((time - startTime) / duration, 1);
       const easeProgress = 1 - Math.pow(1 - progress, 5);
@@ -41,12 +79,12 @@ const AnimatedPrice = ({ value, counting = true }: any) => {
   return <span>{formatted}</span>;
 };
 
-export default function PricingSectionV4({ packages, counting = true, linkComponent: Link = "a" }: any) {
+export default function PricingSectionV4({ packages, counting = true, linkComponent: Link = "a" }: PricingSectionV4Props) {
   const [billingCycle, setBillingCycle] = useState("monthly");
-  const [selectedPlanId, setSelectedPlanId] = useState<any>(null);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | number | null>(null);
 
-  let monthlyPlans: any[] = [];
-  let yearlyPlans: any[] = [];
+  let monthlyPlans: PricingV4Plan[] = [];
+  let yearlyPlans: PricingV4Plan[] = [];
 
   if (Array.isArray(packages)) {
     monthlyPlans = packages.filter((p) => p.billingCycle?.toLowerCase() === "monthly");
@@ -204,7 +242,7 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                 </div>
 
                 <div className="grid grid-cols-2 gap-x-10 gap-y-5 mb-14 relative z-10">
-                  {activePlan.features.map((feature: any, i: number) => (
+                  {activePlan.features?.map((feature: string, i: number) => (
                     <div key={i} className="flex items-center gap-3 border-b border-border pb-3 group/feat transition-colors duration-300">
                       <div className="w-1.5 h-1.5 bg-zinc-300 dark:bg-white/20 group-hover/feat:bg-lime-500 dark:group-hover/feat:bg-[#CCFF00] rounded-full transition-colors shrink-0" />
                       <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground dark:group-hover/feat:text-white transition-colors">
@@ -264,7 +302,7 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                       </div>
                       <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-8 relative z-10">{plan.description}</p>
                       <div className="flex flex-col gap-3 mb-8 relative z-10">
-                        {plan.features.map((feature: any, i: number) => (
+                        {plan.features?.map((feature: string, i: number) => (
                           <div key={i} className="flex items-start gap-3 border-b border-border pb-3">
                             <div className="w-1.5 h-1.5 bg-lime-500 dark:bg-[#CCFF00] rounded-full mt-1.5 shrink-0" />
                             <span className="text-sm md:text-base text-foreground">{feature}</span>

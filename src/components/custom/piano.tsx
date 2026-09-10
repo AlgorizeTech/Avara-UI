@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Volume2, VolumeX, Music, RotateCw } from "lucide-react";
 
@@ -59,7 +59,9 @@ export function Piano({
   const getAudioContext = useCallback(() => {
     if (!audioCtxRef.current) {
       const AudioContextClass =
-        window.AudioContext || (window as any).webkitAudioContext;
+        window.AudioContext ||
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
       if (AudioContextClass) {
         audioCtxRef.current = new AudioContextClass();
       }
@@ -153,6 +155,7 @@ export function Piano({
     <article
       className={cn(
         "w-full max-w-5xl p-5 sm:p-8 rounded-3xl bg-zinc-900 border border-zinc-800 shadow-2xl flex flex-col gap-6 text-white select-none transition-all duration-300 origin-center max-sm:rotate-90 max-sm:w-[88vh] max-sm:h-[88vw] max-sm:max-w-none max-sm:my-16",
+        isRotated && "sm:rotate-90 sm:w-[88vh] sm:h-[88vw] sm:max-w-none sm:my-16",
         className
       )}
     >
@@ -233,6 +236,19 @@ export function Piano({
               </button>
             </div>
           </div>
+
+          {/* Rotate Toggle — turns the keyboard sideways on narrow screens */}
+          <button
+            onClick={() => setIsRotated((prev) => !prev)}
+            className={cn(
+              "transition-colors",
+              isRotated ? "text-primary" : "text-zinc-400 hover:text-zinc-200",
+            )}
+            title="Rotate keyboard"
+            aria-pressed={isRotated}
+          >
+            <RotateCw className="size-4" />
+          </button>
         </div>
       </header>
 

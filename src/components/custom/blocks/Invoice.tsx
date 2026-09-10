@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { DollarSign, Heart, Plus, Save, Send, Trash2, CheckCircle2, QrCode, Building2, User, FileText, CreditCard, Sparkles, Printer, ArrowUpRight, Download, Edit3 } from "lucide-react";
+import { Heart, Plus, Save, Send, Trash2, CheckCircle2, QrCode, Building2, Printer, Download, Edit3 } from "lucide-react";
 import { useState } from "react";
 
 // ==========================================
@@ -643,9 +643,9 @@ export default function Invoice({
 
                 <div className="grid grid-cols-[auto,1fr] gap-x-3 sm:gap-x-4 gap-y-2 text-xs sm:text-sm items-center sm:text-right text-left">
                   <span className="text-muted-foreground font-medium">Date Issued:</span>
-                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.dateIssued} onChange={(e: any) => handleMainChange("dateIssued", e.target.value)} align="right" className="text-foreground font-medium" />
+                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.dateIssued} onChange={(e) => handleMainChange("dateIssued", e.target.value)} align="right" className="text-foreground font-medium" />
                   <span className="text-muted-foreground font-medium">Date Due:</span>
-                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.dateDue} onChange={(e: any) => handleMainChange("dateDue", e.target.value)} align="right" className="text-foreground font-medium" />
+                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} align="right" className="text-foreground font-medium" />
                 </div>
               </div>
             </header>
@@ -655,9 +655,9 @@ export default function Invoice({
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3 block">Invoice To</span>
                 <div className="space-y-1.5 text-xs sm:text-sm break-words">
-                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.name} onChange={(e: any) => handleNestedChange("invoiceTo", "name", e.target.value)} placeholder="Name" className="font-semibold text-sm sm:text-base text-foreground mb-2" />
-                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.company} onChange={(e: any) => handleNestedChange("invoiceTo", "company", e.target.value)} placeholder="Company" className="text-muted-foreground" />
-                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.email} onChange={(e: any) => handleNestedChange("invoiceTo", "email", e.target.value)} placeholder="Email" className="text-muted-foreground break-all" />
+                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} placeholder="Name" className="font-semibold text-sm sm:text-base text-foreground mb-2" />
+                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} placeholder="Company" className="text-muted-foreground" />
+                  <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.email} onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)} placeholder="Email" className="text-muted-foreground break-all" />
                 </div>
               </div>
 
@@ -666,7 +666,7 @@ export default function Invoice({
                 <div className={cn("p-3.5 sm:p-4 rounded-lg space-y-2.5 sm:space-y-3 text-xs sm:text-sm", invoiceVariants[variant].blockBg)}>
                   <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-border">
                     <span className="font-medium text-muted-foreground">Total Due:</span>
-                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo.totalDue} onChange={(e: any) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-bold text-base sm:text-lg", theme.text)} />
+                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo.totalDue} onChange={(e) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-bold text-base sm:text-lg", theme.text)} />
                   </div>
                   <div className="grid grid-cols-[75px,1fr] gap-2 items-center">
                     <span className="text-muted-foreground">Bank:</span>

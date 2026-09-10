@@ -4,7 +4,7 @@ A high-impact, scroll-driven interactive section built with full dark/light mode
 
 Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
 
-export const showcaseItems = `const items = [
+export const showcaseItems = `const items: AccordionShowcaseItem[] = [
   {
     id: "landing-page",
     stepNumber: "01",
@@ -63,7 +63,7 @@ export const showcaseItems = `const items = [
   },
 ];`;
 
-export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageDefault = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -73,7 +73,7 @@ export default function ServicesShowcase() {
   );
 }`;
 
-export const usageTextOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageTextOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -83,7 +83,7 @@ export default function TextOnlyShowcase() {
   return ;
 }`;
 
-export const usageImageOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageImageOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -92,7 +92,7 @@ export default function ImageOnlyShowcase() {
   return ;
 }`;
 
-export const usageDefaultIndex = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageDefaultIndex = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 

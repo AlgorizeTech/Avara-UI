@@ -717,7 +717,7 @@ export default function SupportDashboard({
                     onChange={(v) =>
                       setNewTicketForm({
                         ...newTicketForm,
-                        priority: v,
+                        priority: Array.isArray(v) ? (v[0] ?? "") : v,
                       })
                     }
                     color={color}
@@ -1511,7 +1511,9 @@ export default function SupportDashboard({
                               onChange={(v) =>
                                 setTicketProperties((prev) => ({
                                   ...prev,
-                                  [`${selectedTicket.id}-${key}`]: v,
+                                  [`${selectedTicket.id}-${key}`]: Array.isArray(v)
+                                    ? (v[0] ?? "")
+                                    : v,
                                 }))
                               }
                               color={color}

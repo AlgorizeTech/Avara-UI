@@ -152,9 +152,9 @@ export default function BorderedPricing() {
   return ;
 }`;
 
-export const usageBuilder = `import { PricingBuilder } from "@/components/custom/blocks/Pricing";
+export const usageBuilder = `import { PricingBuilder, type PricingBuilderModule } from "@/components/custom/blocks/Pricing";
 
-const modules = [
+const modules: PricingBuilderModule[] = [
   { id: "auth", name: "User Authentication", price: 15 },
   { id: "db", name: "Database Storage", price: 25 },
   { id: "analytics", name: "Advanced Analytics", price: 35 },
@@ -295,9 +295,9 @@ export default function PricingMenu() {
   return ;
 }`;
 
-export const usagePlans = `import PricingPlans from "@/components/custom/blocks/PricingPlans";
+export const usagePlans = `import PricingPlans, { type PricingServiceOption } from "@/components/custom/blocks/PricingPlans";
 
-const services = [
+const services: PricingServiceOption[] = [
   {
     id: "design",
     name: "Design",

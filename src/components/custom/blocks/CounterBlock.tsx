@@ -96,6 +96,36 @@ export const getThemeStyles = (color: string) => {
 // INTERNAL SUB-COMPONENTS
 // ==========================================
 
+/** What every counter variant needs to paint itself. */
+interface CounterBaseProps {
+  /** A row out of the block’s colour table. */
+  theme: Record<string, string>;
+  style?: React.CSSProperties;
+  label?: string;
+}
+
+interface StepperCounterProps extends CounterBaseProps {
+  initialValue: number;
+  min: number;
+  max: number;
+  variant?: CounterVariant;
+}
+
+interface AnimatedCounterProps extends CounterBaseProps {
+  targetValue: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+interface CircularCounterProps extends CounterBaseProps {
+  targetValue: number;
+  suffix?: string;
+}
+
+interface CountdownCounterProps extends CounterBaseProps {
+  targetDate?: string | number | Date;
+}
+
 const StepperCounter = ({
   theme,
   style,
@@ -104,7 +134,7 @@ const StepperCounter = ({
   min,
   max,
   variant,
-}: any) => {
+}: StepperCounterProps) => {
   const [count, setCount] = useState(initialValue);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -286,7 +316,7 @@ const AnimatedCounter = ({
   targetValue,
   prefix,
   suffix,
-}: any) => {
+}: AnimatedCounterProps) => {
   const [displayVal, setDisplayVal] = useState(0);
 
   useEffect(() => {
@@ -320,7 +350,13 @@ const AnimatedCounter = ({
   );
 };
 
-const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
+const CircularCounter = ({
+  theme,
+  style,
+  label,
+  targetValue,
+  suffix,
+}: CircularCounterProps) => {
   const [displayVal, setDisplayVal] = useState(0);
   const circleRef = useRef<SVGCircleElement>(null);
   const size = 160;
@@ -391,7 +427,12 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
   );
 };
 
-const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
+const CountdownCounter = ({
+  theme,
+  style,
+  label,
+  targetDate,
+}: CountdownCounterProps) => {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   useEffect(() => {

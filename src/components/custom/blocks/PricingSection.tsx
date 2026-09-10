@@ -69,17 +69,36 @@ const AnimatedPrice = ({
   );
 };
 
+export interface PricingSectionPlan {
+  id: string | number;
+  name: string;
+  price: string | number;
+  description?: string;
+  features?: string[];
+  isFeatured?: boolean;
+  /** Which toggle the plan belongs to. */
+  type?: "Subscription Based" | "Product Based" | string;
+}
+
+export interface PricingSectionProps {
+  packages?: PricingSectionPlan[];
+  /** Animate prices up from zero on mount. */
+  counting?: boolean;
+  /** Swap in your router link, e.g. `linkComponent={Link}`. */
+  linkComponent?: React.ElementType;
+}
+
 const PricingSection = ({
   packages,
   counting = true,
   linkComponent: Link = "a",
-}: any) => {
+}: PricingSectionProps) => {
   const [pricingMode, setPricingMode] = useState("subscription");
   const containerRef = useRef(null);
 
   const visiblePlans = useMemo(() => {
     return (
-      packages?.filter((plan: any) =>
+      packages?.filter((plan: PricingSectionPlan) =>
         pricingMode === "subscription"
           ? plan.type === "Subscription Based"
           : plan.type === "Product Based",
@@ -144,9 +163,9 @@ const PricingSection = ({
           className="grid max-w-lg grid-cols-1 gap-8 mx-auto lg:max-w-none lg:grid-cols-3 text-left"
         >
           {visiblePlans.length > 0 ? (
-            visiblePlans.map((plan: any, index: number) => {
+            visiblePlans.map((plan: PricingSectionPlan, index: number) => {
               const Icon = getIcon(index);
-              const price = parseFloat(plan.price);
+              const price = parseFloat(String(plan.price));
 
               return (
                 <div
@@ -225,7 +244,7 @@ const PricingSection = ({
                     <div className="mt-8 h-px w-full bg-muted dark:bg-white/10" />
 
                     <ul className="mt-8 space-y-3">
-                      {plan.features?.map((feature: any, i: number) => (
+                      {plan.features?.map((feature: string, i: number) => (
                         <FeatureItem key={`${plan.id}-${i}`} text={feature} />
                       ))}
                     </ul>

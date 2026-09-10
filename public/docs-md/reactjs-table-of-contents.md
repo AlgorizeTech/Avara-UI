@@ -4,7 +4,7 @@ An interactive, responsive **Table of Contents** navigation block engineered to 
 
 Features a real-time scroll-spy, animated Framer Motion section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
 
-export const usageExample = `const previewItems = [
+export const usageExample = `const previewItems: TOCItem[] = [
   {
     id: "overview",
     title: "Overview & Features",

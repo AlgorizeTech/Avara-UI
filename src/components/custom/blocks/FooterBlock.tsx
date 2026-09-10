@@ -102,15 +102,47 @@ const DEFAULT_FOOTER_SECTIONS: FooterLinkSection[] = [
   },
 ];
 
+/**
+ * Per-variant default link columns.
+ *
+ * `sections` overrides these. Each variant keeps its own wording, so the
+ * out-of-the-box look is unchanged when the prop is omitted.
+ */
+const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = {
+  "simple-centered": DEFAULT_FOOTER_SECTIONS,
+  "glass-dock": [
+  { title: "UI Library", links: [{ label: "Globe 3D", href: "#" }, { label: "Hero Showcase", href: "#" }, { label: "Marquee", href: "#" }, { label: "Scroll Stack", href: "#" }] },
+  { title: "Documentation", links: [{ label: "Quickstart", href: "#" }, { label: "Installation", href: "#" }, { label: "Tailwind Setup", href: "#" }, { label: "Changelog", href: "#" }] },
+  { title: "Community", links: [{ label: "GitHub Repo", href: "#" }, { label: "Discord Chat", href: "#" }, { label: "Twitter News", href: "#" }, { label: "YouTube", href: "#" }] },
+  { title: "Company", links: [{ label: "About Team", href: "#" }, { label: "Careers", href: "#" }, { label: "Privacy Policy", href: "#" }, { label: "Security", href: "#" }] },
+  ],
+  "neon-glow-pulse": [
+  { title: "Cyber Blocks", links: [{ label: "3D Animated Globe", href: "#" }, { label: "Hero Showcase", href: "#" }, { label: "Infinite Marquee", href: "#" }, { label: "Scroll Stack", href: "#" }] },
+  { title: "Documentation", links: [{ label: "Quickstart Guide", href: "#" }, { label: "Framework Setup", href: "#" }, { label: "Tailwind v4", href: "#" }, { label: "CLI Reference", href: "#" }] },
+  { title: "Community", links: [{ label: "GitHub Repository", href: "#" }, { label: "Discord Server", href: "#" }, { label: "Twitter Feed", href: "#" }, { label: "YouTube Channel", href: "#" }] },
+  { title: "Trust & Legal", links: [{ label: "About Our Team", href: "#" }, { label: "Careers (Hiring)", href: "#" }, { label: "Privacy Policy", href: "#" }, { label: "Security Overview", href: "#" }] },
+  ],
+  "quantum-particle-beam": [
+  { title: "UI Components", links: [{ label: "Globe 3D", href: "#" }, { label: "Hero Showcase", href: "#" }, { label: "Marquee", href: "#" }, { label: "Scroll Stack", href: "#" }] },
+  { title: "Documentation", links: [{ label: "Quickstart", href: "#" }, { label: "Installation", href: "#" }, { label: "Tailwind Setup", href: "#" }, { label: "Changelog", href: "#" }] },
+  { title: "Community", links: [{ label: "GitHub Repo", href: "#" }, { label: "Discord Chat", href: "#" }, { label: "Twitter News", href: "#" }, { label: "YouTube", href: "#" }] },
+  { title: "Company", links: [{ label: "About Team", href: "#" }, { label: "Careers", href: "#" }, { label: "Privacy Policy", href: "#" }, { label: "Security", href: "#" }] },
+  ],
+};
+
 export function Footer({
   variant = "simple-centered",
   brandName = "Algorize UI",
   logo,
   tagline = "Elevate your web applications with fluid, production-ready animated components.",
-  copyrightText = "© 2026 AlgorizeTech Inc. All rights reserved.",
-  sections = DEFAULT_FOOTER_SECTIONS,
+  copyrightText,
+  sections,
   className,
 }: FooterProps) {
+  const linkSections = sections ?? DEFAULT_SECTIONS_BY_VARIANT[variant];
+  const copyright =
+    copyrightText ??
+    `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
   const BrandLogo = () => (
     <div className="flex items-center gap-2.5 select-none">
       {logo || (
@@ -173,16 +205,18 @@ export function Footer({
           </div>
 
           <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 p-1.5 rounded-2xl bg-muted/40 border border-border max-w-2xl w-full">
-            {["Components", "Documentation", "Templates", "Showcase", "Pricing", "Changelog", "Security", "Privacy"].map((item, idx) => (
-              <a
-                key={idx}
-                href="#"
-                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-background transition-all flex items-center gap-1.5 group"
-              >
-                <ChevronRight className="size-3 text-primary/60 group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
-                <span>{item}</span>
-              </a>
-            ))}
+            {linkSections
+              .flatMap((section) => section.links)
+              .map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.href}
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-background transition-all flex items-center gap-1.5 group"
+                >
+                  <ChevronRight className="size-3 text-primary/60 group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
+                  <span>{link.label}</span>
+                </a>
+              ))}
           </div>
 
           <div className="pt-2">
@@ -196,7 +230,7 @@ export function Footer({
               <span className="text-border">•</span>
               <span>USD ($)</span>
             </div>
-            <span>© {new Date().getFullYear()} {brandName}. All rights reserved.</span>
+            <span>{copyright}</span>
             <div className="flex items-center gap-1">
               <span>Crafted with</span>
               <Heart className="size-3.5 text-rose-500 fill-rose-500" />
@@ -219,20 +253,15 @@ export function Footer({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-border/80 text-xs sm:text-sm">
-              {[
-                { title: "UI Library", links: ["Globe 3D", "Hero Showcase", "Marquee", "Scroll Stack"] },
-                { title: "Documentation", links: ["Quickstart", "Installation", "Tailwind Setup", "Changelog"] },
-                { title: "Community", links: ["GitHub Repo", "Discord Chat", "Twitter News", "YouTube"] },
-                { title: "Company", links: ["About Team", "Careers", "Privacy Policy", "Security"] },
-              ].map((col, idx) => (
+              {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
                   <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
-                        <a href="#" className="hover:text-primary transition-colors flex items-center gap-1.5 group">
+                        <a href={link.href} className="hover:text-primary transition-colors flex items-center gap-1.5 group">
                           <Layers className="size-3 text-primary/70 group-hover:scale-110 transition-transform shrink-0" />
-                          <span>{link}</span>
+                          <span>{link.label}</span>
                         </a>
                       </li>
                     ))}
@@ -243,7 +272,7 @@ export function Footer({
           </div>
 
           <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground text-center sm:text-left">
-            <span>© {new Date().getFullYear()} {brandName}. Glass Dock Edition.</span>
+            <span>{copyright}</span>
             <span>Crafted for high-end modern interfaces.</span>
           </div>
         </div>
@@ -261,20 +290,15 @@ export function Footer({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 text-xs sm:text-sm">
-              {[
-                { title: "Cyber Blocks", links: ["3D Animated Globe", "Hero Showcase", "Infinite Marquee", "Scroll Stack"] },
-                { title: "Documentation", links: ["Quickstart Guide", "Framework Setup", "Tailwind v4", "CLI Reference"] },
-                { title: "Community", links: ["GitHub Repository", "Discord Server", "Twitter Feed", "YouTube Channel"] },
-                { title: "Trust & Legal", links: ["About Our Team", "Careers (Hiring)", "Privacy Policy", "Security Overview"] },
-              ].map((col, idx) => (
+              {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
                   <h4 className="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider text-xs">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
-                        <a href="#" className="hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1.5 group">
+                        <a href={link.href} className="hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1.5 group">
                           <Zap className="size-3 text-purple-500 dark:text-purple-400 group-hover:scale-125 transition-transform shrink-0" />
-                          <span>{link}</span>
+                          <span>{link.label}</span>
                         </a>
                       </li>
                     ))}
@@ -284,7 +308,7 @@ export function Footer({
             </div>
 
             <div className="border-t border-purple-200/80 dark:border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500 text-center sm:text-left">
-              <span>© {new Date().getFullYear()} {brandName}. Cyberpunk Neon Edition.</span>
+              <span>{copyright}</span>
               <SocialLinks />
             </div>
           </div>
@@ -304,20 +328,15 @@ export function Footer({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-6 border-t border-primary/20 text-xs sm:text-sm">
-              {[
-                { title: "UI Components", links: ["Globe 3D", "Hero Showcase", "Marquee", "Scroll Stack"] },
-                { title: "Documentation", links: ["Quickstart", "Installation", "Tailwind Setup", "Changelog"] },
-                { title: "Community", links: ["GitHub Repo", "Discord Chat", "Twitter News", "YouTube"] },
-                { title: "Company", links: ["About Team", "Careers", "Privacy Policy", "Security"] },
-              ].map((col, idx) => (
+              {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
                   <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
-                        <a href="#" className="hover:text-primary transition-colors flex items-center gap-1.5 group">
+                        <a href={link.href} className="hover:text-primary transition-colors flex items-center gap-1.5 group">
                           <Sparkles className="size-3 text-primary/70 group-hover:scale-110 transition-transform shrink-0" />
-                          <span>{link}</span>
+                          <span>{link.label}</span>
                         </a>
                       </li>
                     ))}
@@ -328,7 +347,7 @@ export function Footer({
           </div>
 
           <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground text-center sm:text-left">
-            <span>© {new Date().getFullYear()} {brandName}. Quantum Edition. All rights reserved.</span>
+            <span>{copyright}</span>
             <span>Built for modern web applications.</span>
           </div>
         </div>

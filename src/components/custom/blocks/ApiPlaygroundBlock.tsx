@@ -112,7 +112,7 @@ export interface KeyValuePair {
 export interface ApiResponse {
   status: number;
   timeMs: number;
-  data: any;
+  data: unknown;
 }
 
 /** The request snapshot handed to `mockHandler` when the reader hits Send. */
@@ -337,11 +337,16 @@ export const ApiPlaygroundBlock = forwardRef<
           body,
         });
         setResponse(res);
-      } catch (error: any) {
+      } catch (error) {
         setResponse({
           status: 500,
           timeMs: 0,
-          data: { error: error.message || "Internal Server Error" },
+          data: {
+            error:
+              error instanceof Error && error.message
+                ? error.message
+                : "Internal Server Error",
+          },
         });
       } finally {
         setIsLoading(false);

@@ -2,15 +2,12 @@
 
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
 	ArrowUp,
 	Bookmark,
 	Check,
-	ChevronRight,
-	Copy,
 	ListFilter,
-	Menu,
 	Sparkles,
 	X,
 } from "lucide-react";
@@ -153,14 +150,6 @@ export function TableOfContentsBlock({
 	const [scrollProgress, setScrollProgress] = useState(0);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [copiedId, setCopiedId] = useState<string | null>(null);
-	const [copiedSnippetId, setCopiedSnippetId] = useState<string | null>(null);
-
-	const copyCodeSnippet = (id: string, snippet: string) => {
-		navigator.clipboard.writeText(snippet);
-		setCopiedSnippetId(id);
-		setTimeout(() => setCopiedSnippetId(null), 2000);
-	};
-
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	// Update activeId when prop changes

@@ -546,6 +546,7 @@ export default function RadialOrbitalTimeline({
                     isMobile ? "w-7 h-7" : "w-10 h-10",
                     badgeColor,
                     isExpanded && (isMobile ? "scale-125 ring-2 ring-primary/40 shadow-lg shadow-primary/30 border-white" : "scale-150 ring-4 ring-primary/40 shadow-xl shadow-primary/30 border-white"),
+                    isRelated && !isExpanded && "ring-2 ring-primary/30",
                   )}
                 >
                   <Icon size={isMobile ? 12 : 16} />

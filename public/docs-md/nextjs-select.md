@@ -8,7 +8,7 @@ Explore the different variations of the Select component — each example shows 
 
 export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
 
-const options = [
+const options: SelectOption[] = [
   { label: "Engineering", value: "eng", icon: Code },
   { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },

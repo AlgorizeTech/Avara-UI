@@ -1,13 +1,13 @@
 "use client";
 
-import React, {
+import {
     useState,
     useEffect,
     useCallback,
-    CSSProperties,
     forwardRef,
     useImperativeHandle,
 } from "react";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, RotateCcw, Globe, QrCode, Sparkles } from "lucide-react";
 
@@ -411,6 +411,10 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     transform: `rotateY(${leafRotation}deg)`,
                                     zIndex,
                                     borderRadius: parsedRadius,
+                                    boxShadow:
+                                        shadowIntensity > 0
+                                            ? `0 10px 30px rgba(0, 0, 0, ${shadowIntensity})`
+                                            : "none",
                                 }}
                             >
                                 {/* FRONT FACE */}

@@ -276,6 +276,16 @@ export default function PricingPlans({
   return (
     <section className="w-full bg-background text-foreground py-6 md:py-12 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
       <div className="max-w-6xl mx-auto">
+        <header className="mb-8 sm:mb-12 space-y-2 sm:space-y-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
+            {title}
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground">
+            {subtitle}{" "}
+            <span className={cn("font-semibold", theme.text)}>{highlightText}</span>
+          </p>
+        </header>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
           <div className="space-y-6 sm:space-y-8">
             <div>

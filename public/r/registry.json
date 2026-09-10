@@ -741,6 +741,7 @@
         "data-display"
       ],
       "dependencies": [
+        "geojson",
         "leaflet",
         "react-leaflet"
       ],
@@ -1977,9 +1978,7 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react",
-        "next-themes"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
@@ -3208,7 +3207,8 @@
         "code"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "shiki"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/ui-code-renderer.json"

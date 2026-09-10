@@ -77,7 +77,7 @@ const segments = [
 
 // The legend reuses the block's theme table, so a dot and its segment
 // can never drift apart.
-function LegendDot({ color }) {
+function LegendDot({ color }: { color: string }) {
   const { theme, style } = getThemeStyles(color);
   return (
     

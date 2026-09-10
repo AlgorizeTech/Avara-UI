@@ -2,6 +2,7 @@
 
 import { useState, useEffect, isValidElement, ReactElement } from "react";
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
+import type { BundledLanguage } from "shiki";
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -132,5 +133,7 @@ export function CodeBlock({ children }: CodeBlockProps) {
   if (!rawCode) return null;
 
   // Direct 100% component reuse of CodeBlocks
-  return <CodeBlocks code={rawCode} language={detectedLanguage} />;
+  return (
+    <CodeBlocks code={rawCode} language={detectedLanguage as BundledLanguage} />
+  );
 }

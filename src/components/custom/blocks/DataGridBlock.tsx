@@ -111,7 +111,7 @@ export interface GridColumn {
 }
 
 export interface DataGridBlockProps<
-  T extends Record<string, any> = Record<string, any>,
+  T extends object = Record<string, unknown>,
 > extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   columns: GridColumn[];
   data: T[];
@@ -484,7 +484,7 @@ DataGridBlockImpl.displayName = "DataGridBlock";
  *   <DataGridBlock columns={COLUMNS} data={rows} onChange={setRows} />
  */
 export const DataGridBlock = DataGridBlockImpl as <
-  T extends Record<string, any> = Record<string, any>,
+  T extends object = Record<string, unknown>,
 >(
   props: DataGridBlockProps<T> & React.RefAttributes<HTMLDivElement>,
 ) => React.ReactElement | null;

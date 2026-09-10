@@ -85,7 +85,7 @@ export interface FlowNodeProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
   title: string;
   description?: string;
-  icon?: React.ComponentType<any>;
+  icon?: React.ElementType;
   connectedPaths?: string[];
 }
 

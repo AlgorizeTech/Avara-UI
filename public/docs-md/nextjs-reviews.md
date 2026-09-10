@@ -4,7 +4,7 @@ A high-converting Review / Testimonial website section featuring a 3D WebGL rota
 
 Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
 
-export const sampleReviewsData = `const sampleReviews = [
+export const sampleReviewsData = `const sampleReviews: ReviewItem[] = [
   {
     id: "1",
     name: "Tamar Mendelson",
@@ -87,7 +87,7 @@ export const sampleReviewsData = `const sampleReviews = [
   },
 ];`;
 
-export const usageGlobeMarquee = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+export const usageGlobeMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
 
 ${sampleReviewsData}
 
@@ -97,7 +97,7 @@ export default function GlobeMarqueeDemo() {
   );
 }`;
 
-export const usageStackedCarousel = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+export const usageStackedCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
 
 ${sampleReviewsData}
 
@@ -107,7 +107,7 @@ export default function StackedCarouselDemo() {
   );
 }`;
 
-export const usageVerticalMarquee = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+export const usageVerticalMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
 
 ${sampleReviewsData}
 

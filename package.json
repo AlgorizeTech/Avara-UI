@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tsx ./src/scripts/build-md-files.ts && npm run build:registry && npm run check:frameworks && next build",
+    "build": "tsx ./src/scripts/build-md-files.ts && npm run build:registry && npm run check:frameworks && npm run check:types && next build",
     "build:analyze": "set ANALYZE=true && next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,7 +21,8 @@
     "check:registry": "tsx ./src/scripts/check-registry.ts",
     "check:frameworks": "tsx ./src/scripts/check-frameworks.ts",
     "prepare": "git config core.hooksPath .githooks || true",
-    "verify:registry": "node scripts/verify-registry.mjs"
+    "verify:registry": "node scripts/verify-registry.mjs",
+    "check:types": "tsx ./src/scripts/check-consumer-types.ts"
   },
   "dependencies": {
     "@babel/generator": "^7.28.0",

@@ -4,7 +4,7 @@ A powerful, reusable extension of the standard shadcn/ui accordion. This custom 
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
 
-export const usageData = `const faqItems = [
+export const usageData = `const faqItems: AccordionDataItem[] = [
   {
     value: "getting-started",
     title: "How do I get started?",
@@ -31,7 +31,7 @@ export const usageData = `const faqItems = [
   },
 ];`;
 
-export const usageDefault = `import { Accordion } from "@/components/custom/blocks/Accordion";
+export const usageDefault = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
 
@@ -41,7 +41,7 @@ export default function Faq() {
   );
 }`;
 
-export const usageMultiple = `import { Accordion } from "@/components/custom/blocks/Accordion";
+export const usageMultiple = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
 
@@ -53,7 +53,7 @@ export default function MultiOpenFaq() {
   );
 }`;
 
-export const usageMandatory = `import { Accordion } from "@/components/custom/blocks/Accordion";
+export const usageMandatory = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
 

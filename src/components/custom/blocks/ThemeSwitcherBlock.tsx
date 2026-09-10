@@ -90,10 +90,20 @@ export const ThemeSwitcher = React.forwardRef<
 });
 ThemeSwitcher.displayName = "ThemeSwitcher";
 
+/** What every switcher variant is handed by ThemeSwitcher. */
+interface ThemeSwitcherVariantProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** The selected theme: light | dark | system. */
+  theme?: string;
+  /** What "system" actually resolved to: light | dark. */
+  resolvedTheme?: string;
+  setTheme: (theme: string) => void;
+}
+
 // ==========================================
 // VARIANT: PILL (Segmented Control)
 // ==========================================
-const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, any>(
+const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantProps>(
   ({ theme, setTheme, className, ...props }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const indicatorRef = useRef<HTMLDivElement>(null);
@@ -169,7 +179,7 @@ ThemeSwitcherPill.displayName = "ThemeSwitcherPill";
 // ==========================================
 // VARIANT: ICON (Simple Toggle)
 // ==========================================
-const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, any>(
+const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantProps>(
   ({ resolvedTheme, setTheme, className, ...props }, ref) => {
     const iconRef = useRef<HTMLDivElement>(null);
 
@@ -218,7 +228,7 @@ ThemeSwitcherIcon.displayName = "ThemeSwitcherIcon";
 // ==========================================
 // VARIANT: DROPDOWN (Click to open menu)
 // ==========================================
-const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, any>(
+const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantProps>(
   ({ theme, resolvedTheme, setTheme, className, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);

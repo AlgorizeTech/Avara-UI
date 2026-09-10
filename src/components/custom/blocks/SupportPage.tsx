@@ -492,7 +492,9 @@ export default function SupportPage() {
                                 onChange={(v) =>
                                   setTicketProperties((prev) => ({
                                     ...prev,
-                                    [`${selectedTicket.id}-${key}`]: v,
+                                    [`${selectedTicket.id}-${key}`]: Array.isArray(v)
+                                      ? (v[0] ?? "")
+                                      : v,
                                   }))
                                 }
                                 color="#0070e0"

@@ -4,7 +4,7 @@ An interactive, fluid **Infrastructure Topology** component simulating live data
 
 ## Variations
 
-export const usageDefault = `import InfrastructureTopology, { TopologyNode, MetricItem } from "@/components/custom/infrastructure-topology";
+export const usageDefault = `import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
 
 const customNodes: TopologyNode[] = [
   {

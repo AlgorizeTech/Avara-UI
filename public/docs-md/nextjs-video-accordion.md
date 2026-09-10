@@ -6,7 +6,7 @@ This layout is incredibly useful for portfolio reels, storytelling feature secti
 
 Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
 
-export const accordionPanels = `const panels = [
+export const accordionPanels = `const panels: AccordionPanel[] = [
   {
     id: "ocean",
     title: "Alpine Sanctuary",
@@ -45,7 +45,7 @@ export const accordionPanels = `const panels = [
   },
 ];`;
 
-export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageDefaultActive = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 
@@ -57,7 +57,7 @@ export default function OpenedOnLoad() {
   );
 }`;
 
-export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageShortRail = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 

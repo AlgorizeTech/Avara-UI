@@ -156,12 +156,19 @@ Stepper.displayName = "Stepper";
 // ==========================================
 // GSAP HELPER: STEP ICON POP ANIMATION
 // ==========================================
+interface StepIndicatorContentProps {
+  isCompleted: boolean;
+  isActive: boolean;
+  index: number;
+  icon?: React.ElementType;
+}
+
 const StepIndicatorContent = ({
   isCompleted,
   isActive,
   index,
   icon: Icon,
-}: any) => {
+}: StepIndicatorContentProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

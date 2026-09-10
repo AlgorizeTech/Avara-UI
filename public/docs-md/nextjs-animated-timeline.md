@@ -16,7 +16,7 @@ export const timelineEvents = `import {
   Zap,
 } from "lucide-react";
 
-const EVENTS = [
+const EVENTS: AnimatedTimelineItem[] = [
   {
     id: "1",
     title: "Project Initiation",
@@ -71,7 +71,7 @@ const EVENTS = [
   },
 ];`;
 
-export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageDefault = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -81,7 +81,7 @@ export default function CompanyHistory() {
   );
 }`;
 
-export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageLeft = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -93,7 +93,7 @@ export default function LeftTimeline() {
   );
 }`;
 
-export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageRight = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -103,7 +103,7 @@ export default function RightTimeline() {
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageFadeUp = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -113,7 +113,7 @@ export default function FadeUpTimeline() {
   );
 }`;
 
-export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageZoom = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -123,7 +123,7 @@ export default function ZoomTimeline() {
   );
 }`;
 
-export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageBlur = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 

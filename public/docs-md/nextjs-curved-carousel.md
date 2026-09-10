@@ -4,9 +4,9 @@ An interactive, 100% full-width 3D curved arc carousel featuring left-to-right o
 
 `CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
 
-export const usageArcSweep = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
+const customItems: CurvedCarouselCard[] = [
   { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
   { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
   { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
@@ -16,9 +16,9 @@ export default function CurvedCarouselDemo() {
   return ;
 }`;
 
-export const usageInfiniteMarquee = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
+const customItems: CurvedCarouselCard[] = [
   { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
   { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
   { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },

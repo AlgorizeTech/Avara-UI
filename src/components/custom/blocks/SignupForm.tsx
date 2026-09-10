@@ -119,13 +119,21 @@ PremiumInput.displayName = "PremiumInput";
 // ==========================================
 // PREMIUM CHECKBOX
 // ==========================================
+interface PremiumCheckboxProps {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label: React.ReactNode;
+  error?: string;
+  required?: boolean;
+}
+
 const PremiumCheckbox = ({
   checked,
   onChange,
   label,
   error,
   required,
-}: any) => {
+}: PremiumCheckboxProps) => {
   return (
     <div className="flex flex-col gap-1">
       <label className="flex items-start gap-3 cursor-pointer group">

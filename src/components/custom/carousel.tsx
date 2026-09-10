@@ -974,6 +974,47 @@ export function FanCarousel({
           <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-zinc-400/90 shadow-inner" />
         </div>
       </div>
+
+      {showArrows && (
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={prevSlide}
+            aria-label="Previous slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={nextSlide}
+            aria-label="Next slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {showDots && (
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          {displayItems.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={positiveModulo(current, total) === index}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                positiveModulo(current, total) === index
+                  ? "w-6 bg-zinc-900 dark:bg-zinc-200"
+                  : "w-2 bg-zinc-400/60 dark:bg-zinc-600",
+              )}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -1041,7 +1082,7 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
 
     if (!progressRef.current) return;
 
-    const progressTween: any = gsap.fromTo(
+    const progressTween = gsap.fromTo(
       progressRef.current,
       { width: "0%" },
       {
@@ -1228,34 +1269,39 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
 
 export type CarouselVariant = "image" | "hero" | "thumbnails" | "radial" | "glass" | "fluid";
 
-export type CarouselComponentProps = {
-  variant?: CarouselVariant;
-  images?: ImgSrc[];
-  slides?: any[];
-  items?: any[];
-  className?: string;
-  [key: string]: any;
-};
+/**
+ * Discriminated on `variant`, so each one takes exactly the props its
+ * carousel takes. The old shape accepted `any[]` for `slides`/`items` plus a
+ * catch-all index signature, which meant nothing you passed was checked and
+ * a slide array meant for one variant compiled fine against another.
+ */
+export type CarouselComponentProps =
+  | ({ variant?: "image"; className?: string } & Omit<
+      ImageCarouselProps,
+      "rootClassName"
+    >)
+  | ({ variant: "hero" } & HeroCarouselProps)
+  | ({ variant: "thumbnails" } & CustomCarouselProps)
+  | ({ variant: "radial" } & RadialCarouselProps)
+  | ({ variant: "glass" | "fluid" } & FluidGlassSliderProps);
 
-export default function Carousel({
-  variant = "image",
-  images,
-  slides,
-  items,
-  className,
-  ...props
-}: CarouselComponentProps) {
-  if (variant === "glass" || variant === "fluid") {
-    return <FluidGlassSlider slides={slides} className={className} {...props} />;
+export default function Carousel(props: CarouselComponentProps) {
+  if (props.variant === "glass" || props.variant === "fluid") {
+    const { variant: _variant, ...rest } = props;
+    return <FluidGlassSlider {...rest} />;
   }
-  if (variant === "hero") {
-    return <HeroCarousel slides={slides || items || []} className={className} {...props} />;
+  if (props.variant === "hero") {
+    const { variant: _variant, ...rest } = props;
+    return <HeroCarousel {...rest} />;
   }
-  if (variant === "thumbnails") {
-    return <CustomCarousel items={items || slides || []} className={className} {...props} />;
+  if (props.variant === "thumbnails") {
+    const { variant: _variant, ...rest } = props;
+    return <CustomCarousel {...rest} />;
   }
-  if (variant === "radial") {
-    return <RadialCarousel items={items || slides || []} className={className} {...props} />;
+  if (props.variant === "radial") {
+    const { variant: _variant, ...rest } = props;
+    return <RadialCarousel {...rest} />;
   }
-  return <ImageCarousel images={images || []} rootClassName={className} {...props} />;
+  const { variant: _variant, className, ...rest } = props;
+  return <ImageCarousel rootClassName={className} {...rest} />;
 }

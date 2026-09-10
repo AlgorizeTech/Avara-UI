@@ -28,12 +28,15 @@ export interface ScrollAccordionShowcaseProps
 }
 
 function hexToRgba(hex: string, alpha: number): string {
-  let c: any;
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
-    if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-    c = "0x" + c.join("");
-    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",")},${alpha})`;
+    let digits = hex.substring(1);
+    if (digits.length === 3)
+      digits = digits
+        .split("")
+        .map((d) => d + d)
+        .join("");
+    const packed = parseInt(digits, 16);
+    return `rgba(${(packed >> 16) & 255},${(packed >> 8) & 255},${packed & 255},${alpha})`;
   }
   return hex;
 }
@@ -269,7 +272,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
       const interval = setInterval(updateEngine, 100);
 
       return () => {
-        targetScroller.removeEventListener("scroll", handleScroll as any);
+        targetScroller.removeEventListener("scroll", handleScroll);
         window.removeEventListener("resize", handleScroll);
         cancelAnimationFrame(rafId);
         clearInterval(interval);

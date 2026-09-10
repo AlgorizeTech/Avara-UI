@@ -14,7 +14,6 @@ import {
   Minus,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   X,
   ZoomIn,
 } from "lucide-react";
@@ -99,6 +98,19 @@ export function ProductDetails({
   const sizeScales = ["scale-100", "scale-105", "scale-110", "scale-115", "scale-120"];
   const sizeScaleClass = sizeScales[sizeIndex % sizeScales.length] || "scale-110";
 
+  /** Five stars, filled up to `rating`. */
+  const Stars = ({ className }: { className?: string }) => (
+    <div className="flex text-amber-400 shrink-0">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star
+          key={i}
+          className={cn(className, i < Math.round(rating) && "fill-amber-400")}
+        />
+      ))}
+    </div>
+  );
+  const reviews = reviewsCount.toLocaleString();
+
   return (
     <section className={cn("w-full bg-background text-foreground transition-colors py-10 sm:py-20 px-4 sm:px-6 overflow-hidden", className)}>
       {/* 1. MODERN SPLIT GALLERY */}
@@ -162,9 +174,10 @@ export function ProductDetails({
             <div className="lg:col-span-5 space-y-6">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex text-amber-400 shrink-0"><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /></div>
-                  <span className="text-xs font-bold text-foreground shrink-0">4.9</span>
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">(3,150 Verified Runner Reviews)</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
+                  <Stars className="size-4" />
+                  <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
                 <h1 className="text-3xl font-extrabold tracking-tight text-foreground">{title || "Nike Air Max 270 React Sneakers"}</h1>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
@@ -253,7 +266,7 @@ export function ProductDetails({
             )}
             {activeTab === "reviews" && (
               <div className="p-4 rounded-2xl bg-card border border-border text-xs text-muted-foreground space-y-1 font-medium">
-                <p className="font-bold text-foreground">4.9 out of 5 stars (3,150 Verified Reviews)</p>
+                <p className="font-bold text-foreground">{rating} out of 5 stars ({reviews} Verified Reviews)</p>
                 <p>"Super comfortable for all-day walking and running. True to size!" - Marcus L.</p>
               </div>
             )}
@@ -303,10 +316,10 @@ export function ProductDetails({
               <div className="lg:col-span-6 space-y-6">
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">Best Seller</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
                     <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-                      <div className="flex text-amber-400 shrink-0"><Star className="size-3.5 fill-amber-400" /><Star className="size-3.5 fill-amber-400" /><Star className="size-3.5 fill-amber-400" /><Star className="size-3.5 fill-amber-400" /><Star className="size-3.5 fill-amber-400" /></div>
-                      <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">4.9 (3,150 Reviews)</span>
+                      <Stars className="size-3.5" />
+                      <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
                     </div>
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{title || "Adidas Ultraboost Light Running Shoes"}</h1>
@@ -400,7 +413,7 @@ export function ProductDetails({
 
               <div className="relative z-20 space-y-3 max-w-xl pointer-events-none">
                 <div className="flex items-center gap-2 text-amber-300 text-xs font-bold drop-shadow">
-                  <Star className="size-4 fill-amber-300" /> 4.9 Rating (3,150 Verified Runner Reviews)
+                  <Star className="size-4 fill-amber-300 fill-amber-300" /> {rating} Rating ({reviews} Verified Runner Reviews)
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">{title || "Air Jordan 1 Retro High OG Vintage"}</h1>
                 <p className="text-xs sm:text-sm text-slate-100/90 line-clamp-2 drop-shadow">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
@@ -509,9 +522,10 @@ export function ProductDetails({
             <div className="lg:col-span-5 space-y-6">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex text-amber-400 shrink-0"><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /><Star className="size-4 fill-amber-400" /></div>
-                  <span className="text-xs font-bold text-foreground shrink-0">4.9</span>
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">(3,150 Verified Runner Reviews)</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
+                  <Stars className="size-4" />
+                  <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
                 <h1 className="text-3xl font-extrabold tracking-tight text-foreground">{title || "Nike Air Max 270 React Sneakers"}</h1>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
@@ -600,7 +614,7 @@ export function ProductDetails({
             )}
             {activeTab === "reviews" && (
               <div className="p-4 rounded-2xl bg-card border border-border text-xs text-muted-foreground space-y-1 font-medium">
-                <p className="font-bold text-foreground">4.9 out of 5 stars (3,150 Verified Reviews)</p>
+                <p className="font-bold text-foreground">{rating} out of 5 stars ({reviews} Verified Reviews)</p>
                 <p>"Super comfortable for all-day walking and running. True to size!" - Marcus L.</p>
               </div>
             )}

@@ -6,7 +6,7 @@ Features a real-time scroll-spy, animated Framer Motion section indicator, scrol
 
 export const usageExample = `"use client";
 
-const previewItems = [
+const previewItems: TOCItem[] = [
   {
     id: "overview",
     title: "Overview & Features",

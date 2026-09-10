@@ -4,7 +4,7 @@ A premium 3D carousel with a fanned layout, smooth interactive animations, and a
 
 Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck.
 
-export const carouselItems = `const items = [
+export const carouselItems = `const items: CarouselItem[] = [
   {
     id: "c1",
     category: "Nature",
@@ -52,7 +52,7 @@ export const carouselItems = `const items = [
   },
 ];`;
 
-export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+export const usageDefault = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
 ${carouselItems}
 
@@ -60,7 +60,7 @@ export default function ProductShowcase() {
   return ;
 }`;
 
-export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+export const usageShortDeck = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
 ${carouselItems}
 

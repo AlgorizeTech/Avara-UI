@@ -102,18 +102,46 @@ function useToggleGroup() {
 // ==========================================
 // GROUP COMPONENT
 // ==========================================
-export interface ToggleGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  type?: ToggleGroupType;
-  value?: string | string[];
-  defaultValue?: string | string[];
-  onValueChange?: (value: any) => void;
+/** Everything both selection modes share. */
+interface ToggleGroupBaseProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   variant?: ToggleGroupVariant;
   color?: ToggleGroupColor;
   size?: ToggleGroupSize;
   disabled?: boolean;
 }
 
-export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
+/** The default: one item pressed at a time, so the value is a string. */
+export interface ToggleGroupSingleProps extends ToggleGroupBaseProps {
+  type?: "single";
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+}
+
+/** `type="multiple"` — value and callback both deal in arrays. */
+export interface ToggleGroupMultipleProps extends ToggleGroupBaseProps {
+  type: "multiple";
+  value?: string[];
+  defaultValue?: string[];
+  onValueChange?: (value: string[]) => void;
+}
+
+/**
+ * Discriminated on `type`, so a single group hands your callback a `string`
+ * and a multiple group hands it a `string[]`, with no cast either way.
+ */
+export type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
+
+/** The two modes collapsed, which is what the implementation works with. */
+type ToggleGroupImplProps = ToggleGroupBaseProps & {
+  type?: ToggleGroupType;
+  value?: string | string[];
+  defaultValue?: string | string[];
+  onValueChange?: (value: string | string[]) => void;
+};
+
+const ToggleGroupImpl = forwardRef<HTMLDivElement, ToggleGroupImplProps>(
   (
     {
       type = "single",
@@ -174,7 +202,15 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
     );
   },
 );
-ToggleGroup.displayName = "ToggleGroup";
+ToggleGroupImpl.displayName = "ToggleGroup";
+
+/**
+ * The implementation is written against the collapsed props; this cast is
+ * what hands callers the discriminated pair instead.
+ */
+export const ToggleGroup = ToggleGroupImpl as React.ForwardRefExoticComponent<
+  ToggleGroupProps & React.RefAttributes<HTMLDivElement>
+>;
 
 // ==========================================
 // ITEM COMPONENT

@@ -113,10 +113,9 @@ const getClippingRect = (el: HTMLElement): DOMRect | null => {
   return null;
 };
 
-export interface SelectBlockProps {
+/** Everything the two selection modes share. */
+interface SelectBlockBaseProps {
   options: SelectOption[];
-  value?: string | string[]; // Added string[] for MultiSelect
-  onChange?: (value: any) => void;
   placeholder?: string;
   variant?: SelectVariant;
   color?: SelectColor;
@@ -127,11 +126,39 @@ export interface SelectBlockProps {
   icon?: React.ReactNode;
   disabled?: boolean;
   className?: string;
-  multiple?: boolean; // NEW: Toggle MultiSelect
-  searchable?: boolean; // NEW: Toggle Search bar
+  /** Adds a filter box above the options. */
+  searchable?: boolean;
 }
 
-export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
+/** The default: one option at a time, so the value is a plain string. */
+export interface SelectBlockSingleProps extends SelectBlockBaseProps {
+  multiple?: false;
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+/** `multiple` — value and callback both deal in arrays. */
+export interface SelectBlockMultipleProps extends SelectBlockBaseProps {
+  multiple: true;
+  value?: string[];
+  onChange?: (value: string[]) => void;
+}
+
+/**
+ * Discriminated on `multiple`, so a single select hands your callback a
+ * `string` and a multi select hands it a `string[]` — neither needs a cast,
+ * and passing a `setState` straight in just works.
+ */
+export type SelectBlockProps = SelectBlockSingleProps | SelectBlockMultipleProps;
+
+/** The two modes collapsed, which is what the implementation works with. */
+type SelectBlockImplProps = SelectBlockBaseProps & {
+  multiple?: boolean;
+  value?: string | string[];
+  onChange?: (value: string | string[]) => void;
+};
+
+const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
   (
     {
       options = [],
@@ -497,7 +524,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                   onClick={(e) => e.stopPropagation()}
                   placeholder="Search options..."
                   className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground outline-none focus:ring-2 focus:border-transparent transition-all"
-                  style={{ "--tw-ring-color": `var(--theme-color)` } as any}
+                  style={{ "--tw-ring-color": `var(--theme-color)` } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -593,4 +620,12 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
     );
   },
 );
-SelectBlock.displayName = "SelectBlock";
+SelectBlockImpl.displayName = "SelectBlock";
+
+/**
+ * The implementation is written against the collapsed props; this cast is
+ * what hands callers the discriminated pair instead.
+ */
+export const SelectBlock = SelectBlockImpl as React.ForwardRefExoticComponent<
+  SelectBlockProps & React.RefAttributes<HTMLDivElement>
+>;

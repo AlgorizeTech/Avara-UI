@@ -113,26 +113,23 @@ export function Accordion({
 
   const styles = getVariantStyles();
 
-  const getDefaultValue = () => {
-    if (type === "multiple") {
-      if (Array.isArray(defaultValue)) return defaultValue;
-      if (defaultValue) return [defaultValue as string];
-      return [];
-    }
-    return defaultValue;
-  };
+  /** Radix wants an array here when `type` is "multiple". */
+  const multipleDefault = Array.isArray(defaultValue)
+    ? defaultValue
+    : defaultValue
+      ? [defaultValue]
+      : [];
+  /** ...and a single string otherwise. */
+  const singleDefault = Array.isArray(defaultValue)
+    ? defaultValue[0]
+    : (defaultValue ?? undefined);
 
   const ResolvedExpandIcon =
     typeof expandIcon === "string" ? ICON_MAP[expandIcon] : null;
 
-  return (
-    <ShadCNAccordion
-      type={type}
-      {...(type === "single" ? { collapsible } : {})}
-      className={cn("w-full", styles.container, className)}
-      defaultValue={getDefaultValue() as any}
-    >
-      {accordionData.map((item) => {
+  const shellClassName = cn("w-full", styles.container, className);
+
+  const items = accordionData.map((item) => {
         const ItemIcon =
           typeof item.icon === "string" ? ICON_MAP[item.icon] : null;
         return (
@@ -187,8 +184,29 @@ export function Accordion({
               </div>
             </AccordionContent>
           </AccordionItem>
-        );
-      })}
+    );
+  });
+
+  if (type === "multiple") {
+    return (
+      <ShadCNAccordion
+        type="multiple"
+        className={shellClassName}
+        defaultValue={multipleDefault}
+      >
+        {items}
+      </ShadCNAccordion>
+    );
+  }
+
+  return (
+    <ShadCNAccordion
+      type="single"
+      collapsible={collapsible}
+      className={shellClassName}
+      defaultValue={singleDefault}
+    >
+      {items}
     </ShadCNAccordion>
   );
 }

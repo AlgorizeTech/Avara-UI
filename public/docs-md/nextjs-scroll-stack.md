@@ -6,7 +6,7 @@ Four independent scroll-driven layouts share this page, each with its own block 
 
 ## Simple stack
 
-export const stackItems = `const items = [
+export const stackItems = `const items: StackItem[] = [
   {
     id: "1",
     title: "Real-time Synchronization",
@@ -113,7 +113,7 @@ export const stackItems = `const items = [
   },
 ];`;
 
-export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+export const usageSimpleGap = `import { ScrollStack, type StackItem } from "@/components/custom/blocks/ScrollStackBlock";
 
 ${stackItems}
 
