@@ -308,13 +308,13 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ref={ref}
           style={customStyle}
           className={cn(
-            "relative w-full min-h-[720px] lg:min-h-[860px] overflow-hidden py-12 lg:py-0 bg-background text-foreground flex items-center select-none",
+            "relative w-full min-h-fit overflow-hidden py-12 lg:py-16 bg-background text-foreground flex flex-col lg:flex-row lg:items-center select-none gap-10 lg:gap-0",
             className
           )}
           {...props}
         >
-          {/* BACKGROUND RIGHT 50% HALF-SCREEN MASONRY IMAGE WALL GRID */}
-          <div className="absolute -top-28 -bottom-28 left-1/2 right-0 w-[50vw] overflow-hidden pointer-events-none z-0">
+          {/* IMAGE WALL GRID: BELOW TEXT ON SMALL SCREENS, RIGHT 50% SIDEBAR ON DESKTOP */}
+          <div className="relative lg:absolute w-full h-[400px] sm:h-[480px] lg:h-full lg:inset-y-0 lg:left-1/2 lg:right-0 lg:w-[50vw] overflow-hidden pointer-events-none z-0 order-2 lg:order-1">
             {/* Flex Columns Container: Fixed 300px Card Widths across ALL screens, exact 14px gap */}
             <div className="w-full h-full flex flex-row gap-[14px] p-0 overflow-hidden">
               
@@ -462,7 +462,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           </div>
 
           {/* FOREGROUND CONTENT (LEFT COLUMN) */}
-          <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full order-1 lg:order-2">
             <div className="max-w-2xl flex flex-col items-start text-left space-y-6">
               
               {/* Top Changelog Badge */}
@@ -478,9 +478,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-foreground">
-                {titlePrefix || "The React component library for"}{" "}
+                The React component library for{" "}
                 <span className="text-[var(--hero-accent-text)]">
-                  {titleSuffix || "beautiful landing pages."}
+                  beautiful landing pages.
                 </span>
               </h1>
 
