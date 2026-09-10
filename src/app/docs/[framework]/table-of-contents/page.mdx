@@ -123,3 +123,119 @@ export default function TableOfContentsDemo() {
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
   </div>
 </div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Object</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>items</code></td>
+        <td><code>TOCItem[]</code></td>
+        <td><code>DEFAULT_ITEMS</code></td>
+        <td>Array of section content blocks with titles, levels, descriptions, and optional code snippets.</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>headings</code></td>
+        <td><code>TOCHeading[]</code></td>
+        <td>Derived from <code>items</code></td>
+        <td>Custom outline structure containing <code>id</code>, <code>title</code>, and <code>level</code> (1 | 2 | 3).</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>activeId</code></td>
+        <td><code>string</code></td>
+        <td>Controlled by scroll-spy</td>
+        <td>Manually override the currently highlighted active section ID.</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>onSelectHeading</code></td>
+        <td><code>(id: string) =&gt; void</code></td>
+        <td>Smooth scroll to target</td>
+        <td>Callback fired when a user clicks on a section heading in the TOC sidebar.</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"var(--primary)"</code></td>
+        <td>Accent theme color for active indicator, progress bar, and search highlights (Hex, RGB, or CSS var).</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>showProgress</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Shows or hides the top reading progress indicator bar.</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>showSearch</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Shows or hides the inline section search filter input inside the sidebar.</td>
+      </tr>
+      <tr>
+        <td><code>TableOfContentsBlock</code></td>
+        <td><code>sidebarTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"On this page"</code></td>
+        <td>Header text displayed at the top of the sticky TOC sidebar.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code> / <code>TOCHeading</code></td>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique DOM element ID matching the section heading target.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code> / <code>TOCHeading</code></td>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Display title shown in the TOC sidebar and main content section.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code> / <code>TOCHeading</code></td>
+        <td><code>level</code></td>
+        <td><code>1 | 2 | 3</code></td>
+        <td><code>1</code></td>
+        <td>Indentation hierarchy level for sub-sections.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code></td>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Body paragraph content associated with the section.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code></td>
+        <td><code>codeSnippet</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Code snippet displayed inside the section card with a copy-to-clipboard button.</td>
+      </tr>
+      <tr>
+        <td><code>TOCItem</code></td>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Badge label shown next to the section title (e.g., "New", "Updated").</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

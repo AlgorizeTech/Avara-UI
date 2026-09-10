@@ -167,7 +167,7 @@ export default function AdvancedTableDemo({
   return (
     <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl p-0 m-0 relative">
       <DataTable
-        key={`${searchable}-${selectable}-${example}`}
+        key={`${searchable}-${selectable}-${example}-${color}`}
         data={data}
         getRowId={(row) => row.id}
         color={color as TableColor}
@@ -268,13 +268,13 @@ export default function AdvancedTableDemo({
                     onClick={() =>
                       console.log("Exporting", selectedIds.length, "rows")
                     }
-                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
                   >
                     Export CSV
                   </button>
                   <button
                     onClick={clearSelection}
-                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors"
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
                   >
                     Clear
                   </button>
@@ -283,7 +283,7 @@ export default function AdvancedTableDemo({
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleOpenEditModal(selectedIds)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-primary-foreground/15 hover:bg-primary-foreground/25 transition-colors whitespace-nowrap active:scale-95"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Edit2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Edit</span>
@@ -293,7 +293,7 @@ export default function AdvancedTableDemo({
                       handleBatchDelete(selectedIds);
                       clearSelection();
                     }}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-rose-500/80 text-white hover:bg-rose-600 transition-colors whitespace-nowrap active:scale-95"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-black/20 hover:bg-black/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Trash2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Delete</span>

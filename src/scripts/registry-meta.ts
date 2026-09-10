@@ -85,6 +85,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed.",
   },
   card: {
+    usageDependencies: ["product-card"],
     description:
       "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
     categories: ["layout"],
@@ -445,12 +446,6 @@ export const META: Record<string, ItemMeta> = {
       "Concentric rings of avatar nodes around a centre node, with a staggered entrance. Use it for community, integration and social-proof sections.",
     categories: ["data-display", "marketing"],
     docs: "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
-  },
-  globe: {
-    description:
-      "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
-    categories: ["data-display", "marketing", "maps"],
-    docs: "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color.",
   },
   footer: {
     description:

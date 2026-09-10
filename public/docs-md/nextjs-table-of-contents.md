@@ -75,6 +75,98 @@ export default function TableOfContentsDemo() {
     Mobile Dropdown Menu
     Collapses into a sticky mobile bar with drawer navigation on smaller devices.
 
+## Props Reference
+
+        Component / Object
+        Prop
+        Type
+        Default
+        Description
+
+        TableOfContentsBlock
+        items
+        TOCItem[]
+        DEFAULT_ITEMS
+        Array of section content blocks with titles, levels, descriptions, and optional code snippets.
+
+        TableOfContentsBlock
+        headings
+        TOCHeading[]
+        Derived from items
+        Custom outline structure containing id, title, and level (1 | 2 | 3).
+
+        TableOfContentsBlock
+        activeId
+        string
+        Controlled by scroll-spy
+        Manually override the currently highlighted active section ID.
+
+        TableOfContentsBlock
+        onSelectHeading
+        (id: string) =&gt; void
+        Smooth scroll to target
+        Callback fired when a user clicks on a section heading in the TOC sidebar.
+
+        TableOfContentsBlock
+        color
+        string
+        "var(--primary)"
+        Accent theme color for active indicator, progress bar, and search highlights (Hex, RGB, or CSS var).
+
+        TableOfContentsBlock
+        showProgress
+        boolean
+        true
+        Shows or hides the top reading progress indicator bar.
+
+        TableOfContentsBlock
+        showSearch
+        boolean
+        true
+        Shows or hides the inline section search filter input inside the sidebar.
+
+        TableOfContentsBlock
+        sidebarTitle
+        string
+        "On this page"
+        Header text displayed at the top of the sticky TOC sidebar.
+
+        TOCItem / TOCHeading
+        id
+        string
+        Required
+        Unique DOM element ID matching the section heading target.
+
+        TOCItem / TOCHeading
+        title
+        string
+        Required
+        Display title shown in the TOC sidebar and main content section.
+
+        TOCItem / TOCHeading
+        level
+        1 | 2 | 3
+        1
+        Indentation hierarchy level for sub-sections.
+
+        TOCItem
+        description
+        string
+        —
+        Body paragraph content associated with the section.
+
+        TOCItem
+        codeSnippet
+        string
+        —
+        Code snippet displayed inside the section card with a copy-to-clipboard button.
+
+        TOCItem
+        badge
+        string
+        —
+        Badge label shown next to the section title (e.g., "New", "Updated").
+
 ---
 
 **Component Path:** `[framework]\table-of-contents\page.mdx`

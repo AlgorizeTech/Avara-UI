@@ -42,6 +42,14 @@ export default function Page() {
   );
 }`;
 
+export const usageComponentWall = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function ComponentWallHeroDemo() {
+  return (
+    
+  );
+}`;
+
 ## Props Reference
 
         Prop

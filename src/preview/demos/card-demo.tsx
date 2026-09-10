@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
-import { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+import { ProductCard, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 import { cn } from "@/lib/utils";
 import {
   Bell,
@@ -221,7 +221,7 @@ export default function CardDemo({
                   "bg-zinc-900 border-zinc-700|bg-gradient-to-br from-zinc-500/15 via-zinc-400/10 to-zinc-500/5 dark:from-zinc-800/30 dark:to-zinc-900 border-zinc-500/30",
               },
             ]}
-            onColorChange={(col) => setSneakerBg(col.value.split("|")[1])}
+            onColorChange={(col: ProductColorOption) => setSneakerBg(col.value.split("|")[1])}
             onQuickView={() => {}}
             onFavoriteToggle={(liked) => console.log("Liked Sneakers:", liked)}
             interactive={interactive}
@@ -263,7 +263,7 @@ export default function CardDemo({
                   "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
               },
             ]}
-            onColorChange={(col) => setWatchBg(col.value.split("|")[1])}
+            onColorChange={(col: ProductColorOption) => setWatchBg(col.value.split("|")[1])}
             onBuyNow={() => {}}
             interactive={interactive}
           />

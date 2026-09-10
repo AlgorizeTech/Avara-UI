@@ -130,3 +130,105 @@ Discover the Item component's structural layout features, designed for lists, dr
     <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>-</code>
+        </td>
+        <td>The primary title text or element displayed in the item block (required).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Secondary description text or content displayed below the title.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>media</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Visual media element such as an icon, avatar, or thumbnail.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>actions</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Action elements like buttons or icons placed on the trailing edge or bottom.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "compact" | "card" | "bordered"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Applies structural layout and visual styling variant.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>() => void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Optional click event handler. Transforms the container into an interactive button.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Additional CSS class names to apply custom styles.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

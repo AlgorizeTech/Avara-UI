@@ -37,14 +37,8 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/table.json",
-        "utils"
-      ],
+      "dependencies": [],
+      "registryDependencies": [],
       "files": [
         {
           "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",
@@ -337,6 +331,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/product-card.json",
         "utils"
       ],
       "files": [
@@ -1121,12 +1116,8 @@
       "type": "registry:component",
       "title": "Globe",
       "author": "AlgorizeTech",
-      "description": "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
-      "categories": [
-        "data-display",
-        "marketing",
-        "maps"
-      ],
+      "description": "TODO: describe globe. Generated placeholder.",
+      "categories": [],
       "dependencies": [],
       "registryDependencies": [
         "utils"
@@ -1137,8 +1128,7 @@
           "type": "registry:component",
           "target": "components/custom/blocks/GlobeBlock.tsx"
         }
-      ],
-      "docs": "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color."
+      ]
     },
     {
       "name": "half-stars",
@@ -2787,6 +2777,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
         "utils"
       ],
       "files": [

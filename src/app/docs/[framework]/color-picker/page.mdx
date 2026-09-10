@@ -21,15 +21,23 @@ export default function ColorWheelStudioDemo() {
       onChange={setColor}
       variant="standalone"
       showShades={true}
-      showHarmonies={true}
     />
   );
 }`;
 
 export const usageGradient = `import { ColorPicker } from "@/components/custom/color-picker";
+import { useState } from "react";
 
 export default function GradientStudioDemo() {
-  return <ColorPicker variant="gradient" />;
+  const [gradient, setGradient] = useState("linear-gradient(135deg, #8b5cf6, #ec4899)");
+
+  return (
+    <ColorPicker
+      variant="gradient"
+      value={gradient}
+      onChange={setGradient}
+    />
+  );
 }`;
 
 <ExampleShowcase
