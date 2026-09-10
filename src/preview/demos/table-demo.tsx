@@ -1,22 +1,7 @@
 "use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContent,
-  TableEmpty,
-  TableExpandToggle,
-  TableExpandedRow,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableHeading,
-  TableRow,
-  TableRowActions,
-  type TableSize,
-  type TableVariant,
-} from "@/components/custom/blocks/TableBlock";
+import { Table, TableBody, TableCell, TableContent, TableEmpty, TableExpandToggle, TableExpandedRow, TableFooter, TableHead, TableHeader, TableHeading, TableRow, TableRowActions } from "@/components/custom/blocks/TableBlock";
+import { type TableSize, type TableVariant } from "@/components/custom/blocks/table-core";
 import { ChevronLeft, ChevronRight, Edit2, Trash2 } from "lucide-react";
 import React, { useMemo, useState } from "react";
 

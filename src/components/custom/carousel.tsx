@@ -147,15 +147,12 @@ export type HeroCarouselProps = {
   textContainerClassName?: string;
   titleClassName?: string;
   descriptionClassName?: string;
-  arrowContainerClassName?: string;
-  arrowClassName?: string;
   slideContainerClassName?: string;
   slideClassName?: string;
   autoPlay?: boolean;
   autoPlayInterval?: number;
   transitionDuration?: number;
   transitionEasing?: string;
-  slideTransform?: number;
   imageWidth?: number;
   imageHeight?: number;
   /**
@@ -172,15 +169,12 @@ export function HeroCarousel({
   textContainerClassName = "absolute max-lg:top-12 max-lg:pl-[15px] left-0 w-full lg:w-1/2 rounded-lg px-4 text-white drop-shadow-lg z-40",
   titleClassName = "mb-3 text-xl font-bold sm:text-2xl lg:text-3xl",
   descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg max-lg:line-clamp-2",
-  arrowContainerClassName: _arrowContainerClassName = "absolute bottom-1/4 max-lg:translate-y-0 max-lg:left-14 z-50 flex gap-3 px-0 lg:px-5",
-  arrowClassName: _arrowClassName = "flex h-8 w-8 items-center justify-center rounded-full bg-white/25 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 backdrop-blur-md border border-white/20 text-white shadow-md md:h-10 md:w-10 transition-all cursor-pointer",
   slideContainerClassName = "absolute -right-5 max-lg:translate-y-[80px] z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
   slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg duration-300",
   autoPlay = false,
   autoPlayInterval = 3000,
   transitionDuration = 1000,
   transitionEasing = "ease-linear",
-  slideTransform: _slideTransform = 200,
   imageWidth = 1200,
   imageHeight = 540,
   imageComponent: Image = "img",
@@ -1287,21 +1281,16 @@ export type CarouselComponentProps =
 
 export default function Carousel(props: CarouselComponentProps) {
   if (props.variant === "glass" || props.variant === "fluid") {
-    const { variant: _variant, ...rest } = props;
-    return <FluidGlassSlider {...rest} />;
+    return <FluidGlassSlider {...props} />;
   }
   if (props.variant === "hero") {
-    const { variant: _variant, ...rest } = props;
-    return <HeroCarousel {...rest} />;
+    return <HeroCarousel {...props} />;
   }
   if (props.variant === "thumbnails") {
-    const { variant: _variant, ...rest } = props;
-    return <CustomCarousel {...rest} />;
+    return <CustomCarousel {...props} />;
   }
   if (props.variant === "radial") {
-    const { variant: _variant, ...rest } = props;
-    return <RadialCarousel {...rest} />;
+    return <RadialCarousel {...props} />;
   }
-  const { variant: _variant, className, ...rest } = props;
-  return <ImageCarousel rootClassName={className} {...rest} />;
+  return <ImageCarousel {...props} rootClassName={props.className} />;
 }

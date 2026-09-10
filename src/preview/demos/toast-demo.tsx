@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  ToastPosition,
-  ToastProvider,
-  ToastVariant,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastPosition, ToastProvider, ToastVariant } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 type ExampleMode = "all" | "basic" | "types" | "action" | "persistent";
 

@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import React, { useEffect, useRef, useCallback, useState, useSyncExternalStore } from "react";
+
+/**
+ * False while server-rendering and during hydration, true afterwards — without
+ * the extra render an effect-flipped useState costs.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
 export interface ParticleCanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
-  variant?: "repel";
   particleSize?: number;
   particleGap?: number;
   speed?: number;
@@ -35,7 +47,6 @@ interface Particle {
 
 export function ParticleCanvas({
   content = "AlgorizeTech",
-  variant = "repel",
   particleSize = 2.5,
   particleGap = 5,
   speed = 1,
@@ -48,12 +59,9 @@ export function ParticleCanvas({
   ...props
 }: ParticleCanvasProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const [themePrimaryColor, setThemePrimaryColor] = useState<string>("#3b82f6");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Dynamically resolve exact `bg-primary` color matching the header active item background
   useEffect(() => {
@@ -69,6 +77,7 @@ export function ParticleCanvas({
       document.body.removeChild(tempEl);
 
       if (computedBg && computedBg !== "rgba(0, 0, 0, 0)" && computedBg !== "transparent") {
+        // The resolved colour is read off a probe element, which only exists once mounted.
         setThemePrimaryColor(computedBg);
       } else {
         setThemePrimaryColor(resolvedTheme === "light" ? "#18181b" : "#3b82f6");

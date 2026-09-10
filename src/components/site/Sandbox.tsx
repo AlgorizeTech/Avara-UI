@@ -25,10 +25,7 @@ import {
   X,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
-import {
-  prefetchHighlight,
-  warmHighlighter,
-} from "@/components/custom/ui/code-renderer";
+import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import {
   ShowcaseControlCard,

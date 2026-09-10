@@ -25,7 +25,8 @@ import { useMemo, useState } from "react";
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
+import { buttonVariants } from "../ui/button-variants";
 import { SelectBlock } from "./SelectBlock";
 
 const EVENT_TYPE_OPTIONS = [

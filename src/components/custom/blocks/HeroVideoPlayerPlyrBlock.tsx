@@ -181,7 +181,9 @@ export const HeroPlyrPlayer = React.forwardRef<
     // pausing must not bring the bottom caption back over the picture.
     const [hasPlayed, setHasPlayed] = useState(false);
     const onReadyRef = useRef(onReady);
-    onReadyRef.current = onReady;
+    useEffect(() => {
+      onReadyRef.current = onReady;
+    });
 
     const isEmbed = provider !== "html5";
     // `controls` is an array literal, so it is a new reference on every parent
@@ -190,7 +192,9 @@ export const HeroPlyrPlayer = React.forwardRef<
     // every render and restart playback under the viewer.
     const controlsKey = controls ? JSON.stringify(controls) : "";
     const controlsRef = useRef(controls);
-    controlsRef.current = controls;
+    useEffect(() => {
+      controlsRef.current = controls;
+    });
 
     useEffect(() => {
       const element = mediaRef.current;

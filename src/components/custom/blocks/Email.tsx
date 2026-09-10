@@ -250,7 +250,7 @@ export default function EmailApp({
       const matchesSearch =
         email.sender.toLowerCase().includes(searchQuery.toLowerCase()) ||
         email.subject.toLowerCase().includes(searchQuery.toLowerCase());
-      let matchesNavigation = false;
+      let matchesNavigation: boolean;
       if (activeLabel) {
         matchesNavigation =
           email.labels?.some((l) => l.name === activeLabel) ?? false;

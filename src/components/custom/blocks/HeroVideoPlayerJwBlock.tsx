@@ -292,7 +292,9 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
     // pausing must not bring the bottom caption back over the picture.
     const [hasPlayed, setHasPlayed] = useState(false);
     const onReadyRef = useRef(onReady);
-    onReadyRef.current = onReady;
+    useEffect(() => {
+      onReadyRef.current = onReady;
+    });
 
     // `skinConfig` and `playerOptions` are object literals, so they are new
     // references on every parent render. The effect keys off their serialized
@@ -302,11 +304,14 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
     const skinKey = JSON.stringify(resolvedSkin ?? null);
     const optionsKey = playerOptions ? JSON.stringify(playerOptions) : "";
     const setupRef = useRef({ skin: resolvedSkin, options: playerOptions });
-    setupRef.current = { skin: resolvedSkin, options: playerOptions };
+    useEffect(() => {
+      setupRef.current = { skin: resolvedSkin, options: playerOptions };
+    });
 
     useEffect(() => {
       let cancelled = false;
       let player: JwPlayer | null = null;
+      // Marks the start of loading the third-party player script; there is nothing to derive this from during render.
       setStatus("loading");
       setHasPlayed(false);
 

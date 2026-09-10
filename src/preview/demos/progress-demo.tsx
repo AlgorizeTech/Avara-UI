@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  CircularProgress,
-  MultiProgress,
-  Progress,
-  ProgressField,
-  ProgressSegment,
-  ProgressSize,
-  ProgressVariant,
-  getThemeStyles,
-} from "@/components/custom/blocks/ProgressBlock";
+import { CircularProgress, MultiProgress, Progress, ProgressField, ProgressSegment, ProgressSize, ProgressVariant } from "@/components/custom/blocks/ProgressBlock";
+import { getThemeStyles } from "@/components/custom/blocks/animated-timeline-theme";
 
 /** Legend swatch — reuses the block's own theme table so a dot and its
  *  segment can never drift apart. */

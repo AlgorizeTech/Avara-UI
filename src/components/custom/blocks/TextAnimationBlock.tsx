@@ -37,10 +37,10 @@ export const TextAnimation = React.forwardRef<
     ref
   ) => {
     // Determine the Motion component correctly for string tags or custom components
-    const MotionComponent = typeof Component === "string" 
-      // @ts-ignore
-      ? motion[Component] 
-      : motion(Component);
+    const MotionComponent =
+      typeof Component === "string"
+        ? (motion[Component as keyof typeof motion] as React.ElementType)
+        : motion(Component);
 
     const renderAnimation = () => {
       switch (variant) {

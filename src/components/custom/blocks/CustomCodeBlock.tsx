@@ -86,7 +86,7 @@ const highlightCode = (code: string, language: string) => {
 
   if (language === "css") {
     return html.replace(
-      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}\/;][^{}\/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
+      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}/;][^{}/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
       (match, comment, atRule, selector, prop, colon, val, semi, brace) => {
         if (comment) return `<span class="${colors.comment}">${comment}</span>`;
         if (atRule) return `<span class="${colors.keyword}">${atRule}</span>`;
@@ -115,7 +115,7 @@ const highlightCode = (code: string, language: string) => {
 
   // JS/TS/JSX
   html = html.replace(
-    /(["'](?:\\.|[^\\])*?["']|`(?:\\`|[^`])*`)|(\/\/.*|\/\*[\s\S]*?\*\/)|(&lt;\/?[a-zA-Z0-9_-]+)|(\/&gt;|&gt;)|([a-zA-Z0-9_-]+)(?=\s*[:=])|(\b\d+\.?\d*\b)|(\b(?:const|let|var|function|return|if|else|for|while|import|export|from|default|class|extends|implements|new|this|typeof|instanceof|switch|case|break|continue|try|catch|finally|async|await|interface|type|public|private|protected|readonly)\b)|([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()|(\b[A-Z][a-zA-Z0-9_$]*\b)|([=+\-*/!&|{}()\[\]]+)/g,
+    /(["'](?:\\.|[^\\])*?["']|`(?:\\`|[^`])*`)|(\/\/.*|\/\*[\s\S]*?\*\/)|(&lt;\/?[a-zA-Z0-9_-]+)|(\/&gt;|&gt;)|([a-zA-Z0-9_-]+)(?=\s*[:=])|(\b\d+\.?\d*\b)|(\b(?:const|let|var|function|return|if|else|for|while|import|export|from|default|class|extends|implements|new|this|typeof|instanceof|switch|case|break|continue|try|catch|finally|async|await|interface|type|public|private|protected|readonly)\b)|([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()|(\b[A-Z][a-zA-Z0-9_$]*\b)|([=+\-*/!&|{}()[\]]+)/g,
     (match, str, comment, jsxTag, jsxBracket, attrKey, num, keyword, func, comp, operator) => {
       if (str) {
         const quote = str[0];

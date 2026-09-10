@@ -2,36 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
-import React, {
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-// ==========================================
-// CONTEXT
-// ==========================================
-interface WizardContextType {
-  currentStep: number;
-  totalSteps: number;
-  nextStep: () => void;
-  prevStep: () => void;
-  setTotalSteps: (steps: number) => void;
-  color: string;
-}
-
-const WizardContext = createContext<WizardContextType | null>(null);
-
-export function useWizard() {
-  const context = useContext(WizardContext);
-  if (!context) {
-    throw new Error("Wizard components must be used within a Wizard root.");
-  }
-  return context;
-}
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { WizardContext, useWizard } from "./wizard-context";
 
 // ==========================================
 // COMPONENTS
@@ -296,7 +268,7 @@ WizardInput.displayName = "WizardInput";
 export const WizardNavigation = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
+>(({ className, ...props }, ref) => {
   const { currentStep, nextStep, prevStep, color } = useWizard();
 
   const isHex = color && color.startsWith("#");

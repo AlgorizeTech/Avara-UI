@@ -2,35 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
-import React, {
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-// ==========================================
-// CONTEXT & TYPES
-// ==========================================
-interface FlowchartContextType {
-  activePath: string | null;
-  setActivePath: (pathId: string | null) => void;
-  color: string;
-}
-
-const FlowchartContext = createContext<FlowchartContextType | null>(null);
-
-export function useFlowchart() {
-  const context = useContext(FlowchartContext);
-  if (!context) {
-    throw new Error(
-      "Flowchart sub-components must be used within a Flowchart root.",
-    );
-  }
-  return context;
-}
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { FlowchartContext, useFlowchart } from "./flowchart-context";
 
 // ==========================================
 // COMPONENTS
@@ -92,7 +65,6 @@ export interface FlowNodeProps extends React.HTMLAttributes<HTMLDivElement> {
 export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
   (
     {
-      id,
       title,
       description,
       icon: Icon,
@@ -289,7 +261,10 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500"
+          className={cn(
+            "text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500",
+            className,
+          )}
           {...props}
         />
 

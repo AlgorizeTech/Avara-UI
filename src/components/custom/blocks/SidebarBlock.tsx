@@ -2,29 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
-import React, { createContext, useContext, useEffect, useState } from "react";
-
-// ==========================================
-// CONTEXT & STATE MANAGEMENT
-// ==========================================
-interface SidebarContextType {
-  expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  isMobileOpen: boolean;
-  setIsMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  color: string;
-}
-
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
-
-export function useSidebar() {
-  const context = useContext(SidebarContext);
-  if (!context)
-    throw new Error(
-      "Sidebar components must be rendered within a SidebarProvider",
-    );
-  return context;
-}
+import React, { useEffect, useState } from "react";
+import { SidebarContext, useSidebar } from "./sidebar-context";
 
 // ==========================================
 // 1. PROVIDER & ROOT LAYOUT

@@ -66,7 +66,7 @@ function resolveCanvasColor(colorStr?: string, alpha: number = 1, element?: HTML
   let raw = colorStr.trim();
 
   if (typeof window !== "undefined" && raw.includes("var(")) {
-    const varName = raw.match(/var\(([^,\)]+)/)?.[1]?.trim();
+    const varName = raw.match(/var\(([^,)]+)/)?.[1]?.trim();
     if (varName) {
       try {
         const targetEl = element || document.documentElement;

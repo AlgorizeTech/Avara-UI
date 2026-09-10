@@ -85,6 +85,7 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
     // with no handler attached and the initials never appear. Re-check the element
     // on mount — a finished load with zero intrinsic width is a failed load.
     React.useEffect(() => {
+      // A broken <img> that finished loading before hydration fires no error event, so the element has to be inspected on mount.
       setImgFailed(false);
       const node = imgRef.current;
       if (node?.complete && node.naturalWidth === 0) setImgFailed(true);

@@ -144,20 +144,16 @@ export function TableOfContentsBlock({
 		}));
 	}, [displayItems]);
 
-	const [activeId, setActiveId] = useState<string>(
-		externalActiveId || headings[0]?.id || ""
+	const [spiedActiveId, setActiveId] = useState<string>(
+		headings[0]?.id || ""
 	);
+	// A supplied `activeId` takes precedence; otherwise the scroll spy decides.
+	const activeId = externalActiveId || spiedActiveId;
 	const [scrollProgress, setScrollProgress] = useState(0);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
 
-	// Update activeId when prop changes
-	useEffect(() => {
-		if (externalActiveId) {
-			setActiveId(externalActiveId);
-		}
-	}, [externalActiveId]);
 
 	// Auto scroll-spy & progress calculation (supports window scroll & container scroll)
 	useEffect(() => {
@@ -180,8 +176,8 @@ export function TableOfContentsBlock({
 		const scrollContainer = findScrollParent(contentRef.current);
 
 		const handleScroll = () => {
-			let scrollTop = 0;
-			let totalHeight = 0;
+			let scrollTop: number;
+			let totalHeight: number;
 
 			if (scrollContainer === window) {
 				scrollTop = window.scrollY;

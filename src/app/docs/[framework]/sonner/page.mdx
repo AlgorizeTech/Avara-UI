@@ -11,7 +11,8 @@ Click the trigger buttons to spawn toasts, then hover the floating stack to expa
 
 export const usageDefault = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -40,7 +41,8 @@ export default function SaveButton() {
 
 export const usageTypes = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -80,7 +82,8 @@ export default function ToastTypes() {
 
 export const usageAction = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -111,7 +114,8 @@ export default function UndoToast() {
 
 export const usageStack = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -140,7 +144,8 @@ export default function StackDemo() {
 
 export const usageExpand = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -169,7 +174,8 @@ export default function ExpandedStack() {
 
 export const usageDuration = `"use client";
 
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -215,7 +221,8 @@ export const usagePosition = `"use client";
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { toast, Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] = [
   { value: "top-left", label: "Top left" },

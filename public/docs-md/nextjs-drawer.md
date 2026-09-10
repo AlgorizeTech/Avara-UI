@@ -55,6 +55,8 @@ export default function OnboardingDrawer() {
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
+    // localStorage does not exist while server-rendering, so this cannot
+    // move into the useState initialiser.
     if (localStorage.getItem("onboarded")) setOpen(false);
   }, []);
 

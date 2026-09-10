@@ -47,10 +47,8 @@ const AnimatedPrice = ({ value, counting = true }: AnimatedPriceProps) => {
   const [displayValue, setDisplayValue] = useState(counting ? 0 : numericValue);
 
   useEffect(() => {
-    if (!counting || isNaN(numericValue)) {
-      setDisplayValue(numericValue);
-      return;
-    }
+    // Both cases render the value directly, without reading state.
+    if (!counting || isNaN(numericValue)) return;
 
     let startTime: number | undefined;
     const duration = 600;

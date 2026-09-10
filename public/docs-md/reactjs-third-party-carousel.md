@@ -38,6 +38,7 @@ export default function EmblaProductCarousel() {
   useEffect(() => {
     if (!emblaApi) return;
     const sync = () => setSelected(emblaApi.selectedScrollSnap());
+    // The snap list only exists once embla has measured the slides.
     setSnaps(emblaApi.scrollSnapList());
     sync();
     emblaApi.on("select", sync).on("reInit", sync);

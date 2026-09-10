@@ -24,85 +24,13 @@ import React, {
   useState,
 } from "react";
 import { SelectBlock } from "./SelectBlock";
+import { type Accessor, DataTableContext, type DataTableContextValue, type SortType, TableContext, type TableSize, type TableVariant, getThemeStyles, resolveAccessor, useDataTable, useTableStyles } from "./table-core";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type TableColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
-export type TableVariant = "default" | "minimal" | "glass";
-export type TableSize = "sm" | "md" | "lg";
 export type TableAlign = "left" | "center" | "right";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    bgSoft: "bg-primary/10",
-    border: "border-primary",
-    focusRing: "focus-visible:ring-primary",
-  },
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    border: "border-indigo-600",
-    focusRing: "focus-visible:ring-indigo-500",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    border: "border-rose-600",
-    focusRing: "focus-visible:ring-rose-500",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    border: "border-emerald-600",
-    focusRing: "focus-visible:ring-emerald-500",
-  },
-  zinc: {
-    bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    border: "border-zinc-900 dark:border-zinc-100",
-    focusRing: "focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-400",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--theme-color)] text-white",
-        text: "text-[var(--theme-color)]",
-        bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]",
-        border: "border-[var(--theme-color)]",
-        focusRing: "focus-visible:ring-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // LOOK-UP TABLES
@@ -175,27 +103,6 @@ const alignFlex: Record<TableAlign, string> = {
   center: "justify-center",
   right: "justify-end",
 };
-
-// ==========================================
-// CONTEXT
-// ==========================================
-export interface TableStyleContext {
-  variant: TableVariant;
-  size: TableSize;
-  theme: Record<string, string>;
-}
-
-const TableContext = createContext<TableStyleContext>({
-  variant: "default",
-  size: "md",
-  theme: colorThemes.primary,
-});
-
-/**
- * Every primitive reads its skin from here and falls back to sane defaults, so
- * a TableCell dropped into a hand-rolled table still renders correctly.
- */
-export const useTableStyles = () => useContext(TableContext);
 
 // ==========================================
 // PRIMITIVES
@@ -626,22 +533,6 @@ export const TableRowActions = forwardRef<HTMLDivElement, TableRowActionsProps>(
 );
 TableRowActions.displayName = "TableRowActions";
 
-// ==========================================
-// DATA ACCESS — deliberately shape-agnostic
-// ==========================================
-/** A column value is read either by dot-path or by your own function. */
-export type Accessor<T> = string | ((row: T) => unknown);
-
-export type SortType = "auto" | "string" | "number" | "date";
-
-/** Reads "user.profile.name" as well as a plain "name". */
-export function resolveAccessor<T>(row: T, accessor: Accessor<T>): unknown {
-  if (typeof accessor === "function") return accessor(row);
-  return accessor
-    .split(".")
-    .reduce<any>((acc, key) => (acc == null ? acc : acc[key]), row);
-}
-
 /** Flattens any nested row into one searchable string. */
 function defaultSearchText(value: unknown): string {
   if (value == null) return "";
@@ -653,8 +544,19 @@ function defaultSearchText(value: unknown): string {
 }
 
 /** Works with SQL `id`, Mongo `_id` and anything you map yourself. */
-function defaultGetRowId(row: any): string | number {
-  return row?.id ?? row?._id ?? row?.uuid ?? row?.key;
+/** The id fields a row is checked for, in order. */
+type RowWithId = {
+  id?: string | number;
+  _id?: string | number;
+  uuid?: string | number;
+  key?: string | number;
+};
+
+function defaultGetRowId<T>(row: T): string | number {
+  const candidate = row as RowWithId | null | undefined;
+  return (
+    candidate?.id ?? candidate?._id ?? candidate?.uuid ?? candidate?.key ?? ""
+  );
 }
 
 function compareValues(a: unknown, b: unknown, type: SortType): number {
@@ -676,58 +578,6 @@ interface SortState<T> {
   direction: "asc" | "desc";
   accessor: Accessor<T>;
   type: SortType;
-}
-
-export interface DataTableContextValue<T = any> {
-  /** Exactly what you passed in. */
-  sourceRows: T[];
-  /** After search + sort, before paging. */
-  filteredRows: T[];
-  /** The current page — what you render. */
-  rows: T[];
-  getRowId: (row: T) => string | number;
-
-  search: string;
-  setSearch: (value: string) => void;
-
-  sort: { id: string; direction: "asc" | "desc" } | null;
-  toggleSort: (id: string, accessor: Accessor<T>, type: SortType) => void;
-
-  page: number;
-  setPage: (page: number) => void;
-  pageSize: number;
-  setPageSize: (size: number) => void;
-  pageSizeOptions: number[];
-  totalPages: number;
-  total: number;
-  from: number;
-  to: number;
-
-  selectedIds: Set<string | number>;
-  selectedRows: T[];
-  isSelected: (id: string | number) => boolean;
-  toggleRow: (id: string | number) => void;
-  toggleAllOnPage: () => void;
-  clearSelection: () => void;
-  isAllPageSelected: boolean;
-  isSomePageSelected: boolean;
-
-  isExpanded: (id: string | number) => boolean;
-  toggleExpanded: (id: string | number) => void;
-
-  theme: Record<string, string>;
-  themeStyle?: React.CSSProperties;
-}
-
-const DataTableContext = createContext<DataTableContextValue | null>(null);
-
-/** Escape hatch — build your own toolbar, pager or empty state on this. */
-export function useDataTable<T = any>(): DataTableContextValue<T> {
-  const ctx = useContext(DataTableContext);
-  if (!ctx) {
-    throw new Error("useDataTable must be used inside <DataTable>.");
-  }
-  return ctx as DataTableContextValue<T>;
 }
 
 const RowContext = createContext<{ rowId: string | number } | null>(null);
@@ -781,7 +631,7 @@ function DataTableImpl<T>({
         }
       : null,
   );
-  const [page, setPage] = useState(1);
+  const [pageState, setPage] = useState(1);
   const [pageSize, setPageSizeState] = useState(
     pageSizeProp ?? pageSizeOptions[1] ?? 10,
   );
@@ -821,14 +671,13 @@ function DataTableImpl<T>({
   // 3. Paginate
   const total = filteredRows.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  // The row count can shrink under the current page — a filter, a bigger
+  // page size. Read it clamped rather than correcting it afterwards.
+  const page = Math.min(pageState, totalPages);
   const rows = useMemo(
     () => filteredRows.slice((page - 1) * pageSize, page * pageSize),
     [filteredRows, page, pageSize],
   );
-
-  useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
-  }, [page, totalPages]);
 
   const setSearch = useCallback((value: string) => {
     setSearchState(value);
@@ -862,9 +711,11 @@ function DataTableImpl<T>({
   );
 
   const selectionCallbackRef = React.useRef(onSelectionChange);
-  selectionCallbackRef.current = onSelectionChange;
   const selectedRowsRef = React.useRef(selectedRows);
-  selectedRowsRef.current = selectedRows;
+  React.useEffect(() => {
+    selectionCallbackRef.current = onSelectionChange;
+    selectedRowsRef.current = selectedRows;
+  });
 
   useEffect(() => {
     selectionCallbackRef.current?.(selectedRowsRef.current);
@@ -1057,7 +908,7 @@ export function DataTablePageSize({
   );
 }
 
-export interface DataTableBodyProps<T = any>
+export interface DataTableBodyProps<T = unknown>
   extends Omit<React.HTMLAttributes<HTMLTableSectionElement>, "children"> {
   children: ((rows: T[]) => React.ReactNode) | React.ReactNode;
   animate?: boolean;
@@ -1082,11 +933,11 @@ function DataTableBodyImpl<T>({
   );
 }
 
-export const DataTableBody = DataTableBodyImpl as <T = any>(
+export const DataTableBody = DataTableBodyImpl as <T = unknown>(
   props: DataTableBodyProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableRowProps<T = any>
+export interface DataTableRowProps<T = unknown>
   extends React.HTMLAttributes<HTMLTableRowElement> {
   /** Pass the row and selection/expansion wire themselves up. */
   row?: T;
@@ -1104,7 +955,8 @@ function DataTableRowImpl<T>({
 }: DataTableRowProps<T>) {
   const { getRowId, isSelected } = useDataTable<T>();
   const rowId =
-    rowIdProp ?? (row !== undefined ? getRowId(row) : (undefined as any));
+    rowIdProp ??
+    (row !== undefined ? getRowId(row) : (undefined as unknown as string | number));
 
   const content = (
     <TableRow
@@ -1122,11 +974,11 @@ function DataTableRowImpl<T>({
   );
 }
 
-export const DataTableRow = DataTableRowImpl as <T = any>(
+export const DataTableRow = DataTableRowImpl as <T = unknown>(
   props: DataTableRowProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableHeadProps<T = any>
+export interface DataTableHeadProps<T = unknown>
   extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "align"> {
   align?: TableAlign;
   /** Dot-path or accessor function. Presence of this makes the header sortable. */
@@ -1162,7 +1014,7 @@ function DataTableHeadImpl<T>({
   );
 }
 
-export const DataTableHead = DataTableHeadImpl as <T = any>(
+export const DataTableHead = DataTableHeadImpl as <T = unknown>(
   props: DataTableHeadProps<T>,
 ) => React.ReactElement | null;
 
@@ -1269,10 +1121,11 @@ export function DataTableExpandedRow({
   );
 }
 
-export interface DataTableBatchBarProps {
+export interface DataTableBatchBarProps<T = unknown> {
+  /** Receives the selected rows and a way to clear them. */
   children?:
     | ((args: {
-        selectedRows: any[];
+        selectedRows: T[];
         selectedIds: (string | number)[];
         clearSelection: () => void;
       }) => React.ReactNode)
@@ -1281,12 +1134,13 @@ export interface DataTableBatchBarProps {
   className?: string;
 }
 
-export function DataTableBatchBar({
+export function DataTableBatchBar<T = unknown>({
   children,
   floating = true,
   className,
-}: DataTableBatchBarProps) {
-  const { selectedIds, selectedRows, clearSelection, theme, themeStyle } = useDataTable();
+}: DataTableBatchBarProps<T>) {
+  const { selectedIds, selectedRows, clearSelection, theme, themeStyle } =
+    useDataTable<T>();
   const count = selectedIds.size;
 
   return (

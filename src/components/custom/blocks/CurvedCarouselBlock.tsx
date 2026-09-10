@@ -169,8 +169,8 @@ const CAROUSEL_ITEMS: CurvedCarouselCard[] = [
 
 export function CurvedCarousel({
   variant = "arc-sweep",
-  autoPlay: _autoPlay = true,
-  speed: _speed = 1,
+  autoPlay = true,
+  speed = 1,
   color = "primary",
   items,
   className,
@@ -193,28 +193,31 @@ export function CurvedCarousel({
     window.addEventListener("resize", handleResize);
 
     // Oscillates the giant wheel ring back and forth smoothly between -10° and +10° for arc-sweep
-    const timer = setInterval(() => {
-      setRotationAngle((prev) => {
-        if (prev >= 10) {
-          sweepDirection.current = -1;
-          return prev - 0.08;
-        }
-        if (prev <= -10) {
-          sweepDirection.current = 1;
-          return prev + 0.08;
-        }
-        return prev + 0.08 * sweepDirection.current;
-      });
+    const step = 0.08 * speed;
+    const timer = autoPlay
+      ? setInterval(() => {
+          setRotationAngle((prev) => {
+            if (prev >= 10) {
+              sweepDirection.current = -1;
+              return prev - step;
+            }
+            if (prev <= -10) {
+              sweepDirection.current = 1;
+              return prev + step;
+            }
+            return prev + step * sweepDirection.current;
+          });
 
-      // All-time continuous right-to-left marquee motion (decreases angle perpetually)
-      setMarqueeAngle((prev) => (prev - 0.12) % 360);
-    }, 20);
+          // All-time continuous right-to-left marquee motion (decreases angle perpetually)
+          setMarqueeAngle((prev) => (prev - 0.12 * speed) % 360);
+        }, 20)
+      : null;
 
     return () => {
-      clearInterval(timer);
+      if (timer !== null) clearInterval(timer);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [autoPlay, speed]);
 
   // Fluid responsive parameters according to screen size:
   const isMobile = windowWidth < 640;

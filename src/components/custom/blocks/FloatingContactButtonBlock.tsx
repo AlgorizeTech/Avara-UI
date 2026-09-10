@@ -138,7 +138,9 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 break;
               }
             }
-          } catch {}
+          } catch {
+            // Unreadable stylesheet (cross-origin): fall through to the default.
+          }
         }
 
         const targetColor = foundColor || defaultAccentColor;

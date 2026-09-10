@@ -329,7 +329,7 @@ export const HeroVideoPlayer = React.forwardRef<
     // that iframe rather than the host page.
     useEffect(() => {
       if (playbackMode !== "modal" || !isOpen) return;
-      const doc = containerRef.current?.ownerDocument ?? document;
+      const doc = document;
       const previous = doc.body.style.overflow;
       doc.body.style.overflow = "hidden";
       closeRef.current?.focus();

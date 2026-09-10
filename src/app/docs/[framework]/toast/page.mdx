@@ -11,10 +11,8 @@ Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss a
 
 export const usageDefault = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 function Triggers() {
   const { toast } = useToast();
@@ -49,10 +47,8 @@ export default function SendMessage() {
 
 export const usageTypes = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
@@ -98,10 +94,8 @@ export default function ToastTypes() {
 
 export const usageAction = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
@@ -144,10 +138,8 @@ export default function ToastWithAction() {
 
 export const usageDuration = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
@@ -200,10 +192,8 @@ export default function ToastDuration() {
 
 export const usageGlow = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
@@ -250,10 +240,8 @@ export default function GlowToasts() {
 
 export const usageMinimal = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";

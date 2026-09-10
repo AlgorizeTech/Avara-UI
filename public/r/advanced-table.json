@@ -5,11 +5,13 @@
   "author": "AlgorizeTech",
   "description": "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/table.json"
+  ],
   "files": [
     {
       "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",
-      "content": "\"use client\";\n\nexport * from \"./TableBlock\";\n",
+      "content": "\"use client\";\n\n/**\n * Compatibility shim: the data table lives in TableBlock. Only its components\n * and types are forwarded — the hooks and helpers are in `./table-core`, so\n * this file stays one that exports components and nothing else.\n */\nexport {\n  DataTable,\n  DataTableBatchBar,\n  DataTableBody,\n  DataTableCell,\n  DataTableContent,\n  DataTableEmpty,\n  DataTableExpandToggle,\n  DataTableExpandedRow,\n  DataTableFooter,\n  DataTableHead,\n  DataTableHeader,\n  DataTableHeading,\n  DataTableInfo,\n  DataTablePageSize,\n  DataTablePagination,\n  DataTableRow,\n  DataTableSearch,\n  DataTableSelect,\n  DataTableSelectAll,\n  DataTableToolbar,\n  Table,\n  TableBody,\n  TableCell,\n  TableContent,\n  TableEmpty,\n  TableExpandToggle,\n  TableExpandedRow,\n  TableFooter,\n  TableHead,\n  TableHeader,\n  TableHeading,\n  TableRow,\n  TableRowActions,\n} from \"./TableBlock\";\n\nexport type {\n  DataTableBatchBarProps,\n  DataTableBodyProps,\n  DataTableExpandedRowProps,\n  DataTableHeadProps,\n  DataTablePageSizeProps,\n  DataTableProps,\n  DataTableRowProps,\n  DataTableSearchProps,\n  TableAlign,\n  TableBodyProps,\n  TableCellProps,\n  TableColor,\n  TableEmptyProps,\n  TableExpandToggleProps,\n  TableExpandedRowProps,\n  TableHeadProps,\n  TableHeadingProps,\n  TableProps,\n  TableRowActionsProps,\n  TableRowProps,\n} from \"./TableBlock\";\n",
       "type": "registry:component",
       "target": "components/custom/blocks/AdvancedTableBlock.tsx"
     }

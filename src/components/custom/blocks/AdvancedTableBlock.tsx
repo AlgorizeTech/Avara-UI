@@ -1,3 +1,65 @@
 "use client";
 
-export * from "./TableBlock";
+/**
+ * Compatibility shim: the data table lives in TableBlock. Only its components
+ * and types are forwarded — the hooks and helpers are in `./table-core`, so
+ * this file stays one that exports components and nothing else.
+ */
+export {
+  DataTable,
+  DataTableBatchBar,
+  DataTableBody,
+  DataTableCell,
+  DataTableContent,
+  DataTableEmpty,
+  DataTableExpandToggle,
+  DataTableExpandedRow,
+  DataTableFooter,
+  DataTableHead,
+  DataTableHeader,
+  DataTableHeading,
+  DataTableInfo,
+  DataTablePageSize,
+  DataTablePagination,
+  DataTableRow,
+  DataTableSearch,
+  DataTableSelect,
+  DataTableSelectAll,
+  DataTableToolbar,
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableEmpty,
+  TableExpandToggle,
+  TableExpandedRow,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+  TableRowActions,
+} from "./TableBlock";
+
+export type {
+  DataTableBatchBarProps,
+  DataTableBodyProps,
+  DataTableExpandedRowProps,
+  DataTableHeadProps,
+  DataTablePageSizeProps,
+  DataTableProps,
+  DataTableRowProps,
+  DataTableSearchProps,
+  TableAlign,
+  TableBodyProps,
+  TableCellProps,
+  TableColor,
+  TableEmptyProps,
+  TableExpandToggleProps,
+  TableExpandedRowProps,
+  TableHeadProps,
+  TableHeadingProps,
+  TableProps,
+  TableRowActionsProps,
+  TableRowProps,
+} from "./TableBlock";

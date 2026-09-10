@@ -67,7 +67,6 @@ export const usageMultiColors = `import {
   MultiProgress,
   ProgressField,
   ProgressSegment,
-  getThemeStyles,
 } from "@/components/custom/blocks/ProgressBlock";
 
 const segments = [

@@ -17,6 +17,14 @@ import {
 
 export type ColorFormat = "hex" | "rgb" | "hsl";
 
+/**
+ * The slice of the EyeDropper API this uses. It is still not in lib.dom,
+ * and `"EyeDropper" in window` already guards the call site.
+ */
+type EyeDropperConstructor = new () => {
+  open: () => Promise<{ sRGBHex: string }>;
+};
+
 export interface ColorPickerProps {
   value?: string;
   onChange?: (color: string) => void;
@@ -194,15 +202,19 @@ export function StandaloneColorPicker({
   const rgb = hslToRgb(colorHsl.h, colorHsl.s, colorHsl.l);
   const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
 
-  useEffect(() => {
+  // Keep the editable hex field in step with the swatch as it is dragged.
+  const [syncedHex, setSyncedHex] = useState(hex);
+  if (syncedHex !== hex) {
+    setSyncedHex(hex);
     setInputHex(hex);
-  }, [hex]);
+  }
 
-  useEffect(() => {
-    if (value && value !== hex) {
-      setColorHsl(parseColorToState(value));
-    }
-  }, [value]);
+  // Adopt a new controlled `value` as it arrives.
+  const [adoptedValue, setAdoptedValue] = useState(value);
+  if (adoptedValue !== value) {
+    setAdoptedValue(value);
+    if (value && value !== hex) setColorHsl(parseColorToState(value));
+  }
 
   const updateColor = useCallback(
     (newHsl: { h: number; s: number; l: number; a: number }) => {
@@ -323,8 +335,9 @@ export function StandaloneColorPicker({
   const handleEyeDropper = async () => {
     if (typeof window !== "undefined" && "EyeDropper" in window) {
       try {
-        // @ts-ignore - EyeDropper API
-        const eyeDropper = new window.EyeDropper();
+        const eyeDropper = new (
+          window as unknown as { EyeDropper: EyeDropperConstructor }
+        ).EyeDropper();
         const result = await eyeDropper.open();
         if (result?.sRGBHex) {
           setColorHsl(parseColorToState(result.sRGBHex));
@@ -697,7 +710,14 @@ export function GradientColorPicker({
 }: ColorPickerProps) {
   const [gradientType, setGradientType] = useState<"linear" | "radial" | "conic">("linear");
   const [stopCount, setStopCount] = useState<2 | 3>(2);
-  const [color1, setColor1] = useState("#8b5cf6");
+  // `value` is a single colour, so for a gradient it can only mean the
+  // first stop. Anything that is not a hex colour (a gradient string, say)
+  // falls back rather than seeding a broken stop.
+  const [color1, setColor1] = useState(
+    value && /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)
+      ? value
+      : "#8b5cf6",
+  );
   const [color2, setColor2] = useState("#ec4899");
   const [color3, setColor3] = useState("#3b82f6");
   const [angle, setAngle] = useState(135);

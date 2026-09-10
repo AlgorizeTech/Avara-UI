@@ -4,7 +4,20 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+/**
+ * False while server-rendering and during hydration, true afterwards — without
+ * the extra render an effect-flipped useState costs.
+ */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 
 export type ThemeVariant = "icon" | "pill" | "dropdown";
 
@@ -17,11 +30,10 @@ export const ThemeSwitcher = React.forwardRef<
   HTMLDivElement,
   ThemeSwitcherProps
 >(({ variant = "icon", className, ...props }, ref) => {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   // Avoid hydration mismatch by waiting for mount
-  useEffect(() => setMounted(true), []);
 
   if (!mounted) {
     // Render a placeholder with the same dimensions to prevent layout shift
