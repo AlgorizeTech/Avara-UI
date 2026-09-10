@@ -313,21 +313,23 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           )}
           {...props}
         >
-          {/* BACKGROUND RIGHT 55% HALF-SCREEN DENSE NANO-COLUMN IMAGE WALL GRID */}
-          <div className="absolute -top-24 -bottom-24 -right-12 left-auto w-full lg:w-[55%] overflow-hidden pointer-events-none z-0">
-            {/* 14 Vertical Dense Nano Columns of Nature Image Cards (Square 1:1, Exact 25px Gap, Nano Dimensions) */}
-            <div className="absolute inset-0 grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-14 gap-[25px] px-2 py-2">
+          {/* BACKGROUND RIGHT 50% HALF-SCREEN MASONRY IMAGE WALL GRID */}
+          <div className="absolute -top-28 -bottom-28 left-1/2 right-0 w-[50vw] overflow-hidden pointer-events-none z-0">
+            {/* Flex Columns Container: Fixed 300px Card Widths across ALL screens, exact 14px gap */}
+            <div className="w-full h-full flex flex-row gap-[14px] p-0 overflow-hidden">
               
               {/* Column 1 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max">
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px]">
                 {[...wallImages, ...wallImages].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 2;
+                  const isFeatured = i === 1;
                   return (
                     <div
                       key={i}
                       className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
+                        "relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted transition-all shrink-0",
+                        isFeatured
+                          ? "opacity-100 border-2 border-red-500 shadow-lg shadow-red-500/20 z-10"
+                          : "opacity-60 border-0"
                       )}
                     >
                       <img
@@ -341,295 +343,120 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               </div>
 
               {/* Column 2 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-16 sm:-mt-24">
-                {[...wallImages.slice(4), ...wallImages, ...wallImages.slice(0, 4)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 1;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-20">
+                {[...wallImages.slice(4), ...wallImages, ...wallImages.slice(0, 4)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 3 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-8 sm:-mt-12">
-                {[...wallImages.slice(8), ...wallImages, ...wallImages.slice(0, 8)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 3;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-10">
+                {[...wallImages.slice(8), ...wallImages, ...wallImages.slice(0, 8)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 4 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-24 sm:-mt-32">
-                {[...wallImages.slice(2), ...wallImages, ...wallImages.slice(0, 2)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 0;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-32">
+                {[...wallImages.slice(2), ...wallImages, ...wallImages.slice(0, 2)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 5 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-12 sm:-mt-16">
-                {[...wallImages.slice(6), ...wallImages, ...wallImages.slice(0, 6)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 2;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-16">
+                {[...wallImages.slice(6), ...wallImages, ...wallImages.slice(0, 6)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 6 */}
-              <div className="flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-20 sm:-mt-28">
-                {[...wallImages.slice(10), ...wallImages, ...wallImages.slice(0, 10)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 4;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-24">
+                {[...wallImages.slice(10), ...wallImages, ...wallImages.slice(0, 10)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 7 */}
-              <div className="hidden sm:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-14 sm:-mt-20">
-                {[...wallImages.slice(3), ...wallImages, ...wallImages.slice(0, 3)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 1;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-14">
+                {[...wallImages.slice(1), ...wallImages, ...wallImages.slice(0, 1)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Column 8 */}
-              <div className="hidden sm:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-26 sm:-mt-36">
-                {[...wallImages.slice(7), ...wallImages, ...wallImages.slice(0, 7)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 3;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 9 */}
-              <div className="hidden sm:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-10 sm:-mt-16">
-                {[...wallImages.slice(1), ...wallImages, ...wallImages.slice(0, 1)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 2;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 10 */}
-              <div className="hidden sm:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-18 sm:-mt-24">
-                {[...wallImages.slice(5), ...wallImages, ...wallImages.slice(0, 5)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 0;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 11 */}
-              <div className="hidden lg:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-12 sm:-mt-18">
-                {[...wallImages.slice(9), ...wallImages, ...wallImages.slice(0, 9)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 3;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 12 */}
-              <div className="hidden lg:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-22 sm:-mt-30">
-                {[...wallImages.slice(3), ...wallImages, ...wallImages.slice(0, 3)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 1;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 13 */}
-              <div className="hidden lg:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-16 sm:-mt-22">
-                {[...wallImages.slice(11), ...wallImages, ...wallImages.slice(0, 11)].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 2;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Column 14 (Far Right Edge) */}
-              <div className="hidden lg:flex flex-col gap-[25px] animate-marquee-vertical h-max -mt-24 sm:-mt-34">
-                {[...wallImages.slice(0), ...wallImages].map((imgUrl, i) => {
-                  const isCenterSpot = i % wallImages.length === 4;
-                  return (
-                    <div
-                      key={i}
-                      className={cn(
-                        "relative aspect-square size-16 sm:size-20 lg:size-24 rounded-md sm:rounded-lg overflow-hidden bg-muted shrink-0 transition-all duration-500",
-                        isCenterSpot ? "opacity-100" : "opacity-70"
-                      )}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Nature Showcase ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-28">
+                {[...wallImages.slice(7), ...wallImages, ...wallImages.slice(0, 7)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
 
             </div>
 
-            {/* Soft Edge Blending Overlays */}
-            <div className="absolute inset-y-0 left-0 w-28 sm:w-44 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
+            {/* Soft Overlay Gradients */}
             <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
             <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
           </div>

@@ -1324,7 +1324,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/hero.json",
         "utils"
       ],
       "files": [
