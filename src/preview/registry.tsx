@@ -64,6 +64,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "hero-video-player": lazyRetry(() => import("./demos/hero-video-player-demo")),
   "hero-video-player-jw": lazyRetry(() => import("./demos/hero-video-player-jw-demo")),
   "hero-video-player-plyr": lazyRetry(() => import("./demos/hero-video-player-plyr-demo")),
+  "homepage-hero-component-wall": lazyRetry(() => import("./demos/homepage-hero-component-wall-demo")),
   "homepage-hero": lazyRetry(() => import("./demos/homepage-hero-demo")),
   "homepage-hero-glow-arc": lazyRetry(() => import("./demos/homepage-hero-glow-arc-demo")),
   "homepage-hero-slider": lazyRetry(() => import("./demos/homepage-hero-slider-demo")),

@@ -81,9 +81,9 @@ export default function EmblaProductCarousel() {
   );
 }`;
 
-## Installation
+### Installation
 
-The examples below also use these Algorize UI components — install whichever
+This example also uses these Algorize UI components — install whichever
 your project does not already have:
 
 ## Swiper
@@ -130,6 +130,11 @@ export default function SwiperTestimonials() {
 
   );
 }`;
+
+### Installation
+
+This example also uses these Algorize UI components — install whichever
+your project does not already have:
 
 ## Which one
 

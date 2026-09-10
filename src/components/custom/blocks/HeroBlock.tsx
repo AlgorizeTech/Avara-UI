@@ -29,8 +29,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "component-wall" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -283,6 +283,271 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     } as React.CSSProperties;
 
     const currentWord = typingWords?.[currentWordIndex] || "";
+
+    /* ═══════════════════════════════════════════════
+       VARIANT: COMPONENT WALL (FULL-SCREEN MULTI-COLUMN IMAGE WALL HERO)
+       ═══════════════════════════════════════════════ */
+    if (variant === "component-wall") {
+      const wallImages = sliderImages && sliderImages.length > 0 ? sliderImages : [
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop", // Yosemite nature
+        "https://images.unsplash.com/photo-1511497584788-8767611136f6?q=80&w=1200&auto=format&fit=crop", // Misty Forest
+        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop", // Mountain fog
+        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop", // Deep Forest Sunbeam
+        "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1200&auto=format&fit=crop", // Green Valley
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop", // Mountain Lake Reflection
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop", // Wilderness Mountain Range
+        "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop", // Mountain Peak Sunset
+        "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=1200&auto=format&fit=crop", // Forest Stream Path
+        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop", // Tropical Ocean Coast
+        "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop", // Waterfall Landscape
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop", // Rocky Alps Peaks
+      ];
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full min-h-fit overflow-hidden py-12 lg:py-16 bg-background text-foreground flex flex-col lg:flex-row lg:items-center select-none gap-10 lg:gap-0",
+            className
+          )}
+          {...props}
+        >
+          {/* IMAGE WALL GRID: BELOW TEXT ON SMALL SCREENS, RIGHT 50% SIDEBAR ON DESKTOP */}
+          <div className="relative lg:absolute w-full h-[400px] sm:h-[480px] lg:h-full lg:inset-y-0 lg:left-1/2 lg:right-0 lg:w-[50vw] overflow-hidden pointer-events-none z-0 order-2 lg:order-1">
+            {/* Flex Columns Container: Fixed 300px Card Widths across ALL screens, exact 14px gap */}
+            <div className="w-full h-full flex flex-row gap-[14px] p-0 overflow-hidden">
+              
+              {/* Column 1 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px]">
+                {[...wallImages, ...wallImages].map((imgUrl, i) => {
+                  const isFeatured = i === 1;
+                  return (
+                    <div
+                      key={i}
+                      className={cn(
+                        "relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted transition-all shrink-0",
+                        isFeatured
+                          ? "opacity-100 border-2 border-red-500 shadow-lg shadow-red-500/20 z-10"
+                          : "opacity-60 border-0"
+                      )}
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`Nature Showcase ${i + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Column 2 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-20">
+                {[...wallImages.slice(4), ...wallImages, ...wallImages.slice(0, 4)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 3 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-10">
+                {[...wallImages.slice(8), ...wallImages, ...wallImages.slice(0, 8)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 4 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-32">
+                {[...wallImages.slice(2), ...wallImages, ...wallImages.slice(0, 2)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 5 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-16">
+                {[...wallImages.slice(6), ...wallImages, ...wallImages.slice(0, 6)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 6 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-24">
+                {[...wallImages.slice(10), ...wallImages, ...wallImages.slice(0, 10)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 7 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-14">
+                {[...wallImages.slice(1), ...wallImages, ...wallImages.slice(0, 1)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Column 8 */}
+              <div className="flex flex-col gap-[14px] animate-marquee-vertical shrink-0 w-[300px] -mt-28">
+                {[...wallImages.slice(7), ...wallImages, ...wallImages.slice(0, 7)].map((imgUrl, i) => (
+                  <div
+                    key={i}
+                    className="relative w-[300px] h-[300px] aspect-square rounded-xl overflow-hidden bg-muted opacity-60 border-0 transition-opacity shrink-0"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Nature Showcase ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+            </div>
+
+            {/* Soft Overlay Gradients */}
+            <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+          </div>
+
+          {/* FOREGROUND CONTENT (LEFT COLUMN) */}
+          <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full order-1 lg:order-2">
+            <div className="max-w-2xl flex flex-col items-start text-left space-y-6">
+              
+              {/* Top Changelog Badge */}
+              <Link href={badgeHref} className="inline-block group">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-xs sm:text-sm font-bold text-[var(--hero-accent-text)] group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300">
+                  <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-wider">
+                    Changelog
+                  </span>
+                  <span>{badgeText || "50+ new blocks"}</span>
+                  <ArrowRight className="size-3.5 text-[var(--hero-accent-text)] group-hover:translate-x-1 transition-transform shrink-0" />
+                </div>
+              </Link>
+
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-foreground">
+                The React component library for{" "}
+                <span className="text-[var(--hero-accent-text)]">
+                  beautiful landing pages.
+                </span>
+              </h1>
+
+              {/* Subtitle Paragraph */}
+              <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed font-medium max-w-xl">
+                {subtitle ||
+                  "200+ production-ready components, blocks and templates built with React, Tailwind CSS and Motion. Copy, paste, customize and ship at lightning speed without wrestling with animations or styling."}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3.5 pt-2 w-full sm:w-auto">
+                <Link
+                  href={primaryActionHref}
+                  className="px-8 h-12 sm:h-14 rounded-2xl bg-primary text-primary-foreground text-sm sm:text-base font-extrabold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 flex-1 sm:flex-initial"
+                >
+                  <span>{primaryActionLabel || "Browse Components"}</span>
+                  <ArrowRight className="size-4 shrink-0" />
+                </Link>
+
+                <Link
+                  href={secondaryActionHref}
+                  target={secondaryActionHref.startsWith("http") ? "_blank" : undefined}
+                  className="px-8 h-12 sm:h-14 rounded-2xl border border-border bg-card/80 backdrop-blur-md text-foreground text-sm sm:text-base font-extrabold hover:bg-muted hover:border-primary/40 transition-all flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+                >
+                  <span>{secondaryActionLabel || "Get All-Access"}</span>
+                  <ArrowUpRight className="size-4 text-muted-foreground shrink-0" />
+                </Link>
+              </div>
+
+              {/* Social Proof Trust Banner */}
+              <div className="pt-4 flex flex-wrap items-center gap-4 border-t border-border/40 w-full">
+                {/* Overlapping Avatar Stack */}
+                <div className="flex items-center -space-x-2.5 shrink-0">
+                  {[
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=100&auto=format&fit=crop",
+                  ].map((imgSrc, i) => (
+                    <img
+                      key={i}
+                      src={imgSrc}
+                      alt={`Developer ${i + 1}`}
+                      className="size-8 sm:size-9 rounded-full border-2 border-background object-cover shadow-sm"
+                    />
+                  ))}
+                </div>
+
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-1 text-amber-500 text-xs font-black">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="size-3.5 fill-amber-500 text-amber-500" />
+                    ))}
+                    <span className="ml-1 text-foreground font-extrabold text-xs">5.0</span>
+                  </div>
+                  <p className="text-xs font-semibold text-muted-foreground truncate">
+                    Trusted by 10,000+ founders developers and creators
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    }
 
     /* ═══════════════════════════════════════════════
        VARIANT 4: MODERN PET SHOP & ANIMAL CARE HERO (MINIMAL, NO SHADOWS & NO PET ICONS)

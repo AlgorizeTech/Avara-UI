@@ -163,6 +163,12 @@ export default function TanStackDataTable() {
   ]}
 />
 
+### Installation
+
+The example renders through our table primitives, so install those too:
+
+It also uses `Badge` and `Button`:
+
 ### Coming from v8
 
 The v9 API is a real break, and most examples still online are v8. Three
@@ -186,12 +192,6 @@ differences account for nearly every migration error:
 Keep `features`, `data` and `columns` stable across renders. A fresh array
 literal as a fallback (`data={rows ?? []}`) invalidates every data-dependent row
 model on every render.
-
-## Installation
-
-The TanStack example renders through our table primitives, so install those too:
-
-Both examples also use `Card`, `Badge` and `Button`:
 
 ## AG Grid
 
@@ -311,6 +311,11 @@ export default function AgGridInventory() {
 
   );
 }`;
+
+### Installation
+
+This example also uses these Algorize UI components — install whichever
+your project does not already have:
 
 ## Which one
 

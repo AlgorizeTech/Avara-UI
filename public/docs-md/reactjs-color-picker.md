@@ -17,7 +17,11 @@ export default function ColorWheelStudioDemo() {
 export const usageGradient = `import { ColorPicker } from "@/components/custom/color-picker";
 
 export default function GradientStudioDemo() {
-  return ;
+  const [gradient, setGradient] = useState("linear-gradient(135deg, #8b5cf6, #ec4899)");
+
+  return (
+    
+  );
 }`;
 
 ## Installation

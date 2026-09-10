@@ -139,9 +139,9 @@ export default function ReactSelectThemed() {
   ]}
 />
 
-## Installation
+### Installation
 
-The examples below also use these Algorize UI components — install whichever
+This example also uses these Algorize UI components — install whichever
 your project does not already have:
 
 ## Two things that will bite

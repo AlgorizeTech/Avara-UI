@@ -337,6 +337,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/product-card.json",
         "utils"
       ],
       "files": [
