@@ -5,7 +5,9 @@
   "author": "AlgorizeTech",
   "description": "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/table.json"
+  ],
   "files": [
     {
       "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",

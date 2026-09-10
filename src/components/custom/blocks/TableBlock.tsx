@@ -639,7 +639,11 @@ export function resolveAccessor<T>(row: T, accessor: Accessor<T>): unknown {
   if (typeof accessor === "function") return accessor(row);
   return accessor
     .split(".")
-    .reduce<any>((acc, key) => (acc == null ? acc : acc[key]), row);
+    .reduce<unknown>(
+      (acc, key) =>
+        acc == null ? acc : (acc as Record<string, unknown>)[key],
+      row,
+    );
 }
 
 /** Flattens any nested row into one searchable string. */
@@ -653,8 +657,19 @@ function defaultSearchText(value: unknown): string {
 }
 
 /** Works with SQL `id`, Mongo `_id` and anything you map yourself. */
-function defaultGetRowId(row: any): string | number {
-  return row?.id ?? row?._id ?? row?.uuid ?? row?.key;
+/** The id fields a row is checked for, in order. */
+type RowWithId = {
+  id?: string | number;
+  _id?: string | number;
+  uuid?: string | number;
+  key?: string | number;
+};
+
+function defaultGetRowId<T>(row: T): string | number {
+  const candidate = row as RowWithId | null | undefined;
+  return (
+    candidate?.id ?? candidate?._id ?? candidate?.uuid ?? candidate?.key ?? ""
+  );
 }
 
 function compareValues(a: unknown, b: unknown, type: SortType): number {
@@ -678,7 +693,7 @@ interface SortState<T> {
   type: SortType;
 }
 
-export interface DataTableContextValue<T = any> {
+export interface DataTableContextValue<T = unknown> {
   /** Exactly what you passed in. */
   sourceRows: T[];
   /** After search + sort, before paging. */
@@ -722,7 +737,7 @@ export interface DataTableContextValue<T = any> {
 const DataTableContext = createContext<DataTableContextValue | null>(null);
 
 /** Escape hatch — build your own toolbar, pager or empty state on this. */
-export function useDataTable<T = any>(): DataTableContextValue<T> {
+export function useDataTable<T = unknown>(): DataTableContextValue<T> {
   const ctx = useContext(DataTableContext);
   if (!ctx) {
     throw new Error("useDataTable must be used inside <DataTable>.");
@@ -1057,7 +1072,7 @@ export function DataTablePageSize({
   );
 }
 
-export interface DataTableBodyProps<T = any>
+export interface DataTableBodyProps<T = unknown>
   extends Omit<React.HTMLAttributes<HTMLTableSectionElement>, "children"> {
   children: ((rows: T[]) => React.ReactNode) | React.ReactNode;
   animate?: boolean;
@@ -1082,11 +1097,11 @@ function DataTableBodyImpl<T>({
   );
 }
 
-export const DataTableBody = DataTableBodyImpl as <T = any>(
+export const DataTableBody = DataTableBodyImpl as <T = unknown>(
   props: DataTableBodyProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableRowProps<T = any>
+export interface DataTableRowProps<T = unknown>
   extends React.HTMLAttributes<HTMLTableRowElement> {
   /** Pass the row and selection/expansion wire themselves up. */
   row?: T;
@@ -1104,7 +1119,8 @@ function DataTableRowImpl<T>({
 }: DataTableRowProps<T>) {
   const { getRowId, isSelected } = useDataTable<T>();
   const rowId =
-    rowIdProp ?? (row !== undefined ? getRowId(row) : (undefined as any));
+    rowIdProp ??
+    (row !== undefined ? getRowId(row) : (undefined as unknown as string | number));
 
   const content = (
     <TableRow
@@ -1122,11 +1138,11 @@ function DataTableRowImpl<T>({
   );
 }
 
-export const DataTableRow = DataTableRowImpl as <T = any>(
+export const DataTableRow = DataTableRowImpl as <T = unknown>(
   props: DataTableRowProps<T>,
 ) => React.ReactElement | null;
 
-export interface DataTableHeadProps<T = any>
+export interface DataTableHeadProps<T = unknown>
   extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "align"> {
   align?: TableAlign;
   /** Dot-path or accessor function. Presence of this makes the header sortable. */
@@ -1162,7 +1178,7 @@ function DataTableHeadImpl<T>({
   );
 }
 
-export const DataTableHead = DataTableHeadImpl as <T = any>(
+export const DataTableHead = DataTableHeadImpl as <T = unknown>(
   props: DataTableHeadProps<T>,
 ) => React.ReactElement | null;
 
@@ -1269,10 +1285,11 @@ export function DataTableExpandedRow({
   );
 }
 
-export interface DataTableBatchBarProps {
+export interface DataTableBatchBarProps<T = unknown> {
+  /** Receives the selected rows and a way to clear them. */
   children?:
     | ((args: {
-        selectedRows: any[];
+        selectedRows: T[];
         selectedIds: (string | number)[];
         clearSelection: () => void;
       }) => React.ReactNode)
@@ -1281,12 +1298,13 @@ export interface DataTableBatchBarProps {
   className?: string;
 }
 
-export function DataTableBatchBar({
+export function DataTableBatchBar<T = unknown>({
   children,
   floating = true,
   className,
-}: DataTableBatchBarProps) {
-  const { selectedIds, selectedRows, clearSelection, theme, themeStyle } = useDataTable();
+}: DataTableBatchBarProps<T>) {
+  const { selectedIds, selectedRows, clearSelection, theme, themeStyle } =
+    useDataTable<T>();
   const count = selectedIds.size;
 
   return (

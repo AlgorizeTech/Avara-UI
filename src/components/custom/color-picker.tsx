@@ -697,7 +697,14 @@ export function GradientColorPicker({
 }: ColorPickerProps) {
   const [gradientType, setGradientType] = useState<"linear" | "radial" | "conic">("linear");
   const [stopCount, setStopCount] = useState<2 | 3>(2);
-  const [color1, setColor1] = useState("#8b5cf6");
+  // `value` is a single colour, so for a gradient it can only mean the
+  // first stop. Anything that is not a hex colour (a gradient string, say)
+  // falls back rather than seeding a broken stop.
+  const [color1, setColor1] = useState(
+    value && /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)
+      ? value
+      : "#8b5cf6",
+  );
   const [color2, setColor2] = useState("#ec4899");
   const [color3, setColor3] = useState("#3b82f6");
   const [angle, setAngle] = useState(135);

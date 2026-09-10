@@ -38,7 +38,9 @@
         "data-display"
       ],
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/table.json"
+      ],
       "files": [
         {
           "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",

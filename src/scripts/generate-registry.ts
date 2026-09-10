@@ -123,6 +123,14 @@ const IMPORT_RE =
   /^[ \t]*import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/gm;
 
 /**
+ * `export * from "./TableBlock"` and friends. A re-export is a dependency as
+ * surely as an import: miss it and the item installs a file that re-exports a
+ * module the consumer was never given.
+ */
+const REEXPORT_RE =
+  /^[ \t]*export\s+(?:type\s+)?(?:\*(?:\s+as\s+\w+)?|\{[\s\S]*?\})\s+from\s+["']([^"']+)["']/gm;
+
+/**
  * `lazy(() => import("./Fleet-map"))` and friends. These resolve at runtime but
  * still have to ship: an item whose dynamic import is not counted installs
  * without the file it reaches for, and the consumer's build fails on a module
@@ -143,7 +151,7 @@ function parseImports(src: string): string[] {
     .join("\n");
 
   const specs: string[] = [];
-  for (const re of [IMPORT_RE, DYNAMIC_IMPORT_RE]) {
+  for (const re of [IMPORT_RE, REEXPORT_RE, DYNAMIC_IMPORT_RE]) {
     re.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = re.exec(code))) specs.push(m[1]);
