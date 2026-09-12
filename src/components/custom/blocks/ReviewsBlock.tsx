@@ -1,18 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import createGlobe from "cobe";
-import { useTheme } from "next-themes";
 
 export type ReviewsVariant =
-	| "globe-marquee"
-	| "stacked-carousel"
-	| "stacked"
-	| "vertical-marquee"
-	| "4-column-marquee";
+	| "up-down-vertical-marquee"
+	| "stacked-carousel";
 
 export interface ReviewItem {
 	id: string;
@@ -30,8 +25,8 @@ export interface ReviewsProps {
 	reviews?: ReviewItem[];
 	autoSlide?: boolean;
 	autoSlideInterval?: number;
+	marqueeSpeed?: number;
 	className?: string;
-	glowColor?: string;
 }
 
 const DEFAULT_REVIEWS: ReviewItem[] = [
@@ -120,146 +115,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 // ==========================================
 // ULTRA-REALISTIC COBE WEBGL 3D GLOBE
 // ==========================================
-function CobeRealGlobe({ glowColor }: { glowColor?: string }) {
-	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-	const { resolvedTheme } = useTheme();
-	const isDarkMode = resolvedTheme !== "light";
-	const [themeTick, setThemeTick] = useState(0);
 
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-		const observer = new MutationObserver(() => {
-			setThemeTick((t) => t + 1);
-		});
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ["style", "class"],
-		});
-		observer.observe(document.body, {
-			attributes: true,
-			attributeFilter: ["style", "class"],
-		});
-		return () => observer.disconnect();
-	}, []);
-
-	useEffect(() => {
-		let phi = 0;
-		let animId: number;
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		const getPrimaryAccentRgb = (): [number, number, number] => {
-			if (typeof window !== "undefined") {
-				try {
-					const dummy = document.createElement("div");
-					dummy.className = "text-primary border-primary";
-					document.body.appendChild(dummy);
-					const comp = getComputedStyle(dummy).color || getComputedStyle(dummy).borderColor;
-					document.body.removeChild(dummy);
-
-					if (comp.includes("oklch")) {
-						const match = comp.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
-						if (match) {
-							const l = parseFloat(match[1]);
-							const c = parseFloat(match[2]);
-							const h = parseFloat(match[3]);
-
-							if (c < 0.03) {
-								return isDarkMode ? [0.4, 0.5, 0.95] : [0.25, 0.45, 0.9];
-							}
-
-							const hRad = (h * Math.PI) / 180;
-							const a = c * Math.cos(hRad);
-							const b = c * Math.sin(hRad);
-
-							const l_ = Math.pow(l + 0.3963377774 * a + 0.2158037573 * b, 3);
-							const m_ = Math.pow(l - 0.1055613458 * a - 0.0638541728 * b, 3);
-							const s_ = Math.pow(l - 0.0894841775 * a - 1.291485548 * b, 3);
-
-							const rLin = +4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_;
-							const gLin = -1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_;
-							const bLin = -0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_;
-
-							const toSrgb = (x: number) =>
-								x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
-
-							return [
-								Math.max(0, Math.min(1, toSrgb(rLin))),
-								Math.max(0, Math.min(1, toSrgb(gLin))),
-								Math.max(0, Math.min(1, toSrgb(bLin))),
-							];
-						}
-					}
-
-					const rgbMatch = comp.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-					if (rgbMatch) {
-						return [
-							parseInt(rgbMatch[1], 10) / 255,
-							parseInt(rgbMatch[2], 10) / 255,
-							parseInt(rgbMatch[3], 10) / 255,
-						];
-					}
-
-					const ctx = document.createElement("canvas").getContext("2d");
-					if (ctx && comp) {
-						ctx.fillStyle = comp;
-						const hex = ctx.fillStyle;
-						if (hex.startsWith("#") && hex.length === 7) {
-							return [
-								parseInt(hex.slice(1, 3), 16) / 255,
-								parseInt(hex.slice(3, 5), 16) / 255,
-								parseInt(hex.slice(5, 7), 16) / 255,
-							];
-						}
-					}
-				} catch {
-					// fallback
-				}
-			}
-			return isDarkMode ? [0.4, 0.5, 0.95] : [0.25, 0.45, 0.9];
-		};
-
-		const accentRgb = getPrimaryAccentRgb();
-
-		const globe = createGlobe(canvas, {
-			devicePixelRatio: 2,
-			width: 1000 * 2,
-			height: 1000 * 2,
-			phi: 0,
-			theta: 0.2,
-			dark: isDarkMode ? 1 : 0,
-			diffuse: isDarkMode ? 1.2 : 1.5,
-			mapSamples: 18000,
-			mapBrightness: 6,
-			mapBaseBrightness: isDarkMode ? 0.05 : 0,
-			baseColor: isDarkMode ? [0.05, 0.05, 0.07] : [1, 1, 1],
-			markerColor: accentRgb,
-			glowColor: accentRgb,
-			markers: [],
-		});
-
-		const loop = () => {
-			phi += 0.004;
-			globe.update({ phi });
-			animId = requestAnimationFrame(loop);
-		};
-		loop();
-
-		return () => {
-			cancelAnimationFrame(animId);
-			globe.destroy();
-		};
-	}, [isDarkMode, glowColor, themeTick]);
-
-	return (
-		<div className="relative flex items-center justify-center pointer-events-none overflow-hidden">
-			<canvas
-				ref={canvasRef}
-				className="relative z-10 w-[360px] h-[360px] sm:w-[750px] sm:h-[750px] max-w-[90vw] aspect-square object-contain rounded-full"
-			/>
-		</div>
-	);
-}
 
 // ==========================================
 // 3D STACKED PORTRAIT CAROUSEL VARIANT
@@ -591,17 +447,25 @@ function ReviewCard({
 // ==========================================
 // 4-COLUMN VERTICAL MARQUEE VARIANT
 // ==========================================
-function FourColumnMarqueeReviews({ reviews }: { reviews: ReviewItem[] }) {
+function FourColumnMarqueeReviews({
+	reviews,
+	speed = 100,
+}: {
+	reviews: ReviewItem[];
+	speed?: number;
+}) {
 	const col1 = [...reviews, ...reviews];
 	const col2 = [...reviews.slice(1), ...reviews, ...reviews.slice(0, 1)];
 	const col3 = [...reviews.slice(2), ...reviews, ...reviews.slice(0, 2)];
 	const col4 = [...reviews.slice(3), ...reviews, ...reviews.slice(0, 3)];
 
+	const speedStr = `${speed}s`;
+
 	const columns = [
-		{ items: col1, dir: "up", speed: "65s", visibility: "flex" },
-		{ items: col2, dir: "down", speed: "75s", visibility: "flex" },
-		{ items: col3, dir: "up", speed: "68s", visibility: "hidden lg:flex" },
-		{ items: col4, dir: "down", speed: "78s", visibility: "hidden xl:flex" },
+		{ items: col1, dir: "up", speed: speedStr, visibility: "flex" },
+		{ items: col2, dir: "down", speed: speedStr, visibility: "flex" },
+		{ items: col3, dir: "up", speed: speedStr, visibility: "hidden lg:flex" },
+		{ items: col4, dir: "down", speed: speedStr, visibility: "hidden xl:flex" },
 	];
 
 	return (
@@ -692,17 +556,16 @@ function FourColumnMarqueeReviews({ reviews }: { reviews: ReviewItem[] }) {
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
-	variant = "globe-marquee",
+	variant = "up-down-vertical-marquee",
 	title = "Loved by Tech Leaders Worldwide",
 	subtitle = "See how fast-growing teams scale products with our senior engineering team.",
 	reviews = DEFAULT_REVIEWS,
 	autoSlide = true,
 	autoSlideInterval = 4000,
+	marqueeSpeed = 100,
 	className,
-	glowColor,
 }: ReviewsProps) {
-	const isStacked = variant === "stacked" || variant === "stacked-carousel";
-	const isVerticalMarquee = variant === "vertical-marquee" || variant === "4-column-marquee";
+	const isStacked = variant === "stacked-carousel";
 
 	return (
 		<section
@@ -733,13 +596,13 @@ export function ReviewsBlock({
 					to   { transform: translateY(0); }
 				}
 				.reviews-marquee-track {
-					animation: reviews-marquee-scroll 35s linear infinite;
+					animation: reviews-marquee-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-hmarquee-left {
-					animation: reviews-marquee-left-scroll 55s linear infinite;
+					animation: reviews-marquee-left-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-hmarquee-right {
-					animation: reviews-marquee-right-scroll 55s linear infinite;
+					animation: reviews-marquee-right-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-vmarquee-up {
 					animation: reviews-vmarquee-up-scroll linear infinite;
@@ -783,78 +646,8 @@ export function ReviewsBlock({
 					autoSlide={autoSlide}
 					autoSlideInterval={autoSlideInterval}
 				/>
-			) : isVerticalMarquee ? (
-				<FourColumnMarqueeReviews reviews={reviews} />
 			) : (
-				<div className="relative w-full min-h-[420px] sm:min-h-[750px] flex items-center justify-center">
-					{/* Centered High-Performance COBE WebGL 3D Globe */}
-					<div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-						<CobeRealGlobe glowColor={glowColor} />
-					</div>
-
-					{/* Foreground Smooth Right-to-Left Infinite Marquee Container */}
-					<div className="relative z-10 w-full overflow-hidden py-6">
-						<div className="flex gap-4 sm:gap-6 w-max reviews-marquee-track">
-							{[
-								...reviews,
-								...reviews,
-								...reviews,
-								...reviews,
-								...reviews,
-								...reviews,
-							].map((review, idx) => (
-								<div
-									key={`${review.id}-${idx}`}
-									className="w-[210px] xs:w-[240px] sm:w-[380px] shrink-0 p-3 sm:p-7 rounded-lg sm:rounded-2xl bg-card text-card-foreground border border-border transition-all duration-300 hover:border-primary/60 group flex flex-col justify-between">
-									<div className="space-y-2 sm:space-y-4">
-										{/* Rating Stars & Badge */}
-										<div className="flex items-center gap-1">
-											<div className="flex items-center text-primary gap-0.5">
-												{Array.from({ length: 5 }).map((_, i) => (
-													<Star
-														key={i}
-														className="size-3 sm:size-4 fill-primary text-primary"
-													/>
-												))}
-											</div>
-											<span className="text-[11px] sm:text-xs font-bold text-primary ml-0.5">
-												{review.rating.toFixed(1)}
-											</span>
-										</div>
-
-										{/* Testimonial Quote */}
-										<p className="text-[11px] sm:text-sm text-muted-foreground leading-snug sm:leading-relaxed font-normal line-clamp-2 sm:line-clamp-none">
-											"{review.content}"
-										</p>
-									</div>
-
-									{/* Customer Info Footer */}
-									<div className="pt-3 sm:pt-5 mt-2 sm:mt-4 border-t border-border flex items-center gap-2 sm:gap-3">
-										{review.avatar ? (
-											<img
-												src={review.avatar}
-												alt={review.name}
-												className="size-7 sm:size-10 rounded-full object-cover border border-primary/30"
-											/>
-										) : (
-											<div className="size-7 sm:size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs sm:text-sm">
-												{review.name.charAt(0)}
-											</div>
-										)}
-										<div className="min-w-0">
-											<h4 className="text-[11px] sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
-												{review.name}
-											</h4>
-											<p className="text-[10px] sm:text-[11px] text-primary/90 font-medium truncate">
-												{review.role}
-											</p>
-										</div>
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
+				<FourColumnMarqueeReviews reviews={reviews} speed={marqueeSpeed} />
 			)}
 		</section>
 	);

@@ -42,12 +42,10 @@ export const usageDrawer = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-// The cart holds no data of its own. Keep the items in the parent, where the
-// rest of your app can reach them, and hand them over as initialItems.
 ${cartItems}
 
 export default function DrawerCart() {
-  return <CartBlock type="drawer" initialItems={items} />;
+  return <CartBlock type="drawer" color="primary" initialItems={items} />;
 }`;
 
 export const usageModal = `import {
@@ -58,8 +56,7 @@ export const usageModal = `import {
 ${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop - same trigger, same state.
-  return <CartBlock type="modal" initialItems={items} />;
+  return <CartBlock type="modal" color="primary" initialItems={items} />;
 }`;
 
 export const usagePage = `import {
@@ -69,10 +66,8 @@ export const usagePage = `import {
 
 ${cartItems}
 
-// Full-width two-column layout for a dedicated /cart route.
-// No trigger button - the cart is the page.
 export default function CartPage() {
-  return <CartBlock type="page" initialItems={items} />;
+  return <CartBlock type="page" color="primary" initialItems={items} />;
 }`;
 
 <ExampleShowcase
@@ -99,7 +94,7 @@ export default function CartPage() {
         {
           prop: "color",
           effect:
-            "themes the primary buttons, focus rings, badges and icons. Takes `indigo`, `rose`, `emerald`, `zinc` or a hex; anything unrecognised — including the `primary` default — falls back to indigo.",
+            "themes the primary buttons, focus rings, badges and icons. Takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a hex.",
         },
       ],
       props: { type: "drawer" },

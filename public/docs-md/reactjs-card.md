@@ -336,6 +336,315 @@ export default function NowPlayingCard() {
   );
 }`;
 
+export const usageProfile = `const TEAMMATES = [
+  {
+    initials: "TL",
+    name: "Tomás Léger",
+    role: "Motion and prototyping",
+    zone: "Lisbon",
+    tint: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
+  },
+  {
+    initials: "WA",
+    name: "Wren Adeyemi",
+    role: "Accessibility",
+    zone: "Lagos",
+    tint: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  },
+];
+
+export default function ProfileCards({ interactive }: { interactive: boolean }) {
+  const [following, setFollowing] = useState(false);
+
+  return (
+
+                AK
+
+              Open to projects
+
+            Ayesha Karim
+            
+              Design engineer at Northwind
+              |
+               Dhaka
+
+            Builds the component library three product teams ship on. Currently
+            rewriting the motion primitives.
+
+            {["Design systems", "React", "Motion", "Accessibility"].map(
+              (tag) => (
+                
+                  {tag}
+                
+              ),
+            )}
+
+            {[
+              ["128", "Components"],
+              ["342", "Merged PRs"],
+              ["96", "Reviews"],
+            ].map(([value, label]) => (
+              
+                {value}
+                {label}
+              
+            ))}
+
+           setFollowing((v) => !v)}
+            className={cn(
+              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              following
+                ? "border-border text-foreground hover:bg-muted"
+                : "border-violet-600 bg-violet-600 text-white hover:border-violet-500 hover:bg-violet-500",
+            )}
+          >
+            {following ? (
+              <>
+                 Following
+              
+            ) : (
+              <>
+                 Follow
+              
+            )}
+
+             Message
+
+        {TEAMMATES.map((member) => (
+
+              {member.initials}
+
+              {member.name}
+              
+                {member.role}
+
+              {member.zone}
+
+        ))}
+
+           Invite a teammate
+
+  );
+}`;
+
+export const usageProfilePage = `const TEAMMATES = [
+  {
+    initials: "TL",
+    name: "Tomás Léger",
+    role: "Motion and prototyping",
+    zone: "Lisbon",
+    tint: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
+  },
+  {
+    initials: "WA",
+    name: "Wren Adeyemi",
+    role: "Accessibility",
+    zone: "Lagos",
+    tint: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  },
+];
+
+const PROFILE_TIME_ZONE = "Asia/Dhaka";
+const WORKDAY = { start: 10, end: 18 }; // hours, in Ayesha's time zone
+
+const HIGHLIGHTS = [
+  {
+    title: "Motion primitives v2",
+    summary: "One easing vocabulary for modals, drawers and toasts.",
+    status: "In progress",
+    progress: 68,
+  },
+  {
+    title: "Northwind UI 4.0",
+    summary: "128 components, dark mode by default, tokens in CSS.",
+    status: "Shipped June 2026",
+  },
+  {
+    title: "Contrast audit",
+    summary: "Every text and icon color checked at 4.5:1 or better.",
+    status: "Shipped February 2026",
+  },
+];
+
+const ACTIVITY = [
+  { icon: GitMerge, text: "Merged #1287 — unify easing curves across overlays", when: "2h ago" },
+  { icon: Eye, text: "Reviewed Tomás's drawer focus-trap fix", when: "Yesterday" },
+  { icon: FileText, text: "Published the Northwind UI 4.0 release notes", when: "3 days ago" },
+  { icon: MessageCircle, text: "Opened an RFC on token naming", when: "Last week" },
+];
+
+/** Hour-of-day (with minutes as a fraction) and a readable clock, both in the
+ *  profile's own time zone — so the day strip is honest wherever it's viewed. */
+function useLocalTime(timeZone: string) {
+  const [time, setTime] = useState(null);
+
+  useEffect(() => {
+    const read = () => {
+      const now = new Date();
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).formatToParts(now);
+      const h = Number(parts.find((p) => p.type === "hour")?.value ?? 0) % 24;
+      const m = Number(parts.find((p) => p.type === "minute")?.value ?? 0);
+      const label = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        hour: "numeric",
+        minute: "2-digit",
+      }).format(now);
+      setTime({ hour: h + m / 60, label });
+    };
+    read();
+    const id = setInterval(read, 30_000);
+    return () => clearInterval(id);
+  }, [timeZone]);
+
+  return time;
+}
+
+export default function ProfilePage() {
+  const [following, setFollowing] = useState(false);
+  const time = useLocalTime(PROFILE_TIME_ZONE);
+  const working =
+    time !== null && time.hour >= WORKDAY.start && time.hour 
+      {/* Top bar */}
+
+           People
+
+           Share
+
+      {/* Hero — no banner; the name and the day strip carry it */}
+
+                AK
+
+                  Ayesha Karim
+
+                  Design engineer at Northwind
+
+                  Dhaka
+
+                    {time ? time.label : "--:--"} local
+
+                  Joined March 2021
+
+               Message
+            
+             setFollowing((v) => !v)}
+              className={cn(
+                "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:flex-none",
+                following
+                  ? "border-border text-foreground hover:bg-muted"
+                  : "border-violet-600 bg-violet-600 text-white hover:border-violet-500 hover:bg-violet-500",
+              )}
+            >
+              {following ? (
+                <>
+                   Following
+                
+              ) : (
+                <>
+                   Follow
+                
+              )}
+
+        {/* Her day: 24 hours in Dhaka, the working window, and a live marker */}
+
+              {working ? "Working now" : "Outside working hours"}
+
+              10:00 – 18:00 Dhaka, UTC+6
+
+            {[6, 12, 18].map((h) => (
+              
+            ))}
+            {time && (
+
+            )}
+
+            12 am
+            6 am
+            12 pm
+            6 pm
+            12 am
+
+      {/* Body — two columns on wide screens, one below */}
+
+            About
+            
+              Builds the component library three product teams ship on. Currently
+              rewriting the motion primitives so a modal, a drawer and a toast all
+              ease the same way. Happiest when a design decision becomes one
+              variable.
+
+            Skills
+            
+              {[
+                "Design systems",
+                "React",
+                "Motion",
+                "Accessibility",
+                "TypeScript",
+                "Figma",
+              ].map((tag) => (
+                
+                  {tag}
+                
+              ))}
+
+            Details
+
+                ayesha@northwind.co
+
+                ayesha.design
+
+                Platform team, reports to Head of Design
+
+            Works closely with
+            
+              {TEAMMATES.map((member) => (
+
+                    {member.initials}
+
+                    {member.name}
+                    
+                      {member.role}
+
+                    {member.zone}
+
+              ))}
+
+            Highlights
+            
+              {HIGHLIGHTS.map((item) => (
+
+                    {item.title}
+                    
+                      {item.summary}
+
+                    {item.progress !== undefined && (
+
+                    )}
+                    
+                      {item.progress !== undefined
+                        ? item.status + ", " + item.progress + "%"
+                        : item.status}
+
+              ))}
+
+            Recent activity
+            
+              {ACTIVITY.map((entry) => (
+
+                  {entry.text}
+                  
+                    {entry.when}
+
+              ))}
+
+  );
+}`;
+
 ## Installation
 
 ## Examples

@@ -87,16 +87,6 @@ export const sampleReviewsData = `const sampleReviews: ReviewItem[] = [
   },
 ];`;
 
-export const usageGlobeMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
-
-${sampleReviewsData}
-
-export default function GlobeMarqueeDemo() {
-  return (
-    
-  );
-}`;
-
 export const usageStackedCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
 
 ${sampleReviewsData}
@@ -123,12 +113,53 @@ export default function VerticalMarqueeDemo() {
 
 Discover the key capabilities of the `ReviewsBlock` component:
 
-- **4-Column Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
+- **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with Framer Motion spring physics, rolling 3D card rotation, and circular arrow buttons.
-- **3D Rotating WebGL Globe Canvas**: Interactive COBE WebGL 3D sphere with dynamic accent glow and light field.
 - **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
 - **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
 - **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
+
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+        variant
+        "up-down-vertical-marquee" | "stacked-carousel"
+        "up-down-vertical-marquee"
+        Determines the visual review layout style (infinite up/down vertical marquee or 3D stacked cards).
+
+        title
+        string
+        "Loved by Teams Worldwide"
+        Main headline text rendered at the top of the reviews section.
+
+        subtitle
+        string
+        "See what founders, designers, and engineers are saying..."
+        Supporting paragraph description displayed below the title.
+
+        reviews
+        ReviewItem[]
+        DEFAULT_REVIEWS
+        Array of review objects with id, name, role, avatar, rating, and content.
+
+        autoSlide
+        boolean
+        true
+        Enables automatic card sliding for stacked carousel variants.
+
+        autoSlideInterval
+        number
+        5000
+        Interval duration in milliseconds for auto-sliding stacked cards.
+
+        className
+        string
+        undefined
+        Additional custom Tailwind CSS class names applied to the container.
 
 ---
 

@@ -22,11 +22,8 @@ import { getThemeStyles } from "./cart-theme";
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-// ==========================================
-// DYNAMIC THEME ENGINE
-// ==========================================
-export type CartColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type CartType = "drawer" | "modal" | "popover" | "page";
+export type CartColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
+export type CartType = "drawer" | "modal" | "page";
 
 export interface CartItem {
   id: string;
@@ -180,16 +177,7 @@ function TriggerButton({
   const nudgeRef = useRef<gsap.core.Timeline | null>(null);
   const prevTotal = useRef(totalItems);
 
-  /**
-   * The nudge is a hint, not a nag: once the cart has been opened it never
-   * comes back, so the trigger stops competing with the rest of the page.
-   */
-  const [hasOpened, setHasOpened] = useState(false);
-  // A latch, not derived state: once the cart has been opened the nudge is
-  // gone for good, including after it closes again.
-  if (isOpen && !hasOpened) setHasOpened(true);
-
-  const shouldNudge = !isOpen && !hasOpened && totalItems > 0;
+  const shouldNudge = !isOpen && totalItems > 0;
 
   // --- "click me": the bag tilts every few seconds and pushes out a ring.
   useIsomorphicLayoutEffect(() => {
@@ -422,12 +410,6 @@ export function CartBlock({
           { opacity: 0, scale: 0.95, y: 10 },
           { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" },
         );
-      if (type === "popover")
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: -10, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power2.out" },
-        );
       return;
     }
 
@@ -451,15 +433,6 @@ export function CartBlock({
         scale: 0.95,
         y: 10,
         duration: 0.3,
-        ease: "power2.in",
-        onComplete: unmountLayer,
-      });
-    if (type === "popover")
-      gsap.to(el, {
-        opacity: 0,
-        y: -10,
-        scale: 0.95,
-        duration: 0.2,
         ease: "power2.in",
         onComplete: unmountLayer,
       });
@@ -532,12 +505,7 @@ export function CartBlock({
       className="w-full flex items-center justify-center relative"
       style={style}
     >
-      <div
-        className={cn(
-          "relative z-[90]",
-          type === "popover" ? "flex flex-col items-center" : "",
-        )}
-      >
+      <div className="relative z-[90]">
         <TriggerButton
           isOpen={isOpen}
           onToggle={() => (isOpen ? closeCart() : openCart())}
@@ -545,58 +513,6 @@ export function CartBlock({
           themeBg={theme.bg}
           themeBorder={theme.border}
         />
-
-        {type === "popover" && isLayerMounted && (
-          <div className="absolute top-[calc(100%+12px)] right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[100] pointer-events-none">
-            <div
-              ref={containerRef}
-              className="w-[340px] bg-background border border-border rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col opacity-0"
-            >
-              <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-muted/50">
-                <span className="font-bold text-foreground">
-                  Cart ({totalItems})
-                </span>
-              </div>
-              <div className="max-h-[300px] overflow-y-auto px-4 py-2">
-                {items.length === 0 ? (
-                  <p className="text-center text-sm text-muted-foreground py-8">
-                    Your cart is empty.
-                  </p>
-                ) : (
-                  items.map((item) => (
-                    <ItemRow
-                      key={item.id}
-                      item={item}
-                      updateQty={updateQty}
-                      removeItem={removeItem}
-                      theme={theme}
-                    />
-                  ))
-                )}
-              </div>
-              {items.length > 0 && (
-                <div className="p-4 border-t border-border bg-muted/50">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Subtotal
-                    </span>
-                    <span className="text-lg font-bold text-foreground">
-                      ${subtotal.toFixed(2)}
-                    </span>
-                  </div>
-                  <button
-                    className={cn(
-                      "w-full py-3 rounded-lg font-bold shadow-sm transition-opacity",
-                      theme.bg,
-                    )}
-                  >
-                    Checkout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
       {(type === "drawer" || type === "modal") && isLayerMounted && (

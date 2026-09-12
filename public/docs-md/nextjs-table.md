@@ -32,7 +32,24 @@ export const usageBasic = `"use client";
 
 ${invoiceType}
 
-export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+];
+
+export default function InvoiceTable({ invoices = sampleInvoices }: { invoices?: Invoice[] }) {
   return (
 
             Invoice
@@ -49,7 +66,7 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
                   
                     {invoice.customer.email}
 
-              {invoice.amount}
+              \${invoice.amount}
             
           ))}
 

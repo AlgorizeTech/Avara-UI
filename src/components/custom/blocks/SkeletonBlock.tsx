@@ -67,13 +67,21 @@ export function SkeletonBlock({
   );
 
 
+  // Combine standard style prop with explicit width/height/radius custom props
+  const customStyles: React.CSSProperties = {
+    ...style,
+    ...(width !== undefined && { width }),
+    ...(height !== undefined && { height }),
+    ...(radius !== undefined && { borderRadius: radius }),
+  };
+
   // --- COMPOSITE VARIANTS ---
 
   if (variant === "profile") {
     return (
       <div
         className={cn("flex items-center justify-center gap-4 w-full max-w-xs mx-auto", className)}
-        style={style}
+        style={customStyles}
         {...props}
       >
         <div className={cn(baseClasses, "w-12 h-12 rounded-full shrink-0")}>
@@ -98,7 +106,7 @@ export function SkeletonBlock({
           "flex flex-col gap-2.5 w-full max-w-sm mx-auto items-center",
           className,
         )}
-        style={style}
+        style={customStyles}
         {...props}
       >
         <div className={cn(baseClasses, "h-4 w-full rounded-md")}>
@@ -115,10 +123,10 @@ export function SkeletonBlock({
     return (
       <div
         className={cn(
-          "flex flex-col gap-3 w-full max-w-sm p-4 border border-border rounded-2xl bg-white dark:bg-[#050505]",
+          "flex flex-col gap-3 w-full max-w-sm p-4 border border-border rounded-2xl bg-card text-card-foreground",
           className,
         )}
-        style={style}
+        style={customStyles}
         {...props}
       >
         <div className={cn(baseClasses, "w-full h-40 rounded-xl mb-2")}>
@@ -146,14 +154,6 @@ export function SkeletonBlock({
     variant === "rect" && !radius && "rounded-xl",
     className,
   );
-
-  // Combine standard style prop with our explicit custom props
-  const customStyles: React.CSSProperties = {
-    ...style,
-    width: width ?? style?.width,
-    height: height ?? style?.height,
-    borderRadius: radius ?? style?.borderRadius,
-  };
 
   return (
     <div className={atomicClasses} style={customStyles} {...props}>

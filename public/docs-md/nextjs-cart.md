@@ -39,8 +39,6 @@ export const usageDrawer = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-// The cart holds no data of its own. Keep the items in the parent, where the
-// rest of your app can reach them, and hand them over as initialItems.
 ${cartItems}
 
 export default function DrawerCart() {
@@ -55,7 +53,6 @@ export const usageModal = `import {
 ${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop - same trigger, same state.
   return ;
 }`;
 
@@ -66,8 +63,6 @@ export const usagePage = `import {
 
 ${cartItems}
 
-// Full-width two-column layout for a dedicated /cart route.
-// No trigger button - the cart is the page.
 export default function CartPage() {
   return ;
 }`;
