@@ -198,7 +198,7 @@ function HeroInteractiveHub() {
 
 			<div className="relative rounded-2xl border border-border/60 bg-card/95 backdrop-blur-2xl shadow-2xl overflow-hidden ring-1 ring-white/10 dark:ring-white/5">
 				{/* Hub Header Bar */}
-				<div className="px-4 py-2.5 border-b border-border/50 bg-muted/40 flex items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
+				<div className="px-4 py-2.5 border-b border-border/50 bg-muted/40 flex items-center justify-between gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 					<div className="flex items-center gap-1.5 shrink-0">
 						<span className="size-2.5 rounded-full bg-rose-500/80 inline-block" />
 						<span className="size-2.5 rounded-full bg-amber-500/80 inline-block" />

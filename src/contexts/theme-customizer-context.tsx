@@ -4,7 +4,8 @@
  * ThemeCustomizerProvider — manages full CSS variable customization.
  *
  * This is a separate context from the existing ThemeContextProvider.
- * It handles all 19 color tokens + border radius + preset management,
+ * It handles all 32 shadcn color tokens (core, chart, sidebar) + border radius
+ * + preset management,
  * persisting to localStorage and injecting CSS variables onto <html>.
  */
 
@@ -22,12 +23,17 @@ import {
   type ColorToken,
   type ThemePreset,
   COLOR_TOKENS,
+  CHART_TOKENS,
+  SIDEBAR_TOKENS,
   THEME_PRESETS,
   DEFAULT_PRESET,
   THEME_CUSTOMIZER_STORAGE_KEY,
+  resolvePresetColors,
 } from "@/lib/theme-presets";
 
 // ─── Types ───────────────────────────────────────────────────────
+
+export type ExportMode = "both" | "light" | "dark";
 
 export interface ThemeCustomizerState {
   colors: {
@@ -54,7 +60,7 @@ interface ThemeCustomizerContextValue {
   activePreset: string;
   // Actions
   resetToDefaults: () => void;
-  generateCSS: () => string;
+  generateCSS: (exportMode?: ExportMode) => string;
   // Current mode awareness
   currentMode: "light" | "dark";
 }
@@ -70,13 +76,16 @@ function getDefaultPreset(): ThemePreset {
   );
 }
 
-function getInitialState(): ThemeCustomizerState {
-  const preset = getDefaultPreset();
+function presetColors(preset: ThemePreset): ThemeCustomizerState["colors"] {
   return {
-    colors: {
-      light: { ...preset.colors.light },
-      dark: { ...preset.colors.dark },
-    },
+    light: resolvePresetColors(preset.colors.light, "light"),
+    dark: resolvePresetColors(preset.colors.dark, "dark"),
+  };
+}
+
+function getInitialState(): ThemeCustomizerState {
+  return {
+    colors: presetColors(getDefaultPreset()),
     radius: 0.625,
     activePreset: DEFAULT_PRESET,
   };
@@ -95,6 +104,22 @@ function loadState(): ThemeCustomizerState {
       );
       if (hasAllTokens && typeof parsed.radius === "number") {
         return parsed;
+      }
+      // State saved before the chart/sidebar tokens existed: keep the user's
+      // colors and derive the missing tokens from them, rather than throwing
+      // the whole customization away.
+      if (
+        parsed.colors?.light &&
+        parsed.colors?.dark &&
+        typeof parsed.radius === "number"
+      ) {
+        return {
+          ...parsed,
+          colors: {
+            light: resolvePresetColors(parsed.colors.light, "light"),
+            dark: resolvePresetColors(parsed.colors.dark, "dark"),
+          },
+        };
       }
     }
   } catch {
@@ -258,10 +283,7 @@ export function ThemeCustomizerProvider({
     const nextState: ThemeCustomizerState = {
       radius: state.radius,
       activePreset: presetName,
-      colors: {
-        light: { ...preset.colors.light },
-        dark: { ...preset.colors.dark },
-      },
+      colors: presetColors(preset),
     };
 
     saveState(nextState);
@@ -275,7 +297,7 @@ export function ThemeCustomizerProvider({
     saveState(initial);
   }, []);
 
-  const generateCSS = useCallback((exportMode: "both" | "light" | "dark" = "both"): string => {
+  const generateCSS = useCallback((exportMode: ExportMode = "both"): string => {
     const indent = "  ";
     const lightVars = COLOR_TOKENS.map(
       (token) => `${indent}--${token}: ${state.colors.light[token]};`
@@ -309,20 +331,51 @@ export function ThemeCustomizerProvider({
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+${[...CHART_TOKENS, ...SIDEBAR_TOKENS]
+  .map((token) => `  --color-${token}: var(--${token});`)
+  .join("\n")}
 }`;
 
+    // Site globals the components lean on, so a copied theme reproduces what
+    // the docs preview showed. Only rules shared across many components belong
+    // here — anything a single component needs ships inline with it.
+    const baseBlock = `/* Buttons: Tailwind preflight resets them to cursor: default. */
+@layer base {
+  button {
+    cursor: pointer;
+  }
+}`;
+
+    // The customizer squares every corner at radius 0 (not just the ones that
+    // read --radius) via an inline-style selector on <html>. That selector can
+    // never match a :root variable, so emit the same effect directly.
+    const radiusZeroBlock =
+      state.radius === 0
+        ? `\n\n/* Radius 0: force sharp corners everywhere. Elements that must stay
+   circular opt out with the .keep-rounded class. */
+*:not(.keep-rounded) {
+  border-radius: 0 !important;
+}`
+        : "";
+
+    const tail = `${themeBlock}\n\n${baseBlock}${radiusZeroBlock}`;
+
     if (exportMode === "light") {
-      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
     }
 
     if (exportMode === "dark") {
-      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
     }
 
-    return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+    // `dark:` utilities only follow the .dark class when the variant is
+    // declared; without it Tailwind v4 falls back to prefers-color-scheme and
+    // the .dark block below would never drive them.
+    return `@import "tailwindcss";\n\n@custom-variant dark (&:where(.dark, .dark *));\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
   }, [state]);
 
   // ─── Memoized Value ──────────────────────────────────────────

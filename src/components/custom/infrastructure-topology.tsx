@@ -277,6 +277,15 @@ export function InfrastructureTopology({
                 className
             )}
         >
+            {/* `dash` drives the animate-[dash_…] beams below. Plain <style> rather
+                than styled-jsx so the component compiles outside Next.js, and kept
+                inline so the keyframes survive a copy into another project. */}
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: `@keyframes dash { to { stroke-dashoffset: -1000; } }`,
+                }}
+            />
+
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-border/40">
                 <div className="space-y-1">
