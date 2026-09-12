@@ -2441,10 +2441,8 @@
         "data-display"
       ],
       "dependencies": [
-        "cobe",
         "framer-motion",
-        "lucide-react",
-        "next-themes"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"

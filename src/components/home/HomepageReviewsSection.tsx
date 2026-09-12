@@ -1,10 +1,5 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
-import createGlobe from "cobe";
-import { useTheme } from "next-themes";
 
 export interface ReviewItem {
 	id: string;
@@ -98,150 +93,10 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 	},
 ];
 
-function CobeGlobe() {
-	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-	const { resolvedTheme } = useTheme();
-	const isDarkMode = resolvedTheme !== "light";
-	const [themeTick, setThemeTick] = useState(0);
-
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-		const observer = new MutationObserver(() => {
-			setThemeTick((t) => t + 1);
-		});
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ["style", "class"],
-		});
-		observer.observe(document.body, {
-			attributes: true,
-			attributeFilter: ["style", "class"],
-		});
-		return () => observer.disconnect();
-	}, []);
-
-	useEffect(() => {
-		let phi = 0;
-		let animId: number;
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		const getPrimaryAccentRgb = (): [number, number, number] => {
-			if (typeof window !== "undefined") {
-				try {
-					const dummy = document.createElement("div");
-					dummy.className = "text-primary border-primary";
-					document.body.appendChild(dummy);
-					const comp =
-						getComputedStyle(dummy).color ||
-						getComputedStyle(dummy).borderColor;
-					document.body.removeChild(dummy);
-
-					if (comp.includes("oklch")) {
-						const match = comp.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
-						if (match) {
-							const l = parseFloat(match[1]);
-							const c = parseFloat(match[2]);
-							const h = parseFloat(match[3]);
-
-							if (c < 0.03) {
-								return isDarkMode ? [0.4, 0.5, 0.95] : [0.25, 0.45, 0.9];
-							}
-
-							const hRad = (h * Math.PI) / 180;
-							const a = c * Math.cos(hRad);
-							const b = c * Math.sin(hRad);
-
-							const l_ = Math.pow(l + 0.3963377774 * a + 0.2158037573 * b, 3);
-							const m_ = Math.pow(l - 0.1055613458 * a - 0.0638541728 * b, 3);
-							const s_ = Math.pow(l - 0.0894841775 * a - 1.291485548 * b, 3);
-
-							const rLin =
-								+4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_;
-							const gLin =
-								-1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_;
-							const bLin =
-								-0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_;
-
-							const toSrgb = (x: number) =>
-								x <= 0.0031308
-									? 12.92 * x
-									: 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
-
-							return [
-								Math.max(0, Math.min(1, toSrgb(rLin))),
-								Math.max(0, Math.min(1, toSrgb(gLin))),
-								Math.max(0, Math.min(1, toSrgb(bLin))),
-							];
-						}
-					}
-
-					const rgbMatch = comp.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-					if (rgbMatch) {
-						return [
-							parseInt(rgbMatch[1], 10) / 255,
-							parseInt(rgbMatch[2], 10) / 255,
-							parseInt(rgbMatch[3], 10) / 255,
-						];
-					}
-
-					const ctx = document.createElement("canvas").getContext("2d");
-					if (ctx && comp) {
-						ctx.fillStyle = comp;
-						const hex = ctx.fillStyle;
-						if (hex.startsWith("#") && hex.length === 7) {
-							return [
-								parseInt(hex.slice(1, 3), 16) / 255,
-								parseInt(hex.slice(3, 5), 16) / 255,
-								parseInt(hex.slice(5, 7), 16) / 255,
-							];
-						}
-					}
-				} catch {
-					// fallback
-				}
-			}
-			return isDarkMode ? [0.4, 0.5, 0.95] : [0.25, 0.45, 0.9];
-		};
-
-		const accentRgb = getPrimaryAccentRgb();
-
-		const globe = createGlobe(canvas, {
-			devicePixelRatio: 2,
-			width: 1000 * 2,
-			height: 1000 * 2,
-			phi: 0,
-			theta: 0.2,
-			dark: isDarkMode ? 1 : 0,
-			diffuse: 1.2,
-			mapSamples: 18000,
-			mapBrightness: isDarkMode ? 6 : 2.5,
-			mapBaseBrightness: 0,
-			baseColor: isDarkMode ? [0.05, 0.05, 0.07] : [1, 1, 1],
-			markerColor: accentRgb,
-			glowColor: accentRgb,
-			markers: [],
-		});
-
-		const loop = () => {
-			phi += 0.004;
-			globe.update({ phi });
-			animId = requestAnimationFrame(loop);
-		};
-		loop();
-
-		return () => {
-			cancelAnimationFrame(animId);
-			globe.destroy();
-		};
-	}, [isDarkMode, themeTick]);
-
+function AmbientGlowSphere() {
 	return (
 		<div className="relative flex items-center justify-center pointer-events-none overflow-hidden">
-			<canvas
-				ref={canvasRef}
-				className="relative z-10 w-[360px] h-[360px] sm:w-[720px] sm:h-[720px] xl:w-[920px] xl:h-[920px] max-w-[95vw] aspect-square object-contain rounded-full"
-			/>
+			<div className="size-[320px] sm:size-[500px] rounded-full bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent blur-3xl opacity-60 animate-pulse" />
 		</div>
 	);
 }
@@ -297,9 +152,9 @@ export function HomepageReviewsSection({
 			)}
 
 			<div className="relative w-full min-h-[420px] sm:min-h-[720px] xl:min-h-[860px] flex items-center justify-center">
-				{/* Centered High-Performance COBE WebGL 3D Globe */}
+				{/* Ambient Glow Backdrop */}
 				<div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-					<CobeGlobe />
+					<AmbientGlowSphere />
 				</div>
 
 				{/* Foreground Smooth Right-to-Left Infinite Marquee Container */}

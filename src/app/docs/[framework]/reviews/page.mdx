@@ -91,21 +91,6 @@ export const sampleReviewsData = `const sampleReviews: ReviewItem[] = [
   },
 ];`;
 
-export const usageGlobeMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
-
-${sampleReviewsData}
-
-export default function GlobeMarqueeDemo() {
-  return (
-    <ReviewsBlock
-      variant="globe-marquee"
-      title="Loved by Tech Leaders Worldwide"
-      subtitle="See how fast-growing teams scale products with our senior engineering team."
-      reviews={sampleReviews}
-    />
-  );
-}`;
-
 export const usageStackedCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
 
 ${sampleReviewsData}
@@ -156,12 +141,6 @@ export default function VerticalMarqueeDemo() {
       usage: usageStackedCarousel,
       code: extractCode("src/components/custom/blocks/ReviewsBlock.tsx"),
     },
-    {
-      title: "3D Globe Background with Right-to-Left Marquee Reviews",
-      propNotes: [{ lead: "Features", prop: "globe-marquee", value: "3D Globe Marquee", effect: "renders a rotating 3D dot-matrix WebGL globe with smooth right-to-left marquee review cards." }],
-      props: { variant: "globe-marquee" },
-      usage: usageGlobeMarquee,
-    },
   ]}
 />
 
@@ -175,7 +154,6 @@ Discover the key capabilities of the `ReviewsBlock` component:
 
 - **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with Framer Motion spring physics, rolling 3D card rotation, and circular arrow buttons.
-- **3D Rotating WebGL Globe Canvas**: Interactive COBE WebGL 3D sphere with dynamic accent glow and light field.
 - **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
 - **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
 - **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
@@ -195,9 +173,9 @@ Discover the key capabilities of the `ReviewsBlock` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"up-down-vertical-marquee" | "stacked-carousel" | "globe-marquee"</code></td>
+        <td><code>"up-down-vertical-marquee" | "stacked-carousel"</code></td>
         <td><code>"up-down-vertical-marquee"</code></td>
-        <td>Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or rotating WebGL globe marquee).</td>
+        <td>Determines the visual review layout style (infinite up/down vertical marquee or 3D stacked cards).</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -228,12 +206,6 @@ Discover the key capabilities of the `ReviewsBlock` component:
         <td><code>number</code></td>
         <td><code>5000</code></td>
         <td>Interval duration in milliseconds for auto-sliding stacked cards.</td>
-      </tr>
-      <tr>
-        <td><code>glowColor</code></td>
-        <td><code>string</code></td>
-        <td><code>"var(--primary)"</code></td>
-        <td>Custom color string or CSS variable for background glow accents and globe light field.</td>
       </tr>
       <tr>
         <td><code>className</code></td>

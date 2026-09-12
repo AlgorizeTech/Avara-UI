@@ -46,7 +46,6 @@
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cobe": "^2.0.1",
     "commander": "^14.0.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.19.1",
