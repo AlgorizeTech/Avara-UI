@@ -314,15 +314,42 @@ export function ThemeCustomizerProvider({
   --color-ring: var(--ring);
 }`;
 
+    // Site globals the components lean on, so a copied theme reproduces what
+    // the docs preview showed. Only rules shared across many components belong
+    // here — anything a single component needs ships inline with it.
+    const baseBlock = `/* Buttons: Tailwind preflight resets them to cursor: default. */
+@layer base {
+  button {
+    cursor: pointer;
+  }
+}`;
+
+    // The customizer squares every corner at radius 0 (not just the ones that
+    // read --radius) via an inline-style selector on <html>. That selector can
+    // never match a :root variable, so emit the same effect directly.
+    const radiusZeroBlock =
+      state.radius === 0
+        ? `\n\n/* Radius 0: force sharp corners everywhere. Elements that must stay
+   circular opt out with the .keep-rounded class. */
+*:not(.keep-rounded) {
+  border-radius: 0 !important;
+}`
+        : "";
+
+    const tail = `${themeBlock}\n\n${baseBlock}${radiusZeroBlock}`;
+
     if (exportMode === "light") {
-      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
     }
 
     if (exportMode === "dark") {
-      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
     }
 
-    return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
+    // `dark:` utilities only follow the .dark class when the variant is
+    // declared; without it Tailwind v4 falls back to prefers-color-scheme and
+    // the .dark block below would never drive them.
+    return `@import "tailwindcss";\n\n@custom-variant dark (&:where(.dark, .dark *));\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${tail}`;
   }, [state]);
 
   // ─── Memoized Value ──────────────────────────────────────────
