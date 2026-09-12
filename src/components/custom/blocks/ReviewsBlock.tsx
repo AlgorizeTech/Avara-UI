@@ -8,11 +8,9 @@ import createGlobe from "cobe";
 import { useTheme } from "next-themes";
 
 export type ReviewsVariant =
-	| "globe-marquee"
+	| "up-down-vertical-marquee"
 	| "stacked-carousel"
-	| "stacked"
-	| "vertical-marquee"
-	| "4-column-marquee";
+	| "globe-marquee";
 
 export interface ReviewItem {
 	id: string;
@@ -30,6 +28,7 @@ export interface ReviewsProps {
 	reviews?: ReviewItem[];
 	autoSlide?: boolean;
 	autoSlideInterval?: number;
+	marqueeSpeed?: number;
 	className?: string;
 	glowColor?: string;
 }
@@ -591,17 +590,25 @@ function ReviewCard({
 // ==========================================
 // 4-COLUMN VERTICAL MARQUEE VARIANT
 // ==========================================
-function FourColumnMarqueeReviews({ reviews }: { reviews: ReviewItem[] }) {
+function FourColumnMarqueeReviews({
+	reviews,
+	speed = 100,
+}: {
+	reviews: ReviewItem[];
+	speed?: number;
+}) {
 	const col1 = [...reviews, ...reviews];
 	const col2 = [...reviews.slice(1), ...reviews, ...reviews.slice(0, 1)];
 	const col3 = [...reviews.slice(2), ...reviews, ...reviews.slice(0, 2)];
 	const col4 = [...reviews.slice(3), ...reviews, ...reviews.slice(0, 3)];
 
+	const speedStr = `${speed}s`;
+
 	const columns = [
-		{ items: col1, dir: "up", speed: "65s", visibility: "flex" },
-		{ items: col2, dir: "down", speed: "75s", visibility: "flex" },
-		{ items: col3, dir: "up", speed: "68s", visibility: "hidden lg:flex" },
-		{ items: col4, dir: "down", speed: "78s", visibility: "hidden xl:flex" },
+		{ items: col1, dir: "up", speed: speedStr, visibility: "flex" },
+		{ items: col2, dir: "down", speed: speedStr, visibility: "flex" },
+		{ items: col3, dir: "up", speed: speedStr, visibility: "hidden lg:flex" },
+		{ items: col4, dir: "down", speed: speedStr, visibility: "hidden xl:flex" },
 	];
 
 	return (
@@ -692,17 +699,18 @@ function FourColumnMarqueeReviews({ reviews }: { reviews: ReviewItem[] }) {
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
-	variant = "globe-marquee",
+	variant = "up-down-vertical-marquee",
 	title = "Loved by Tech Leaders Worldwide",
 	subtitle = "See how fast-growing teams scale products with our senior engineering team.",
 	reviews = DEFAULT_REVIEWS,
 	autoSlide = true,
 	autoSlideInterval = 4000,
+	marqueeSpeed = 100,
 	className,
 	glowColor,
 }: ReviewsProps) {
-	const isStacked = variant === "stacked" || variant === "stacked-carousel";
-	const isVerticalMarquee = variant === "vertical-marquee" || variant === "4-column-marquee";
+	const isStacked = variant === "stacked-carousel";
+	const isVerticalMarquee = variant === "up-down-vertical-marquee";
 
 	return (
 		<section
@@ -733,13 +741,13 @@ export function ReviewsBlock({
 					to   { transform: translateY(0); }
 				}
 				.reviews-marquee-track {
-					animation: reviews-marquee-scroll 35s linear infinite;
+					animation: reviews-marquee-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-hmarquee-left {
-					animation: reviews-marquee-left-scroll 55s linear infinite;
+					animation: reviews-marquee-left-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-hmarquee-right {
-					animation: reviews-marquee-right-scroll 55s linear infinite;
+					animation: reviews-marquee-right-scroll ${marqueeSpeed}s linear infinite;
 				}
 				.reviews-vmarquee-up {
 					animation: reviews-vmarquee-up-scroll linear infinite;
@@ -784,7 +792,7 @@ export function ReviewsBlock({
 					autoSlideInterval={autoSlideInterval}
 				/>
 			) : isVerticalMarquee ? (
-				<FourColumnMarqueeReviews reviews={reviews} />
+				<FourColumnMarqueeReviews reviews={reviews} speed={marqueeSpeed} />
 			) : (
 				<div className="relative w-full min-h-[420px] sm:min-h-[750px] flex items-center justify-center">
 					{/* Centered High-Performance COBE WebGL 3D Globe */}
@@ -794,7 +802,10 @@ export function ReviewsBlock({
 
 					{/* Foreground Smooth Right-to-Left Infinite Marquee Container */}
 					<div className="relative z-10 w-full overflow-hidden py-6">
-						<div className="flex gap-4 sm:gap-6 w-max reviews-marquee-track">
+						<div
+							className="flex gap-4 sm:gap-6 w-max reviews-marquee-track"
+							style={{ animationDuration: `${marqueeSpeed}s` }}
+						>
 							{[
 								...reviews,
 								...reviews,
