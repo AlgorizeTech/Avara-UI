@@ -227,12 +227,42 @@ export function CurvedCarousel({
   const baseCenterOffset = isMobile ? 480 : isTablet ? 660 : 880;
 
   // Custom styling for color support
-  const activeColorStyle = color && color !== "primary" ? { borderColor: color } : {};  if (variant === "infinite-marquee") {
+  const activeColorStyle = React.useMemo(() => {
+    if (!color || color === "primary") return { borderColor: "var(--primary)" };
+    if (color === "indigo") return { borderColor: "#6366f1" };
+    if (color === "rose") return { borderColor: "#f43f5e" };
+    if (color === "emerald") return { borderColor: "#10b981" };
+    if (color === "zinc") return { borderColor: "#71717a" };
+    return { borderColor: color };
+  }, [color]);
+
+  if (variant === "infinite-marquee") {
     // 100% Constant Linear Speed Marquee Track with Strict 12px Card Spacing
     const cardWidth = isMobile ? 140 : isTablet ? 195 : 245;
     const gap = 12;
     const itemTotalWidth = cardWidth + gap;
-    const totalTrackWidth = carouselItems.length * itemTotalWidth;
+
+    // Auto-duplicate items if the total width is too small to cover the viewport seamlessly
+    let displayItems = carouselItems;
+    if (carouselItems.length > 0) {
+      const minTrackWidth = Math.max(windowWidth * 2.5, 2000);
+      const singleSetWidth = carouselItems.length * itemTotalWidth;
+      if (singleSetWidth < minTrackWidth) {
+        const repeatCount = Math.ceil(minTrackWidth / singleSetWidth);
+        const duplicated: CurvedCarouselCard[] = [];
+        for (let i = 0; i < repeatCount; i++) {
+          carouselItems.forEach((item, idx) => {
+            duplicated.push({
+              ...item,
+              id: `${item.id}-dup-${i}-${idx}`,
+            });
+          });
+        }
+        displayItems = duplicated;
+      }
+    }
+
+    const totalTrackWidth = displayItems.length * itemTotalWidth;
 
     // Linear continuous pixel offset for constant linear speed across entire track
     const currentOffset = (marqueeAngle * 10) % totalTrackWidth;
@@ -240,22 +270,22 @@ export function CurvedCarousel({
     return (
       <div
         className={cn(
-          "relative w-full h-[400px] sm:h-[480px] md:h-[560px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-muted dark:bg-[#0a0a0c] border border-border",
+          "relative w-full h-[400px] sm:h-[480px] md:h-[560px] rounded-[24px] sm:rounded-[32px] overflow-hidden select-none bg-background border border-border",
           "flex items-center justify-center p-0 m-0 isolation-auto",
           className
         )}
         {...props}
       >
         {/* Soft edge fade vignettes */}
-        <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-r from-zinc-100 dark:from-[#0a0a0c] via-zinc-100/90 dark:via-[#0a0a0c]/90 to-transparent z-40 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-l from-zinc-100 dark:from-[#0a0a0c] via-zinc-100/90 dark:via-[#0a0a0c]/90 to-transparent z-40 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-r from-background via-background/90 to-transparent z-40 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-28 sm:w-48 bg-gradient-to-l from-background via-background/90 to-transparent z-40 pointer-events-none" />
 
         {/* Constant Linear Speed 3D Concave Track */}
         <div
           className="relative w-full h-full flex items-center justify-center overflow-hidden"
           style={{ perspective: "1100px" }}
         >
-          {carouselItems.map((item, index) => {
+          {displayItems.map((item, index) => {
             let posX = index * itemTotalWidth + currentOffset;
 
             // Seamless infinite wrap around total track width

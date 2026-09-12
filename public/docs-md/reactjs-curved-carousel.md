@@ -10,10 +10,15 @@ const customItems: CurvedCarouselCard[] = [
   { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
   { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
   { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+  { id: "4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
+  { id: "5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
+  { id: "6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
 ];
 
 export default function CurvedCarouselDemo() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
@@ -22,10 +27,15 @@ const customItems: CurvedCarouselCard[] = [
   { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
   { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
   { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+  { id: "4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
+  { id: "5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
+  { id: "6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
 ];
 
 export default function InfiniteMarqueeDemo() {
-  return ;
+  return (
+    
+  );
 }`;
 
 ## Installation
