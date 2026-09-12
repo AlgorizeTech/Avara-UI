@@ -9,7 +9,8 @@
 
 // ─── Types ───────────────────────────────────────────────────────
 
-export type ColorToken =
+/** The tokens every preset spells out by hand. */
+export type CoreColorToken =
   | "background"
   | "foreground"
   | "card"
@@ -30,12 +31,38 @@ export type ColorToken =
   | "input"
   | "ring";
 
+/**
+ * Tokens a preset may leave out. `resolvePresetColors` fills them in — sidebar
+ * from the core tokens, charts from the default palette — so every preset
+ * still exports the complete shadcn variable set without hand-authoring
+ * thirteen extra values per mode.
+ */
+export type ExtendedColorToken =
+  | "chart-1"
+  | "chart-2"
+  | "chart-3"
+  | "chart-4"
+  | "chart-5"
+  | "sidebar"
+  | "sidebar-foreground"
+  | "sidebar-primary"
+  | "sidebar-primary-foreground"
+  | "sidebar-accent"
+  | "sidebar-accent-foreground"
+  | "sidebar-border"
+  | "sidebar-ring";
+
+export type ColorToken = CoreColorToken | ExtendedColorToken;
+
+export type PresetColors = Record<CoreColorToken, string> &
+  Partial<Record<ExtendedColorToken, string>>;
+
 export interface ThemePreset {
   name: string;
   label: string;
   colors: {
-    light: Record<ColorToken, string>;
-    dark: Record<ColorToken, string>;
+    light: PresetColors;
+    dark: PresetColors;
   };
 }
 
@@ -51,7 +78,7 @@ export const THEME_CUSTOMIZER_STORAGE_KEY = "theme-customizer-state";
 
 // ─── All Color Tokens ────────────────────────────────────────────
 
-export const COLOR_TOKENS: ColorToken[] = [
+export const CORE_COLOR_TOKENS: CoreColorToken[] = [
   "background",
   "foreground",
   "card",
@@ -72,6 +99,90 @@ export const COLOR_TOKENS: ColorToken[] = [
   "input",
   "ring",
 ];
+
+export const CHART_TOKENS: ExtendedColorToken[] = [
+  "chart-1",
+  "chart-2",
+  "chart-3",
+  "chart-4",
+  "chart-5",
+];
+
+export const SIDEBAR_TOKENS: ExtendedColorToken[] = [
+  "sidebar",
+  "sidebar-foreground",
+  "sidebar-primary",
+  "sidebar-primary-foreground",
+  "sidebar-accent",
+  "sidebar-accent-foreground",
+  "sidebar-border",
+  "sidebar-ring",
+];
+
+/** Every token the customizer edits, injects and exports — in export order. */
+export const COLOR_TOKENS: ColorToken[] = [
+  ...CORE_COLOR_TOKENS,
+  ...CHART_TOKENS,
+  ...SIDEBAR_TOKENS,
+];
+
+// ─── Derived Tokens ──────────────────────────────────────────────
+
+/**
+ * Chart palette from globals.css. Hue-separated on purpose: the neutral
+ * presets have no chroma to derive a categorical ramp from.
+ */
+const DEFAULT_CHART_COLORS: Record<"light" | "dark", Record<string, string>> = {
+  light: {
+    "chart-1": "oklch(0.646 0.222 41.116)",
+    "chart-2": "oklch(0.6 0.118 184.704)",
+    "chart-3": "oklch(0.398 0.07 227.392)",
+    "chart-4": "oklch(0.828 0.189 84.429)",
+    "chart-5": "oklch(0.769 0.188 70.08)",
+  },
+  dark: {
+    "chart-1": "oklch(0.488 0.243 264.376)",
+    "chart-2": "oklch(0.696 0.17 162.48)",
+    "chart-3": "oklch(0.769 0.188 70.08)",
+    "chart-4": "oklch(0.627 0.265 303.9)",
+    "chart-5": "oklch(0.645 0.246 16.439)",
+  },
+};
+
+/**
+ * Expands a preset's colors for one mode into the full token set.
+ *
+ * Sidebar tokens mirror the surface they sit on, the way shadcn's own themes
+ * do: the panel is the card surface, its accent is the page accent, and so on.
+ * A preset that wants something different sets the token explicitly and wins.
+ */
+export function resolvePresetColors(
+  colors: PresetColors,
+  mode: "light" | "dark"
+): Record<ColorToken, string> {
+  const derived: Record<ExtendedColorToken, string> = {
+    ...(DEFAULT_CHART_COLORS[mode] as Record<
+      "chart-1" | "chart-2" | "chart-3" | "chart-4" | "chart-5",
+      string
+    >),
+    sidebar: colors.card,
+    "sidebar-foreground": colors["card-foreground"],
+    "sidebar-primary": colors.primary,
+    "sidebar-primary-foreground": colors["primary-foreground"],
+    "sidebar-accent": colors.accent,
+    "sidebar-accent-foreground": colors["accent-foreground"],
+    "sidebar-border": colors.border,
+    "sidebar-ring": colors.ring,
+  };
+
+  const full = { ...derived } as Record<ColorToken, string>;
+  for (const token of CORE_COLOR_TOKENS) full[token] = colors[token];
+  for (const token of [...CHART_TOKENS, ...SIDEBAR_TOKENS]) {
+    const explicit = colors[token];
+    if (explicit) full[token] = explicit;
+  }
+  return full;
+}
 
 /** Tokens grouped for the customizer UI */
 export const TOKEN_GROUPS = [
@@ -109,6 +220,14 @@ export const TOKEN_GROUPS = [
   {
     label: "Borders & Inputs",
     tokens: ["border", "input", "ring"] as ColorToken[],
+  },
+  {
+    label: "Charts",
+    tokens: CHART_TOKENS as ColorToken[],
+  },
+  {
+    label: "Sidebar",
+    tokens: SIDEBAR_TOKENS as ColorToken[],
   },
 ];
 
