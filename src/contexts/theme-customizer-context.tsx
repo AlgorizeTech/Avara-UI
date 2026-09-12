@@ -4,7 +4,8 @@
  * ThemeCustomizerProvider — manages full CSS variable customization.
  *
  * This is a separate context from the existing ThemeContextProvider.
- * It handles all 19 color tokens + border radius + preset management,
+ * It handles all 32 shadcn color tokens (core, chart, sidebar) + border radius
+ * + preset management,
  * persisting to localStorage and injecting CSS variables onto <html>.
  */
 
@@ -22,9 +23,12 @@ import {
   type ColorToken,
   type ThemePreset,
   COLOR_TOKENS,
+  CHART_TOKENS,
+  SIDEBAR_TOKENS,
   THEME_PRESETS,
   DEFAULT_PRESET,
   THEME_CUSTOMIZER_STORAGE_KEY,
+  resolvePresetColors,
 } from "@/lib/theme-presets";
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -70,13 +74,16 @@ function getDefaultPreset(): ThemePreset {
   );
 }
 
-function getInitialState(): ThemeCustomizerState {
-  const preset = getDefaultPreset();
+function presetColors(preset: ThemePreset): ThemeCustomizerState["colors"] {
   return {
-    colors: {
-      light: { ...preset.colors.light },
-      dark: { ...preset.colors.dark },
-    },
+    light: resolvePresetColors(preset.colors.light, "light"),
+    dark: resolvePresetColors(preset.colors.dark, "dark"),
+  };
+}
+
+function getInitialState(): ThemeCustomizerState {
+  return {
+    colors: presetColors(getDefaultPreset()),
     radius: 0.625,
     activePreset: DEFAULT_PRESET,
   };
@@ -95,6 +102,22 @@ function loadState(): ThemeCustomizerState {
       );
       if (hasAllTokens && typeof parsed.radius === "number") {
         return parsed;
+      }
+      // State saved before the chart/sidebar tokens existed: keep the user's
+      // colors and derive the missing tokens from them, rather than throwing
+      // the whole customization away.
+      if (
+        parsed.colors?.light &&
+        parsed.colors?.dark &&
+        typeof parsed.radius === "number"
+      ) {
+        return {
+          ...parsed,
+          colors: {
+            light: resolvePresetColors(parsed.colors.light, "light"),
+            dark: resolvePresetColors(parsed.colors.dark, "dark"),
+          },
+        };
       }
     }
   } catch {
@@ -258,10 +281,7 @@ export function ThemeCustomizerProvider({
     const nextState: ThemeCustomizerState = {
       radius: state.radius,
       activePreset: presetName,
-      colors: {
-        light: { ...preset.colors.light },
-        dark: { ...preset.colors.dark },
-      },
+      colors: presetColors(preset),
     };
 
     saveState(nextState);
@@ -309,9 +329,13 @@ export function ThemeCustomizerProvider({
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+${[...CHART_TOKENS, ...SIDEBAR_TOKENS]
+  .map((token) => `  --color-${token}: var(--${token});`)
+  .join("\n")}
 }`;
 
     // Site globals the components lean on, so a copied theme reproduces what
