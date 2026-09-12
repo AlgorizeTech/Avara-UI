@@ -22,9 +22,7 @@ import { getThemeStyles } from "./cart-theme";
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-// ==========================================
-// DYNAMIC THEME ENGINE
-// ==========================================
+export type CartColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type CartType = "drawer" | "modal" | "page";
 
 export interface CartItem {

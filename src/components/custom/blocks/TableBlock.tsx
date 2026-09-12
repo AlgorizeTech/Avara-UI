@@ -23,7 +23,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { SelectBlock } from "./SelectBlock";
 import { type Accessor, DataTableContext, type DataTableContextValue, type SortType, TableContext, type TableSize, type TableVariant, getThemeStyles, resolveAccessor, useDataTable, useTableStyles } from "./table-core";
 
 // ==========================================
@@ -883,7 +882,8 @@ export function DataTablePageSize({
   color,
   className,
 }: DataTablePageSizeProps) {
-  const { pageSize, setPageSize, pageSizeOptions } = useDataTable();
+  const { pageSize, setPageSize, pageSizeOptions, theme: defaultTheme } = useDataTable();
+  const theme = color ? getThemeStyles(color as string).theme : defaultTheme;
   return (
     <div
       className={cn(
@@ -892,17 +892,23 @@ export function DataTablePageSize({
       )}
     >
       {label}
-      <SelectBlock
-        options={pageSizeOptions.map((opt) => ({
-          label: String(opt),
-          value: String(opt),
-        }))}
-        value={String(pageSize)}
-        onChange={(v) => setPageSize(Number(v))}
-        color={color as string}
-        inputSize="sm"
-        className="w-[72px] shrink-0"
-      />
+      <div className="relative inline-flex items-center">
+        <select
+          value={pageSize}
+          onChange={(e) => setPageSize(Number(e.target.value))}
+          className={cn(
+            "h-8 pl-2.5 pr-7 text-xs font-semibold bg-background text-foreground border border-border rounded-lg appearance-none outline-none cursor-pointer transition-colors focus:ring-2",
+            theme.focusRing,
+          )}
+        >
+          {pageSizeOptions.map((opt) => (
+            <option key={opt} value={opt} className="bg-background text-foreground">
+              {opt}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="w-3.5 h-3.5 absolute right-2 pointer-events-none text-muted-foreground" />
+      </div>
       {suffix}
     </div>
   );
