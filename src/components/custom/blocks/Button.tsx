@@ -1559,7 +1559,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               __html: `@keyframes slide-icon-loop {
   0%   { transform: translateX(-100%); animation-timing-function: ease-out; }
   50%  { transform: translateX(0);     animation-timing-function: ease-in; }
-  100% { transform: translateX(170%); }
+  100% { transform: translateX(100%); }
 }`,
             }}
           />
