@@ -59,7 +59,7 @@ export default function ZoomableMap() {
   return (
     <DataMaps
       dataPoints={mapData}
-      variant="dots"
+      variant="fill"
       zoomable
       scrollWheelZoom
       zoom={2}
@@ -164,30 +164,8 @@ export default function ColoredMap() {
           effect: "and `maxZoom` bound how far the reader can go; `zoom` is the starting level.",
         },
       ],
-      props: { variant: "dots", zoomable: true, mapId: "map-zoomable" },
+      props: { variant: "fill", zoomable: true, mapId: "map-zoomable" },
       usage: usageZoomable,
-    },
-    {
-      title: "Custom colors",
-      propNotes: [
-        {
-          prop: "highlightColor",
-          value: '"#10b981"',
-          effect: "is the global accent applied to countries that have data.",
-        },
-        {
-          prop: "defaultColor",
-          value: '"#cbd5e1"',
-          effect: "paints every country without data.",
-        },
-        {
-          prop: "color",
-          effect:
-            "on an individual entry in `dataPoints` overrides both for that country alone.",
-        },
-      ],
-      props: { variant: "fill", zoomable: false, color: "#10b981", mapId: "map-colors" },
-      usage: usageColors,
     },
   ]}
 />

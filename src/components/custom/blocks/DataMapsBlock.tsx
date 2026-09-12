@@ -138,7 +138,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const variantRef = useRef(variant);
     const [leafletLib, setLeafletLib] = useState<Leaflet | null>(null);
     const [rl, setRl] = useState<ReactLeaflet | null>(null);
-    const [dotCount, setDotCount] = useState(0);
+    const [dotCount, setDotCount] = useState(dataPoints?.length || 0);
+    const [dotMarkers, setDotMarkers] = useState<{ id: string; lat: number; lng: number; color: string }[]>([]);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -201,37 +202,93 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         }
 
         let currentDotCount = 0;
+        const newDotMarkers: { id: string; lat: number; lng: number; color: string }[] = [];
+
+        // Static centroid coordinates for key ISO-3 countries as fallback
+        const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
+          CHN: [35.8617, 104.1954],
+          IND: [20.5937, 78.9629],
+          USA: [37.0902, -95.7129],
+          BRA: [-14.2350, -51.9253],
+          GBR: [55.3781, -3.4360],
+          DEU: [51.1657, 10.4515],
+          CAN: [56.1304, -106.3468],
+          AUS: [-25.2744, 133.7751],
+          FRA: [46.2276, 2.2137],
+          JPN: [36.2048, 138.2529],
+          RUS: [61.5240, 105.3188],
+        };
 
         geoJsonRef.current.eachLayer((baseLayer) => {
           const layer = baseLayer as FeatureLayer;
-          const countryId = layer.feature?.id;
-          const dataPoint = dataPoints.find((p) => p.id === countryId);
+          const countryId = layer.feature?.id || layer.feature?.properties?.id || layer.feature?.properties?.ISO_A3;
+          const dataPoint = dataPoints.find((p) => String(p.id).toUpperCase() === String(countryId).toUpperCase());
           
           layer.setStyle({
             fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : defaultColor,
           });
 
-          if (isDots && dataPoint && layer.getBounds && markersGroupRef.current && map?.getPanes?.()?.markerPane) {
+          if (isDots && dataPoint && layer.getBounds) {
              currentDotCount++;
              const c = layer.getBounds().getCenter();
              const color = dataPoint.color || highlightColor;
-             
-             const icon = leafletLib.divIcon({
-                className: 'bg-transparent border-none',
-                html: `<div class="map-pulse-dot" style="--pulse-color: ${color};"></div>`,
-                iconSize: [8, 8],
-                iconAnchor: [4, 4]
+             newDotMarkers.push({
+               id: String(dataPoint.id),
+               lat: c.lat,
+               lng: c.lng,
+               color,
              });
-             
-             try {
-               leafletLib.marker([c.lat, c.lng], { icon, interactive: false }).addTo(markersGroupRef.current);
-             } catch {
-               // Silently ignore if map is unmounting during HMR
-             }
           }
         });
+
+        // Fallback for any data points not matched by layer bounds
+        if (isDots) {
+          dataPoints.forEach((dp) => {
+            const dpId = String(dp.id).toUpperCase();
+            if (!newDotMarkers.some((m) => m.id.toUpperCase() === dpId)) {
+              const coords = COUNTRY_CENTROIDS[dpId];
+              if (coords) {
+                newDotMarkers.push({
+                  id: dpId,
+                  lat: coords[0],
+                  lng: coords[1],
+                  color: dp.color || highlightColor,
+                });
+                currentDotCount++;
+              }
+            }
+          });
+        }
         
-        setDotCount(currentDotCount);
+        setDotMarkers(newDotMarkers);
+        setDotCount(currentDotCount > 0 ? currentDotCount : dataPoints.length);
+      } else if (variant === "dots") {
+        // Fallback when geoJsonRef is not yet attached
+        const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
+          CHN: [35.8617, 104.1954],
+          IND: [20.5937, 78.9629],
+          USA: [37.0902, -95.7129],
+          BRA: [-14.2350, -51.9253],
+          GBR: [55.3781, -3.4360],
+          DEU: [51.1657, 10.4515],
+          CAN: [56.1304, -106.3468],
+          AUS: [-25.2744, 133.7751],
+          FRA: [46.2276, 2.2137],
+          JPN: [36.2048, 138.2529],
+          RUS: [61.5240, 105.3188],
+        };
+        const initialMarkers = dataPoints.map((dp) => {
+          const dpId = String(dp.id).toUpperCase();
+          const coords = COUNTRY_CENTROIDS[dpId] || [20, 0];
+          return {
+            id: dpId,
+            lat: coords[0],
+            lng: coords[1],
+            color: dp.color || highlightColor,
+          };
+        });
+        setDotMarkers(initialMarkers);
+        setDotCount(dataPoints.length);
       }
       
       return () => {
@@ -316,25 +373,37 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           .custom-leaflet-tooltip::before {
             display: none !important;
           }
+          .leaflet-marker-icon {
+            background: transparent !important;
+            border: none !important;
+            overflow: visible !important;
+          }
           .map-pulse-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             position: relative;
-            background-color: var(--pulse-color);
+            background-color: var(--pulse-color, #2563eb);
+            box-shadow: 0 0 6px var(--pulse-color, #2563eb);
+            display: block;
+            pointer-events: none;
           }
           .map-pulse-dot::after {
             content: "";
             position: absolute;
-            inset: 0;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
             border-radius: 50%;
-            box-shadow: 0 0 0 0 var(--pulse-color);
+            box-shadow: 0 0 0 0 var(--pulse-color, #2563eb);
             animation: map-pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
           }
           @keyframes map-pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0.8; }
-            70% { transform: scale(1); box-shadow: 0 0 0 20px var(--pulse-color); opacity: 0; }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0; }
+            0% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 0 0 var(--pulse-color, #2563eb); opacity: 0.95; }
+            70% { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 0 28px transparent; opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 0 0 transparent; opacity: 0; }
           }
         `}} />
         <div ref={mapWrapperRef} className="absolute inset-0 z-0">
@@ -358,10 +427,11 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
             {zoomable && <rl.ZoomControl position="bottomright" />}
             <rl.GeoJSON
               ref={geoJsonRef}
+              key={`geojson-${variant}`}
               data={geoData}
               style={(feature) => {
-                const countryId = feature?.id;
-                const dataPoint = dataPoints.find((p) => p.id === countryId);
+                const countryId = feature?.id || feature?.properties?.id || feature?.properties?.ISO_A3;
+                const dataPoint = dataPoints.find((p) => String(p.id).toUpperCase() === String(countryId).toUpperCase());
                 const isDots = variant === "dots";
                 return {
                   fillColor: (dataPoint && !isDots) ? (dataPoint.color || highlightColor) : defaultColor,
@@ -371,8 +441,8 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                 };
               }}
               onEachFeature={(feature, layer) => {
-                const countryId = feature?.id;
-                const dataPoint = dataPoints.find((p) => p.id === countryId);
+                const countryId = feature?.id || feature?.properties?.id || feature?.properties?.ISO_A3;
+                const dataPoint = dataPoints.find((p) => String(p.id).toUpperCase() === String(countryId).toUpperCase());
                 const flagHtml = countryId ? getFlagHtml(String(countryId)) : "";
                 
                 if (dataPoint) {
@@ -443,6 +513,22 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
                 });
               }}
             />
+            {variant === "dots" && leafletLib && dotMarkers.map((dm) => {
+              const icon = leafletLib.divIcon({
+                className: 'bg-transparent border-none overflow-visible',
+                html: `<div class="map-pulse-dot" style="--pulse-color: ${dm.color};"></div>`,
+                iconSize: [8, 8],
+                iconAnchor: [4, 4]
+              });
+              return (
+                <rl.Marker
+                  key={dm.id}
+                  position={[dm.lat, dm.lng]}
+                  icon={icon}
+                  interactive={false}
+                />
+              );
+            })}
           </rl.MapContainer>
           )}
         </div>
@@ -464,7 +550,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
             <span className="text-xs font-semibold text-foreground">
-              {dotCount} Locations Selected
+              {dotCount} Countries Selected
             </span>
           </div>
         )}
