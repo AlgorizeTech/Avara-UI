@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useThemeCustomizer } from '@/contexts/theme-customizer-context';
+import { useThemeCustomizer, type ExportMode } from '@/contexts/theme-customizer-context';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Check, ClipboardCopy, FileCode2, Moon, Sun, SunMoon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -12,12 +12,12 @@ export function CSSExportDialog() {
   const { generateCSS } = useThemeCustomizer();
   const [copied, setCopied] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [exportMode, setExportMode] = React.useState<'both' | 'light' | 'dark'>('both');
+  const [exportMode, setExportMode] = React.useState<ExportMode>('both');
   const [cssCode, setCssCode] = React.useState('');
 
   React.useEffect(() => {
     if (open) {
-      setCssCode(generateCSS());
+      setCssCode(generateCSS(exportMode));
     }
   }, [open, exportMode, generateCSS]);
 

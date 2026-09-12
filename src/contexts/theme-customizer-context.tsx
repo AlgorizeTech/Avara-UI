@@ -33,6 +33,8 @@ import {
 
 // ─── Types ───────────────────────────────────────────────────────
 
+export type ExportMode = "both" | "light" | "dark";
+
 export interface ThemeCustomizerState {
   colors: {
     light: Record<ColorToken, string>;
@@ -58,7 +60,7 @@ interface ThemeCustomizerContextValue {
   activePreset: string;
   // Actions
   resetToDefaults: () => void;
-  generateCSS: () => string;
+  generateCSS: (exportMode?: ExportMode) => string;
   // Current mode awareness
   currentMode: "light" | "dark";
 }
@@ -295,7 +297,7 @@ export function ThemeCustomizerProvider({
     saveState(initial);
   }, []);
 
-  const generateCSS = useCallback((exportMode: "both" | "light" | "dark" = "both"): string => {
+  const generateCSS = useCallback((exportMode: ExportMode = "both"): string => {
     const indent = "  ";
     const lightVars = COLOR_TOKENS.map(
       (token) => `${indent}--${token}: ${state.colors.light[token]};`
