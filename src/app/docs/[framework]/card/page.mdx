@@ -589,7 +589,7 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
   const [following, setFollowing] = useState(false);
 
   return (
-    <div className="grid w-full max-w-4xl items-start gap-5 lg:grid-cols-2">
+    <div className="grid w-full max-w-4xl gap-5 lg:grid-cols-2">
       <Card variant="bordered" className="overflow-hidden rounded-3xl">
         <div className="h-24 bg-violet-500/10 bg-[radial-gradient(circle_at_1px_1px,rgba(139,92,246,0.35)_1px,transparent_0)] [background-size:12px_12px]" />
 
@@ -677,7 +677,7 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
         </CardFooter>
       </Card>
 
-      <div className="grid gap-4">
+      <div className="grid gap-4 lg:grid-rows-[auto_auto_1fr]">
         {TEAMMATES.map((member) => (
           <Card
             key={member.name}
@@ -932,7 +932,7 @@ export default function ProfilePage() {
 
         {/* Her day: 24 hours in Dhaka, the working window, and a live marker */}
         <div className="space-y-2">
-          <div className="flex items-baseline justify-between gap-4 text-sm">
+          <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
             <p className="font-medium">
               {working ? "Working now" : "Outside working hours"}
             </p>
