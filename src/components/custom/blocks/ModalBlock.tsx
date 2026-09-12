@@ -203,7 +203,12 @@ export function ModalHeader({
       )}
     >
       <div className="flex-1 flex items-center gap-3">
-        {children ?? title}
+        {title && typeof title === "string" ? (
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+        ) : (
+          title
+        )}
+        {children}
       </div>
     </div>
   );
