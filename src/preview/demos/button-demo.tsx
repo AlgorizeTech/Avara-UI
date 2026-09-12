@@ -80,6 +80,11 @@ export default function ButtonDemo({
             Sliding Icon
           </Button>
 
+          {/* 2b. Looping Rounded Icon */}
+          <Button variant="slide-icon-loop" iconRight={<ArrowRightIcon />}>
+            Looping Icon
+          </Button>
+
           {/* 3. Horizontal Background Slide */}
           <Button variant="slide-bg" iconRight={<DownloadIcon />}>
             Background Wipe
