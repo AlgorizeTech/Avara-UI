@@ -210,46 +210,7 @@ export default function CustomSkeleton() {
   ]}
 />
 
-## Usage
 
-### Composite Use
-
-If you are loading standard layouts like a user profile or a product card, just use the built-in composite variants to save time.
-
-```tsx
-import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
-
-export default function FeedLoader() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <SkeletonBlock variant="card" />
-      <SkeletonBlock variant="card" />
-    </div>
-  );
-}
-```
-
-## Custom Skeletons
-
-For everything else, you can leverage explicit props to build perfect placeholder boundaries without wrestling with Tailwind class strings.
-
-```tsx
-import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
-
-export default function CustomDashboardLoader() {
-  return (
-    <div className="flex gap-4">
-      {/* Build any layout using exact width/height/radius props */}
-      <SkeletonBlock width={64} height={64} radius="1rem" />
-      <div className="flex flex-col gap-2">
-        <SkeletonBlock width={200} height={16} radius="4px" />
-        <SkeletonBlock width={140} height={16} radius="4px" />
-        <SkeletonBlock width={80} height={12} radius="4px" />
-      </div>
-    </div>
-  );
-}
-```
 
 ## Features
 Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
