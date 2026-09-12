@@ -465,7 +465,7 @@ export default function RadialOrbitalTimeline({
 
           {/* Outer Orbital Circle Line (ONLY line is kept 100% rounded circle at all times) */}
           <div
-            className="keep-rounded absolute border border-zinc-300/80 dark:border-white/10 pointer-events-none transition-all duration-300"
+            className="keep-rounded rounded-full absolute border border-zinc-300/80 dark:border-white/10 pointer-events-none transition-all duration-300"
             style={{
               width: isMobile ? "230px" : "420px",
               height: isMobile ? "230px" : "420px",
@@ -475,7 +475,7 @@ export default function RadialOrbitalTimeline({
           {/* Inner Orbital Circle Line (Only shown when effectiveOrbitCount === 2) */}
           {effectiveOrbitCount === 2 && (
             <div
-              className="keep-rounded absolute border border-dashed border-zinc-400/50 dark:border-white/20 pointer-events-none transition-all duration-300"
+              className="keep-rounded rounded-full absolute border border-dashed border-zinc-400/50 dark:border-white/20 pointer-events-none transition-all duration-300"
               style={{
                 width: isMobile ? "140px" : "260px",
                 height: isMobile ? "140px" : "260px",

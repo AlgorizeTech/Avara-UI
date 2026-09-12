@@ -60,36 +60,6 @@ export default function CustomSkeleton() {
 
 ## Examples
 
-## Usage
-
-### Composite Use
-
-If you are loading standard layouts like a user profile or a product card, just use the built-in composite variants to save time.
-
-```tsx
-
-export default function FeedLoader() {
-  return (
-
-  );
-}
-```
-
-## Custom Skeletons
-
-For everything else, you can leverage explicit props to build perfect placeholder boundaries without wrestling with Tailwind class strings.
-
-```tsx
-
-export default function CustomDashboardLoader() {
-  return (
-    
-      {/* Build any layout using exact width/height/radius props */}
-
-  );
-}
-```
-
 ## Features
 Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
 
