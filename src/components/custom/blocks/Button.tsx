@@ -1073,6 +1073,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
+          {/* Keyframes travel with the variant so the animation survives a copy
+              into a project whose globals.css never defined `gradient`. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}`,
+            }}
+          />
           <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
@@ -1866,6 +1877,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
+          {/* Keyframes travel with the variant so the animation survives a copy
+              into a project whose globals.css never defined `gradient`. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}`,
+            }}
+          />
           <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
