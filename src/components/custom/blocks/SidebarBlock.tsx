@@ -185,7 +185,7 @@ export function SidebarContent({
   return (
     <div
       className={cn(
-        "flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-4 scrollbar-hide",
+        "flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
       {...props}
