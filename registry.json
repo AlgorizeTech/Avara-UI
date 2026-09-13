@@ -257,7 +257,7 @@
           "target": "components/custom/blocks/AppleSelectBlock.tsx"
         }
       ],
-      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, `animate` fades the highlight in on mount, and `as` picks p | span | div for the root."
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
     },
     {
       "name": "book-flip",
@@ -2584,6 +2584,30 @@
         }
       ],
       "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one."
+    },
+    {
+      "name": "selection-frame",
+      "type": "registry:component",
+      "title": "Selection Frame",
+      "author": "AlgorizeTech",
+      "description": "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SelectionFrameBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SelectionFrameBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion."
     },
     {
       "name": "settings",
