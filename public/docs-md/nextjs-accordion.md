@@ -69,6 +69,18 @@ export default function AlwaysOpenFaq() {
 
 ## Examples
 
+export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function PermanentMultiOpenFaq() {
+  // type="multiple" and collapsible={false} allows opening multiple panels,
+  // but once opened, a panel cannot be closed by clicking it again.
+  return (
+    
+  );
+}`;
+
 ## Features
 Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.
 

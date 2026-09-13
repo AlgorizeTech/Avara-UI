@@ -20,10 +20,7 @@ function AccordionItem({ className, ...props }: AccordionItemProps) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn(
-        "border-b last:border-b-0",
-        className,
-      )}
+      className={cn(className)}
       {...props}
     />
   );
@@ -57,7 +54,7 @@ function AccordionTrigger({
         {expandIcon ? (
           expandIcon
         ) : (
-          <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+          <ChevronDownIcon className="text-muted-foreground group-hover:text-primary group-[[data-state=open]]:text-primary pointer-events-none size-4 shrink-0 translate-y-0.5 transition-all duration-200" />
         )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
