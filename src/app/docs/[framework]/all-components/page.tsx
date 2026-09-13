@@ -51,6 +51,8 @@ const COMPONENT_META: Record<
 	"ai-chat": { countText: "Streaming Interface", illustrationType: "chat" },
 	alert: { countText: "Notification Banners", illustrationType: "modal" },
 	"api-playground": { countText: "API Tester", illustrationType: "api-playground" },
+	"apple-select": { countText: "iOS Text Selection", illustrationType: "apple-select" },
+	"selection-frame": { countText: "Figma Selection Box", illustrationType: "selection-frame" },
 	breadcrumb: { countText: "Path Navigation", illustrationType: "breadcrumb" },
 	button: { countText: "5+ Action Styles", illustrationType: "button", titleOverride: "Modern Buttons" },
 	calendar: { countText: "Date Picker Grid", illustrationType: "calendar" },
@@ -72,6 +74,7 @@ const COMPONENT_META: Record<
 	"date-picker": { countText: "Calendar Input", illustrationType: "date-picker" },
 	dialog: { countText: "Modal Dialog", illustrationType: "dialog" },
 	drawer: { countText: "Slideover Sheet", illustrationType: "drawer" },
+	folder: { countText: "Tactile File Folder", illustrationType: "folder" },
 	form: { countText: "Validated Forms", illustrationType: "form" },
 	"half-stars": { countText: "Rating Stars", illustrationType: "half-stars" },
 	"hero-video-player": { countText: "Video & Audio Players", illustrationType: "hero-videoplayer" },
@@ -1888,6 +1891,44 @@ function MiniatureIllustration({
 							<span>Total:</span>
 							<span className="text-primary">$198.00</span>
 						</div>
+					</div>
+				)}
+
+				{type === "apple-select" && (
+					<div className="w-full px-2 my-auto text-[7px] leading-[1.9] font-semibold text-foreground">
+						<span>Tap to </span>
+						<span className="relative inline-block w-px h-[9px] align-[-2px] bg-primary">
+							<span className="absolute left-1/2 -translate-x-1/2 -top-[3px] size-[4px] rounded-full bg-primary" />
+						</span>
+						<span className="rounded-[2px] bg-primary/30 px-px">select text</span>
+						<span className="relative inline-block w-px h-[9px] align-[-2px] bg-primary">
+							<span className="absolute left-1/2 -translate-x-1/2 -bottom-[3px] size-[4px] rounded-full bg-primary" />
+						</span>
+						<span> and drag the handles.</span>
+					</div>
+				)}
+
+				{type === "folder" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<div className="relative w-16 h-12">
+							<div className="absolute left-0 top-0 w-7 h-3 rounded-t-md bg-sky-200 dark:bg-sky-900" />
+							<div className="absolute inset-x-0 top-2 bottom-0 rounded-md bg-sky-200 dark:bg-sky-900" />
+							<div className="absolute left-1/2 -translate-x-1/2 top-3 w-7 h-8 -rotate-6 rounded-sm bg-white shadow-sm" />
+							<div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-7 h-8 rotate-3 rounded-sm bg-white shadow-sm" />
+							<div className="absolute inset-x-0 bottom-0 h-6 rounded-md bg-sky-300/90 dark:bg-sky-800/90 backdrop-blur-[2px] shadow-inner" />
+						</div>
+					</div>
+				)}
+
+				{type === "selection-frame" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<span className="relative inline-block px-1.5 py-0.5 text-[8px] font-bold text-foreground">
+							<span className="absolute inset-0 border-[1.5px] border-sky-500" />
+							{["-top-[3px] -left-[3px]", "-top-[3px] -right-[3px]", "-bottom-[3px] -left-[3px]", "-bottom-[3px] -right-[3px]"].map((pos) => (
+								<span key={pos} className={`absolute ${pos} size-[5px] bg-background border-[1.5px] border-sky-500`} />
+							))}
+							Selected
+						</span>
 					</div>
 				)}
 

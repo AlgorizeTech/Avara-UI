@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   Card,
   CardContent,
@@ -12,31 +12,22 @@ import {
 import { ProductCard, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
   Bell,
-  CalendarDays,
   Check,
-  Clock,
   CreditCard,
   Download,
-  Eye,
-  FileText,
-  GitMerge,
-  Globe,
   Heart,
-  Mail,
   MapPin,
   MessageCircle,
   Pause,
   Plane,
   Play,
   Settings,
-  Share2,
+  ShoppingBasket,
   SkipBack,
   SkipForward,
   Upload,
   UserPlus,
-  Users,
 } from "lucide-react";
 
 export default function CardDemo({
@@ -54,9 +45,9 @@ export default function CardDemo({
     | "blog-showcase"
     | "blog-grid"
     | "profile"
-    | "profile-page"
     | "ticket"
-    | "media";
+    | "media"
+    | "shop";
 }) {
   const [sneakerBg, setSneakerBg] = useState(
     "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30"
@@ -310,11 +301,106 @@ export default function CardDemo({
 
       {layout === "profile" && <ProfileCards interactive={interactive} />}
 
-      {layout === "profile-page" && <ProfilePage />}
-
       {layout === "ticket" && <BoardingPassCard />}
 
       {layout === "media" && <NowPlayingCard />}
+
+      {layout === "shop" && <ShopCards interactive={interactive} />}
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Shop cards — pastel tiles: a tag, a title, the product, a price bar         */
+/* ========================================================================== */
+
+const SHOP_ITEMS = [
+  {
+    tag: "Women",
+    title: "Pink Fashion",
+    price: "$42.00",
+    tint: "#efb6c4",
+    image:
+      "https://images.unsplash.com/photo-1769708638693-60abd4bdfa9e?q=80&w=600&auto=format&fit=crop",
+    imageAlt: "Woman in a pink coat adjusting her sunglasses against a pink wall",
+    // She stands mid-frame; showing the left of the photo keeps her clear of the mask
+    focus: "object-left",
+  },
+  {
+    tag: "Kids",
+    title: "Party Frock",
+    price: "$56.00",
+    tint: "#fdd24f",
+    image:
+      "https://images.unsplash.com/photo-1759313560255-0458c8f4e615?q=80&w=600&auto=format&fit=crop",
+    imageAlt: "Young girl in a blue star dress against a yellow backdrop",
+    focus: "object-center",
+  },
+  {
+    tag: "Shoes",
+    title: "Pastel Sneakers",
+    price: "$80.00",
+    tint: "#dcd6f4",
+    image:
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600&auto=format&fit=crop",
+    imageAlt: "Pastel sneakers on a pink and periwinkle surface",
+    focus: "object-center",
+  },
+];
+
+function ShopCards({ interactive }: { interactive: boolean }) {
+  return (
+    <div className="grid w-full max-w-4xl gap-5 sm:grid-cols-3">
+      {SHOP_ITEMS.map((item) => (
+        <Card
+          key={item.title}
+          variant="default"
+          interactive={interactive}
+          style={{ backgroundColor: item.tint, "--tint": item.tint } as CSSProperties}
+          className="group relative aspect-[3/4] overflow-hidden rounded-[28px] text-zinc-900 shadow-none"
+        >
+          {/* The photo sits bottom-right at 80% height, leaving the top clear
+              for the tag and title. Two masks, intersected, fade its left and
+              top edges so it dissolves into the tile instead of ending in a
+              hard line */}
+          <img
+            src={item.image}
+            alt={item.imageAlt}
+            loading="lazy"
+            className={cn(
+              "absolute bottom-0 right-0 h-[90%] w-[58%] object-cover [mask-image:linear-gradient(to_right,transparent,black_35%),linear-gradient(to_bottom,transparent,black_30%)] [mask-composite:intersect]",
+              item.focus,
+              interactive &&
+                "transition-transform duration-500 motion-safe:group-hover:scale-105",
+            )}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-1/5 bg-gradient-to-t from-(--tint) to-transparent"
+          />
+
+          <CardHeader className="relative items-start space-y-3 p-5">
+            <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-medium">
+              {item.tag}
+            </span>
+            <CardTitle className="max-w-[7ch] text-[28px] font-normal leading-[1.05] tracking-tight">
+              {item.title}
+            </CardTitle>
+          </CardHeader>
+
+          <CardFooter className="absolute inset-x-3 bottom-3 justify-between rounded-[20px] bg-white/70 p-1.5 pl-4 backdrop-blur-md">
+            <span className="text-sm font-semibold tabular-nums">{item.price}</span>
+            <button
+              type="button"
+              aria-label={`Add ${item.title} to basket`}
+              onClick={(e) => e.stopPropagation()}
+              className="grid size-11 place-items-center rounded-full bg-[#0f172a] text-white transition-colors hover:bg-[#1e293b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0f172a] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              <ShoppingBasket className="size-[18px]" />
+            </button>
+          </CardFooter>
+        </Card>
+      ))}
     </div>
   );
 }
@@ -577,7 +663,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
   const [following, setFollowing] = useState(false);
 
   return (
-    <div className="grid w-full max-w-4xl items-start gap-5 lg:grid-cols-2">
+    <div className="grid w-full max-w-4xl gap-5 lg:grid-cols-2">
       <Card variant="bordered" className="overflow-hidden rounded-3xl">
         <div className="h-24 bg-violet-500/10 bg-[radial-gradient(circle_at_1px_1px,rgba(139,92,246,0.35)_1px,transparent_0)] [background-size:12px_12px]" />
 
@@ -665,7 +751,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
         </CardFooter>
       </Card>
 
-      <div className="grid gap-4">
+      <div className="grid gap-4 lg:grid-rows-[auto_auto_1fr]">
         {TEAMMATES.map((member) => (
           <Card
             key={member.name}
@@ -708,378 +794,6 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
         </button>
       </div>
     </div>
-  );
-}
-
-/* ========================================================================== */
-/*  Profile page — a whole screen built from Card, not just a tile           */
-/* ========================================================================== */
-
-const PROFILE_TIME_ZONE = "Asia/Dhaka";
-const WORKDAY = { start: 10, end: 18 }; // hours, in Ayesha's time zone
-
-const HIGHLIGHTS = [
-  {
-    title: "Motion primitives v2",
-    summary: "One easing vocabulary for modals, drawers and toasts.",
-    status: "In progress",
-    progress: 68,
-  },
-  {
-    title: "Northwind UI 4.0",
-    summary: "128 components, dark mode by default, tokens in CSS.",
-    status: "Shipped June 2026",
-  },
-  {
-    title: "Contrast audit",
-    summary: "Every text and icon color checked at 4.5:1 or better.",
-    status: "Shipped February 2026",
-  },
-];
-
-const ACTIVITY = [
-  { icon: GitMerge, text: "Merged #1287 — unify easing curves across overlays", when: "2h ago" },
-  { icon: Eye, text: "Reviewed Tomás's drawer focus-trap fix", when: "Yesterday" },
-  { icon: FileText, text: "Published the Northwind UI 4.0 release notes", when: "3 days ago" },
-  { icon: MessageCircle, text: "Opened an RFC on token naming", when: "Last week" },
-];
-
-/** Hour-of-day (with minutes as a fraction) and a readable clock, both in the
- *  profile's own time zone — so the day strip is honest wherever it's viewed. */
-function useLocalTime(timeZone: string) {
-  const [time, setTime] = useState<{ hour: number; label: string } | null>(null);
-
-  useEffect(() => {
-    const read = () => {
-      const now = new Date();
-      const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone,
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false,
-      }).formatToParts(now);
-      const h = Number(parts.find((p) => p.type === "hour")?.value ?? 0) % 24;
-      const m = Number(parts.find((p) => p.type === "minute")?.value ?? 0);
-      const label = new Intl.DateTimeFormat("en-US", {
-        timeZone,
-        hour: "numeric",
-        minute: "2-digit",
-      }).format(now);
-      setTime({ hour: h + m / 60, label });
-    };
-    read();
-    const id = setInterval(read, 30_000);
-    return () => clearInterval(id);
-  }, [timeZone]);
-
-  return time;
-}
-
-function ProfilePage() {
-  const [following, setFollowing] = useState(false);
-  const time = useLocalTime(PROFILE_TIME_ZONE);
-  const working =
-    time !== null && time.hour >= WORKDAY.start && time.hour < WORKDAY.end;
-
-  return (
-    <Card
-      variant="bordered"
-      className="w-full max-w-6xl overflow-hidden rounded-3xl"
-    >
-      {/* Top bar */}
-      <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-3 sm:px-8">
-        <a
-          href="#"
-          className="inline-flex items-center gap-1.5 rounded-md text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
-        >
-          <ArrowLeft className="size-4" /> People
-        </a>
-        <button
-          type="button"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
-        >
-          <Share2 className="size-4" /> Share
-        </button>
-      </div>
-
-      {/* Hero — no banner; the name and the day strip carry it */}
-      <CardHeader className="gap-6 px-5 pb-0 pt-6 sm:px-8 sm:pt-8">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex items-start gap-5">
-            <div className="relative shrink-0">
-              <span className="grid size-20 place-items-center rounded-2xl bg-violet-500/15 text-2xl font-semibold text-violet-700 dark:bg-violet-500/20 dark:text-violet-200 sm:size-24 sm:text-3xl">
-                AK
-              </span>
-              <span
-                title={working ? "Working now" : "Outside working hours"}
-                className={cn(
-                  "absolute -bottom-1 -right-1 size-4 rounded-full ring-4 ring-white dark:ring-[#050505]",
-                  working ? "bg-emerald-500" : "bg-zinc-400 dark:bg-zinc-600",
-                )}
-              />
-            </div>
-            <div className="space-y-2">
-              <div>
-                <CardTitle className="text-3xl tracking-tight sm:text-4xl">
-                  Ayesha Karim
-                </CardTitle>
-                <CardDescription className="mt-1.5 text-base">
-                  Design engineer at Northwind
-                </CardDescription>
-              </div>
-              <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted-foreground">
-                <li className="flex items-center gap-1.5">
-                  <MapPin className="size-3.5" />
-                  <span>Dhaka</span>
-                </li>
-                <li className="flex items-center gap-1.5">
-                  <Clock className="size-3.5" />
-                  <span className="tabular-nums">
-                    {time ? time.label : "--:--"} local
-                  </span>
-                </li>
-                <li className="flex items-center gap-1.5">
-                  <CalendarDays className="size-3.5" />
-                  <span>Joined March 2021</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex gap-3 sm:shrink-0">
-            <button
-              type="button"
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:flex-none"
-            >
-              <MessageCircle className="size-4" /> Message
-            </button>
-            <button
-              type="button"
-              aria-pressed={following}
-              onClick={() => setFollowing((v) => !v)}
-              className={cn(
-                "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:flex-none",
-                following
-                  ? "border-border text-foreground hover:bg-muted"
-                  : "border-violet-600 bg-violet-600 text-white hover:border-violet-500 hover:bg-violet-500",
-              )}
-            >
-              {following ? (
-                <>
-                  <Check className="size-4" /> Following
-                </>
-              ) : (
-                <>
-                  <UserPlus className="size-4" /> Follow
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Her day: 24 hours in Dhaka, the working window, and a live marker */}
-        <div className="space-y-2">
-          <div className="flex items-baseline justify-between gap-4 text-sm">
-            <p className="font-medium">
-              {working ? "Working now" : "Outside working hours"}
-            </p>
-            <p className="text-muted-foreground">
-              10:00 – 18:00 Dhaka, UTC+6
-            </p>
-          </div>
-          <div
-            role="img"
-            aria-label={
-              time
-                ? "It is " + time.label + " in Dhaka. Ayesha works 10:00 to 18:00."
-                : "Ayesha works 10:00 to 18:00 Dhaka time."
-            }
-            className="relative h-9 overflow-hidden rounded-full bg-muted"
-          >
-            <div
-              className="absolute inset-y-0 bg-violet-500/25 dark:bg-violet-400/25"
-              style={{
-                left: (WORKDAY.start / 24) * 100 + "%",
-                width: ((WORKDAY.end - WORKDAY.start) / 24) * 100 + "%",
-              }}
-            />
-            {[6, 12, 18].map((h) => (
-              <span
-                key={h}
-                aria-hidden
-                className="absolute inset-y-0 w-px bg-border"
-                style={{ left: (h / 24) * 100 + "%" }}
-              />
-            ))}
-            {time && (
-              <span
-                aria-hidden
-                className="absolute inset-y-0 w-0.5 bg-violet-600 transition-[left] duration-500 dark:bg-violet-400"
-                style={{ left: (time.hour / 24) * 100 + "%" }}
-              >
-                <span className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600 ring-2 ring-white dark:bg-violet-400 dark:ring-[#050505]" />
-              </span>
-            )}
-          </div>
-          <div className="flex justify-between text-xs tabular-nums text-muted-foreground">
-            <span>12 am</span>
-            <span>6 am</span>
-            <span>12 pm</span>
-            <span>6 pm</span>
-            <span>12 am</span>
-          </div>
-        </div>
-      </CardHeader>
-
-      {/* Body — two columns on wide screens, one below */}
-      <CardContent className="grid gap-10 px-5 pb-8 pt-8 sm:px-8 lg:grid-cols-12 lg:gap-12">
-        <div className="space-y-8 lg:col-span-5">
-          <section className="space-y-2">
-            <h4 className="text-sm font-semibold">About</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Builds the component library three product teams ship on. Currently
-              rewriting the motion primitives so a modal, a drawer and a toast all
-              ease the same way. Happiest when a design decision becomes one
-              variable.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h4 className="text-sm font-semibold">Skills</h4>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Design systems",
-                "React",
-                "Motion",
-                "Accessibility",
-                "TypeScript",
-                "Figma",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-3">
-            <h4 className="text-sm font-semibold">Details</h4>
-            <ul className="divide-y divide-border text-sm">
-              <li className="flex items-center gap-3 py-2.5">
-                <Mail className="size-4 text-muted-foreground" />
-                <a href="#" className="hover:underline">ayesha@northwind.co</a>
-              </li>
-              <li className="flex items-center gap-3 py-2.5">
-                <Globe className="size-4 text-muted-foreground" />
-                <a href="#" className="hover:underline">ayesha.design</a>
-              </li>
-              <li className="flex items-center gap-3 py-2.5">
-                <Users className="size-4 text-muted-foreground" />
-                <span>Platform team, reports to Head of Design</span>
-              </li>
-            </ul>
-          </section>
-
-          <section className="space-y-3">
-            <h4 className="text-sm font-semibold">Works closely with</h4>
-            <ul className="space-y-3">
-              {TEAMMATES.map((member) => (
-                <li key={member.name} className="flex items-center gap-3">
-                  <span
-                    className={cn(
-                      "grid size-9 shrink-0 place-items-center rounded-xl text-xs font-semibold",
-                      member.tint,
-                    )}
-                  >
-                    {member.initials}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{member.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {member.role}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-xs text-muted-foreground">
-                    {member.zone}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-
-        <div className="space-y-10 lg:col-span-7">
-          <section className="space-y-3">
-            <h4 className="text-sm font-semibold">Highlights</h4>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {HIGHLIGHTS.map((item) => (
-                <Card
-                  key={item.title}
-                  variant="flat"
-                  className="gap-3 rounded-2xl p-4"
-                >
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium leading-snug">{item.title}</p>
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      {item.summary}
-                    </p>
-                  </div>
-                  <div className="mt-auto space-y-2">
-                    {item.progress !== undefined && (
-                      <div
-                        role="progressbar"
-                        aria-valuenow={item.progress}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-label={item.title + " progress"}
-                        className="h-1.5 overflow-hidden rounded-full bg-border"
-                      >
-                        <div
-                          className="h-full rounded-full bg-violet-600 dark:bg-violet-400"
-                          style={{ width: item.progress + "%" }}
-                        />
-                      </div>
-                    )}
-                    <p
-                      className={cn(
-                        "text-xs",
-                        item.progress !== undefined
-                          ? "text-violet-700 dark:text-violet-300"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      {item.progress !== undefined
-                        ? item.status + ", " + item.progress + "%"
-                        : item.status}
-                    </p>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-3">
-            <h4 className="text-sm font-semibold">Recent activity</h4>
-            <ol className="divide-y divide-border">
-              {ACTIVITY.map((entry) => (
-                <li key={entry.text} className="flex items-center gap-3 py-3">
-                  <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
-                    <entry.icon className="size-3.5" />
-                  </span>
-                  <p className="flex-1 text-sm leading-snug">{entry.text}</p>
-                  <span className="shrink-0 text-xs text-muted-foreground">
-                    {entry.when}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 

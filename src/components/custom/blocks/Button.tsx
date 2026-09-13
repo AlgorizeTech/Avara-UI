@@ -36,6 +36,7 @@ type ButtonVariant =
   | "cyber-scan"
   | "expand-icon"
   | "slide-icon"
+  | "slide-icon-loop"
   | "slide-bg"
   | "slide-bg-top"
   | "slide-bg-bottom"
@@ -202,6 +203,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const baseClasses =
       variant === "slide-icon" ||
+      variant === "slide-icon-loop" ||
       variant === "slide-text" ||
       variant === "slide-text-down" ||
       variant === "slide-text-bounce"
@@ -1509,6 +1511,70 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Initial Right Icon (slides out to right on hover) */}
           <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-muted text-foreground group-hover:translate-x-10 group-hover:opacity-0 transition-all duration-300 ease-out">
             {loading ? <Loader2 className="h-4 w-4" /> : activeIcon}
+          </span>
+
+          {!loading && (
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">
+              {ripples.map((ripple) => (
+                <span
+                  key={ripple.id}
+                  className={cn(
+                    "absolute rounded-full animate-ripple",
+                    rippleColor,
+                  )}
+                  style={{
+                    left: ripple.x,
+                    top: ripple.y,
+                    width: ripple.size,
+                    height: ripple.size,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </button>
+      );
+    }
+
+    // Variant: Slide Icon Loop (same rounded icon as slide-icon, but the arrow
+    // never rests: it travels out of the circle to the right and re-enters
+    // from the left, on a loop. The circle clips it, so only the pass shows.)
+    if (variant === "slide-icon-loop") {
+      return (
+        <button
+          className={cn(
+            baseClasses,
+            sizeClasses[size],
+            "relative z-10 w-max pl-4 pr-3.5 gap-3",
+            className,
+          )}
+          onClick={createRipple}
+          disabled={loading}
+          ref={ref}
+          {...props}
+        >
+          {/* Plain <style> rather than styled-jsx — see shine-sweep. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes slide-icon-loop {
+  0%   { transform: translateX(-100%); animation-timing-function: ease-out; }
+  50%  { transform: translateX(0);     animation-timing-function: ease-in; }
+  100% { transform: translateX(100%); }
+}`,
+            }}
+          />
+
+          <span className="relative z-10 font-semibold">{children}</span>
+
+          {/* Looping Right Icon (circle clips the arrow as it wraps around) */}
+          <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-muted text-foreground overflow-hidden transition-colors duration-300 group-hover:bg-primary-foreground group-hover:text-primary">
+            {loading ? (
+              <Loader2 className="h-4 w-4" />
+            ) : (
+              <span className="flex items-center justify-center animate-[slide-icon-loop_1.4s_linear_infinite] motion-reduce:animate-none">
+                {activeIcon}
+              </span>
+            )}
           </span>
 
           {!loading && (

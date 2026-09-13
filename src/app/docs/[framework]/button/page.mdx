@@ -47,22 +47,27 @@ export default function MotionButtonDemo() {
         Explore Features
       </Button>
 
-      {/* 3. Horizontal Left to Right Background Wipe */}
+      {/* 3. Looping Rounded Icon (arrow cycles through the circle on its own) */}
+      <Button variant="slide-icon-loop" iconRight={<ArrowRightIcon />}>
+        Keep Reading
+      </Button>
+
+      {/* 4. Horizontal Left to Right Background Wipe */}
       <Button variant="slide-bg" iconRight={<DownloadIcon />}>
         Download Assets
       </Button>
 
-      {/* 4. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
+      {/* 5. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
       <Button variant="slide-text-bounce">
         Spring Bounce
       </Button>
 
-      {/* 5. Upward Text Roll */}
+      {/* 6. Upward Text Roll */}
       <Button variant="slide-text" iconRight={<ArrowRightIcon />}>
         Upward Roll
       </Button>
 
-      {/* 6. Downward Text Roll */}
+      {/* 7. Downward Text Roll */}
       <Button variant="slide-text-down" iconLeft={<MailIcon />}>
         Downward Roll
       </Button>
@@ -161,6 +166,7 @@ export default function SocialButtonDemo() {
       propNotes: [
         { lead: "Icon Expand", prop: "variant", value: '"expand-icon"', effect: "radial color expansion fills button from icon center." },
         { lead: "Icon Slide", prop: "variant", value: '"slide-icon"', effect: "rounded icon slides out to right while new icon enters from left." },
+        { lead: "Icon Loop", prop: "variant", value: '"slide-icon-loop"', effect: "same rounded icon, but the arrow keeps travelling right and re-entering from the left on its own — no hover needed. Holds still under `prefers-reduced-motion`." },
         { lead: "Background Wipe", prop: "variant", value: '"slide-bg"', effect: "background wipes horizontally from left to right." },
         { lead: "Text Roll Motion", prop: "variant", value: '"slide-text" | "slide-text-down" | "slide-text-bounce"', effect: "vertical text sliding and hero spring character bounce." }
       ],
@@ -193,6 +199,7 @@ export default function SocialButtonDemo() {
 
 - **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
 - **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
+- **Looping Icon Motion**: `variant="slide-icon-loop"` keeps the same rounded icon on the right, but the arrow continuously exits to the right and re-enters from the left inside the circle, without any hover.
 - **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
 - **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
 - **Loading Spinners**: Built-in async state handling with interactive disabled states.
@@ -216,12 +223,12 @@ export default function SocialButtonDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"outline" | "slide-icon" | "slide-text"</code>
+          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text"</code>
         </td>
         <td>
           <code>"outline"</code>
         </td>
-        <td>Choose between 4-side border glow, sliding rounded icon, or vertical text roll variant.</td>
+        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, or vertical text roll variant.</td>
       </tr>
       <tr>
         <td>

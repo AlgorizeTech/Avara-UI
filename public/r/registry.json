@@ -238,6 +238,53 @@
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
     },
     {
+      "name": "apple-select",
+      "type": "registry:component",
+      "title": "Apple Select",
+      "author": "AlgorizeTech",
+      "description": "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AppleSelectBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AppleSelectBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
+    },
+    {
+      "name": "book-appointment",
+      "type": "registry:component",
+      "title": "Book Appointment",
+      "author": "AlgorizeTech",
+      "description": "A booking flow in the glass style: a day strip, time slots, a button that reads back the choice, and a confirmation that draws itself in. Use it for clinics, salons, consultations — any page that ends in an appointment.",
+      "categories": [
+        "forms",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BookAppointmentBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BookAppointmentBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Booker, StarRating. `Booker` is a compound component — put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. Pair with `ProfilePage` and `GlassPanel` from the profile-page item for the frosted panels."
+    },
+    {
       "name": "book-flip",
       "type": "registry:component",
       "title": "Book Flip",
@@ -1119,6 +1166,32 @@
         }
       ],
       "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
+    },
+    {
+      "name": "folder",
+      "type": "registry:component",
+      "title": "Folder",
+      "author": "AlgorizeTech",
+      "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FolderBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
     },
     {
       "name": "footer",
@@ -2234,6 +2307,29 @@
       "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
     },
     {
+      "name": "profile-page",
+      "type": "registry:component",
+      "title": "Profile Page",
+      "author": "AlgorizeTech",
+      "description": "A person's profile as a glass bento page: an aurora backdrop, one frosted panel recipe in four shapes, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "categories": [
+        "layout",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ProfilePage, GlassPanel, WorkdayDial, useLocalTime. `ProfilePage` is the backdrop and 12-column grid; place `GlassPanel`s inside with `shape` (slab, tile, disc, capsule) and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
+    },
+    {
       "name": "progress",
       "type": "registry:component",
       "title": "Progress",
@@ -2545,6 +2641,30 @@
         }
       ],
       "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one."
+    },
+    {
+      "name": "selection-frame",
+      "type": "registry:component",
+      "title": "Selection Frame",
+      "author": "AlgorizeTech",
+      "description": "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SelectionFrameBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SelectionFrameBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion."
     },
     {
       "name": "settings",
@@ -3100,7 +3220,7 @@
           "target": "components/custom/blocks/toast-context.ts"
         }
       ],
-      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider."
+      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider."
     },
     {
       "name": "toggle",
