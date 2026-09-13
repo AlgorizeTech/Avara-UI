@@ -112,21 +112,22 @@ export default function NavigationMenuDemo({
 }
 
 // Small helper for the preview
-function ListItem({ className, title, children, icon: Icon, ...props }: any) {
+function ListItem({ className, title, children, icon: Icon, active, ...props }: any) {
   return (
     <li>
       <NavigationMenuLink
+        active={active}
         className={cn(
-          "block select-none space-y-1 rounded-md p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 focus:bg-zinc-100 focus:text-zinc-900",
+          "block select-none space-y-1 rounded-md p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-muted focus:bg-muted",
           className,
         )}
         {...props}
       >
-        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
-          {Icon && <Icon className="w-4 h-4 text-zinc-500 shrink-0" />}
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-foreground">
+          {Icon && <Icon className="w-4 h-4 text-muted-foreground shrink-0" />}
           {title}
         </div>
-        <p className="line-clamp-2 text-xs sm:text-sm leading-snug text-zinc-500 dark:text-zinc-400 mt-1 sm:mt-1.5">
+        <p className="line-clamp-2 text-xs sm:text-sm leading-snug text-muted-foreground mt-1 sm:mt-1.5">
           {children}
         </p>
       </NavigationMenuLink>

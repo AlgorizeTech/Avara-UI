@@ -299,14 +299,21 @@ export const NavigationMenuLink = forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { active?: boolean }
 >(({ children, className, active, ...props }, ref) => {
-  const { theme } = useNavContext();
+  const navCtx = useContext(NavContext);
+  const theme = navCtx?.theme;
+
   return (
     <a
       ref={ref}
+      data-active={active ? "" : undefined}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-muted cursor-pointer",
-        active && theme.bgSoft,
         className,
+        active &&
+          (theme?.bgSoft
+            ? cn(theme.bgSoft, theme?.text || "text-primary", "font-semibold")
+            : "bg-accent text-accent-foreground font-semibold"),
       )}
       {...props}
     >
