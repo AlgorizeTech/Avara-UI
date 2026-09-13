@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-13T11:07:59.299Z",
-  "totalFiles": 243,
+  "generatedAt": "2026-09-13T15:29:16.340Z",
+  "totalFiles": 253,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -57,10 +57,22 @@
       "originalMdx": "[framework]\\api-playground\\page.mdx"
     },
     {
+      "name": "nextjs/apple-select",
+      "path": "/docs/nextjs-apple-select.md",
+      "url": "/docs/nextjs/apple-select",
+      "originalMdx": "[framework]\\apple-select\\page.mdx"
+    },
+    {
       "name": "nextjs/architecture",
       "path": "/docs/nextjs-architecture.md",
       "url": "/docs/nextjs/architecture",
       "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "nextjs/book-appointment",
+      "path": "/docs/nextjs-book-appointment.md",
+      "url": "/docs/nextjs/book-appointment",
+      "originalMdx": "[framework]\\book-appointment\\page.mdx"
     },
     {
       "name": "nextjs/book-flip",
@@ -297,6 +309,12 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "nextjs/folder",
+      "path": "/docs/nextjs-folder.md",
+      "url": "/docs/nextjs/folder",
+      "originalMdx": "[framework]\\folder\\page.mdx"
+    },
+    {
       "name": "nextjs/footer",
       "path": "/docs/nextjs-footer.md",
       "url": "/docs/nextjs/footer",
@@ -489,6 +507,12 @@
       "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
+      "name": "nextjs/profile-page",
+      "path": "/docs/nextjs-profile-page.md",
+      "url": "/docs/nextjs/profile-page",
+      "originalMdx": "[framework]\\profile-page\\page.mdx"
+    },
+    {
       "name": "nextjs/progress",
       "path": "/docs/nextjs-progress.md",
       "url": "/docs/nextjs/progress",
@@ -541,6 +565,12 @@
       "path": "/docs/nextjs-select.md",
       "url": "/docs/nextjs/select",
       "originalMdx": "[framework]\\select\\page.mdx"
+    },
+    {
+      "name": "nextjs/selection-frame",
+      "path": "/docs/nextjs-selection-frame.md",
+      "url": "/docs/nextjs/selection-frame",
+      "originalMdx": "[framework]\\selection-frame\\page.mdx"
     },
     {
       "name": "nextjs/sidebar",
@@ -789,10 +819,22 @@
       "originalMdx": "[framework]\\api-playground\\page.mdx"
     },
     {
+      "name": "reactjs/apple-select",
+      "path": "/docs/reactjs-apple-select.md",
+      "url": "/docs/reactjs/apple-select",
+      "originalMdx": "[framework]\\apple-select\\page.mdx"
+    },
+    {
       "name": "reactjs/architecture",
       "path": "/docs/reactjs-architecture.md",
       "url": "/docs/reactjs/architecture",
       "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "reactjs/book-appointment",
+      "path": "/docs/reactjs-book-appointment.md",
+      "url": "/docs/reactjs/book-appointment",
+      "originalMdx": "[framework]\\book-appointment\\page.mdx"
     },
     {
       "name": "reactjs/book-flip",
@@ -1029,6 +1071,12 @@
       "originalMdx": "[framework]\\flowchart\\page.mdx"
     },
     {
+      "name": "reactjs/folder",
+      "path": "/docs/reactjs-folder.md",
+      "url": "/docs/reactjs/folder",
+      "originalMdx": "[framework]\\folder\\page.mdx"
+    },
+    {
       "name": "reactjs/footer",
       "path": "/docs/reactjs-footer.md",
       "url": "/docs/reactjs/footer",
@@ -1221,6 +1269,12 @@
       "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
+      "name": "reactjs/profile-page",
+      "path": "/docs/reactjs-profile-page.md",
+      "url": "/docs/reactjs/profile-page",
+      "originalMdx": "[framework]\\profile-page\\page.mdx"
+    },
+    {
       "name": "reactjs/progress",
       "path": "/docs/reactjs-progress.md",
       "url": "/docs/reactjs/progress",
@@ -1273,6 +1327,12 @@
       "path": "/docs/reactjs-select.md",
       "url": "/docs/reactjs/select",
       "originalMdx": "[framework]\\select\\page.mdx"
+    },
+    {
+      "name": "reactjs/selection-frame",
+      "path": "/docs/reactjs-selection-frame.md",
+      "url": "/docs/reactjs/selection-frame",
+      "originalMdx": "[framework]\\selection-frame\\page.mdx"
     },
     {
       "name": "reactjs/sidebar",
