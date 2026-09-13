@@ -40,6 +40,7 @@
     "src/components/custom/blocks/AnimatedTypographyBlock.tsx",
     "src/components/custom/blocks/ApiPlaygroundBlock.tsx",
     "src/components/custom/blocks/AppleSelectBlock.tsx",
+    "src/components/custom/blocks/BookAppointmentBlock.tsx",
     "src/components/custom/blocks/BreadcrumbBlock.tsx",
     "src/components/custom/blocks/Button.tsx",
     "src/components/custom/blocks/Calendar.tsx",
