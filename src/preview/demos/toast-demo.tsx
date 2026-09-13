@@ -3,7 +3,7 @@
 import { ToastPosition, ToastProvider, ToastVariant } from "@/components/custom/blocks/ToastBlock";
 import { useToast } from "@/components/custom/blocks/toast-context";
 
-type ExampleMode = "all" | "basic" | "types" | "action" | "persistent";
+type ExampleMode = "all" | "basic" | "types" | "action" | "persistent" | "stack";
 
 const TRIGGER =
   "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
@@ -36,6 +36,35 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
       { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
       { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
       { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    ] as const;
+
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-3 relative z-10">
+        {types.map((t) => (
+          <button
+            key={t.type}
+            onClick={() =>
+              toast({
+                title: t.title,
+                description: t.description,
+                type: t.type,
+              })
+            }
+            className={`${TRIGGER} ${t.className}`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  if (example === "stack") {
+    const types = [
+      { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
+      { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+      { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+      { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
     ] as const;
 
     return (
@@ -171,24 +200,25 @@ export default function ToastDemo({
   variant = "default",
   position = "bottom-right",
   color = "primary",
+  stack = false,
   example = "all",
 }: {
   variant?: ToastVariant;
   position?: ToastPosition;
   color?: string;
+  stack?: boolean;
   /** Picks which trigger buttons the preview renders. "all" is the classic set. */
   example?: ExampleMode;
 }) {
   return (
-    <div
-      className={`relative overflow-hidden w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-2 sm:p-8" : ""}`}
-    >
+    <div className="relative w-full flex flex-col items-center justify-center min-h-[500px]">
       {/* We must wrap the preview area in the provider so the hooks work */}
       <ToastProvider
-        key={`${variant}-${color}-${position}`}
+        key={`${variant}-${color}-${position}-${stack}`}
         variant={variant}
         color={color}
         position={position}
+        stack={stack}
       >
         <ToastButtons example={example} />
       </ToastProvider>
