@@ -3118,7 +3118,7 @@
           "target": "components/custom/blocks/toast-context.ts"
         }
       ],
-      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider."
+      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider."
     },
     {
       "name": "toggle",
