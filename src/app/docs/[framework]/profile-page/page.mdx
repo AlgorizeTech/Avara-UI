@@ -176,10 +176,11 @@ export default function ProfilePageDemo() {
             end={WORKDAY.end}
             place="Dhaka"
             name="Ayesha"
+            note="Replies within the day"
           />
         </div>
         <p className="text-center text-sm text-black/60 dark:text-white/60">
-          Works 10:00 to 18:00, replies within the day
+          Hover the ring for her hours in your time
         </p>
       </GlassPanel>
 
@@ -310,7 +311,7 @@ export default function ProfilePageDemo() {
           prop: "WorkdayDial",
           value: "timeZone, start, end",
           effect:
-            "and it draws the working window as an arc on a 24-hour ring, with a live marker that goes violet inside the window and grey outside it.",
+            "and it draws the working window as an arc on a labelled 24-hour ring, with a live marker that goes violet inside the window and grey outside it. Hover or focus the ring for the window converted to the viewer's own time and how long until it opens.",
         },
         {
           prop: "aurora",
@@ -487,7 +488,13 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
         <td><code>name</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>Used in the accessible description.</td>
+        <td>Used in the accessible description and the tooltip.</td>
+      </tr>
+      <tr>
+        <td><code>note</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>One extra line at the bottom of the tooltip, e.g. <code>"Replies within the day"</code>.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
@@ -516,7 +523,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
         <td><code>timeZone</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>IANA zone to read the clock in. Returns <code>&#123; hour, label &#125; | null</code>: <code>hour</code> is fractional (14.5 for 14:30), <code>label</code> the readable clock. It is <code>null</code> until the first client read, so server and client render the same markup.</td>
+        <td>IANA zone to read the clock in. Returns <code>&#123; hour, label, offsetFromViewer &#125; | null</code>: <code>hour</code> is fractional (14.5 for 14:30), <code>label</code> the readable clock, <code>offsetFromViewer</code> how many hours that zone runs ahead of the viewer's own. It is <code>null</code> until the first client read, so server and client render the same markup.</td>
       </tr>
     </tbody>
   </table>
