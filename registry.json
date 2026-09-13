@@ -238,6 +238,28 @@
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
     },
     {
+      "name": "apple-select",
+      "type": "registry:component",
+      "title": "Apple Select",
+      "author": "AlgorizeTech",
+      "description": "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AppleSelectBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AppleSelectBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, `animate` fades the highlight in on mount, and `as` picks p | span | div for the root."
+    },
+    {
       "name": "book-flip",
       "type": "registry:component",
       "title": "Book Flip",
