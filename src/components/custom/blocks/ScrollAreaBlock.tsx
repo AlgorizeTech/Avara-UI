@@ -44,7 +44,7 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
   ) => {
     const { style } = getThemeStyles(color as string);
     const [isScrolling, setIsScrolling] = React.useState(false);
-    const scrollTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+    const scrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const instanceId = React.useId().replace(/:/g, "");
     const uniqueClass = `custom-scroll-${instanceId}`;

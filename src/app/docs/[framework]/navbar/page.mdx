@@ -12,35 +12,65 @@ Switch any preview to a mobile width with the device buttons to see the GSAP ham
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function SiteHeader() {
-  return <NavbarBlock />;
+  return (
+    <NavbarBlock
+      variant="default"
+      color="indigo"
+      logoText="Nexus"
+    />
+  );
 }`;
 
 export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function LandingHeader() {
   // A pill that floats over the hero — pair it with a colorful background.
-  return <NavbarBlock variant="floating" />;
+  return (
+    <NavbarBlock
+      variant="floating"
+      color="rose"
+      logoText="Nexus"
+    />
+  );
 }`;
 
 export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function CenteredHeader() {
   // Logo in the middle, links split either side.
-  return <NavbarBlock variant="centered" />;
+  return (
+    <NavbarBlock
+      variant="centered"
+      color="emerald"
+      logoText="Nexus"
+    />
+  );
 }`;
 
 export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function MinimalHeader() {
   // Borderless and transparent — lets the page behind it show through.
-  return <NavbarBlock variant="minimal" />;
+  return (
+    <NavbarBlock
+      variant="minimal"
+      color="zinc"
+      logoText="Nexus"
+    />
+  );
 }`;
 
 export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function GlassHeader() {
   // Full-width bar with a backdrop blur, so content scrolls under it.
-  return <NavbarBlock variant="glass" />;
+  return (
+    <NavbarBlock
+      variant="glass"
+      color="indigo"
+      logoText="Nexus"
+    />
+  );
 }`;
 
 <ExampleShowcase
@@ -53,12 +83,14 @@ export default function GlassHeader() {
       subheading: "The default bar: wordmark, desktop links with dropdowns, and a mobile drawer.",
       propNotes: [
         {
+          lead: "Set",
           prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
           effect:
-            "themes the logo mark and the primary CTA — a named key or any hex.",
+            "themes the logo mark icon and the primary call-to-action button.",
         },
       ],
-      props: { variant: "default" },
+      props: { variant: "default", color: "indigo" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
     },
@@ -165,15 +197,15 @@ export default function GlassHeader() {
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the logo icon and primary
-          Call-to-Action button. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>).
+          Call-to-Action button. Accepts named themes or valid hex codes (e.g.{" "}
+          <code>"#8b5cf6"</code>).
         </td>
       </tr>
       <tr>
@@ -187,6 +219,21 @@ export default function GlassHeader() {
           <code>"Nexus"</code>
         </td>
         <td>The text displayed next to the logo mark.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>linkComponent</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>"a"</code>
+        </td>
+        <td>
+          The React component used for internal links. In Next.js, pass{" "}
+          <code>next/link</code> to preserve client-side routing.
+        </td>
       </tr>
     </tbody>
   </table>

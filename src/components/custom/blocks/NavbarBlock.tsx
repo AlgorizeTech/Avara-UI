@@ -6,13 +6,32 @@ import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./navbar-theme";
 
-export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type NavbarColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
+
 export type NavbarVariant =
   | "default"
   | "floating"
   | "centered"
   | "minimal"
   | "glass";
+
+export interface NavbarProps {
+  variant?: NavbarVariant;
+  color?: NavbarColor;
+  logoText?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+}
 
 const NAV_LINKS = [
   { name: "Products", href: "#", hasDropdown: true },
@@ -147,17 +166,7 @@ export function NavbarBlock({
   color = "primary",
   logoText = "Nexus",
   linkComponent: Link = "a",
-}: {
-  variant?: NavbarVariant;
-  color?: NavbarColor;
-  logoText?: string;
-  /**
-   * The element used for links. Defaults to a plain `a`, so this component works
-   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
-   * client-side navigation and prefetching: `linkComponent={Link}`.
-   */
-  linkComponent?: React.ElementType;
-}) {
+}: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [renderLayer, setRenderLayer] = useState(false);
   const { theme, style } = getThemeStyles(color);
