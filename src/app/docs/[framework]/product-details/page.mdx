@@ -178,45 +178,81 @@ Discover the key capabilities of the `ProductDetails` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>ProductDetailsVariant</code></td>
+        <td><code>"color-sync-gallery" | "modern-split-gallery" | "floating-card-glass" | "bento-editorial-showcase"</code></td>
         <td><code>"color-sync-gallery"</code></td>
-        <td>Selects from the 4 unique footwear product details variants.</td>
+        <td>Selects layout architecture from the 4 available variants: <code>"color-sync-gallery"</code>, <code>"modern-split-gallery"</code>, <code>"floating-card-glass"</code>, or <code>"bento-editorial-showcase"</code>.</td>
       </tr>
       <tr>
         <td><code>zoomMode</code></td>
         <td><code>"inner" | "side"</code></td>
         <td><code>"inner"</code></td>
-        <td>Controls image hover zoom style for 1st variant (<code>color-sync-gallery</code>). <code>"inner"</code> magnifies inside image frame; <code>"side"</code> displays a right-side HD lens portal.</td>
+        <td>Controls HD image zoom mode for 1st variant (<code>"color-sync-gallery"</code>). <code>"inner"</code> magnifies directly within the hero frame; <code>"side"</code> projects a 2.8x HD lens window to the right of the image on hover.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
         <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>Product title string.</td>
+        <td><code>"Nike Air Max Pulse 2026"</code></td>
+        <td>Main product title heading displayed across all variants.</td>
       </tr>
       <tr>
         <td><code>price</code></td>
         <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>Product price string.</td>
+        <td><code>"$189.99"</code></td>
+        <td>Current product retail or discounted selling price string.</td>
       </tr>
       <tr>
         <td><code>originalPrice</code></td>
         <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>Product original list price for discount badges.</td>
+        <td><code>"$240.00"</code></td>
+        <td>Original list price string displayed with line-through styling to show savings.</td>
       </tr>
       <tr>
         <td><code>description</code></td>
         <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>Product summary text.</td>
+        <td><code>"Engineered with reactive Air Cushioning..."</code></td>
+        <td>Short description or marketing bio summary text.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"Special Edition"</code></td>
+        <td>Promotional badge label text (e.g. <code>"Special Edition"</code>, <code>"20% OFF"</code>, <code>"Best Seller"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>rating</code></td>
+        <td><code>number</code></td>
+        <td><code>4.9</code></td>
+        <td>Product review score out of 5 stars (renders filled yellow star icons).</td>
+      </tr>
+      <tr>
+        <td><code>reviewsCount</code></td>
+        <td><code>number</code></td>
+        <td><code>284</code></td>
+        <td>Total count of verified customer reviews.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>string[]</code></td>
+        <td><code>DEFAULT_IMAGES</code></td>
+        <td>Array of high-resolution product image URLs for image slider arrows, thumbnail galleries, and colorway syncing.</td>
+      </tr>
+      <tr>
+        <td><code>colors</code></td>
+        <td><code>ProductColor[]</code></td>
+        <td><code>DEFAULT_COLORS</code></td>
+        <td>Array of colorway objects (containing <code>name</code>, <code>class</code>, <code>bgClass</code>, <code>image</code>). Selecting a color swatch dynamically updates active state and swaps main preview image in <code>"color-sync-gallery"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>sizes</code></td>
+        <td><code>string[]</code></td>
+        <td><code>DEFAULT_SIZES</code></td>
+        <td>Array of shoe or apparel size strings (e.g. <code>["US 8", "US 9", "US 10", "US 11", "US 12"]</code>) for size picker grids.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
         <td><code>string</code></td>
         <td><code>""</code></td>
-        <td>Custom Tailwind CSS class overrides.</td>
+        <td>Custom Tailwind CSS class overrides applied to wrapper container section.</td>
       </tr>
     </tbody>
   </table>

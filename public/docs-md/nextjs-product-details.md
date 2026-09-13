@@ -85,34 +85,69 @@ Discover the key capabilities of the `ProductDetails` component:
         Description
 
         variant
-        ProductDetailsVariant
-        "modern-split-gallery"
-        Selects from the 4 unique footwear product details variants.
+        "color-sync-gallery" | "modern-split-gallery" | "floating-card-glass" | "bento-editorial-showcase"
+        "color-sync-gallery"
+        Selects layout architecture from the 4 available variants: "color-sync-gallery", "modern-split-gallery", "floating-card-glass", or "bento-editorial-showcase".
+
+        zoomMode
+        "inner" | "side"
+        "inner"
+        Controls HD image zoom mode for 1st variant ("color-sync-gallery"). "inner" magnifies directly within the hero frame; "side" projects a 2.8x HD lens window to the right of the image on hover.
 
         title
         string
-        undefined
-        Product title string.
+        "Nike Air Max Pulse 2026"
+        Main product title heading displayed across all variants.
 
         price
         string
-        undefined
-        Product price string.
+        "$189.99"
+        Current product retail or discounted selling price string.
 
         originalPrice
         string
-        undefined
-        Product original list price for discount badges.
+        "$240.00"
+        Original list price string displayed with line-through styling to show savings.
 
         description
         string
-        undefined
-        Product summary text.
+        "Engineered with reactive Air Cushioning..."
+        Short description or marketing bio summary text.
+
+        badge
+        string
+        "Special Edition"
+        Promotional badge label text (e.g. "Special Edition", "20% OFF", "Best Seller").
+
+        rating
+        number
+        4.9
+        Product review score out of 5 stars (renders filled yellow star icons).
+
+        reviewsCount
+        number
+        284
+        Total count of verified customer reviews.
+
+        images
+        string[]
+        DEFAULT_IMAGES
+        Array of high-resolution product image URLs for image slider arrows, thumbnail galleries, and colorway syncing.
+
+        colors
+        ProductColor[]
+        DEFAULT_COLORS
+        Array of colorway objects (containing name, class, bgClass, image). Selecting a color swatch dynamically updates active state and swaps main preview image in "color-sync-gallery".
+
+        sizes
+        string[]
+        DEFAULT_SIZES
+        Array of shoe or apparel size strings (e.g. ["US 8", "US 9", "US 10", "US 11", "US 12"]) for size picker grids.
 
         className
         string
         ""
-        Custom Tailwind CSS class overrides.
+        Custom Tailwind CSS class overrides applied to wrapper container section.
 
 ---
 
