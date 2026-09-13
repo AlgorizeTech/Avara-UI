@@ -649,21 +649,15 @@ export const META: Record<string, ItemMeta> = {
   },
   pricing: {
     description:
-      "A complete pricing system with plan cards, a comparison table and an interactive plan builder. Use it as the full pricing page rather than a single section.",
+      "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
     categories: ["commerce", "marketing"],
-    docs: "Named exports: PricingCards, PricingBuilder, getThemeStyles, plus Plan, PricingData, TableFeature, TableSection and PricingTableData types. The largest pricing item — variants are default | premium | elegant | minimal | bordered. Uses next/link, so it needs edits outside Next.js. For a single card row, use `pricing-plans` or `pricing-section`.",
+    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist.",
   },
   "pricing-plan": {
     description:
       "Three pricing layouts in one item — basic cards, a feature table and a usage slider that recalculates price. Use the slider variant for consumption-based products.",
     categories: ["commerce", "marketing"],
     docs: "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project.",
-  },
-  "pricing-plans": {
-    description:
-      "A three-tier pricing card row with a highlighted recommended plan and GSAP entrance. Use it as a self-contained pricing section on a landing page.",
-    categories: ["commerce", "marketing"],
-    docs: "Named export: PricingPlans. Self-contained with its own plan content — copy and adapt rather than configuring through props. Uses next/link, so it needs edits outside Next.js. Installs with no registry dependencies, not even `utils`.",
   },
   "pricing-section": {
     description:

@@ -96,10 +96,10 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   onClick={() => onStepChange?.(index)}
                   disabled={!onStepChange}
                   className={cn(
-                    "relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full border-2 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950",
+                    "relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full border-2 transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isCompleted || isActive
-                      ? cn("border-transparent text-white", !isCssColor && color)
-                      : "border-border bg-card text-zinc-400 dark:text-zinc-600",
+                      ? cn("border-transparent text-primary-foreground", !isCssColor && color)
+                      : "border-border bg-card text-muted-foreground",
                     onStepChange
                       ? "cursor-pointer hover:scale-110 active:scale-95"
                       : "cursor-default",
@@ -128,11 +128,9 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   <span
                     className={cn(
                       "text-[11px] sm:text-sm font-bold leading-tight break-words hyphens-auto transition-colors duration-300",
-                      isActive
+                      isActive || isCompleted
                         ? "text-foreground"
-                        : isCompleted
-                          ? "text-foreground"
-                          : "text-zinc-400 dark:text-zinc-600",
+                        : "text-muted-foreground",
                     )}
                   >
                     {step.title}

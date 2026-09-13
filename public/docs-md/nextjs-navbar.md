@@ -7,35 +7,45 @@ Switch any preview to a mobile width with the device buttons to see the GSAP ham
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function SiteHeader() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function LandingHeader() {
   // A pill that floats over the hero — pair it with a colorful background.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function CenteredHeader() {
   // Logo in the middle, links split either side.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function MinimalHeader() {
   // Borderless and transparent — lets the page behind it show through.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function GlassHeader() {
   // Full-width bar with a backdrop blur, so content scrolls under it.
-  return ;
+  return (
+    
+  );
 }`;
 
 ## Installation
@@ -59,13 +69,13 @@ export default function GlassHeader() {
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the logo icon and primary
-          Call-to-Action button. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          Call-to-Action button. Accepts named themes or valid hex codes (e.g.{" "}
+          "#8b5cf6").
 
           logoText
 
@@ -74,6 +84,15 @@ export default function GlassHeader() {
           "Nexus"
         
         The text displayed next to the logo mark.
+
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The React component used for internal links. In Next.js, pass{" "}
+          next/link to preserve client-side routing.
 
 ---
 

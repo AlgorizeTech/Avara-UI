@@ -105,7 +105,6 @@
     "src/components/custom/blocks/PopoverBlock.tsx",
     "src/components/custom/blocks/Pricing-plan.tsx",
     "src/components/custom/blocks/Pricing.tsx",
-    "src/components/custom/blocks/PricingPlans.tsx",
     "src/components/custom/blocks/PricingSection.tsx",
     "src/components/custom/blocks/PricingSectionV4.tsx",
     "src/components/custom/blocks/ProductCardBlock.tsx",

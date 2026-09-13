@@ -10,7 +10,7 @@ import {
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/custom/blocks/Drawer";
-import { useState } from "react";
+import React, { useState } from "react";
 
 type Side = "top" | "bottom" | "left" | "right";
 
@@ -53,6 +53,10 @@ export default function DrawerDemo({
   showAll?: "sides";
 }) {
   const [isOpen, setIsOpen] = useState(open);
+
+  React.useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
 
   if (showAll === "sides") {
     return (

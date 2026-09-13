@@ -2,7 +2,7 @@
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports six independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -295,7 +295,7 @@ export default function PricingMenu() {
   return ;
 }`;
 
-export const usagePlans = `import PricingPlans, { type PricingServiceOption } from "@/components/custom/blocks/PricingPlans";
+export const usagePlans = `import { PricingPlans, type PricingServiceOption } from "@/components/custom/blocks/Pricing";
 
 const services: PricingServiceOption[] = [
   {
@@ -498,6 +498,22 @@ export default function InteractiveChecklistPricing() {
           "indigo"
 
           Accent for the active row, price and underline treatment.
+
+          PricingPlans
+
+          services
+
+          PricingServiceOption[]
+
+          List of selectable service items with pricing, icons and feature bullet points.
+
+          PricingPlans
+
+          color
+
+          PricingColor
+
+          Accent theme color for selected checkboxes, total calculation and CTA button.
 
 ---
 

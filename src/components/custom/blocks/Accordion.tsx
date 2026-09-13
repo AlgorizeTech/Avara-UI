@@ -43,7 +43,7 @@ export type CustomAccordionProps = {
   collapsible?: boolean;
   defaultValue?: string | string[] | null;
   accordionData?: AccordionDataItem[];
-  variant?: "default" | "bordered" | "filled" | "ghost" | "elevated";
+  variant?: "default" | "bordered" | "filled" | "ghost" | "elevated" | "card-filled";
   className?: string;
   itemClassName?: string;
   triggerClassName?: string;
@@ -70,42 +70,36 @@ export function Accordion({
       case "bordered":
         return {
           container: "space-y-3",
-          item: "border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden bg-card shadow-sm data-[state=open]:border-zinc-300 dark:data-[state=open]:border-zinc-700 transition-colors duration-200",
+          item: "border border-border rounded-xl overflow-hidden bg-card shadow-sm data-[state=open]:bg-primary/5 data-[state=open]:border-primary/40 transition-colors duration-200",
           trigger:
-            "px-5 py-4 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold",
+            "px-5 py-4 hover:bg-primary/5 data-[state=open]:text-primary text-foreground transition-colors duration-200 text-left font-semibold",
           content: "px-5 pb-5 pt-1 text-muted-foreground",
         };
       case "filled":
+      case "card-filled":
         return {
-          container: "space-y-2",
-          item: "bg-zinc-100/80 dark:bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-200/50 dark:border-zinc-800/40 data-[state=open]:bg-zinc-200/70 dark:data-[state=open]:bg-zinc-800/80 data-[state=open]:border-zinc-300 dark:data-[state=open]:border-zinc-700/60 transition-colors duration-200",
-          trigger: "px-5 py-4 text-left font-semibold text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-colors",
+          container: "space-y-2.5",
+          item: "bg-card border border-border rounded-xl overflow-hidden data-[state=open]:bg-primary/5 data-[state=open]:border-primary/40 transition-colors duration-200",
+          trigger: "px-5 py-4 text-left font-semibold text-foreground data-[state=open]:text-primary hover:bg-primary/5 transition-colors",
           content: "px-5 pb-5 pt-1 text-muted-foreground",
         };
       case "elevated":
-        return {
-          container: "space-y-4",
-          item: "bg-card rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:shadow-xl dark:shadow-black/40 border border-border/60 transition-all duration-300 hover:-translate-y-0.5",
-          trigger:
-            "px-6 py-5 text-left font-bold text-foreground hover:bg-muted/50 transition-colors",
-          content:
-            "px-6 pb-6 pt-0 text-muted-foreground leading-relaxed",
-        };
       case "ghost":
         return {
-          container: "space-y-1",
-          item: "rounded-lg overflow-hidden border border-transparent dark:data-[state=open]:bg-zinc-900/40 transition-colors",
+          container: "space-y-3",
+          item: "bg-card rounded-xl overflow-hidden border border-border/60 data-[state=open]:bg-primary/5 data-[state=open]:border-primary/40 transition-colors duration-200",
           trigger:
-            "px-4 py-3 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold rounded-lg",
-          content: "px-4 pb-4 pt-1 text-muted-foreground",
+            "px-5 py-4 text-left font-semibold text-foreground data-[state=open]:text-primary hover:bg-primary/5 transition-colors",
+          content:
+            "px-5 pb-5 pt-1 text-muted-foreground leading-relaxed",
         };
       default:
         return {
           container:
             "space-y-0 border border-border rounded-xl bg-card overflow-hidden shadow-sm",
-          item: "border-b border-border last:border-0 data-[state=open]:bg-muted/50 dark:data-[state=open]:bg-zinc-900/40 transition-colors",
+          item: "border-b border-border last:border-b-0 data-[state=open]:border data-[state=open]:border-primary/40 data-[state=open]:bg-primary/5 transition-colors",
           trigger:
-            "px-6 py-4 hover:bg-muted text-foreground transition-colors duration-200 text-left font-semibold",
+            "px-6 py-4 hover:bg-primary/5 data-[state=open]:text-primary text-foreground transition-colors duration-200 text-left font-semibold",
           content: "px-6 pb-5 pt-1 text-muted-foreground",
         };
     }
@@ -155,7 +149,7 @@ export function Accordion({
             >
               <div className="flex items-center gap-3 w-full">
                 {item.icon && (
-                  <span className="flex-shrink-0 text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                  <span className="flex-shrink-0 text-muted-foreground group-hover:text-primary group-[[data-state=open]]:text-primary transition-colors duration-200">
                     {ItemIcon ? (
                       <ItemIcon className="w-4 h-4" />
                     ) : (
@@ -187,12 +181,45 @@ export function Accordion({
     );
   });
 
-  if (type === "multiple") {
+  const [multipleValue, setMultipleValue] = React.useState<string[]>(multipleDefault);
+
+  if (type === "single" && collapsible) {
+    return (
+      <ShadCNAccordion
+        type="single"
+        collapsible={true}
+        className={shellClassName}
+        defaultValue={singleDefault}
+      >
+        {items}
+      </ShadCNAccordion>
+    );
+  }
+
+  if (type === "single" && !collapsible) {
+    return (
+      <ShadCNAccordion
+        type="single"
+        collapsible={false}
+        className={shellClassName}
+        defaultValue={singleDefault}
+      >
+        {items}
+      </ShadCNAccordion>
+    );
+  }
+
+  if (type === "multiple" && !collapsible) {
     return (
       <ShadCNAccordion
         type="multiple"
         className={shellClassName}
-        defaultValue={multipleDefault}
+        value={multipleValue}
+        onValueChange={(newVal) => {
+          // Never allow removing items that were previously opened
+          const merged = Array.from(new Set([...multipleValue, ...newVal]));
+          setMultipleValue(merged);
+        }}
       >
         {items}
       </ShadCNAccordion>
@@ -201,10 +228,9 @@ export function Accordion({
 
   return (
     <ShadCNAccordion
-      type="single"
-      collapsible={collapsible}
+      type="multiple"
       className={shellClassName}
-      defaultValue={singleDefault}
+      defaultValue={multipleDefault}
     >
       {items}
     </ShadCNAccordion>

@@ -41,14 +41,14 @@ export default function AccordionDemo({
   showAll,
 }: {
   variant?: Variant;
-  interaction?: "single" | "single-mandatory" | "multiple";
+  interaction?: "single" | "single-mandatory" | "multiple" | "multiple-non-collapsible";
   /** Lucide name from the block's ICON_MAP, e.g. "Plus". */
   expandIcon?: string;
   /** Render-all mode: one short accordion per visual variant. */
   showAll?: "variants";
 }) {
-  const accordionType = interaction === "multiple" ? "multiple" : "single";
-  const isCollapsible = interaction !== "single-mandatory";
+  const accordionType = interaction.startsWith("multiple") ? "multiple" : "single";
+  const isCollapsible = interaction !== "single-mandatory" && interaction !== "multiple-non-collapsible";
 
   if (showAll === "variants") {
     const variants: Variant[] = [

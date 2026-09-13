@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 const TRIGGER_CLASS =
-  "w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-indigo-400 dark:hover:border-indigo-500/50 cursor-pointer";
+  "w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-primary/50 cursor-pointer";
 
 const TriggerBox = () => (
   <div className="flex flex-col items-center justify-center w-full px-4">

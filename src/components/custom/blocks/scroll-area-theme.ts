@@ -4,9 +4,9 @@ import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    thumb: "hsl(var(--primary))",
-    thumbHover: "hsl(var(--primary) / 0.85)",
-    track: "hsl(var(--primary) / 0.18)",
+    thumb: "rgba(161, 161, 170, 0.4)",
+    thumbHover: "rgba(113, 113, 122, 0.7)",
+    track: "rgba(228, 228, 231, 0.25)",
   },
   indigo: {
     thumb: "#4f46e5",
@@ -44,6 +44,9 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
+  if (!color || color === "primary" || color === "default") {
+    return { style: {} };
+  }
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
@@ -54,7 +57,8 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  const theme = colorThemes[color] || colorThemes.primary;
+  const theme = colorThemes[color];
+  if (!theme) return { style: {} };
   return {
     style: {
       "--scroll-thumb": theme.thumb,
