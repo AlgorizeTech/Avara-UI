@@ -44,15 +44,26 @@ for (const file of files) {
           }
         }
       }
-      if (modified || raw.includes("\r\n")) {
+      if (modified || raw.includes("\r\n") || !raw.endsWith("\n")) {
         const jsonStr = JSON.stringify(data, null, 2).replace(/\r\n/g, "\n") + "\n";
-        fs.writeFileSync(filePath, jsonStr, "utf8");
-        cleanedCount++;
+        try {
+          fs.writeFileSync(filePath, jsonStr, "utf8");
+          cleanedCount++;
+        } catch {
+          // Retry once if file lock on Windows
+          setTimeout(() => {
+            try { fs.writeFileSync(filePath, jsonStr, "utf8"); } catch {}
+          }, 100);
+        }
       }
     } catch {
-      if (raw.includes("\r\n")) {
-        fs.writeFileSync(filePath, raw.replace(/\r\n/g, "\n"), "utf8");
-        cleanedCount++;
+      if (raw.includes("\r\n") || !raw.endsWith("\n")) {
+        const cleanRaw = raw.replace(/\r\n/g, "\n");
+        const finalRaw = cleanRaw.endsWith("\n") ? cleanRaw : cleanRaw + "\n";
+        try {
+          fs.writeFileSync(filePath, finalRaw, "utf8");
+          cleanedCount++;
+        } catch {}
       }
     }
   }

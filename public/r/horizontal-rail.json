@@ -3,7 +3,7 @@
   "name": "horizontal-rail",
   "title": "Horizontal Rail",
   "author": "AlgorizeTech",
-  "description": "TODO: describe horizontal-rail. Generated placeholder.",
+  "description": "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
   "dependencies": [
     "framer-motion"
   ],
@@ -18,6 +18,10 @@
       "target": "components/custom/blocks/HorizontalRailBlock.tsx"
     }
   ],
-  "categories": [],
+  "categories": [
+    "layout",
+    "scroll",
+    "media"
+  ],
   "type": "registry:component"
 }
